@@ -12,6 +12,24 @@ function dirtyDist() {
   return Math.random() * Math.random();
 }
 
+let ID = {
+  SOUND: 99000739,
+  SAFE: 98477920,
+  FRNT: 98240827,
+  NRDE: 98465171,
+};
+
+let CITADELS = [
+  'Hammerheim',
+  'Castle Black',
+  'Flotsam',
+  'Skykrab',
+  'BONESAW',
+  'The Ga733bo',
+  'Wafflehus',
+  'Witsend'
+];
+
 if (process.argv.length < 3) {
   console.error('You must specify a file to read.');
   process.exit(2);
@@ -34,6 +52,9 @@ for (let i = 0; i < rows.length; i++) {
   let transformedRow = {};
   for (let v in row) {
     switch (v) {
+      case 'characterID':
+        transformedRow['characterId'] = row[v];
+        break;
       case 'startDateTime':
       case 'logonDateTime':
       case 'logoffDateTime':
@@ -48,16 +69,27 @@ for (let i = 0; i < rows.length; i++) {
 
   // Simulate some extra data from the server that isn't contained in this XML
   // dump
-  transformedRow.homeCitadel = 'Hammerheim';
+  transformedRow.homeCitadel =
+      CITADELS[Math.round(Math.random() * (CITADELS.length - 1))];
   transformedRow.recentKills = Math.round(dirtyDist() * 40);
   transformedRow.recentLosses = Math.round(dirtyDist() * 20);
   transformedRow.siggyScore = Math.round(dirtyDist() * 1000);
+  if (Math.random() < 0.9) {
+    transformedRow.corporationId = ID.SAFE;
+  } else {
+    if (Math.random() < 0.8) {
+      transformedRow.corporationId = ID.FRNT;
+    } else {
+      transformedRow.corporationId = ID.NRDE;
+    }
+  }
 
   // Simulate the presence of alts by randomly assigning characters
   // as alts of other characters.
   let treatAsAlt = prevMain != null && Math.random() < 0.33;
 
   if (treatAsAlt) {
+    transformedRow.homeCitadel = prevMain.homeCitadel;
     prevMain.alts.push(transformedRow);
   } else {
     transformedRow.alts = [];

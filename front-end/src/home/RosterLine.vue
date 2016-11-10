@@ -1,19 +1,41 @@
 <template>
-  <div class="roster-row" :class="{'roster-is-alt': !isMain}">
-    <img class="roster-cell roster-portrait" :src="portraitImageSrc">
-    <div class="roster-cell roster-row-name">{{ row.name }}</div>
-    <div class="roster-cell roster-row-login">{{ relativeLoginTime }}</div>
-    <div class="roster-cell roster-row-siggy">{{ row.siggyScore }}</div>
-    <div class="roster-cell roster-row-kills">{{ row.recentKills }}</div>
-    <div class="roster-cell roster-row-losses">{{ row.recentLosses }}</div>
-    <div class="roster-cell roster-row-citadel">{{ row.homeCitadel }}</div>
+  <div class="row" :class="{'roster-is-alt': !isMain}">
+    <div class="alt-indicator">
+      <template v-if="isMain && row.alts.length > 0">
+        {{row.alts.length}}
+      </template>
+    </div>
+    <eve-image :id="row.characterId" type="Character" :size="isMain ? 44 : 35" />
+    <!--<img class="cell portrait" :src="portraitImageSrc">-->
+    <div class="cell name">
+      {{ row.name }}
+      <eve-image
+          v-if="isAltCorp"
+          :id="row.corporationId"
+          type="Corporation"
+          :size="30"
+          class="altCorpBadge"
+          />
+    </div>
+    <div class="cell login">{{ relativeLoginTime }}</div>
+    <div class="cell siggy">{{ row.siggyScore }}</div>
+    <div class="cell kills">{{ row.recentKills }}</div>
+    <div class="cell losses">{{ row.recentLosses }}</div>
+    <div class="cell citadel">{{ row.homeCitadel }}</div>
   </div>
 </template>
 
 <script>
+import EveImage from './EveImage.vue'; 
+import EveConstants from './EveConstants';
+
 let moment = require('moment');
 
 export default {
+  components: {
+    EveImage
+  },
+
   props: {
     row: {
       type: Object,
@@ -31,63 +53,73 @@ export default {
       return moment(this.row.logonDateTime).fromNow();
     },
 
-    portraitImageSrc: function() {
-      return '//image.eveonline.com/Character/' + this.row.characterID + 
-          '_32.jpg';
+    isAltCorp: function() {
+      return this.row.corporationId != EveConstants.id.SAFE
     }
   }
 }
 </script>
 
-<style>
-.roster-row {
-  margin: 10px 0 10px 0;
+<style scoped>
+.row {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 
 .roster-is-alt {
-  padding-left: 15px;
+  padding: 2px 0 2px 9px;
 }
 
-.roster-cell {
-  display: inline-block;
-  vertical-align: middle;
+.cell {
+  padding: 0 5px;
 }
 
-.roster-portrait {
-  width: 32px;
-  height: 32px;
+.alt-indicator {
+  font-size: 12px;
+  color: #AAA;
+  text-align: center;
+  width: 30px;
 }
 
-.roster-row-name {
+.portrait {
+  width: 50px;
+  height: 50px;
+}
+
+.name {
   width: 300px;
 }
 
-.roster-is-alt .roster-row-name {
-  width: 285px;
-}
+/*.roster-is-alt .name {
+  width: 262px;
+}*/
 
-.roster-row-login {
+.login {
   width: 100px;
 }
 
-.roster-row-siggy {
-  width: 30px;
+.siggy {
+  width: 60px;
   text-align: right;
 }
 
-.roster-row-kills {
-  width: 30px;
+.kills {
+  width: 60px;
   text-align: right;
 }
 
-.roster-row-losses {
-  width: 30px;
+.losses {
+  width: 60px;
   text-align: right;
 }
 
-.roster-row-citadel {
+.citadel {
   width: 150px;
-  padding-left: 20px;
+}
+
+.altCorpBadge {
+  vertical-align: middle;
 }
 
 </style>
