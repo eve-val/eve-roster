@@ -12,6 +12,7 @@
     "axios": "^0.15.2",
     "moment": "^2.15.2",
     "vue": "^2.0.1",
+    "vue-router": "^2.0.1",
     "xml2json": "^0.10.0"
   },
   "devDependencies": {

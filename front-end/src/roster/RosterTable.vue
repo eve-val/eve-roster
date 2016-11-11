@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <member-entry v-for="row in sortedRows" :row="row" />
+  <member-entry v-for="row in sortedRows" :row="row" :key="row.characterId" />
 </div>
 </template>
 

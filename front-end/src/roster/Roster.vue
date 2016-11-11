@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div>
     <app-header :identity="identity" />
-    <roster-table :rows="rows" style="margin: 40px 30px 0 30px;">
+    <roster-table :rows="rows" style="margin: 40px 30px 0 30px;" />
   </div>
 </template>
 
@@ -12,8 +12,6 @@ import AppHeader from './AppHeader.vue';
 import RosterTable from './RosterTable.vue';
 
 export default {
-  name: 'home',
-
   components: {
     AppHeader,
     RosterTable,
@@ -26,10 +24,11 @@ export default {
     }
   },
 
-  mounted: function() {
+  created: function() {
     let self = this;
     axios.get('/fake-data/member_tracking_example.json')
       .then(function (response) {
+        console.log('Loaded!');
         self.injectAggregates(response.data);
         self.rows = response.data;
       })

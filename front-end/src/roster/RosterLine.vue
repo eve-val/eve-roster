@@ -8,7 +8,10 @@
     <eve-image :id="row.characterId" type="Character" :size="isMain ? 44 : 35" />
     <!--<img class="cell portrait" :src="portraitImageSrc">-->
     <div class="cell name">
-      {{ row.name }}
+      <router-link
+          class="member-link"
+          :to="'/member/' + row.name"
+          >{{ row.name }}</router-link>
       <eve-image
           v-if="isAltCorp"
           :id="row.corporationId"
@@ -120,6 +123,20 @@ export default {
 
 .altCorpBadge {
   vertical-align: middle;
+}
+
+.member-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.member-link:hover {
+  color: #4f7bc1;
+  text-decoration: underline;
+}
+
+.member-link:active {
+  color: #F90;
 }
 
 </style>
