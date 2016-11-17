@@ -27,7 +27,9 @@ let CITADELS = [
   'BONESAW',
   'The Ga733bo',
   'Wafflehus',
-  'Witsend'
+  'Witsend',
+  '',
+  '',
 ];
 
 if (process.argv.length < 3) {

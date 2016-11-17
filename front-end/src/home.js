@@ -20,4 +20,7 @@ Vue.use(VueRouter);
 new Vue({
   el: '#app',
   router,
+  data: {
+    identity: $IDENTITY,
+  },
 });

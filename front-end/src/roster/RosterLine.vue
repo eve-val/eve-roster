@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import EveImage from './EveImage.vue'; 
+import EveImage from '../shared/EveImage.vue'; 
 import EveConstants from './EveConstants';
 
 let moment = require('moment');

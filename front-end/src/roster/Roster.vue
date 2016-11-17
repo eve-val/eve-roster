@@ -8,7 +8,7 @@
 <script>
 let axios = require('axios');
 
-import AppHeader from './AppHeader.vue';
+import AppHeader from '../shared/AppHeader.vue';
 import RosterTable from './RosterTable.vue';
 
 export default {
@@ -17,10 +17,13 @@ export default {
     RosterTable,
   },
 
+  props: {
+    identity: { type: Object, required: true }
+  },
+
   data () {
     return {
-      rows: [],
-      identity: {}
+      rows: []
     }
   },
 
