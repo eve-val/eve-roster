@@ -6,8 +6,7 @@
 </template>
 
 <script>
-let axios = require('axios');
-
+import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
 import RosterTable from './RosterTable.vue';
 
@@ -29,7 +28,7 @@ export default {
 
   created: function() {
     let self = this;
-    axios.get('/fake-data/member_tracking_example.json')
+    ajaxer.fetchRoster()
       .then(function (response) {
         console.log('Loaded!');
         self.injectAggregates(response.data);

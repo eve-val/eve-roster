@@ -29,9 +29,9 @@
 </template>
 
 <script>
-let axios = require('axios');
 import Vue from 'vue';
 
+import ajaxer from '../shared/ajaxer'
 import AppHeader from '../shared/AppHeader.vue';
 
 import CitadelRow from './CitadelRow.vue';
@@ -131,9 +131,8 @@ export default {
 
   created: function() {
     let self = this;
-    axios.get('/fake-data/member_tracking_example.json')
+    ajaxer.fetchRoster()
       .then(function (response) {
-        console.log('Loaded!');
         self.pilots = response.data;
       })
       .catch(function (err) {

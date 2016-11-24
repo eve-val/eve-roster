@@ -31,6 +31,10 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
       }
     ]
   },
@@ -39,6 +43,14 @@ module.exports = {
       'vue$': 'vue/dist/vue'
     }
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+      },
+      __DEV__: process.env.NODE_ENV != 'production',
+    }),
+  ],
   devServer: {
     historyApiFallback: true,
     noInfo: true,
@@ -51,11 +63,6 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
