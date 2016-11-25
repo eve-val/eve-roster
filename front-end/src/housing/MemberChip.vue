@@ -1,7 +1,11 @@
 <template>
 <div class="chip"
     @mousedown="onMouseDown"
-    :style="{ visibility: visible ? 'visible' : 'hidden' }">
+    :style="{
+      visibility: visible ? 'visible' : 'hidden',
+      color: character.transactionInProgress ? 'green' : 'black',
+    }"
+    >
   <eve-image
       :id="character.characterId"
       type="Character"
@@ -28,7 +32,7 @@ export default {
 
   data: function() {
     return {
-      visible: true
+      visible: true,
     }
   },
 

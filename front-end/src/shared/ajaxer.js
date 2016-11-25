@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-console.log('DEV is: ' + __DEV__);
-
 let rosterJson = {};
 if (__DEV__) {
   rosterJson = require('../../api/roster.json')
-  console.log('rosterJson is', rosterJson);
 }
 
 export default {
@@ -15,7 +12,18 @@ export default {
     } else {
       return axios.get('/api/roster');
     }
-  }
+  },
+
+  updatePilot(name, props) {
+    if (__DEV__) {
+      return fakeResponse('');
+    } else {
+      return axios.patch(
+          '/api/' + encodeURIComponent(name),
+          JSON.stringify(props),
+      );
+    }
+  },
 }
 
 function fakeResponse(data) {

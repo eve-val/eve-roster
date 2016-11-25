@@ -35,6 +35,7 @@ export default {
   align-items: center;
   height: 40px;
   /*background: #EEE;*/
+  flex: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 

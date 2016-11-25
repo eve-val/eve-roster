@@ -2,21 +2,18 @@
 <div class="row"
     @mouseenter="emitEvent('hover')"
     @mouseleave="emitEvent('unhover')">
-  <div class="cell-citadel">
-    <div>{{ row.name }}</div>
-    <div>
-      <member-chip v-for="character in row.occupants"
-        :character="character"
-        :bus="bus"
-        />
-    </div>
+  <div>({{ row.occupants.length }}) {{ row.name }}</div>
+  <div v-for="character in row.occupants">
+    <member-chip
+      :character="character"
+      :bus="bus"
+      :key="character.characterId"
+      />
   </div>
-  <div class="cell-size">{{ row.occupants.length }}</div>
 </div>
 </template>
 
 <script>
-
 import MemberChip from './MemberChip.vue';
 
 export default {
@@ -40,17 +37,8 @@ export default {
 
 <style scoped>
 .row {
-  display: flex;
-  margin: 10px 0;
-}
-
-.cell-citadel {
-  flex-grow: 1;
-}
-
-.cell-size {
-  flex: 0 0 50px;
-  text-align: right;
+  width: 200px;
+  padding: 10px;
 }
 
 </style>

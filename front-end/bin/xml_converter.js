@@ -20,16 +20,29 @@ let ID = {
 };
 
 let CITADELS = [
-  'Hammerheim',
-  'Castle Black',
+  'A Little Krabby',
+  'Elation',
+  'Enthusiasm',
+  'Exhilaration',
+  'Exuberance',
   'Flotsam',
+  'Forward Ruderino Detection Array',
+  'King\'s Landing',
+  'Liverpool Bay',
+  'Pons',
+  'Roanoke',
   'Skykrab',
-  'BONESAW',
+  'The Banana Stand',
   'The Ga733bo',
+  'Witzend',
+  'Absent\'s Bed and Breakfast ',
+  'Astrohouse',
+  'Castle Black',
+  'Dumb Little Paws',
+  'Hammerheim',
+  'Palais du Mireille',
+  'The Black Lodge',
   'Wafflehus',
-  'Witsend',
-  '',
-  '',
 ];
 
 if (process.argv.length < 3) {
@@ -70,9 +83,7 @@ for (let i = 0; i < rows.length; i++) {
   }
 
   // Simulate some extra data from the server that isn't contained in this XML
-  // dump
-  transformedRow.homeCitadel =
-      CITADELS[Math.round(Math.random() * (CITADELS.length - 1))];
+  // dump  
   transformedRow.recentKills = Math.round(dirtyDist() * 40);
   transformedRow.recentLosses = Math.round(dirtyDist() * 20);
   transformedRow.siggyScore = Math.round(dirtyDist() * 1000);
@@ -95,6 +106,15 @@ for (let i = 0; i < rows.length; i++) {
     prevMain.alts.push(transformedRow);
   } else {
     transformedRow.alts = [];
+
+    if (Math.random() > 0.9) {
+      // Unassigned
+      transformedRow.homeCitadel = null;
+    } else {
+      transformedRow.homeCitadel =
+          CITADELS[Math.round(Math.random() * (CITADELS.length - 1))];
+    }
+
     transformedRows.push(transformedRow);
     prevMain = transformedRow;
   }
