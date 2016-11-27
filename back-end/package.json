@@ -1,0 +1,14 @@
+{
+  "name": "eve-roster-backend",
+  "description": "Roster backend",
+  "author": "SOUND IT",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {}
+}
