@@ -4,11 +4,14 @@
   "author": "SOUND IT",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "create-db": "node db/schema.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "knex": "^0.12.6",
+    "sqlite3": "^3.1.8"
   },
   "devDependencies": {}
 }
