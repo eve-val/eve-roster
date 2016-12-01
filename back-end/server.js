@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const request = require('request');
 
 const configLoader = require('./src/config-loader');
 
@@ -49,12 +50,38 @@ app.get('/login', function(req, res) {
 app.get('/authenticate', function(req, res) {
   console.log('AUTH QUERY:', req.query);
 
-  // TODO: Do stuff with auth code here
+  let authCode =
+      Buffer.from(CONFIG.ssoClientId + ':' + CONFIG.ssoSecretKey)
+          .toString('base64');
 
-  req.session.authenticated = true;
-  req.session.characterName = 'Capsuleer07413';
+  request.post('https://login.eveonline.com/oauth/token', {
+    headers: {
+      'Authorization': 'Basic ' + authCode,
+    },
+    form: {
+      grant_type: 'authorization_code',
+      code: req.query.code,
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      let parsedResponse = JSON.parse(body);
 
-  res.redirect('/');
+      console.log('Auth successful! Auth token is %s', parsedResponse.access_token);
+      console.log('  Full response:', parsedResponse);
+
+      // TODO: Do something with access_token
+
+      req.session.authenticated = true;
+      req.session.characterName = 'Capsuleer07413';
+      res.redirect('/');
+    } else {
+      console.error('Something bad happened while trying to get an auth token:',
+          error, response.statusCode, body);
+      // TODO show something to the user
+      res.redirect('/');
+    }
+
+  });
 });
 
 app.get('/logout', function(req, res) {
