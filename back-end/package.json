@@ -8,7 +8,10 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "express": "^4.14.0"
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-alpha.2",
+    "express": "^4.14.0",
+    "pug": "^2.0.0-beta6"
   },
   "devDependencies": {}
 }
