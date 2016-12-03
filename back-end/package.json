@@ -9,9 +9,13 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "express": "^4.14.0",
     "knex": "^0.12.6",
-    "sqlite3": "^3.1.8"
+    "sqlite3": "^3.1.8",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-alpha.2",
+    "express": "^4.14.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.79.0"
   },
   "devDependencies": {}
 }

@@ -1,0 +1,17 @@
+{
+  "cookieSecret": null,
+  "ssoClientId": null,
+  "ssoSecretKey": null,
+
+  "ssoScope": [
+    "characterAccountRead",
+    "characterAssetsRead",
+    "characterClonesRead",
+    "characterKillsRead",
+    "characterLocationRead",
+    "characterSkillsRead",
+    "fleetRead",
+    "fleetWrite",
+    "publicData"
+  ]
+}
