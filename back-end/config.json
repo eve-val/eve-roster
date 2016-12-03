@@ -13,5 +13,7 @@
     "fleetRead",
     "fleetWrite",
     "publicData"
-  ]
+  ],
+
+  "dbFileName": null
 }
