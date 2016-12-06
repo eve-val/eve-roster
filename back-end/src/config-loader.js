@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const REQUIRED_LOCAL_CONFIG = ['cookieSecret', 'ssoClientId', 'ssoSecretKey'];
+const REQUIRED_LOCAL_CONFIG = ['cookieSecret', 'ssoClientId', 'ssoSecretKey', 'dbFileName'];
 
 module.exports = {
   load: function() {
