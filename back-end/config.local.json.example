@@ -1,0 +1,6 @@
+{
+  "cookieSecret": "penguin",
+
+  "ssoClientId": "<fillmein>",
+  "ssoSecretKey": "<fillmein>"
+}
