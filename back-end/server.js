@@ -1,3 +1,4 @@
+const path = require('path');
 const querystring = require('querystring');
 
 const express = require('express');
@@ -91,8 +92,8 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// Static files in public/
-app.use(express.static('public'));
+// Static files in static/
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Manually include the API routes defined in api/
 var api = require('./api');
