@@ -12,6 +12,7 @@
     "axios": "^0.15.2",
     "json-loader": "^0.5.4",
     "moment": "^2.15.2",
+    "path-to-regexp": "^1.7.0",
     "vue": "^2.0.1",
     "vue-router": "^2.0.1",
     "xml2json": "^0.10.0"

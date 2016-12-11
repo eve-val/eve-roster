@@ -6,14 +6,17 @@
 2. `$ cd <this dir>`
 3. `$ npm install`
 
-Then either:
+To build for production with minificaton:
 
 ``` bash
-# serve with hot reload at localhost:8080
-$ npm run dev
-
-# build for production with minification
 $ npm run build
+```
+
+To run the development environment you will first need to start up the back-end 
+server in another terminal (see `/back-end/README.md`). Then run:
+
+``` bash
+$ npm run dev
 ```
 
 ## Framework
@@ -32,21 +35,6 @@ data, including other components, and listening for events. The
 [template syntax documentation](https://vuejs.org/v2/guide/syntax.html) is worth a skim. The
 structure of the JavaScript also relies heavily on the
 [Vue API](https://vuejs.org/v2/guide/instance.html). The CSS is just CSS.
-
-## Structure
-
-The front-end currently has two pages: `home`, which has some actual content, and `settings`,
-which is currently empty and just serves as an example for how to add a second page.
-
-Home has the following structures:
-
-`/pages/index.html` includes `/dist/home.build.js`, which is compiled from `/src/home.js`,
-which uses the *components* defined in `/src/home/`. You shouldn't need to change any of
-that.
-
-`home.js` includes the root component `Home`, which renders the roster list as a series
-of `MemberEntry`s. A `MemberEntry` is made up of one or more `RosterLine`s (one main
-and any alts they may have).
 
 ## Generating fake data
 
