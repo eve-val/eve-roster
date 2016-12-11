@@ -1,10 +1,18 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const pathToRegexp = require('path-to-regexp');
+
+const routes = require('../shared/src/routes');
+
+
+const ROUTE_PATTERNS = [].concat(
+  routes.frontEnd.map((path) => pathToRegexp(path)),
+  routes.backEnd.map((path) => pathToRegexp(path))
+);
 
 module.exports = {
   entry: {
     home: './src/home.js',
-    settings: './src/settings.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -52,9 +60,21 @@ module.exports = {
     }),
   ],
   devServer: {
-    historyApiFallback: true,
+    port: 8081,
     noInfo: true,
-    contentBase: 'pages/'
+    proxy: [
+      {
+        context: function(pathname, req) {
+          for (let i = 0; i < ROUTE_PATTERNS.length; i++) {
+            if (ROUTE_PATTERNS[i].test(pathname)) {
+              return true;
+            }
+          }
+          return false;
+        },
+        target: 'http://localhost:8082',
+      },
+    ],
   },
   devtool: '#eval-source-map'
 }

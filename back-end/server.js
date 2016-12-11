@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const request = require('request');
 
+const routes = require('../shared/src/routes');
 const configLoader = require('./src/config-loader');
 
 const CONFIG = configLoader.load();
@@ -23,7 +24,8 @@ app.use(cookieSession({
 app.set('view engine', 'pug');
 app.set('views', './views')
 
-app.get('/', function(req, res) {
+// Includes root ('/')
+app.get(routes.frontEnd, function(req, res) {
   if (req.session.authenticated != true) {
     // Explicitly write a value so we start tracking a session
     req.session.authenticated = false;
@@ -96,6 +98,6 @@ app.use(express.static('public'));
 var roster = require('./api/roster.js');
 app.use('/roster', roster);
 
-var server = app.listen(8081, function() {
+var server = app.listen(8082, function() {
   console.log('Listening on port %s...', server.address().port);
 });
