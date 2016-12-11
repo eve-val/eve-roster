@@ -95,8 +95,8 @@ app.get('/logout', function(req, res) {
 app.use(express.static('public'));
 
 // Manually include the API routes defined in api/
-var roster = require('./api/roster.js');
-app.use('/roster', roster);
+var api = require('./api');
+app.use('/api', api);
 
 var server = app.listen(8082, function() {
   console.log('Listening on port %s...', server.address().port);

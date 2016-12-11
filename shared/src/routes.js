@@ -13,5 +13,6 @@ module.exports = {
     '/login',
     '/authenticate',
     '/logout',
+    '/api/*',
   ],
 }
