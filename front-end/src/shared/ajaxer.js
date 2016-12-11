@@ -1,17 +1,8 @@
 import axios from 'axios';
 
-let rosterJson = {};
-if (__DEV__) {
-  rosterJson = require('../../api/roster.json')
-}
-
 export default {
   fetchRoster() {
-    if (__DEV__) {
-      return fakeResponse(rosterJson);
-    } else {
-      return axios.get('/api/roster');
-    }
+    return axios.get('/api/roster');
   },
 
   updatePilot(name, props) {
