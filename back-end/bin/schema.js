@@ -87,33 +87,37 @@ knex.transaction(function(trx) {
         // FIXME is it worth including the EVE ID of the citadel?
         return knex.schema.transacting(trx).createTable('citadel', function(table) {
             table.string('name').primary();
+            table.string('type').notNullable();
+            table.boolean('allianceAccess').notNullable();
+            table.boolean('allianceOwned').notNullable();
         });
     }).then(function() {
         // Current citadels in J+
         return knex.insert([
-                {name: 'A Little Krabby'},
-                {name: 'Elation'},
-                {name: 'Enthusiasm'},
-                {name: 'Exhilaration'},
-                {name: 'Exuberance'},
-                {name: 'Flotsam'},
-                {name: 'Forward Ruderino Detection Array'},
-                {name: 'King\'s Landing'},
-                {name: 'Liverpool Bay'},
-                {name: 'Pons'},
-                {name: 'Roanoke'},
-                {name: 'Skykrab'},
-                {name: 'The Banana Stand'},
-                {name: 'The Ga733bo'},
-                {name: 'Witzend'},
-                {name: 'Absent\'s Bed and Breakfast'},
-                {name: 'Astrohouse'},
-                {name: 'Castle Black'},
-                {name: 'Dumb Little Paws'},
-                {name: 'Hammerheim'},
-                {name: 'Palais du Mireille'},
-                {name: 'The Black Lodge'},
-                {name: 'Wafflehus'}])
+                {name: 'A Little Krabby', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Elation', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Enthusiasm', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Exhilaration', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Exuberance', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Flotsam', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Forward Ruderino Detection Array', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'King\'s Landing', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Liverpool Bay', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Pons', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Roanoke', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Skykrab', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'The Banana Stand', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'The Ga733bo', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Witzend', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
+                {name: 'Absent\'s Bed and Breakfast', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
+                {name: 'Astrohouse', type: 'Astrahus', allianceAccess: false, allianceOwned: false},
+                {name: 'Castle Black', type: 'Astrahus', allianceAccess: false, allianceOwned: false},
+                {name: 'Dumb Little Paws', type: 'Astrahus', allianceAccess: false, allianceOwned: false},
+                {name: 'Hammerheim', type: 'Astrahus', allianceAccess: false, allianceOwned: false},
+                {name: 'Palais du Mireille', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
+                {name: 'The Black Lodge', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
+                {name: 'Wafflehus', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
+                {name: 'Dern\'s House of Pancakes', type: 'Fortizar', allianceAccess: true, allianceOwned: true}])
         .into('citadel').transacting(trx)
     }).then(function() {
         // Members - Data on all members and ex-members. Ex-members have their
