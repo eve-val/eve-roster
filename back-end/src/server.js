@@ -7,8 +7,8 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const request = require('request');
 
-const routes = require('../shared/src/routes');
-const configLoader = require('./src/config-loader');
+const routes = require('../../shared/src/routes');
+const configLoader = require('./config-loader');
 
 const CONFIG = configLoader.load();
 
@@ -96,9 +96,9 @@ app.get('/logout', function(req, res) {
 app.use(express.static(path.join(__dirname, 'static')));
 
 // Manually include the API routes defined in api/
-var api = require('./api');
+var api = require('./api.js');
 app.use('/api', api);
 
-var server = app.listen(8082, function() {
+var server = app.listen(8081, function() {
   console.log('Listening on port %s...', server.address().port);
 });

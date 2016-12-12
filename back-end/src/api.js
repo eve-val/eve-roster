@@ -9,7 +9,7 @@ const router = express.Router();
 // GET -> returns JSON representing entire corp roster.
 router.get('/roster', function(req, res) {
   res.type('json');
-	res.send(fs.readFileSync(path.join(__dirname, 'roster.fake.json'), 'utf8'));
+	res.send(fs.readFileSync(path.join(__dirname, '../api/roster.fake.json'), 'utf8'));
 });
 
 module.exports = router;
