@@ -1,3 +1,4 @@
+const path = require('path');
 const querystring = require('querystring');
 
 const express = require('express');
@@ -6,7 +7,8 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const request = require('request');
 
-const configLoader = require('./src/config-loader');
+const routes = require('../../shared/src/routes');
+const configLoader = require('./config-loader');
 
 const CONFIG = configLoader.load();
 
@@ -23,7 +25,8 @@ app.use(cookieSession({
 app.set('view engine', 'pug');
 app.set('views', './views')
 
-app.get('/', function(req, res) {
+// Includes root ('/')
+app.get(routes.frontEnd, function(req, res) {
   if (req.session.authenticated != true) {
     // Explicitly write a value so we start tracking a session
     req.session.authenticated = false;
@@ -89,12 +92,12 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// Static files in public/
-app.use(express.static('public'));
+// Static files in static/
+app.use(express.static(path.join(__dirname, '../static')));
 
 // Manually include the API routes defined in api/
-var roster = require('./api/roster.js');
-app.use('/roster', roster);
+var api = require('./api.js');
+app.use('/api', api);
 
 var server = app.listen(8081, function() {
   console.log('Listening on port %s...', server.address().port);

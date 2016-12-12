@@ -5,12 +5,13 @@
 1. Install the latest version of [Node.js](https://nodejs.org/en/).
 2. `$ cd <this dir>`
 3. `$ npm install`
-4. Create a file named `config.local.json`. Fill in any config values that are `null` in `config.json`.
+4. `$ cp config.local.json.example config.local.json`
+5. Edit `config.local.json` and fill in missing values
 
 Then:
 
 ``` bash
-# create empty database
+# create empty database in ./roster.sqlite (or file named in config.local.json)
 $ npm run create-db
 ```
 

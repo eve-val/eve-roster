@@ -4,8 +4,8 @@
   "author": "SOUND IT",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "create-db": "node db/schema.js"
+    "start": "node src/server.js",
+    "create-db": "node bin/schema.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",

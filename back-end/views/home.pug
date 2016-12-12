@@ -1,6 +1,23 @@
+doctype html
 html
   head
-    title Home
+    meta(charset='utf-8')
+    title SOUND Roster
+    script.
+      var $IDENTITY = {
+        characterId: 996613635,
+        name: 'Bloodstripes',
+        role: 'admin',
+      };
   body
-    h1 Hello, #{name}
-    a(href='logout') Log out
+    #app
+      keep-alive
+        router-view(
+            'v-if'='$route.meta.keepAlive'
+            ':identity'='identity'
+            )
+      router-view(
+          'v-if'='!$route.meta.keepAlive'
+          ':identity'='identity'
+          )
+    script(src='/dist/home.build.js')
