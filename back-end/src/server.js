@@ -93,7 +93,7 @@ app.get('/logout', function(req, res) {
 });
 
 // Static files in static/
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, '../static')));
 
 // Manually include the API routes defined in api/
 var api = require('./api.js');
