@@ -15,7 +15,7 @@
 const configLoader = require('../src/config-loader');
 const CONFIG = configLoader.load();
 
-var knex = require('knex')({
+const knex = require('knex')({
     client: 'sqlite3',
     debug: false,
     useNullAsDefault: true,
