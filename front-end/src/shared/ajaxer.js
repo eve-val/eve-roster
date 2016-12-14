@@ -1,6 +1,17 @@
 import axios from 'axios';
 
 export default {
+  getDashboard() {
+    return axios.get('/api/dashboard');
+  },
+
+  putApiKey(characterId, keyId, keyVerification) {
+    return axios.put('/api/character/' + characterId + '/apikey', {
+      keyId: keyId,
+      keyVerification: keyVerification,
+    });
+  },
+
   fetchRoster() {
     return axios.get('/api/roster');
   },

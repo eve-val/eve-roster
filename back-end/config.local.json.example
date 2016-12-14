@@ -5,5 +5,5 @@
   "ssoSecretKey": "<fillmein>",
 
   // Delete this line if not doing front-end development
-  "serveMode": "proxy-dev"
+  "serveMode": "dev-frontend"
 }

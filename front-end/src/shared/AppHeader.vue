@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
-    <!--<div class="title">SOUND Roster</div>-->
+    <router-link to="/" class="nav-link">Dashboard</router-link>
     <router-link to="/roster" class="nav-link">Roster</router-link>
     <router-link to="/housing" class="nav-link">Housing</router-link>
     <div class="spacer"></div>
@@ -52,6 +52,20 @@ export default {
 .nav-link {
   margin: 0 10px;
   font-size: 14px;
+  color: #676767;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-link:active {
+  color: #CDCDCD;
+}
+
+.router-link-active {
+  color: #929292;
 }
 
 .spacer {
