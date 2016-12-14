@@ -11,7 +11,7 @@
 Then:
 
 ``` bash
-# create empty database
+# create empty database in ./roster.sqlite (or file named in config.local.json)
 $ npm run create-db
 ```
 
