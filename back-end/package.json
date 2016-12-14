@@ -8,6 +8,7 @@
     "create-db": "node bin/schema.js"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.15.2",
     "knex": "^0.12.6",
     "sqlite3": "^3.1.8",
@@ -17,5 +18,7 @@
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "xml2js": "^0.4.17"
+  }
 }

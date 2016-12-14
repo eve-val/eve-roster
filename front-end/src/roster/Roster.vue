@@ -92,14 +92,4 @@ function aggregateMax(row, prop) {
 </script>
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-
-  font-family: Helvetica, 'Calibri', Arial, sans-serif;
-  font-size: 16px;
-}
-
-#app {
-}
 </style>

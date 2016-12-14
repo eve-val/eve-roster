@@ -10,7 +10,7 @@
     <div class="cell name">
       <router-link
           class="member-link"
-          :to="'/member/' + row.name"
+          :to="'/character/' + row.characterId"
           >{{ row.name }}</router-link>
       <eve-image
           v-if="isAltCorp"

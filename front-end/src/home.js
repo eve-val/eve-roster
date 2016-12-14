@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Housing from './housing/Housing.vue'
-import Member from './member/Member.vue'
+import Character from './character/Character.vue'
 import Roster from './roster/Roster.vue'
 
 const router = new VueRouter({
@@ -10,7 +10,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: '/roster' },
     { path: '/roster', component: Roster, meta: { keepAlive: true } },
-    { path: '/member/:name', component: Member, meta: { keepAlive: false } },
+    { path: '/character/:id', component: Character, meta: { keepAlive: false } },
     { path: '/housing', component: Housing, meta: { keepAlive: false } },
   ],
 });

@@ -5,6 +5,14 @@ export default {
     return axios.get('/api/roster');
   },
 
+  fetchCharacter(id) {
+    return axios.get('/api/character/' + id);
+  },
+
+  fetchSkills(id) {
+    return axios.get('/api/character/' + id + '/skills');
+  },
+
   updatePilot(name, props) {
     if (__DEV__) {
       return fakeResponse('');
