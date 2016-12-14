@@ -12,12 +12,12 @@ To build for production with minificaton:
 $ npm run build
 ```
 
-To run the development environment you will first need to start up the back-end 
-server in another terminal (see `/back-end/README.md`). Then run:
-
-``` bash
-$ npm run dev
-```
+To build for development:
+1. Follow the instructions in `/back-end/README.md` to set up the backend
+server.
+2. Modify `/back-end/config.local.json` and set `serveMode: "dev-frontend"`
+3. Start the back-end server.
+4. Open up a new shell, navigate to `/front-end` and run `$ npm run dev`
 
 ## Framework
 

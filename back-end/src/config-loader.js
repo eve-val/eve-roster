@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const stripJsonComments = require('strip-json-comments');
+
 const REQUIRED_CONFIGS = [
   'cookieSecret',
   'ssoClientId',
@@ -11,7 +13,10 @@ const REQUIRED_CONFIGS = [
 module.exports = {
   load: function() {
     let config = JSON.parse(
-        fs.readFileSync(path.join(__dirname, '../config.default.json'), 'utf8'));
+        stripJsonComments(
+            fs.readFileSync(
+                path.join(__dirname, '../config.default.json'),
+                'utf8')));
     Object.assign(config, loadLocalConfig());
     verifyConfig(config);
     return config;
@@ -22,7 +27,10 @@ function loadLocalConfig() {
   let localConfig;
   try {
     localConfig = JSON.parse(
-        fs.readFileSync(path.join(__dirname, '../config.local.json'), 'utf8'));
+        stripJsonComments(
+            fs.readFileSync(
+                path.join(__dirname, '../config.local.json'),
+                'utf8')));
   } catch (e) {
     if (e.code === 'ENOENT') {
       console.error('FATAL: You must create config.local.json');

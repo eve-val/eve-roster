@@ -99,6 +99,19 @@ app.use(express.static(path.join(__dirname, '../static')));
 var api = require('./api.js');
 app.use('/api', api);
 
-var server = app.listen(8081, function() {
+var server = app.listen(getServingPort(), function() {
   console.log('Listening on port %s...', server.address().port);
 });
+
+function getServingPort() {
+  switch (CONFIG.serveMode) {
+    case 'production':
+      return 80;
+    case 'dev-backend':
+      return 8081;
+    case 'dev-frontend':
+      return 8082;
+    default:
+      throw new Error('Invalid serveMode: ' + CONFIG.serveMode);
+  }
+}
