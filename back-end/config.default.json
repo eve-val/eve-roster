@@ -11,5 +11,8 @@
     "publicData"
   ],
 
-  "dbFileName": "roster.sqlite"
+  "dbFileName": "roster.sqlite",
+
+  // "production" (80), "dev-backend" (8081), or "dev-frontend" (8082).
+  "serveMode": "dev-backend"
 }

@@ -2,5 +2,8 @@
   "cookieSecret": "penguin",
 
   "ssoClientId": "<fillmein>",
-  "ssoSecretKey": "<fillmein>"
+  "ssoSecretKey": "<fillmein>",
+
+  // Delete this line if not doing front-end development
+  "serveMode": "dev-frontend"
 }

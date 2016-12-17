@@ -5,7 +5,7 @@ module.exports = {
   frontEnd: [
     '/',
     '/roster',
-    '/member/:name',
+    '/character/:id',
     '/housing',
   ],
   // Content served directly by the Express server.
