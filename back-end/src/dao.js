@@ -16,40 +16,113 @@ const configLoader = require('../src/config-loader');
 const CONFIG = configLoader.load();
 
 const knex = require('knex')({
-    client: 'sqlite3',
-    debug: false,
-    useNullAsDefault: true,
-    connection: {
-        filename: CONFIG.dbFileName
-    }
+  client: 'sqlite3',
+  debug: false,
+  useNullAsDefault: true,
+  connection: {
+    filename: CONFIG.dbFileName
+  }
 });
 
-exports.getCitadels = function() {
-    return knex.select().from('citadel');
-};
+function Dao(builder) {
+  this.builder = builder;
+}
+Dao.prototype = {
+  transaction: function(callback) {
+    return knex.transaction(function(trx) {
+      callback(new Dao(trx));
+    });
+  },
 
-exports.getCitadelByName = function(name) {
-    return knex.select().from('citadel').where('name', name);
-};
+  commit: function() {
+    return this.builder.commit();
+  },
 
-exports.getMembers = function() {
-    return knex.select().from('member');
-};
+  rollback: function() {
+    return this.builder.rollback();
+  },
 
-exports.getMemberByName = function(name) {
-    return knex.select().from('member').where('name', name);
-};
+  getCitadels: function() {
+    return this.builder.select().from('citadel');
+  },
 
-exports.getMemberByID = function(id) {
-    return knex.select().from('member').where('characterID', id);
-};
+  getCitadelByName: function(name) {
+    return this.builder.select().from('citadel').where('name', name);
+  },
 
-exports.setMemberCitadel = function(id, citadel) {
-    return knex.insert([{homeCitadel: citadel}])
+  getMembers: function() {
+    return this.builder.select().from('member');
+  },
+
+  getMemberByName: function(name) {
+    return this.builder.select().from('member').where('name', name);
+  },
+
+  getMemberByID: function(id) {
+    return this.builder.select().from('member').where('characterID', id);
+  },
+
+  setMemberCitadel: function(id, citadel) {
+    return this.builder.insert([{homeCitadel: citadel}])
         .into('member').where('characterID', id);
-};
+  },
 
-exports.setMemberMain = function(id, mainCharacterID) {
-    return knex.insert([{mainID: mainCharacterID}])
+  setMemberMain: function(id, mainCharacterID) {
+    return this.builder.insert([{mainID: mainCharacterID}])
         .into('member').where('characterID', id);
-};
+  },
+
+  createCharacter: function(id, name, corporationId) {
+    return this.builder('character').insert({
+      id: id,
+      name: name,
+      corporationId: corporationId,
+    });
+  },
+
+  createAccessTokens: function(
+      characterId, refreshToken, accessToken, expiresIn) {
+    return this.builder('accessToken').insert({
+      character: characterId,
+      refreshToken: refreshToken,
+      accessToken: accessToken,
+      accessTokenExpires: Date.now() + expiresIn * 1000,
+      needsUpdate: false,
+    });
+  },
+
+  updateAccessTokens: function(
+      characterId, refreshToken, accessToken, expiresIn) {
+    return this.builder('accessToken')
+        .where('character', '=', characterId)
+        .update({
+          refreshToken: refreshToken,
+          accessToken: accessToken,
+          accessTokenExpires: Date.now() + expiresIn * 1000,
+          needsUpdate: false
+        });
+  },
+
+  createAccount: function() {
+    return this.builder('account').insert({
+      roles: 'Junior Sound FC',
+    })
+    .then(function(ids) {
+      return ids[0];
+    });
+  },
+
+  ownCharacter: function(characterId, accountId, isMain) {
+    return this.builder('ownership').insert({
+      account: accountId,
+      character: characterId,
+    })
+    .then(() => {
+      if (isMain) {
+        return this.builder('account').update('mainCharacter', characterId);
+      }
+    });
+  },
+}
+
+module.exports = new Dao(knex);
