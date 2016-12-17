@@ -10,16 +10,20 @@ const REQUIRED_CONFIGS = [
   'dbFileName',
 ];
 
+let loadedConfig = null;
+
 module.exports = {
   load: function() {
-    let config = JSON.parse(
-        stripJsonComments(
-            fs.readFileSync(
-                path.join(__dirname, '../config.default.json'),
-                'utf8')));
-    Object.assign(config, loadLocalConfig());
-    verifyConfig(config);
-    return config;
+    if (loadedConfig == null) {
+      loadedConfig = JSON.parse(
+          stripJsonComments(
+              fs.readFileSync(
+                  path.join(__dirname, '../config.default.json'),
+                  'utf8')));
+      Object.assign(loadedConfig, loadLocalConfig());
+      verifyConfig(loadedConfig);
+    }
+    return loadedConfig;
   }
 }
 
