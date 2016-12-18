@@ -9,9 +9,14 @@
     <character-slab v-for="character in characters"
         class="slab"
         :character="character"
+        :loginParams="loginParams"
         @setApiKey="onApiKeySet"
         />
-    <div class="add-character">＋ Add a character</div>
+    <div class="add-character" v-if="loginParams">
+      <a class="add-character-link"
+          :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+          >＋ Add a character</a>
+      </div>
   </div>
 </div>
 </template>
@@ -36,7 +41,8 @@ export default {
 
   data: function() {
     return {
-      characters: []
+      characters: [],
+      loginParams: null,
     };
   },
 
@@ -44,6 +50,7 @@ export default {
     ajaxer.getDashboard()
       .then((response) => {
         this.characters = response.data.characters;
+        this.loginParams = response.data.loginParams;
       })
       .catch((err) => {
         // TODO
@@ -118,5 +125,18 @@ export default {
   font-size: 18px;
   color: #a7a29c;
   font-weight: 100;
+}
+
+.add-character-link {
+  color: #676767;
+  text-decoration: none;
+}
+
+.add-character-link:hover {
+  text-decoration: underline;
+}
+
+.add-character-link:active {
+  color: #CDCDCD;
 }
 </style>

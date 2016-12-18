@@ -32,34 +32,11 @@
   <div class="key-bother-container"
       v-if="!character.hasApiKey"
       >
-    <div class="key-title">Last step: add an API key</div>
-    Create a <a :href="keyGenUrl">new API key</a> with those predefined
-    permissions. Checking "No expiry" is recommended.
-    <div class="key-input-root-container">
-      <div class="key-input-container" style="width: 90px; flex: 0 0 auto;">
-        <label class="key-input-label" for="key-id-input">Key ID</label>
-        <input id="key-id-input"
-            class="key-input"
-            v-model="keyId"
-            ></input>
-      </div>
-      <div class="key-input-container" style="flex: 1; margin-left: 20px;">
-        <label class="key-input-label"
-            for="key-verification-input"
-            >Verification Code</label>
-        <input id="key-verification-input"
-            class="key-input"
-            v-model="keyVerification"
-            ></input>
-      </div>
-    </div>
-    <div style="margin-top: 30px">
-      <button
-          class="key-submit-btn"
-          :disabled="!keyInputIsValid"
-          @click="onKeySubmitClick"
-          >Submit</button>
-    </div>
+    <div class="key-title">Character needs to be re-authorized</div>
+    Please
+    <a :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+        >log in</a>
+    as {{ character.name }}.
   </div>
 </div>
 </template>
@@ -74,6 +51,7 @@ export default {
 
   props: {
     character: { type: Object, required: true },
+    loginParams: { type: String, required: true },
   },
 
   data: function() {
@@ -86,7 +64,7 @@ export default {
   computed: {
     trainingLabel: function() {
       if (!this.character.hasApiKey) {
-        return 'Missing API key!';
+        return 'Needs authorization!';
       } else if (this.character.skillInTraining == null) {
         return 'No skill training'
       } else {
