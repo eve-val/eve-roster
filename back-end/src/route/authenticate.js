@@ -2,8 +2,8 @@ const axios = require('axios');
 const express = require('express');
 const request = require('request');
 
-const configLoader = require('./config-loader');
-const dao = require('./dao');
+const configLoader = require('../config-loader');
+const dao = require('../dao');
 
 
 const CONFIG = configLoader.load();
