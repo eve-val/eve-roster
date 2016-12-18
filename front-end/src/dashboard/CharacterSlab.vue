@@ -1,6 +1,7 @@
 <template>
 <div class="slab-root">
-  <div class="slab-main">
+  <div class="slab-main"
+      :class="{ 'main-character': isMain }">
     <eve-image :id="character.id" :size="105" type="Character" />
     <div class="body">
       <router-link
@@ -51,6 +52,8 @@ export default {
 
   props: {
     character: { type: Object, required: true },
+    isMain: { type: Boolean, required: true },
+    highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
   },
 
@@ -106,6 +109,10 @@ export default {
   background: #101010;
   height: 105px;
   display: flex;
+}
+
+.main-character {
+  border-color: #4a433b;
 }
 
 .body {
