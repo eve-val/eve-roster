@@ -119,22 +119,30 @@ knex.transaction(function(trx) {
                 {name: 'Wafflehus', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
                 {name: 'Dern\'s House of Pancakes', type: 'Fortizar', allianceAccess: true, allianceOwned: true}])
         .into('citadel').transacting(trx)
-    }).then(function() {
+    })
+    .then(function() {
+        return knex.schema.transacting(trx).createTable('account', (table) => {
+            table.increments('id');
+            // FIXME comma separated list? break it into a many-to-many table
+            // between member and role that tracks each?
+            table.string('roles').notNullable();
+            table.integer('mainCharacter')
+                .references('character.id').nullable();
+        });
+    })
+    .then(function() {
         // Members - Data on all members and ex-members. Ex-members have their
         // role set to NOT_A_MEMBER, but are otherwise remembered so that 
         // alts that have not left SOUND can still be represented (and warned 
         // about).
-        return knex.schema.transacting(trx).createTable('member', function(table) {
+        return knex.schema.transacting(trx).createTable('character', function(table) {
             // From XML API
-            table.integer('characterID').primary();
+            table.integer('id').primary();
             table.string('name').unique();
-            table.integer('corporationID').notNullable();
-            table.date('startDate').notNullable();
-            table.date('logonDate').notNullable();
-            table.date('logoffDate').notNullable();
-            // FIXME comma separated list? break it into a many-to-many table
-            // between member and role that tracks each?
-            table.string('roles').notNullable();
+            table.integer('corporationId').notNullable();
+            table.date('startDate');
+            table.date('logonDate');
+            table.date('logoffDate');
 
             // From zKillboard
             table.integer('killsInLastMonth');
@@ -146,11 +154,29 @@ knex.transaction(function(trx) {
             table.integer('siggyScore');
 
             // Custom
-            table.integer('mainID').nullable().references('characterID');
             table.enu('activeTimezone', ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
             table.string('homeCitadel').nullable().references('name').inTable('citadel');
         });
-    }).then(trx.commit).catch(trx.rollback);
+    })
+    .then(function() {
+        return knex.schema
+                .transacting(trx).createTable('ownership', (table) => {
+            table.integer('character').primary().references('character.id');
+            table.integer('account').references('account.id').notNullable();
+        });
+    })
+    .then(function() {
+        return knex.schema
+                .transacting(trx).createTable('accessToken', (table) => {
+            table.integer('character')
+                    .primary().references('character.id').notNullable();
+            table.string('refreshToken').notNullable();
+            table.string('accessToken').notNullable();
+            table.integer('accessTokenExpires').notNullable();
+            table.boolean('needsUpdate').notNullable();
+        });
+    })
+    .then(trx.commit).catch(trx.rollback);
 
 }).then(function() {
     console.log('Schema transaction completed successfully.');
