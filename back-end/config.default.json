@@ -1,14 +1,16 @@
 {
   "ssoScope": [
-    "characterAccountRead",
-    "characterAssetsRead",
-    "characterClonesRead",
-    "characterKillsRead",
-    "characterLocationRead",
-    "characterSkillsRead",
-    "fleetRead",
-    "fleetWrite",
-    "publicData"
+    "esi-ui.open_window.v1",
+    "esi-ui.write_waypoint.v1",
+    "esi-assets.read_assets.v1",
+    "esi-clones.read_clones.v1",
+    "esi-killmails.read_killmails.v1",
+    "esi-location.read_location.v1",
+    "esi-location.read_ship_type.v1",
+    "esi-skills.read_skillqueue.v1",
+    "esi-skills.read_skills.v1",
+    "esi-fleets.read_fleet.v1",
+    "esi-fleets.write_fleet.v1"
   ],
 
   "dbFileName": "roster.sqlite",
