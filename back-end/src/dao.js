@@ -50,26 +50,26 @@ Dao.prototype = {
     return this.builder.select().from('citadel').where('name', name);
   },
 
-  getMembers: function() {
-    return this.builder.select().from('member');
+  getCharacters: function() {
+    return this.builder.select().from('character');
   },
 
-  getMemberByName: function(name) {
-    return this.builder.select().from('member').where('name', name);
+  getCharacterByName: function(name) {
+    return this.builder.select().from('character').where('name', name);
   },
 
-  getMemberByID: function(id) {
-    return this.builder.select().from('member').where('characterID', id);
+  getCharacterById: function(id) {
+    return this.builder.select().from('character').where('id', id);
   },
 
-  setMemberCitadel: function(id, citadel) {
-    return this.builder.insert([{homeCitadel: citadel}])
-        .into('member').where('characterID', id);
+  setCharacterCitadel: function(id, citadel) {
+    return this.builder.update([{homeCitadel: citadel}])
+        .table('character').where('id', id);
   },
 
-  setMemberMain: function(id, mainCharacterID) {
-    return this.builder.insert([{mainID: mainCharacterID}])
-        .into('member').where('characterID', id);
+  setAccountMain: function(accountId, mainCharacterId) {
+    return this.builder.update([{mainCharacter: mainCharacterId}])
+        .table('account').where('id', accountId);
   },
 
   createCharacter: function(id, name, corporationId) {
@@ -119,7 +119,7 @@ Dao.prototype = {
     })
     .then(() => {
       if (isMain) {
-        return this.builder('account').update('mainCharacter', characterId);
+        return this.setAccountMain(accountId, characterId);
       }
     });
   },
