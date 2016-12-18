@@ -31,7 +31,6 @@ app.set('views', './views')
 // Includes root ('/')
 app.get(routes.frontEnd, function(req, res) {
   if (req.session.accountId == null) {
-    // Explicitly write a value so we start tracking a session
     res.redirect('/login');
   } else {
     res.render('home', {
