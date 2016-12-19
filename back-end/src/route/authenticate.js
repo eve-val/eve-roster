@@ -4,6 +4,7 @@ const request = require('request');
 
 const configLoader = require('../config-loader');
 const dao = require('../dao');
+const esi = require('../esi');
 
 
 const CONFIG = configLoader.load();
@@ -55,7 +56,7 @@ function handleAccessToken(req, res, body) {
   .then(function(response) {
     console.log('VERIFY CHAR', response.data);
     characterId = response.data.CharacterID;
-    return getEsi('characters/' + characterId + '/', accessToken);
+    return esi.get('characters/' + characterId + '/', accessToken);
   })
   .then(function(response) {
     console.log('ESI CHAR', response.data);

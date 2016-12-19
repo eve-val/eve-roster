@@ -6,10 +6,12 @@
       />
   <div class="title">Dashboard</div>
   <div class="characters-container">
-    <character-slab v-for="character in characters"
+    <character-slab v-for="character in sortedCharacters"
         class="slab"
         :character="character"
         :loginParams="loginParams"
+        :isMain="character.id == mainCharacter"
+        :highlightMain="sortedCharacters.length > 1"
         @setApiKey="onApiKeySet"
         />
     <div class="add-character" v-if="loginParams">
@@ -43,7 +45,23 @@ export default {
     return {
       characters: [],
       loginParams: null,
+      mainCharacter: null,
     };
+  },
+
+  computed: {
+    sortedCharacters: function() {
+      this.characters.sort((a, b) => {
+        if (a.id == this.mainCharacter) {
+          return a;
+        } else if (b.id == this.mainCharacter) {
+          return b;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      });
+      return this.characters;
+    }
   },
 
   created: function() {
@@ -51,6 +69,7 @@ export default {
       .then((response) => {
         this.characters = response.data.characters;
         this.loginParams = response.data.loginParams;
+        this.mainCharacter = response.data.mainCharacter;
       })
       .catch((err) => {
         // TODO
