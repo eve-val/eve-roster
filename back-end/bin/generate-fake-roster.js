@@ -1,6 +1,6 @@
 /**
  * Usage:
- * $ node bin/xml_converter.js path/to/xml/dump.xml > path/to/target.json
+ * $ node bin/generate-fake-roster.js path/to/xml/dump.xml > path/to/target.json
  */
 
 let xmlParser = require('xml2json');
