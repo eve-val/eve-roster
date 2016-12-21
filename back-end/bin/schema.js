@@ -176,6 +176,32 @@ knex.transaction(function(trx) {
             table.boolean('needsUpdate').notNullable();
         });
     })
+    .then(function() {
+        return knex.schema.transacting(trx)
+                .createTable('skillsheet', (table) => {
+            table.integer('character')
+                    .references('character.id').index().notNullable();
+            table.integer('skill').notNullable();
+            table.integer('level').notNullable();
+            table.integer('skillpoints').notNullable();
+
+            table.unique(['character', 'skill']);
+        });
+    })
+    .then(function() {
+        // TODO: This is a temporary fix until we have a proper cache control
+        // mechanism.
+        return knex.schema.transacting(trx)
+                .createTable('cacheControl', (table) => {
+            table.integer('character')
+                    .references('character.id').notNullable();
+            table.string('source').notNullable();
+            table.integer('cacheUntil').notNullable();
+
+            table.unique(['character', 'source']);
+            table.index(['character', 'source']);
+        });
+    })
     .then(trx.commit).catch(trx.rollback);
 
 }).then(function() {
