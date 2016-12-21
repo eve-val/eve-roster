@@ -124,11 +124,13 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
       charId,
       req.session.accountId);
 
-  return dao.transaction(function(trx) {
-    let accountId = req.session.accountId;
+  let accountId = req.session.accountId;
+
+  return dao.transaction()
+  .then(function(trx) {
     let isNewAccount = accountId == null;
 
-    createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
+    return createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
     .then(function() {
       if (isNewAccount) {
         return trx.createAccount()
@@ -147,11 +149,11 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
     .catch(function(err) {
       trx.rollback();
       throw err;
-    })
-    .then(function() {
-      req.session.accountId = accountId;
-      res.redirect('/');
     });
+  })
+  .then(function() {
+    req.session.accountId = accountId;
+    res.redirect('/');
   });
 }
 

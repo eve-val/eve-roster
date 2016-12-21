@@ -29,8 +29,10 @@ function Dao(builder) {
 }
 Dao.prototype = {
   transaction: function(callback) {
-    return knex.transaction(function(trx) {
-      callback(new Dao(trx));
+    return new Promise((resolve, reject) => {
+      knex.transaction(function(trx) {
+        resolve(new Dao(trx));
+      });
     });
   },
 
