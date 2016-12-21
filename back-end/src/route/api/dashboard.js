@@ -75,7 +75,7 @@ function getRealOutput(accountId) {
         esi
         .getForCharacter('characters/' + row.id + '/skillqueue/', row.id)
         .then(function(response) {
-          let queueData = response.data;
+          let queueData = pruneCompletedSkills(response.data);
 
           return {
             id: row.id,
@@ -96,6 +96,20 @@ function getRealOutput(accountId) {
       mainCharacter: mainCharacter,
     };
   })
+}
+
+function pruneCompletedSkills(queueData) {
+  // Why do we even need to DO this... #ccpls
+  let now = new Date();
+  let startIndex = 0;
+  for (let i = 0; i < queueData.length; i++) {
+    startIndex = i;
+    let endDate = new Date(queueData[i].finish_date);
+    if (endDate > now) {
+      break;
+    }
+  }
+  return queueData.slice(startIndex);
 }
 
 function getSkillInTraining(queueData) {
