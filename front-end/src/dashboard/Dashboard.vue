@@ -143,7 +143,7 @@ export default {
   align-items: center;
   font-size: 18px;
   color: #a7a29c;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .add-character-link {
@@ -152,7 +152,8 @@ export default {
 }
 
 .add-character-link:hover {
-  text-decoration: underline;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  color: #848484;
 }
 
 .add-character-link:active {

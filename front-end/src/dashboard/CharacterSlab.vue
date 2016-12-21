@@ -1,7 +1,6 @@
 <template>
 <div class="slab-root">
-  <div class="slab-main"
-      :class="{ 'main-character': isMain }">
+  <div class="slab-main">
     <eve-image :id="character.id" :size="105" type="Character" />
     <div class="body">
       <router-link
@@ -109,10 +108,15 @@ export default {
   background: #101010;
   height: 105px;
   display: flex;
+  user-select: none;
+  cursor: default;
+
+  transition: box-shadow 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.main-character {
-  border-color: #4a433b;
+.slab-main:hover {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+  border-color: #352d24;
 }
 
 .body {
