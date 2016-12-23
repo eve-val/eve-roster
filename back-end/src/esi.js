@@ -17,6 +17,12 @@ const REQUEST_TIMEOUT = 10000;
 let pendingTokenRequests = {};
 
 const esi = module.exports = {
+  getNoAuth: function(path) {
+    return axios.get(ESI_ROOT + path, {
+      timeout: REQUEST_TIMEOUT,
+    });
+  },
+
   getForCharacter: function(path, characterId) {
     console.log('getForCharacter', characterId);
     return getAccessToken(characterId)
@@ -25,11 +31,11 @@ const esi = module.exports = {
           '[getForCharacter] Got access token %s, fetching %s',
           accessToken,
           path);
-      return esi.get(path, accessToken);
+      return esi.getWithToken(path, accessToken);
     });
   },
 
-  get: function(path, accessToken) {
+  getWithToken: function(path, accessToken) {
     return axios.get(ESI_ROOT + path, {
       headers: {
         'Authorization': 'Bearer ' + accessToken,
