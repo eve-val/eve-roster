@@ -1,9 +1,6 @@
 <template>
 <div class="root">
-  <app-header
-      :identity="identity"
-      style="background: #101010;"
-      />
+  <app-header :identity="identity" />
   <div class="title">Dashboard</div>
   <div class="characters-container">
     <character-slab v-for="character in sortedCharacters"
@@ -107,11 +104,8 @@ export default {
 
 <style scoped>
 .root {
-  background: #202020;
   font-size: 14px;
   font-weight: 300;
-  min-height: 2000px;
-  color: #CDCDCD
 }
 
 .title {
