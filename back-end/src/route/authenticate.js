@@ -56,7 +56,7 @@ function handleAccessToken(req, res, body) {
   .then(function(response) {
     console.log('VERIFY CHAR', response.data);
     characterId = response.data.CharacterID;
-    return esi.get('characters/' + characterId + '/', accessToken);
+    return esi.getNoAuth('characters/' + characterId + '/', accessToken);
   })
   .then(function(response) {
     console.log('ESI CHAR', response.data);

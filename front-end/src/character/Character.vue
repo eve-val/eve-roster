@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="root">
   <app-header :identity="identity" />
 
   <template v-if="character">
@@ -9,6 +9,35 @@
         <eve-image :id="characterId" type="Character" :size="274"
             style="border: 1px solid #463830;"
             />
+        <div class="factoid-title">Corporation</div>
+        <div class="factoid">{{ corporationName || '-' }}</div>
+
+        <template v-if="character.main">
+          <div class="factoid-title">Main</div>
+          <div class="factoid">
+            <router-link
+                class="character-link"
+                :to="'/character/' + character.main.id"
+                >{{ character.main.name }}</router-link>
+          </div>
+        </template>
+
+        <template v-if="character.alts">
+          <div class="factoid-title">Alts</div>
+          <div v-for="alt in character.alts"
+              class="factoid">
+            <router-link
+                class="character-link"
+                :to="'/character/' + alt.id"
+                >{{ alt.name }}</router-link>
+          </div>
+        </template>
+
+        <div class="factoid-title">Timezone</div>
+        <div class="factoid">{{ character.activeTimezone || '-' }}</div>
+
+        <div class="factoid-title">Citadel</div>
+        <div class="factoid">{{ homeCitadel || '-' }}</div>
       </div>
       <div class="content">
         <div class="skills-container">
@@ -76,6 +105,7 @@ export default {
   data: function() {
     return {
       character: null,
+      corporationName: null,
       queue: null,
       skillMap: null,
       skillGroups: null,
@@ -89,26 +119,57 @@ export default {
   },
 
   created: function() {
-    ajaxer.fetchCharacter(this.characterId)
-      .then((response) => {
-        this.character = response.data;
-      })
-      .catch((err) => {
-        // TODO
-        console.log('ERROR:', err);
-      });
+    this.fetchData();
+  },
 
-    ajaxer.fetchSkills(this.characterId)
-      .then((response) => {
-        this.processData(response.data);
-      })
-      .catch((err) => {
-        // TODO
-        console.log('ERROR:', err);
-      });
+  watch: {
+    character: function(value) {
+      if (value && value.corporationId) {
+        ajaxer.getCorporation(value.corporationId)
+            .then((response) =>  {
+              this.corporationName = response.data.name;
+            })
+            .catch((e) => {
+              // TODO
+              console.log(e);
+            });
+      }
+    },
+
+    '$route' (to, from) {
+      // We've transitioned from one character to another, so this component
+      // is getting reused. Null out our data and fetch new data...
+      this.character = null;
+      this.corporationName = null;
+      this.queue = null;
+      this.skillMap = null;
+      this.skillGroups = null;
+
+      this.fetchData();
+    },
   },
 
   methods: {
+    fetchData: function() {
+      ajaxer.fetchCharacter(this.characterId)
+          .then((response) => {
+            this.character = response.data;
+          })
+          .catch((err) => {
+            // TODO
+            console.log('ERROR:', err);
+          });
+
+      ajaxer.fetchSkills(this.characterId)
+          .then((response) => {
+            this.processData(response.data);
+          })
+          .catch((err) => {
+            // TODO
+            console.log('ERROR:', err);
+          });
+    },
+
     processData: function(data) {
       let map = {};
       for (let skill of data.skills) {
@@ -194,6 +255,10 @@ function processSkills(skills){
 </script>
 
 <style scoped>
+.root {
+  font-weight: 300;
+}
+
 .name-title {
   font-size: 30px;
   color: #a7a29c;
@@ -210,7 +275,27 @@ function processSkills(skills){
   flex: 0 0 auto;
   width: 274px;
   padding-left: 30px;
-  padding-right: 30px;
+  padding-right: 50px;
+}
+
+.factoid-title {
+  font-size: 14px;
+  margin-top: 24px;
+  color: #a7a29c;
+}
+
+.factoid {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.character-link {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+
+.character-link:hover {
+  text-decoration: underline;
 }
 
 .content {
@@ -226,7 +311,6 @@ function processSkills(skills){
 
 .skills-container {
   width: 800px;
-  font-weight: 300;
 }
 
 .skillgroup-container {

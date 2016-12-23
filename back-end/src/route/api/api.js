@@ -29,4 +29,6 @@ router.get('/roster', function(req, res) {
 router.get('/character/:id', require('./character'));
 router.get('/character/:id/skills', require('./character/skills'));
 
+router.get('/corporation/:id', require('./corporation'));
+
 module.exports = router;
