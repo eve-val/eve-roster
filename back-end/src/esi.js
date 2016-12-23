@@ -12,6 +12,7 @@ const SSO_AUTH_CODE =
           .toString('base64');
 const ESI_ROOT = 'https://esi.tech.ccp.is/latest/';
 const TOKEN_EXPIRATION_FUDGE_MS = 10000;   // 10 seconds
+const REQUEST_TIMEOUT = 10000;
 
 let pendingTokenRequests = {};
 
@@ -33,6 +34,7 @@ const esi = module.exports = {
       headers: {
         'Authorization': 'Bearer ' + accessToken,
       },
+      timeout: REQUEST_TIMEOUT,
     })
     .then(function(response) {
       return response;
@@ -93,6 +95,7 @@ function refreshAccessToken(characterId, refreshToken) {
         headers: {
           'Authorization': 'Basic ' + SSO_AUTH_CODE,
         },
+        timeout: REQUEST_TIMEOUT,
       })
   .then(function(response) {
     tokenResponse = response.data;

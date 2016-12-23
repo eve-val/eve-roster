@@ -6,6 +6,7 @@ const moment = require('moment');
 
 const dao = require('../../dao.js');
 const esi = require('../../esi.js');
+const skillQueue = require('../../data-source/skill-queue');
 
 const STATIC = require('../../static-data').get();
 const CONFIG = require('../../config-loader').load();
@@ -72,11 +73,9 @@ function getRealOutput(accountId) {
     for (let i = 0; i < rows.length; i++) {
       let row = rows[i];
       workList.push(
-        esi
-        .getForCharacter('characters/' + row.id + '/skillqueue/', row.id)
-        .then(function(response) {
-          let queueData = pruneCompletedSkills(response.data);
-
+        skillQueue
+        .getQueue(row.id)
+        .then(function(queueData) {
           return {
             id: row.id,
             name: row.name,
@@ -98,20 +97,6 @@ function getRealOutput(accountId) {
   })
 }
 
-function pruneCompletedSkills(queueData) {
-  // Why do we even need to DO this... #ccpls
-  let now = new Date();
-  let startIndex = 0;
-  for (let i = 0; i < queueData.length; i++) {
-    startIndex = i;
-    let endDate = new Date(queueData[i].finish_date);
-    if (endDate > now) {
-      break;
-    }
-  }
-  return queueData.slice(startIndex);
-}
-
 function getSkillInTraining(queueData) {
   let skillInTraining = null;
   if (queueData.length > 0) {
@@ -121,7 +106,7 @@ function getSkillInTraining(queueData) {
 
     skillInTraining = {
       name: skillName + ' ' + skillLevelLabel,
-      progress: getProgress(skill0),
+      progress: skillQueue.getProgress(skill0),
       timeRemaining: getDurationString(skill0.finish_date),
     }
   }
@@ -138,19 +123,6 @@ function getQueue(queueData) {
     }
   }
   return queue;
-}
-
-function getProgress(skill) {
-  // There must be a better way to do this...
-
-  let pretrainedProgress = (skill.training_start_sp - skill.level_start_sp) /
-      (skill.level_end_sp - skill.level_start_sp);
-
-  let trainingStart = new Date(skill.start_date);
-  let trainedProgress = (new Date() - trainingStart) /
-      (new Date(skill.finish_date) - trainingStart);
-
-  return pretrainedProgress + trainedProgress * (1 - pretrainedProgress);
 }
 
 function getDurationString(timestr) {

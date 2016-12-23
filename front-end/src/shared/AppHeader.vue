@@ -34,7 +34,7 @@ export default {
   flex-direction: row;
   align-items: center;
   height: 40px;
-  /*background: #EEE;*/
+  background: #101010;
   flex: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
