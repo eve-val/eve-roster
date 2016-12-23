@@ -107,7 +107,7 @@ function fetchNewSkills(characterId, cacheEntryExists) {
       }
       console.log('Inserting %s records', insertObjs.length);
 
-      return trx.builder('skillsheet').insert(insertObjs);
+      return trx.batchInsert('skillsheet', insertObjs, 100);
     })
     .then(function() {
       console.log('Updating cache control...');

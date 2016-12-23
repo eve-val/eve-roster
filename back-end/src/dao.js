@@ -44,6 +44,14 @@ Dao.prototype = {
     return this.builder.rollback();
   },
 
+  batchInsert: function(table, rows, chunkSize) {
+    let work = knex.batchInsert(table, rows, chunkSize);
+    if (this.builder != knex) {
+      work = work.transacting(this.builder);
+    }
+    return work;
+  },
+
   getCitadels: function() {
     return this.builder.select().from('citadel');
   },
