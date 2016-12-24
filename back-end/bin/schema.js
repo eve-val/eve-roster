@@ -21,7 +21,7 @@ knex.transaction(function(trx) {
     // multiple roles, the effective permissions are the OR of the corresponding 
     // booleans. These roles correspond to in-game roles, with the exception of 
     // NOT_A_MEMBER, and so does not include alt-status of the character.
-    knex.schema.transacting(trx).createTable('role', function(table) {
+    return trx.schema.createTable('role', (table) => {
         table.string('name').primary();
         // True if player can see the list of players in SA.FE
         table.boolean('viewBasicRoster').notNullable();
@@ -39,7 +39,7 @@ knex.transaction(function(trx) {
         table.boolean('viewRosterWarnings').notNullable();
     }).then(function() {
         // Insert statically defined roles, since this is basically an enum
-        return knex.insert([
+        return trx.insert([
                 {name: 'NOT_A_MEMBER', 
                     viewBasicRoster: false, 
                     viewFullRoster: false, 
@@ -80,12 +80,11 @@ knex.transaction(function(trx) {
                     viewCitadelAssignments: true, 
                     editCitadelAssignments: true, 
                     viewRosterWarnings: true}])
-            .into('role')
-            .transacting(trx)
+            .into('role');
     }).then(function() {
         // Citadels in J+
         // FIXME is it worth including the EVE ID of the citadel?
-        return knex.schema.transacting(trx).createTable('citadel', function(table) {
+        return trx.schema.createTable('citadel', (table) => {
             table.string('name').primary();
             table.string('type').notNullable();
             table.boolean('allianceAccess').notNullable();
@@ -93,7 +92,7 @@ knex.transaction(function(trx) {
         });
     }).then(function() {
         // Current citadels in J+
-        return knex.insert([
+        return trx.insert([
                 {name: 'A Little Krabby', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
                 {name: 'Elation', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
                 {name: 'Enthusiasm', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
@@ -118,10 +117,10 @@ knex.transaction(function(trx) {
                 {name: 'The Black Lodge', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
                 {name: 'Wafflehus', type: 'Astrahus', allianceAccess: true, allianceOwned: false},
                 {name: 'Dern\'s House of Pancakes', type: 'Fortizar', allianceAccess: true, allianceOwned: true}])
-        .into('citadel').transacting(trx)
+        .into('citadel');
     })
     .then(function() {
-        return knex.schema.transacting(trx).createTable('account', (table) => {
+        return trx.schema.createTable('account', (table) => {
             table.increments('id');
             // FIXME comma separated list? break it into a many-to-many table
             // between member and role that tracks each?
@@ -135,7 +134,7 @@ knex.transaction(function(trx) {
         // role set to NOT_A_MEMBER, but are otherwise remembered so that 
         // alts that have not left SOUND can still be represented (and warned 
         // about).
-        return knex.schema.transacting(trx).createTable('character', function(table) {
+        return trx.schema.createTable('character', (table) => {
             // From XML API
             table.integer('id').primary();
             table.string('name').unique();
@@ -159,15 +158,13 @@ knex.transaction(function(trx) {
         });
     })
     .then(function() {
-        return knex.schema
-                .transacting(trx).createTable('ownership', (table) => {
+        return trx.schema.createTable('ownership', (table) => {
             table.integer('character').primary().references('character.id');
             table.integer('account').references('account.id').notNullable();
         });
     })
     .then(function() {
-        return knex.schema
-                .transacting(trx).createTable('accessToken', (table) => {
+        return trx.schema.createTable('accessToken', (table) => {
             table.integer('character')
                     .primary().references('character.id').notNullable();
             table.string('refreshToken').notNullable();
@@ -177,8 +174,7 @@ knex.transaction(function(trx) {
         });
     })
     .then(function() {
-        return knex.schema.transacting(trx)
-                .createTable('skillsheet', (table) => {
+        return trx.schema.createTable('skillsheet', (table) => {
             table.integer('character')
                     .references('character.id').index().notNullable();
             table.integer('skill').notNullable();
@@ -191,8 +187,7 @@ knex.transaction(function(trx) {
     .then(function() {
         // TODO: This is a temporary fix until we have a proper cache control
         // mechanism.
-        return knex.schema.transacting(trx)
-                .createTable('cacheControl', (table) => {
+        return trx.schema.createTable('cacheControl', (table) => {
             table.integer('character')
                     .references('character.id').notNullable();
             table.string('source').notNullable();
@@ -201,9 +196,7 @@ knex.transaction(function(trx) {
             table.unique(['character', 'source']);
             table.index(['character', 'source']);
         });
-    })
-    .then(trx.commit).catch(trx.rollback);
-
+    });
 }).then(function() {
     console.log('Schema transaction completed successfully.');
     process.exit(0);
