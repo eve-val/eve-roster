@@ -81,59 +81,50 @@ function fetchSkills(characterId) {
 }
 
 function fetchNewSkills(characterId, cacheEntryExists) {
-  let esiSkills;
-  
   return esi.getForCharacter(
       'characters/' + characterId + '/skills/', characterId)
   .then(function(response) {
-    esiSkills = response.data.skills;
+    return response.data.skills;
   })
-  .then(dao.transaction)
-  .then(function(trx) {
-    console.log('Dropping skillsheet...');
-    return trx.builder('skillsheet')
+  .then((esiSkills) => {
+    return dao.transaction((trx) => {
+      console.log('Dropping skillsheet...');
+      return trx.builder('skillsheet')
         .del()
         .where('character', '=', characterId)
-    .then(function() {
-      let insertObjs = [];
-      for (let i = 0; i < esiSkills.length; i++) {
-        let s = esiSkills[i];
-        insertObjs.push({
-          character: characterId,
-          skill: s.skill_id,
-          level: s.current_skill_level,
-          skillpoints: s.skillpoints_in_skill,
-        });
-      }
-      console.log('Inserting %s records', insertObjs.length);
-
-      return trx.batchInsert('skillsheet', insertObjs, 100);
-    })
-    .then(function() {
-      console.log('Updating cache control...');
-      let cacheUntil = Date.now() + CACHE_DURATION;
-      if (cacheEntryExists) {
-        return trx.builder('cacheControl')
-            .update('cacheUntil', cacheUntil)
-            .where('character', '=', characterId);
-      } else {
-        return trx.builder('cacheControl')
-            .insert({
+        .then(function() {
+          let insertObjs = [];
+          for (let i = 0; i < esiSkills.length; i++) {
+            let s = esiSkills[i];
+            insertObjs.push({
               character: characterId,
-              source: CACHE_SOURCE,
-              cacheUntil: cacheUntil
+              skill: s.skill_id,
+              level: s.current_skill_level,
+              skillpoints: s.skillpoints_in_skill,
             });
-      }
-    })
-    .then(function() {
-      console.log('Committing!');
-      return trx.commit();
-    })
-    .catch(function(e) {
-      trx.rollback();
-      throw e;
+          }
+          console.log('Inserting %s records', insertObjs.length);
+
+          return trx.batchInsert('skillsheet', insertObjs, 100);
+        })
+        .then(function() {
+          console.log('Updating cache control...');
+          let cacheUntil = Date.now() + CACHE_DURATION;
+          if (cacheEntryExists) {
+            return trx.builder('cacheControl')
+              .update('cacheUntil', cacheUntil)
+              .where('character', '=', characterId);
+          } else {
+            return trx.builder('cacheControl')
+              .insert({
+                character: characterId,
+                source: CACHE_SOURCE,
+                cacheUntil: cacheUntil
+              });
+          }
+        });
     });
-  })
+  });
 }
 
 function fetchQueue(characterId) {

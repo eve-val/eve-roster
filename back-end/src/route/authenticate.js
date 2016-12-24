@@ -126,8 +126,7 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
 
   let accountId = req.session.accountId;
 
-  return dao.transaction()
-  .then(function(trx) {
+  return dao.transaction(function(trx) {
     let isNewAccount = accountId == null;
 
     return createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
@@ -142,13 +141,6 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
     })
     .then(function() {
       return trx.ownCharacter(charId, accountId, /* isMain */ isNewAccount);
-    })
-    .then(function() {
-      trx.commit();
-    })
-    .catch(function(err) {
-      trx.rollback();
-      throw err;
     });
   })
   .then(function() {
@@ -172,7 +164,7 @@ function createOrUpdateCharacter(trx, charId, charData, charTokens, charRow) {
   } else {
     // Just update in-place
     return trx.builder('character')
-        .where('id', '=', charId)
+        .where({id: charId})
         .update({
           corporationId: charData.corporation_id
         })
