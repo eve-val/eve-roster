@@ -1,4 +1,4 @@
-const esi = require('../../esi');
+const eve = require('../../eve');
 
 
 const STUB_OUTPUT = false;
@@ -16,13 +16,13 @@ module.exports = function(req, res) {
 
   let corporationId = req.params.id;
 
-  esi.getNoAuth('corporations/' + corporationId + '/')
-  .then(function(response) {
+  eve.esi.corporation.get(corporationId)
+  .then(function(data) {
     return {
       id: corporationId,
-      name: response.data.corporation_name,
-      alliance: response.data.alliance_id,
-      ticker: response.data.ticker,
+      name: data.corporation_name,
+      alliance: data.alliance_id,
+      ticker: data.ticker,
     };
   })
   .then(function(payload) {
@@ -34,4 +34,4 @@ module.exports = function(req, res) {
     console.log(e);
     res.status(500).send('<pre>' + e.stack + '</pre>');
   });
-}
+};

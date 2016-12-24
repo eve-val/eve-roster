@@ -5,7 +5,6 @@ const querystring = require('querystring');
 const moment = require('moment');
 
 const dao = require('../../dao.js');
-const esi = require('../../esi.js');
 const skillQueue = require('../../data-source/skill-queue');
 
 const STATIC = require('../../static-data').get();

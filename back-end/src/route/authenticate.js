@@ -4,7 +4,7 @@ const request = require('request');
 
 const configLoader = require('../config-loader');
 const dao = require('../dao');
-const esi = require('../esi');
+const eve = require('../eve');
 
 
 const CONFIG = configLoader.load();
@@ -39,7 +39,6 @@ module.exports = function(req, res) {
 
 function handleAccessToken(req, res, body) {
   let charTokens = JSON.parse(body);
-  let accessToken = charTokens.access_token;
 
   let characterId = 0;
   let characterBasicInfo = null;
@@ -47,7 +46,6 @@ function handleAccessToken(req, res, body) {
   console.log('Auth successful! Auth token is %s', charTokens.access_token);
   console.log('  Full response:', charTokens);
 
-  let work =
   axios.get('https://login.eveonline.com/oauth/verify', {
     headers: {
       'Authorization': 'Bearer ' + charTokens.access_token,
@@ -56,7 +54,7 @@ function handleAccessToken(req, res, body) {
   .then(function(response) {
     console.log('VERIFY CHAR', response.data);
     characterId = response.data.CharacterID;
-    return esi.getNoAuth('characters/' + characterId + '/', accessToken);
+    return eve.esi.character.get(characterId);
   })
   .then(function(response) {
     console.log('ESI CHAR', response.data);
@@ -68,14 +66,6 @@ function handleAccessToken(req, res, body) {
   .catch(function(err) {
     console.log('THERE WAS AN ERROR', err);
     res.send('ERROR :(' + '\n' + err);
-  });
-}
-
-function getEsi(path, accessToken) {
-  return axios.get('https://esi.tech.ccp.is/latest/' + path, {
-    headers: {
-      'Authorization': 'Bearer ' + accessToken,
-    },
   });
 }
 

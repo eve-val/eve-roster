@@ -1,5 +1,5 @@
 const dao = require('../../../dao');
-const esi = require('../../../esi');
+const eve = require('../../../eve');
 
 const sendStub = require('../send-stub');
 const skillQueue = require('../../../data-source/skill-queue');
@@ -45,20 +45,7 @@ module.exports = function(req, res) {
 };
 
 function fetchSkills(characterId) {
-  return dao.builder('cacheControl')
-      .select('cacheUntil')
-      .where({
-        character: characterId,
-        source: CACHE_SOURCE,
-      })
-  .then(function([row]) {
-    if (row == null || row.cacheUntil < Date.now()) {
-      console.log('Skills cache expired, fetching new set...');
-      return fetchNewSkills(characterId, row != null);
-    } else {
-      console.log('Reusing cached skills...');
-    }
-  })
+  return fetchNewSkills(characterId)
   .then(function() {
     return dao.builder('skillsheet')
         .select('skill', 'level', 'skillpoints')
@@ -80,50 +67,38 @@ function fetchSkills(characterId) {
   });
 }
 
-function fetchNewSkills(characterId, cacheEntryExists) {
-  return esi.getForCharacter(
-      'characters/' + characterId + '/skills/', characterId)
-  .then(function(response) {
-    return response.data.skills;
-  })
-  .then((esiSkills) => {
-    return dao.transaction((trx) => {
-      console.log('Dropping skillsheet...');
-      return trx.builder('skillsheet')
-        .del()
-        .where('character', '=', characterId)
-        .then(function() {
-          let insertObjs = [];
-          for (let i = 0; i < esiSkills.length; i++) {
-            let s = esiSkills[i];
-            insertObjs.push({
-              character: characterId,
-              skill: s.skill_id,
-              level: s.current_skill_level,
-              skillpoints: s.skillpoints_in_skill,
-            });
-          }
-          console.log('Inserting %s records', insertObjs.length);
-
-          return trx.batchInsert('skillsheet', insertObjs, 100);
-        })
-        .then(function() {
-          console.log('Updating cache control...');
-          let cacheUntil = Date.now() + CACHE_DURATION;
-          if (cacheEntryExists) {
-            return trx.builder('cacheControl')
-              .update('cacheUntil', cacheUntil)
-              .where('character', '=', characterId);
-          } else {
-            return trx.builder('cacheControl')
-              .insert({
+function fetchNewSkills(characterId) {
+  // TODO make the skill insertion into the table a tap, so that the fetchSkills() function doesn't have to
+  // requery them (although this would also involve reformatting the data here to match what DB would return)
+  return eve.getAccessToken(characterId)
+    .then(accessToken => {
+      return eve.esi.character.getSkills(characterId, accessToken);
+    })
+    .then(data => {
+      return data.skills;
+    })
+    .then(esiSkills => {
+      return dao.transaction((trx) => {
+        console.log('Dropping skillsheet...');
+        return trx.builder('skillsheet')
+          .del()
+          .where('character', '=', characterId)
+          .then(function() {
+            let insertObjs = [];
+            for (let i = 0; i < esiSkills.length; i++) {
+              let s = esiSkills[i];
+              insertObjs.push({
                 character: characterId,
-                source: CACHE_SOURCE,
-                cacheUntil: cacheUntil
+                skill: s.skill_id,
+                level: s.current_skill_level,
+                skillpoints: s.skillpoints_in_skill,
               });
-          }
-        });
-    });
+            }
+            console.log('Inserting %s records', insertObjs.length);
+
+            return trx.batchInsert('skillsheet', insertObjs, 100);
+          });
+      });
   });
 }
 

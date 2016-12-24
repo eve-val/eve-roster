@@ -1,15 +1,15 @@
-const esi = require('../esi');
+const eve = require('../eve');
 
 const moment = require('moment');
 
 
 module.exports = {
   getQueue: function(characterId) {
-    return esi
-    .getForCharacter('characters/' + characterId + '/skillqueue/', characterId)
-    .then(function(response) {
-      return pruneCompletedSkills(response.data);
-    });
+    return eve.getAccessToken(characterId)
+      .then(accessToken => {
+        return eve.esi.character.getSkillQueue(characterId, accessToken);
+      })
+      .then(pruneCompletedSkills);
   },
 
   getProgress: function(queueEntry) {
