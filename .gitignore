@@ -3,3 +3,4 @@ node_modules/
 /front-end/dist/
 npm-debug.log
 .vscode
+.idea/
