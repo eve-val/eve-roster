@@ -186,19 +186,6 @@ knex.transaction(function(trx) {
 
             table.unique(['character', 'skill']);
         });
-    })
-    .then(function() {
-        // TODO: This is a temporary fix until we have a proper cache control
-        // mechanism.
-        return trx.schema.createTable('cacheControl', (table) => {
-            table.integer('character')
-                    .references('character.id').notNullable();
-            table.string('source').notNullable();
-            table.integer('cacheUntil').notNullable();
-
-            table.unique(['character', 'source']);
-            table.index(['character', 'source']);
-        });
     });
 }).then(function() {
     console.log('Schema transaction completed successfully.');
