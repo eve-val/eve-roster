@@ -5,9 +5,9 @@
     <router-link to="/roster" class="nav-link">Roster</router-link>
     <router-link to="/housing" class="nav-link">Housing</router-link>
     <div class="spacer"></div>
-    <div class="identity">{{ identity.name }}</div>
-    <eve-image :id="identity.characterId" type="Character"
-      :size="32" class="identity-icon" />
+    <div class="logout">
+      <a class="nav-link" href="/logout">Log out</a>
+    </div>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
   flex-direction: row;
   align-items: center;
   height: 40px;
-  /*background: #EEE;*/
+  background: #101010;
   flex: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
@@ -70,15 +70,6 @@ export default {
 
 .spacer {
   flex-grow: 1;
-}
-
-.identity {
-  font-size: 12px;
-  color: #777;
-}
-
-.identity-icon {
-  margin: 0 5px;
 }
 
 </style>

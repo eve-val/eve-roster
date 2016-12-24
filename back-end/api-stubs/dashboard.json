@@ -56,5 +56,7 @@
       "skillInTraining": null,
       "queue": null
     }
-  ]
+  ],
+  "mainCharacter": 95773199,
+  "loginParams": null
 }

@@ -5,6 +5,10 @@ export default {
     return axios.get('/api/dashboard');
   },
 
+  getCorporation(id) {
+    return axios.get('/api/corporation/' + id);
+  },
+
   putApiKey(characterId, keyId, keyVerification) {
     return axios.put('/api/character/' + characterId + '/apikey', {
       keyId: keyId,

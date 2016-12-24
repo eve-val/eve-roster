@@ -31,7 +31,6 @@ app.set('views', './views')
 // Includes root ('/')
 app.get(routes.frontEnd, function(req, res) {
   if (req.session.accountId == null) {
-    // Explicitly write a value so we start tracking a session
     res.redirect('/login');
   } else {
     res.render('home', {
@@ -52,7 +51,7 @@ app.get('/login', function(req, res) {
   });
 });
 
-app.get('/authenticate', require('./authenticate'));
+app.get('/authenticate', require('./route/authenticate'));
 
 app.get('/logout', function(req, res) {
   req.session = null;
@@ -63,7 +62,7 @@ app.get('/logout', function(req, res) {
 app.use(express.static(path.join(__dirname, '../static')));
 
 // Manually include the API routes defined in api/
-var api = require('./api.js');
+var api = require('./route/api/api.js');
 app.use('/api', api);
 
 var server = app.listen(getServingPort(), function() {

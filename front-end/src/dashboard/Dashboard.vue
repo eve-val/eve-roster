@@ -1,17 +1,21 @@
 <template>
 <div class="root">
-  <app-header
-      :identity="identity"
-      style="background: #101010;"
-      />
+  <app-header :identity="identity" />
   <div class="title">Dashboard</div>
   <div class="characters-container">
-    <character-slab v-for="character in characters"
+    <character-slab v-for="character in sortedCharacters"
         class="slab"
         :character="character"
+        :loginParams="loginParams"
+        :isMain="character.id == mainCharacter"
+        :highlightMain="sortedCharacters.length > 1"
         @setApiKey="onApiKeySet"
         />
-    <div class="add-character">＋ Add a character</div>
+    <div class="add-character" v-if="loginParams">
+      <a class="add-character-link"
+          :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+          >＋ Add a character</a>
+      </div>
   </div>
 </div>
 </template>
@@ -36,14 +40,33 @@ export default {
 
   data: function() {
     return {
-      characters: []
+      characters: [],
+      loginParams: null,
+      mainCharacter: null,
     };
+  },
+
+  computed: {
+    sortedCharacters: function() {
+      this.characters.sort((a, b) => {
+        if (a.id == this.mainCharacter) {
+          return a;
+        } else if (b.id == this.mainCharacter) {
+          return b;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      });
+      return this.characters;
+    }
   },
 
   created: function() {
     ajaxer.getDashboard()
       .then((response) => {
         this.characters = response.data.characters;
+        this.loginParams = response.data.loginParams;
+        this.mainCharacter = response.data.mainCharacter;
       })
       .catch((err) => {
         // TODO
@@ -81,11 +104,8 @@ export default {
 
 <style scoped>
 .root {
-  background: #202020;
   font-size: 14px;
   font-weight: 300;
-  min-height: 2000px;
-  color: #CDCDCD
 }
 
 .title {
@@ -117,6 +137,20 @@ export default {
   align-items: center;
   font-size: 18px;
   color: #a7a29c;
-  font-weight: 100;
+  font-weight: 300;
+}
+
+.add-character-link {
+  color: #676767;
+  text-decoration: none;
+}
+
+.add-character-link:hover {
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  color: #848484;
+}
+
+.add-character-link:active {
+  color: #CDCDCD;
 }
 </style>

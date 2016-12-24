@@ -29,8 +29,10 @@ function Dao(builder) {
 }
 Dao.prototype = {
   transaction: function(callback) {
-    return knex.transaction(function(trx) {
-      callback(new Dao(trx));
+    return new Promise((resolve, reject) => {
+      knex.transaction(function(trx) {
+        resolve(new Dao(trx));
+      });
     });
   },
 
@@ -40,6 +42,14 @@ Dao.prototype = {
 
   rollback: function() {
     return this.builder.rollback();
+  },
+
+  batchInsert: function(table, rows, chunkSize) {
+    let work = knex.batchInsert(table, rows, chunkSize);
+    if (this.builder != knex) {
+      work = work.transacting(this.builder);
+    }
+    return work;
   },
 
   getCitadels: function() {

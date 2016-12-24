@@ -2,8 +2,9 @@ const axios = require('axios');
 const express = require('express');
 const request = require('request');
 
-const configLoader = require('./config-loader');
-const dao = require('./dao');
+const configLoader = require('../config-loader');
+const dao = require('../dao');
+const esi = require('../esi');
 
 
 const CONFIG = configLoader.load();
@@ -55,7 +56,7 @@ function handleAccessToken(req, res, body) {
   .then(function(response) {
     console.log('VERIFY CHAR', response.data);
     characterId = response.data.CharacterID;
-    return getEsi('characters/' + characterId + '/', accessToken);
+    return esi.getNoAuth('characters/' + characterId + '/', accessToken);
   })
   .then(function(response) {
     console.log('ESI CHAR', response.data);
@@ -123,11 +124,13 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
       charId,
       req.session.accountId);
 
-  return dao.transaction(function(trx) {
-    let accountId = req.session.accountId;
+  let accountId = req.session.accountId;
+
+  return dao.transaction()
+  .then(function(trx) {
     let isNewAccount = accountId == null;
 
-    createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
+    return createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
     .then(function() {
       if (isNewAccount) {
         return trx.createAccount()
@@ -146,11 +149,11 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
     .catch(function(err) {
       trx.rollback();
       throw err;
-    })
-    .then(function() {
-      req.session.accountId = accountId;
-      res.redirect('/');
     });
+  })
+  .then(function() {
+    req.session.accountId = accountId;
+    res.redirect('/');
   });
 }
 
