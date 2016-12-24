@@ -37,7 +37,8 @@ knex.transaction(function(trx) {
         table.boolean('editCitadelAssignments').notNullable();
         // True if player can see inconsistency warnings in roster state
         table.boolean('viewRosterWarnings').notNullable();
-    }).then(function() {
+    })
+    .then(function() {
         // Insert statically defined roles, since this is basically an enum
         return trx.insert([
                 {name: 'NOT_A_MEMBER', 
@@ -81,7 +82,8 @@ knex.transaction(function(trx) {
                     editCitadelAssignments: true, 
                     viewRosterWarnings: true}])
             .into('role');
-    }).then(function() {
+    })
+    .then(function() {
         // Citadels in J+
         // FIXME is it worth including the EVE ID of the citadel?
         return trx.schema.createTable('citadel', (table) => {
@@ -90,7 +92,8 @@ knex.transaction(function(trx) {
             table.boolean('allianceAccess').notNullable();
             table.boolean('allianceOwned').notNullable();
         });
-    }).then(function() {
+    })
+    .then(function() {
         // Current citadels in J+
         return trx.insert([
                 {name: 'A Little Krabby', type: 'Astrahus', allianceAccess: true, allianceOwned: true},
