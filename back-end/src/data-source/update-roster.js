@@ -8,6 +8,7 @@ const axios = require('axios');
 const moment = require('moment');
 const xml2js = require('xml2js');
 
+const accountRoles = require('./account-roles');
 const async = require('../util/async');
 const dao = require('../dao');
 const eve = require('../eve');
@@ -22,6 +23,7 @@ module.exports = updateRoster;
 function updateRoster() {
   return updateAllCorporations()
   .then(updateOrphanedCharacters)
+  .then(accountRoles.updateAll)
   .then(function() {
     console.log('updateRoster() complete');
   });

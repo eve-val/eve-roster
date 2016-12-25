@@ -100,9 +100,9 @@ Dao.prototype = {
   },
 
   createAccount: function() {
-    return this.builder('account').insert({
-      roles: 'Junior Sound FC',
-    })
+    return this.builder('account')
+        // We have to specify at least one column or knex throws up
+        .insert({ mainCharacter: null })
     .then(function(ids) {
       return ids[0];
     });
@@ -114,6 +114,8 @@ Dao.prototype = {
       character: characterId,
     })
     .then(() => {
+      // TODO: Change this to automatically apply if there are no other
+      // chars owned by the account
       if (isMain) {
         return this.setAccountMain(accountId, characterId);
       }
@@ -130,6 +132,32 @@ Dao.prototype = {
     return this.builder('account')
         .where({id: accountId})
         .update({homeCitadel: citadel});
+  },
+
+  setAccountRoles: function(accountId, roles) {
+    // TODO: start transaction if not already in a transaction?
+    return this.builder('accountRole')
+        .del()
+        .where('account', '=', accountId)
+    .then(() => {
+      if (roles.length > 0) {
+        return this.builder('accountRole')
+            .insert(roles.map(role => ({ account: accountId, role: role }) ));
+      }
+    })
+  },
+
+  getPrivileges: function(accountId) {
+    return this.builder('account')
+        .select(
+            'rolePriv.privilege',
+            knex.raw('max(rolePriv.level) as level'),
+            'privilege.ownerLevel')
+        .where('account.id', '=', accountId)
+        .join('accountRole', 'accountRole.account', '=', 'account.id')
+        .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
+        .join('privilege', 'privilege.name', '=', 'rolePriv.privilege')
+        .groupBy('rolePriv.privilege');
   },
 
   _upsert: function(table, row, primaryKey) {
