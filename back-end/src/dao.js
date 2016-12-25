@@ -29,10 +29,8 @@ function Dao(builder) {
 }
 Dao.prototype = {
   transaction: function(callback) {
-    return new Promise((resolve, reject) => {
-      knex.transaction(function(trx) {
-        resolve(new Dao(trx));
-      });
+    return this.builder.transaction((trx) => {
+      return callback(new Dao(trx));
     });
   },
 
@@ -53,33 +51,35 @@ Dao.prototype = {
   },
 
   getCitadels: function() {
-    return this.builder.select().from('citadel');
+    return this.builder('citadel').select();
   },
 
   getCitadelByName: function(name) {
-    return this.builder.select().from('citadel').where('name', name);
+    return this.builder('citadel').select().where({name: name});
   },
 
-  getMembers: function() {
-    return this.builder.select().from('member');
+  getCharacters: function() {
+    return this.builder('character').select();
   },
 
-  getMemberByName: function(name) {
-    return this.builder.select().from('member').where('name', name);
+  getCharacterByName: function(name) {
+    return this.builder('character').select().where({name: name});
   },
 
-  getMemberByID: function(id) {
-    return this.builder.select().from('member').where('characterID', id);
+  getCharacterById: function(id) {
+    return this.builder('character').select().where({id: id});
   },
 
-  setMemberCitadel: function(id, citadel) {
-    return this.builder.insert([{homeCitadel: citadel}])
-        .into('member').where('characterID', id);
+  setCharacterCitadel: function(id, citadel) {
+    return this.builder('character')
+        .where({id: id})
+        .update({homeCitadel: citadel});
   },
 
-  setMemberMain: function(id, mainCharacterID) {
-    return this.builder.insert([{mainID: mainCharacterID}])
-        .into('member').where('characterID', id);
+  setAccountMain: function(accountId, mainCharacterId) {
+    return this.builder('account')
+        .where({id: accountId})
+        .update({mainCharacter: mainCharacterId});
   },
 
   createCharacter: function(id, name, corporationId) {
@@ -104,7 +104,7 @@ Dao.prototype = {
   updateAccessTokens: function(
       characterId, refreshToken, accessToken, expiresIn) {
     return this.builder('accessToken')
-        .where('character', '=', characterId)
+        .where({character: characterId})
         .update({
           refreshToken: refreshToken,
           accessToken: accessToken,
@@ -129,10 +129,10 @@ Dao.prototype = {
     })
     .then(() => {
       if (isMain) {
-        return this.builder('account').update('mainCharacter', characterId);
+        return this.setAccountMain(accountId, characterId);
       }
     });
   },
-}
+};
 
 module.exports = new Dao(knex);

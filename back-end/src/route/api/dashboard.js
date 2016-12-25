@@ -5,7 +5,6 @@ const querystring = require('querystring');
 const moment = require('moment');
 
 const dao = require('../../dao.js');
-const esi = require('../../esi.js');
 const skillQueue = require('../../data-source/skill-queue');
 
 const STATIC = require('../../static-data').get();
@@ -52,21 +51,21 @@ function getStubOutput() {
 
 function getRealOutput(accountId) {
   let mainCharacter = null;
-  return Promise.resolve()
-  .then(function() {
-    return dao.builder('account')
-        .select('mainCharacter')
-        .where('id', '=', accountId)
-  })
-  .then(function(rows) {
-    mainCharacter = rows[0].mainCharacter;
-  })
-  .then(function() {
-    return dao.builder('ownership')
-      .select('character.id', 'character.name', 'accessToken.needsUpdate')
-      .join('character', 'character.id', '=', 'ownership.character')
-      .join('accessToken', 'accessToken.character', '=', 'ownership.character')
-      .where('ownership.account', accountId);
+  return dao.transaction((trx) => {
+    return trx.builder('account')
+          .select('mainCharacter')
+          .where({id: accountId})
+    .then(function(rows) {
+      mainCharacter = rows[0].mainCharacter;
+      return mainCharacter;
+    })
+    .then(function() {
+      return trx.builder('ownership')
+        .select('character.id', 'character.name', 'accessToken.needsUpdate')
+        .join('character', 'character.id', '=', 'ownership.character')
+        .join('accessToken', 'accessToken.character', '=', 'ownership.character')
+        .where('ownership.account', accountId);
+    });
   })
   .then(function(rows) {
     let workList = [];
@@ -94,7 +93,7 @@ function getRealOutput(accountId) {
       loginParams: LOGIN_PARAMS,
       mainCharacter: mainCharacter,
     };
-  })
+  });
 }
 
 function getSkillInTraining(queueData) {
