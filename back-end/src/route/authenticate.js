@@ -139,30 +139,12 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
 }
 
 function createOrUpdateCharacter(trx, charId, charData, charTokens, charRow) {
-  if (!charRow) {
-    // Create character
-    return trx
-        .createCharacter(charId, charData.name, charData.corporation_id)
-    .then(function() {
-      return trx.createAccessTokens(
-          charId,
-          charTokens.refresh_token,
-          charTokens.access_token,
-          charTokens.expires_in);
-    });
-  } else {
-    // Just update in-place
-    return trx.builder('character')
-        .where({id: charId})
-        .update({
-          corporationId: charData.corporation_id
-        })
-    .then(function() {
-      return trx.updateAccessTokens(
-          charId,
-          charTokens.refresh_token,
-          charTokens.access_token,
-          charTokens.expires_in);
-    });
-  }
+  return trx.upsertCharacter(charId, charData.name, charData.corporation_id)
+  .then(function() {
+    return trx.upsertAccessTokens(
+        charId,
+        charTokens.refresh_token,
+        charTokens.access_token,
+        charTokens.expires_in);
+  });
 }
