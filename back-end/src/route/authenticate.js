@@ -56,16 +56,14 @@ function handleAccessToken(req, res, body) {
     characterId = response.data.CharacterID;
     return eve.esi.character.get(characterId);
   })
-  .then(function(response) {
-    console.log('ESI CHAR', response.data);
-    characterBasicInfo = response.data;
-
-    return handleCharLogin(
-          req, res, characterId, characterBasicInfo, charTokens);
+  .then(function(charData) {
+    console.log('ESI CHAR', charData);
+    return handleCharLogin(req, res, characterId, charData, charTokens);
   })
-  .catch(function(err) {
-    console.log('THERE WAS AN ERROR', err);
-    res.send('ERROR :(' + '\n' + err);
+  .catch(function(e) {
+    console.log(e);
+    res.status(500);
+    res.send('<pre>' + e.stack + '</pre>');
   });
 }
 
@@ -79,7 +77,8 @@ function handleCharLogin(req, res, charId, charData, charTokens) {
   .then(function(charRows) {
     console.log('charRows:', charRows);
     if (charRows.length > 0 && charRows[0].account != null) {
-      return handleOwnedChar(req, res, charId, charTokens, charRows[0]);
+      return handleOwnedChar(
+          req, res, charId, charTokens, charRows[0]);
     } else {
       return handleUnownedChar(
           req, res, charId, charData, charTokens, charRows[0]);
