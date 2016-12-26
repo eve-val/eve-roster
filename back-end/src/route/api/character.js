@@ -1,19 +1,19 @@
 const dao = require('../../dao');
-const sendStub = require('./send-stub');
+const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const getStub = require('../../route-helper/getStub');
 
 const STUB_OUTPUT = false;
 
-module.exports = function(req, res) {
+module.exports = jsonEndpoint(function(req, res) {
   if (STUB_OUTPUT) {
-    sendStub(res, 'character.json');
-    return;
+    return Promise.resolve(getStub('character.json'));
   }
 
   let characterId = req.params.id;
   let payload;
 
   // Fetch character and account data
-  dao.builder('character')
+  return dao.builder('character')
       .select(
           'character.name',
           'character.corporationId', 
@@ -42,19 +42,8 @@ module.exports = function(req, res) {
   })
   .then(function() {
     return payload;
-  })
-  .then(function(response) {
-    let space = req.query.pretty != undefined ? 2 : undefined;
-    res.type('json');
-    res.send(JSON.stringify(response, null, space));
-  })
-  .catch(function(e) {
-    // TODO
-    res.status(500);
-    res.send('Error :(\n' + e.toString());
-    throw e;
   });
-};
+});
 
 function injectAlts(accountId, thisCharacterId, payload) {
   return dao.builder('ownership')
