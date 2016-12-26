@@ -130,6 +130,10 @@ knex.transaction(function(trx) {
             table.string('roles').notNullable();
             table.integer('mainCharacter')
                 .references('character.id').nullable();
+
+            table.enu('activeTimezone',
+                ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
+            table.string('homeCitadel').nullable().references('citadel.name');
         });
     })
     .then(function() {
@@ -154,10 +158,6 @@ knex.transaction(function(trx) {
 
             // From Siggy
             table.integer('siggyScore');
-
-            // Custom
-            table.enu('activeTimezone', ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
-            table.string('homeCitadel').nullable().references('name').inTable('citadel');
         });
     })
     .then(function() {
