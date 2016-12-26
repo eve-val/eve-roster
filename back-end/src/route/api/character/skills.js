@@ -1,8 +1,9 @@
 const dao = require('../../../dao');
 const eve = require('../../../eve');
 
-const sendStub = require('../send-stub');
-const skillQueue = require('../../../data-source/skill-queue');
+const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const getStub = require('../../../route-helper/getStub');
+const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
 const STATIC = require('../../../static-data').get();
@@ -12,15 +13,14 @@ const CACHE_SOURCE = 'skills'
 const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
 const STUB_OUTPUT = false;
 
-module.exports = function(req, res) {
+module.exports = jsonEndpoint(function(req, res) {
   if (STUB_OUTPUT) {
-    sendStub(res, 'character.skills.json');
-    return;
+    return Promise.resolve(getStub('character.skills.json'));
   }
 
   let characterId = req.params.id;
 
-  Promise.all([
+  return Promise.all([
     fetchQueue(characterId),
     fetchSkills(characterId),
   ])
@@ -29,20 +29,8 @@ module.exports = function(req, res) {
       queue: queue,
       skills: skills,
     };
-  })
-  .then(function(response) {
-    let space = req.query.pretty != undefined ? 2 : undefined;
-
-    res.type('json');
-    res.send(JSON.stringify(response, null, space));
-  })
-  .catch(function(e) {
-    // TODO
-    res.status(500);
-    res.send('<pre>' + e.stack + '</pre>');
-    console.log(e);
   });
-};
+});
 
 function fetchSkills(characterId) {
   return fetchNewSkills(characterId)

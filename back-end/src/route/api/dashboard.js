@@ -5,7 +5,9 @@ const querystring = require('querystring');
 const moment = require('moment');
 
 const dao = require('../../dao.js');
-const skillQueue = require('../../data-source/skill-queue');
+const getStub = require('../../route-helper/getStub');
+const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const skillQueue = require('../../data-source/skillQueue');
 
 const STATIC = require('../../static-data').get();
 const CONFIG = require('../../config-loader').load();
@@ -22,30 +24,15 @@ const LOGIN_PARAMS = querystring.stringify({
 
 const STUB_OUTPUT = false;
 
-module.exports = function(req, res) {
-  (STUB_OUTPUT
+module.exports = jsonEndpoint(function(req, res) {
+  return (STUB_OUTPUT
     ? getStubOutput()
-    : getRealOutput(req.session.accountId))
-  .then(function(output) {
-    let space = req.query.pretty != undefined ? 2 : undefined;
-
-    res.type('json');
-    res.send(JSON.stringify(  output, null, space));
-  })
-  .catch(function(err) {
-    // TODO
-    console.log('ERROR:', err);
-    res.send(err.toString());
-  });
-}
+    : getRealOutput(req.session.accountId));
+});
 
 function getStubOutput() {
-  let json = JSON.parse(
-      fs.readFileSync(
-          path.join(__dirname, '../../../api-stubs/dashboard.json'),
-          'utf8'));
+  let json = getStub('dashboard.json');
   json.loginParams = LOGIN_PARAMS;
-
   return Promise.resolve(json);
 }
 

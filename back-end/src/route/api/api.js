@@ -4,7 +4,9 @@ const path = require('path');
 const express = require('express');
 
 const dao = require('../../dao.js');
-const sendStub = require('./send-stub');
+const getStub = require('../../route-helper/getStub');
+const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+
 
 // /api routes
 const router = express.Router();
@@ -22,9 +24,9 @@ router.get('/*', function(req, res, next) {
 router.get('/dashboard', require('./dashboard'));
 
 // GET -> returns JSON representing entire corp roster.
-router.get('/roster', function(req, res) {
-  sendStub(res, 'roster.json');
-});
+router.get('/roster', jsonEndpoint(function(req, res) {
+  return Promise.resolve(getStub('roster.json'));
+}));
 
 router.get('/character/:id', require('./character'));
 router.get('/character/:id/skills', require('./character/skills'));
