@@ -3,7 +3,7 @@ const eve = require('../../../eve');
 
 const sendStub = require('../send-stub');
 const skillQueue = require('../../../data-source/skill-queue');
-const timeUtil = require('../../../data-source/time-util');
+const time = require('../../../util/time');
 
 const STATIC = require('../../../static-data').get();
 
@@ -125,7 +125,7 @@ function fetchQueue(characterId) {
         id: skillId,
         proportionalStart: (skillStart - now) / totalDuration,
         proportionalEnd: (skillEnd - now) / totalDuration,
-        durationLabel: timeUtil.shortDurationString(skillStart, skillEnd),
+        durationLabel: time.shortDurationString(skillStart, skillEnd),
         targetLevel: queueItem.finished_level,
       };
 
