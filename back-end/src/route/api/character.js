@@ -17,8 +17,8 @@ module.exports = jsonEndpoint(function(req, res) {
       .select(
           'character.name',
           'character.corporationId', 
-          'character.activeTimezone',
-          'character.homeCitadel',
+          'account.activeTimezone',
+          'account.homeCitadel',
           'account.id as accountId',
           'account.mainCharacter')
       .leftJoin('ownership', 'character.id', '=', 'ownership.character')
@@ -62,7 +62,10 @@ function injectAlts(accountId, thisCharacterId, payload) {
     alts.sort(function(a, b) {
       return a.name.localeCompare(b.name);
     });
-    payload.alts = alts;
+
+    if (alts.length > 0) {
+      payload.alts = alts;
+    }
   });
 }
 

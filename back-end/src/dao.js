@@ -70,18 +70,6 @@ Dao.prototype = {
     return this.builder('character').select().where({id: id});
   },
 
-  setCharacterCitadel: function(id, citadel) {
-    return this.builder('character')
-        .where({id: id})
-        .update({homeCitadel: citadel});
-  },
-
-  setAccountMain: function(accountId, mainCharacterId) {
-    return this.builder('account')
-        .where({id: accountId})
-        .update({mainCharacter: mainCharacterId});
-  },
-
   createCharacter: function(id, name, corporationId) {
     return this.builder('character').insert({
       id: id,
@@ -132,6 +120,18 @@ Dao.prototype = {
         return this.setAccountMain(accountId, characterId);
       }
     });
+  },
+
+  setAccountMain: function(accountId, mainCharacterId) {
+    return this.builder('account')
+        .where({id: accountId})
+        .update({mainCharacter: mainCharacterId});
+  },
+
+  setAccountCitadel: function(accountId, citadel) {
+    return this.builder('account')
+        .where({id: accountId})
+        .update({homeCitadel: citadel});
   },
 };
 
