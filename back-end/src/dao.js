@@ -14,10 +14,34 @@
 
 const path = require('path');
 
-const configLoader = require('../src/config-loader');
-const CONFIG = configLoader.load();
+const _ = require('underscore');
 
+const CONFIG = require('../src/config-loader').load();
 const CLIENT = 'sqlite3';
+const allCorpIds = _.pluck(
+    CONFIG.primaryCorporations.concat(CONFIG.altCorporations),
+    'id'
+);
+const BASIC_CHARACTER_COLUMNS = [
+  'character.id',
+  'character.name',
+  'character.corporationId',
+  'character.startDate',
+  'character.logonDate',
+  'character.logoffDate',
+  'character.killsInLastMonth',
+  'character.killValueInLastMonth',
+  'character.lossesInLastMonth',
+  'character.lossValueInLastMonth',
+  'character.siggyScore',
+];
+const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
+  'account.activeTimezone',
+  'account.homeCitadel',
+
+  'account.id as accountId',
+  'account.mainCharacter',
+]);
 
 const knex = require('knex')({
   client: CLIENT,
@@ -158,6 +182,35 @@ Dao.prototype = {
         .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
         .join('privilege', 'privilege.name', '=', 'rolePriv.privilege')
         .groupBy('rolePriv.privilege');
+  },
+
+  getCharactersOwnedByMembers: function() {
+    // This complex subquery is required because we want to select the
+    // characters of all accounts that own 1 or more member character. In
+    // particular, in the case where an account's main has left the corp but
+    // one of their alts is still a member, we want to include that account
+    // (and all of that account's characters).
+    return this.builder
+        .select(OWNED_CHARACTER_COLUMNS)
+        .from(function() {
+          this.select()
+            .distinct('account.id')
+            .from('character')
+            .join('ownership', 'ownership.character', '=', 'character.id')
+            .join('account', 'account.id', '=', 'ownership.account')
+            .whereIn('character.corporationId', allCorpIds)
+            .as('memberAccount')
+        })
+        .join('account', 'account.id', '=', 'memberAccount.id')
+        .join('ownership', 'ownership.account', '=', 'memberAccount.id')
+        .join('character', 'character.id', '=', 'ownership.character');
+  },
+
+  getUnownedCorpCharacters: function() {
+    return this.builder('character')
+        .select(BASIC_CHARACTER_COLUMNS)
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .whereNull('ownership.account');
   },
 
   _upsert: function(table, row, primaryKey) {
