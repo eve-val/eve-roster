@@ -9,7 +9,6 @@
         :loginParams="loginParams"
         :isMain="character.id == mainCharacter"
         :highlightMain="sortedCharacters.length > 1"
-        @setApiKey="onApiKeySet"
         />
     <div class="add-character" v-if="loginParams">
       <a class="add-character-link"
@@ -63,41 +62,18 @@ export default {
 
   created: function() {
     ajaxer.getDashboard()
-      .then((response) => {
+      .then(response => {
         this.characters = response.data.characters;
         this.loginParams = response.data.loginParams;
         this.mainCharacter = response.data.mainCharacter;
       })
-      .catch((err) => {
+      .catch(e => {
         // TODO
-        console.log('ERROR:', err);
+        console.log('ERROR:', e);
       });
   },
 
   methods: {
-    onApiKeySet: function(characterId, keyId, keyVerification) {
-      ajaxer.putApiKey(characterId, keyId, keyVerification)
-        .then((response) => {
-          let updatedChars = response.data;
-          for (let i = 0; i < updatedChars.length; i++) {
-            this.updateOrAddCharacter(updatedChars[i]);
-          }
-        })
-        .catch((err) => {
-          // TODO
-          console.log('ERROR', err);
-        });
-    },
-
-    updateOrAddCharacter: function(chardata) {
-      for (let i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].id == chardata.id) {
-          this.characters.splice(i, 1, chardata);
-          return;
-        }
-      }
-      this.characters.push(chardata);
-    }
   },
 }
 </script>

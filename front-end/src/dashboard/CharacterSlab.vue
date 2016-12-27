@@ -9,28 +9,27 @@
           >{{ character.name }}</router-link>
       <div class="training-summary">
         <div class="training-track"
-            :class="{
-              errorState: !character.hasApiKey || character.queue == null
-            }"
+            :class="{ errorState: errorState }"
             >
           <div class="training-progress"
-              v-if="character.skillInTraining != null"
-              :style="{ width: character.skillInTraining.progress * 100 + '%' }"
+              :style="{ width: progressTrackWidth }"
               ></div>
-          <span class="training-label">{{ trainingLabel }}</span>
+          <span class="training-label"
+              :class="{ loading: queueFetchStatus == 'loading' }"
+              >{{ trainingLabel }}</span>
         </div><span
-            v-if="character.skillInTraining != null"
+            v-if="skillInTraining != null"
             class="training-remaining"
-            >{{ character.skillInTraining.timeRemaining }}</span>
+            >{{ skillInTraining.timeRemaining }}</span>
       </div>
-      <div class="queue-summary" v-if="character.queue != null">
-        {{ character.queue.timeRemaining }} left in queue
-        ({{ character.queue.count}} skills)
+      <div class="queue-summary" v-if="queue != null">
+        {{ queue.timeRemaining }} left in queue
+        ({{ queue.count}} skills)
       </div>
     </div>
   </div>
   <div class="key-bother-container"
-      v-if="!character.hasApiKey"
+      v-if="character.needsReauth"
       >
     <div class="key-title">Character needs to be re-authorized</div>
     Please
@@ -42,7 +41,10 @@
 </template>
 
 <script>
+import ajaxer from '../shared/ajaxer';
+
 import EveImage from '../shared/EveImage.vue';
+
 
 export default {
   components: {
@@ -58,43 +60,71 @@ export default {
 
   data: function() {
     return {
-      keyId: null,
-      keyVerification: null,
+      queueFetchStatus: 'loading',
+      skillInTraining: null,
+      queue: null,
     };
   },
 
   computed: {
-    trainingLabel: function() {
-      if (!this.character.hasApiKey) {
-        return 'Needs authorization!';
-      } else if (this.character.skillInTraining == null) {
-        return 'No skill training'
-      } else {
-        return this.character.skillInTraining.name;
+    queueStatus: function() {
+      if (this.queueFetchStatus == 'loading') {
+        return 'loading';
+      } else if (this.queueFetchStatus == 'error') {
+        return 'loading-error';
+      } else if (this.character.needsReauth) {
+        return ''
       }
     },
 
-    accessMask: function() {
-      return 3280339210;
+    errorState: function() {
+      return this.character.needsReauth ||
+          this.queueFetchStatus == 'error' ||
+          this.queueFetchStatus == 'loaded' && this.queue == null;
+    },
+
+    trainingLabel: function() {
+      if (this.character.needsReauth) {
+        return 'Needs authorization!';
+      } else if (this.queueFetchStatus == 'loading') {
+        return 'Loading...';
+      } else if (this.queueFetchStatus == 'error') {
+        return 'Error loading skill queue';
+      } else if (this.skillInTraining == null) {
+        return 'No skill training';
+      } else {
+        return this.skillInTraining.name;
+      }
+    },
+
+    progressTrackWidth: function() {
+      if (this.skillInTraining == null) {
+        return '0';
+      } else {
+        return this.skillInTraining.progress * 100 + '%';
+      }
     },
 
     keyGenUrl: function() {
       return 'https://community.eveonline.com/support/api-key/' +
           'CreatePredefined?accessMask=' + this.accessMask;
     },
+  },
 
-    keyInputIsValid: function() {
-      return this.keyId != null && this.keyId.trim() != '' &&
-          this.keyVerification != null && this.keyVerification.trim() != '';
-    }
+  created: function() {
+    ajaxer.getSkillQueue(this.character.id)
+      .then(response => {
+        this.queueFetchStatus = 'loaded';
+        this.skillInTraining = response.data.skillInTraining;
+        this.queue = response.data.queue;
+      })
+      .catch(e => {
+        this.queueFetchStatus = 'error';
+      });
   },
 
   methods: {
-    onKeySubmitClick: function() {
-      this.$emit(
-          'setApiKey', this.character.id, this.keyId, this.keyVerification);
-    }
-  }
+  },
 }
 </script>
 
@@ -155,13 +185,19 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
+  width: 0;
   height: 100%;
   background: linear-gradient(to bottom, #75615c 0%,#534539 50%,#534539 50%);
+  transition: width 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .training-label {
   margin-left: 6px;
   position: relative;
+}
+
+.training-label.loading {
+  color: #a7a29c;
 }
 
 .training-remaining {

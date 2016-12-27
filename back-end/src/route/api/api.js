@@ -20,6 +20,7 @@ router.get('/roster', require('./roster'));
 
 router.get('/character/:id', require('./character'));
 router.get('/character/:id/skills', require('./character/skills'));
+router.get('/character/:id/skillQueue', require('./character/skillQueue'));
 
 router.get('/corporation/:id', require('./corporation'));
 
