@@ -28,6 +28,10 @@ export default {
     return axios.get('/api/character/' + id + '/skills');
   },
 
+  getSkillQueue(id) {
+    return axios.get('/api/character/' + id + '/skillQueue');
+  },
+
   updatePilot(name, props) {
     if (__DEV__) {
       return fakeResponse('');
