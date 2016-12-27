@@ -5,6 +5,7 @@ const request = require('request');
 const configLoader = require('../config-loader');
 const dao = require('../dao');
 const eve = require('../eve');
+const accountRoles = require('../data-source/account-roles');
 
 
 const CONFIG = configLoader.load();
@@ -130,6 +131,9 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
     })
     .then(function() {
       return trx.ownCharacter(charId, accountId, /* isMain */ isNewAccount);
+    })
+    .then(function() {
+      return accountRoles.updateAccount(trx, accountId);
     });
   })
   .then(function() {

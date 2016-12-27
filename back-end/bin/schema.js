@@ -1,87 +1,98 @@
 // schema.js
 // - Creates and initializes an empty sqlite3 database
 //   with the appropriate table schema.
+const path = require('path');
 
 const configLoader = require('../src/config-loader');
 const CONFIG = configLoader.load();
+
 
 const knex = require('knex')({
     client: 'sqlite3',
     debug: false,
     useNullAsDefault: true,
     connection: {
-        filename: CONFIG.dbFileName
+        filename: path.join(__dirname, '../', CONFIG.dbFileName),
     }
 });
 
 // Wrap everything in a single transaction
 knex.transaction(function(trx) {
-    // Roles - Specifies permissions for viewing/modifying roster associated
-    // with in-game roles (used as access management). If a character has 
-    // multiple roles, the effective permissions are the OR of the corresponding 
-    // booleans. These roles correspond to in-game roles, with the exception of 
-    // NOT_A_MEMBER, and so does not include alt-status of the character.
-    return trx.schema.createTable('role', (table) => {
-        table.string('name').primary();
-        // True if player can see the list of players in SA.FE
-        table.boolean('viewBasicRoster').notNullable();
-        // True if player can see the alt status/roles of characters in SA.FE
-        table.boolean('viewFullRoster').notNullable();
-        // True if player can see the citadel they've been assigned too
-        table.boolean('viewAssignedCitadel').notNullable();
-        // True if player can see members of their assigned citadel
-        table.boolean('viewAssignedCitadelMembers').notNullable();
-        // True if player can see all citadel assignments
-        table.boolean('viewCitadelAssignments').notNullable();
-        // True if player can modify citadel assignments
-        table.boolean('editCitadelAssignments').notNullable();
-        // True if player can see inconsistency warnings in roster state
-        table.boolean('viewRosterWarnings').notNullable();
+    return Promise.resolve()
+    .then(function() {
+        return trx.schema.createTable('privilege', table => {
+            table.string('name').primary();
+            table.string('category').notNullable();
+            // An account can gain access to a privilege it doesn't naturally
+            // have if it "owns" the resource in question. This column
+            // specifies its privilege level in that case.
+            table.integer('ownerLevel').notNullable();
+            table.text('description').notNullable();
+        });
     })
     .then(function() {
-        // Insert statically defined roles, since this is basically an enum
-        return trx.insert([
-                {name: 'NOT_A_MEMBER', 
-                    viewBasicRoster: false, 
-                    viewFullRoster: false, 
-                    viewAssignedCitadel: false,
-                    viewAssignedCitadelMembers: false, 
-                    viewCitadelAssignments: false, 
-                    editCitadelAssignments: false, 
-                    viewRosterWarnings: false},
-                {name: 'Official Sound FC',
-                    viewBasicRoster: true, 
-                    viewFullRoster: true, 
-                    viewAssignedCitadel: true,
-                    viewAssignedCitadelMembers: true, 
-                    viewCitadelAssignments: true,
-                    editCitadelAssignments: false, 
-                    viewRosterWarnings: false},
-                {name: 'Junior Sound FC',
-                    viewBasicRoster: true, 
-                    viewFullRoster: false, 
-                    viewAssignedCitadel: true,
-                    viewAssignedCitadelMembers: false, 
-                    viewCitadelAssignments: false, 
-                    editCitadelAssignments: false, 
-                    viewRosterWarnings: false},
-                {name: 'Staff',
-                    viewBasicRoster: true, 
-                    viewFullRoster: true, 
-                    viewAssignedCitadel: true,
-                    viewAssignedCitadelMembers: true, 
-                    viewCitadelAssignments: true, 
-                    editCitadelAssignments: true, 
-                    viewRosterWarnings: false},
-                {name: 'Director',
-                    viewBasicRoster: true, 
-                    viewFullRoster: true, 
-                    viewAssignedCitadel: true,
-                    viewAssignedCitadelMembers: true, 
-                    viewCitadelAssignments: true, 
-                    editCitadelAssignments: true, 
-                    viewRosterWarnings: true}])
-            .into('role');
+        return trx('privilege').insert([
+            { name: 'roster', category: 'roster', ownerLevel: 0,
+                description: 'Access to the list of members and their alts.' },
+            { name: 'extendedRoster', category: 'roster', ownerLevel: 0,
+                description: 'Can see all roster info.' },
+            { name: 'basicMember', category: 'character', ownerLevel: 1,
+                description: 'Can access member pages.'},
+            { name: 'memberHousing', category: 'character', ownerLevel: 1,
+                description: 'Can see other members\' housing.'},
+            { name: 'memberTimezone', category: 'character', ownerLevel: 2,
+                description: 'Can see other members\' active timezone.'},
+            { name: 'memberSkills', category: 'character', ownerLevel: 1,
+                description: 'View members\' skills.' },
+            { name: 'memberSkillQueue', category: 'character', ownerLevel: 1,
+                description: 'View members\' skill queue.' },
+        ]);
+    })
+    .then(function() {
+        return trx.schema.createTable('role', table => {
+            table.string('name').primary().notNullable();
+        });
+    })
+    .then(function() {
+        return trx('role').insert([
+            // Special role; automatically assigned to any account with a
+            // mainCharacter in the alliance.
+            { name: '__member'},
+
+            { name: 'admin'},
+            { name: 'provisional_member'},
+            { name: 'full_member'},
+        ]);
+    })
+    .then(function() {
+        return trx.schema.createTable('rolePriv', table => {
+            table.string('role')
+                .index().references('role.name').notNullable();
+            table.string('privilege')
+                .index().references('privilege.name').notNullable();
+            // 0 = none, 1 = read, 2 = write
+            table.integer('level').notNullable();
+
+            table.unique(['role', 'privilege']);
+        });
+    })
+    .then(function() {
+        return trx('rolePriv').insert([
+            { role: 'admin', privilege: 'roster', level: 2 },
+            { role: 'admin', privilege: 'extendedRoster', level: 2 },
+            { role: 'admin', privilege: 'basicMember', level: 2 },
+            { role: 'admin', privilege: 'memberHousing', level: 2 },
+            { role: 'admin', privilege: 'memberTimezone', level: 2 },
+            { role: 'admin', privilege: 'memberSkills', level: 2 },
+            { role: 'admin', privilege: 'memberSkillQueue', level: 0 },
+
+            { role: 'full_member', privilege: 'roster', level: 1 },
+            { role: 'full_member', privilege: 'basicMember', level: 1 },
+            { role: 'full_member', privilege: 'memberTimezone', level: 1 },
+            { role: 'full_member', privilege: 'memberHousing', level: 1 },
+
+            { role: 'provisional_member', privilege: 'roster', level: 1 },
+        ]);
     })
     .then(function() {
         // Citadels in J+
@@ -125,15 +136,19 @@ knex.transaction(function(trx) {
     .then(function() {
         return trx.schema.createTable('account', (table) => {
             table.increments('id');
-            // FIXME comma separated list? break it into a many-to-many table
-            // between member and role that tracks each?
-            table.string('roles').notNullable();
             table.integer('mainCharacter')
                 .references('character.id').nullable();
 
             table.enu('activeTimezone',
                 ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
             table.string('homeCitadel').nullable().references('citadel.name');
+        });
+    })
+    .then(function() {
+        return trx.schema.createTable('accountRole', (table) => {
+            table.integer('account')
+                .references('account.id').index().notNullable();
+            table.string('role').references('role.name').notNullable();
         });
     })
     .then(function() {

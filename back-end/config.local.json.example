@@ -16,7 +16,12 @@
     {
       "id": 123456,
       "keyId": 123456,
-      "vCode": "z8alsdALsd...lasdA0923"
+      "vCode": "z8alsdALsd...lasdA0923",
+      "titles": {
+        "Staff": "admin",
+        "Rocketstar": "full_member",
+        "Junior Rocketstar": "limited_member"
+      }
     }
   ],
 
