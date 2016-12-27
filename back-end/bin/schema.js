@@ -137,18 +137,21 @@ knex.transaction(function(trx) {
         });
     })
     .then(function() {
-        // Members - Data on all members and ex-members. Ex-members have their
-        // role set to NOT_A_MEMBER, but are otherwise remembered so that 
-        // alts that have not left SOUND can still be represented (and warned 
-        // about).
+        // Members - Data on all members and ex-members. Ex-members are
+        // remembered so that alts that have not left SOUND can still be
+        // represented (and warned about).
         return trx.schema.createTable('character', (table) => {
-            // From XML API
             table.integer('id').primary();
-            table.string('name').unique();
-            table.integer('corporationId').notNullable();
-            table.date('startDate');
-            table.date('logonDate');
-            table.date('logoffDate');
+            table.string('name').notNullable();
+            table.integer('corporationId').index().notNullable();
+
+            // Just a JSON array. Maybe this should be a table?
+            table.string('titles').nullable();
+
+            // In Unix time
+            table.integer('startDate');
+            table.integer('logonDate');
+            table.integer('logoffDate');
 
             // From zKillboard
             table.integer('killsInLastMonth');

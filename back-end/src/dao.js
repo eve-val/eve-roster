@@ -12,15 +12,19 @@
 // a selected row, in the function passed to then(). Modify functions report
 // the number of modified rows.
 
+const path = require('path');
+
 const configLoader = require('../src/config-loader');
 const CONFIG = configLoader.load();
 
+const CLIENT = 'sqlite3';
+
 const knex = require('knex')({
-  client: 'sqlite3',
+  client: CLIENT,
   debug: false,
   useNullAsDefault: true,
   connection: {
-    filename: CONFIG.dbFileName
+    filename: path.join(__dirname, '../', CONFIG.dbFileName),
   }
 });
 
@@ -70,35 +74,29 @@ Dao.prototype = {
     return this.builder('character').select().where({id: id});
   },
 
-  createCharacter: function(id, name, corporationId) {
-    return this.builder('character').insert({
+  upsertCharacter: function(id, name, corporationId, extraColumns) {
+    let fullVals = Object.assign(extraColumns || {}, {
       id: id,
       name: name,
       corporationId: corporationId,
     });
+
+    return this._upsert('character', fullVals, 'id');
   },
 
-  createAccessTokens: function(
+  updateCharacter: function(id, vals) {
+    return this.builder('character').update(vals).where('id', '=', id);
+  },
+
+  upsertAccessTokens: function(
       characterId, refreshToken, accessToken, expiresIn) {
-    return this.builder('accessToken').insert({
+    return this._upsert('accessToken', {
       character: characterId,
       refreshToken: refreshToken,
       accessToken: accessToken,
       accessTokenExpires: Date.now() + expiresIn * 1000,
       needsUpdate: false,
-    });
-  },
-
-  updateAccessTokens: function(
-      characterId, refreshToken, accessToken, expiresIn) {
-    return this.builder('accessToken')
-        .where({character: characterId})
-        .update({
-          refreshToken: refreshToken,
-          accessToken: accessToken,
-          accessTokenExpires: Date.now() + expiresIn * 1000,
-          needsUpdate: false
-        });
+    }, 'character');
   },
 
   createAccount: function() {
@@ -133,6 +131,33 @@ Dao.prototype = {
         .where({id: accountId})
         .update({homeCitadel: citadel});
   },
+
+  _upsert: function(table, row, primaryKey) {
+    if (CLIENT == 'sqlite3') {
+      // Manually convert booleans to 0/1 for sqlite
+      for (let v in row) {
+        let val = row[v];
+        if (typeof val == 'boolean') {
+          row[v] = val ? 1 : 0;
+        }
+      }
+
+      return this.builder(table)
+          .update(row)
+          .where(primaryKey, '=', row[primaryKey])
+      .then(() => {
+        let rawQuery = knex(table)
+            .insert(row)
+            .toString()
+            .replace(/^insert/i, 'insert or ignore');
+
+        return this.builder.raw(rawQuery);
+      });
+    } else {
+      throw new Error('Client not supported: ' + CLIENT);
+    }
+  },
+
 };
 
 module.exports = new Dao(knex);

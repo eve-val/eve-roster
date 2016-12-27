@@ -4,6 +4,22 @@
   "ssoClientId": "<fillmein>",
   "ssoSecretKey": "<fillmein>",
 
+  "primaryCorporations": [
+    {
+      "id": 123456,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923"
+    }
+  ],
+
+  "altCorporations": [
+    {
+      "id": 123456,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923"
+    }
+  ],
+
   // Delete this line if not doing front-end development
   "serveMode": "dev-frontend"
 }
