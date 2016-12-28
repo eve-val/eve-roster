@@ -30,7 +30,7 @@ const accountRoles = module.exports = {
         .join('character', 'character.id', '=', 'ownership.character')
         .where('account.id', '=', accountId)
     .then(rows => {
-      console.log('updateAccount', accountId);
+      console.log('updateAccount, accountId =', accountId);
       let roles = [];
       for (let row of rows) {
         console.log('Checking char', row.id);
