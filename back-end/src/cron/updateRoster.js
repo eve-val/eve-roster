@@ -1,3 +1,11 @@
+/**
+ * Fetches rosters of all member corps and updates roster data as appropriate.
+ * Also grants/revokes all title- and membership-derived roles for all accounts.
+ * 
+ * This script can be run from the command line:
+ * `$ node src/cron/updateRoster.js`
+ */
+
 const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
@@ -8,7 +16,7 @@ const axios = require('axios');
 const moment = require('moment');
 const xml2js = require('xml2js');
 
-const accountRoles = require('./account-roles');
+const accountRoles = require('../data-source/accountRoles');
 const async = require('../util/async');
 const dao = require('../dao');
 const eve = require('../eve');

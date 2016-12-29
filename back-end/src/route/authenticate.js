@@ -5,7 +5,7 @@ const querystring = require('querystring');
 const configLoader = require('../config-loader');
 const dao = require('../dao');
 const eve = require('../eve');
-const accountRoles = require('../data-source/account-roles');
+const accountRoles = require('../data-source/accountRoles');
 const UserVisibleError = require('../error/UserVisibleError');
 
 
