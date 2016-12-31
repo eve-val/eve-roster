@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
-    <router-link to="/" class="nav-link">Dashboard</router-link>
+    <router-link to="/" class="nav-link" exact>Dashboard</router-link>
     <router-link to="/roster" class="nav-link">Roster</router-link>
     <router-link to="/housing" class="nav-link">Housing</router-link>
     <div class="spacer"></div>
@@ -36,7 +36,9 @@ export default {
   height: 40px;
   background: #101010;
   flex: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .app-icon {
@@ -51,7 +53,6 @@ export default {
 
 .nav-link {
   margin: 0 10px;
-  font-size: 14px;
   color: #676767;
   text-decoration: none;
 }
