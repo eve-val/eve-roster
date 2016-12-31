@@ -75,8 +75,8 @@ function getCharOutput(row) {
     name: row.name,
     corporationId: row.corporationId,
 
-    lastSeen:
-        row.logonDate != null ? Math.max(row.logonDate, row.logoffDate) : null,
+    logonDate: row.logonDate,
+    logoffDate: row.logoffDate,
     killsInLastMonth: row.killsInLastMonth,
     killValueInLastMonth: row.killValueInLastMonth,
     lossesInLastMonth: row.lossesInLastMonth,

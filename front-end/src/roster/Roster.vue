@@ -51,7 +51,7 @@ export default {
   created: function() {
     ajaxer.fetchRoster()
       .then(response => {
-        let rows = injectAggregateCharacters(response.data);
+        let rows = injectDerivedData(response.data);
         this.tableRows = rows;
       })
       .catch(e => {
@@ -83,8 +83,9 @@ const MAX_ATTRS = new Set([
   'lastSeen',
 ]);
 
-function injectAggregateCharacters(data) {
+function injectDerivedData(data) {
   for (let account of data) {
+    injectLastSeen(account);
     let aggregate = {};
     for (let v in account.main) {
       if (SUM_ATTRS.has(v)) {
@@ -122,6 +123,22 @@ function maxProp(prop, ...chars) {
     }
   }
   return sawNotNull ? best : null;
+}
+
+function injectLastSeen(account) {
+  for (let character of [account.main, ...account.alts]) {
+    character.lastSeen = getLastSeen(character);
+  }
+}
+
+function getLastSeen(character) {
+  if (character.logonDate == null || character.logoffDate == null) {
+    return null;
+  } else if (character.logonDate > character.logoffDate) {
+    return Math.floor(Date.now() / 1000);
+  } else {
+    return character.logoffDate;
+  }
 }
 
 </script>

@@ -144,11 +144,12 @@ export default {
           }
           break;
         case 'lastSeen':
-          let lastSeen = this.character[col.key];
-          if (lastSeen == null) {
+          if (this.character.lastSeen == null) {
             return '-';
+          } else if (this.character.logonDate > this.character.logoffDate) {
+            return 'now';
           } else {
-            return moment(this.character[col.key] * 1000).fromNow();
+            return moment(this.character.lastSeen * 1000).fromNow();
           }
         default:
           if (col.account) {
