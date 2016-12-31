@@ -17,15 +17,16 @@ module.exports = jsonEndpoint(function(req, res) {
     dao.getUnownedCorpCharacters(),
   ])
   .then(function([ownedChars, unownedChars]) {
-    let charList = [];
+    let accountList = [];
 
-    pushOwnedChars(ownedChars, charList);
+    pushOwnedChars(ownedChars, accountList);
 
     for (let unownedChar of unownedChars) {
-      charList.push(getCharOutput(unownedChar, false /* not owned */));
+      accountList.push(
+          getAccountOutput(unownedChar, null, false /* not owned */));
     }
 
-    return charList;
+    return accountList;
   });
 
 });
@@ -44,27 +45,35 @@ function pushOwnedChars(ownedRows, outList) {
       };
       accountGroups.set(accountId, group);
     }
-    let charOut = getCharOutput(row, true /* is owned */);
     if (row.id == row.mainCharacter) {
-      group.main = charOut;
+      group.main = row;
     } else {
-      group.alts.push(charOut);
+      group.alts.push(row);
     }
   }
 
   for (let group of accountGroups.values()) {
     // TODO: Should we add a warning flag here if !(main.corporation in corps)?
-    group.main.alts = group.alts;
-    outList.push(group.main);
+    outList.push(
+        getAccountOutput(group.main, group.alts, true /* is owned */));
   }
 }
 
-function getCharOutput(row, isOwned) {
+function getAccountOutput(mainRow, altRows, isOwned) {
+  return {
+    isOwned: isOwned,
+    activeTimezone: mainRow.activeTimezone || null,
+    homeCitadel: mainRow.homeCitadel || null,
+    main: getCharOutput(mainRow),
+    alts: altRows == null ? [] : altRows.map(getCharOutput),
+  };
+}
+
+function getCharOutput(row) {
   return {
     id: row.id,
     name: row.name,
     corporationId: row.corporationId,
-    isOwned: isOwned,
 
     logonDate: row.logonDate,
     logoffDate: row.logoffDate,
@@ -73,8 +82,5 @@ function getCharOutput(row, isOwned) {
     lossesInLastMonth: row.lossesInLastMonth,
     lossValueInLastMonth: row.lossValueInLastMonth,
     siggyScore: row.siggyScore,
-
-    activeTimezone: row.activeTimezone,
-    homeCitadel: row.homeCitadel,
   };
 }
