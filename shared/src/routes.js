@@ -14,5 +14,6 @@ module.exports = {
     '/authenticate',
     '/logout',
     '/api/*',
+    '/static/*',
   ],
 }

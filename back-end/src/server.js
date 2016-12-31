@@ -40,6 +40,8 @@ app.get(routes.frontEnd, function(req, res) {
 });
 
 app.get('/login', function(req, res) {
+
+
   res.render('login', {
     loginParams: querystring.stringify({
       'response_type': 'code',
@@ -48,6 +50,7 @@ app.get('/login', function(req, res) {
       'scope': CONFIG.ssoScope.join(' '),
       'state': '12345',
     }),
+    backgroundUrl: Math.floor(Math.random() * 5) + '.jpg',
   });
 });
 
