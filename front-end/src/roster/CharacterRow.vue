@@ -143,9 +143,9 @@ export default {
             return altsLabel(this.account.alts.length);
           }
           break;
-        case 'logoffDate':
-          let logoff = this.character[col.key];
-          if (logoff == null) {
+        case 'lastSeen':
+          let lastSeen = this.character[col.key];
+          if (lastSeen == null) {
             return '-';
           } else {
             return moment(this.character[col.key] * 1000).fromNow();

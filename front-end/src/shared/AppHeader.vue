@@ -17,7 +17,7 @@ export default {
   components: {
     EveImage,
   },
-  
+
   props: {
     identity: {
       type: Object,

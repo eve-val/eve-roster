@@ -5,7 +5,7 @@ export default [
 
   { label: 'Citadel', key: 'homeCitadel', width: 110, account: true },
   { label: 'Timezone', key: 'activeTimezone', width: 90, account: true },
-  { label: 'Last seen', key: 'logoffDate', width: 110, },
+  { label: 'Last seen', key: 'lastSeen', width: 110, },
   { label: 'Siggy score', key: 'siggyScore', width: 85, numeric: true, },
   { label: 'Kills', key: 'killsInLastMonth', width: 60, numeric: true, },
   { label: 'Losses', key: 'lossesInLastMonth', width: 60, numeric: true, },
