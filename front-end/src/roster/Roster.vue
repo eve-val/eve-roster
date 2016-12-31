@@ -80,8 +80,7 @@ const SUM_ATTRS = new Set([
 ]);
 
 const MAX_ATTRS = new Set([
-  'logonDate',
-  'logoffDate',
+  'lastSeen',
 ]);
 
 function injectAggregateCharacters(data) {
