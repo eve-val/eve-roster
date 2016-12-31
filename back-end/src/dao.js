@@ -125,8 +125,7 @@ Dao.prototype = {
 
   createAccount: function() {
     return this.builder('account')
-        // We have to specify at least one column or knex throws up
-        .insert({ mainCharacter: null })
+        .insert({ created: Math.floor(Date.now() / 1000), })
     .then(function(ids) {
       return ids[0];
     });

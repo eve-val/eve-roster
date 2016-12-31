@@ -136,6 +136,10 @@ knex.transaction(function(trx) {
     .then(function() {
         return trx.schema.createTable('account', (table) => {
             table.increments('id');
+
+            // In Unix time (seconds)
+            table.integer('created').notNullable();
+
             table.integer('mainCharacter')
                 .references('character.id').nullable();
 
@@ -163,7 +167,7 @@ knex.transaction(function(trx) {
             // Just a JSON array. Maybe this should be a table?
             table.string('titles').nullable();
 
-            // In Unix time
+            // In Unix time (seconds)
             table.integer('startDate');
             table.integer('logonDate');
             table.integer('logoffDate');
