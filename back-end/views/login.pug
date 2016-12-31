@@ -1,6 +1,108 @@
 html
   head
-    title Log in
+    title SOUND Roster - Log in
+    style.
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+
+        font-family: 'Helvetica Neue', 'Calibri', Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+
+        background: #000;
+        color: #CDCDCD;
+      }
+
+      .root {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        display: flex;
+        width: 430px;
+        height: 330px;
+        background: rgba(32, 32, 32, 0.97);
+        border-radius: 3px;
+
+        flex-direction: column;
+        align-items: center;
+
+        box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      }
+
+      .title-line {
+        margin-top: 23px;
+        font-size: 40;
+        font-weight: 100;
+        color: #a7a29c;
+        text-align: center;
+      }
+
+      .sound-icon {
+        position: relative;
+        width: 65px;
+        height: 65px;
+        top: -3px;
+      }
+
+      .title-text {
+        margin-left: 12px;
+      }
+
+      .sound-icon, .title-text {
+        vertical-align: middle;
+      }
+
+      .divider {
+        width: 128px;
+        height: 0px;
+        border-top: 1px solid #343434;
+        margin: 35px 0 35px;
+      }
+
+      .login-cnt {
+        text-align: center;
+      }
+
+      .login-link {
+        display: inline-block;
+      }
+
+      .login-img {
+        width: 270px;
+        height: 45px;
+      }
+
+      .instructions {
+        color: #a7a29c;
+      }
   body
-    h1 You need to log in, yo
-    a(href='https://login.eveonline.com/oauth/authorize?' + loginParams) Log in
+    div.root(style={
+          'background-image': 'url("/static/background/' + backgroundUrl + '")'
+        })
+      div.container
+        div.title-line
+          img.sound-icon(
+            src='https://imageserver.eveonline.com/Alliance/99000739_128.png'
+          )
+          span.title-text Roster
+        div.divider
+        div.login-cnt
+          a.login-link(
+            href='https://login.eveonline.com/oauth/authorize?' + loginParams
+          )
+            img.login-img(src='/static/sso-login.png')
+        div.divider
+        div.instructions.
+          Log in with your main. Then add alts.

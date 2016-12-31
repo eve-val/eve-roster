@@ -114,7 +114,7 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
     throw new UserVisibleError(
         'This character has already been claimed by another account.');
   }
-  dao.updateAccessTokens(
+  return dao.upsertAccessTokens(
       charData.id,
       charTokens.refresh_token,
       charTokens.access_token,
