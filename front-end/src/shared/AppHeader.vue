@@ -3,7 +3,6 @@
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
     <router-link to="/" class="nav-link" exact>Dashboard</router-link>
     <router-link to="/roster" class="nav-link">Roster</router-link>
-    <router-link to="/housing" class="nav-link">Housing</router-link>
     <div class="spacer"></div>
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
