@@ -51,7 +51,7 @@ export default {
   created: function() {
     ajaxer.fetchRoster()
       .then(response => {
-        let rows = injectDerivedData(response.data);
+        let rows = injectDerivedData(response.data.rows);
         this.tableRows = rows;
       })
       .catch(e => {
@@ -127,7 +127,10 @@ function maxProp(prop, ...chars) {
 
 function injectLastSeen(account) {
   for (let character of [account.main, ...account.alts]) {
-    character.lastSeen = getLastSeen(character);
+    let lastSeen = getLastSeen(character);
+    if (lastSeen != null) {
+      character.lastSeen = lastSeen;
+    }
   }
 }
 
