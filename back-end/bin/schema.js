@@ -190,7 +190,8 @@ knex.transaction(function(trx) {
     .then(function() {
         return trx.schema.createTable('ownership', (table) => {
             table.integer('character').primary().references('character.id');
-            table.integer('account').references('account.id').notNullable();
+            table.integer('account')
+                .references('account.id').index().notNullable();
         });
     })
     .then(function() {

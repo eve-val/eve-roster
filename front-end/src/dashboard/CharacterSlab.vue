@@ -112,7 +112,7 @@ export default {
   },
 
   created: function() {
-    ajaxer.getSkillQueue(this.character.id)
+    ajaxer.getSkillQueueSummary(this.character.id)
       .then(response => {
         this.queueFetchStatus = 'loaded';
         this.skillInTraining = response.data.skillInTraining;

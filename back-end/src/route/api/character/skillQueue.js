@@ -1,51 +1,53 @@
-const moment = require('moment');
-
+const dao = require('../../../dao');
 const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
-
-const STATIC = require('../../../static-data').get();
-const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
-
-module.exports = jsonEndpoint(function(req, res) {
+module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   let characterId = req.params.id;
 
-  return skillQueue.getQueue(characterId)
-  .then(queueData => {
-    return {
-      skillInTraining: getSkillInTraining(queueData),
-      queue: getQueue(queueData),
-    };
+  return dao.getOwner(characterId)
+  .then(row => {
+    let owningAccount = row != null ? row.id : null;
+    privs.requireRead('characterSkillQueue', accountId == owningAccount);
+  })
+  .then(() => {
+    return skillQueue.getQueue(characterId);
+  })
+  .then(function(esiQueue) {
+    if (esiQueue.length == 0) {
+      return [];
+    }
+    let outQueue = [];
+
+    let now = new Date();
+    let queueEnd = new Date(esiQueue[esiQueue.length - 1].finish_date);
+    let totalDuration = queueEnd - now;
+
+    for (let i = 0; i < esiQueue.length; i++) {
+      let queueItem = esiQueue[i];
+      let skillId = queueItem.skill_id;
+
+      let skillStart = i == 0 ? now : new Date(queueItem.start_date);
+      let skillEnd = new Date(queueItem.finish_date);
+
+      let newItem = {
+        id: skillId,
+        proportionalStart: (skillStart - now) / totalDuration,
+        proportionalEnd: (skillEnd - now) / totalDuration,
+        durationLabel: time.shortDurationString(skillStart, skillEnd),
+        targetLevel: queueItem.finished_level,
+      };
+
+      if (i == 0) {
+        newItem.progress = skillQueue.getProgress(queueItem);
+      }
+
+      outQueue.push(newItem);
+    }
+
+    // TODO: Make this standalone by adding the name and trained level to all
+    // the entries?
+    return outQueue;
   });
 });
-
-function getSkillInTraining(queueData) {
-  let skillInTraining = null;
-  if (queueData.length > 0) {
-    let skill0 = queueData[0];
-    let skillName = STATIC.SKILLS[skill0.skill_id].name;
-    let skillLevelLabel = SKILL_LEVEL_LABELS[skill0.finished_level];
-
-    skillInTraining = {
-      name: skillName + ' ' + skillLevelLabel,
-      progress: skillQueue.getProgress(skill0),
-      timeRemaining:
-          time.shortDurationString(Date.now(), skill0.finish_date, 2),
-    }
-  }
-  return skillInTraining;
-}
-
-function getQueue(queueData) {
-  let queue = null;
-  if (queueData.length > 0) {
-    let finalSkill = queueData[queueData.length - 1];
-    queue = {
-      count: queueData.length,
-      timeRemaining:
-          time.shortDurationString(Date.now(), finalSkill.finish_date, 2),
-    }
-  }
-  return queue;
-}

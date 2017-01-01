@@ -145,6 +145,17 @@ Dao.prototype = {
     });
   },
 
+  getOwner(characterId) {
+    return this.builder('character')
+        .select('account.id')
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .leftJoin('account', 'account.id', '=', 'ownership.account')
+        .where('character.id', '=', characterId)
+    .then(([row]) => {
+      return row;
+    });
+  },
+
   setAccountMain: function(accountId, mainCharacterId) {
     return this.builder('account')
         .where({id: accountId})

@@ -41,7 +41,7 @@
       </div>
       <div class="content">
         <div class="skills-container">
-          <template v-if="queue">
+          <template v-if="queue && skillGroups">
             <div class="section-title"
                 style="margin-top: 0;"
                 >
@@ -54,7 +54,9 @@
                 />
           </template>
           <template v-if="skillGroups">
-            <div class="section-title">Skills</div>
+            <div class="section-title"
+                :style="{ 'margin-top': queue == null ? '0px' : undefined, }"
+                >Skills</div>
             <template v-for="skillGroup in skillGroups">
               <div class="skillgroup-title">{{ skillGroup.name }}</div>
               <div class="skillgroup-container">
@@ -151,7 +153,7 @@ export default {
 
   methods: {
     fetchData: function() {
-      ajaxer.fetchCharacter(this.characterId)
+      ajaxer.getCharacter(this.characterId)
           .then((response) => {
             this.character = response.data;
           })
@@ -160,9 +162,19 @@ export default {
             console.log('ERROR:', err);
           });
 
-      ajaxer.fetchSkills(this.characterId)
+      ajaxer.getSkills(this.characterId)
           .then((response) => {
-            this.processData(response.data);
+            this.processSkillsData(response.data);
+          })
+          .catch((err) => {
+            // TODO
+            console.log('ERROR:', err);
+          });
+      
+      ajaxer.getSkillQueue(this.characterId)
+          .then((response) => {
+            this.queue = response.data;
+            this.maybeInjectQueueDataIntoSkillsMap();
           })
           .catch((err) => {
             // TODO
@@ -170,22 +182,24 @@ export default {
           });
     },
 
-    processData: function(data) {
+    processSkillsData: function(skills) {
       let map = {};
-      for (let skill of data.skills) {
+      for (let skill of skills) {
         map[skill.id] = skill;
+        skill.queuedLevel = null;
       }
-
-      for (let queueItem of data.queue) {
-        map[queueItem.id].queuedLevel = queueItem.targetLevel;
-      }
-
-      let skillGroups = processSkills(data.skills);
-
       this.skillMap = map;
-      this.queue = data.queue;
-      this.skillGroups = skillGroups;
-    }
+      this.skillGroups = groupifySkills(skills);
+      this.maybeInjectQueueDataIntoSkillsMap();
+    },
+
+    maybeInjectQueueDataIntoSkillsMap: function() {
+      if (this.skillsMap != null && this.queue != null) {
+        for (let queueItem of this.queue) {
+          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
+        }
+      }
+    },
   }
 }
 
@@ -218,7 +232,7 @@ const GROUP_DISPLAY_ORDER = [
   1545,   // Structure Management
 ];
 
-function processSkills(skills){
+function groupifySkills(skills){
   let groupMap = {};
   for (let skill of skills) {
     let groupId = skill.group;

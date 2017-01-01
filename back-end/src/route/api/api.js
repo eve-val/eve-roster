@@ -29,6 +29,7 @@ router.get('/*', function(req, res, next) {
 });
 
 router.get('/dashboard', require('./dashboard'));
+router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));
 
 router.get('/roster', require('./roster'));
 
