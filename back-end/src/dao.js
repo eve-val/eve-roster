@@ -170,17 +170,42 @@ Dao.prototype = {
     })
   },
 
-  getPrivileges: function(accountId) {
-    return this.builder('account')
+  getPrivilegesForAccount: function(accountId) {
+    return this.builder('privilege')
         .select(
-            'rolePriv.privilege',
-            knex.raw('max(rolePriv.level) as level'),
+            'privilege.name',
+            'grantedPrivs.level',
             'privilege.ownerLevel')
-        .where('account.id', '=', accountId)
-        .join('accountRole', 'accountRole.account', '=', 'account.id')
-        .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
-        .join('privilege', 'privilege.name', '=', 'rolePriv.privilege')
-        .groupBy('rolePriv.privilege');
+        .leftJoin(function() {
+          // Subquery: all the privileges this account has been granted
+          this.select(
+                  'rolePriv.privilege',
+                  knex.raw('max(rolePriv.level) as level'))
+              .from('account')
+              .where('account.id', '=', accountId)
+              .join('accountRole', 'accountRole.account', '=', 'account.id')
+              .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
+              .groupBy('rolePriv.privilege')
+              .as('grantedPrivs');
+        }, 'grantedPrivs.privilege', '=', 'privilege.name');
+  },
+
+  getPrivilegesForRoles: function(roles) {
+    return this.builder('privilege')
+        .select(
+            'privilege.name',
+            'grantedPrivs.level',
+            'privilege.ownerLevel')
+        .leftJoin(function() {
+          // Subquery: all the privileges these roles have been granted
+          this.select(
+                  'privilege',
+                  knex.raw('max(level) as level'))
+              .from('rolePriv')
+              .whereIn('role', roles)
+              .groupBy('privilege')
+              .as('grantedPrivs')
+        }, 'grantedPrivs.privilege', '=', 'privilege.name');
   },
 
   getCharactersOwnedByMembers: function() {

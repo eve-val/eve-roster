@@ -1,16 +1,30 @@
 const express = require('express');
 
+const privileges = require('../../route-helper/privileges');
+const handleEndpointError = require('../../route-helper/handleEndpointError');
+
+const UnauthorizedClientError = require('../../error/UnauthorizedClientError');
+const UserVisibleError = require('../../error/UserVisibleError');
 
 // /api routes
 const router = express.Router();
 
 router.get('/*', function(req, res, next) {
   // TODO: Check to make sure account ID is still valid
-  // and that account has permissions to access this path
-  if (req.session.accountId == null) {
-    res.status(401).send('401 Unauthorized');
+  let accountId = req.session.accountId;
+  if (accountId == null) {
+    throw new UnauthorizedClientError('Not logged in');
   } else {
-    next();
+    res.locals.accountId = accountId;
+    privileges.get(accountId)
+    .then(privs => {
+      res.locals.privs = privs;
+      next();
+    })
+    .catch(e => {
+      console.error('Error while reading privs.');
+      handleEndpointError(e, req, res);
+    });
   }
 });
 
@@ -23,5 +37,10 @@ router.get('/character/:id/skills', require('./character/skills'));
 router.get('/character/:id/skillQueue', require('./character/skillQueue'));
 
 router.get('/corporation/:id', require('./corporation'));
+
+// Global (synchronous) error handling
+router.use(function (e, req, res, next) {
+  handleEndpointError(e, req, res);
+});
 
 module.exports = router;
