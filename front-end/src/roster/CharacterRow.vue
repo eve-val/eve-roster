@@ -149,7 +149,7 @@ export default {
           } else if (this.character.logonDate > this.character.logoffDate) {
             return 'now';
           } else {
-            return moment(this.character.lastSeen * 1000).fromNow();
+            return moment(this.character.lastSeen).fromNow();
           }
         default:
           if (col.account) {

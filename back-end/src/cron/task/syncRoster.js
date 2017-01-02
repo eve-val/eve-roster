@@ -111,9 +111,9 @@ function parseAndStoreXml(corpId, [memberXml, securityXml]) {
 
     return dao.upsertCharacter(characterId, member.$.name, corpId, {
       titles: titles != null ? JSON.stringify(titles) : null,
-      startDate: moment(member.$.startDateTime + '+00').unix(),
-      logonDate: moment(member.$.logonDateTime + '+00').unix(),
-      logoffDate: moment(member.$.logoffDateTime + '+00').unix(),
+      startDate: moment(member.$.startDateTime + '+00').valueOf(),
+      logonDate: moment(member.$.logonDateTime + '+00').valueOf(),
+      logoffDate: moment(member.$.logoffDateTime + '+00').valueOf(),
     })
     .then(function() {
       return characterId;

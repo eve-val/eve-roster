@@ -142,8 +142,8 @@ knex.transaction(function(trx) {
         return trx.schema.createTable('account', (table) => {
             table.increments('id');
 
-            // In Unix time (seconds)
-            table.integer('created').notNullable();
+            // In Unix millis
+            table.bigInteger('created').notNullable();
 
             table.integer('mainCharacter')
                 .references('character.id').nullable();
@@ -172,10 +172,10 @@ knex.transaction(function(trx) {
             // Just a JSON array. Maybe this should be a table?
             table.string('titles').nullable();
 
-            // In Unix time (seconds)
-            table.integer('startDate');
-            table.integer('logonDate');
-            table.integer('logoffDate');
+            // In Unix millis
+            table.bigInteger('startDate');
+            table.bigInteger('logonDate');
+            table.bigInteger('logoffDate');
 
             // From zKillboard
             table.integer('killsInLastMonth');
@@ -200,7 +200,7 @@ knex.transaction(function(trx) {
                     .primary().references('character.id').notNullable();
             table.string('refreshToken').notNullable();
             table.string('accessToken').notNullable();
-            table.integer('accessTokenExpires').notNullable();
+            table.bigInteger('accessTokenExpires').notNullable();
             table.boolean('needsUpdate').notNullable();
         });
     })
