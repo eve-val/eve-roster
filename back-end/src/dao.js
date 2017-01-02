@@ -16,6 +16,7 @@ const path = require('path');
 
 const _ = require('underscore');
 
+
 const CONFIG = require('../src/config-loader').load();
 const CLIENT = 'sqlite3';
 const allCorpIds = _.pluck(
@@ -246,6 +247,62 @@ Dao.prototype = {
         .select(BASIC_CHARACTER_COLUMNS)
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')
         .whereNull('ownership.account');
+  },
+
+  getMostRecentCronJob(taskName) {
+    return this.builder('cronLog')
+        .select('id', 'task', 'start', 'end')
+        .where('task', '=', taskName)
+        .orderBy('start', 'desc')
+        .orderBy('id', 'desc')
+        .limit(1)
+    .then(([row]) => {
+      return row;
+    });
+  },
+
+  startCronJob(taskName) {
+    return this.builder('cronLog')
+        .insert({
+          task: taskName,
+          start: Date.now(),
+        })
+    .then(([id]) => {
+      return id;
+    });
+  },
+
+  finishCronJob(jobId, result) {
+    return this.builder('cronLog')
+        .update({
+          end: Date.now(),
+          result: result
+        })
+        .where('id', '=', jobId);
+  },
+
+  dropOldCronJobs(startCutoff) {
+    return this.builder('cronLog')
+        .del()
+        .where('start', '<', startCutoff);
+
+    /*
+    // This is the "more correct" way to to this -- it guarantees that we leave
+    // the most recent completed entry in the log even if it's "too old".
+    // However, SQLite doesn't support joins on deletes. Womp.
+    return this.builder('cronLog as c1')
+        .del('c1')
+        .leftJoin(function() {
+          // The most recent completed entry for each task
+          this.select('id', 'max(start) as start')
+              .from('cronLog')
+              .whereNotNull('end')
+              .groupBy('task')
+              .as('c2')
+        }, 'c1.task', '=', 'c2.task')
+        .where('c1.start', '<', 'c2.start')
+        .andWhere('c1.start', '<', startCutoff);
+    */
   },
 
   _upsert: function(table, row, primaryKey) {

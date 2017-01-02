@@ -8,9 +8,10 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const request = require('request');
 
-const routes = require('../../shared/src/routes');
 const configLoader = require('./config-loader');
+const cron = require('./cron/cron.js');
 const dao = require('./dao');
+const routes = require('../../shared/src/routes');
 
 
 const CONFIG = configLoader.load();
@@ -70,6 +71,7 @@ app.use('/api', api);
 
 var server = app.listen(getServingPort(), function() {
   console.log('Listening on port %s...', server.address().port);
+  cron.init();
 });
 
 function getServingPort() {

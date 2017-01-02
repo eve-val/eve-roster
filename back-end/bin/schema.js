@@ -214,6 +214,19 @@ knex.transaction(function(trx) {
 
             table.unique(['character', 'skill']);
         });
+    })
+    .then(function() {
+        return trx.schema.createTable('cronLog', (table) => {
+            table.increments('id');
+            table.string('task').index().notNullable();
+
+            // Unix millis
+            table.bigInteger('start').index().notNullable();
+            table.bigInteger('end');
+
+            table.enum('result',
+                ['success', 'failure', 'partial', 'unknown']);
+        });
     });
 }).then(function() {
     console.log('Schema transaction completed successfully.');
