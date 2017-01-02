@@ -79,6 +79,7 @@ function getCharInfo(charTokens) {
 
     characterId = response.data.CharacterID;
 
+    // TODO: Handle the case where ESI throws up here
     console.log('Getting character info...');
     return eve.esi.character.get(characterId);
   })

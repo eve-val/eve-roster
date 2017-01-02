@@ -3,7 +3,7 @@
  * Also grants/revokes all title- and membership-derived roles for all accounts.
  * 
  * This script can be run from the command line:
- * `$ node src/cron/updateRoster.js`
+ * `$ node src/cron/syncRoster.js`
  */
 
 const fs = require('fs');
@@ -16,24 +16,25 @@ const axios = require('axios');
 const moment = require('moment');
 const xml2js = require('xml2js');
 
-const accountRoles = require('../data-source/accountRoles');
-const async = require('../util/async');
-const dao = require('../dao');
-const eve = require('../eve');
-const CONFIG = require('../config-loader').load();
+const accountRoles = require('../../data-source/accountRoles');
+const async = require('../../util/async');
+const dao = require('../../dao');
+const eve = require('../../eve');
+const CONFIG = require('../../config-loader').load();
 
 
 const allConfigs = CONFIG.primaryCorporations.concat(CONFIG.altCorporations);
 const allCorpIds = _.pluck(allConfigs, 'id');
 
-module.exports = updateRoster;
+module.exports = syncRoster;
 
-function updateRoster() {
+function syncRoster() {
   return updateAllCorporations()
   .then(updateOrphanedCharacters)
   .then(accountRoles.updateAll)
   .then(function() {
-    console.log('updateRoster() complete');
+    console.log('syncRoster() complete');
+    return 'success';
   });
 }
 
@@ -182,7 +183,7 @@ function parseXml(xmlStr) {
 
 
 if (require.main == module) {
-  updateRoster()
+  syncRoster()
   .catch(function(e) {
     console.log(e);
   });
