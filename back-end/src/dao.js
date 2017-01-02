@@ -126,7 +126,7 @@ Dao.prototype = {
 
   createAccount: function() {
     return this.builder('account')
-        .insert({ created: Math.floor(Date.now() / 1000), })
+        .insert({ created: Date.now(), })
     .then(function(ids) {
       return ids[0];
     });
