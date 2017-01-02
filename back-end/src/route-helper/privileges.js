@@ -1,5 +1,5 @@
 const dao = require('../dao');
-const MissingPermissionError = require('../error/MissingPermissionError');
+const MissingPrivilegeError = require('../error/MissingPrivilegeError');
 
 const CONFIG = require('../config-loader').load();
 
@@ -52,8 +52,8 @@ class AccountPrivileges {
 
   _require(permission, level, isOwner=false) {
     if (!this._satisfies(permission, level, isOwner)) {
-      throw new MissingPermissionError(
-          this._accountId, permission, level, isOwner);
+      throw new MissingPrivilegeError(
+          this._accountId, permission, level, isOwner, this._privs);
     }
     return this;
   }
