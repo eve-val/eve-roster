@@ -4,6 +4,7 @@ const querystring = require('querystring');
 
 const configLoader = require('../config-loader');
 const dao = require('../dao');
+const error = require('../util/error');
 const eve = require('../eve');
 const accountRoles = require('../data-source/accountRoles');
 const UserVisibleError = require('../error/UserVisibleError');
@@ -66,6 +67,13 @@ function getAccessToken(queryCode) {
 }
 
 function getCharInfo(charTokens) {
+  let charData = {
+    id: null,
+    name: null,
+    scopes: null,
+    corporationId: null,
+  };
+
   let characterId = 0;
 
   console.log('Getting auth info...');
@@ -77,18 +85,29 @@ function getCharInfo(charTokens) {
   .then(response => {
     console.log('Auth info:', response.data);
 
-    characterId = response.data.CharacterID;
+    charData.id = response.data.CharacterID;
+    charData.name = response.data.CharacterName;
+    charData.scopes = response.data.Scopes;
 
-    // TODO: Handle the case where ESI throws up here
-    console.log('Getting character info...');
-    return eve.esi.character.get(characterId);
-  })
-  .then(charData => {
-    console.log('Character info:', charData);
-
-    charData.id = characterId;
-
-    return charData;
+    console.log('Getting ESI character info...');
+    return eve.esi.character.get(charData.id)
+    .then(esiCharData => {
+      console.log('ESI character info:', esiCharData);
+      charData.corporationId = esiCharData.corporation_id;
+    })
+    .catch(e => {
+      if (error.isAnyEsiError(e)) {
+        console.error('ESI is unavailable, moving on with our lives...');
+        console.error(e);
+      } else {
+        console.log('GOT HERE MATE');
+        throw e;
+      }
+    })
+    .then(() => {
+      console.log('Final char data:', charData);
+      return charData;
+    });
   })
 }
 
@@ -161,8 +180,12 @@ function handleUnownedChar(accountId, charData, charTokens, charRow) {
 }
 
 function createOrUpdateCharacter(trx, charData, charTokens) {
-  return trx.upsertCharacter(
-      charData.id, charData.name, charData.corporation_id)
+  let extraColumns = {};
+  if (charData.corporationId != null) {
+    extraColumns.corporationId = charData.corporationId;
+  }
+
+  return trx.upsertCharacter(charData.id, charData.name, extraColumns)
   .then(function() {
     return trx.upsertAccessTokens(
         charData.id,

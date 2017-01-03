@@ -30,7 +30,7 @@ module.exports = syncRoster;
 
 function syncRoster() {
   return updateAllCorporations()
-  .then(updateOrphanedCharacters)
+  .then(updateOrphanedOrUnknownCharacters)
   .then(accountRoles.updateAll)
   .then(function() {
     console.log('syncRoster() complete');
@@ -71,12 +71,15 @@ function updateCorporation(corpConfig) {
 /**
  * Updates any characters that used to be members of our corporations but which
  * were not present in the most recent roster update.
+ *
+ * Also updates any characters with null corporationIds.
  */
-function updateOrphanedCharacters(processedCharactersIds) {
-  console.log('updateOrphanedCharacters');
+function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
+  console.log('updateOrphanedOrUnknownCharacters');
   return dao.builder('character')
       .select('id', 'corporationId')
       .whereIn('corporationId', allCorpIds)
+      .orWhereNull('corporationId')
   .then(function(rows) {
     return async.parallelize(rows, row => {
       if (!processedCharactersIds[row.id]) {
@@ -109,8 +112,9 @@ function parseAndStoreXml(corpId, [memberXml, securityXml]) {
     let characterId = parseInt(member.$.characterID);
     let titles = titlesMap[characterId];
 
-    return dao.upsertCharacter(characterId, member.$.name, corpId, {
+    return dao.upsertCharacter(characterId, member.$.name, {
       titles: titles != null ? JSON.stringify(titles) : null,
+      corporationId: corpId,
       startDate: moment(member.$.startDateTime + '+00').valueOf(),
       logonDate: moment(member.$.logonDateTime + '+00').valueOf(),
       logoffDate: moment(member.$.logoffDateTime + '+00').valueOf(),
