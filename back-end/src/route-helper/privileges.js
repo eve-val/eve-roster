@@ -32,41 +32,53 @@ class AccountPrivileges {
     }
   }
 
-  canRead(permission, isOwner=false) {
-    return this._satisfies(permission, 1, isOwner);
+  canRead(privilege, isOwner=false) {
+    return this._satisfies(privilege, 1, isOwner);
   }
 
-  canWrite(permission, isOwner=false) {
-    return this._satisfies(permission, 2, isOwner);
+  canWrite(privilege, isOwner=false) {
+    return this._satisfies(privilege, 2, isOwner);
   }
 
-  requireRead(permission, isOwner=false) {
-    this._require(permission, 1, isOwner);
+  requireRead(privilege, isOwner=false) {
+    this._require(privilege, 1, isOwner);
     return this;
   }
 
-  requireWrite(permission, isOwner=false) {
-    this._require(permission, 2, isOwner);
+  requireWrite(privilege, isOwner=false) {
+    this._require(privilege, 2, isOwner);
     return this;
   }
 
-  _require(permission, level, isOwner=false) {
-    if (!this._satisfies(permission, level, isOwner)) {
+  dumpForFrontend(privNames, isOwner) {
+    let out = {};
+    for (let privName of privNames) {
+      out[privName] = this._getEffectiveLevel(privName, isOwner);
+    }
+    return out;
+  }
+
+  _require(privilege, level, isOwner=false) {
+    if (!this._satisfies(privilege, level, isOwner)) {
       throw new MissingPrivilegeError(
-          this._accountId, permission, level, isOwner, this._privs);
+          this._accountId, privilege, level, isOwner, this._privs);
     }
     return this;
   }
 
-  _satisfies(permissionName, requestedLevel, isOwner=false) {
-    let priv = this._privs.get(permissionName);
+  _satisfies(privilegeName, requestedLevel, isOwner=false) {
+    return this._getEffectiveLevel(privilegeName, isOwner) >= requestedLevel;
+  }
+
+  _getEffectiveLevel(privilegeName, isOwner) {
+    let priv = this._privs.get(privilegeName);
     if (priv == null) {
-      throw new Error('Unknown permission: ' + permissionName);
+      throw new Error('Unknown privilege: ' + privilegeName);
     }
     let effectiveLevel = priv.level || 0;
     if (isOwner) {
       effectiveLevel = Math.max(priv.level, priv.ownerLevel);
     }
-    return effectiveLevel >= requestedLevel;
+    return effectiveLevel;
   }
 }

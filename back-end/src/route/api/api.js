@@ -9,7 +9,7 @@ const UserVisibleError = require('../../error/UserVisibleError');
 // /api routes
 const router = express.Router();
 
-router.get('/*', function(req, res, next) {
+router.use('/*', function(req, res, next) {
   // TODO: Check to make sure account ID is still valid
   let accountId = req.session.accountId;
   if (accountId == null) {
@@ -27,6 +27,8 @@ router.get('/*', function(req, res, next) {
     });
   }
 });
+
+router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
 
 router.get('/dashboard', require('./dashboard'));
 router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));

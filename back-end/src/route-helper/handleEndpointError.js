@@ -1,3 +1,4 @@
+const NotFoundError = require('../error/NotFoundError');
 const UnauthorizedClientError = require('../error/UnauthorizedClientError');
 const UserVisibleError = require('../error/UserVisibleError');
 
@@ -8,7 +9,10 @@ module.exports = function(e, req, res) {
 
   let message;
 
-  if (e instanceof UnauthorizedClientError) {
+  if (e instanceof NotFoundError) {
+    res.status(404);
+    message = 'Not found';
+  } else if (e instanceof UnauthorizedClientError) {
     // Possibly should be 404
     res.status(403);
     message = 'Forbidden';

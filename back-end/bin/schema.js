@@ -103,7 +103,8 @@ knex.transaction(function(trx) {
         // Citadels in J+
         // FIXME is it worth including the EVE ID of the citadel?
         return trx.schema.createTable('citadel', (table) => {
-            table.string('name').primary();
+            table.increments('id');
+            table.string('name').index();
             table.string('type').notNullable();
             table.boolean('allianceAccess').notNullable();
             table.boolean('allianceOwned').notNullable();
@@ -150,7 +151,7 @@ knex.transaction(function(trx) {
 
             table.enu('activeTimezone',
                 ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
-            table.string('homeCitadel').nullable().references('citadel.name');
+            table.string('homeCitadel').nullable().references('citadel.id');
         });
     })
     .then(function() {

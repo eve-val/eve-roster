@@ -38,7 +38,7 @@ const BASIC_CHARACTER_COLUMNS = [
 ];
 const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
   'account.activeTimezone',
-  'account.homeCitadel',
+  'citadel.name as homeCitadel',
 
   'account.id as accountId',
   'account.mainCharacter',
@@ -158,14 +158,14 @@ Dao.prototype = {
 
   setAccountMain: function(accountId, mainCharacterId) {
     return this.builder('account')
-        .where({id: accountId})
-        .update({mainCharacter: mainCharacterId});
+        .where({ id: accountId })
+        .update({ mainCharacter: mainCharacterId });
   },
 
-  setAccountCitadel: function(accountId, citadel) {
+  setAccountCitadel: function(accountId, citadelId) {
     return this.builder('account')
-        .where({id: accountId})
-        .update({homeCitadel: citadel});
+        .where({ id: accountId })
+        .update({ homeCitadel: citadelId });
   },
 
   setAccountRoles: function(accountId, roles) {
@@ -238,7 +238,8 @@ Dao.prototype = {
         })
         .join('account', 'account.id', '=', 'memberAccount.id')
         .join('ownership', 'ownership.account', '=', 'memberAccount.id')
-        .join('character', 'character.id', '=', 'ownership.character');
+        .join('character', 'character.id', '=', 'ownership.character')
+        .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel');
   },
 
   getUnownedCorpCharacters: function() {
