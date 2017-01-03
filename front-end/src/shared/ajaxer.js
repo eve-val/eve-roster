@@ -20,12 +20,20 @@ export default {
     return axios.get('/api/roster');
   },
 
-  fetchCharacter(id) {
+  getCharacter(id) {
     return axios.get('/api/character/' + id);
   },
 
-  fetchSkills(id) {
+  getSkills(id) {
     return axios.get('/api/character/' + id + '/skills');
+  },
+
+  getSkillQueue(id) {
+    return axios.get('/api/character/' + id + '/skillQueue');
+  },
+
+  getSkillQueueSummary(id) {
+    return axios.get('/api/dashboard/' + id + '/queueSummary');
   },
 
   updatePilot(name, props) {

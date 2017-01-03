@@ -87,7 +87,9 @@ function refreshAccessToken(characterId, refreshToken) {
       })
   .then(function(response) {
     tokenResponse = response.data;
-    console.log('  Got a new access token:', printSafeToken(tokenResponse.access_token));
+    console.log(
+        '  Got a new access token:',
+        printSafeToken(tokenResponse.access_token));
   })
   .then(function() {
     console.log('  Updating database...');

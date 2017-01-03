@@ -12,15 +12,44 @@
 // a selected row, in the function passed to then(). Modify functions report
 // the number of modified rows.
 
-const configLoader = require('../src/config-loader');
-const CONFIG = configLoader.load();
+const path = require('path');
+
+const _ = require('underscore');
+
+
+const CONFIG = require('../src/config-loader').load();
+const CLIENT = 'sqlite3';
+const allCorpIds = _.pluck(
+    CONFIG.primaryCorporations.concat(CONFIG.altCorporations),
+    'id'
+);
+const BASIC_CHARACTER_COLUMNS = [
+  'character.id',
+  'character.name',
+  'character.corporationId',
+  'character.startDate',
+  'character.logonDate',
+  'character.logoffDate',
+  'character.killsInLastMonth',
+  'character.killValueInLastMonth',
+  'character.lossesInLastMonth',
+  'character.lossValueInLastMonth',
+  'character.siggyScore',
+];
+const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
+  'account.activeTimezone',
+  'citadel.name as homeCitadel',
+
+  'account.id as accountId',
+  'account.mainCharacter',
+]);
 
 const knex = require('knex')({
-  client: 'sqlite3',
+  client: CLIENT,
   debug: false,
   useNullAsDefault: true,
   connection: {
-    filename: CONFIG.dbFileName
+    filename: path.join(__dirname, '../', CONFIG.dbFileName),
   }
 });
 
@@ -70,53 +99,33 @@ Dao.prototype = {
     return this.builder('character').select().where({id: id});
   },
 
-  setCharacterCitadel: function(id, citadel) {
-    return this.builder('character')
-        .where({id: id})
-        .update({homeCitadel: citadel});
-  },
-
-  setAccountMain: function(accountId, mainCharacterId) {
-    return this.builder('account')
-        .where({id: accountId})
-        .update({mainCharacter: mainCharacterId});
-  },
-
-  createCharacter: function(id, name, corporationId) {
-    return this.builder('character').insert({
+  upsertCharacter: function(id, name, extraColumns) {
+    let fullVals = Object.assign(extraColumns || {}, {
       id: id,
       name: name,
-      corporationId: corporationId,
     });
+
+    return this._upsert('character', fullVals, 'id');
   },
 
-  createAccessTokens: function(
+  updateCharacter: function(id, vals) {
+    return this.builder('character').update(vals).where('id', '=', id);
+  },
+
+  upsertAccessTokens: function(
       characterId, refreshToken, accessToken, expiresIn) {
-    return this.builder('accessToken').insert({
+    return this._upsert('accessToken', {
       character: characterId,
       refreshToken: refreshToken,
       accessToken: accessToken,
       accessTokenExpires: Date.now() + expiresIn * 1000,
       needsUpdate: false,
-    });
-  },
-
-  updateAccessTokens: function(
-      characterId, refreshToken, accessToken, expiresIn) {
-    return this.builder('accessToken')
-        .where({character: characterId})
-        .update({
-          refreshToken: refreshToken,
-          accessToken: accessToken,
-          accessTokenExpires: Date.now() + expiresIn * 1000,
-          needsUpdate: false
-        });
+    }, 'character');
   },
 
   createAccount: function() {
-    return this.builder('account').insert({
-      roles: 'Junior Sound FC',
-    })
+    return this.builder('account')
+        .insert({ created: Date.now(), })
     .then(function(ids) {
       return ids[0];
     });
@@ -128,11 +137,200 @@ Dao.prototype = {
       character: characterId,
     })
     .then(() => {
+      // TODO: Change this to automatically apply if there are no other
+      // chars owned by the account
       if (isMain) {
         return this.setAccountMain(accountId, characterId);
       }
     });
   },
+
+  getOwner(characterId) {
+    return this.builder('character')
+        .select('account.id')
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .leftJoin('account', 'account.id', '=', 'ownership.account')
+        .where('character.id', '=', characterId)
+    .then(([row]) => {
+      return row;
+    });
+  },
+
+  setAccountMain: function(accountId, mainCharacterId) {
+    return this.builder('account')
+        .where({ id: accountId })
+        .update({ mainCharacter: mainCharacterId });
+  },
+
+  setAccountCitadel: function(accountId, citadelId) {
+    return this.builder('account')
+        .where({ id: accountId })
+        .update({ homeCitadel: citadelId });
+  },
+
+  setAccountRoles: function(accountId, roles) {
+    // TODO: start transaction if not already in a transaction?
+    return this.builder('accountRole')
+        .del()
+        .where('account', '=', accountId)
+    .then(() => {
+      if (roles.length > 0) {
+        return this.builder('accountRole')
+            .insert(roles.map(role => ({ account: accountId, role: role }) ));
+      }
+    })
+  },
+
+  getPrivilegesForAccount: function(accountId) {
+    return this.builder('privilege')
+        .select(
+            'privilege.name',
+            'grantedPrivs.level',
+            'privilege.ownerLevel')
+        .leftJoin(function() {
+          // Subquery: all the privileges this account has been granted
+          this.select(
+                  'rolePriv.privilege',
+                  knex.raw('max(rolePriv.level) as level'))
+              .from('account')
+              .where('account.id', '=', accountId)
+              .join('accountRole', 'accountRole.account', '=', 'account.id')
+              .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
+              .groupBy('rolePriv.privilege')
+              .as('grantedPrivs');
+        }, 'grantedPrivs.privilege', '=', 'privilege.name');
+  },
+
+  getPrivilegesForRoles: function(roles) {
+    return this.builder('privilege')
+        .select(
+            'privilege.name',
+            'grantedPrivs.level',
+            'privilege.ownerLevel')
+        .leftJoin(function() {
+          // Subquery: all the privileges these roles have been granted
+          this.select(
+                  'privilege',
+                  knex.raw('max(level) as level'))
+              .from('rolePriv')
+              .whereIn('role', roles)
+              .groupBy('privilege')
+              .as('grantedPrivs')
+        }, 'grantedPrivs.privilege', '=', 'privilege.name');
+  },
+
+  getCharactersOwnedByMembers: function() {
+    // This complex subquery is required because we want to select the
+    // characters of all accounts that own 1 or more member character. In
+    // particular, in the case where an account's main has left the corp but
+    // one of their alts is still a member, we want to include that account
+    // (and all of that account's characters).
+    return this.builder
+        .select(OWNED_CHARACTER_COLUMNS)
+        .from(function() {
+          this.select()
+            .distinct('account.id')
+            .from('character')
+            .join('ownership', 'ownership.character', '=', 'character.id')
+            .join('account', 'account.id', '=', 'ownership.account')
+            .whereIn('character.corporationId', allCorpIds)
+            .as('memberAccount')
+        })
+        .join('account', 'account.id', '=', 'memberAccount.id')
+        .join('ownership', 'ownership.account', '=', 'memberAccount.id')
+        .join('character', 'character.id', '=', 'ownership.character')
+        .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel');
+  },
+
+  getUnownedCorpCharacters: function() {
+    return this.builder('character')
+        .select(BASIC_CHARACTER_COLUMNS)
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .whereNull('ownership.account');
+  },
+
+  getMostRecentCronJob(taskName) {
+    return this.builder('cronLog')
+        .select('id', 'task', 'start', 'end')
+        .where('task', '=', taskName)
+        .orderBy('start', 'desc')
+        .orderBy('id', 'desc')
+        .limit(1)
+    .then(([row]) => {
+      return row;
+    });
+  },
+
+  startCronJob(taskName) {
+    return this.builder('cronLog')
+        .insert({
+          task: taskName,
+          start: Date.now(),
+        })
+    .then(([id]) => {
+      return id;
+    });
+  },
+
+  finishCronJob(jobId, result) {
+    return this.builder('cronLog')
+        .update({
+          end: Date.now(),
+          result: result
+        })
+        .where('id', '=', jobId);
+  },
+
+  dropOldCronJobs(startCutoff) {
+    return this.builder('cronLog')
+        .del()
+        .where('start', '<', startCutoff);
+
+    /*
+    // This is the "more correct" way to to this -- it guarantees that we leave
+    // the most recent completed entry in the log even if it's "too old".
+    // However, SQLite doesn't support joins on deletes. Womp.
+    return this.builder('cronLog as c1')
+        .del('c1')
+        .leftJoin(function() {
+          // The most recent completed entry for each task
+          this.select('id', 'max(start) as start')
+              .from('cronLog')
+              .whereNotNull('end')
+              .groupBy('task')
+              .as('c2')
+        }, 'c1.task', '=', 'c2.task')
+        .where('c1.start', '<', 'c2.start')
+        .andWhere('c1.start', '<', startCutoff);
+    */
+  },
+
+  _upsert: function(table, row, primaryKey) {
+    if (CLIENT == 'sqlite3') {
+      // Manually convert booleans to 0/1 for sqlite
+      for (let v in row) {
+        let val = row[v];
+        if (typeof val == 'boolean') {
+          row[v] = val ? 1 : 0;
+        }
+      }
+
+      return this.builder(table)
+          .update(row)
+          .where(primaryKey, '=', row[primaryKey])
+      .then(() => {
+        let rawQuery = knex(table)
+            .insert(row)
+            .toString()
+            .replace(/^insert/i, 'insert or ignore');
+
+        return this.builder.raw(rawQuery);
+      });
+    } else {
+      throw new Error('Client not supported: ' + CLIENT);
+    }
+  },
+
 };
 
 module.exports = new Dao(knex);

@@ -4,6 +4,31 @@
   "ssoClientId": "<fillmein>",
   "ssoSecretKey": "<fillmein>",
 
-  // Delete this line if not doing front-end development
-  "serveMode": "dev-frontend"
+  "primaryCorporations": [
+    {
+      "id": 123456,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923"
+    }
+  ],
+
+  "altCorporations": [
+    {
+      "id": 123456,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923",
+      "titles": {
+        "Staff": "admin",
+        "Rocketstar": "full_member",
+        "Junior Rocketstar": "limited_member"
+      }
+    }
+  ],
+
+  // Uncomment this line if doing front-end development
+  // "serveMode": "dev-frontend",
+
+  // Force all requests to be handled as if the client's account had the
+  // following roles. Set to [] to designate a client with no roles whatsoever.
+  // "debugRoles": ["admin"]
 }

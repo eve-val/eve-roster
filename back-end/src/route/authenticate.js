@@ -1,10 +1,13 @@
 const axios = require('axios');
 const express = require('express');
-const request = require('request');
+const querystring = require('querystring');
 
 const configLoader = require('../config-loader');
 const dao = require('../dao');
+const error = require('../util/error');
 const eve = require('../eve');
+const accountRoles = require('../data-source/accountRoles');
+const UserVisibleError = require('../error/UserVisibleError');
 
 
 const CONFIG = configLoader.load();
@@ -15,111 +18,145 @@ const SSO_AUTH_CODE =
 const SAFE_CORP_ID = 98477920;  // TODO: Centralize this
 
 module.exports = function(req, res) {
-  console.log('AUTH QUERY:', req.query);
+  console.log('~~~ Auth request ~~~');
+  console.log('query:', req.query);
 
-  request.post('https://login.eveonline.com/oauth/token', {
-    headers: {
-      'Authorization': 'Basic ' + SSO_AUTH_CODE,
-    },
-    form: {
-      grant_type: 'authorization_code',
-      code: req.query.code,
-    }
-  }, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      handleAccessToken(req, res, body);
-    } else {
-      console.error('Something bad happened while trying to get an auth token:',
-          error, response.statusCode, body);
-      // TODO show something to the user
-      res.send('ERROR :(');
-    }
+  let charTokens;
+  let charData;
+
+  return getAccessToken(req.query.code)
+  .then(characterTokens => {
+    charTokens = characterTokens;
+    return getCharInfo(charTokens);
+  })
+  .then(characterData => {
+    charData = characterData;
+
+    return handleCharLogin(req.session.accountId, charData, charTokens);
+  })
+  .then(accountId => {
+    console.log('accountId =', accountId);
+    console.log('~~ Auth complete ~~');
+    req.session.accountId = accountId;
+    res.redirect('/');
+  })
+  .catch(e => {
+    // TODO
+    console.log(e);
+    res.status(500);
+    res.send('<pre>' + e.stack + '</pre>');
   });
 };
 
-function handleAccessToken(req, res, body) {
-  let charTokens = JSON.parse(body);
+function getAccessToken(queryCode) {
+  console.log('Getting access tokens from auth code...');
+  return axios.post(
+      'https://login.eveonline.com/oauth/token',
+      querystring.stringify({
+        grant_type: 'authorization_code',
+        code: queryCode,
+      }), {
+        headers: {
+          'Authorization': 'Basic ' + SSO_AUTH_CODE,
+        },
+      })
+  .then(response => {
+    console.log('tokens:', response.data);
+    return response.data;
+  });
+}
+
+function getCharInfo(charTokens) {
+  let charData = {
+    id: null,
+    name: null,
+    scopes: null,
+    corporationId: null,
+  };
 
   let characterId = 0;
-  let characterBasicInfo = null;
 
-  console.log('Auth successful! Auth token is %s', charTokens.access_token);
-  console.log('  Full response:', charTokens);
-
-  axios.get('https://login.eveonline.com/oauth/verify', {
+  console.log('Getting auth info...');
+  return axios.get('https://login.eveonline.com/oauth/verify', {
     headers: {
       'Authorization': 'Bearer ' + charTokens.access_token,
     },
   })
-  .then(function(response) {
-    console.log('VERIFY CHAR', response.data);
-    characterId = response.data.CharacterID;
-    return eve.esi.character.get(characterId);
-  })
-  .then(function(response) {
-    console.log('ESI CHAR', response.data);
-    characterBasicInfo = response.data;
+  .then(response => {
+    console.log('Auth info:', response.data);
 
-    return handleCharLogin(
-          req, res, characterId, characterBasicInfo, charTokens);
+    charData.id = response.data.CharacterID;
+    charData.name = response.data.CharacterName;
+    charData.scopes = response.data.Scopes;
+
+    console.log('Getting ESI character info...');
+    return eve.esi.character.get(charData.id)
+    .then(esiCharData => {
+      console.log('ESI character info:', esiCharData);
+      charData.corporationId = esiCharData.corporation_id;
+    })
+    .catch(e => {
+      if (error.isAnyEsiError(e)) {
+        console.error('ESI is unavailable, moving on with our lives...');
+        console.error(e);
+      } else {
+        console.log('GOT HERE MATE');
+        throw e;
+      }
+    })
+    .then(() => {
+      console.log('Final char data:', charData);
+      return charData;
+    });
   })
-  .catch(function(err) {
-    console.log('THERE WAS AN ERROR', err);
-    res.send('ERROR :(' + '\n' + err);
-  });
 }
 
-function handleCharLogin(req, res, charId, charData, charTokens) {
+function handleCharLogin(accountId, charData, charTokens) {
   return dao.builder('character')
         .select(
             'character.name', 'ownership.account', 'accessToken.needsUpdate')
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')
         .leftJoin('accessToken', 'accessToken.character', '=', 'character.id')
-        .where('character.id', charId)
-  .then(function(charRows) {
-    console.log('charRows:', charRows);
-    if (charRows.length > 0 && charRows[0].account != null) {
-      return handleOwnedChar(req, res, charId, charTokens, charRows[0]);
+        .where('character.id', charData.id)
+  .then(([row]) => {
+    if (row != null && row.account != null) {
+      return handleOwnedChar(accountId, charData, charTokens, row);
     } else {
-      return handleUnownedChar(
-          req, res, charId, charData, charTokens, charRows[0]);
+      return handleUnownedChar(accountId, charData, charTokens, row);
     }
   });
 }
 
-function handleOwnedChar(req, res, charId, charTokens, charRow) {
+function handleOwnedChar(accountId, charData, charTokens, charRow) {
   let owningAccount = charRow.account;
 
-  if (req.session.accountId != null && req.session.accountId != owningAccount) {
-    throw new Error(
+  if (accountId != null && accountId != owningAccount) {
+    throw new UserVisibleError(
         'This character has already been claimed by another account.');
   }
-  dao.updateAccessTokens(
-      charId,
+  return dao.upsertAccessTokens(
+      charData.id,
       charTokens.refresh_token,
       charTokens.access_token,
       charTokens.expires_in)
   .then(() => {
-    if (req.session.accountId == null) {
-      req.session.accountId = owningAccount;
-      console.log('Now logged in as account', req.session.accountId);
+    if (accountId == null) {
+      console.log('Now logged in as account', owningAccount);
     }
-    res.redirect('/');
+    return owningAccount;
   });
 }
 
-function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
+function handleUnownedChar(accountId, charData, charTokens, charRow) {
   console.log(
       'handleUnownedChar for charId=%s, accountId=%s',
-      charId,
-      req.session.accountId);
-
-  let accountId = req.session.accountId;
+      charData.id,
+      accountId);
 
   return dao.transaction(function(trx) {
     let isNewAccount = accountId == null;
 
-    return createOrUpdateCharacter(trx, charId, charData, charTokens, charRow)
+    return createOrUpdateCharacter(trx, charData, charTokens)
     .then(function() {
       if (isNewAccount) {
         return trx.createAccount()
@@ -130,40 +167,30 @@ function handleUnownedChar(req, res, charId, charData, charTokens, charRow) {
       }
     })
     .then(function() {
-      return trx.ownCharacter(charId, accountId, /* isMain */ isNewAccount);
+      return trx.ownCharacter(
+          charData.id, accountId, /* isMain */ isNewAccount);
+    })
+    .then(function() {
+      return accountRoles.updateAccount(trx, accountId);
     });
   })
   .then(function() {
-    req.session.accountId = accountId;
-    res.redirect('/');
+    return accountId;
   });
 }
 
-function createOrUpdateCharacter(trx, charId, charData, charTokens, charRow) {
-  if (!charRow) {
-    // Create character
-    return trx
-        .createCharacter(charId, charData.name, charData.corporation_id)
-    .then(function() {
-      return trx.createAccessTokens(
-          charId,
-          charTokens.refresh_token,
-          charTokens.access_token,
-          charTokens.expires_in);
-    });
-  } else {
-    // Just update in-place
-    return trx.builder('character')
-        .where({id: charId})
-        .update({
-          corporationId: charData.corporation_id
-        })
-    .then(function() {
-      return trx.updateAccessTokens(
-          charId,
-          charTokens.refresh_token,
-          charTokens.access_token,
-          charTokens.expires_in);
-    });
+function createOrUpdateCharacter(trx, charData, charTokens) {
+  let extraColumns = {};
+  if (charData.corporationId != null) {
+    extraColumns.corporationId = charData.corporationId;
   }
+
+  return trx.upsertCharacter(charData.id, charData.name, extraColumns)
+  .then(function() {
+    return trx.upsertAccessTokens(
+        charData.id,
+        charTokens.refresh_token,
+        charTokens.access_token,
+        charTokens.expires_in);
+  });
 }

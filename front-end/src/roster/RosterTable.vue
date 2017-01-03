@@ -1,121 +1,132 @@
 <template>
-<div class="table">
-  <div class="headers">
-    <div v-for="header in headers"
-        class="header"
-        :class="{ active: header.key == sortKey }"
-        @click="sortBy(header.key)"
-        :style="header.style"
-        >
-      {{ header.label }}
-      <span v-if="header.key == sortKey" class="sort-arrow">
-        {{ reverseSort ? '▼' : '▲'}}
-      </span>
-    </div>
-  </div>
-
-  <member-entry v-for="row in sortedRows" :row="row" :key="row.characterId" />
+<div class="root">
+  <table-header
+      :columns="columns"
+      :sortKey="sort.key"
+      :reverseSort="sort.reverse"
+      @selectSortKey="onSelectSortKey"
+      />
+  <account-row v-for="row in sortedRows"
+      :account="row"
+      :key="row.main.id"
+      :filter="filter"
+      />
 </div>
 </template>
 
 <script>
-import MemberEntry from './MemberEntry.vue';
+import AccountRow from './AccountRow.vue';
+import TableHeader from './TableHeader.vue';
+
+import rosterColumns from './rosterColumns';
+
 
 export default {
-  props: {
-    rows: {
-      type: Array,
-      required: true
-    }
+  components: {
+    AccountRow,
+    TableHeader,
   },
 
-  components: {
-    MemberEntry
+  props: {
+    rows: { type: Array, required: true },
+    filter: { type: String, required: false },
   },
 
   data: function() {
     return {
-      sortKey: 'logonDateTime',
-      reverseSort: true,
-      headers: [
-        {label: '', key: null,  style: {width: '64px'}},
-        {label: 'Name', key: 'name', style: {width: '300px'}},
-        {label: 'Last seen', key: 'logonDateTime', style: {width: '100px'}},
-        {label: 'Siggy', key: 'siggyScore', style: {width: '60px'}},
-        {label: 'Kills', key: 'recentKills', style: {width: '60px'}},
-        {label: 'Losses', key: 'recentLosses', style: {width: '60px'}},
-        {label: 'Citadel', key: 'homeCitadel', style: {width: '150px'}},
-      ]
-    }
+      sort: {
+        key: 'name',
+        reverse: false,
+      },
+
+      columns: rosterColumns,
+    };
   },
 
   computed: {
+    sortColumn: function() {
+      for (let col of this.columns) {
+        if (col.key == this.sort.key) {
+          return col;
+        }
+      }
+      return null;
+    },
+
     sortedRows: function() {
-      var self = this;
-      this.rows.sort(function(a, b) {
-        let aVal = a.aggregate[self.sortKey];
-        let bVal = b.aggregate[self.sortKey];
-
-        let comp = 0;
-        if (aVal > bVal) {
-          comp = 1;
-        } else if (bVal > aVal) {
-          comp = -1;
-        }
-
-        if (self.reverseSort) {
-          comp = -comp;
-        }
-
-        return comp;
+      // Sort accounts
+      return this.rows.sort((a, b) => {
+        return stringAwareCmp(
+            getSortVal(this.sortColumn, a.aggregate, a.account),
+            getSortVal(this.sortColumn, b.aggregate, b.account),
+            this.sort.reverse
+        );
       });
-      return this.rows;
-    }
+
+      // Sort alts
+      for (let row of rows) {
+        row.alts.sort((a, b) => {
+          return stringAwareCmp(
+              getSortVal(this.sortColumn, a, null),
+              getSortVal(this.sortColumn, b, null),
+              this.sort.reverse
+          );
+        });
+      }
+    },
   },
 
   methods: {
-    sortBy: function(key) {
-      if (key == null) {
-        return;
+    onSelectSortKey: function(key) {
+      if (key == this.sort.key) {
+        this.sort.reverse = !this.sort.reverse;
+      } else {
+        this.sort.key = key;
+        this.sort.reverse = false;
       }
-      if (this.sortKey == key) {
-        this.reverseSort = !this.reverseSort;
-      } else{
-        this.sortKey = key;
-        this.reverseSort = key != 'name';
-      }
-    },
+    }
   }
 }
+
+function getSortVal(column, character, account) {
+  if (column.account) {
+    if (account != null) {
+      return account[column.key];
+    } else {
+      return character.name;
+    }
+  } else {
+    return character[column.key];
+  }
+}
+
+function stringAwareCmp(a, b, reverse) {
+  // TODO: deal with null values
+  let cmp;
+  if (typeof a == 'string' && typeof b == 'string') {
+    cmp = a.localeCompare(b);
+  } else {
+    cmp = 0;
+    if (a > b) {
+      cmp = 1;
+    } else if (b > a) {
+      cmp = -1;
+    }
+  }
+
+  if (reverse) {
+    cmp = -cmp;
+  }
+
+  return cmp;
+}
+
 </script>
 
 <style scoped>
-.headers {
-  display: flex;
-  font-size: 13px;
-  color: #AAA;
-  margin-bottom: 5px;
-}
-
-.header {
-  padding: 0 5px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.header:hover {
-  color: #777;
-}
-
-.header:active {
-  color: black;
-}
-
-.header.active {
-  color: #333;
-}
-
-.sort-arrow {
-  font-size: 10px;
+.root {
+  font-size: 14px;
+  font-weight: 300;
+  display: inline-block;
 }
 </style>

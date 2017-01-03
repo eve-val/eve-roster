@@ -1,34 +1,49 @@
-const fs = require('fs');
-const path = require('path');
-
 const express = require('express');
 
-const dao = require('../../dao.js');
-const sendStub = require('./send-stub');
+const privileges = require('../../route-helper/privileges');
+const handleEndpointError = require('../../route-helper/handleEndpointError');
+
+const UnauthorizedClientError = require('../../error/UnauthorizedClientError');
+const UserVisibleError = require('../../error/UserVisibleError');
 
 // /api routes
 const router = express.Router();
 
-router.get('/*', function(req, res, next) {
+router.use('/*', function(req, res, next) {
   // TODO: Check to make sure account ID is still valid
-  // and that account has permissions to access this path
-  if (req.session.accountId == null) {
-    res.status(401).send('401 Unauthorized');
+  let accountId = req.session.accountId;
+  if (accountId == null) {
+    throw new UnauthorizedClientError('Not logged in');
   } else {
-    next();
+    res.locals.accountId = accountId;
+    privileges.get(accountId)
+    .then(privs => {
+      res.locals.privs = privs;
+      next();
+    })
+    .catch(e => {
+      console.error('Error while reading privs.');
+      handleEndpointError(e, req, res);
+    });
   }
 });
 
-router.get('/dashboard', require('./dashboard'));
+router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
 
-// GET -> returns JSON representing entire corp roster.
-router.get('/roster', function(req, res) {
-  sendStub(res, 'roster.json');
-});
+router.get('/dashboard', require('./dashboard'));
+router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));
+
+router.get('/roster', require('./roster'));
 
 router.get('/character/:id', require('./character'));
 router.get('/character/:id/skills', require('./character/skills'));
+router.get('/character/:id/skillQueue', require('./character/skillQueue'));
 
 router.get('/corporation/:id', require('./corporation'));
+
+// Global (synchronous) error handling
+router.use(function (e, req, res, next) {
+  handleEndpointError(e, req, res);
+});
 
 module.exports = router;

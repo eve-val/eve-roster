@@ -8,7 +8,7 @@ const UNITS = [
 ];
 
 module.exports = {
-  shortDurationString: function(start, end, maxUnits) {
+  shortDurationString(start, end, maxUnits) {
     maxUnits = maxUnits || UNITS.length;
     
     let timeRemaining = moment(end).diff(moment(start), 'days', true);

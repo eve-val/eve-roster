@@ -12,19 +12,19 @@
         <div class="factoid-title">Corporation</div>
         <div class="factoid">{{ corporationName || '-' }}</div>
 
-        <template v-if="character.main">
+        <template v-if="account.main">
           <div class="factoid-title">Main</div>
           <div class="factoid">
             <router-link
                 class="character-link"
-                :to="'/character/' + character.main.id"
-                >{{ character.main.name }}</router-link>
+                :to="'/character/' + account.main.id"
+                >{{ account.main.name }}</router-link>
           </div>
         </template>
 
-        <template v-if="character.alts">
+        <template v-if="account.alts">
           <div class="factoid-title">Alts</div>
-          <div v-for="alt in character.alts"
+          <div v-for="alt in account.alts"
               class="factoid">
             <router-link
                 class="character-link"
@@ -33,15 +33,22 @@
           </div>
         </template>
 
-        <div class="factoid-title">Timezone</div>
-        <div class="factoid">{{ character.activeTimezone || '-' }}</div>
+        <template v-if="account.id != null">
+          <div class="factoid-title">Timezone</div>
+          <div class="factoid">{{ account.activeTimezone || '-' }}</div>
 
-        <div class="factoid-title">Citadel</div>
-        <div class="factoid">{{ homeCitadel || '-' }}</div>
+          <div class="factoid-title">Citadel</div>
+          <citadel-selector v-if="canWriteCitadel"
+              :accountId="account.id"
+              :initialCitadel="account.citadelId"
+              :citadels="citadels"
+              />
+          <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+        </template>
       </div>
       <div class="content">
         <div class="skills-container">
-          <template v-if="queue">
+          <template v-if="queue && skillGroups">
             <div class="section-title"
                 style="margin-top: 0;"
                 >
@@ -54,7 +61,9 @@
                 />
           </template>
           <template v-if="skillGroups">
-            <div class="section-title">Skills</div>
+            <div class="section-title"
+                :style="{ 'margin-top': queue == null ? '0px' : undefined, }"
+                >Skills</div>
             <template v-for="skillGroup in skillGroups">
               <div class="skillgroup-title">{{ skillGroup.name }}</div>
               <div class="skillgroup-container">
@@ -85,6 +94,7 @@ import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
 import TabbedContainer from '../shared/TabbedContainer.vue';
 
+import CitadelSelector from './CitadelSelector.vue';
 import QueueEntry from './QueueEntry.vue';
 import SkillPips from './SkillPips.vue';
 
@@ -96,6 +106,7 @@ export default {
 
     SkillPips,
     QueueEntry,
+    CitadelSelector,
   },
 
   props: {
@@ -105,6 +116,10 @@ export default {
   data: function() {
     return {
       character: null,
+      account: null,
+      access: null,
+      citadels: null,
+
       corporationName: null,
       queue: null,
       skillMap: null,
@@ -115,6 +130,10 @@ export default {
   computed: {
     characterId: function() {
       return parseInt(this.$route.params.id);
+    },
+
+    canWriteCitadel: function() {
+      return this.access != null && this.access['memberHousing'] == 2;
     },
   },
 
@@ -151,41 +170,56 @@ export default {
 
   methods: {
     fetchData: function() {
-      ajaxer.fetchCharacter(this.characterId)
-          .then((response) => {
-            this.character = response.data;
+      ajaxer.getCharacter(this.characterId)
+          .then(response => {
+            this.character = response.data.character;
+            this.account = response.data.account;
+            this.access = response.data.access;
+            this.citadels = response.data.citadels;
           })
-          .catch((err) => {
+          .catch(e => {
             // TODO
-            console.log('ERROR:', err);
+            console.log('ERROR:', e);
           });
 
-      ajaxer.fetchSkills(this.characterId)
-          .then((response) => {
-            this.processData(response.data);
+      ajaxer.getSkills(this.characterId)
+          .then(response => {
+            this.processSkillsData(response.data);
           })
-          .catch((err) => {
+          .catch(e => {
             // TODO
-            console.log('ERROR:', err);
+            console.log('ERROR:', e);
+          });
+      
+      ajaxer.getSkillQueue(this.characterId)
+          .then(response => {
+            this.queue = response.data;
+            this.maybeInjectQueueDataIntoSkillsMap();
+          })
+          .catch(e => {
+            // TODO
+            console.log('ERROR:', e);
           });
     },
 
-    processData: function(data) {
+    processSkillsData: function(skills) {
       let map = {};
-      for (let skill of data.skills) {
+      for (let skill of skills) {
         map[skill.id] = skill;
+        skill.queuedLevel = null;
       }
-
-      for (let queueItem of data.queue) {
-        map[queueItem.id].queuedLevel = queueItem.targetLevel;
-      }
-
-      let skillGroups = processSkills(data.skills);
-
       this.skillMap = map;
-      this.queue = data.queue;
-      this.skillGroups = skillGroups;
-    }
+      this.skillGroups = groupifySkills(skills);
+      this.maybeInjectQueueDataIntoSkillsMap();
+    },
+
+    maybeInjectQueueDataIntoSkillsMap: function() {
+      if (this.skillsMap != null && this.queue != null) {
+        for (let queueItem of this.queue) {
+          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
+        }
+      }
+    },
   }
 }
 
@@ -218,7 +252,7 @@ const GROUP_DISPLAY_ORDER = [
   1545,   // Structure Management
 ];
 
-function processSkills(skills){
+function groupifySkills(skills){
   let groupMap = {};
   for (let skill of skills) {
     let groupId = skill.group;

@@ -1,95 +1,186 @@
 <template>
-  <div>
-    <app-header :identity="identity" />
-    <roster-table :rows="rows" style="margin: 40px 30px 0 30px;" />
+<div class="roster">
+  <app-header :identity="identity" />
+  <div class="table-cnt">
+    <div class="title-row">
+      <div class="title">Roster</div>
+      <search-box class="search-box"
+          v-if="tableRows != null"
+          @change="onSearchStringChange"
+          />
+    </div>
+    <roster-table
+        v-if="tableRows != null"
+        :rows="tableRows"
+        :filter="this.searchString"
+        class="table"
+        />
   </div>
+  <div class="member-count" v-if="tableRows != null">
+    {{ tableRows.length }} members
+  </div>
+</div>
 </template>
 
 <script>
+import _ from 'underscore';
 import ajaxer from '../shared/ajaxer';
+
 import AppHeader from '../shared/AppHeader.vue';
-import RosterTable from './RosterTable.vue';
+import RosterTable from './RosterTable.vue'
+import SearchBox from './SearchBox.vue';
 
 export default {
   components: {
     AppHeader,
     RosterTable,
+    SearchBox,
   },
 
   props: {
     identity: { type: Object, required: true }
   },
 
-  data () {
+  data: function() {
     return {
-      rows: []
-    }
+      tableRows: null,
+      searchString: null,
+    };
   },
 
   created: function() {
-    let self = this;
     ajaxer.fetchRoster()
-      .then(function (response) {
-        console.log('Loaded!');
-        self.injectAggregates(response.data);
-        self.rows = response.data;
+      .then(response => {
+        let rows = injectDerivedData(response.data.rows);
+        this.tableRows = rows;
       })
-      .catch(function (err) {
-        console.log('DATA FETCH ERROR:', err);
+      .catch(e => {
+        // TODO
+        console.log('DATA FETCH ERROR:', e);
       });
   },
 
   methods: {
-    injectAggregates: function(rows) {
-      for (let i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var aggregate = {};
-        for (let v in row) {
-          switch (v) {
-            case 'logonDateTime':
-              aggregate[v] = aggregateMax(row, 'logonDateTime');
-              break;
-            case 'logoffDateTime':
-              aggregate[v] = aggregateMax(row, 'logoffDateTime');
-              break;
-            case 'recentKills':
-              aggregate[v] = aggregateSum(row, 'recentKills');
-              break;
-            case 'recentLosses':
-              aggregate[v] = aggregateSum(row, 'recentLosses');
-              break;
-            case 'siggyScore':
-              aggregate[v] = aggregateSum(row, 'siggyScore');
-              break;
-            default:
-              aggregate[v] = row[v];
-              break;
-          }
-          row.aggregate = aggregate;
-        }
+    onSearchStringChange: _.debounce(function(str) {
+      if (str.length == 0) {
+        this.searchString = null;
+      } else if (str.length >= 3) {
+        this.searchString = str;
       }
-    },
-
-  },
-
-}
-
-function aggregateSum(row, prop) {
-  let sum = row[prop];
-  for (let i = 0; i < row.alts.length; i++) {
-    sum += row.alts[i][prop];
+    }, 100),
   }
-  return sum;
 }
 
-function aggregateMax(row, prop) {
-  let best = row[prop];
-  for (let i = 0; i < row.alts.length; i++) {
-    best = Math.max(row.alts[i][prop], best);
+const SUM_ATTRS = new Set([
+  'killsInLastMonth',
+  'killValueInLastMonth',
+  'lossesInLastMonth',
+  'lossValueInLastMonth',
+  'siggyScore',
+]);
+
+const MAX_ATTRS = new Set([
+  'lastSeen',
+]);
+
+function injectDerivedData(data) {
+  for (let account of data) {
+    injectLastSeen(account);
+    let aggregate = {};
+    for (let v in account.main) {
+      if (SUM_ATTRS.has(v)) {
+        aggregate[v] = sumProp(v, account.main, ...account.alts);
+      } else if (MAX_ATTRS.has(v)) {
+        aggregate[v] = maxProp(v, account.main, ...account.alts);
+      } else {
+        aggregate[v] = account.main[v];
+      }
+    }
+    account.aggregate = aggregate;
   }
-  return best;
+  return data;
 }
+
+function sumProp(prop, ...chars) {
+  let sawNotNull = false;
+  let sum = 0;
+  for (let char of chars) {
+    if (char[prop] != null) {
+      sum += char[prop];
+      sawNotNull = true;
+    }
+  }
+  return sawNotNull ? sum : null;
+}
+
+function maxProp(prop, ...chars) {
+  let sawNotNull = false;
+  let best = 0;
+  for (let char of chars) {
+    if (char[prop] != null) {
+      best = Math.max(char[prop], best);
+      sawNotNull = true;
+    }
+  }
+  return sawNotNull ? best : null;
+}
+
+function injectLastSeen(account) {
+  for (let character of [account.main, ...account.alts]) {
+    let lastSeen = getLastSeen(character);
+    if (lastSeen != null) {
+      character.lastSeen = lastSeen;
+    }
+  }
+}
+
+function getLastSeen(character) {
+  if (character.logonDate == null || character.logoffDate == null) {
+    return null;
+  } else if (character.logonDate > character.logoffDate) {
+    return Math.floor(Date.now() / 1000);
+  } else {
+    return character.logoffDate;
+  }
+}
+
 </script>
 
-<style>
+<style scoped>
+.roster {
+  padding-bottom: 200px;
+}
+
+.table-cnt {
+  display: inline-block;
+  margin: 0 33px 0 33px;
+}
+
+.title-row {
+  display: flex;
+  margin: 40px 0 40px 0;
+}
+
+.title {
+  flex: 1;
+  font-size: 30px;
+  color: #a7a29c;
+  font-weight: 100;
+}
+
+.search-box {
+  flex: 0 0 auto;
+}
+
+.table {
+  min-width: 600px;
+}
+
+.member-count {
+  margin-top: 20px;
+  margin-left: 33px;
+  font-size: 14px;
+  font-weight: 300;
+  color: #a7a29c;
+}
 </style>

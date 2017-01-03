@@ -1,38 +1,67 @@
 const dao = require('../../dao');
-const sendStub = require('./send-stub');
+const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const getStub = require('../../route-helper/getStub');
+const NotFoundError = require('../../error/NotFoundError');
 
 const STUB_OUTPUT = false;
 
-module.exports = function(req, res) {
+module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   if (STUB_OUTPUT) {
-    sendStub(res, 'character.json');
-    return;
+    return Promise.resolve(getStub('character.json'));
   }
 
   let characterId = req.params.id;
+  let isOwned = false;
   let payload;
 
   // Fetch character and account data
-  dao.builder('character')
+  return dao.builder('character')
       .select(
           'character.name',
           'character.corporationId', 
-          'character.activeTimezone',
-          'character.homeCitadel',
+          'account.activeTimezone',
+          'citadel.id as citadelId',
+          'citadel.name as citadelName',
           'account.id as accountId',
           'account.mainCharacter')
       .leftJoin('ownership', 'character.id', '=', 'ownership.character')
       .leftJoin('account', 'account.id', '=', 'ownership.account')
+      .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel')
       .where('character.id', '=', characterId)
-  .then(function([row]) {
+  .then(([row]) => {
+    if (row == null) {
+      throw new NotFoundError();
+    }
+    isOwned = accountId == row.accountId;
+
     payload = {
-      name: row.name,
-      corporationId: row.corporationId,
-      activeTimezone: row.activeTimezone,
-      homeCitadel: row.homeCitadel,
+      character: {
+        name: row.name,
+        corporationId: row.corporationId,
+      },
+      account: {
+        id: row.accountId,
+      },
+      access: privs.dumpForFrontend(
+        [
+          'memberTimezone',
+          'memberHousing',
+          'characterSkills',
+          'characterSkillQueue',
+        ],
+        isOwned),
     };
 
-    if (row.accountId != null) {
+    if (privs.canRead('memberTimezone', isOwned)) {
+      payload.account.activeTimezone = row.activeTimezone;
+    }
+
+    if (privs.canRead('memberHousing', isOwned)) {
+      payload.account.citadelId = row.citadelId;
+      payload.account.citadelName = row.citadelName;
+    }
+
+    if (privs.canRead('memberAlts', isOwned) && row.accountId != null) {
       if (row.mainCharacter == characterId) {
         return injectAlts(row.accountId, characterId, payload);
       } else {
@@ -40,21 +69,22 @@ module.exports = function(req, res) {
       }
     }
   })
-  .then(function() {
+  .then(() => {
+    if (privs.canWrite('memberTimezone', isOwned)) {
+      return dao.getCitadels()
+      .then(rows => {
+        citadels = [];
+        for (let row of rows) {
+          citadels.push({ id: row.id, name: row.name });
+        }
+        payload.citadels = citadels;
+      });
+    }
+  })
+  .then(() => {
     return payload;
-  })
-  .then(function(response) {
-    let space = req.query.pretty != undefined ? 2 : undefined;
-    res.type('json');
-    res.send(JSON.stringify(response, null, space));
-  })
-  .catch(function(e) {
-    // TODO
-    res.status(500);
-    res.send('Error :(\n' + e.toString());
-    throw e;
   });
-};
+});
 
 function injectAlts(accountId, thisCharacterId, payload) {
   return dao.builder('ownership')
@@ -63,6 +93,7 @@ function injectAlts(accountId, thisCharacterId, payload) {
       .where('ownership.account', '=', accountId)
       .andWhere('ownership.character', '!=', thisCharacterId)
   .then(function(rows) {
+    // TODO: Restrict this on memberExternalAlts priv
     let alts = [];
     for (let row of rows) {
       alts.push({
@@ -73,7 +104,10 @@ function injectAlts(accountId, thisCharacterId, payload) {
     alts.sort(function(a, b) {
       return a.name.localeCompare(b.name);
     });
-    payload.alts = alts;
+
+    if (alts.length > 0) {
+      payload.account.alts = alts;
+    }
   });
 }
 
@@ -82,7 +116,7 @@ function injectMain(mainCharacterId, payload) {
       .select('name')
       .where('id', '=', mainCharacterId)
   .then(function([row]) {
-    payload.main = {
+    payload.account.main = {
       id: mainCharacterId,
       name: row.name,
     };
