@@ -12,19 +12,19 @@
         <div class="factoid-title">Corporation</div>
         <div class="factoid">{{ corporationName || '-' }}</div>
 
-        <template v-if="character.main">
+        <template v-if="account.main">
           <div class="factoid-title">Main</div>
           <div class="factoid">
             <router-link
                 class="character-link"
-                :to="'/character/' + character.main.id"
-                >{{ character.main.name }}</router-link>
+                :to="'/character/' + account.main.id"
+                >{{ account.main.name }}</router-link>
           </div>
         </template>
 
-        <template v-if="character.alts">
+        <template v-if="account.alts">
           <div class="factoid-title">Alts</div>
-          <div v-for="alt in character.alts"
+          <div v-for="alt in account.alts"
               class="factoid">
             <router-link
                 class="character-link"
@@ -33,11 +33,18 @@
           </div>
         </template>
 
-        <div class="factoid-title">Timezone</div>
-        <div class="factoid">{{ character.activeTimezone || '-' }}</div>
+        <template v-if="account.id != null">
+          <div class="factoid-title">Timezone</div>
+          <div class="factoid">{{ account.activeTimezone || '-' }}</div>
 
-        <div class="factoid-title">Citadel</div>
-        <div class="factoid">{{ homeCitadel || '-' }}</div>
+          <div class="factoid-title">Citadel</div>
+          <citadel-selector v-if="canWriteCitadel"
+              :accountId="account.id"
+              :initialCitadel="account.citadelId"
+              :citadels="citadels"
+              />
+          <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+        </template>
       </div>
       <div class="content">
         <div class="skills-container">
@@ -87,6 +94,7 @@ import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
 import TabbedContainer from '../shared/TabbedContainer.vue';
 
+import CitadelSelector from './CitadelSelector.vue';
 import QueueEntry from './QueueEntry.vue';
 import SkillPips from './SkillPips.vue';
 
@@ -98,6 +106,7 @@ export default {
 
     SkillPips,
     QueueEntry,
+    CitadelSelector,
   },
 
   props: {
@@ -107,6 +116,10 @@ export default {
   data: function() {
     return {
       character: null,
+      account: null,
+      access: null,
+      citadels: null,
+
       corporationName: null,
       queue: null,
       skillMap: null,
@@ -117,6 +130,10 @@ export default {
   computed: {
     characterId: function() {
       return parseInt(this.$route.params.id);
+    },
+
+    canWriteCitadel: function() {
+      return this.access != null && this.access['memberHousing'] == 2;
     },
   },
 
@@ -154,31 +171,34 @@ export default {
   methods: {
     fetchData: function() {
       ajaxer.getCharacter(this.characterId)
-          .then((response) => {
-            this.character = response.data;
+          .then(response => {
+            this.character = response.data.character;
+            this.account = response.data.account;
+            this.access = response.data.access;
+            this.citadels = response.data.citadels;
           })
-          .catch((err) => {
+          .catch(e => {
             // TODO
-            console.log('ERROR:', err);
+            console.log('ERROR:', e);
           });
 
       ajaxer.getSkills(this.characterId)
-          .then((response) => {
+          .then(response => {
             this.processSkillsData(response.data);
           })
-          .catch((err) => {
+          .catch(e => {
             // TODO
-            console.log('ERROR:', err);
+            console.log('ERROR:', e);
           });
       
       ajaxer.getSkillQueue(this.characterId)
-          .then((response) => {
+          .then(response => {
             this.queue = response.data;
             this.maybeInjectQueueDataIntoSkillsMap();
           })
-          .catch((err) => {
+          .catch(e => {
             // TODO
-            console.log('ERROR:', err);
+            console.log('ERROR:', e);
           });
     },
 
