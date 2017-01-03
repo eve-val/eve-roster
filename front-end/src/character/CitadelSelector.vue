@@ -37,7 +37,6 @@ export default {
 
   watch: {
     citadelId: function(value) {
-      console.log('Selected:', value);
       let id = value == -1 ? null : value;
       this.requestStatus = 'loading';
       axios.put('/api/account/' + this.accountId + '/homeCitadel', {
