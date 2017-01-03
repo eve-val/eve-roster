@@ -167,7 +167,7 @@ knex.transaction(function(trx) {
         return trx.schema.createTable('character', (table) => {
             table.integer('id').primary();
             table.string('name').notNullable();
-            table.integer('corporationId').index().notNullable();
+            table.integer('corporationId').index();
 
             // Just a JSON array. Maybe this should be a table?
             table.string('titles').nullable();

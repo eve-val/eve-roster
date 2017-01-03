@@ -99,11 +99,10 @@ Dao.prototype = {
     return this.builder('character').select().where({id: id});
   },
 
-  upsertCharacter: function(id, name, corporationId, extraColumns) {
+  upsertCharacter: function(id, name, extraColumns) {
     let fullVals = Object.assign(extraColumns || {}, {
       id: id,
       name: name,
-      corporationId: corporationId,
     });
 
     return this._upsert('character', fullVals, 'id');

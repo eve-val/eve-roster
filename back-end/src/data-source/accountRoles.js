@@ -73,7 +73,7 @@ const accountRoles = module.exports = {
 }
 
 function isPrimaryCorp(corpId) {
-  return primaryCorpIds.indexOf(corpId) != -1;
+  return corpId != null && primaryCorpIds.indexOf(corpId) != -1;
 }
 
 function getTitleMap(corpId) {
