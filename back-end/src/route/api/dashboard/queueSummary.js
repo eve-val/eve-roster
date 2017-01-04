@@ -1,15 +1,20 @@
 const moment = require('moment');
 
 const dao = require('../../../dao');
+const getStub = require('../../../route-helper/getStub');
 const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
-
+const CONFIG = require('../../../config-loader').load();
 const STATIC = require('../../../static-data').get();
 const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
 
 module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+  if (CONFIG.useStubOutput) {
+    return Promise.resolve(getStub('dashboard.queuesummary.json'));
+  }
+
   let characterId = req.params.id;
 
   return dao.getOwner(characterId)
