@@ -26,7 +26,7 @@ module.exports = {
     }
     return loadedConfig;
   }
-}
+};
 
 function loadLocalConfig() {
   let localConfig;

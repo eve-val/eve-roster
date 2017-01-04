@@ -27,4 +27,4 @@ module.exports = function(e, req, res) {
   }
   res.type('json');
   res.send({ message: message });
-}
+};

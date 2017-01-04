@@ -1,8 +1,5 @@
 const eve = require('../eve');
 
-const moment = require('moment');
-
-
 module.exports = {
   getQueue: function(characterId) {
     return eve.getAccessToken(characterId)
@@ -25,7 +22,7 @@ module.exports = {
 
     return pretrainedProgress + trainedProgress * (1 - pretrainedProgress);
   },
-}
+};
 
 function pruneCompletedSkills(queueData) {
   // Why do we even need to DO this... #ccpls

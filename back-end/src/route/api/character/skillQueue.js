@@ -1,9 +1,16 @@
 const dao = require('../../../dao');
+const getStub = require('../../../route-helper/getStub');
 const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
+const CONFIG = require('../../../config-loader').load();
+
 module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+  if (CONFIG.useStubOutput) {
+    return Promise.resolve(getStub('character.skillqueue.json'));
+  }
+
   let characterId = req.params.id;
 
   return dao.getOwner(characterId)

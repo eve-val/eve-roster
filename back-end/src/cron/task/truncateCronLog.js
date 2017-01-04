@@ -10,7 +10,7 @@ module.exports = function truncateCronLog() {
   .then(() => {
     return 'success';
   });
-}
+};
 
 
 

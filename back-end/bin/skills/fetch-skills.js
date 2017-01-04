@@ -22,8 +22,8 @@ module.exports = function() {
   })
   .then(function(parsedXml) {
     let groups = parsedXml.eveapi.result[0].rowset[0].row;
-    var groupsMap = {};
-    var skillsMap = {};
+    let groupsMap = {};
+    let skillsMap = {};
     for (let i = 0; i < groups.length; i++) {
       let group = groups[i];
       let groupId = parseInt(group.$.groupID);
@@ -34,7 +34,7 @@ module.exports = function() {
           id: groupId,
           name: group.$.groupName,
           skills: [],
-        }
+        };
         groupsMap[groupId] = groupMap;
       }
       let skills = group.rowset[0].row;
@@ -50,7 +50,7 @@ module.exports = function() {
             primaryAttribute: skill.requiredAttributes[0].primaryAttribute[0],
             secondaryAttribute: 
                 skill.requiredAttributes[0].secondaryAttribute[0],
-          }
+          };
           skillsMap[skillObj.id] = skillObj;
           groupMap.skills.push(skillObj);
         }
@@ -59,5 +59,5 @@ module.exports = function() {
 
     return [skillsMap, groupsMap];
   });
-}
+};
 

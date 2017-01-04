@@ -1,14 +1,11 @@
-const _ = require('underscore');
-
 const dao = require('../../dao');
 const getStub = require('../../route-helper/getStub');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');
 
-const STUB_OUTPUT = false;
 const CONFIG = require('../../config-loader').load();
 
 module.exports = jsonEndpoint(function(req, res, accountId, privs) {
-  if (STUB_OUTPUT) {
+  if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('roster.json'));
   }
   privs.requireRead('roster');
@@ -37,7 +34,6 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
 
 function pushOwnedChars(ownedRows, outList, privs) {
   let accountGroups = new Map();
-  let unownedChars = [];
 
   for (let row of ownedRows) {
     let accountId = row.accountId;

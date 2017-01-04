@@ -1,0 +1,129 @@
+[{
+  "id": 3309,
+  "proportionalStart": 0,
+  "proportionalEnd": 0.0006813712398919011,
+  "durationLabel": "2h 35m",
+  "targetLevel": 3,
+  "progress": 0.8508169961734694
+}, {
+  "id": 3307,
+  "proportionalStart": 0.0006813712398919011,
+  "proportionalEnd": 0.0008547587446432923,
+  "durationLabel": "39m",
+  "targetLevel": 1
+}, {
+  "id": 3307,
+  "proportionalStart": 0.0008547587446432923,
+  "proportionalEnd": 0.0016622740912153947,
+  "durationLabel": "3h 4m",
+  "targetLevel": 2
+}, {
+  "id": 3307,
+  "proportionalStart": 0.0016622740912153947,
+  "proportionalEnd": 0.006229625749345277,
+  "durationLabel": "17h 25m",
+  "targetLevel": 3
+}, {
+  "id": 3326,
+  "proportionalStart": 0.006229625749345277,
+  "proportionalEnd": 0.010796977407475159,
+  "durationLabel": "17h 25m",
+  "targetLevel": 3
+}, {
+  "id": 3441,
+  "proportionalStart": 0.010796977407475159,
+  "proportionalEnd": 0.16002041011386842,
+  "durationLabel": "23d 17h 12m",
+  "targetLevel": 5
+}, {
+  "id": 12485,
+  "proportionalStart": 0.16002041011386842,
+  "proportionalEnd": 0.18857786374188018,
+  "durationLabel": "4d 12h 55m",
+  "targetLevel": 4
+}, {
+  "id": 12486,
+  "proportionalStart": 0.18857786374188018,
+  "proportionalEnd": 0.21713531736989197,
+  "durationLabel": "4d 12h 55m",
+  "targetLevel": 4
+}, {
+  "id": 23566,
+  "proportionalStart": 0.21713531736989197,
+  "proportionalEnd": 0.24569269817660816,
+  "durationLabel": "4d 12h 55m",
+  "targetLevel": 4
+}, {
+  "id": 25739,
+  "proportionalStart": 0.24569269817660816,
+  "proportionalEnd": 0.48331958163608174,
+  "durationLabel": "37d 19h 25m",
+  "targetLevel": 5
+}, {
+  "id": 21718,
+  "proportionalStart": 0.48331958163608174,
+  "proportionalEnd": 0.572429544598779,
+  "durationLabel": "14d 3h 54m",
+  "targetLevel": 5
+}, {
+  "id": 12487,
+  "proportionalStart": 0.572429544598779,
+  "proportionalEnd": 0.6009869982267908,
+  "durationLabel": "4d 12h 55m",
+  "targetLevel": 4
+}, {
+  "id": 12484,
+  "proportionalStart": 0.6009869982267908,
+  "proportionalEnd": 0.6295444518548026,
+  "durationLabel": "4d 12h 55m",
+  "targetLevel": 4
+}, {
+  "id": 33098,
+  "proportionalStart": 0.6295444518548026,
+  "proportionalEnd": 0.8049355617324977,
+  "durationLabel": "27d 21h 1m",
+  "targetLevel": 5
+}, {
+  "id": 40328,
+  "proportionalStart": 0.8049355617324977,
+  "proportionalEnd": 0.8256057408373582,
+  "durationLabel": "3d 6h 50m",
+  "targetLevel": 4
+}, {
+  "id": 33097,
+  "proportionalStart": 0.8256057408373582,
+  "proportionalEnd": 0.8566109366733533,
+  "durationLabel": "4d 22h 16m",
+  "targetLevel": 4
+}, {
+  "id": 33095,
+  "proportionalStart": 0.8566109366733533,
+  "proportionalEnd": 0.8876162053306441,
+  "durationLabel": "4d 22h 16m",
+  "targetLevel": 4
+}, {
+  "id": 3337,
+  "proportionalStart": 0.8876162053306441,
+  "proportionalEnd": 0.9289563450764784,
+  "durationLabel": "6d 13h 41m",
+  "targetLevel": 4
+}, {
+  "id": 12092,
+  "proportionalStart": 0.9289563450764784,
+  "proportionalEnd": 0.949626524181339,
+  "durationLabel": "3d 6h 50m",
+  "targetLevel": 4
+}, {
+  "id": 12095,
+  "proportionalStart": 0.949626524181339,
+  "proportionalEnd": 0.9702966304649039,
+  "durationLabel": "3d 6h 50m",
+  "targetLevel": 4
+}, {
+  "id": 3551,
+  "proportionalStart": 0.9702966304649039,
+  "proportionalEnd": 1,
+  "durationLabel": "4d 17h 18m",
+  "targetLevel": 5
+}]
+
