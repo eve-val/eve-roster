@@ -1,2535 +1,1544 @@
-[
-  {
-    "id": 257,
-    "name": "Spaceship Command",
-    "skills": [
-      {
-        "id": "20342",
-        "name": "Advanced Spaceship Command",
-        "level": -1
-      },
-      {
-        "id": "33095",
-        "name": "Amarr Battlecruiser",
-        "level": 3
-      },
-      {
-        "id": "3339",
-        "name": "Amarr Battleship",
-        "level": 5
-      },
-      {
-        "id": "24311",
-        "name": "Amarr Carrier",
-        "level": -1
-      },
-      {
-        "id": "3335",
-        "name": "Amarr Cruiser",
-        "level": -1
-      },
-      {
-        "id": "33091",
-        "name": "Amarr Destroyer",
-        "level": 5
-      },
-      {
-        "id": "20525",
-        "name": "Amarr Dreadnought",
-        "level": -1
-      },
-      {
-        "id": "40535",
-        "name": "Amarr Force Auxiliary",
-        "level": -1
-      },
-      {
-        "id": "20524",
-        "name": "Amarr Freighter",
-        "level": -1
-      },
-      {
-        "id": "3331",
-        "name": "Amarr Frigate",
-        "level": -1
-      },
-      {
-        "id": "3343",
-        "name": "Amarr Industrial",
-        "level": -1
-      },
-      {
-        "id": "30650",
-        "name": "Amarr Strategic Cruiser",
-        "level": -1
-      },
-      {
-        "id": "34390",
-        "name": "Amarr Tactical Destroyer",
-        "level": -1
-      },
-      {
-        "id": "3347",
-        "name": "Amarr Titan",
-        "level": 1
-      },
-      {
-        "id": "12095",
-        "name": "Assault Frigates",
-        "level": -1
-      },
-      {
-        "id": "12099",
-        "name": "Battlecruisers",
-        "level": -1
-      },
-      {
-        "id": "28656",
-        "name": "Black Ops",
-        "level": -1
-      },
-      {
-        "id": "33096",
-        "name": "Caldari Battlecruiser",
-        "level": -1
-      },
-      {
-        "id": "3338",
-        "name": "Caldari Battleship",
-        "level": -1
-      },
-      {
-        "id": "24312",
-        "name": "Caldari Carrier",
-        "level": -1
-      },
-      {
-        "id": "3334",
-        "name": "Caldari Cruiser",
-        "level": -1
-      },
-      {
-        "id": "33092",
-        "name": "Caldari Destroyer",
-        "level": -1
-      },
-      {
-        "id": "20530",
-        "name": "Caldari Dreadnought",
-        "level": -1
-      },
-      {
-        "id": "40536",
-        "name": "Caldari Force Auxiliary",
-        "level": 3
-      },
-      {
-        "id": "20526",
-        "name": "Caldari Freighter",
-        "level": 3
-      },
-      {
-        "id": "3330",
-        "name": "Caldari Frigate",
-        "level": 4
-      },
-      {
-        "id": "3342",
-        "name": "Caldari Industrial",
-        "level": 5
-      },
-      {
-        "id": "30651",
-        "name": "Caldari Strategic Cruiser",
-        "level": 5
-      },
-      {
-        "id": "35680",
-        "name": "Caldari Tactical Destroyer",
-        "level": -1
-      },
-      {
-        "id": "3346",
-        "name": "Caldari Titan",
-        "level": -1
-      },
-      {
-        "id": "28374",
-        "name": "Capital Industrial Ships",
-        "level": 4
-      },
-      {
-        "id": "20533",
-        "name": "Capital Ships",
-        "level": -1
-      },
-      {
-        "id": "37615",
-        "name": "Command Destroyers",
-        "level": -1
-      },
-      {
-        "id": "23950",
-        "name": "Command Ships",
-        "level": -1
-      },
-      {
-        "id": "10264",
-        "name": "Concord",
-        "level": 4
-      },
-      {
-        "id": "12093",
-        "name": "Covert Ops",
-        "level": -1
-      },
-      {
-        "id": "12097",
-        "name": "Destroyers",
-        "level": 4
-      },
-      {
-        "id": "28615",
-        "name": "Electronic Attack Ships",
-        "level": 3
-      },
-      {
-        "id": "22551",
-        "name": "Exhumers",
-        "level": 4
-      },
-      {
-        "id": "33856",
-        "name": "Expedition Frigates",
-        "level": -1
-      },
-      {
-        "id": "33097",
-        "name": "Gallente Battlecruiser",
-        "level": -1
-      },
-      {
-        "id": "3336",
-        "name": "Gallente Battleship",
-        "level": 5
-      },
-      {
-        "id": "24313",
-        "name": "Gallente Carrier",
-        "level": -1
-      },
-      {
-        "id": "3332",
-        "name": "Gallente Cruiser",
-        "level": 5
-      },
-      {
-        "id": "33093",
-        "name": "Gallente Destroyer",
-        "level": 2
-      },
-      {
-        "id": "20531",
-        "name": "Gallente Dreadnought",
-        "level": -1
-      },
-      {
-        "id": "40537",
-        "name": "Gallente Force Auxiliary",
-        "level": 4
-      },
-      {
-        "id": "20527",
-        "name": "Gallente Freighter",
-        "level": -1
-      },
-      {
-        "id": "3328",
-        "name": "Gallente Frigate",
-        "level": 3
-      },
-      {
-        "id": "3340",
-        "name": "Gallente Industrial",
-        "level": 2
-      },
-      {
-        "id": "30652",
-        "name": "Gallente Strategic Cruiser",
-        "level": 4
-      },
-      {
-        "id": "35685",
-        "name": "Gallente Tactical Destroyer",
-        "level": -1
-      },
-      {
-        "id": "3344",
-        "name": "Gallente Titan",
-        "level": 5
-      },
-      {
-        "id": "16591",
-        "name": "Heavy Assault Cruisers",
-        "level": -1
-      },
-      {
-        "id": "28609",
-        "name": "Heavy Interdiction Cruisers",
-        "level": -1
-      },
-      {
-        "id": "29637",
-        "name": "Industrial Command Ships",
-        "level": 1
-      },
-      {
-        "id": "12092",
-        "name": "Interceptors",
-        "level": -1
-      },
-      {
-        "id": "12098",
-        "name": "Interdictors",
-        "level": -1
-      },
-      {
-        "id": "11078",
-        "name": "Jove Battleship",
-        "level": -1
-      },
-      {
-        "id": "3758",
-        "name": "Jove Cruiser",
-        "level": -1
-      },
-      {
-        "id": "3755",
-        "name": "Jove Frigate",
-        "level": 3
-      },
-      {
-        "id": "11075",
-        "name": "Jove Industrial",
-        "level": 3
-      },
-      {
-        "id": "29029",
-        "name": "Jump Freighters",
-        "level": -1
-      },
-      {
-        "id": "12096",
-        "name": "Logistics Cruisers",
-        "level": 2
-      },
-      {
-        "id": "40328",
-        "name": "Logistics Frigates",
-        "level": -1
-      },
-      {
-        "id": "28667",
-        "name": "Marauders",
-        "level": 4
-      },
-      {
-        "id": "17940",
-        "name": "Mining Barge",
-        "level": -1
-      },
-      {
-        "id": "32918",
-        "name": "Mining Frigate",
-        "level": 1
-      },
-      {
-        "id": "33098",
-        "name": "Minmatar Battlecruiser",
-        "level": 2
-      },
-      {
-        "id": "3337",
-        "name": "Minmatar Battleship",
-        "level": 1
-      },
-      {
-        "id": "24314",
-        "name": "Minmatar Carrier",
-        "level": -1
-      },
-      {
-        "id": "3333",
-        "name": "Minmatar Cruiser",
-        "level": 1
-      },
-      {
-        "id": "33094",
-        "name": "Minmatar Destroyer",
-        "level": 4
-      },
-      {
-        "id": "20532",
-        "name": "Minmatar Dreadnought",
-        "level": -1
-      },
-      {
-        "id": "40538",
-        "name": "Minmatar Force Auxiliary",
-        "level": -1
-      },
-      {
-        "id": "20528",
-        "name": "Minmatar Freighter",
-        "level": -1
-      },
-      {
-        "id": "3329",
-        "name": "Minmatar Frigate",
-        "level": -1
-      },
-      {
-        "id": "3341",
-        "name": "Minmatar Industrial",
-        "level": -1
-      },
-      {
-        "id": "30653",
-        "name": "Minmatar Strategic Cruiser",
-        "level": 5
-      },
-      {
-        "id": "34533",
-        "name": "Minmatar Tactical Destroyer",
-        "level": -1
-      },
-      {
-        "id": "3345",
-        "name": "Minmatar Titan",
-        "level": 4
-      },
-      {
-        "id": "19430",
-        "name": "Omnipotent",
-        "level": -1
-      },
-      {
-        "id": "34327",
-        "name": "ORE Freighter",
-        "level": 3
-      },
-      {
-        "id": "3184",
-        "name": "ORE Industrial",
-        "level": 4
-      },
-      {
-        "id": "9955",
-        "name": "Polaris",
-        "level": 5
-      },
-      {
-        "id": "22761",
-        "name": "Recon Ships",
-        "level": -1
-      },
-      {
-        "id": "3327",
-        "name": "Spaceship Command",
-        "level": -1
-      },
-      {
-        "id": "19719",
-        "name": "Transport Ships",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 275,
-    "name": "Navigation",
-    "skills": [
-      {
-        "id": "3452",
-        "name": "Acceleration Control",
-        "level": -1
-      },
-      {
-        "id": "3450",
-        "name": "Afterburner",
-        "level": 4
-      },
-      {
-        "id": "21603",
-        "name": "Cynosural Field Theory",
-        "level": 5
-      },
-      {
-        "id": "3453",
-        "name": "Evasive Maneuvering",
-        "level": -1
-      },
-      {
-        "id": "3451",
-        "name": "Fuel Conservation",
-        "level": -1
-      },
-      {
-        "id": "3454",
-        "name": "High Speed Maneuvering",
-        "level": -1
-      },
-      {
-        "id": "21611",
-        "name": "Jump Drive Calibration",
-        "level": 5
-      },
-      {
-        "id": "3456",
-        "name": "Jump Drive Operation",
-        "level": 2
-      },
-      {
-        "id": "21610",
-        "name": "Jump Fuel Conservation",
-        "level": 1
-      },
-      {
-        "id": "24562",
-        "name": "Jump Portal Generation",
-        "level": 1
-      },
-      {
-        "id": "4385",
-        "name": "Micro Jump Drive Operation",
-        "level": 1
-      },
-      {
-        "id": "3449",
-        "name": "Navigation",
-        "level": -1
-      },
-      {
-        "id": "3455",
-        "name": "Warp Drive Operation",
-        "level": 5
-      }
-    ]
-  },
-  {
-    "id": 1216,
-    "name": "Engineering",
-    "skills": [
-      {
-        "id": "11204",
-        "name": "Advanced Energy Grid Upgrades",
-        "level": -1
-      },
-      {
-        "id": "11207",
-        "name": "Advanced Weapon Upgrades",
-        "level": 4
-      },
-      {
-        "id": "3423",
-        "name": "Capacitor Emission Systems",
-        "level": 2
-      },
-      {
-        "id": "3418",
-        "name": "Capacitor Management",
-        "level": -1
-      },
-      {
-        "id": "3417",
-        "name": "Capacitor Systems Operation",
-        "level": -1
-      },
-      {
-        "id": "24572",
-        "name": "Capital Capacitor Emission Systems",
-        "level": -1
-      },
-      {
-        "id": "3426",
-        "name": "CPU Management",
-        "level": -1
-      },
-      {
-        "id": "3432",
-        "name": "Electronics Upgrades",
-        "level": -1
-      },
-      {
-        "id": "3424",
-        "name": "Energy Grid Upgrades",
-        "level": -1
-      },
-      {
-        "id": "3421",
-        "name": "Energy Pulse Weapons",
-        "level": -1
-      },
-      {
-        "id": "28880",
-        "name": "Nanite Interfacing",
-        "level": -1
-      },
-      {
-        "id": "28879",
-        "name": "Nanite Operation",
-        "level": 5
-      },
-      {
-        "id": "3413",
-        "name": "Power Grid Management",
-        "level": 2
-      },
-      {
-        "id": "32797",
-        "name": "Resistance Phasing",
-        "level": -1
-      },
-      {
-        "id": "28164",
-        "name": "Thermodynamics",
-        "level": -1
-      },
-      {
-        "id": "3318",
-        "name": "Weapon Upgrades",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 1240,
-    "name": "Subsystems",
-    "skills": [
-      {
-        "id": "30532",
-        "name": "Amarr Defensive Systems",
-        "level": 4
-      },
-      {
-        "id": "30536",
-        "name": "Amarr Electronic Systems",
-        "level": -1
-      },
-      {
-        "id": "30539",
-        "name": "Amarr Engineering Systems",
-        "level": -1
-      },
-      {
-        "id": "30537",
-        "name": "Amarr Offensive Systems",
-        "level": 5
-      },
-      {
-        "id": "30538",
-        "name": "Amarr Propulsion Systems",
-        "level": -1
-      },
-      {
-        "id": "30544",
-        "name": "Caldari Defensive Systems",
-        "level": -1
-      },
-      {
-        "id": "30542",
-        "name": "Caldari Electronic Systems",
-        "level": 3
-      },
-      {
-        "id": "30548",
-        "name": "Caldari Engineering Systems",
-        "level": -1
-      },
-      {
-        "id": "30549",
-        "name": "Caldari Offensive Systems",
-        "level": -1
-      },
-      {
-        "id": "30552",
-        "name": "Caldari Propulsion Systems",
-        "level": 4
-      },
-      {
-        "id": "30540",
-        "name": "Gallente Defensive Systems",
-        "level": -1
-      },
-      {
-        "id": "30541",
-        "name": "Gallente Electronic Systems",
-        "level": -1
-      },
-      {
-        "id": "30546",
-        "name": "Gallente Engineering Systems",
-        "level": 1
-      },
-      {
-        "id": "30550",
-        "name": "Gallente Offensive Systems",
-        "level": 3
-      },
-      {
-        "id": "30553",
-        "name": "Gallente Propulsion Systems",
-        "level": 5
-      },
-      {
-        "id": "30545",
-        "name": "Minmatar Defensive Systems",
-        "level": 4
-      },
-      {
-        "id": "30543",
-        "name": "Minmatar Electronic Systems",
-        "level": -1
-      },
-      {
-        "id": "30547",
-        "name": "Minmatar Engineering Systems",
-        "level": -1
-      },
-      {
-        "id": "30551",
-        "name": "Minmatar Offensive Systems",
-        "level": -1
-      },
-      {
-        "id": "30554",
-        "name": "Minmatar Propulsion Systems",
-        "level": 1
-      }
-    ]
-  },
-  {
-    "id": 1210,
-    "name": "Armor",
-    "skills": [
-      {
-        "id": "33078",
-        "name": "Armor Layering",
-        "level": -1
-      },
-      {
-        "id": "24568",
-        "name": "Capital Remote Armor Repair Systems",
-        "level": 5
-      },
-      {
-        "id": "27936",
-        "name": "Capital Remote Hull Repair Systems",
-        "level": 4
-      },
-      {
-        "id": "21803",
-        "name": "Capital Repair Systems",
-        "level": -1
-      },
-      {
-        "id": "22806",
-        "name": "EM Armor Compensation",
-        "level": -1
-      },
-      {
-        "id": "22807",
-        "name": "Explosive Armor Compensation",
-        "level": -1
-      },
-      {
-        "id": "3394",
-        "name": "Hull Upgrades",
-        "level": 3
-      },
-      {
-        "id": "22808",
-        "name": "Kinetic Armor Compensation",
-        "level": -1
-      },
-      {
-        "id": "3392",
-        "name": "Mechanics",
-        "level": -1
-      },
-      {
-        "id": "16069",
-        "name": "Remote Armor Repair Systems",
-        "level": -1
-      },
-      {
-        "id": "27902",
-        "name": "Remote Hull Repair Systems",
-        "level": 5
-      },
-      {
-        "id": "3393",
-        "name": "Repair Systems",
-        "level": 5
-      },
-      {
-        "id": "22809",
-        "name": "Thermal Armor Compensation",
-        "level": 1
-      }
-    ]
-  },
-  {
-    "id": 1209,
-    "name": "Shields",
-    "skills": [
-      {
-        "id": "11206",
-        "name": "Advanced Shield Upgrades",
-        "level": -1
-      },
-      {
-        "id": "24571",
-        "name": "Capital Shield Emission Systems",
-        "level": -1
-      },
-      {
-        "id": "21802",
-        "name": "Capital Shield Operation",
-        "level": -1
-      },
-      {
-        "id": "12365",
-        "name": "EM Shield Compensation",
-        "level": -1
-      },
-      {
-        "id": "12367",
-        "name": "Explosive Shield Compensation",
-        "level": -1
-      },
-      {
-        "id": "44067",
-        "name": "Invulnerability Core Operation",
-        "level": -1
-      },
-      {
-        "id": "12366",
-        "name": "Kinetic Shield Compensation",
-        "level": -1
-      },
-      {
-        "id": "21059",
-        "name": "Shield Compensation",
-        "level": -1
-      },
-      {
-        "id": "3422",
-        "name": "Shield Emission Systems",
-        "level": 1
-      },
-      {
-        "id": "3419",
-        "name": "Shield Management",
-        "level": -1
-      },
-      {
-        "id": "3416",
-        "name": "Shield Operation",
-        "level": 2
-      },
-      {
-        "id": "3425",
-        "name": "Shield Upgrades",
-        "level": 1
-      },
-      {
-        "id": "3420",
-        "name": "Tactical Shield Manipulation",
-        "level": 2
-      },
-      {
-        "id": "11566",
-        "name": "Thermal Shield Compensation",
-        "level": 3
-      }
-    ]
-  },
-  {
-    "id": 1213,
-    "name": "Targeting",
-    "skills": [
-      {
-        "id": "3430",
-        "name": "Advanced Target Management",
-        "level": -1
-      },
-      {
-        "id": "33000",
-        "name": "Gravimetric Sensor Compensation",
-        "level": -1
-      },
-      {
-        "id": "33001",
-        "name": "Ladar Sensor Compensation",
-        "level": 4
-      },
-      {
-        "id": "3428",
-        "name": "Long Range Targeting",
-        "level": 4
-      },
-      {
-        "id": "32999",
-        "name": "Magnetometric Sensor Compensation",
-        "level": -1
-      },
-      {
-        "id": "33002",
-        "name": "Radar Sensor Compensation",
-        "level": -1
-      },
-      {
-        "id": "3431",
-        "name": "Signature Analysis",
-        "level": 3
-      },
-      {
-        "id": "3429",
-        "name": "Target Management",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 255,
-    "name": "Gunnery",
-    "skills": [
-      {
-        "id": "41404",
-        "name": "Capital Artillery Specialization",
-        "level": -1
-      },
-      {
-        "id": "41403",
-        "name": "Capital Autocannon Specialization",
-        "level": -1
-      },
-      {
-        "id": "41408",
-        "name": "Capital Beam Laser Specialization",
-        "level": -1
-      },
-      {
-        "id": "41405",
-        "name": "Capital Blaster Specialization",
-        "level": 3
-      },
-      {
-        "id": "20327",
-        "name": "Capital Energy Turret",
-        "level": 5
-      },
-      {
-        "id": "21666",
-        "name": "Capital Hybrid Turret",
-        "level": 2
-      },
-      {
-        "id": "21667",
-        "name": "Capital Projectile Turret",
-        "level": 2
-      },
-      {
-        "id": "41407",
-        "name": "Capital Pulse Laser Specialization",
-        "level": 3
-      },
-      {
-        "id": "41406",
-        "name": "Capital Railgun Specialization",
-        "level": -1
-      },
-      {
-        "id": "3316",
-        "name": "Controlled Bursts",
-        "level": 5
-      },
-      {
-        "id": "24563",
-        "name": "Doomsday Operation",
-        "level": -1
-      },
-      {
-        "id": "41537",
-        "name": "Doomsday Rapid Firing",
-        "level": 5
-      },
-      {
-        "id": "3300",
-        "name": "Gunnery",
-        "level": 3
-      },
-      {
-        "id": "12203",
-        "name": "Large Artillery Specialization",
-        "level": 5
-      },
-      {
-        "id": "12209",
-        "name": "Large Autocannon Specialization",
-        "level": -1
-      },
-      {
-        "id": "12205",
-        "name": "Large Beam Laser Specialization",
-        "level": -1
-      },
-      {
-        "id": "12212",
-        "name": "Large Blaster Specialization",
-        "level": 3
-      },
-      {
-        "id": "3309",
-        "name": "Large Energy Turret",
-        "level": -1
-      },
-      {
-        "id": "3307",
-        "name": "Large Hybrid Turret",
-        "level": -1
-      },
-      {
-        "id": "3308",
-        "name": "Large Projectile Turret",
-        "level": -1
-      },
-      {
-        "id": "12215",
-        "name": "Large Pulse Laser Specialization",
-        "level": 3
-      },
-      {
-        "id": "12207",
-        "name": "Large Railgun Specialization",
-        "level": 3
-      },
-      {
-        "id": "12202",
-        "name": "Medium Artillery Specialization",
-        "level": -1
-      },
-      {
-        "id": "12208",
-        "name": "Medium Autocannon Specialization",
-        "level": 1
-      },
-      {
-        "id": "12204",
-        "name": "Medium Beam Laser Specialization",
-        "level": 4
-      },
-      {
-        "id": "12211",
-        "name": "Medium Blaster Specialization",
-        "level": -1
-      },
-      {
-        "id": "3306",
-        "name": "Medium Energy Turret",
-        "level": 2
-      },
-      {
-        "id": "3304",
-        "name": "Medium Hybrid Turret",
-        "level": 4
-      },
-      {
-        "id": "3305",
-        "name": "Medium Projectile Turret",
-        "level": -1
-      },
-      {
-        "id": "12214",
-        "name": "Medium Pulse Laser Specialization",
-        "level": 4
-      },
-      {
-        "id": "12206",
-        "name": "Medium Railgun Specialization",
-        "level": 5
-      },
-      {
-        "id": "3312",
-        "name": "Motion Prediction",
-        "level": 4
-      },
-      {
-        "id": "3310",
-        "name": "Rapid Firing",
-        "level": -1
-      },
-      {
-        "id": "3311",
-        "name": "Sharpshooter",
-        "level": -1
-      },
-      {
-        "id": "12201",
-        "name": "Small Artillery Specialization",
-        "level": 2
-      },
-      {
-        "id": "11084",
-        "name": "Small Autocannon Specialization",
-        "level": -1
-      },
-      {
-        "id": "11083",
-        "name": "Small Beam Laser Specialization",
-        "level": -1
-      },
-      {
-        "id": "12210",
-        "name": "Small Blaster Specialization",
-        "level": -1
-      },
-      {
-        "id": "3303",
-        "name": "Small Energy Turret",
-        "level": 1
-      },
-      {
-        "id": "3301",
-        "name": "Small Hybrid Turret",
-        "level": 2
-      },
-      {
-        "id": "3302",
-        "name": "Small Projectile Turret",
-        "level": 2
-      },
-      {
-        "id": "12213",
-        "name": "Small Pulse Laser Specialization",
-        "level": 3
-      },
-      {
-        "id": "11082",
-        "name": "Small Railgun Specialization",
-        "level": 3
-      },
-      {
-        "id": "3315",
-        "name": "Surgical Strike",
-        "level": 3
-      },
-      {
-        "id": "32856",
-        "name": "Tactical Strike",
-        "level": 2
-      },
-      {
-        "id": "22043",
-        "name": "Tactical Weapon Reconfiguration",
-        "level": -1
-      },
-      {
-        "id": "3317",
-        "name": "Trajectory Analysis",
-        "level": 1
-      }
-    ]
-  },
-  {
-    "id": 256,
-    "name": "Missiles",
-    "skills": [
-      {
-        "id": "3322",
-        "name": "Auto-Targeting Missiles",
-        "level": 5
-      },
-      {
-        "id": "28073",
-        "name": "Bomb Deployment",
-        "level": 1
-      },
-      {
-        "id": "20212",
-        "name": "Cruise Missile Specialization",
-        "level": -1
-      },
-      {
-        "id": "3326",
-        "name": "Cruise Missiles",
-        "level": 4
-      },
-      {
-        "id": "3323",
-        "name": "Defender Missiles",
-        "level": 3
-      },
-      {
-        "id": "20312",
-        "name": "Guided Missile Precision",
-        "level": 4
-      },
-      {
-        "id": "25718",
-        "name": "Heavy Assault Missile Specialization",
-        "level": 2
-      },
-      {
-        "id": "25719",
-        "name": "Heavy Assault Missiles",
-        "level": -1
-      },
-      {
-        "id": "20211",
-        "name": "Heavy Missile Specialization",
-        "level": -1
-      },
-      {
-        "id": "3324",
-        "name": "Heavy Missiles",
-        "level": -1
-      },
-      {
-        "id": "20210",
-        "name": "Light Missile Specialization",
-        "level": 3
-      },
-      {
-        "id": "3321",
-        "name": "Light Missiles",
-        "level": -1
-      },
-      {
-        "id": "12441",
-        "name": "Missile Bombardment",
-        "level": 5
-      },
-      {
-        "id": "3319",
-        "name": "Missile Launcher Operation",
-        "level": -1
-      },
-      {
-        "id": "12442",
-        "name": "Missile Projection",
-        "level": 1
-      },
-      {
-        "id": "21071",
-        "name": "Rapid Launch",
-        "level": 5
-      },
-      {
-        "id": "20209",
-        "name": "Rocket Specialization",
-        "level": 3
-      },
-      {
-        "id": "3320",
-        "name": "Rockets",
-        "level": 4
-      },
-      {
-        "id": "20314",
-        "name": "Target Navigation Prediction",
-        "level": -1
-      },
-      {
-        "id": "20213",
-        "name": "Torpedo Specialization",
-        "level": 4
-      },
-      {
-        "id": "3325",
-        "name": "Torpedoes",
-        "level": -1
-      },
-      {
-        "id": "20315",
-        "name": "Warhead Upgrades",
-        "level": -1
-      },
-      {
-        "id": "41410",
-        "name": "XL Cruise Missile Specialization",
-        "level": 1
-      },
-      {
-        "id": "32435",
-        "name": "XL Cruise Missiles",
-        "level": -1
-      },
-      {
-        "id": "41409",
-        "name": "XL Torpedo Specialization",
-        "level": 5
-      },
-      {
-        "id": "21668",
-        "name": "XL Torpedoes",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 273,
-    "name": "Drones",
-    "skills": [
-      {
-        "id": "23566",
-        "name": "Advanced Drone Avionics",
-        "level": 1
-      },
-      {
-        "id": "12484",
-        "name": "Amarr Drone Specialization",
-        "level": 3
-      },
-      {
-        "id": "12487",
-        "name": "Caldari Drone Specialization",
-        "level": 3
-      },
-      {
-        "id": "3437",
-        "name": "Drone Avionics",
-        "level": -1
-      },
-      {
-        "id": "23618",
-        "name": "Drone Durability",
-        "level": -1
-      },
-      {
-        "id": "3442",
-        "name": "Drone Interfacing",
-        "level": -1
-      },
-      {
-        "id": "12305",
-        "name": "Drone Navigation",
-        "level": 5
-      },
-      {
-        "id": "23606",
-        "name": "Drone Sharpshooting",
-        "level": -1
-      },
-      {
-        "id": "3436",
-        "name": "Drones",
-        "level": 1
-      },
-      {
-        "id": "24613",
-        "name": "Fighter Hangar Management",
-        "level": -1
-      },
-      {
-        "id": "23069",
-        "name": "Fighters",
-        "level": -1
-      },
-      {
-        "id": "12486",
-        "name": "Gallente Drone Specialization",
-        "level": 3
-      },
-      {
-        "id": "3441",
-        "name": "Heavy Drone Operation",
-        "level": 4
-      },
-      {
-        "id": "32339",
-        "name": "Heavy Fighters",
-        "level": -1
-      },
-      {
-        "id": "43702",
-        "name": "Ice Harvesting Drone Operation",
-        "level": 3
-      },
-      {
-        "id": "43703",
-        "name": "Ice Harvesting Drone Specialization",
-        "level": 2
-      },
-      {
-        "id": "24241",
-        "name": "Light Drone Operation",
-        "level": -1
-      },
-      {
-        "id": "40572",
-        "name": "Light Fighters",
-        "level": 3
-      },
-      {
-        "id": "33699",
-        "name": "Medium Drone Operation",
-        "level": 5
-      },
-      {
-        "id": "3438",
-        "name": "Mining Drone Operation",
-        "level": 2
-      },
-      {
-        "id": "22541",
-        "name": "Mining Drone Specialization",
-        "level": 1
-      },
-      {
-        "id": "12485",
-        "name": "Minmatar Drone Specialization",
-        "level": -1
-      },
-      {
-        "id": "23599",
-        "name": "Propulsion Jamming Drone Interfacing",
-        "level": 5
-      },
-      {
-        "id": "3439",
-        "name": "Repair Drone Operation",
-        "level": 1
-      },
-      {
-        "id": "3440",
-        "name": "Salvage Drone Operation",
-        "level": -1
-      },
-      {
-        "id": "23594",
-        "name": "Sentry Drone Interfacing",
-        "level": 3
-      },
-      {
-        "id": "40573",
-        "name": "Support Fighters",
-        "level": -1
-      },
-      {
-        "id": "22172",
-        "name": "TEST Drone Skill",
-        "level": 5
-      }
-    ]
-  },
-  {
-    "id": 272,
-    "name": "Electronic Systems",
-    "skills": [
-      {
-        "id": "11208",
-        "name": "Advanced Sensor Upgrades",
-        "level": 2
-      },
-      {
-        "id": "27911",
-        "name": "Burst Projector Operation",
-        "level": 5
-      },
-      {
-        "id": "11579",
-        "name": "Cloaking",
-        "level": 4
-      },
-      {
-        "id": "3427",
-        "name": "Electronic Warfare",
-        "level": -1
-      },
-      {
-        "id": "19760",
-        "name": "Frequency Modulation",
-        "level": -1
-      },
-      {
-        "id": "12368",
-        "name": "Hypereuclidean Navigation",
-        "level": -1
-      },
-      {
-        "id": "28631",
-        "name": "Imperial Navy Security Clearance",
-        "level": -1
-      },
-      {
-        "id": "19759",
-        "name": "Long Distance Jamming",
-        "level": -1
-      },
-      {
-        "id": "3435",
-        "name": "Propulsion Jamming",
-        "level": -1
-      },
-      {
-        "id": "3433",
-        "name": "Sensor Linking",
-        "level": -1
-      },
-      {
-        "id": "19761",
-        "name": "Signal Dispersion",
-        "level": 4
-      },
-      {
-        "id": "19766",
-        "name": "Signal Suppression",
-        "level": 1
-      },
-      {
-        "id": "19922",
-        "name": "Signature Focusing",
-        "level": 5
-      },
-      {
-        "id": "27906",
-        "name": "Tactical Logistics Reconfiguration",
-        "level": 1
-      },
-      {
-        "id": "4411",
-        "name": "Target Breaker Amplification",
-        "level": -1
-      },
-      {
-        "id": "19921",
-        "name": "Target Painting",
-        "level": 4
-      },
-      {
-        "id": "28604",
-        "name": "Tournament Observation",
-        "level": 3
-      },
-      {
-        "id": "19767",
-        "name": "Weapon Destabilization",
-        "level": -1
-      },
-      {
-        "id": "3434",
-        "name": "Weapon Disruption",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 1217,
-    "name": "Scanning",
-    "skills": [
-      {
-        "id": "13278",
-        "name": "Archaeology",
-        "level": -1
-      },
-      {
-        "id": "25811",
-        "name": "Astrometric Acquisition",
-        "level": -1
-      },
-      {
-        "id": "25810",
-        "name": "Astrometric Pinpointing",
-        "level": 1
-      },
-      {
-        "id": "25739",
-        "name": "Astrometric Rangefinding",
-        "level": -1
-      },
-      {
-        "id": "3412",
-        "name": "Astrometrics",
-        "level": 5
-      },
-      {
-        "id": "21718",
-        "name": "Hacking",
-        "level": -1
-      },
-      {
-        "id": "3551",
-        "name": "Survey",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 269,
-    "name": "Rigging",
-    "skills": [
-      {
-        "id": "26253",
-        "name": "Armor Rigging",
-        "level": -1
-      },
-      {
-        "id": "26254",
-        "name": "Astronautics Rigging",
-        "level": 1
-      },
-      {
-        "id": "26255",
-        "name": "Drones Rigging",
-        "level": -1
-      },
-      {
-        "id": "26256",
-        "name": "Electronic Superiority Rigging",
-        "level": 5
-      },
-      {
-        "id": "26258",
-        "name": "Energy Weapon Rigging",
-        "level": -1
-      },
-      {
-        "id": "26259",
-        "name": "Hybrid Weapon Rigging",
-        "level": -1
-      },
-      {
-        "id": "26252",
-        "name": "Jury Rigging",
-        "level": 1
-      },
-      {
-        "id": "26260",
-        "name": "Launcher Rigging",
-        "level": -1
-      },
-      {
-        "id": "26257",
-        "name": "Projectile Weapon Rigging",
-        "level": -1
-      },
-      {
-        "id": "26261",
-        "name": "Shield Rigging",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 278,
-    "name": "Social",
-    "skills": [
-      {
-        "id": "3359",
-        "name": "Connections",
-        "level": -1
-      },
-      {
-        "id": "3361",
-        "name": "Criminal Connections",
-        "level": -1
-      },
-      {
-        "id": "3362",
-        "name": "DED Connections",
-        "level": 5
-      },
-      {
-        "id": "3357",
-        "name": "Diplomacy",
-        "level": 4
-      },
-      {
-        "id": "3894",
-        "name": "Distribution Connections",
-        "level": -1
-      },
-      {
-        "id": "3358",
-        "name": "Fast Talk",
-        "level": 4
-      },
-      {
-        "id": "3893",
-        "name": "Mining Connections",
-        "level": 5
-      },
-      {
-        "id": "3356",
-        "name": "Negotiation",
-        "level": 4
-      },
-      {
-        "id": "3895",
-        "name": "Security Connections",
-        "level": -1
-      },
-      {
-        "id": "3355",
-        "name": "Social",
-        "level": 3
-      }
-    ]
-  },
-  {
-    "id": 258,
-    "name": "Fleet Support",
-    "skills": [
-      {
-        "id": "20494",
-        "name": "Armored Command",
-        "level": 1
-      },
-      {
-        "id": "11569",
-        "name": "Armored Command Specialist",
-        "level": 5
-      },
-      {
-        "id": "3354",
-        "name": "Command Burst Specialist",
-        "level": -1
-      },
-      {
-        "id": "24764",
-        "name": "Fleet Command",
-        "level": -1
-      },
-      {
-        "id": "20495",
-        "name": "Information Command",
-        "level": 5
-      },
-      {
-        "id": "3352",
-        "name": "Information Command Specialist",
-        "level": 1
-      },
-      {
-        "id": "3348",
-        "name": "Leadership",
-        "level": -1
-      },
-      {
-        "id": "22552",
-        "name": "Mining Director",
-        "level": -1
-      },
-      {
-        "id": "22536",
-        "name": "Mining Foreman",
-        "level": 5
-      },
-      {
-        "id": "3350",
-        "name": "Shield Command",
-        "level": 1
-      },
-      {
-        "id": "3351",
-        "name": "Shield Command Specialist",
-        "level": 4
-      },
-      {
-        "id": "3349",
-        "name": "Skirmish Command",
-        "level": -1
-      },
-      {
-        "id": "11572",
-        "name": "Skirmish Command Specialist",
-        "level": 2
-      },
-      {
-        "id": "43728",
-        "name": "Spatial Phenomena Generation",
-        "level": 4
-      },
-      {
-        "id": "11574",
-        "name": "Wing Command",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 266,
-    "name": "Corporation Management",
-    "skills": [
-      {
-        "id": "3369",
-        "name": "CFO Training",
-        "level": -1
-      },
-      {
-        "id": "3370",
-        "name": "Chief Science Officer",
-        "level": -1
-      },
-      {
-        "id": "3363",
-        "name": "Corporation Management",
-        "level": -1
-      },
-      {
-        "id": "3368",
-        "name": "Diplomatic Relations",
-        "level": -1
-      },
-      {
-        "id": "3732",
-        "name": "Empire Control",
-        "level": -1
-      },
-      {
-        "id": "3366",
-        "name": "Factory Management",
-        "level": 5
-      },
-      {
-        "id": "3372",
-        "name": "Intelligence Analyst",
-        "level": 5
-      },
-      {
-        "id": "3731",
-        "name": "Megacorp Management",
-        "level": 4
-      },
-      {
-        "id": "3371",
-        "name": "Public Relations",
-        "level": 5
-      },
-      {
-        "id": "3367",
-        "name": "Refinery Management",
-        "level": -1
-      },
-      {
-        "id": "12241",
-        "name": "Sovereignty",
-        "level": -1
-      },
-      {
-        "id": "3365",
-        "name": "Starbase Management",
-        "level": 2
-      },
-      {
-        "id": "3364",
-        "name": "Station Management",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 274,
-    "name": "Trade",
-    "skills": [
-      {
-        "id": "16622",
-        "name": "Accounting",
-        "level": -1
-      },
-      {
-        "id": "3445",
-        "name": "Black Market Trading",
-        "level": -1
-      },
-      {
-        "id": "3446",
-        "name": "Broker Relations",
-        "level": -1
-      },
-      {
-        "id": "13074",
-        "name": "Consumable Freight",
-        "level": -1
-      },
-      {
-        "id": "25235",
-        "name": "Contracting",
-        "level": 1
-      },
-      {
-        "id": "25233",
-        "name": "Corporation Contracting",
-        "level": 1
-      },
-      {
-        "id": "33467",
-        "name": "Customs Code Expertise",
-        "level": -1
-      },
-      {
-        "id": "16595",
-        "name": "Daytrading",
-        "level": -1
-      },
-      {
-        "id": "13072",
-        "name": "Drone Freight",
-        "level": -1
-      },
-      {
-        "id": "12834",
-        "name": "General Freight",
-        "level": 2
-      },
-      {
-        "id": "13075",
-        "name": "Hazardous Material Freight",
-        "level": 1
-      },
-      {
-        "id": "16597",
-        "name": "Margin Trading",
-        "level": 4
-      },
-      {
-        "id": "16598",
-        "name": "Marketing",
-        "level": -1
-      },
-      {
-        "id": "13070",
-        "name": "Mineral Freight",
-        "level": -1
-      },
-      {
-        "id": "13071",
-        "name": "Munitions Freight",
-        "level": -1
-      },
-      {
-        "id": "16594",
-        "name": "Procurement",
-        "level": -1
-      },
-      {
-        "id": "13073",
-        "name": "Raw Material Freight",
-        "level": -1
-      },
-      {
-        "id": "3444",
-        "name": "Retail",
-        "level": 2
-      },
-      {
-        "id": "3448",
-        "name": "Smuggling",
-        "level": 1
-      },
-      {
-        "id": "13069",
-        "name": "Starship Freight",
-        "level": 3
-      },
-      {
-        "id": "28261",
-        "name": "Tax Evasion",
-        "level": -1
-      },
-      {
-        "id": "11015",
-        "name": "Test",
-        "level": 5
-      },
-      {
-        "id": "3443",
-        "name": "Trade",
-        "level": -1
-      },
-      {
-        "id": "18580",
-        "name": "Tycoon",
-        "level": -1
-      },
-      {
-        "id": "3447",
-        "name": "Visibility",
-        "level": -1
-      },
-      {
-        "id": "16596",
-        "name": "Wholesale",
-        "level": 1
-      }
-    ]
-  },
-  {
-    "id": 1220,
-    "name": "Neural Enhancement",
-    "skills": [
-      {
-        "id": "33407",
-        "name": "Advanced Infomorph Psychology",
-        "level": 4
-      },
-      {
-        "id": "3405",
-        "name": "Biology",
-        "level": -1
-      },
-      {
-        "id": "24606",
-        "name": "Cloning Facility Operation",
-        "level": -1
-      },
-      {
-        "id": "3411",
-        "name": "Cybernetics",
-        "level": -1
-      },
-      {
-        "id": "24242",
-        "name": "Infomorph Psychology",
-        "level": -1
-      },
-      {
-        "id": "33399",
-        "name": "Infomorph Synchronizing",
-        "level": -1
-      },
-      {
-        "id": "25538",
-        "name": "Neurotoxin Control",
-        "level": 1
-      },
-      {
-        "id": "25530",
-        "name": "Neurotoxin Recovery",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 268,
-    "name": "Production",
-    "skills": [
-      {
-        "id": "3396",
-        "name": "Advanced Industrial Ship Construction",
-        "level": 4
-      },
-      {
-        "id": "3388",
-        "name": "Advanced Industry",
-        "level": -1
-      },
-      {
-        "id": "3398",
-        "name": "Advanced Large Ship Construction",
-        "level": -1
-      },
-      {
-        "id": "24625",
-        "name": "Advanced Mass Production",
-        "level": -1
-      },
-      {
-        "id": "3397",
-        "name": "Advanced Medium Ship Construction",
-        "level": 2
-      },
-      {
-        "id": "3395",
-        "name": "Advanced Small Ship Construction",
-        "level": -1
-      },
-      {
-        "id": "3381",
-        "name": "Amarr Tech",
-        "level": -1
-      },
-      {
-        "id": "3382",
-        "name": "Caldari Tech",
-        "level": -1
-      },
-      {
-        "id": "22242",
-        "name": "Capital Ship Construction",
-        "level": 1
-      },
-      {
-        "id": "26224",
-        "name": "Drug Manufacturing",
-        "level": 2
-      },
-      {
-        "id": "3383",
-        "name": "Gallente Tech",
-        "level": 3
-      },
-      {
-        "id": "3380",
-        "name": "Industry",
-        "level": 1
-      },
-      {
-        "id": "3387",
-        "name": "Mass Production",
-        "level": 3
-      },
-      {
-        "id": "3384",
-        "name": "Minmatar Tech",
-        "level": -1
-      },
-      {
-        "id": "3391",
-        "name": "Mobile Factory Operation",
-        "level": 2
-      },
-      {
-        "id": "3400",
-        "name": "Outpost Construction",
-        "level": 3
-      },
-      {
-        "id": "24268",
-        "name": "Supply Chain Management",
-        "level": 4
-      }
-    ]
-  },
-  {
-    "id": 270,
-    "name": "Science",
-    "skills": [
-      {
-        "id": "24624",
-        "name": "Advanced Laboratory Operation",
-        "level": -1
-      },
-      {
-        "id": "23087",
-        "name": "Amarr Encryption Methods",
-        "level": 5
-      },
-      {
-        "id": "11444",
-        "name": "Amarr Starship Engineering",
-        "level": -1
-      },
-      {
-        "id": "11487",
-        "name": "Astronautic Engineering",
-        "level": -1
-      },
-      {
-        "id": "21790",
-        "name": "Caldari Encryption Methods",
-        "level": -1
-      },
-      {
-        "id": "11454",
-        "name": "Caldari Starship Engineering",
-        "level": 2
-      },
-      {
-        "id": "30324",
-        "name": "Defensive Subsystem Technology",
-        "level": 2
-      },
-      {
-        "id": "11448",
-        "name": "Electromagnetic Physics",
-        "level": 2
-      },
-      {
-        "id": "11453",
-        "name": "Electronic Engineering",
-        "level": 4
-      },
-      {
-        "id": "30326",
-        "name": "Electronic Subsystem Technology",
-        "level": 4
-      },
-      {
-        "id": "30325",
-        "name": "Engineering Subsystem Technology",
-        "level": 1
-      },
-      {
-        "id": "23121",
-        "name": "Gallente Encryption Methods",
-        "level": 4
-      },
-      {
-        "id": "11450",
-        "name": "Gallente Starship Engineering",
-        "level": 5
-      },
-      {
-        "id": "11446",
-        "name": "Graviton Physics",
-        "level": 4
-      },
-      {
-        "id": "11433",
-        "name": "High Energy Physics",
-        "level": 4
-      },
-      {
-        "id": "11443",
-        "name": "Hydromagnetic Physics",
-        "level": -1
-      },
-      {
-        "id": "11858",
-        "name": "Hypernet Science",
-        "level": -1
-      },
-      {
-        "id": "3406",
-        "name": "Laboratory Operation",
-        "level": 5
-      },
-      {
-        "id": "11447",
-        "name": "Laser Physics",
-        "level": 3
-      },
-      {
-        "id": "11452",
-        "name": "Mechanical Engineering",
-        "level": 2
-      },
-      {
-        "id": "3409",
-        "name": "Metallurgy",
-        "level": -1
-      },
-      {
-        "id": "21791",
-        "name": "Minmatar Encryption Methods",
-        "level": -1
-      },
-      {
-        "id": "11445",
-        "name": "Minmatar Starship Engineering",
-        "level": 4
-      },
-      {
-        "id": "11529",
-        "name": "Molecular Engineering",
-        "level": -1
-      },
-      {
-        "id": "11442",
-        "name": "Nanite Engineering",
-        "level": 2
-      },
-      {
-        "id": "11451",
-        "name": "Nuclear Physics",
-        "level": 3
-      },
-      {
-        "id": "30327",
-        "name": "Offensive Subsystem Technology",
-        "level": 4
-      },
-      {
-        "id": "11441",
-        "name": "Plasma Physics",
-        "level": -1
-      },
-      {
-        "id": "30788",
-        "name": "Propulsion Subsystem Technology",
-        "level": 2
-      },
-      {
-        "id": "11455",
-        "name": "Quantum Physics",
-        "level": -1
-      },
-      {
-        "id": "3403",
-        "name": "Research",
-        "level": -1
-      },
-      {
-        "id": "12179",
-        "name": "Research Project Management",
-        "level": -1
-      },
-      {
-        "id": "11449",
-        "name": "Rocket Science",
-        "level": -1
-      },
-      {
-        "id": "3402",
-        "name": "Science",
-        "level": -1
-      },
-      {
-        "id": "24270",
-        "name": "Scientific Networking",
-        "level": 4
-      },
-      {
-        "id": "3408",
-        "name": "Sleeper Encryption Methods",
-        "level": 4
-      },
-      {
-        "id": "21789",
-        "name": "Sleeper Technology",
-        "level": -1
-      },
-      {
-        "id": "23123",
-        "name": "Takmahl Technology",
-        "level": 5
-      },
-      {
-        "id": "20433",
-        "name": "Talocan Technology",
-        "level": -1
-      },
-      {
-        "id": "23124",
-        "name": "Yan Jung Technology",
-        "level": 3
-      }
-    ]
-  },
-  {
-    "id": 1218,
-    "name": "Resource Processing",
-    "skills": [
-      {
-        "id": "12180",
-        "name": "Arkonor Processing",
-        "level": -1
-      },
-      {
-        "id": "3410",
-        "name": "Astrogeology",
-        "level": 4
-      },
-      {
-        "id": "12181",
-        "name": "Bistot Processing",
-        "level": -1
-      },
-      {
-        "id": "12182",
-        "name": "Crokite Processing",
-        "level": -1
-      },
-      {
-        "id": "12183",
-        "name": "Dark Ochre Processing",
-        "level": 1
-      },
-      {
-        "id": "11395",
-        "name": "Deep Core Mining",
-        "level": 3
-      },
-      {
-        "id": "25544",
-        "name": "Gas Cloud Harvesting",
-        "level": 3
-      },
-      {
-        "id": "12184",
-        "name": "Gneiss Processing",
-        "level": -1
-      },
-      {
-        "id": "12185",
-        "name": "Hedbergite Processing",
-        "level": 3
-      },
-      {
-        "id": "12186",
-        "name": "Hemorphite Processing",
-        "level": 3
-      },
-      {
-        "id": "16281",
-        "name": "Ice Harvesting",
-        "level": 4
-      },
-      {
-        "id": "18025",
-        "name": "Ice Processing",
-        "level": 5
-      },
-      {
-        "id": "28585",
-        "name": "Industrial Reconfiguration",
-        "level": 4
-      },
-      {
-        "id": "12187",
-        "name": "Jaspet Processing",
-        "level": -1
-      },
-      {
-        "id": "12188",
-        "name": "Kernite Processing",
-        "level": -1
-      },
-      {
-        "id": "12189",
-        "name": "Mercoxit Processing",
-        "level": -1
-      },
-      {
-        "id": "3386",
-        "name": "Mining",
-        "level": -1
-      },
-      {
-        "id": "22578",
-        "name": "Mining Upgrades",
-        "level": -1
-      },
-      {
-        "id": "3390",
-        "name": "Mobile Refinery Operation",
-        "level": -1
-      },
-      {
-        "id": "12190",
-        "name": "Omber Processing",
-        "level": 4
-      },
-      {
-        "id": "28373",
-        "name": "Ore Compression",
-        "level": -1
-      },
-      {
-        "id": "12191",
-        "name": "Plagioclase Processing",
-        "level": 4
-      },
-      {
-        "id": "12192",
-        "name": "Pyroxeres Processing",
-        "level": 3
-      },
-      {
-        "id": "3385",
-        "name": "Reprocessing",
-        "level": -1
-      },
-      {
-        "id": "3389",
-        "name": "Reprocessing Efficiency",
-        "level": -1
-      },
-      {
-        "id": "25863",
-        "name": "Salvaging",
-        "level": -1
-      },
-      {
-        "id": "12193",
-        "name": "Scordite Processing",
-        "level": 4
-      },
-      {
-        "id": "12196",
-        "name": "Scrapmetal Processing",
-        "level": -1
-      },
-      {
-        "id": "12194",
-        "name": "Spodumain Processing",
-        "level": 3
-      },
-      {
-        "id": "12195",
-        "name": "Veldspar Processing",
-        "level": -1
-      }
-    ]
-  },
-  {
-    "id": 1241,
-    "name": "Planet Management",
-    "skills": [
-      {
-        "id": "2403",
-        "name": "Advanced Planetology",
-        "level": 5
-      },
-      {
-        "id": "2505",
-        "name": "Command Center Upgrades",
-        "level": 4
-      },
-      {
-        "id": "2495",
-        "name": "Interplanetary Consolidation",
-        "level": -1
-      },
-      {
-        "id": "2406",
-        "name": "Planetology",
-        "level": 2
-      },
-      {
-        "id": "13279",
-        "name": "Remote Sensing",
-        "level": 2
-      }
-    ]
-  },
-  {
-    "id": 1545,
-    "name": "Structure Management",
-    "skills": [
-      {
-        "id": "11584",
-        "name": "Anchoring",
-        "level": -1
-      },
-      {
-        "id": "3373",
-        "name": "Starbase Defense Management",
-        "level": 1
-      },
-      {
-        "id": "37797",
-        "name": "Structure Doomsday Operation",
-        "level": -1
-      },
-      {
-        "id": "37798",
-        "name": "Structure Electronic Systems",
-        "level": -1
-      },
-      {
-        "id": "37799",
-        "name": "Structure Engineering Systems",
-        "level": 4
-      },
-      {
-        "id": "37796",
-        "name": "Structure Missile Systems",
-        "level": 2
-      }
-    ]
-  }
-]
+[{
+  "id": 2403,
+  "name": "Advanced Planetology",
+  "group": 1241,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 2406,
+  "name": "Planetology",
+  "group": 1241,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 2495,
+  "name": "Interplanetary Consolidation",
+  "group": 1241,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 2505,
+  "name": "Command Center Upgrades",
+  "group": 1241,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 3184,
+  "name": "ORE Industrial",
+  "group": 257,
+  "level": 2,
+  "sp": 5657
+}, {
+  "id": 3300,
+  "name": "Gunnery",
+  "group": 255,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3301,
+  "name": "Small Hybrid Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3302,
+  "name": "Small Projectile Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3303,
+  "name": "Small Energy Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3304,
+  "name": "Medium Hybrid Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3305,
+  "name": "Medium Projectile Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3306,
+  "name": "Medium Energy Turret",
+  "group": 255,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3307,
+  "name": "Large Hybrid Turret",
+  "group": 255,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3308,
+  "name": "Large Projectile Turret",
+  "group": 255,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 3309,
+  "name": "Large Energy Turret",
+  "group": 255,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 3310,
+  "name": "Rapid Firing",
+  "group": 255,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3311,
+  "name": "Sharpshooter",
+  "group": 255,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3312,
+  "name": "Motion Prediction",
+  "group": 255,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3315,
+  "name": "Surgical Strike",
+  "group": 255,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 3316,
+  "name": "Controlled Bursts",
+  "group": 255,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3317,
+  "name": "Trajectory Analysis",
+  "group": 255,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 3318,
+  "name": "Weapon Upgrades",
+  "group": 1216,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3319,
+  "name": "Missile Launcher Operation",
+  "group": 256,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3320,
+  "name": "Rockets",
+  "group": 256,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3321,
+  "name": "Light Missiles",
+  "group": 256,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3322,
+  "name": "Auto-Targeting Missiles",
+  "group": 256,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 3323,
+  "name": "Defender Missiles",
+  "group": 256,
+  "level": 2,
+  "sp": 2829
+}, {
+  "id": 3324,
+  "name": "Heavy Missiles",
+  "group": 256,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3325,
+  "name": "Torpedoes",
+  "group": 256,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 3326,
+  "name": "Cruise Missiles",
+  "group": 256,
+  "level": 2,
+  "sp": 7072
+}, {
+  "id": 3327,
+  "name": "Spaceship Command",
+  "group": 257,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3328,
+  "name": "Gallente Frigate",
+  "group": 257,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3329,
+  "name": "Minmatar Frigate",
+  "group": 257,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3330,
+  "name": "Caldari Frigate",
+  "group": 257,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3331,
+  "name": "Amarr Frigate",
+  "group": 257,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3332,
+  "name": "Gallente Cruiser",
+  "group": 257,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 3333,
+  "name": "Minmatar Cruiser",
+  "group": 257,
+  "level": 5,
+  "sp": 1280000
+}, {
+  "id": 3334,
+  "name": "Caldari Cruiser",
+  "group": 257,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 3335,
+  "name": "Amarr Cruiser",
+  "group": 257,
+  "level": 5,
+  "sp": 1280000
+}, {
+  "id": 3336,
+  "name": "Gallente Battleship",
+  "group": 257,
+  "level": 3,
+  "sp": 64000
+}, {
+  "id": 3337,
+  "name": "Minmatar Battleship",
+  "group": 257,
+  "level": 3,
+  "sp": 64000
+}, {
+  "id": 3338,
+  "name": "Caldari Battleship",
+  "group": 257,
+  "level": 3,
+  "sp": 64000
+}, {
+  "id": 3339,
+  "name": "Amarr Battleship",
+  "group": 257,
+  "level": 3,
+  "sp": 64000
+}, {
+  "id": 3340,
+  "name": "Gallente Industrial",
+  "group": 257,
+  "level": 1,
+  "sp": 1000
+}, {
+  "id": 3341,
+  "name": "Minmatar Industrial",
+  "group": 257,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 3342,
+  "name": "Caldari Industrial",
+  "group": 257,
+  "level": 1,
+  "sp": 1000
+}, {
+  "id": 3343,
+  "name": "Amarr Industrial",
+  "group": 257,
+  "level": 1,
+  "sp": 1000
+}, {
+  "id": 3348,
+  "name": "Leadership",
+  "group": 258,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3349,
+  "name": "Skirmish Command",
+  "group": 258,
+  "level": 3,
+  "sp": 16000
+}, {
+  "id": 3350,
+  "name": "Shield Command",
+  "group": 258,
+  "level": 3,
+  "sp": 16000
+}, {
+  "id": 3355,
+  "name": "Social",
+  "group": 278,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 3356,
+  "name": "Negotiation",
+  "group": 278,
+  "level": 2,
+  "sp": 2829
+}, {
+  "id": 3359,
+  "name": "Connections",
+  "group": 278,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 3373,
+  "name": "Starbase Defense Management",
+  "group": 1545,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3380,
+  "name": "Industry",
+  "group": 268,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3385,
+  "name": "Reprocessing",
+  "group": 1218,
+  "level": 2,
+  "sp": 1415
+}, {
+  "id": 3386,
+  "name": "Mining",
+  "group": 1218,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 3387,
+  "name": "Mass Production",
+  "group": 268,
+  "level": 2,
+  "sp": 2829
+}, {
+  "id": 3388,
+  "name": "Advanced Industry",
+  "group": 268,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 3392,
+  "name": "Mechanics",
+  "group": 1210,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3393,
+  "name": "Repair Systems",
+  "group": 1210,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 3394,
+  "name": "Hull Upgrades",
+  "group": 1210,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3395,
+  "name": "Advanced Small Ship Construction",
+  "group": 268,
+  "level": 2,
+  "sp": 2829
+}, {
+  "id": 3397,
+  "name": "Advanced Medium Ship Construction",
+  "group": 268,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3402,
+  "name": "Science",
+  "group": 270,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3405,
+  "name": "Biology",
+  "group": 1220,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 3410,
+  "name": "Astrogeology",
+  "group": 1218,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 3411,
+  "name": "Cybernetics",
+  "group": 1220,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 3412,
+  "name": "Astrometrics",
+  "group": 1217,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3413,
+  "name": "Power Grid Management",
+  "group": 1216,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3416,
+  "name": "Shield Operation",
+  "group": 1209,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3417,
+  "name": "Capacitor Systems Operation",
+  "group": 1216,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3418,
+  "name": "Capacitor Management",
+  "group": 1216,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3419,
+  "name": "Shield Management",
+  "group": 1209,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3420,
+  "name": "Tactical Shield Manipulation",
+  "group": 1209,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 3421,
+  "name": "Energy Pulse Weapons",
+  "group": 1216,
+  "level": 3,
+  "sp": 16000
+}, {
+  "id": 3422,
+  "name": "Shield Emission Systems",
+  "group": 1209,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3423,
+  "name": "Capacitor Emission Systems",
+  "group": 1216,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3424,
+  "name": "Energy Grid Upgrades",
+  "group": 1216,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3425,
+  "name": "Shield Upgrades",
+  "group": 1209,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3426,
+  "name": "CPU Management",
+  "group": 1216,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3427,
+  "name": "Electronic Warfare",
+  "group": 272,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3428,
+  "name": "Long Range Targeting",
+  "group": 1213,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3429,
+  "name": "Target Management",
+  "group": 1213,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3430,
+  "name": "Advanced Target Management",
+  "group": 1213,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3431,
+  "name": "Signature Analysis",
+  "group": 1213,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3432,
+  "name": "Electronics Upgrades",
+  "group": 1216,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3433,
+  "name": "Sensor Linking",
+  "group": 272,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 3434,
+  "name": "Weapon Disruption",
+  "group": 272,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 3435,
+  "name": "Propulsion Jamming",
+  "group": 272,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 3436,
+  "name": "Drones",
+  "group": 273,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3437,
+  "name": "Drone Avionics",
+  "group": 273,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 3438,
+  "name": "Mining Drone Operation",
+  "group": 273,
+  "level": 2,
+  "sp": 2829
+}, {
+  "id": 3439,
+  "name": "Repair Drone Operation",
+  "group": 273,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 3440,
+  "name": "Salvage Drone Operation",
+  "group": 273,
+  "level": 2,
+  "sp": 5657
+}, {
+  "id": 3441,
+  "name": "Heavy Drone Operation",
+  "group": 273,
+  "level": 4,
+  "sp": 306643
+}, {
+  "id": 3442,
+  "name": "Drone Interfacing",
+  "group": 273,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 3443,
+  "name": "Trade",
+  "group": 274,
+  "level": 2,
+  "sp": 1415
+}, {
+  "id": 3444,
+  "name": "Retail",
+  "group": 274,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3446,
+  "name": "Broker Relations",
+  "group": 274,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 3449,
+  "name": "Navigation",
+  "group": 275,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3450,
+  "name": "Afterburner",
+  "group": 275,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 3451,
+  "name": "Fuel Conservation",
+  "group": 275,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 3452,
+  "name": "Acceleration Control",
+  "group": 275,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 3453,
+  "name": "Evasive Maneuvering",
+  "group": 275,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 3454,
+  "name": "High Speed Maneuvering",
+  "group": 275,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 3455,
+  "name": "Warp Drive Operation",
+  "group": 275,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 3551,
+  "name": "Survey",
+  "group": 1217,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 4385,
+  "name": "Micro Jump Drive Operation",
+  "group": 275,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 4411,
+  "name": "Target Breaker Amplification",
+  "group": 272,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 11082,
+  "name": "Small Railgun Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 11083,
+  "name": "Small Beam Laser Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 11084,
+  "name": "Small Autocannon Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 11207,
+  "name": "Advanced Weapon Upgrades",
+  "group": 1216,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 11433,
+  "name": "High Energy Physics",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11442,
+  "name": "Nanite Engineering",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11443,
+  "name": "Hydromagnetic Physics",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11446,
+  "name": "Graviton Physics",
+  "group": 270,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 11447,
+  "name": "Laser Physics",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11448,
+  "name": "Electromagnetic Physics",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11449,
+  "name": "Rocket Science",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11452,
+  "name": "Mechanical Engineering",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11453,
+  "name": "Electronic Engineering",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11455,
+  "name": "Quantum Physics",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11529,
+  "name": "Molecular Engineering",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 11566,
+  "name": "Thermal Shield Compensation",
+  "group": 1209,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 11579,
+  "name": "Cloaking",
+  "group": 272,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 11584,
+  "name": "Anchoring",
+  "group": 1545,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 12092,
+  "name": "Interceptors",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 12093,
+  "name": "Covert Ops",
+  "group": 257,
+  "level": 5,
+  "sp": 1024000
+}, {
+  "id": 12095,
+  "name": "Assault Frigates",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 12096,
+  "name": "Logistics Cruisers",
+  "group": 257,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 12098,
+  "name": "Interdictors",
+  "group": 257,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12201,
+  "name": "Small Artillery Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 12202,
+  "name": "Medium Artillery Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 12204,
+  "name": "Medium Beam Laser Specialization",
+  "group": 255,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12206,
+  "name": "Medium Railgun Specialization",
+  "group": 255,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12208,
+  "name": "Medium Autocannon Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 12210,
+  "name": "Small Blaster Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 12211,
+  "name": "Medium Blaster Specialization",
+  "group": 255,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12213,
+  "name": "Small Pulse Laser Specialization",
+  "group": 255,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 12214,
+  "name": "Medium Pulse Laser Specialization",
+  "group": 255,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12305,
+  "name": "Drone Navigation",
+  "group": 273,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 12365,
+  "name": "EM Shield Compensation",
+  "group": 1209,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 12366,
+  "name": "Kinetic Shield Compensation",
+  "group": 1209,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 12367,
+  "name": "Explosive Shield Compensation",
+  "group": 1209,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 12441,
+  "name": "Missile Bombardment",
+  "group": 256,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 12442,
+  "name": "Missile Projection",
+  "group": 256,
+  "level": 4,
+  "sp": 181020
+}, {
+  "id": 12484,
+  "name": "Amarr Drone Specialization",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12485,
+  "name": "Minmatar Drone Specialization",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12486,
+  "name": "Gallente Drone Specialization",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 12487,
+  "name": "Caldari Drone Specialization",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 13278,
+  "name": "Archaeology",
+  "group": 1217,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 13279,
+  "name": "Remote Sensing",
+  "group": 1241,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 16069,
+  "name": "Remote Armor Repair Systems",
+  "group": 1210,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 16281,
+  "name": "Ice Harvesting",
+  "group": 1218,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 16591,
+  "name": "Heavy Assault Cruisers",
+  "group": 257,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 16594,
+  "name": "Procurement",
+  "group": 274,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 16598,
+  "name": "Marketing",
+  "group": 274,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 17940,
+  "name": "Mining Barge",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 19719,
+  "name": "Transport Ships",
+  "group": 257,
+  "level": 2,
+  "sp": 8486
+}, {
+  "id": 19759,
+  "name": "Long Distance Jamming",
+  "group": 272,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 19760,
+  "name": "Frequency Modulation",
+  "group": 272,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 19761,
+  "name": "Signal Dispersion",
+  "group": 272,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 19766,
+  "name": "Signal Suppression",
+  "group": 272,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 19767,
+  "name": "Weapon Destabilization",
+  "group": 272,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 19921,
+  "name": "Target Painting",
+  "group": 272,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 19922,
+  "name": "Signature Focusing",
+  "group": 272,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 20209,
+  "name": "Rocket Specialization",
+  "group": 256,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 20210,
+  "name": "Light Missile Specialization",
+  "group": 256,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 20211,
+  "name": "Heavy Missile Specialization",
+  "group": 256,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 20312,
+  "name": "Guided Missile Precision",
+  "group": 256,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 20314,
+  "name": "Target Navigation Prediction",
+  "group": 256,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 20315,
+  "name": "Warhead Upgrades",
+  "group": 256,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 20494,
+  "name": "Armored Command",
+  "group": 258,
+  "level": 3,
+  "sp": 16000
+}, {
+  "id": 20495,
+  "name": "Information Command",
+  "group": 258,
+  "level": 3,
+  "sp": 16000
+}, {
+  "id": 21059,
+  "name": "Shield Compensation",
+  "group": 1209,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 21071,
+  "name": "Rapid Launch",
+  "group": 256,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 21718,
+  "name": "Hacking",
+  "group": 1217,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 21790,
+  "name": "Caldari Encryption Methods",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 21791,
+  "name": "Minmatar Encryption Methods",
+  "group": 270,
+  "level": 1,
+  "sp": 1250
+}, {
+  "id": 22536,
+  "name": "Mining Foreman",
+  "group": 258,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 22552,
+  "name": "Mining Director",
+  "group": 258,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 22578,
+  "name": "Mining Upgrades",
+  "group": 1218,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 22761,
+  "name": "Recon Ships",
+  "group": 257,
+  "level": 3,
+  "sp": 48000
+}, {
+  "id": 22806,
+  "name": "EM Armor Compensation",
+  "group": 1210,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 22807,
+  "name": "Explosive Armor Compensation",
+  "group": 1210,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 22808,
+  "name": "Kinetic Armor Compensation",
+  "group": 1210,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 22809,
+  "name": "Thermal Armor Compensation",
+  "group": 1210,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 23566,
+  "name": "Advanced Drone Avionics",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 23594,
+  "name": "Sentry Drone Interfacing",
+  "group": 273,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 23606,
+  "name": "Drone Sharpshooting",
+  "group": 273,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 23618,
+  "name": "Drone Durability",
+  "group": 273,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 24241,
+  "name": "Light Drone Operation",
+  "group": 273,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 24242,
+  "name": "Infomorph Psychology",
+  "group": 1220,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 24613,
+  "name": "Fighter Hangar Management",
+  "group": 273,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 25235,
+  "name": "Contracting",
+  "group": 274,
+  "level": 1,
+  "sp": 250
+}, {
+  "id": 25544,
+  "name": "Gas Cloud Harvesting",
+  "group": 1218,
+  "level": 5,
+  "sp": 256000
+}, {
+  "id": 25718,
+  "name": "Heavy Assault Missile Specialization",
+  "group": 256,
+  "level": 4,
+  "sp": 226275
+}, {
+  "id": 25719,
+  "name": "Heavy Assault Missiles",
+  "group": 256,
+  "level": 5,
+  "sp": 768000
+}, {
+  "id": 25739,
+  "name": "Astrometric Rangefinding",
+  "group": 1217,
+  "level": 4,
+  "sp": 362039
+}, {
+  "id": 25810,
+  "name": "Astrometric Pinpointing",
+  "group": 1217,
+  "level": 5,
+  "sp": 1280000
+}, {
+  "id": 25811,
+  "name": "Astrometric Acquisition",
+  "group": 1217,
+  "level": 5,
+  "sp": 1280000
+}, {
+  "id": 25863,
+  "name": "Salvaging",
+  "group": 1218,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 26252,
+  "name": "Jury Rigging",
+  "group": 269,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 26253,
+  "name": "Armor Rigging",
+  "group": 269,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 26254,
+  "name": "Astronautics Rigging",
+  "group": 269,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 26255,
+  "name": "Drones Rigging",
+  "group": 269,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 26256,
+  "name": "Electronic Superiority Rigging",
+  "group": 269,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 26257,
+  "name": "Projectile Weapon Rigging",
+  "group": 269,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 26258,
+  "name": "Energy Weapon Rigging",
+  "group": 269,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 26259,
+  "name": "Hybrid Weapon Rigging",
+  "group": 269,
+  "level": 2,
+  "sp": 4243
+}, {
+  "id": 26260,
+  "name": "Launcher Rigging",
+  "group": 269,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 26261,
+  "name": "Shield Rigging",
+  "group": 269,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 27902,
+  "name": "Remote Hull Repair Systems",
+  "group": 1210,
+  "level": 0,
+  "sp": 0
+}, {
+  "id": 28073,
+  "name": "Bomb Deployment",
+  "group": 256,
+  "level": 2,
+  "sp": 5657
+}, {
+  "id": 28164,
+  "name": "Thermodynamics",
+  "group": 1216,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 28609,
+  "name": "Heavy Interdiction Cruisers",
+  "group": 257,
+  "level": 3,
+  "sp": 48000
+}, {
+  "id": 28615,
+  "name": "Electronic Attack Ships",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 28879,
+  "name": "Nanite Operation",
+  "group": 1216,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 28880,
+  "name": "Nanite Interfacing",
+  "group": 1216,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 30532,
+  "name": "Amarr Defensive Systems",
+  "group": 1240,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 30536,
+  "name": "Amarr Electronic Systems",
+  "group": 1240,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 30537,
+  "name": "Amarr Offensive Systems",
+  "group": 1240,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 30538,
+  "name": "Amarr Propulsion Systems",
+  "group": 1240,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 30539,
+  "name": "Amarr Engineering Systems",
+  "group": 1240,
+  "level": 3,
+  "sp": 8000
+}, {
+  "id": 30543,
+  "name": "Minmatar Electronic Systems",
+  "group": 1240,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 30545,
+  "name": "Minmatar Defensive Systems",
+  "group": 1240,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 30547,
+  "name": "Minmatar Engineering Systems",
+  "group": 1240,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 30551,
+  "name": "Minmatar Offensive Systems",
+  "group": 1240,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 30554,
+  "name": "Minmatar Propulsion Systems",
+  "group": 1240,
+  "level": 4,
+  "sp": 45255
+}, {
+  "id": 30650,
+  "name": "Amarr Strategic Cruiser",
+  "group": 257,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 30653,
+  "name": "Minmatar Strategic Cruiser",
+  "group": 257,
+  "level": 3,
+  "sp": 40000
+}, {
+  "id": 32797,
+  "name": "Resistance Phasing",
+  "group": 1216,
+  "level": 3,
+  "sp": 24000
+}, {
+  "id": 32918,
+  "name": "Mining Frigate",
+  "group": 257,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 32999,
+  "name": "Magnetometric Sensor Compensation",
+  "group": 1213,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33000,
+  "name": "Gravimetric Sensor Compensation",
+  "group": 1213,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33001,
+  "name": "Ladar Sensor Compensation",
+  "group": 1213,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33002,
+  "name": "Radar Sensor Compensation",
+  "group": 1213,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33078,
+  "name": "Armor Layering",
+  "group": 1210,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 33091,
+  "name": "Amarr Destroyer",
+  "group": 257,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 33092,
+  "name": "Caldari Destroyer",
+  "group": 257,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33093,
+  "name": "Gallente Destroyer",
+  "group": 257,
+  "level": 4,
+  "sp": 90510
+}, {
+  "id": 33094,
+  "name": "Minmatar Destroyer",
+  "group": 257,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 33095,
+  "name": "Amarr Battlecruiser",
+  "group": 257,
+  "level": 3,
+  "sp": 48000
+}, {
+  "id": 33096,
+  "name": "Caldari Battlecruiser",
+  "group": 257,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 33097,
+  "name": "Gallente Battlecruiser",
+  "group": 257,
+  "level": 3,
+  "sp": 48000
+}, {
+  "id": 33098,
+  "name": "Minmatar Battlecruiser",
+  "group": 257,
+  "level": 4,
+  "sp": 271530
+}, {
+  "id": 33699,
+  "name": "Medium Drone Operation",
+  "group": 273,
+  "level": 5,
+  "sp": 512000
+}, {
+  "id": 33856,
+  "name": "Expedition Frigates",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}, {
+  "id": 34390,
+  "name": "Amarr Tactical Destroyer",
+  "group": 257,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 34533,
+  "name": "Minmatar Tactical Destroyer",
+  "group": 257,
+  "level": 4,
+  "sp": 135765
+}, {
+  "id": 37796,
+  "name": "Structure Missile Systems",
+  "group": 1545,
+  "level": 1,
+  "sp": 500
+}, {
+  "id": 37797,
+  "name": "Structure Doomsday Operation",
+  "group": 1545,
+  "level": 1,
+  "sp": 500
+}, {
+  "id": 37798,
+  "name": "Structure Electronic Systems",
+  "group": 1545,
+  "level": 1,
+  "sp": 500
+}, {
+  "id": 37799,
+  "name": "Structure Engineering Systems",
+  "group": 1545,
+  "level": 1,
+  "sp": 500
+}, {
+  "id": 40328,
+  "name": "Logistics Frigates",
+  "group": 257,
+  "level": 3,
+  "sp": 32000
+}]
+
