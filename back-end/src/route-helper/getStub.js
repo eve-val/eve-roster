@@ -8,4 +8,4 @@ module.exports = function(filename) {
           'utf8'
       )
   );
-}
+};

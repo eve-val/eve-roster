@@ -1,5 +1,3 @@
-const _ = require('underscore');
-
 const dao = require('../../dao');
 const getStub = require('../../route-helper/getStub');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');
@@ -36,7 +34,6 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
 
 function pushOwnedChars(ownedRows, outList, privs) {
   let accountGroups = new Map();
-  let unownedChars = [];
 
   for (let row of ownedRows) {
     let accountId = row.accountId;

@@ -15,7 +15,7 @@ const REQUEST_TIMEOUT = 10000;
 
 let pendingTokenRequests = {};
 
-const eve = module.exports = {
+module.exports = {
   // Make one shared instance of the ESI module so that everything uses the same cache
   esi: require('eve_swagger_interface')({
     // defaults are okay

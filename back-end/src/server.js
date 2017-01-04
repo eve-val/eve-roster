@@ -15,7 +15,7 @@ const routes = require('../../shared/src/routes');
 
 const CONFIG = configLoader.load();
 
-var app = express();
+let app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +26,7 @@ app.use(cookieSession({
 }));
 
 app.set('view engine', 'pug');
-app.set('views', './views')
+app.set('views', './views');
 
 // Includes root ('/')
 app.get(routes.frontEnd, function(req, res) {
@@ -65,10 +65,10 @@ app.get('/logout', function(req, res) {
 app.use(express.static(path.join(__dirname, '../static')));
 
 // Manually include the API routes defined in api/
-var api = require('./route/api/api.js');
+let api = require('./route/api/api.js');
 app.use('/api', api);
 
-var server = app.listen(getServingPort(), function() {
+let server = app.listen(getServingPort(), function() {
   console.log('Listening on port %s...', server.address().port);
   cron.init();
 });

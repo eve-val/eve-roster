@@ -15,8 +15,6 @@ const SSO_AUTH_CODE =
       Buffer.from(CONFIG.ssoClientId + ':' + CONFIG.ssoSecretKey)
           .toString('base64');
 
-const SAFE_CORP_ID = 98477920;  // TODO: Centralize this
-
 module.exports = function(req, res) {
   console.log('~~~ Auth request ~~~');
   console.log('query:', req.query);
@@ -73,8 +71,6 @@ function getCharInfo(charTokens) {
     scopes: null,
     corporationId: null,
   };
-
-  let characterId = 0;
 
   console.log('Getting auth info...');
   return axios.get('https://login.eveonline.com/oauth/verify', {

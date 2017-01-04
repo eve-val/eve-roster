@@ -28,4 +28,4 @@ module.exports = {
 
     return out.join(' ');
   },
-}
+};

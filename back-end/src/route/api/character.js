@@ -73,7 +73,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
     if (privs.canWrite('memberTimezone', isOwned)) {
       return dao.getCitadels()
       .then(rows => {
-        citadels = [];
+        let citadels = [];
         for (let row of rows) {
           citadels.push({ id: row.id, name: row.name });
         }

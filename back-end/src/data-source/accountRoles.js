@@ -2,7 +2,6 @@ const _ = require('underscore');
 
 const async = require('../util/async');
 const dao = require('../dao');
-const eve = require('../eve');
 const CONFIG = require('../config-loader').load();
 
 
@@ -70,7 +69,7 @@ const accountRoles = module.exports = {
     });
   },
 
-}
+};
 
 function isPrimaryCorp(corpId) {
   return corpId != null && primaryCorpIds.indexOf(corpId) != -1;
