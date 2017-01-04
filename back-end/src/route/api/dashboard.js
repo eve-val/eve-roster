@@ -15,10 +15,8 @@ const LOGIN_PARAMS = querystring.stringify({
   'state': '12345',
 });
 
-const STUB_OUTPUT = false;
-
 module.exports = jsonEndpoint(function(req, res) {
-  return (STUB_OUTPUT
+  return (CONFIG.useStubOutput
     ? getStubOutput()
     : getRealOutput(req.session.accountId));
 });

@@ -3,10 +3,10 @@ const jsonEndpoint = require('../../route-helper/jsonEndpoint');
 const getStub = require('../../route-helper/getStub');
 const NotFoundError = require('../../error/NotFoundError');
 
-const STUB_OUTPUT = false;
+const CONFIG = require('../../config-loader').load();
 
 module.exports = jsonEndpoint(function(req, res, accountId, privs) {
-  if (STUB_OUTPUT) {
+  if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('character.json'));
   }
 
