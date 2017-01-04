@@ -1,16 +1,13 @@
 const eve = require('../../eve');
+const getStub = require('../../route-helper/getStub');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');
 
 
-const STUB_OUTPUT = false;
+const CONFIG = require('../../config-loader').load();
 
 module.exports = jsonEndpoint(function(req, res) {
-  if (STUB_OUTPUT) {
-    return Promise.resolve({
-      id: 98477920,
-      name: "Nobody in Local",
-      alliance: 99000739,
-    });
+  if (CONFIG.useStubOutput) {
+    return Promise.resolve(getStub('corporation.json'));
   }
 
   let corporationId = req.params.id;
