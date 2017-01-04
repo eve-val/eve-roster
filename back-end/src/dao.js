@@ -156,6 +156,17 @@ Dao.prototype = {
     });
   },
 
+  getOwnerByCharacterName(characterName) {
+    return this.builder('character')
+        .select('account.id', 'account.created')
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .leftJoin('account', 'account.id', '=', 'ownership.account')
+        .where('character.name', '=', characterName)
+    .then(([row]) => {
+      return row;
+    });
+  },
+
   setAccountMain: function(accountId, mainCharacterId) {
     return this.builder('account')
         .where({ id: accountId })
@@ -240,6 +251,17 @@ Dao.prototype = {
         .join('ownership', 'ownership.account', '=', 'memberAccount.id')
         .join('character', 'character.id', '=', 'ownership.character')
         .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel');
+  },
+
+  getCharactersOwnedByAccount(accountId) {
+    return this.builder('account')
+        .select(
+            'character.id',
+            'character.name'
+        )
+        .join('ownership', 'ownership.account', '=', 'account.id')
+        .join('character', 'character.id', '=', 'ownership.character')
+        .where('account.id', '=', accountId);
   },
 
   getUnownedCorpCharacters: function() {
