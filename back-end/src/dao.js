@@ -16,9 +16,9 @@ const path = require('path');
 
 const _ = require('underscore');
 
+const knex = require('./util/knex-loader');
 
 const CONFIG = require('../src/config-loader').load();
-const CLIENT = 'sqlite3';
 const allCorpIds = _.pluck(
     CONFIG.primaryCorporations.concat(CONFIG.altCorporations),
     'id'
@@ -43,15 +43,6 @@ const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
   'account.id as accountId',
   'account.mainCharacter',
 ]);
-
-const knex = require('knex')({
-  client: CLIENT,
-  debug: false,
-  useNullAsDefault: true,
-  connection: {
-    filename: path.join(__dirname, '../', CONFIG.dbFileName),
-  }
-});
 
 function Dao(builder) {
   this.builder = builder;
@@ -328,7 +319,7 @@ Dao.prototype = {
   },
 
   _upsert: function(table, row, primaryKey) {
-    if (CLIENT == 'sqlite3') {
+    if (knex.CLIENT == 'sqlite3') {
       // Manually convert booleans to 0/1 for sqlite
       for (let v in row) {
         let val = row[v];
@@ -349,7 +340,7 @@ Dao.prototype = {
         return this.builder.raw(rawQuery);
       });
     } else {
-      throw new Error('Client not supported: ' + CLIENT);
+      throw new Error('Client not supported: ' + knex.CLIENT);
     }
   },
 
