@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node src/server.js",
-    "create-db": "node bin/schema.js"
+    "updatedb": "node bin/updatedb.js"
   },
   "dependencies": {
     "axios": "^0.15.3",
