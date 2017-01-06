@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const axios = require('axios');
 const xml2js = require('xml2js');
+const Promise = require('bluebird');
 
 
 module.exports = function() {

@@ -1,4 +1,5 @@
 const moment = require('moment');
+const Promise = require('bluebird');
 
 const dao = require('../../../dao');
 const getStub = require('../../../route-helper/getStub');

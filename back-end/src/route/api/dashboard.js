@@ -1,4 +1,5 @@
 const querystring = require('querystring');
+const Promise = require('bluebird');
 
 const dao = require('../../dao.js');
 const getStub = require('../../route-helper/getStub');

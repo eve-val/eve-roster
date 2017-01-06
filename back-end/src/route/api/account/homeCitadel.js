@@ -1,3 +1,5 @@
+const Promise = require('bluebird');
+
 const dao = require('../../../dao');
 const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
 
