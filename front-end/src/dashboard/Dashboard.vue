@@ -9,6 +9,8 @@
         :loginParams="loginParams"
         :isMain="character.id == mainCharacter"
         :highlightMain="sortedCharacters.length > 1"
+        :access="access"
+        @designateAsMain="onDesignateCharacterAsMain"
         />
     <div class="add-character" v-if="loginParams">
       <a class="add-character-link"
@@ -39,9 +41,11 @@ export default {
 
   data: function() {
     return {
+      accountId: null,
       characters: [],
       loginParams: null,
       mainCharacter: null,
+      access: null,
     };
   },
 
@@ -61,19 +65,35 @@ export default {
   },
 
   created: function() {
-    ajaxer.getDashboard()
-      .then(response => {
-        this.characters = response.data.characters;
-        this.loginParams = response.data.loginParams;
-        this.mainCharacter = response.data.mainCharacter;
-      })
-      .catch(e => {
-        // TODO
-        console.log('ERROR:', e);
-      });
+    this.fetchData();
   },
 
   methods: {
+    fetchData() {
+      ajaxer.getDashboard()
+        .then(response => {
+          this.accountId = response.data.accountId;
+          this.characters = response.data.characters;
+          this.loginParams = response.data.loginParams;
+          this.mainCharacter = response.data.mainCharacter;
+          this.access = response.data.access;
+        })
+        .catch(e => {
+          // TODO
+          console.log('ERROR:', e);
+        });
+    },
+
+    onDesignateCharacterAsMain(characterId) {
+      ajaxer.putAccountMainCharacter(this.accountId, characterId)
+      .then(() => {
+        this.fetchData();
+      })
+      .catch(e => {
+        // TODO
+        console.log('ERROR!', e);
+      })
+    },
   },
 }
 </script>
