@@ -49,9 +49,9 @@ export default {
     sortedCharacters: function() {
       this.characters.sort((a, b) => {
         if (a.id == this.mainCharacter) {
-          return a;
+          return -1;
         } else if (b.id == this.mainCharacter) {
-          return b;
+          return 1;
         } else {
           return a.name.localeCompare(b.name);
         }

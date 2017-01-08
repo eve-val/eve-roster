@@ -3,10 +3,16 @@
   <div class="slab-main">
     <eve-image :id="character.id" :size="105" type="Character" />
     <div class="body">
-      <router-link
-          class="name"
-          :to="'/character/' + character.id"
-          >{{ character.name }}</router-link>
+      <div>
+        <router-link
+            class="name"
+            :to="'/character/' + character.id"
+            >{{ character.name }}</router-link>
+        <img class="main-marker"
+            v-if="isMain && highlightMain"
+            src="../assets/main-star.png"
+            >
+      </div>
       <div class="training-summary">
         <div class="training-track"
             :class="{ errorState: errorState }"
@@ -165,6 +171,14 @@ export default {
 
 .name:active {
   color: #aaa;
+}
+
+.main-marker {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+  position: relative;
+  top: -1px;
 }
 
 .training-track {
