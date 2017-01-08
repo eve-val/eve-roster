@@ -16,6 +16,7 @@ const path = require('path');
 
 const _ = require('underscore');
 
+const accountRoles = require('./data-source/accountRoles');
 const knex = require('./util/knex-loader');
 
 const CONFIG = require('../src/config-loader').load();
@@ -49,9 +50,14 @@ function Dao(builder) {
 }
 Dao.prototype = {
   transaction: function(callback) {
-    return this.builder.transaction((trx) => {
-      return callback(new Dao(trx));
-    });
+    if (this == module.exports) {
+      return this.builder.transaction((trx) => {
+        return callback(new Dao(trx));
+      });
+    } else {
+      // Already in a transaction, just continue using it
+      return callback(this);
+    }
   },
 
   commit: function() {
@@ -122,6 +128,17 @@ Dao.prototype = {
     });
   },
 
+  getAccountDetails(accountId) {
+    return this.builder('account')
+        .select(
+            'id',
+            'created',
+            'mainCharacter',
+            'activeTimezone',
+            'homeCitadel')
+        .where('id', '=', accountId);
+  },
+
   ownCharacter: function(characterId, accountId, isMain) {
     return this.builder('ownership').insert({
       account: accountId,
@@ -158,10 +175,13 @@ Dao.prototype = {
     });
   },
 
-  setAccountMain: function(accountId, mainCharacterId) {
+  setAccountMain(accountId, mainCharacterId) {
     return this.builder('account')
         .where({ id: accountId })
-        .update({ mainCharacter: mainCharacterId });
+        .update({ mainCharacter: mainCharacterId })
+    .then(() => {
+      return accountRoles.updateAccount(this, accountId);
+    });
   },
 
   setAccountCitadel: function(accountId, citadelId) {
@@ -255,7 +275,7 @@ Dao.prototype = {
         .where('account.id', '=', accountId);
   },
 
-  getUnownedCorpCharacters: function() {
+  getUnownedCorpCharacters() {
     return this.builder('character')
         .select(BASIC_CHARACTER_COLUMNS)
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')

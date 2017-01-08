@@ -29,6 +29,7 @@ router.use('/*', function(req, res, next) {
 });
 
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
+router.put('/account/:id/mainCharacter', require('./account/mainCharacter'));
 
 router.get('/dashboard', require('./dashboard'));
 router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));

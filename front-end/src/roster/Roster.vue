@@ -49,7 +49,7 @@ export default {
   },
 
   created: function() {
-    ajaxer.fetchRoster()
+    ajaxer.getRoster()
       .then(response => {
         let rows = injectDerivedData(response.data.rows);
         this.tableRows = rows;

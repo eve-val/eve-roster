@@ -1,6 +1,8 @@
 <template>
 <div class="slab-root">
-  <div class="slab-main">
+  <div class="slab-main"
+    @mouseleave="onMouseOut"
+    >
     <eve-image :id="character.id" :size="105" type="Character" />
     <div class="body">
       <div>
@@ -33,6 +35,20 @@
         ({{ queue.count}} skills)
       </div>
     </div>
+    <div class="menu" v-if="!isMain && access['designateMain'] == 2">
+      <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
+      <drop-menu class="menu-body" ref="menu"
+          :rootStyle="{
+            position: 'absolute',
+            right: '7px',
+            top: '18px',
+          }"
+          >
+        <div class="menu-item" @click="onDesignateAsMainClick">
+          Designate as main
+        </div>
+      </drop-menu>
+    </div>
   </div>
   <div class="key-bother-container"
       v-if="character.needsReauth"
@@ -49,11 +65,13 @@
 <script>
 import ajaxer from '../shared/ajaxer';
 
+import DropMenu from '../shared/DropMenu.vue';
 import EveImage from '../shared/EveImage.vue';
 
 
 export default {
   components: {
+    DropMenu,
     EveImage,
   },
 
@@ -62,6 +80,7 @@ export default {
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
+    access: { type: Object, required: true },
   },
 
   data: function() {
@@ -130,6 +149,16 @@ export default {
   },
 
   methods: {
+    onMouseOut(e) {
+      if (this.$refs.menu) {
+        this.$refs.menu.hide();
+      }
+    },
+
+    onDesignateAsMainClick(e) {
+      this.$refs.menu.hide();
+      this.$emit('designateAsMain', this.character.id);
+    },
   },
 }
 </script>
@@ -144,6 +173,7 @@ export default {
   background: #101010;
   height: 105px;
   display: flex;
+  position: relative;
   user-select: none;
   cursor: default;
 
@@ -151,7 +181,7 @@ export default {
 }
 
 .slab-main:hover {
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+  /*box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);*/
   border-color: #352d24;
 }
 
@@ -234,49 +264,37 @@ export default {
   color: #a7a29c;
 }
 
-.key-input-root-container {
-  display: flex;
-  margin-top: 22px;
+.menu {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.key-input-label {
-  display: block;
+.slab-main:hover > .menu {
+  opacity: 1;
 }
 
-.key-input-container {
-  display: flex;
-  flex-direction: column;
+.menu-arrow {
+  width: 25px;
+  height: 22px;
+  background-image: url('../assets/dashbaord-character-menu-arrow.png');
+  background-size: cover;
 }
 
-.key-input {
-  display: block;
-  margin-top: 4px;
-  background: #2f2f2f;
-  border: 1px solid #545454;
-  color: #9c9c9c;
-  font-size: 14px;
-  font-family: monospace;
-  padding: 5px;
+.menu-arrow:hover {
+  background-position: 0 100%;
 }
 
-.key-submit-btn {
-  width: 117px;
-  height: 36px;
-  color: #cdcdcd;
-  background: #5c4e3f;
-  border: 1px solid #7e6d5b;
-  box-shadow: inset 0 0 7px 1px rgba(255, 255, 255, 0.06);
-  font-size: 14px;
-  font-family: 'Helvetica Neue', 'Calibri', Arial, sans-serif;
-  font-weight: 300;
+.menu-item {
+  padding: 8px 11px;
+  white-space: nowrap;
 }
 
-.key-submit-btn[disabled] {
-  opacity: 0.5;
-}
-
-.key-submit-btn:active {
-  color: #ffffff;
+.menu-item:hover {
+  background: #4b4b4b;
 }
 
 </style>
