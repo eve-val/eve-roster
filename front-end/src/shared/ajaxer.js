@@ -9,14 +9,13 @@ export default {
     return axios.get('/api/corporation/' + id);
   },
 
-  putApiKey(characterId, keyId, keyVerification) {
-    return axios.put('/api/character/' + characterId + '/apikey', {
-      keyId: keyId,
-      keyVerification: keyVerification,
+  putAccountMainCharacter(accountId, characterId) {
+    return axios.put(`/api/account/${accountId}/mainCharacter`, {
+      characterId: characterId,
     });
   },
 
-  fetchRoster() {
+  getRoster() {
     return axios.get('/api/roster');
   },
 
@@ -35,29 +34,4 @@ export default {
   getSkillQueueSummary(id) {
     return axios.get('/api/dashboard/' + id + '/queueSummary');
   },
-
-  updatePilot(name, props) {
-    if (__DEV__) {
-      return fakeResponse('');
-    } else {
-      return axios.patch(
-          '/api/' + encodeURIComponent(name),
-          JSON.stringify(props),
-      );
-    }
-  },
-}
-
-function fakeResponse(data) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        data: data,
-        status: 200,
-        statusText: 'OK',
-        headers: {},
-        config: {},
-      });
-    }, 1000);
-  }); 
 }

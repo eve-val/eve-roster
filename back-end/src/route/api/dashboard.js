@@ -1,9 +1,12 @@
 const querystring = require('querystring');
 const Promise = require('bluebird');
 
+const moment = require('moment');
+
 const dao = require('../../dao.js');
 const getStub = require('../../route-helper/getStub');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const policy = require('../../route-helper/policy');
 
 
 const CONFIG = require('../../config-loader').load();
@@ -30,12 +33,14 @@ function getStubOutput() {
 
 function getRealOutput(accountId) {
   let mainCharacter = null;
+  let accountCreated = null;
 
   return dao.builder('account')
-      .select('mainCharacter')
+      .select('mainCharacter', 'created')
       .where({ id: accountId })
-  .then(rows => {
-    mainCharacter = rows[0].mainCharacter;
+  .then(([row]) => {
+    mainCharacter = row.mainCharacter;
+    accountCreated = row.created;
 
     return dao.builder('ownership')
       .select('character.id', 'character.name', 'accessToken.needsUpdate')
@@ -51,13 +56,19 @@ function getRealOutput(accountId) {
         id: row.id,
         name: row.name,
         needsReauth: row.needsUpdate,
-      })
+      });
     }
 
+    let access = {
+      "designateMain": policy.canDesignateMain(accountCreated) ? 2 : 0,
+    };
+
     return {
+      accountId: accountId,
       characters: characters,
       loginParams: LOGIN_PARAMS,
       mainCharacter: mainCharacter,
+      access: access,
     };
   });
 }
