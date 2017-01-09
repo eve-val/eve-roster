@@ -1,3 +1,5 @@
+const Promise = require('bluebird');
+
 const dao = require('../../../dao');
 const eve = require('../../../eve');
 

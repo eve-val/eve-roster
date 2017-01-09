@@ -1,3 +1,5 @@
+const Promise = require('bluebird');
+
 const eve = require('../../eve');
 const getStub = require('../../route-helper/getStub');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');

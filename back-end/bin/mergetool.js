@@ -18,6 +18,7 @@ const readline = require('readline');
 
 const _ = require('underscore');
 const moment = require('moment');
+const Promise = require('bluebird');
 
 const accountRoles = require('../src/data-source/accountRoles');
 const dao = require('../src/dao');

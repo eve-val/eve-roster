@@ -1,4 +1,5 @@
 const querystring = require('querystring');
+const Promise = require('bluebird');
 
 const moment = require('moment');
 
