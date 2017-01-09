@@ -17,7 +17,7 @@ module.exports = function syncKillboard() {
     .then(calcCharacterStats)
     .then(saveStats)
     .then((updateCount) => {
-      console.log('Updated', updateCount, 'haracters');
+      console.log('Updated', updateCount, 'characters');
       return 'success';
     });
 };
