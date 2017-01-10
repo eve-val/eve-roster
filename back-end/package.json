@@ -15,12 +15,16 @@
     "cookie-session": "^2.0.0-alpha.2",
     "eve_swagger_interface": "git://github.com/lhkbob/eve-swagger-js.git#0.1.2",
     "express": "^4.14.0",
+    "htmlparser": "^1.7.7",
     "knex": "^0.12.6",
     "moment": "^2.17.1",
     "node-schedule": "^1.2.0",
     "pug": "^2.0.0-beta6",
+    "querystring": "^0.2.0",
+    "soupselect": "^0.2.0",
     "sqlite3": "^3.1.8",
     "strip-json-comments": "^2.0.1",
+    "tough-cookie": "^2.3.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
