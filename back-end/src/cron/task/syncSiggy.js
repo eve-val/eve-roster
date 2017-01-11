@@ -49,16 +49,16 @@ function resetSavedScores() {
 
 function saveScrapedScores(recentScores) {
   return dao.transaction((trx) => {
-      return Promise.map(recentScores, (score) => {
-        return trx.updateCharacter(score.id, {
-          // Schema currently stores integers, so convert the floating point scraped score
-          siggyScore: Math.round(score.score)
-        });
+    return Promise.map(recentScores, (score) => {
+      return trx.updateCharacter(score.id, {
+        // Schema currently stores integers, so convert the floating point scraped score
+        siggyScore: Math.round(score.score)
       });
-    })
-    .then((updates) => {
-      return updates.reduce((a, b) => a + b, 0);
     });
+  })
+  .then((updates) => {
+    return updates.reduce((a, b) => a + b, 0);
+  });
 }
 
 // Initiate login with siggy site using an existing account credentials
