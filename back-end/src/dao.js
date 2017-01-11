@@ -184,13 +184,19 @@ Dao.prototype = {
     });
   },
 
-  setAccountCitadel: function(accountId, citadelId) {
+  setAccountCitadel(accountId, citadelId) {
     return this.builder('account')
         .where({ id: accountId })
         .update({ homeCitadel: citadelId });
   },
 
-  setAccountRoles: function(accountId, roles) {
+  setAccountActiveTimezone(accountId, activeTimezone) {
+    return this.builder('account')
+        .where({ id: accountId })
+        .update({ activeTimezone: activeTimezone });
+  },
+
+  setAccountRoles(accountId, roles) {
     // TODO: start transaction if not already in a transaction?
     return this.builder('accountRole')
         .del()
@@ -203,7 +209,7 @@ Dao.prototype = {
     })
   },
 
-  getPrivilegesForAccount: function(accountId) {
+  getPrivilegesForAccount(accountId) {
     return this.builder('privilege')
         .select(
             'privilege.name',
@@ -223,7 +229,7 @@ Dao.prototype = {
         }, 'grantedPrivs.privilege', '=', 'privilege.name');
   },
 
-  getPrivilegesForRoles: function(roles) {
+  getPrivilegesForRoles(roles) {
     return this.builder('privilege')
         .select(
             'privilege.name',
@@ -241,7 +247,7 @@ Dao.prototype = {
         }, 'grantedPrivs.privilege', '=', 'privilege.name');
   },
 
-  getCharactersOwnedByMembers: function() {
+  getCharactersOwnedByMembers() {
     // This complex subquery is required because we want to select the
     // characters of all accounts that own 1 or more member character. In
     // particular, in the case where an account's main has left the corp but
