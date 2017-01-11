@@ -15,6 +15,18 @@ export default {
     });
   },
 
+  putAccountHomeCitadel(accountId, citadelName) {
+    return axios.put('/api/account/' + accountId + '/homeCitadel', {
+      citadelName: citadelName,
+    });
+  },
+
+  putAccountActiveTimezone(accountId, activeTimezone) {
+    return axios.put('/api/account/' + accountId + '/activeTimezone', {
+      activeTimezone: activeTimezone,
+    });
+  },
+
   getRoster() {
     return axios.get('/api/roster');
   },
