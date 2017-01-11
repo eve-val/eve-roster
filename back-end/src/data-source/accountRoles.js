@@ -1,14 +1,13 @@
 const _ = require('underscore');
 
 const async = require('../util/async');
-const dao = require('../dao');
 const CONFIG = require('../config-loader').load();
 
 
 const primaryCorpIds = _.pluck(CONFIG.primaryCorporations, 'id');
 
 const accountRoles = module.exports = {
-  updateAll: function() {
+  updateAll: function(dao) {
     return dao.builder('account')
         .select('account.id')
     .then(rows => {
