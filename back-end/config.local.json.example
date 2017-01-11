@@ -25,6 +25,13 @@
     }
   ],
 
+  // Uncomment and provide account name and password for siggy in order to
+  // scrap siggy stats. The account must be registered directly with siggy
+  // "siggy": {
+  //   "username": "<fillmein>",
+  //   "password": "<fillmein>"
+  // }
+
   // Uncomment this line if doing front-end development
   // "serveMode": "dev-frontend",
 
