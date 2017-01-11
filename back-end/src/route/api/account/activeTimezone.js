@@ -1,23 +1,20 @@
-const Promise = require('bluebird');
-
 const dao = require('../../../dao');
 const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const policy = require('../../../route-helper/policy');
 const BadRequestError = require('../../../error/BadRequestError');
 
 module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   let targetAccountId = req.params.id;
-  let citadelName = req.body.citadelName;
   let isOwner = targetAccountId == accountId;
+  privs.requireWrite('memberTimezone', isOwner);
 
-  privs.requireWrite('memberHousing', isOwner);
+  let timezone = req.body.activeTimezone;
 
-  return dao.getCitadelByName(citadelName)
-  .then(([row]) => {
-    if (!row) {
-      throw new BadRequestError('Unknown citadel: ' + citadelName);
-    }
-    return dao.setAccountCitadel(targetAccountId, row.id);
-  })
+  if (policy.TIMEZONE_LABELS.indexOf(timezone) < 0) {
+    throw new BadRequestError('Invalid timezone: ' + timezone);
+  }
+
+  return dao.setAccountActiveTimezone(targetAccountId, timezone)
   .then(() => {
     return {};
   });

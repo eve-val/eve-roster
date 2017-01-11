@@ -35,13 +35,18 @@
 
         <template v-if="account.id != null">
           <div class="factoid-title">Timezone</div>
-          <div class="factoid">{{ account.activeTimezone || '-' }}</div>
+          <factoid-selector v-if="canWriteTimezone"
+              :options="timezoneOptions"
+              :initialValue="account.activeTimezone"
+              :submitHandler="submitTimezone.bind(this)"
+              />
+          <div v-else class="factoid">{{ account.activeTimezone || '-' }}</div>
 
           <div class="factoid-title">Citadel</div>
-          <citadel-selector v-if="canWriteCitadel"
-              :accountId="account.id"
-              :initialCitadel="account.citadelId"
-              :citadels="citadels"
+          <factoid-selector v-if="canWriteCitadel"
+              :options="citadelOptions"
+              :initialValue="account.citadelName"
+              :submitHandler="submitHousing.bind(this)"
               />
           <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
         </template>
@@ -94,7 +99,7 @@ import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
 import TabbedContainer from '../shared/TabbedContainer.vue';
 
-import CitadelSelector from './CitadelSelector.vue';
+import FactoidSelector from './FactoidSelector.vue';
 import QueueEntry from './QueueEntry.vue';
 import SkillPips from './SkillPips.vue';
 
@@ -106,7 +111,7 @@ export default {
 
     SkillPips,
     QueueEntry,
-    CitadelSelector,
+    FactoidSelector,
   },
 
   props: {
@@ -118,6 +123,7 @@ export default {
       character: null,
       account: null,
       access: null,
+      timezones: null,
       citadels: null,
 
       corporationName: null,
@@ -132,8 +138,26 @@ export default {
       return parseInt(this.$route.params.id);
     },
 
+    canWriteTimezone: function() {
+      return this.access != null && this.access['memberTimezone'] == 2;
+    },
+
     canWriteCitadel: function() {
       return this.access != null && this.access['memberHousing'] == 2;
+    },
+
+    timezoneOptions: function() {
+      return this.timezones.map(timezone => {
+        let hint = TIMEZONE_HINTS[timezone];
+        return {
+          value: timezone,
+          label: hint != null ? `${timezone} (${hint})` : timezone, 
+        };
+      });
+    },
+
+    citadelOptions: function() {
+      return this.citadels.map(citadel => ({ label: citadel, value: citadel }));
     },
   },
 
@@ -169,13 +193,14 @@ export default {
   },
 
   methods: {
-    fetchData: function() {
+    fetchData() {
       ajaxer.getCharacter(this.characterId)
           .then(response => {
             this.character = response.data.character;
             this.account = response.data.account;
             this.access = response.data.access;
             this.citadels = response.data.citadels;
+            this.timezones = response.data.timezones;
           })
           .catch(e => {
             // TODO
@@ -202,7 +227,7 @@ export default {
           });
     },
 
-    processSkillsData: function(skills) {
+    processSkillsData(skills) {
       let map = {};
       for (let skill of skills) {
         map[skill.id] = skill;
@@ -213,12 +238,20 @@ export default {
       this.maybeInjectQueueDataIntoSkillsMap();
     },
 
-    maybeInjectQueueDataIntoSkillsMap: function() {
+    maybeInjectQueueDataIntoSkillsMap() {
       if (this.skillsMap != null && this.queue != null) {
         for (let queueItem of this.queue) {
           this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
         }
       }
+    },
+
+    submitTimezone(timezone) {
+      return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
+    },
+
+    submitHousing(citadelName) {
+      return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
   }
 }
@@ -251,6 +284,15 @@ const GROUP_DISPLAY_ORDER = [
   1241,   // Planet Management
   1545,   // Structure Management
 ];
+
+const TIMEZONE_HINTS = {
+  'US West': 'PT/MT',
+  'US East': 'CT/ET',
+  'EU West': 'WET/CET',
+  'EU East': 'EET/MSK/FET/TRT',
+  'Aus': null,
+  'Other': null,
+};
 
 function groupifySkills(skills){
   let groupMap = {};

@@ -1,8 +1,10 @@
+const _ = require('underscore');
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
 const jsonEndpoint = require('../../route-helper/jsonEndpoint');
 const getStub = require('../../route-helper/getStub');
+const policy = require('../../route-helper/policy');
 const NotFoundError = require('../../error/NotFoundError');
 
 const CONFIG = require('../../config-loader').load();
@@ -59,7 +61,6 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
     }
 
     if (privs.canRead('memberHousing', isOwned)) {
-      payload.account.citadelId = row.citadelId;
       payload.account.citadelName = row.citadelName;
     }
 
@@ -73,13 +74,12 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   })
   .then(() => {
     if (privs.canWrite('memberTimezone', isOwned)) {
+      payload.timezones = policy.TIMEZONE_LABELS;
+    }
+    if (privs.canWrite('memberHousing', isOwned)) {
       return dao.getCitadels()
       .then(rows => {
-        let citadels = [];
-        for (let row of rows) {
-          citadels.push({ id: row.id, name: row.name });
-        }
-        payload.citadels = citadels;
+        payload.citadels = _.pluck(rows, 'name');
       });
     }
   })
