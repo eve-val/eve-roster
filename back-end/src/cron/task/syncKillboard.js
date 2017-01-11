@@ -9,9 +9,7 @@ module.exports = function syncKillboard() {
   // clear the cached market map
   marketMap = null;
   return Promise.resolve()
-    .then(() => {
-      return dao.getCharacters();
-    })
+    .then(resetScores)
     .then(fetchAllKills)
     .then(joinKills)
     .then(calcCharacterStats)
@@ -22,16 +20,40 @@ module.exports = function syncKillboard() {
     });
 };
 
-// Get the value-annotated 30-day history for all the given characters.
-function fetchAllKills(characters) {
-  return Promise.map(_.pluck(characters, 'id'), (id) => {
-    return fetchKillHistory(id)
-      .then((kms) => {
-        return Promise.map(kms, injectKillValue);
-      })
-      .then((kms) => {
-        return {id: id, killmails: kms};
-      });
+// Reset all scores to null (null == unknown, differentiated from a 0, which implies character access with no
+// known kills)
+function resetScores() {
+  return dao.transaction((trx) => {
+    return trx.builder('character').update({
+      killsInLastMonth: null,
+      killValueInLastMonth: null,
+      lossesInLastMonth: null,
+      lossValueInLastMonth: null
+    });
+  });
+}
+
+// Get the value-annotated 30-day history for all known characters with access tokens.
+// Characters without access tokens are not included in the returned array.
+// Returns an array of objects {id: characterId, killmails: []}
+function fetchAllKills() {
+  return dao.getCharacters().then((characters) => {
+    return Promise.map(_.pluck(characters, 'id'), (id) => {
+      return fetchKillHistory(id)
+        .then((kms) => {
+          if (kms) {
+            return Promise.map(kms, injectKillValue);
+          } else {
+            return null;
+          }
+        })
+        .then((kms) => {
+          return {id: id, killmails: kms};
+        });
+    });
+  })
+  .then((charMails) => {
+    return charMails.filter(km => km.killmails != null);
   });
 }
 
@@ -222,7 +244,19 @@ function fetchKillHistory(character) {
   };
 
   // Initial request has no max kill ID
-  return _fetchHistory(character, undefined);
+  return _fetchHistory(character, undefined)
+    .catch((error) => {
+      console.warn('Unable to fetch kills for', character);
+      if (error != 'Error: No access tokens for this character.') {
+        console.error('Unexpected exception type:');
+        console.error(error);
+        // Probably best to continue to fail in this case instead of swallowing the error
+        throw error;
+      }
+
+      // Return null to differentiate between an accessible character that go no kills (e.g. returning [])
+      return null;
+    });
 }
 
 // Loads killmails for the character and denormalizes them to actual killmail data blobs, which includes timestamp.
@@ -236,16 +270,5 @@ function fetchKills(character, maxKillmailID) {
       return Promise.map(killmails, (km) => {
         return eve.esi.killmails.get(km.killmail_id, km.killmail_hash);
       });
-    })
-    .catch((error) => {
-      console.warn('Unable to fetch kills for', character);
-      if (error != 'Error: No access tokens for this character.') {
-        console.error('Unexpected exception type:');
-        console.error(error);
-        // Probably best to continue to fail in this case instead of swallowing the error
-        throw error;
-      }
-
-      return [];
     });
 }
