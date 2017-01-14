@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path fill="#a7a29c" d="M34.892919,49.6719153 C45.7414888,47.8224573 54,38.375668 54,27 C54,15.624332 45.7414888,6.17754274 34.892919,4.32808468 C44.2703508,7.59235154 51,16.5102789 51,27 C51,37.4897211 44.2703508,46.4076485 34.892919,49.6719153 Z"></path>
+        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 27 27" to="360 27 27" repeatCount="indefinite" dur="1s"></animateTransform>
+    </g>
+</svg>
