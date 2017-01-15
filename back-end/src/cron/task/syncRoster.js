@@ -32,7 +32,7 @@ function syncRoster() {
   return updateAllCorporations()
   .then(updateOrphanedOrUnknownCharacters)
   .then(() => {
-    accountRoles.updateAll(dao);
+    return accountRoles.updateAll(dao);
   })
   .then(function() {
     console.log('syncRoster() complete');
