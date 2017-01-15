@@ -49,11 +49,19 @@
         </div>
       </drop-menu>
     </div>
+    <loading-spinner
+        v-if="designateMainPromise != null"
+        class="designate-main-spinner"
+        :size="13"
+        :promise="designateMainPromise"
+        gravity="left"
+        actionLabel="designating this character as your main"
+        />
   </div>
-  <div class="key-bother-container"
+  <div class="auth-bother-container"
       v-if="character.needsReauth"
       >
-    <div class="key-title">Character needs to be re-authorized</div>
+    <div class="auth-bother-title">Character needs to be re-authorized</div>
     Please
     <a :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
         >log in</a>
@@ -67,15 +75,18 @@ import ajaxer from '../shared/ajaxer';
 
 import DropMenu from '../shared/DropMenu.vue';
 import EveImage from '../shared/EveImage.vue';
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
 
 export default {
   components: {
     DropMenu,
     EveImage,
+    LoadingSpinner,
   },
 
   props: {
+    accountId: { type: Number, required: true, },
     character: { type: Object, required: true },
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
@@ -88,6 +99,8 @@ export default {
       queueFetchStatus: 'loading',
       skillInTraining: null,
       queue: null,
+
+      designateMainPromise: null,
     };
   },
 
@@ -129,11 +142,6 @@ export default {
         return this.skillInTraining.progress * 100 + '%';
       }
     },
-
-    keyGenUrl: function() {
-      return 'https://community.eveonline.com/support/api-key/' +
-          'CreatePredefined?accessMask=' + this.accessMask;
-    },
   },
 
   created: function() {
@@ -157,7 +165,12 @@ export default {
 
     onDesignateAsMainClick(e) {
       this.$refs.menu.hide();
-      this.$emit('designateAsMain', this.character.id);
+      this.designateMainPromise = ajaxer
+      .putAccountMainCharacter(this.accountId, this.character.id)
+      .then(() => {
+        this.$emit('designatedNewMain', this.character.id);
+        this.designateMainPromise = null;
+      });
     },
   },
 }
@@ -248,17 +261,17 @@ export default {
   margin-left: 6px;
 }
 
-.queue-summary, .training-remaining, .key-input-label {
+.queue-summary, .training-remaining, {
   font-size: 12px;
   color: #a7a29c;
 }
 
-.key-bother-container {
+.auth-bother-container {
   background: #3d3d3d;
   padding: 12px;
 }
 
-.key-title {
+.auth-bother-title {
   font-size: 16px;
   margin-bottom: 6px;
   color: #a7a29c;
@@ -295,6 +308,12 @@ export default {
 
 .menu-item:hover {
   background: #4b4b4b;
+}
+
+.designate-main-spinner {
+  position: absolute;
+  right: 24px;
+  top: 2px;
 }
 
 </style>

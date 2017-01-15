@@ -17,17 +17,19 @@
     </div>
     <div class="hover-message-cnt"
         v-if="errorMode == 'icon'"
-        :style="{
-          left: size + 10 + 'px',
-        }"
+        :style="hoverStyle"
         >
-      <div class="hover-message-triangle"
-          :style="{
-            top: size / 2 - 7 + 5 + 'px',
-          }"></div>
+      <div class="hover-triangle right"
+          v-if="gravity=='right'"
+          :style="triangleStyle"
+          ></div>
       <div class="hover-message">
         {{ errorMessage }}
       </div>
+      <div class="hover-triangle left"
+          v-if="gravity=='left'"
+          :style="triangleStyle"
+          ></div>
     </div>
   </template>
 </div>
@@ -52,6 +54,15 @@ export default {
         return value == 'icon' || value == 'text';
       },
     },
+    gravity: {
+      type: String,
+      required: false,
+      default: 'right', 
+      validator: function(value) {
+        return value == 'left' || value == 'right';
+      },
+    },
+    actionLabel: { type: String, required: false, },
     rethrowError: { type: Boolean, required: false, default: false, },
   },
 
@@ -63,15 +74,45 @@ export default {
   },
 
   computed: {
-    imgSrc: function() {
+    imgSrc() {
       switch (this.status) {
         case 'loading':
           return spinnerPath;
         case 'error':
           return errorPath;
         default:
-          return null;
+          return spinnerPath;
       }
+    },
+
+    hoverStyle() {
+      let style = {};
+      switch (this.gravity) {
+        case 'left':
+          style.right = this.size + 10 + 'px';
+          break;
+        case 'right':
+          style.left = this.size + 10 + 'px';
+          break;
+      }
+      return style;
+    },
+
+    triangleStyle() {
+      let style = {
+        top: this.size / 2 - 7 + 9 + 'px'
+      };
+      switch (this.gravity) {
+        case 'left':
+          style.right = '-7px';
+          style['border-left'] = '7px solid #3e3e3e';
+          break;
+        case 'right':
+          style.left = '-7px';
+          style['border-right'] = '7px solid #3e3e3e';
+          break;
+      }
+      return style;
     },
   },
 
@@ -98,14 +139,15 @@ export default {
       })
       .catch(e =>  {
         this.status = 'error';
+        let actionLabel = this.actionLabel || 'retrieving this resource';
         let message;
         if (typeof e == 'string') {
           message = e;
         } else if (e.message) {
           message =
-              `There was an error retrieving this resource. ("${e.message}").`;
+              `There was an error while ${actionLabel}. ("${e.message}").`;
         } else {
-          message = 'There was an error retrieving this resource.';
+          message = `There was an error while ${actionLabel}.`;
         }
         this.errorMessage = message;
 
@@ -147,35 +189,67 @@ export default {
 .hover-message-cnt {
   display: none;
   position: absolute;
-  top: -5px;
+  top: -7px;
 }
 
 ._loading-spinner:hover > .hover-message-cnt {
   display: inline-block;
 }
 
-.hover-message-triangle {
+.hover-triangle {
   width: 0;
   height: 0;
   position: absolute;
-  left: -7px;
-  top: 0;
+  display: block;
+  
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+.hover-triangle {
+  width: 0;
+  height: 0;
+  position: absolute;
+  display: block;
+  
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+.hover-triangle::before {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
   display: block;
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
-  border-right: 7px solid #3B342C;
+}
+
+.hover-triangle.left::before {
+  left: -9px;
+  top: -7px;
+  border-left: 7px solid #202020;
+}
+
+.hover-triangle.right::before {
+  right: -9px;
+  top: -7px;
+  border-right: 7px solid #202020;
 }
 
 .hover-message {
   width: 250px;
-  padding: 8px 9px;
-  background: #3B342C;
+  padding: 7px 8px;
+  background: #202020;
+  border: 1px solid #3e3e3e;
 
   color: #a7a29c;
   font-size: 14px;
   font-weight: normal;
+  line-height: 1.25;
 
-  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
 }
 
 </style>
