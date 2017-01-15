@@ -19,6 +19,7 @@
     </div>
     <roster-table
         v-if="tableRows != null"
+        :columns="displayColumns"
         :rows="tableRows"
         :filter="this.searchString"
         class="table"
@@ -34,10 +35,13 @@
 import _ from 'underscore';
 import ajaxer from '../shared/ajaxer';
 
+import rosterColumns from './rosterColumns';
+
 import AppHeader from '../shared/AppHeader.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import RosterTable from './RosterTable.vue'
 import SearchBox from './SearchBox.vue';
+
 
 export default {
   components: {
@@ -53,6 +57,7 @@ export default {
 
   data: function() {
     return {
+      displayColumns: null,
       tableRows: null,
       searchString: null,
 
@@ -63,6 +68,12 @@ export default {
   created: function() {
     this.rosterPromise = ajaxer.getRoster()
       .then(response => {
+        let providedColumns = response.data.columns;
+        this.displayColumns = rosterColumns.filter(item => {
+          return item.key == 'warning' ||
+              providedColumns.indexOf(item.key) != -1;
+        });
+
         let rows = injectDerivedData(response.data.rows);
         this.tableRows = rows;
 

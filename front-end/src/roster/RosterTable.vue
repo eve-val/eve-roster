@@ -7,6 +7,7 @@
       @selectSortKey="onSelectSortKey"
       />
   <account-row v-for="row in sortedRows"
+      :columns="columns"
       :account="row"
       :key="row.main.id"
       :filter="filter"
@@ -18,8 +19,6 @@
 import AccountRow from './AccountRow.vue';
 import TableHeader from './TableHeader.vue';
 
-import rosterColumns from './rosterColumns';
-
 
 export default {
   components: {
@@ -28,6 +27,7 @@ export default {
   },
 
   props: {
+    columns: { type: Array, required: true },
     rows: { type: Array, required: true },
     filter: { type: String, required: false },
   },
@@ -38,8 +38,6 @@ export default {
         key: 'name',
         reverse: false,
       },
-
-      columns: rosterColumns,
     };
   },
 

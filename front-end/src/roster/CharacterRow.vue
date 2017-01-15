@@ -59,6 +59,7 @@ export default {
 
   props: {
     character: { type: Object, required: true },
+    columns: { type: Array, required: true },
     isMain: { type: Boolean, required: true },
     account: { type: Object, required: false },
     filter: { type: String, required: false },
@@ -66,7 +67,6 @@ export default {
 
   data: function() {
     return {
-      cols: rosterColumns,
     };
   },
 
@@ -74,7 +74,7 @@ export default {
 
     displayVals: function() {
       let labels = [];
-      for (let col of rosterColumns) {
+      for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
       return labels;
@@ -112,7 +112,7 @@ export default {
 
   methods: {
     cellStyle: function(idx) {
-      let col = rosterColumns[idx];
+      let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
       if (col.key == 'name' && !this.isMain) {
