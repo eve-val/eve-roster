@@ -10,15 +10,23 @@
       {{ option.label }}
     </option>
   </select>
-  <!-- TODO: Non-shitty loading indicator... -->
-  <span class="message"
-      :style="{ color: requestStatus == 'error' ? 'red' : undefined }"
-      >{{ requestStatus }}</span>
+  <loading-spinner class="loading-spinner"
+      v-show="requestStatus != null"
+      :size="16"
+      :promise="requestPromise"
+      errorMode="icon"
+      />
 </div>
 </template>
 
 <script>
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
+
 export default {
+  components: {
+    LoadingSpinner,
+  },
+
   props: {
     options: { type: Array, required: true },
     initialValue: { type: String, required: false },
@@ -29,26 +37,20 @@ export default {
     return {
       selectedValue: this.initialValue,
       requestStatus: null,
+      requestPromise: null,
     };
   },
 
   watch: {
     selectedValue: function(value) {
-      console.log('Value!', value);
       this.requestStatus = 'loading';
-      this.submitHandler(value || null)
-      // value = value || null; // Strip out 
-      // let id = value == -1 ? null : value;
-      // this.requestStatus = 'loading';
-      // axios.put('/api/account/' + this.accountId + '/homeCitadel', {
-      //   citadelId: id,
-      // })
+      this.requestPromise = this.submitHandler(value || null)
       .then(response => {
         this.requestStatus = null;
       })
       .catch(e => {
-        console.log('Error :(', e);
         this.requestStatus = 'error';
+        throw e;
       });
     },
   },
@@ -64,9 +66,7 @@ export default {
   width: 200px;
 }
 
-.message {
-  font-size: 10px;
-  color: #8d785f;
-  margin-left: 5px;
+.loading-spinner {
+  margin-left: 3px;
 }
 </style>

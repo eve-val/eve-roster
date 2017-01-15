@@ -10,7 +10,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
 
   let timezone = req.body.activeTimezone;
 
-  if (policy.TIMEZONE_LABELS.indexOf(timezone) < 0) {
+  if (timezone != null && policy.TIMEZONE_LABELS.indexOf(timezone) < 0) {
     throw new BadRequestError('Invalid timezone: ' + timezone);
   }
 
