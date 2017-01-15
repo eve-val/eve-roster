@@ -32,7 +32,7 @@
       </div>
       <div class="queue-summary" v-if="queue != null">
         {{ queue.timeRemaining }} left in queue
-        ({{ queue.count}} skills)
+        ({{ queue.count}} {{queue.count == 1 ? 'skill' : 'skills' }})
       </div>
     </div>
     <div class="menu" v-if="!isMain && access['designateMain'] == 2">
