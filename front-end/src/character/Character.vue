@@ -2,8 +2,17 @@
 <div class="root">
   <app-header :identity="identity" />
 
+  <div class="name-title">
+    <template v-if="character">
+      {{ character.name }}
+    </template>
+    <loading-spinner v-else
+        :size="34"
+        :promise="characterPromise"
+        errorMode="text"
+        />
+  </div>
   <template v-if="character">
-    <div class="name-title">{{ character.name }}</div>
     <div class="root-container">
       <div class="sidebar">
         <eve-image :id="characterId" type="Character" :size="274"
@@ -35,51 +44,27 @@
 
         <template v-if="account.id != null">
           <div class="factoid-title">Timezone</div>
-          <div class="factoid">{{ account.activeTimezone || '-' }}</div>
+          <factoid-selector v-if="canWriteTimezone"
+              :options="timezoneOptions"
+              :initialValue="account.activeTimezone"
+              :submitHandler="submitTimezone.bind(this)"
+              />
+          <div v-else class="factoid">{{ account.activeTimezone || '-' }}</div>
 
           <div class="factoid-title">Citadel</div>
-          <citadel-selector v-if="canWriteCitadel"
-              :accountId="account.id"
-              :initialCitadel="account.citadelId"
-              :citadels="citadels"
+          <factoid-selector v-if="canWriteCitadel"
+              :options="citadelOptions"
+              :initialValue="account.citadelName"
+              :submitHandler="submitHousing.bind(this)"
               />
           <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
         </template>
       </div>
       <div class="content">
-        <div class="skills-container">
-          <template v-if="queue && skillGroups">
-            <div class="section-title"
-                style="margin-top: 0;"
-                >
-                Training queue
-            </div>
-            <queue-entry v-for="(queueItem, i) in queue"
-                :skill="skillMap[queueItem.id]"
-                :queueData="queueItem"
-                :position="i"
-                />
-          </template>
-          <template v-if="skillGroups">
-            <div class="section-title"
-                :style="{ 'margin-top': queue == null ? '0px' : undefined, }"
-                >Skills</div>
-            <template v-for="skillGroup in skillGroups">
-              <div class="skillgroup-title">{{ skillGroup.name }}</div>
-              <div class="skillgroup-container">
-                <div v-for="skill in skillGroup.skills"
-                    class="skill"
-                    >
-                  <skill-pips class="skill-pips"
-                      :trainedLevel="skill.level"
-                      :queuedLevel="skill.queuedLevel || 0"
-                      />
-                  {{ skill.name }}
-                </div>
-              </div>
-            </template>
-          </template>
-        </div>
+        <skill-sheet
+            :characterId="characterId"
+            :access="access"
+            />
       </div>
     </div>
   </template>
@@ -92,21 +77,19 @@ import skillGroups from '../../../shared/src/data/skill-groups.js'
 import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
-import TabbedContainer from '../shared/TabbedContainer.vue';
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
-import CitadelSelector from './CitadelSelector.vue';
-import QueueEntry from './QueueEntry.vue';
-import SkillPips from './SkillPips.vue';
+import FactoidSelector from './FactoidSelector.vue';
+import SkillSheet from './SkillSheet.vue';
 
 export default {
   components: {
     AppHeader,
     EveImage,
-    TabbedContainer,
+    LoadingSpinner,
 
-    SkillPips,
-    QueueEntry,
-    CitadelSelector,
+    FactoidSelector,
+    SkillSheet,
   },
 
   props: {
@@ -118,12 +101,11 @@ export default {
       character: null,
       account: null,
       access: null,
+      timezones: null,
       citadels: null,
 
+      characterPromise: null,
       corporationName: null,
-      queue: null,
-      skillMap: null,
-      skillGroups: null,
     };
   },
 
@@ -132,8 +114,26 @@ export default {
       return parseInt(this.$route.params.id);
     },
 
+    canWriteTimezone: function() {
+      return this.access != null && this.access['memberTimezone'] == 2;
+    },
+
     canWriteCitadel: function() {
       return this.access != null && this.access['memberHousing'] == 2;
+    },
+
+    timezoneOptions: function() {
+      return this.timezones.map(timezone => {
+        let hint = TIMEZONE_HINTS[timezone];
+        return {
+          value: timezone,
+          label: hint != null ? `${timezone} (${hint})` : timezone, 
+        };
+      });
+    },
+
+    citadelOptions: function() {
+      return this.citadels.map(citadel => ({ label: citadel, value: citadel }));
     },
   },
 
@@ -142,7 +142,17 @@ export default {
   },
 
   watch: {
-    character: function(value) {
+    characterId(value) {
+      // We've transitioned from one character to another, so this component
+      // is getting reused. Null out our data and fetch new data...
+      this.character = null;
+      this.corporationName = null;
+      this.characterPromise = null;
+
+      this.fetchData();
+    },
+
+    character(value) {
       if (value && value.corporationId) {
         ajaxer.getCorporation(value.corporationId)
             .then((response) =>  {
@@ -154,55 +164,24 @@ export default {
             });
       }
     },
-
-    '$route' (to, from) {
-      // We've transitioned from one character to another, so this component
-      // is getting reused. Null out our data and fetch new data...
-      this.character = null;
-      this.corporationName = null;
-      this.queue = null;
-      this.skillMap = null;
-      this.skillGroups = null;
-
-      this.fetchData();
-    },
   },
 
   methods: {
-    fetchData: function() {
-      ajaxer.getCharacter(this.characterId)
+    fetchData() {
+      this.characterPromise = ajaxer.getCharacter(this.characterId)
           .then(response => {
             this.character = response.data.character;
             this.account = response.data.account;
             this.access = response.data.access;
+            if (response.data.citadels) {
+              response.data.citadels.sort((a, b) => a.localeCompare(b));
+            }
             this.citadels = response.data.citadels;
-          })
-          .catch(e => {
-            // TODO
-            console.log('ERROR:', e);
-          });
-
-      ajaxer.getSkills(this.characterId)
-          .then(response => {
-            this.processSkillsData(response.data);
-          })
-          .catch(e => {
-            // TODO
-            console.log('ERROR:', e);
-          });
-      
-      ajaxer.getSkillQueue(this.characterId)
-          .then(response => {
-            this.queue = response.data;
-            this.maybeInjectQueueDataIntoSkillsMap();
-          })
-          .catch(e => {
-            // TODO
-            console.log('ERROR:', e);
+            this.timezones = response.data.timezones;
           });
     },
 
-    processSkillsData: function(skills) {
+    processSkillsData(skills) {
       let map = {};
       for (let skill of skills) {
         map[skill.id] = skill;
@@ -213,78 +192,32 @@ export default {
       this.maybeInjectQueueDataIntoSkillsMap();
     },
 
-    maybeInjectQueueDataIntoSkillsMap: function() {
+    maybeInjectQueueDataIntoSkillsMap() {
       if (this.skillsMap != null && this.queue != null) {
         for (let queueItem of this.queue) {
           this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
         }
       }
     },
+
+    submitTimezone(timezone) {
+      return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
+    },
+
+    submitHousing(citadelName) {
+      return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
+    },
   }
 }
 
-const GROUP_DISPLAY_ORDER = [
-  257,    // Spaceship Command
-  275,    // Navigation
-  1216,   // Engineering
-  1240,   // Subsystems
-  1210,   // Armor
-  1209,   // Shields
-
-  1213,   // Targeting
-  255,    // Gunnery
-  256,    // Missiles
-  273,    // Drones
-  272,    // Electronic Systems
-  1217,   // Scanning
-
-  269,    // Rigging
-  278,    // Social
-  258,    // Fleet Support
-  266,    // Coporation Management
-  274,    // Trade
-  1220,   // Neural Enhancement
-
-  268,    // Production
-  270,    // Science
-  1218,   // Resource Processing
-  1241,   // Planet Management
-  1545,   // Structure Management
-];
-
-function groupifySkills(skills){
-  let groupMap = {};
-  for (let skill of skills) {
-    let groupId = skill.group;
-    let group = groupMap[groupId];
-    if (!group) {
-      group = {
-        id: groupId,
-        name: skillGroups[groupId],
-        skills: [],
-      };
-      groupMap[groupId] = group;
-    }
-    group.skills.push(skill);
-  }
-
-  // Sort skills by name
-  for (let groupId in groupMap) {
-    groupMap[groupId].skills.sort(function(a, b) {
-      return a.name.localeCompare(b.name);
-    });
-  }
-
-  // Sort groups by display order
-  let groupList = [];
-  for (let groupId of GROUP_DISPLAY_ORDER) {
-    if (groupMap[groupId]) {
-      groupList.push(groupMap[groupId]);
-    }
-  }
-
-  return groupList;
-}
+const TIMEZONE_HINTS = {
+  'US West': 'PT/MT',
+  'US East': 'CT/ET',
+  'EU West': 'WET/CET',
+  'EU East': 'EET/MSK/FET/TRT',
+  'Aus': null,
+  'Other': null,
+};
 
 </script>
 
@@ -341,33 +274,5 @@ function groupifySkills(skills){
   color: #a7a29c;
   margin: 40px 0 20px 0;
   font-weight: 300;
-}
-
-.skills-container {
-  width: 800px;
-}
-
-.skillgroup-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.skillgroup-title {
-  font-size: 14px;
-  color: #8d785f;
-  margin: 17px 0 11px 0;
-}
-
-.skill {
-  width: 50%;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  margin: 6px 0 6px 0;
-}
-
-.skill-pips {
-  margin: 0 13px 0 13px;
 }
 </style>

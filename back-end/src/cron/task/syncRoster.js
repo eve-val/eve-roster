@@ -31,7 +31,9 @@ module.exports = syncRoster;
 function syncRoster() {
   return updateAllCorporations()
   .then(updateOrphanedOrUnknownCharacters)
-  .then(accountRoles.updateAll)
+  .then(() => {
+    return accountRoles.updateAll(dao);
+  })
   .then(function() {
     console.log('syncRoster() complete');
     return 'success';

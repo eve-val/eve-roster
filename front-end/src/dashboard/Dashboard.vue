@@ -2,15 +2,23 @@
 <div class="root">
   <app-header :identity="identity" />
   <div class="title">Dashboard</div>
+  <loading-spinner
+      v-if="dashboardPromise != null"
+      class="main-spinner"
+      :size="34"
+      :promise="dashboardPromise"
+      :errorMode="text"
+      />
   <div class="characters-container">
     <character-slab v-for="character in sortedCharacters"
         class="slab"
+        :accountId="accountId"
         :character="character"
         :loginParams="loginParams"
         :isMain="character.id == mainCharacter"
         :highlightMain="sortedCharacters.length > 1"
         :access="access"
-        @designateAsMain="onDesignateCharacterAsMain"
+        @designatedNewMain="onDesignatedNewCharacterAsMain"
         />
     <div class="add-character" v-if="loginParams">
       <a class="add-character-link"
@@ -25,6 +33,7 @@
 import ajaxer from '../shared/ajaxer';
 
 import AppHeader from '../shared/AppHeader.vue';
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
 import CharacterSlab from './CharacterSlab.vue';
 
@@ -32,6 +41,7 @@ import CharacterSlab from './CharacterSlab.vue';
 export default {
   components: {
     AppHeader,
+    LoadingSpinner,
     CharacterSlab,
   },
 
@@ -46,6 +56,8 @@ export default {
       loginParams: null,
       mainCharacter: null,
       access: null,
+
+      dashboardPromise: null,
     };
   },
 
@@ -70,29 +82,24 @@ export default {
 
   methods: {
     fetchData() {
-      ajaxer.getDashboard()
+      this.characters = [];
+      this.loginParams = null;
+      this.mainCharacter = null;
+      this.access = null;
+      this.dashboardPromise = ajaxer.getDashboard()
         .then(response => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
           this.loginParams = response.data.loginParams;
           this.mainCharacter = response.data.mainCharacter;
           this.access = response.data.access;
-        })
-        .catch(e => {
-          // TODO
-          console.log('ERROR:', e);
+
+          this.dashboardPromise = null;
         });
     },
 
-    onDesignateCharacterAsMain(characterId) {
-      ajaxer.putAccountMainCharacter(this.accountId, characterId)
-      .then(() => {
-        this.fetchData();
-      })
-      .catch(e => {
-        // TODO
-        console.log('ERROR!', e);
-      })
+    onDesignatedNewCharacterAsMain(characterId) {
+      this.fetchData();
     },
   },
 }
@@ -109,6 +116,10 @@ export default {
   color: #a7a29c;
   font-weight: 100;
   margin: 40px 0 40px 33px;
+}
+
+.main-spinner {
+  margin-left: 33px;
 }
 
 .characters-container {

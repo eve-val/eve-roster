@@ -7,4 +7,6 @@ module.exports = {
   canDesignateMain(accountCreated) {
     return Date.now() < accountCreated + MODIFY_MAIN_WINDOW_DURATION;
   },
+
+  TIMEZONE_LABELS: ['US West', 'US East', 'EU West', 'EU East', 'Aus', 'Other'],
 };

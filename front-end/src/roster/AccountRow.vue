@@ -3,6 +3,7 @@
     v-show="filterMatches.any || filterMatches.inactive">
   <character-row
       :character="expanded ? account.main : account.aggregate"
+      :columns="columns"
       :isMain="true"
       :account="account"
       :filter="filter"
@@ -29,6 +30,7 @@
         >
       <character-row v-for="alt in account.alts"
           :character="alt"
+          :columns="columns"
           :isMain="false"
           :filter="filter"
           />
@@ -49,6 +51,7 @@ export default {
   },
 
   props: {
+    columns: { type: Array, required: true },
     account: { type: Object, required: true },
     filter: { type: String, required: false },
   },
