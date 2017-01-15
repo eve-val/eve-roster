@@ -9,39 +9,17 @@ module.exports = function syncKillboard() {
   // clear the cached market map
   marketMap = null;
   return Promise.resolve()
-<<<<<<< HEAD
-    .then(() => {
-      return dao.getCharacters();
-    })
-=======
     .then(resetScores)
->>>>>>> 7sempra/master
     .then(fetchAllKills)
     .then(joinKills)
     .then(calcCharacterStats)
     .then(saveStats)
     .then((updateCount) => {
-<<<<<<< HEAD
-      console.log('Updated', updateCount, 'haracters');
-=======
       console.log('Updated', updateCount, 'characters');
->>>>>>> 7sempra/master
       return 'success';
     });
 };
 
-<<<<<<< HEAD
-// Get the value-annotated 30-day history for all the given characters.
-function fetchAllKills(characters) {
-  return Promise.map(_.pluck(characters, 'id'), (id) => {
-    return fetchKillHistory(id)
-      .then((kms) => {
-        return Promise.map(kms, injectKillValue);
-      })
-      .then((kms) => {
-        return {id: id, killmails: kms};
-      });
-=======
 // Reset all scores to null (null == unknown, differentiated from a 0, which implies character access with no
 // known kills)
 function resetScores() {
@@ -76,7 +54,6 @@ function fetchAllKills() {
   })
   .then((charMails) => {
     return charMails.filter(km => km.killmails != null);
->>>>>>> 7sempra/master
   });
 }
 
@@ -267,9 +244,6 @@ function fetchKillHistory(character) {
   };
 
   // Initial request has no max kill ID
-<<<<<<< HEAD
-  return _fetchHistory(character, undefined);
-=======
   return _fetchHistory(character, undefined)
     .catch((error) => {
       console.warn('Unable to fetch kills for', character);
@@ -283,7 +257,6 @@ function fetchKillHistory(character) {
       // Return null to differentiate between an accessible character that go no kills (e.g. returning [])
       return null;
     });
->>>>>>> 7sempra/master
 }
 
 // Loads killmails for the character and denormalizes them to actual killmail data blobs, which includes timestamp.
@@ -297,19 +270,5 @@ function fetchKills(character, maxKillmailID) {
       return Promise.map(killmails, (km) => {
         return eve.esi.killmails.get(km.killmail_id, km.killmail_hash);
       });
-<<<<<<< HEAD
-    })
-    .catch((error) => {
-      console.warn('Unable to fetch kills for', character);
-      if (error != 'Error: No access tokens for this character.') {
-        console.error('Unexpected exception type:');
-        console.error(error);
-        // Probably best to continue to fail in this case instead of swallowing the error
-        throw error;
-      }
-
-      return [];
-=======
->>>>>>> 7sempra/master
     });
 }

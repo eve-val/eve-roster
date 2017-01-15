@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 const _ = require('underscore');
->>>>>>> 7sempra/master
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
