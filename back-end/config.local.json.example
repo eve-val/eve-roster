@@ -39,6 +39,10 @@
   // following roles. Set to [] to designate a client with no roles whatsoever.
   // "debugRoles": ["admin"],
 
+  // Add the following latency (in ms) to all API requests. Useful for
+  // simulating more realistic network conditions.
+  // "debugRequestLatency": 1000
+
   // Uncomment this to use stub output responses for routes, stored in api-stubs/
   // "useStubOutput": true,
 }

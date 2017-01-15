@@ -3,7 +3,15 @@
   <app-header :identity="identity" />
   <div class="table-cnt">
     <div class="title-row">
-      <div class="title">Roster</div>
+      <div class="title">
+        Roster
+        <loading-spinner
+            class="loading-spinner"
+            v-if="rosterPromise != null"
+            :size="33"
+            :promise="rosterPromise"
+            />
+      </div>
       <search-box class="search-box"
           v-if="tableRows != null"
           @change="onSearchStringChange"
@@ -27,12 +35,14 @@ import _ from 'underscore';
 import ajaxer from '../shared/ajaxer';
 
 import AppHeader from '../shared/AppHeader.vue';
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import RosterTable from './RosterTable.vue'
 import SearchBox from './SearchBox.vue';
 
 export default {
   components: {
     AppHeader,
+    LoadingSpinner,
     RosterTable,
     SearchBox,
   },
@@ -45,18 +55,18 @@ export default {
     return {
       tableRows: null,
       searchString: null,
+
+      rosterPromise: null,
     };
   },
 
   created: function() {
-    ajaxer.getRoster()
+    this.rosterPromise = ajaxer.getRoster()
       .then(response => {
         let rows = injectDerivedData(response.data.rows);
         this.tableRows = rows;
-      })
-      .catch(e => {
-        // TODO
-        console.log('DATA FETCH ERROR:', e);
+
+        this.rosterPromise = null;
       });
   },
 
@@ -149,6 +159,10 @@ function getLastSeen(character) {
 <style scoped>
 .roster {
   padding-bottom: 200px;
+}
+
+.loading-spinner {
+  margin-left: 2px;
 }
 
 .table-cnt {
