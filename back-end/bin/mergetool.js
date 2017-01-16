@@ -114,6 +114,11 @@ Promise.resolve()
     })
     .then(count => {
       console.log('  Modified %s rows', count);
+
+      return trx.logEvent(targetAccountId, 'MERGE_ACCOUNTS', null, {
+        targetAccount: accounts[0],
+        sourceAccounts: accounts.slice(1),
+      });
     });
   })
   .then(() => {
