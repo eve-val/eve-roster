@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const dao = require('../../dao.js');
 const getStub = require('../../route-helper/getStub');
-const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 const policy = require('../../route-helper/policy');
 
 
@@ -19,10 +19,10 @@ const LOGIN_PARAMS = querystring.stringify({
   'state': '12345',
 });
 
-module.exports = jsonEndpoint(function(req, res) {
+module.exports = protectedEndpoint('json', function(req, res, account) {
   return (CONFIG.useStubOutput
     ? getStubOutput()
-    : getRealOutput(req.session.accountId));
+    : getRealOutput(account.id));
 });
 
 function getStubOutput() {

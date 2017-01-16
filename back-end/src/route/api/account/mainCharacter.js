@@ -1,19 +1,19 @@
 const _ = require('underscore');
 
 const dao = require('../../../dao');
-const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const policy = require('../../../route-helper/policy');
 const BadRequestError = require('../../../error/BadRequestError');
 const UnauthorizedClientError = require('../../../error/UnauthorizedClientError');
 
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let newMainId;
 
   return Promise.resolve()
   .then(() => {
     let targetAccountId = req.params.id;
-    let isOwner = targetAccountId == accountId;
+    let isOwner = targetAccountId == account.id;
     if (!isOwner) {
       throw new UnauthorizedClientError('Not the right owner.');
     }
@@ -21,7 +21,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
     if (!newMainId) {
       throw new BadRequestError('Invalid character id: ' + newMainId);
     }
-    return dao.getAccountDetails(accountId);
+    return dao.getAccountDetails(account.id);
   })
   .then(([row]) => {
     let created = row.created;
@@ -29,14 +29,14 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
       throw new UnauthorizedClientError(`Account was created ${created}, ` +
                 `which is outside this account's main designation window.`);
     }
-    return dao.getCharactersOwnedByAccount(accountId);
+    return dao.getCharactersOwnedByAccount(account.id);
   })
   .then(rows => {
     if (!_.findWhere(rows, { id: newMainId })) {
       throw new BadRequestError(
-          `Account ${accountId} doesn't own character ${newMainId}`);
+          `Account ${accound.id} doesn't own character ${newMainId}`);
     }
-    return dao.setAccountMain(accountId, newMainId);
+    return dao.setAccountMain(account.id, newMainId);
   })
   .then(() => {
     return {};

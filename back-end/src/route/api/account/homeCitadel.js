@@ -1,13 +1,13 @@
 const Promise = require('bluebird');
 
 const dao = require('../../../dao');
-const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const BadRequestError = require('../../../error/BadRequestError');
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let targetAccountId = req.params.id;
   let citadelName = req.body.citadelName;
-  let isOwner = targetAccountId == accountId;
+  let isOwner = targetAccountId == account.id;
 
   privs.requireWrite('memberHousing', isOwner);
 

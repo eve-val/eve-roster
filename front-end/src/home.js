@@ -20,6 +20,6 @@ new Vue({
   el: '#app',
   router,
   data: {
-    identity: $IDENTITY,
+    identity: $__IDENTITY,
   },
 });
