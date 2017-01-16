@@ -165,9 +165,6 @@ function handleUnownedChar(accountId, charData, charTokens, charRow) {
     .then(function() {
       return trx.ownCharacter(
           charData.id, accountId, /* isMain */ isNewAccount);
-    })
-    .then(function() {
-      return accountRoles.updateAccount(trx, accountId);
     });
   })
   .then(function() {
