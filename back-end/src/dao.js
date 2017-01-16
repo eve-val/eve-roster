@@ -210,6 +210,12 @@ Dao.prototype = {
   },
 
   getPrivilegesForAccount(accountId) {
+    // This query has an odd structure because we need to select all privileges,
+    // not just those that have been granted to this account. This is because
+    // some privileges are inherently granted to the owner of the resource even
+    // if the owner doesn't have that privilege in general. Thus, we need to
+    // know the owner level for every privilege in order to know whether the
+    // account has access.
     return this.builder('privilege')
         .select(
             'privilege.name',
@@ -230,6 +236,7 @@ Dao.prototype = {
   },
 
   getPrivilegesForRoles(roles) {
+    // See similar comment in getPrivilegesForAccount
     return this.builder('privilege')
         .select(
             'privilege.name',

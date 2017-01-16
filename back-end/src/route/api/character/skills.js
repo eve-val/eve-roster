@@ -3,13 +3,13 @@ const Promise = require('bluebird');
 const dao = require('../../../dao');
 const eve = require('../../../eve');
 
-const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const getStub = require('../../../route-helper/getStub');
 
 const STATIC = require('../../../static-data').get();
 const CONFIG = require('../../../config-loader').load();
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('character.skills.json'));
   }
@@ -19,7 +19,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   return dao.getOwner(characterId)
   .then(row => {
     let owningAccount = row != null ? row.id : null;
-    privs.requireRead('characterSkills', accountId == owningAccount);
+    privs.requireRead('characterSkills', account.id == owningAccount);
   })
   .then(() => {
     return fetchSkills(characterId);

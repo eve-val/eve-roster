@@ -2,14 +2,14 @@ const _ = require('underscore');
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
-const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 const getStub = require('../../route-helper/getStub');
 const policy = require('../../route-helper/policy');
 const NotFoundError = require('../../error/NotFoundError');
 
 const CONFIG = require('../../config-loader').load();
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('character.json'));
   }
@@ -36,7 +36,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
     if (row == null) {
       throw new NotFoundError();
     }
-    isOwned = accountId == row.accountId;
+    isOwned = account.id == row.accountId;
 
     payload = {
       character: {

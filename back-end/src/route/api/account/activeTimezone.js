@@ -1,11 +1,11 @@
 const dao = require('../../../dao');
-const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const policy = require('../../../route-helper/policy');
 const BadRequestError = require('../../../error/BadRequestError');
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let targetAccountId = req.params.id;
-  let isOwner = targetAccountId == accountId;
+  let isOwner = targetAccountId == account.id;
   privs.requireWrite('memberTimezone', isOwner);
 
   let timezone = req.body.activeTimezone;

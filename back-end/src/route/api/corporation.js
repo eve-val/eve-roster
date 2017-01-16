@@ -2,12 +2,12 @@ const Promise = require('bluebird');
 
 const eve = require('../../eve');
 const getStub = require('../../route-helper/getStub');
-const jsonEndpoint = require('../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
 
 const CONFIG = require('../../config-loader').load();
 
-module.exports = jsonEndpoint(function(req, res) {
+module.exports = protectedEndpoint('json', function(req, res) {
   if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('corporation.json'));
   }
