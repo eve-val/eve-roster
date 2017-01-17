@@ -44,10 +44,12 @@ function processCSS(css, result, options, logWarnings) {
           block.push(msg.toString());
         });
 
-        if (options.failOnWarning) {
-          throw new Error('ERROR: warnings encountered while processing (failOnWarning is enabled):\n' + block.join('\n'));
-        } else {
-          console.log(block.join('\n'));
+        if (block.length > 0) {
+          if (options.failOnWarning) {
+            throw new Error('ERROR: warnings encountered while processing (failOnWarning is enabled):\n' + block.join('\n'));
+          } else {
+            console.log(block.join('\n'));
+          }
         }
       }
 

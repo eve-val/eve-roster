@@ -26,7 +26,7 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           // vue-loader options go here
-          postcss: [require('./src/shared/insertCSS')]
+          postcss: [require('./src/shared/postcss-filter-guard')]
         }
       },
       {
