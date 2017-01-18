@@ -5,6 +5,7 @@ const CONFIG = require('../config-loader').load();
 
 
 const primaryCorpIds = _.pluck(CONFIG.primaryCorporations, 'id');
+const MEMBER_ROLE = '__member';
 
 const accountRoles = module.exports = {
   updateAll: function(dao) {
@@ -17,8 +18,8 @@ const accountRoles = module.exports = {
     });
   },
 
-  updateAccount: function(trx, accountId) {
-    return trx.builder('account')
+  updateAccount: function(dao, accountId) {
+    return dao.builder('account')
         .select(
             'character.id',
             'character.corporationId',
@@ -41,7 +42,7 @@ const accountRoles = module.exports = {
             // present?
             break;
           } else {
-            roles.push('__member');
+            roles.push(MEMBER_ROLE);
           }
         }
 
@@ -64,7 +65,7 @@ const accountRoles = module.exports = {
       roles = _.uniq(roles);
       console.log('Final roles:', roles);
 
-      return trx.setAccountRoles(accountId, roles);
+      return setAccountRoles(dao, accountId, roles);
     });
   },
 
@@ -81,6 +82,45 @@ function getTitleMap(corpId) {
     }
   }
   return null;
+}
+
+function setAccountRoles(dao, accountId, roles) {
+  return dao.transaction(trx => {
+    let oldRoles;
+    roles.sort((a, b) => a.localeCompare(b));
+
+    return trx.builder('accountRole')
+        .select('role')
+        .where('account', '=', accountId)
+    .then(roles => {
+      oldRoles = _.pluck(roles, 'role');
+      return trx.builder('accountRole')
+          .del()
+          .where('account', '=', accountId)
+    })
+    .then(() => {
+      if (roles.length > 0) {
+        return trx.builder('accountRole')
+            .insert(roles.map(role => ({ account: accountId, role: role }) ));
+      }
+    })
+    .then(() => {
+      if (!_.isEqual(oldRoles, roles)) {
+        return trx.logEvent(accountId, 'MODIFY_ROLES', null, {
+          old: oldRoles,
+          new: roles,
+        });
+      }
+    })
+    .then(() => {
+      if (!oldRoles.includes(MEMBER_ROLE) && roles.includes(MEMBER_ROLE)) {
+        return trx.logEvent(accountId, 'GAIN_MEMBERSHIP');
+      } else if (oldRoles.includes(MEMBER_ROLE) &&
+          !roles.includes(MEMBER_ROLE)) {
+        return trx.logEvent(accountId, 'LOSE_MEMBERSHIP');
+      }
+    });
+  });
 }
 
 

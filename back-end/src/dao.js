@@ -45,11 +45,21 @@ const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
   'account.mainCharacter',
 ]);
 
+const LOGGABLE_EVENTS = [
+  'CREATE_ACCOUNT',
+  'OWN_CHARACTER',
+  'DESIGNATE_MAIN',
+  'MERGE_ACCOUNTS',
+  'MODIFY_ROLES',
+  'GAIN_MEMBERSHIP',
+  'LOSE_MEMBERSHIP',
+];
+
 function Dao(builder) {
   this.builder = builder;
 }
 Dao.prototype = {
-  transaction: function(callback) {
+  transaction(callback) {
     if (this == module.exports) {
       return this.builder.transaction((trx) => {
         return callback(new Dao(trx));
@@ -60,15 +70,15 @@ Dao.prototype = {
     }
   },
 
-  commit: function() {
+  commit() {
     return this.builder.commit();
   },
 
-  rollback: function() {
+  rollback() {
     return this.builder.rollback();
   },
 
-  batchInsert: function(table, rows, chunkSize) {
+  batchInsert(table, rows, chunkSize) {
     let work = knex.batchInsert(table, rows, chunkSize);
     if (this.builder != knex) {
       work = work.transacting(this.builder);
@@ -76,27 +86,27 @@ Dao.prototype = {
     return work;
   },
 
-  getCitadels: function() {
+  getCitadels() {
     return this.builder('citadel').select();
   },
 
-  getCitadelByName: function(name) {
+  getCitadelByName(name) {
     return this.builder('citadel').select().where({name: name});
   },
 
-  getCharacters: function() {
+  getCharacters() {
     return this.builder('character').select();
   },
 
-  getCharacterByName: function(name) {
+  getCharacterByName(name) {
     return this.builder('character').select().where({name: name});
   },
 
-  getCharacterById: function(id) {
+  getCharacterById(id) {
     return this.builder('character').select().where({id: id});
   },
 
-  upsertCharacter: function(id, name, extraColumns) {
+  upsertCharacter(id, name, extraColumns) {
     let fullVals = Object.assign(extraColumns || {}, {
       id: id,
       name: name,
@@ -105,12 +115,11 @@ Dao.prototype = {
     return this._upsert('character', fullVals, 'id');
   },
 
-  updateCharacter: function(id, vals) {
+  updateCharacter(id, vals) {
     return this.builder('character').update(vals).where('id', '=', id);
   },
 
-  upsertAccessTokens: function(
-      characterId, refreshToken, accessToken, expiresIn) {
+  upsertAccessTokens(characterId, refreshToken, accessToken, expiresIn) {
     return this._upsert('accessToken', {
       character: characterId,
       refreshToken: refreshToken,
@@ -120,11 +129,18 @@ Dao.prototype = {
     }, 'character');
   },
 
-  createAccount: function() {
-    return this.builder('account')
-        .insert({ created: Date.now(), })
-    .then(function(ids) {
-      return ids[0];
+  createAccount() {
+    let id;
+    return this.transaction(trx => {
+      return trx.builder('account')
+          .insert({ created: Date.now(), })
+      .then(([_id]) => {
+        id = _id;
+        return trx.logEvent(id, 'CREATE_ACCOUNT');
+      })
+      .then(() => {
+        return id;
+      });
     });
   },
 
@@ -139,17 +155,24 @@ Dao.prototype = {
         .where('id', '=', accountId);
   },
 
-  ownCharacter: function(characterId, accountId, isMain) {
-    return this.builder('ownership').insert({
-      account: accountId,
-      character: characterId,
-    })
-    .then(() => {
-      // TODO: Change this to automatically apply if there are no other
-      // chars owned by the account
-      if (isMain) {
-        return this.setAccountMain(accountId, characterId);
-      }
+  ownCharacter(characterId, accountId, isMain) {
+    return this.transaction(trx => {
+      return trx.builder('ownership').insert({
+        account: accountId,
+        character: characterId,
+      })
+      .then(() => {
+        return trx.logEvent(accountId, 'OWN_CHARACTER', characterId);
+      })
+      .then(() => {
+        // TODO: Change this to automatically apply if there are no other
+        // chars owned by the account
+        if (isMain) {
+          return trx.setAccountMain(accountId, characterId);
+        } else {
+          return accountRoles.updateAccount(trx, accountId);
+        }
+      });
     });
   },
 
@@ -176,11 +199,20 @@ Dao.prototype = {
   },
 
   setAccountMain(accountId, mainCharacterId) {
-    return this.builder('account')
-        .where({ id: accountId })
-        .update({ mainCharacter: mainCharacterId })
-    .then(() => {
-      return accountRoles.updateAccount(this, accountId);
+    return this.transaction(trx => {
+      return trx.builder('account')
+          .where({ id: accountId })
+          .update({ mainCharacter: mainCharacterId })
+      .then(updateCount => {
+        if (updateCount != 1) {
+          throw new Error(
+              `No rows updated when setting main of account ${accountId}.`);
+        }
+        return trx.logEvent(accountId, 'DESIGNATE_MAIN', mainCharacterId);
+      })
+      .then(() => {
+        return accountRoles.updateAccount(trx, accountId);
+      });
     });
   },
 
@@ -194,19 +226,6 @@ Dao.prototype = {
     return this.builder('account')
         .where({ id: accountId })
         .update({ activeTimezone: activeTimezone });
-  },
-
-  setAccountRoles(accountId, roles) {
-    // TODO: start transaction if not already in a transaction?
-    return this.builder('accountRole')
-        .del()
-        .where('account', '=', accountId)
-    .then(() => {
-      if (roles.length > 0) {
-        return this.builder('accountRole')
-            .insert(roles.map(role => ({ account: accountId, role: role }) ));
-      }
-    })
   },
 
   getPrivilegesForAccount(accountId) {
@@ -351,7 +370,7 @@ Dao.prototype = {
     */
   },
 
-  _upsert: function(table, row, primaryKey) {
+  _upsert(table, row, primaryKey) {
     if (knex.CLIENT == 'sqlite3') {
       // Manually convert booleans to 0/1 for sqlite
       for (let v in row) {
@@ -376,6 +395,20 @@ Dao.prototype = {
       throw new Error('Client not supported: ' + knex.CLIENT);
     }
   },
+
+  logEvent(accountId, event, relatedCharacter, data) {
+    if (!LOGGABLE_EVENTS.includes(event)) {
+      throw new Error('Not a loggable event: ' + event);
+    }
+    return this.builder('accountLog')
+        .insert({
+          timestamp: Date.now(),
+          account: accountId,
+          event: event,
+          relatedCharacter: relatedCharacter,
+          data: JSON.stringify(data),
+        });
+  }
 
 };
 
