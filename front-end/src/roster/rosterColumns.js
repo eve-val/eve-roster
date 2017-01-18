@@ -7,6 +7,6 @@ export default [
   { label: 'Timezone', key: 'activeTimezone', width: 90, account: true },
   { label: 'Last seen', key: 'lastSeen', width: 110, },
   { label: 'Siggy score', key: 'siggyScore', width: 85, numeric: true, },
-  { label: 'Kills', key: 'killsInLastMonth', width: 60, numeric: true, },
-  { label: 'Losses', key: 'lossesInLastMonth', width: 60, numeric: true, },
+  { label: 'Kills', key: 'killsInLastMonth', width: 60, numeric: true, metaKey: 'killValueInLastMonth', },
+  { label: 'Losses', key: 'lossesInLastMonth', width: 60, numeric: true, metaKey: 'lossValueInLastMonth', },
 ];
