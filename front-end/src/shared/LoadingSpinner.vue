@@ -1,41 +1,29 @@
 <template>
-<div class="_loading-spinner"
+<div
     :style="{
       display: errorMode == 'text' ? 'block' : 'inline'
     }">
-  <img class="spinner"
-      v-if="errorMessage == null || errorMode == 'icon'"
-      :src="imgSrc"
-      :style="{
-        width: size + 'px',
-        height: size + 'px',
-      }"
-      >
-  <template v-if="status == 'error'">
-    <div class="block-message" v-if="errorMode == 'text'">
-      <img class="error-icon" src="../assets/error-icon.svg">{{ errorMessage }}
-    </div>
-    <div class="hover-message-cnt"
-        v-if="errorMode == 'icon'"
-        :style="hoverStyle"
-        >
-      <div class="hover-triangle right"
-          v-if="gravity=='right'"
-          :style="triangleStyle"
-          ></div>
-      <div class="hover-message">
-        {{ errorMessage }}
-      </div>
-      <div class="hover-triangle left"
-          v-if="gravity=='left'"
-          :style="triangleStyle"
-          ></div>
-    </div>
-  </template>
+  <tooltip v-if="errorMessage == null || errorMode == 'icon'"
+           :gravity="gravity"
+           :message="errorMessage">
+      <img class="spinner"
+          :src="imgSrc"
+          :style="{
+            width: size + 'px',
+            height: size + 'px',
+          }"
+          >
+  </tooltip>
+
+  <div class="block-message" v-if="status == 'error' && errorMode == 'text'">
+    <img class="error-icon" src="../assets/error-icon.svg">{{ errorMessage }}
+  </div>
 </div>
 </template>
 
 <script>
+
+import Tooltip from './Tooltip.vue';
 
 const ERROR_MODES = ['text', 'icon'];
 
@@ -43,6 +31,10 @@ const spinnerPath = require('../assets/spinner.svg');
 const errorPath = require('../assets/spinner-error.svg');
 
 export default {
+  components: {
+    Tooltip
+  },
+
   props: {
     size: { type: Number, required: true, },
     promise: { type: Promise, required: false, },
@@ -83,36 +75,6 @@ export default {
         default:
           return spinnerPath;
       }
-    },
-
-    hoverStyle() {
-      let style = {};
-      switch (this.gravity) {
-        case 'left':
-          style.right = this.size + 10 + 'px';
-          break;
-        case 'right':
-          style.left = this.size + 10 + 'px';
-          break;
-      }
-      return style;
-    },
-
-    triangleStyle() {
-      let style = {
-        top: this.size / 2 - 7 + 9 + 'px'
-      };
-      switch (this.gravity) {
-        case 'left':
-          style.right = '-7px';
-          style['border-left'] = '7px solid #3e3e3e';
-          break;
-        case 'right':
-          style.left = '-7px';
-          style['border-right'] = '7px solid #3e3e3e';
-          break;
-      }
-      return style;
     },
   },
 
@@ -161,10 +123,6 @@ export default {
 </script>
 
 <style scoped>
-._loading-spinner {
-  position: relative;
-}
-
 .spinner {
   vertical-align: text-bottom;
 }
@@ -184,72 +142,6 @@ export default {
   color: #cdcdcd;
   background: #3B342C;
   border-radius: 2px;
-}
-
-.hover-message-cnt {
-  display: none;
-  position: absolute;
-  top: -7px;
-}
-
-._loading-spinner:hover > .hover-message-cnt {
-  display: inline-block;
-}
-
-.hover-triangle {
-  width: 0;
-  height: 0;
-  position: absolute;
-  display: block;
-  
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-}
-
-.hover-triangle {
-  width: 0;
-  height: 0;
-  position: absolute;
-  display: block;
-  
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-}
-
-.hover-triangle::before {
-  content: '';
-  width: 0;
-  height: 0;
-  position: absolute;
-  display: block;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-}
-
-.hover-triangle.left::before {
-  left: -9px;
-  top: -7px;
-  border-left: 7px solid #202020;
-}
-
-.hover-triangle.right::before {
-  right: -9px;
-  top: -7px;
-  border-right: 7px solid #202020;
-}
-
-.hover-message {
-  width: 250px;
-  padding: 7px 8px;
-  background: #202020;
-  border: 1px solid #3e3e3e;
-
-  color: #a7a29c;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.25;
-
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
 }
 
 </style>
