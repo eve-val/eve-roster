@@ -41,7 +41,6 @@
 
 <script>
 import filter from './filter';
-import rosterColumns from './rosterColumns';
 import CharacterRow from './CharacterRow.vue';
 
 
