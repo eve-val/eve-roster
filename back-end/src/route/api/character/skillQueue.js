@@ -2,13 +2,13 @@ const Promise = require('bluebird');
 
 const dao = require('../../../dao');
 const getStub = require('../../../route-helper/getStub');
-const jsonEndpoint = require('../../../route-helper/jsonEndpoint');
+const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
 const CONFIG = require('../../../config-loader').load();
 
-module.exports = jsonEndpoint(function(req, res, accountId, privs) {
+module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   if (CONFIG.useStubOutput) {
     return Promise.resolve(getStub('character.skillqueue.json'));
   }
@@ -18,7 +18,7 @@ module.exports = jsonEndpoint(function(req, res, accountId, privs) {
   return dao.getOwner(characterId)
   .then(row => {
     let owningAccount = row != null ? row.id : null;
-    privs.requireRead('characterSkillQueue', accountId == owningAccount);
+    privs.requireRead('characterSkillQueue', account.id == owningAccount);
   })
   .then(() => {
     return skillQueue.getQueue(characterId);

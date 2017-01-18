@@ -6,7 +6,7 @@ const _ = require('underscore');
 const moment = require('moment');
 const schedule = require('node-schedule');
 
-const asyncUtil = require('../util/async');
+const asyncUtil = require('../util/asyncUtil');
 const dao = require('../dao');
 
 

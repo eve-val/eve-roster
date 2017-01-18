@@ -1,6 +1,6 @@
 const _ = require('underscore');
 
-const async = require('../util/async');
+const asyncUtil = require('../util/asyncUtil');
 const CONFIG = require('../config-loader').load();
 
 
@@ -11,7 +11,7 @@ const accountRoles = module.exports = {
     return dao.builder('account')
         .select('account.id')
     .then(rows => {
-      return async.serialize(rows, row => {
+      return asyncUtil.serialize(rows, row => {
         return accountRoles.updateAccount(dao, row.id);
       });
     });

@@ -29,19 +29,9 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 // Includes root ('/')
-app.get(routes.frontEnd, function(req, res) {
-  if (req.session.accountId == null) {
-    res.redirect('/login');
-  } else {
-    res.render('home', {
-      name: req.session.characterName
-    });
-  }
-});
+app.get(routes.frontEnd, require('./route/home'));
 
 app.get('/login', function(req, res) {
-
-
   res.render('login', {
     loginParams: querystring.stringify({
       'response_type': 'code',

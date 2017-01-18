@@ -17,7 +17,7 @@ const moment = require('moment');
 const xml2js = require('xml2js');
 
 const accountRoles = require('../../data-source/accountRoles');
-const async = require('../../util/async');
+const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const eve = require('../../eve');
 const CONFIG = require('../../config-loader').load();
@@ -83,7 +83,7 @@ function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
       .whereIn('corporationId', allCorpIds)
       .orWhereNull('corporationId')
   .then(function(rows) {
-    return async.parallelize(rows, row => {
+    return asyncUtil.parallelize(rows, row => {
       if (!processedCharactersIds[row.id]) {
         return eve.esi.character.get(row.id)
         .then(function(character) {
@@ -110,7 +110,7 @@ function parseAndStoreXml(corpId, [memberXml, securityXml]) {
   let titlesMap = scrapeTitles(securityXml);
 
   let members = memberXml.eveapi.result[0].rowset[0].row;
-  return async.serialize(members, function(member, i) {
+  return asyncUtil.serialize(members, function(member, i) {
     let characterId = parseInt(member.$.characterID);
     let titles = titlesMap[characterId];
 

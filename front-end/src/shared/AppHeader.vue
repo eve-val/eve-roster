@@ -2,7 +2,11 @@
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
     <router-link to="/" class="nav-link" exact>Dashboard</router-link>
-    <router-link to="/roster" class="nav-link">Roster</router-link>
+    <router-link 
+        to="/roster"
+        v-if="canReadRoster"
+        class="nav-link"
+        >Roster</router-link>
     <div class="spacer"></div>
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
@@ -23,7 +27,13 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
+
+  computed: {
+    canReadRoster() {
+      return this.identity.access['roster'] >= 1;
+    },
+  },
 }
 </script>
 
