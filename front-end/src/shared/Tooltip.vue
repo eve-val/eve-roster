@@ -1,24 +1,21 @@
 <template>
-    <div class="anchor" :style="anchorStyle">
-        <slot></slot>
-        <div class="hover-message-cnt"
-             v-if="message != null"
-             :style="hoverStyle"
-        >
-            <div class="hover-triangle right"
-                 v-if="gravity=='right'"
-                 :style="triangleStyle"
-            ></div>
-            <div class="hover-message"
-                 :style="messageStyle">
-                {{ message }}
-            </div>
-            <div class="hover-triangle left"
-                 v-if="gravity=='left'"
-                 :style="triangleStyle"
-            ></div>
-        </div>
+  <div class="_tooltip"
+       :style="{ display: packTarget ? 'inline-block' : 'block' }">
+    <slot></slot>
+    <div class="hover-message-cnt"
+         v-if="message != null"
+         :style="hoverStyle">
+      <div class="hover-triangle right"
+           v-if="gravity=='right'"
+           :style="triangleStyle"></div>
+      <div class="hover-message">
+        {{ message }}
+      </div>
+      <div class="hover-triangle left"
+           v-if="gravity=='left'"
+           :style="triangleStyle"></div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -33,8 +30,9 @@ export default {
         return value == 'left' || value == 'right';
       },
     },
-    // A null message disables tooltipping, which can make conditional tooltips easier to layout in parent components
     message: {
+      // A null message disables tooltipping, which can make conditional
+      // tooltips easier to layout in parent components
       type: String,
       required: false,
       default: null
@@ -53,8 +51,9 @@ export default {
     }
   },
 
-  // Both of these do a pretty decent job of resizing during a hotswap in dev mode but sporadically it seems
-  // they aren't called and the tooltip uses an incorrect size. Haven't been able to reproduce these conditions
+  // Both of these do a pretty decent job of resizing during a hotswap in dev
+  // mode but sporadically it seems they aren't called and the tooltip uses an
+  // incorrect size. Haven't been able to reproduce these conditions
   updated: function() {
     this.updateSizing();
   },
@@ -63,34 +62,20 @@ export default {
   },
 
   computed: {
-    anchorStyle() {
-      if (this.packTarget) {
-        return { display: 'inline-block' };
-      } else {
-        return { display: 'block' };
-      }
-    },
-
     hoverStyle() {
       let offset = (this.width + 10) + 'px';
 
       switch (this.gravity) {
         case 'left':
-          return { right: offset };
+          return {
+            right: offset,
+            'text-align': 'right'
+          };
         case 'right':
-          return { left: offset };
-      }
-      return {};
-    },
-
-    messageStyle() {
-      // Since the hover-message-cnt uses a fixed size, shift the packed, actual message to the
-      // proper end of the container so it lines up with the arrow.
-      switch(this.gravity) {
-        case 'left':
-          return { float: 'right' };
-        case 'right':
-          return { float: 'left' };
+          return {
+            left: offset,
+            'text-align': 'left'
+          };
       }
       return {};
     },
@@ -120,35 +105,24 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>
-.anchor {
+._tooltip {
   position: relative;
 }
 
 .hover-message-cnt {
   display: none;
   position: absolute;
-  clear: both;
   top: -7px;
-  text-align: left;
   z-index: 99;
   width: 250px;
 }
 
-.anchor:hover > .hover-message-cnt {
+._tooltip:hover > .hover-message-cnt {
   display: inline-block;
-}
-
-.hover-triangle {
-  width: 0;
-  height: 0;
-  position: absolute;
-  display: block;
-
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
 }
 
 .hover-triangle {
@@ -203,6 +177,7 @@ export default {
   font-size: 14px;
   font-weight: normal;
   line-height: 1.25;
+  text-align: left;
 
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
 }
