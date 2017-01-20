@@ -37,7 +37,10 @@
         v-if="i >= 3"
         :style="cellStyle(i)"
         >
-      {{ displayVal | dashDefault }}
+        <tooltip gravity="right" :packTarget="false"
+                 :message="tooltipMessage(i)">
+            {{ displayVal | dashDefault }}
+        </tooltip>
     </div>
   </div>
 </div>
@@ -51,10 +54,20 @@ import filter from './filter';
 import rosterColumns from './rosterColumns';
 
 import EveImage from '../shared/EveImage.vue';
+import Tooltip from '../shared/Tooltip.vue';
+
+const ISK_VALUE_STOPS = [
+  { symbol: 't', min: 1e12 },
+  { symbol: 'b', min: 1e9 },
+  { symbol: 'm', min: 1e6 },
+  { symbol: 'k', min: 1e3 },
+  { symbol: '', min: 0 }
+]
 
 export default {
   components: {
     EveImage,
+    Tooltip
   },
 
   props: {
@@ -134,6 +147,38 @@ export default {
       };
     },
 
+    tooltipMessage: function(idx) {
+      let col = this.columns[idx];
+      if (!col.metaKey) {
+        // No tooltip to display
+        return null;
+      }
+
+      let metaValue = null;
+      if (col.account) {
+        if (!this.isMain) {
+         // In this case the column displays a ditto, so there's not a reason to show a tooltip for that
+          return null;
+        } else {
+          metaValue = this.account[col.metaKey];
+        }
+      } else {
+        metaValue = this.character[col.metaKey];
+      }
+
+      if (metaValue) {
+        if (col.metaKey == 'killValueInLastMonth' || col.metaKey == 'lossValueInLastMonth') {
+          // Special case to reformat numeric value to a friendly ISK string
+          metaValue = iskLabel(metaValue);
+        }
+
+        return metaValue;
+      } else {
+        // Meta data was not included in the server response
+        return null;
+      }
+    },
+
     displayVal: function(col) {
       switch (col.key) {
         case 'alts':
@@ -164,6 +209,22 @@ export default {
       }
     },
   },
+}
+
+function iskLabel(isk) {
+  let iskUnit = '';
+  let fixedValue = '';
+
+  for (let stop of ISK_VALUE_STOPS) {
+    // ISK_VALUE_STOPS is in descending order so stop after first minimum is reached
+    if (isk > stop.min) {
+      iskUnit = stop.symbol;
+      fixedValue = (isk / stop.min).toFixed(2);
+      break;
+    }
+  }
+
+  return fixedValue + iskUnit + ' ISK';
 }
 
 function altsLabel(altsCount) {
@@ -254,5 +315,4 @@ function altsLabel(altsCount) {
   /*background: yellow;
   color: black;*/
 }
-
 </style>
