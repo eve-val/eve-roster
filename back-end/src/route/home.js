@@ -9,6 +9,7 @@ module.exports = protectedEndpoint('html', (req, res, account, privs) => {
     access: privs.dumpForFrontend(
         [
           'roster',
+          'adminConsole',
         ],
         false
     ),

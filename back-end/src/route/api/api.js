@@ -8,6 +8,9 @@ const UserVisibleError = require('../../error/UserVisibleError');
 // /api routes
 const router = express.Router();
 
+router.get('/admin/accountLog', require('./admin/accountLog'));
+router.get('/admin/cronLog', require('./admin/cronLog'));
+
 router.put('/account/:id/activeTimezone', require('./account/activeTimezone'));
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
 router.put('/account/:id/mainCharacter', require('./account/mainCharacter'));

@@ -7,6 +7,11 @@
         v-if="canReadRoster"
         class="nav-link"
         >Roster</router-link>
+    <router-link
+        to="/admin"
+        v-if="canAccessAdminConsole"
+        class="nav-link"
+        >Admin</router-link>
     <div class="spacer"></div>
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
@@ -32,6 +37,10 @@ export default {
   computed: {
     canReadRoster() {
       return this.identity.access['roster'] >= 1;
+    },
+
+    canAccessAdminConsole() {
+      return this.identity.access['adminConsole'] >= 1;
     },
   },
 }

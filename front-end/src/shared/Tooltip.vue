@@ -3,13 +3,13 @@
        :style="{ display: packTarget ? 'inline-block' : 'block' }">
     <slot></slot>
     <div class="hover-message-cnt"
-         v-if="message != null"
+         v-if="$slots.message"
          :style="hoverStyle">
       <div class="hover-triangle right"
            v-if="gravity=='right'"
            :style="triangleStyle"></div>
       <div class="hover-message">
-        {{ message }}
+        <slot name="message"></slot>
       </div>
       <div class="hover-triangle left"
            v-if="gravity=='left'"
@@ -29,13 +29,6 @@ export default {
       validator: function(value) {
         return value == 'left' || value == 'right';
       },
-    },
-    message: {
-      // A null message disables tooltipping, which can make conditional
-      // tooltips easier to layout in parent components
-      type: String,
-      required: false,
-      default: null
     },
     packTarget: {
       type: Boolean,
@@ -57,6 +50,7 @@ export default {
   updated: function() {
     this.updateSizing();
   },
+
   mounted: function() {
     this.updateSizing();
   },
@@ -118,11 +112,11 @@ export default {
   position: absolute;
   top: -7px;
   z-index: 99;
-  width: 250px;
+  max-width: 250px;
 }
 
 ._tooltip:hover > .hover-message-cnt {
-  display: inline-block;
+  display: block;
 }
 
 .hover-triangle {
@@ -168,7 +162,7 @@ export default {
 }
 
 .hover-message {
-  display: inline-block;
+  display: block;
   padding: 7px 8px;
   background: #202020;
   border: 1px solid #3e3e3e;
