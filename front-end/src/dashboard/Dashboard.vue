@@ -7,7 +7,7 @@
       class="main-spinner"
       :size="34"
       :promise="dashboardPromise"
-      :errorMode="text"
+      errorMode="text"
       />
   <div class="characters-container">
     <character-slab v-for="character in sortedCharacters"
