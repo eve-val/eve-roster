@@ -18,7 +18,7 @@
         <div class="cell event">{{ row.event }}</div>
         <div class="cell related-char">{{ row.relatedCharacterName }}</div>
         <div class="data">
-          <tooltip v-if="row.data" gravity="left" :packTarget="false">
+          <tooltip v-if="row.data" gravity="left bottom" :inline="false">
             <div class="cell">
               { ... }
             </div>
