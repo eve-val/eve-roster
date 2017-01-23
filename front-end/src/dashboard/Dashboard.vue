@@ -1,30 +1,32 @@
 <template>
 <div class="root">
   <app-header :identity="identity" />
+  <div class="centering-container">
   <div class="title">Dashboard</div>
-  <loading-spinner
-      v-if="dashboardPromise != null"
-      class="main-spinner"
-      :size="34"
-      :promise="dashboardPromise"
-      errorMode="text"
-      />
-  <div class="characters-container">
-    <character-slab v-for="character in sortedCharacters"
-        class="slab"
-        :accountId="accountId"
-        :character="character"
-        :loginParams="loginParams"
-        :isMain="character.id == mainCharacter"
-        :highlightMain="sortedCharacters.length > 1"
-        :access="access"
-        @designatedNewMain="onDesignatedNewCharacterAsMain"
+    <loading-spinner
+        v-if="dashboardPromise != null"
+        class="main-spinner"
+        :size="34"
+        :promise="dashboardPromise"
+        errorMode="text"
         />
-    <div class="add-character" v-if="loginParams">
-      <a class="add-character-link"
-          :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
-          >＋ Add a character</a>
-      </div>
+    <div class="characters-container">
+      <character-slab v-for="character in sortedCharacters"
+          class="slab"
+          :accountId="accountId"
+          :character="character"
+          :loginParams="loginParams"
+          :isMain="character.id == mainCharacter"
+          :highlightMain="sortedCharacters.length > 1"
+          :access="access"
+          @designatedNewMain="onDesignatedNewCharacterAsMain"
+          />
+      <div class="add-character" v-if="loginParams">
+        <a class="add-character-link"
+            :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+            >＋ Add a character</a>
+        </div>
+    </div>
   </div>
 </div>
 </template>
@@ -109,6 +111,11 @@ export default {
 .root {
   font-size: 14px;
   font-weight: 300;
+}
+
+.centering-container {
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .title {

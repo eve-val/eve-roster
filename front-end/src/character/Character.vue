@@ -2,69 +2,73 @@
 <div class="root">
   <app-header :identity="identity" />
 
-  <div class="name-title">
+  <div class="centering-container">
+    <div class="name-title">
+      <template v-if="character">
+        {{ character.name }}
+      </template>
+      <loading-spinner v-else
+          :size="34"
+          :promise="characterPromise"
+          errorMode="text"
+          />
+    </div>
     <template v-if="character">
-      {{ character.name }}
-    </template>
-    <loading-spinner v-else
-        :size="34"
-        :promise="characterPromise"
-        errorMode="text"
-        />
-  </div>
-  <template v-if="character">
-    <div class="root-container">
-      <div class="sidebar">
-        <eve-image :id="characterId" type="Character" :size="274"
-            style="border: 1px solid #463830;"
-            />
-        <div class="factoid-title">Corporation</div>
-        <div class="factoid">{{ corporationName || '-' }}</div>
-
-        <template v-if="account.main">
-          <div class="factoid-title">Main</div>
-          <div class="factoid">
-            <router-link
-                class="character-link"
-                :to="'/character/' + account.main.id"
-                >{{ account.main.name }}</router-link>
-          </div>
-        </template>
-
-        <template v-if="account.alts">
-          <div class="factoid-title">Alts</div>
-          <div v-for="alt in account.alts"
-              class="factoid">
-            <router-link
-                class="character-link"
-                :to="'/character/' + alt.id"
-                >{{ alt.name }}</router-link>
-          </div>
-        </template>
-
-        <template v-if="account.id != null">
-          <div class="factoid-title">Timezone</div>
-          <factoid-selector v-if="canWriteTimezone"
-              :options="timezoneOptions"
-              :initialValue="account.activeTimezone"
-              :submitHandler="submitTimezone.bind(this)"
+      <div class="root-container">
+        <div class="sidebar">
+          <eve-image :id="characterId" type="Character" :size="274"
+              style="border: 1px solid #463830;"
               />
-          <div v-else class="factoid">{{ account.activeTimezone || '-' }}</div>
+          <div class="factoid-title">Corporation</div>
+          <div class="factoid">{{ corporationName || '-' }}</div>
 
-          <div class="factoid-title">Citadel</div>
-          <factoid-selector v-if="canWriteCitadel"
-              :options="citadelOptions"
-              :initialValue="account.citadelName"
-              :submitHandler="submitHousing.bind(this)"
+          <template v-if="account.main">
+            <div class="factoid-title">Main</div>
+            <div class="factoid">
+              <router-link
+                  class="character-link"
+                  :to="'/character/' + account.main.id"
+                  >{{ account.main.name }}</router-link>
+            </div>
+          </template>
+
+          <template v-if="account.alts">
+            <div class="factoid-title">Alts</div>
+            <div v-for="alt in account.alts"
+                class="factoid">
+              <router-link
+                  class="character-link"
+                  :to="'/character/' + alt.id"
+                  >{{ alt.name }}</router-link>
+            </div>
+          </template>
+
+          <template v-if="account.id != null">
+            <div class="factoid-title">Timezone</div>
+            <factoid-selector v-if="canWriteTimezone"
+                :options="timezoneOptions"
+                :initialValue="account.activeTimezone"
+                :submitHandler="submitTimezone.bind(this)"
+                />
+            <div v-else class="factoid">
+              {{ account.activeTimezone || '-' }}
+            </div>
+
+            <div class="factoid-title">Citadel</div>
+            <factoid-selector v-if="canWriteCitadel"
+                :options="citadelOptions"
+                :initialValue="account.citadelName"
+                :submitHandler="submitHousing.bind(this)"
+                />
+            <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+          </template>
+        </div>
+        <div class="content">
+          <skill-sheet
+              :characterId="characterId"
+              :access="access"
               />
-          <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
-        </template>
-      </div>
-      <div class="content">
-        <skill-sheet
-            :characterId="characterId"
-            :access="access"
-            />
+        </div>
       </div>
     </div>
   </template>
@@ -224,6 +228,11 @@ const TIMEZONE_HINTS = {
 <style scoped>
 .root {
   font-weight: 300;
+}
+
+.centering-container {
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .name-title {
