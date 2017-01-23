@@ -1,171 +1,345 @@
 <template>
   <div class="_tooltip"
-       :style="{ display: packTarget ? 'inline-block' : 'block' }">
-    <slot></slot>
-    <div class="hover-message-cnt"
-         v-if="$slots.message"
-         :style="hoverStyle">
-      <div class="hover-triangle right"
-           v-if="gravity=='right'"
-           :style="triangleStyle"></div>
-      <div class="hover-message">
-        <slot name="message"></slot>
+       :style="{
+         display: this.inline ? 'inline-flex' : 'flex'
+       }"
+       @mouseenter="hovering = true"
+       @mouseleave="hovering = false"
+       >
+    <div class="flex-container" :style="flexContainerStyle">
+      <!-- main content goes here -->
+      <slot></slot>
+      <div class="nosize-container"
+          v-if="$slots.message && hovering"
+          :style="nosizeContainerStyle"
+          >
+        <div class="message-container" :style="messageContainerStyle">
+          <!-- tooltip content goes here -->
+          <slot name="message"></slot>
+        </div>
+        <div class="hover-triangle" :style="triangleStyle">
+            <div class="hover-triangle-inset"
+                :style="insetTriangleStyle"
+                ></div>
+        </div>
+        <div class="spacer" :style="spacerStyle"></div>
       </div>
-      <div class="hover-triangle left"
-           v-if="gravity=='left'"
-           :style="triangleStyle"></div>
     </div>
   </div>
 </template>
 
 <script>
 
+const HORIZONTAL_GRAVITIES = ['left', 'center', 'right'];
+const VERTICAL_GRAVITIES = ['top', 'center', 'bottom'];
+
+const MARGIN_TO_TARGET = 3;
+const ARROW_RISE = 7;
+const ARROW_BASE = 14;
+const ARROW_FILL = '#3e3e3e';
+const ARROW_INSET_FILL = '#202020';
+
 export default {
   props: {
+    /**
+     * Where the tooltip appears relative to the original object.
+     * Format: `<horizontal> <vertical>`
+     * e.g. `left center`
+     * Horizontal options: `left`, `center`, `right`
+     * Vertical optioins: `top`, `center`, `bottom`
+     */
     gravity: {
       type: String,
       required: false,
-      default: 'right',
+      default: 'center bottom',
       validator: function(value) {
-        return value == 'left' || value == 'right';
+        let pieces = splitGravString(value);
+        if (!HORIZONTAL_GRAVITIES.includes(pieces[0])) {
+          return false;
+        }
+        if (pieces[1] && !VERTICAL_GRAVITIES.includes(pieces[1])) {
+          return false;
+        }
+        return true;
       },
     },
-    packTarget: {
+
+    inline: {
       type: Boolean,
       required: false,
       default: true
-    }
+    },
   },
 
   data: function() {
     return {
-      width: 0,
-      height: 0
-    }
-  },
-
-  // Both of these do a pretty decent job of resizing during a hotswap in dev
-  // mode but sporadically it seems they aren't called and the tooltip uses an
-  // incorrect size. Haven't been able to reproduce these conditions
-  updated: function() {
-    this.updateSizing();
-  },
-
-  mounted: function() {
-    this.updateSizing();
+      hovering: false,
+    };
   },
 
   computed: {
-    hoverStyle() {
-      let offset = (this.width + 10) + 'px';
-
-      switch (this.gravity) {
-        case 'left':
-          return {
-            right: offset,
-            'text-align': 'right'
-          };
-        case 'right':
-          return {
-            left: offset,
-            'text-align': 'left'
-          };
+    horizontalGravity() {
+      let hgrav = splitGravString(this.gravity)[0];
+      if (!HORIZONTAL_GRAVITIES.includes(hgrav)) {
+        hgrav = 'center';
       }
-      return {};
+      return hgrav;
+    },
+
+    verticalGravity() {
+      let vgrav = splitGravString(this.gravity)[1] || 'center';
+      if (!VERTICAL_GRAVITIES.includes(vgrav)) {
+        vgrav = 'center';
+      }
+      if (this.horizontalGravity == 'center' && vgrav == 'center') {
+        vgrav = 'bottom';
+      }
+
+      return vgrav;
+    },
+
+    flexContainerStyle() {
+      let style = {};
+
+      switch (this.horizontalGravity) {
+        case 'left':
+          style['flex-direction'] = 'row-reverse';
+          // style['justify-content'] = 'flex-end';
+          break;
+        case 'right':
+          style['flex-direction'] = 'row';
+          // style['justify-content'] = 'flex-start';
+          break;
+        case 'center':
+          switch (this.verticalGravity) {
+            case 'top':
+              style['flex-direction'] = 'column-reverse';
+              break;
+            case 'bottom':
+              style['flex-direction'] = 'column';
+              break;
+          }
+          break;
+      }
+
+      return style;
+    },
+
+    nosizeContainerStyle() {
+      let style = {};
+
+      if (this.horizontalGravity == 'center') {
+        style['align-items'] = 'center';
+        switch (this.verticalGravity) {
+          case 'top':
+            style['flex-direction'] = 'column';
+            break;
+          case 'bottom':
+            style['flex-direction'] = 'column-reverse';
+            break;
+        }
+        switch (this.verticalGravity) {
+          case 'top':
+            break;
+          case 'bottom':
+            break;
+        }
+      } else {
+        switch (this.horizontalGravity) {
+          case 'left':
+            style['flex-direction'] = 'row';
+            break;
+          case 'right':
+            style['flex-direction'] = 'row-reverse';
+            break;
+        }
+        switch (this.verticalGravity) {
+          case 'top':
+            style['align-items'] = 'flex-end';
+            break;
+          case 'bottom':
+            style['align-items'] = 'flex-start';
+            break;
+          case 'center':
+            style['align-items'] = 'center';
+            break;
+        }
+      }
+
+      return style;
+    },
+
+    spacerStyle() {
+      let style = {};
+      let marginStr = MARGIN_TO_TARGET + 'px';
+      switch (this.triangleDirection) {
+        case 'left':
+        case 'right':
+          style['width'] = marginStr;
+          style['height'] = `${ARROW_BASE}px`;
+          break;
+        case 'up':
+        case 'down':
+          style['width'] = `${ARROW_BASE}px`;
+          style['height'] = marginStr;
+          break;
+      }
+      return style;
     },
 
     triangleStyle() {
-      return {
-        top: (this.height / 2 - 7 + 9) + 'px'
-      };
+      let style = this.getTriangleStyle(ARROW_FILL, ARROW_BASE, ARROW_RISE);
+
+      if (this.horizontalGravity != 'center') {
+        switch (this.verticalGravity) {
+          case 'top':
+            style['top'] = `${ARROW_BASE / 2}px`;
+            break;
+          case 'bottom':
+            style['top'] = `-${ARROW_BASE / 2}px`;
+            break;
+        }
+      }
+
+      return style;
+    },
+
+    insetTriangleStyle() {
+      let style = this.getTriangleStyle(
+          ARROW_INSET_FILL, ARROW_BASE, ARROW_RISE);
+
+      let left, top;
+      if (this.horizontalGravity == 'center') {
+        style['left'] = `-${ARROW_BASE / 2}px`;
+        style[this.verticalGravity] = `-${ARROW_RISE + 2}px`;
+      } else {
+        style['top'] = `-${ARROW_BASE / 2}px`;
+        style[this.horizontalGravity] = `-${ARROW_RISE + 2}px`;
+      }
+
+      return style;
+    },
+
+    messageContainerStyle() {
+      let style = {};
+
+      if (this.horizontalGravity != 'center') {
+        switch (this.verticalGravity) {
+          case 'top':
+            style.top = '13px';
+            break;
+          case 'bottom':
+            style.top = '-13px';
+            break;
+          case 'center':
+            break;
+        }
+      }
+
+      return style;
+    },
+
+    triangleDirection() {
+      switch (this.horizontalGravity) {
+        case 'center':
+          switch (this.verticalGravity) {
+            case 'top':
+              return 'down';
+            case 'bottom':
+              return 'up';
+          }
+          break;
+        case 'left':
+          return 'right';
+        case 'right':
+          return 'left';
+      }
+      return null;
     },
   },
 
   methods: {
-    updateSizing() {
-      if (!this.$el) {
-        return;
+    getTriangleStyle: function(color, base, rise) {
+      let style = {};
+
+      const solidBorder = `${rise}px solid ${color}`;
+      const transBorder = `${base / 2}px solid transparent`;
+
+      if (this.horizontalGravity == 'center') {
+        style['border-left'] = transBorder;
+        style['border-right'] = transBorder;
+        switch (this.verticalGravity) {
+          case 'top':
+            style['border-top'] = solidBorder;
+            break;
+          case 'bottom':
+            style['border-bottom'] = solidBorder;
+            break;
+        }
+      } else {
+        style['border-top'] = transBorder;
+        style['border-bottom'] = transBorder;
+        switch (this.horizontalGravity) {
+          case 'left':
+            style['border-left'] = solidBorder;
+            break;
+          case 'right':
+            style['border-right'] = solidBorder;
+            break;
+        }
       }
 
-      let newWidth = this.$el.offsetWidth;
-      let newHeight = this.$el.offsetHeight;
-
-      if (newWidth != this.width) {
-        this.width = newWidth;
-      }
-      if (newHeight != this.height) {
-        this.height = newHeight;
-      }
+      return style;
     }
   }
+}
+
+function splitGravString(str) {
+  return str.trim().split(/\s+/);
 }
 
 </script>
 
 <style scoped>
-._tooltip {
+.flex-container {
   position: relative;
+  align-items: center;
+  display: inline-flex;
 }
 
-.hover-message-cnt {
-  display: none;
-  position: absolute;
-  top: -7px;
+.nosize-container {
+  display: flex;
+  width: 0;
+  height: 0;
+  position: relative;
+  justify-content: flex-end;
   z-index: 99;
-  max-width: 250px;
 }
 
-._tooltip:hover > .hover-message-cnt {
-  display: block;
+.spacer {
+  flex: 0 0 auto;
 }
 
 .hover-triangle {
   width: 0;
   height: 0;
-  position: absolute;
-  display: block;
-
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.hover-triangle::before {
-  content: '';
+.hover-triangle-inset {
   width: 0;
   height: 0;
   position: absolute;
-  display: block;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
 }
 
-.hover-triangle.left {
-  right: -7px;
-  border-left: 7px solid #3e3e3e;
-}
-
-.hover-triangle.right {
-  left: -7px;
-  border-right: 7px solid #3e3e3e;
-}
-
-.hover-triangle.left::before {
-  left: -9px;
-  top: -7px;
-  border-left: 7px solid #202020;
-}
-
-.hover-triangle.right::before {
-  right: -9px;
-  top: -7px;
-  border-right: 7px solid #202020;
-}
-
-.hover-message {
+.message-container {
   display: block;
   padding: 7px 8px;
+  max-width: 250px;
   background: #202020;
   border: 1px solid #3e3e3e;
+  position: relative;
 
   color: #a7a29c;
   font-size: 14px;

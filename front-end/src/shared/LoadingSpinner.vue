@@ -13,7 +13,7 @@
           height: size + 'px',
         }"
         >
-    <span slot="message">{{ errorMessage }} </span>
+    <span slot="message" v-if="errorMessage != null">{{ errorMessage }} </span>
   </tooltip>
 
   <div class="block-message" v-if="status == 'error' && errorMode == 'text'">
