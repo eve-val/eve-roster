@@ -43,6 +43,8 @@ export default {
 .split-container {
   display: flex;
   font-weight: 300;
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .sidebar {
