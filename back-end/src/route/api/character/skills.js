@@ -44,7 +44,7 @@ function loadSkillsFromDB(characterId) {
       });
     }
 
-    return skillList;
+    return { skills: skillList };
   });
 }
 
@@ -59,10 +59,8 @@ function fetchSkills(characterId) {
       // that was never reached and wrap the result in a warning message.
       return loadSkillsFromDB(characterId)
       .then(skills => {
-        return {
-          warning: 'Missing access token for character.',
-          data: skills
-        }
+        skills.warning = 'Missing access token for character. Skills are out of date.';
+        return skills;
       });
     } else {
       // Unknown failure
