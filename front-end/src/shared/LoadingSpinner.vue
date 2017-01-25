@@ -1,23 +1,25 @@
 <template>
 <div
     :style="{
-      display: errorMode == 'text' ? 'block' : 'inline'
+      display: messageMode == 'text' ? 'block' : 'inline'
     }">
-  <tooltip v-if="errorMessage == null || errorMode == 'icon'"
+  <tooltip
+      v-if="status == 'loading' || (messageMode == 'icon' && errOrMsg != null)"
       :gravity="gravity"
       >
     <img class="spinner"
-        :src="imgSrc"
+        :src="spinnerSrc"
         :style="{
           width: size + 'px',
           height: size + 'px',
         }"
         >
-    <span slot="message" v-if="errorMessage != null">{{ errorMessage }} </span>
+    <span slot="message" v-if="errOrMsg != null">{{ errOrMsg }}</span>
   </tooltip>
 
-  <div class="block-message" v-if="status == 'error' && errorMode == 'text'">
-    <img class="error-icon" src="../assets/error-icon.svg">{{ errorMessage }}
+  <div class="block-message"
+       v-if="messageMode == 'text' && (status == 'error' || errOrMsg != null)">
+    <img class="text-icon" :src="iconSrc">{{ errOrMsg }}
   </div>
 </div>
 </template>
@@ -26,10 +28,19 @@
 
 import Tooltip from './Tooltip.vue';
 
-const ERROR_MODES = ['text', 'icon'];
+const MESSAGE_MODES = ['text', 'icon'];
 
-const spinnerPath = require('../assets/spinner.svg');
-const errorPath = require('../assets/spinner-error.svg');
+const spinnerPath = {
+  'loading': require('../assets/spinner.svg'),
+  'loaded': require('../assets/spinner-warning.svg'),
+  'error': require('../assets/spinner-error.svg'),
+};
+
+const iconPath = {
+  'loading': require('../assets/spinner.svg'),
+  'loaded': require('../assets/warning-icon.svg'),
+  'error': require('../assets/error-icon.svg'),
+};
 
 export default {
   components: {
@@ -39,22 +50,25 @@ export default {
   props: {
     size: { type: Number, required: true, },
     promise: { type: Promise, required: false, },
-    errorMode: {
+    messageMode: {
       type: String,
       required: false,
       default: 'icon', 
       validator: function(value) {
-        return value == 'icon' || value == 'text';
+        for (let e of MESSAGE_MODES) {
+          if (value == e) {
+            return true;
+          }
+        }
+        return false;
       },
     },
     gravity: {
       type: String,
       required: false,
-      default: 'right', 
-      validator: function(value) {
-        return value == 'left' || value == 'right';
-      },
+      default: 'right',
     },
+    message: { type: String, required: false, },
     actionLabel: { type: String, required: false, },
     rethrowError: { type: Boolean, required: false, default: false, },
   },
@@ -67,16 +81,25 @@ export default {
   },
 
   computed: {
-    imgSrc() {
-      switch (this.status) {
-        case 'loading':
-          return spinnerPath;
-        case 'error':
-          return errorPath;
-        default:
-          return spinnerPath;
+    spinnerSrc() {
+      if (this.status in spinnerPath) {
+        return spinnerPath[this.status];
+      } else {
+        return spinnerPath['loading'];
       }
     },
+
+    iconSrc() {
+      if (this.status in iconPath) {
+        return iconPath[this.status];
+      } else {
+        return iconPath['loading'];
+      }
+    },
+
+    errOrMsg() {
+      return this.errorMessage || this.message;
+    }
   },
 
   watch: {
@@ -128,7 +151,7 @@ export default {
   vertical-align: text-bottom;
 }
 
-.error-icon {
+.text-icon {
   width: 15px;
   height: 15px;
   margin-right: 5px;

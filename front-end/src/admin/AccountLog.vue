@@ -35,7 +35,7 @@
         v-if="dataPromise != null"
         :size="34"
         :promise="dataPromise"
-        errorMode="text"
+        messageMode="text"
         />
 </admin-wrapper>
 </template>
