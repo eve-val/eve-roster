@@ -99,22 +99,13 @@ export default {
       queueFetchStatus: 'loading',
       skillInTraining: null,
       queue: null,
+      warningMessage: null,
 
       designateMainPromise: null,
     };
   },
 
   computed: {
-    queueStatus: function() {
-      if (this.queueFetchStatus == 'loading') {
-        return 'loading';
-      } else if (this.queueFetchStatus == 'error') {
-        return 'loading-error';
-      } else if (this.character.needsReauth) {
-        return ''
-      }
-    },
-
     errorState: function() {
       return this.character.needsReauth ||
           this.queueFetchStatus == 'error' ||
@@ -122,7 +113,9 @@ export default {
     },
 
     trainingLabel: function() {
-      if (this.character.needsReauth) {
+      if (this.warningMessage) {
+        return this.warningMessage;
+      } else if (this.character.needsReauth) {
         return 'Needs authorization!';
       } else if (this.queueFetchStatus == 'loading') {
         return 'Loading...';
@@ -148,6 +141,7 @@ export default {
     ajaxer.getSkillQueueSummary(this.character.id)
       .then(response => {
         this.queueFetchStatus = 'loaded';
+        this.warningMessage = response.data.warning;
         this.skillInTraining = response.data.skillInTraining;
         this.queue = response.data.queue;
       })
