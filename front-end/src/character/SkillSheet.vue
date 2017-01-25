@@ -7,7 +7,7 @@
     <loading-spinner
         v-if="queueStatus != 'loaded'"
         :size="30"
-        errorMode="text"
+        messageMode="text"
         :promise="queuePromise"
         />
     <template v-if="queue && skillGroups">
@@ -24,8 +24,9 @@
     </div>
     <loading-spinner
         v-if="skillStatus != 'loaded'"
+        :message="skillMessage"
         :size="30"
-        errorMode="text"
+        messageMode="text"
         :promise="skillPromise"
         />
     <template v-if="skillGroups">
@@ -78,6 +79,7 @@ export default {
 
       queueStatus: null,
       skillStatus: null,
+      skillMessage: null,
     };
   },
 
@@ -104,6 +106,7 @@ export default {
 
       this.queueStatus = null;
       this.skillStatus = null;
+      this.skillMessage = null;
 
       this.fetchData();
     },
@@ -115,8 +118,15 @@ export default {
         this.skillStatus = 'loading';
         this.skillPromise = ajaxer.getSkills(this.characterId)
           .then(response => {
-            this.skillStatus = 'loaded';
-            this.processSkillsData(response.data);
+            if (response.data.warning) {
+              this.skillStatus = 'loaded-warning';
+              this.skillMessage = response.data.warning;
+              this.processSkillsData(response.data.data);
+            } else {
+              this.skillStatus = 'loaded';
+              this.skillMessage = null;
+              this.processSkillsData(response.data);
+            }
           })
           .catch(e => {
             this.skillStatus = 'error';
