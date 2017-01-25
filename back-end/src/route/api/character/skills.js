@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 
+const MissingTokenError = require('../../../error/MissingTokenError');
 const dao = require('../../../dao');
 const eve = require('../../../eve');
 
@@ -26,13 +27,10 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   })
 });
 
-function fetchSkills(characterId) {
-  return fetchNewSkills(characterId)
-  .then(function() {
-    return dao.builder('skillsheet')
-        .select('skill', 'level', 'skillpoints')
-        .where('character', characterId);
-  })
+function loadSkillsFromDB(characterId) {
+  return dao.builder('skillsheet')
+      .select('skill', 'level', 'skillpoints')
+      .where('character', characterId)
   .then(function(rows) {
     let skillList = [];
     for (let i = 0; i < rows.length; i++) {
@@ -45,42 +43,65 @@ function fetchSkills(characterId) {
         sp: row.skillpoints,
       });
     }
+
     return skillList;
   });
 }
 
-function fetchNewSkills(characterId) {
-  // TODO make the skill insertion into the table a tap, so that the
-  // fetchSkills() function doesn't have to requery them (although this would
-  // also involve reformatting the data here to match what DB would return)
-  return eve.getAccessToken(characterId)
-    .then(accessToken => {
-      return eve.esi.character.getSkills(characterId, accessToken);
-    })
-    .then(data => {
-      return data.skills;
-    })
-    .then(esiSkills => {
-      return dao.transaction((trx) => {
-        console.log('Dropping skillsheet...');
-        return trx.builder('skillsheet')
-          .del()
-          .where('character', '=', characterId)
-          .then(function() {
-            let insertObjs = [];
-            for (let i = 0; i < esiSkills.length; i++) {
-              let s = esiSkills[i];
-              insertObjs.push({
-                character: characterId,
-                skill: s.skill_id,
-                level: s.current_skill_level,
-                skillpoints: s.skillpoints_in_skill,
-              });
-            }
-            console.log('Inserting %s records', insertObjs.length);
-
-            return trx.batchInsert('skillsheet', insertObjs, 100);
-          });
+function fetchSkills(characterId) {
+  return fetchNewSkills(characterId)
+  .then(function() {
+    return loadSkillsFromDB(characterId);
+  })
+  .catch(function(err) {
+    if (err instanceof MissingTokenError) {
+      // This error is thrown only in fetchNewSkills so execute the DB load
+      // that was never reached and wrap the result in a warning message.
+      return loadSkillsFromDB(characterId)
+      .then(skills => {
+        return {
+          warning: 'Missing access token for character.',
+          data: skills
+        }
       });
+    } else {
+      // Unknown failure
+      throw err;
+    }
+  })
+}
+
+function fetchNewSkills(characterId) {
+  // Always store the skills in the DB since it makes the logic around what to
+  // do when there's no access token easier (i.e. always read the DB)
+  return eve.getAccessToken(characterId)
+  .then(accessToken => {
+    return eve.esi.character.getSkills(characterId, accessToken);
+  })
+  .then(data => {
+    return data.skills;
+  })
+  .then(esiSkills => {
+    return dao.transaction((trx) => {
+      console.log('Dropping skillsheet...');
+      return trx.builder('skillsheet')
+      .del()
+      .where('character', '=', characterId)
+      .then(function() {
+        let insertObjs = [];
+        for (let i = 0; i < esiSkills.length; i++) {
+          let s = esiSkills[i];
+          insertObjs.push({
+            character: characterId,
+            skill: s.skill_id,
+            level: s.current_skill_level,
+            skillpoints: s.skillpoints_in_skill,
+          });
+        }
+        console.log('Inserting %s records', insertObjs.length);
+
+        return trx.batchInsert('skillsheet', insertObjs, 100);
+      });
+    });
   });
 }
