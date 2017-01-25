@@ -7,6 +7,9 @@ module.exports = {
     '/roster',
     '/character/:id',
     '/housing',
+    '/admin',
+    '/admin/cron-logs',
+    '/admin/account-logs',
   ],
   // Content served directly by the Express server.
   backEnd: [

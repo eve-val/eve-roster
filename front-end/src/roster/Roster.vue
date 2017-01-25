@@ -1,33 +1,35 @@
 <template>
 <div class="roster">
   <app-header :identity="identity" />
-  <div class="table-cnt">
-    <div class="title-row">
-      <div class="title">
-        Roster
-        <loading-spinner
-            class="loading-spinner"
-            v-if="rosterPromise != null"
-            :size="33"
-            :promise="rosterPromise"
+  <div class="centering-container">
+    <div class="table-cnt">
+      <div class="title-row">
+        <div class="title">
+          Roster
+          <loading-spinner
+              class="loading-spinner"
+              v-if="rosterPromise != null"
+              :size="33"
+              :promise="rosterPromise"
+              />
+        </div>
+        <search-box class="search-box"
+            v-if="tableRows != null"
+            @change="onSearchStringChange"
             />
       </div>
-      <search-box class="search-box"
+      <roster-table
           v-if="tableRows != null"
-          @change="onSearchStringChange"
+          :columns="displayColumns"
+          :rows="tableRows"
+          :filter="this.searchString"
+          class="table"
           />
     </div>
-    <roster-table
-        v-if="tableRows != null"
-        :columns="displayColumns"
-        :rows="tableRows"
-        :filter="this.searchString"
-        class="table"
-        />
-  </div>
-  <div class="member-count" v-if="tableRows != null">
-    {{ tableRows.length }} members
-  </div>
+    <div class="member-count" v-if="tableRows != null">
+      {{ tableRows.length }} members
+    </div>
+  <div>
 </div>
 </template>
 
@@ -170,6 +172,11 @@ function getLastSeen(character) {
 <style scoped>
 .roster {
   padding-bottom: 200px;
+}
+
+.centering-container {
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .loading-spinner {

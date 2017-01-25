@@ -46,4 +46,12 @@ export default {
   getSkillQueueSummary(id) {
     return axios.get('/api/dashboard/' + id + '/queueSummary');
   },
+
+  getAdminAccountLog() {
+    return axios.get('/api/admin/accountLog');
+  },
+
+  getAdminCronLog() {
+    return axios.get('/api/admin/cronLog');
+  },
 }

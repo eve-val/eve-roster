@@ -370,6 +370,33 @@ Dao.prototype = {
     */
   },
 
+  getCronLogsRecent() {
+    return this.builder('cronLog')
+        .select('id', 'task', 'start', 'end', 'result')
+        .orderBy('id', 'desc')
+        .limit(400);
+  },
+
+  getAccountLogsRecent() {
+    return this.builder('accountLog')
+        .select(
+            'accountLog.id as id',
+            'timestamp',
+            'account as accountId',
+            'mainChar.name as mainCharacter',
+            'event',
+            'relatedCharacter',
+            'relatedChar.name as relatedCharacterName',
+            'data')
+        .leftJoin('account', 'account.id', '=', 'accountLog.account')
+        .leftJoin(
+            'character as mainChar', 'mainChar.id', 'account.mainCharacter')
+        .leftJoin(
+            'character as relatedChar', 'relatedChar.id', 'relatedCharacter')
+        .orderBy('timestamp', 'desc')
+        .limit(200);
+  },
+
   _upsert(table, row, primaryKey) {
     if (knex.CLIENT == 'sqlite3') {
       // Manually convert booleans to 0/1 for sqlite

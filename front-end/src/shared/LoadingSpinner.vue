@@ -4,15 +4,16 @@
       display: errorMode == 'text' ? 'block' : 'inline'
     }">
   <tooltip v-if="errorMessage == null || errorMode == 'icon'"
-           :gravity="gravity"
-           :message="errorMessage">
-      <img class="spinner"
-          :src="imgSrc"
-          :style="{
-            width: size + 'px',
-            height: size + 'px',
-          }"
-          >
+      :gravity="gravity"
+      >
+    <img class="spinner"
+        :src="imgSrc"
+        :style="{
+          width: size + 'px',
+          height: size + 'px',
+        }"
+        >
+    <span slot="message" v-if="errorMessage != null">{{ errorMessage }} </span>
   </tooltip>
 
   <div class="block-message" v-if="status == 'error' && errorMode == 'text'">

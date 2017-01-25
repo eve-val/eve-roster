@@ -37,10 +37,11 @@
         v-if="i >= 3"
         :style="cellStyle(i)"
         >
-        <tooltip gravity="right" :packTarget="false"
-                 :message="tooltipMessage(i)">
-            {{ displayVal | dashDefault }}
-        </tooltip>
+      <tooltip gravity="right" inline:="false">
+        {{ displayVal | dashDefault }}
+        <span slot="message" v-if="tooltipMessage(i)"
+            >{{ tooltipMessage(i) }}</span>
+      </tooltip>
     </div>
   </div>
 </div>
