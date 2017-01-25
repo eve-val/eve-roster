@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 
 const dao = require('../../../dao');
 const getStub = require('../../../route-helper/getStub');
+const MissingAccessToken = require('../../../error/MissingTokenError');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
@@ -31,7 +32,16 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       skillInTraining: getSkillInTraining(queueData),
       queue: getQueue(queueData),
     };
-  });
+  })
+  .catch(err => {
+    if (err instanceof MissingAccessToken) {
+      return {
+        warning: 'Missing access token, queue unavailable.',
+      }
+    } else {
+      throw err;
+    }
+  })
 });
 
 function getSkillInTraining(queueData) {
