@@ -14,7 +14,7 @@
       v-show="requestStatus != null"
       :size="16"
       :promise="requestPromise"
-      errorMode="icon"
+      messageMode="icon"
       />
 </div>
 </template>

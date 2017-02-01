@@ -6,8 +6,9 @@
     </div>
     <loading-spinner
         v-if="queueStatus != 'loaded'"
+        :message="queueMessage"
         :size="30"
-        errorMode="text"
+        messageMode="text"
         :promise="queuePromise"
         />
     <template v-if="queue && skillGroups">
@@ -24,8 +25,9 @@
     </div>
     <loading-spinner
         v-if="skillStatus != 'loaded'"
+        :message="skillMessage"
         :size="30"
-        errorMode="text"
+        messageMode="text"
         :promise="skillPromise"
         />
     <template v-if="skillGroups">
@@ -78,6 +80,9 @@ export default {
 
       queueStatus: null,
       skillStatus: null,
+
+      queueMessage: null,
+      skillMessage: null,
     };
   },
 
@@ -104,6 +109,8 @@ export default {
 
       this.queueStatus = null;
       this.skillStatus = null;
+      this.queueMessage = null;
+      this.skillMessage = null;
 
       this.fetchData();
     },
@@ -115,8 +122,9 @@ export default {
         this.skillStatus = 'loading';
         this.skillPromise = ajaxer.getSkills(this.characterId)
           .then(response => {
-            this.skillStatus = 'loaded';
-            this.processSkillsData(response.data);
+            this.skillMessage = response.data.warning;
+            this.skillStatus = this.skillMessage ? 'loaded-warning' : 'loaded';
+            this.processSkillsData(response.data.skills);
           })
           .catch(e => {
             this.skillStatus = 'error';
@@ -132,9 +140,10 @@ export default {
           ajaxer.getSkillQueue(this.characterId),
         ])
         .then(([skillResponse, queueResponse]) => {
-          this.queue = queueResponse.data;
+          this.queue = queueResponse.data.queue;
           this.maybeInjectQueueDataIntoSkillsMap();
-          this.queueStatus = 'loaded';
+          this.queueMessage = queueResponse.data.warning;
+          this.queueStatus = this.queueMessage ? 'loaded-warning' : 'loaded';
         })
         .catch(e => {
           this.queueStatus = 'error';

@@ -2,6 +2,7 @@ const querystring = require('querystring');
 
 const axios = require('axios');
 
+const MissingTokenError = require('./error/MissingTokenError');
 const configLoader = require('./config-loader');
 const dao = require('./dao');
 
@@ -39,7 +40,7 @@ module.exports = {
       .then(function (rows) {
         const row = rows[0];
         if (!row) {
-          throw new Error('No access tokens for this character.');
+          throw new MissingTokenError(characterId);
         }
 
         if (Date.now() <= row.accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS) {

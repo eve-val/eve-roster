@@ -10,7 +10,7 @@
       <loading-spinner v-else
           :size="34"
           :promise="characterPromise"
-          errorMode="text"
+          messageMode="text"
           />
     </div>
     <template v-if="character">

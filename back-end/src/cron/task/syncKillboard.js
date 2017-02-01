@@ -1,5 +1,6 @@
 const eve = require('../../eve');
 const dao = require('../../dao');
+const MissingTokenError = require('../../error/MissingTokenError');
 
 const _ = require('underscore');
 const moment = require('moment');
@@ -247,7 +248,7 @@ function fetchKillHistory(character) {
   return _fetchHistory(character, undefined)
     .catch((error) => {
       console.warn('Unable to fetch kills for', character);
-      if (error != 'Error: No access tokens for this character.') {
+      if (!(error instanceof MissingTokenError)) {
         console.error('Unexpected exception type:');
         console.error(error);
         // Probably best to continue to fail in this case instead of swallowing the error
