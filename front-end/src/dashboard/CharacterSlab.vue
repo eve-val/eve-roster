@@ -10,7 +10,11 @@
             class="name"
             :to="'/character/' + character.id"
             >{{ character.name }}</router-link><!--
-     --><tooltip class="status-icon" v-for="icon in statusIcons" :inline="true">
+     --><tooltip class="status-icon"
+            v-for="icon in statusIcons"
+            :inline="true"
+            gravity="center top"
+            >
           <img class="status-icon-img" :src="icon.src">
           <div slot="message">{{ icon.label }}</div>
         </tooltip>
@@ -182,7 +186,7 @@ export default {
           this.character.corpStatus == 'external') {
         items.push({
           tag: 'designate-opsec',
-          label: this.character.opsec ? 'Don\'t show in roster' : 'Show in roster',
+          label: this.character.opsec ? 'Show in roster' : 'Don\'t show in roster',
         });
       }
 
