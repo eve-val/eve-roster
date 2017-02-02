@@ -50,7 +50,10 @@ function pushOwnedChars(ownedRows, outList, privs) {
     if (row.id == row.mainCharacter) {
       group.main = row;
     } else {
-      group.alts.push(row);
+      if (!row.opsec || privs.canRead('memberOpsecAlts')) {
+        delete row.opsec;
+        group.alts.push(row);
+      }
     }
   }
 

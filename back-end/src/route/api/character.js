@@ -66,7 +66,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 
     if (privs.canRead('memberAlts', isOwned) && row.accountId != null) {
       if (row.mainCharacter == characterId) {
-        return injectAlts(row.accountId, characterId, payload);
+        return injectAlts(row.accountId, characterId, privs, payload);
       } else {
         return injectMain(row.mainCharacter, payload);
       }
@@ -88,16 +88,18 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   });
 });
 
-function injectAlts(accountId, thisCharacterId, payload) {
+function injectAlts(accountId, thisCharacterId, privs, payload) {
   return dao.builder('ownership')
-      .select('character.id', 'character.name')
+      .select('character.id', 'character.name', 'ownership.opsec')
       .join('character', 'id', '=', 'ownership.character')
       .where('ownership.account', '=', accountId)
       .andWhere('ownership.character', '!=', thisCharacterId)
   .then(function(rows) {
-    // TODO: Restrict this on memberExternalAlts priv
     let alts = [];
     for (let row of rows) {
+      if (row.opsec && !privs.canRead('memberOpsecAlts')) {
+        continue;
+      }
       alts.push({
         id: row.id,
         name: row.name,

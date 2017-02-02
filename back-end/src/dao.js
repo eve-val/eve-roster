@@ -43,6 +43,7 @@ const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
 
   'account.id as accountId',
   'account.mainCharacter',
+  'ownership.opsec',
 ]);
 
 const LOGGABLE_EVENTS = [
@@ -102,8 +103,16 @@ Dao.prototype = {
     return this.builder('character').select().where({name: name});
   },
 
-  getCharacterById(id) {
-    return this.builder('character').select().where({id: id});
+  getCharacterById(id, columns=['character.name']) {
+    return this.builder('character').select(...columns).where({id: id});
+  },
+
+  getCharacterAndOwner(characterId, columns=['character.name']) {
+    return this.builder('character')
+        .select(columns)
+        .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .leftJoin('account', 'account.id', '=', 'ownership.account')
+        .where('character.id', '=', characterId)
   },
 
   upsertCharacter(id, name, extraColumns) {
@@ -117,6 +126,12 @@ Dao.prototype = {
 
   updateCharacter(id, vals) {
     return this.builder('character').update(vals).where('id', '=', id);
+  },
+
+  setCharacterIsOpsec(characterId, isOpsec) {
+    return this.builder('ownership')
+        .update({ opsec: isOpsec })
+        .where('character', '=', characterId);
   },
 
   upsertAccessTokens(characterId, refreshToken, accessToken, expiresIn) {
@@ -160,6 +175,7 @@ Dao.prototype = {
       return trx.builder('ownership').insert({
         account: accountId,
         character: characterId,
+        opsec: false,
       })
       .then(() => {
         return trx.logEvent(accountId, 'OWN_CHARACTER', characterId);
@@ -226,6 +242,16 @@ Dao.prototype = {
     return this.builder('account')
         .where({ id: accountId })
         .update({ activeTimezone: activeTimezone });
+  },
+
+  getAccountRoles(accountId) {
+    return this.builder('account')
+        .select('accountRole.role')
+        .join('accountRole', 'accountRole.account', '=', 'account.id')
+        .where('account.id', '=', accountId)
+    .then(rows => {
+      return _.pluck(rows, 'role');
+    });
   },
 
   getPrivilegesForAccount(accountId) {

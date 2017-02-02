@@ -27,6 +27,12 @@ export default {
     });
   },
 
+  putCharacterIsOpsec(characterId, isOpsec) {
+    return axios.put(`/api/character/${characterId}`, {
+      opsec: isOpsec
+    });
+  },
+
   getRoster() {
     return axios.get('/api/roster');
   },

@@ -6,19 +6,36 @@ const CONFIG = require('../config-loader').load();
 
 module.exports = {
   get(accountId) {
-    return (CONFIG.debugRoles == undefined
-        ? dao.getPrivilegesForAccount(accountId)
-        : dao.getPrivilegesForRoles(CONFIG.debugRoles)
-    )
+    let roles;
+
+    return Promise.resolve()
+    .then(() => {
+      // Get roles
+      if (CONFIG.debugRoles != undefined) {
+        return CONFIG.debugRoles;
+      } else {
+        return dao.getAccountRoles(accountId);
+      }
+    })
+    .then(_roles => {
+      roles = _roles;
+
+      // Get privs
+      return (CONFIG.debugRoles == undefined
+          ? dao.getPrivilegesForAccount(accountId)
+          : dao.getPrivilegesForRoles(CONFIG.debugRoles)
+      );
+    })
     .then(privs => {
-      return new AccountPrivileges(accountId, privs);
+      return new AccountPrivileges(accountId, roles, privs);
     });
   }
 };
 
 class AccountPrivileges {
-  constructor(accountId, privs) {
+  constructor(accountId, roles, privs) {
     this._accountId = accountId;
+    this._roles = roles;
 
     this._privs = new Map();
     for (let priv of privs) {
@@ -30,6 +47,14 @@ class AccountPrivileges {
         }
       );
     }
+  }
+
+  isMember() {
+    return this.hasRole('__member');
+  }
+
+  hasRole(role) {
+    return this._roles.includes(role);
   }
 
   canRead(privilege, isOwner=false) {
