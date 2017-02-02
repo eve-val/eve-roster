@@ -334,7 +334,7 @@ export default {
   width: 0;
   height: 100%;
   background: linear-gradient(to bottom, #75615c 0%,#534539 50%,#534539 50%);
-  transition: width 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: width 750ms cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .training-label {
