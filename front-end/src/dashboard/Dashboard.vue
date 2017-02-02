@@ -19,7 +19,7 @@
           :isMain="character.id == mainCharacter"
           :highlightMain="sortedCharacters.length > 1"
           :access="access"
-          @designatedNewMain="onDesignatedNewCharacterAsMain"
+          @requireRefresh="onRequireRefresh"
           />
       <div class="add-character" v-if="loginParams">
         <a class="add-character-link"
@@ -100,7 +100,7 @@ export default {
         });
     },
 
-    onDesignatedNewCharacterAsMain(characterId) {
+    onRequireRefresh(characterId) {
       this.fetchData();
     },
   },

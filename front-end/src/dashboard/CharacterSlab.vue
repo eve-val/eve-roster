@@ -9,11 +9,11 @@
         <router-link
             class="name"
             :to="'/character/' + character.id"
-            >{{ character.name }}</router-link>
-        <img class="main-marker"
-            v-if="isMain && highlightMain"
-            src="../assets/main-star.png"
-            >
+            >{{ character.name }}</router-link><!--
+     --><tooltip class="status-icon" v-for="icon in statusIcons" :inline="true">
+          <img class="status-icon-img" :src="icon.src">
+          <div slot="message">{{ icon.label }}</div>
+        </tooltip>
       </div>
       <div class="training-summary">
         <div class="training-track"
@@ -35,7 +35,7 @@
         ({{ queue.count}} {{queue.count == 1 ? 'skill' : 'skills' }})
       </div>
     </div>
-    <div class="menu" v-if="!isMain && access['designateMain'] == 2">
+    <div class="menu" v-if="menuItems.length > 0">
       <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
       <drop-menu class="menu-body" ref="menu"
           :rootStyle="{
@@ -44,16 +44,18 @@
             top: '18px',
           }"
           >
-        <div class="menu-item" @click="onDesignateAsMainClick">
-          Designate as main
+        <div class="menu-item"
+            v-for="item in menuItems"
+            @click="onMenuItemClick(item)">
+          {{ item.label }}
         </div>
       </drop-menu>
     </div>
     <loading-spinner
-        v-if="designateMainPromise != null"
+        v-if="ajaxPromise != null"
         class="designate-main-spinner"
         :size="13"
-        :promise="designateMainPromise"
+        :promise="ajaxPromise"
         gravity="left"
         actionLabel="designating this character as your main"
         />
@@ -76,13 +78,17 @@ import ajaxer from '../shared/ajaxer';
 import DropMenu from '../shared/DropMenu.vue';
 import EveImage from '../shared/EveImage.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import Tooltip from '../shared/Tooltip.vue';
 
+import mainIcon from '../assets/dashboard-main-star.svg';
+import opsecIcon from '../assets/dashboard-hidden-icon.svg';
 
 export default {
   components: {
     DropMenu,
     EveImage,
     LoadingSpinner,
+    Tooltip,
   },
 
   props: {
@@ -102,10 +108,15 @@ export default {
       warningMessage: null,
 
       designateMainPromise: null,
+      setIsOpsecPromise: null,
     };
   },
 
   computed: {
+    ajaxPromise: function() {
+      return this.designateMainPromise || this.setIsOpsecPromise;
+    },
+
     errorState: function() {
       return this.character.needsReauth ||
           this.queueFetchStatus == 'error' ||
@@ -135,6 +146,48 @@ export default {
         return this.skillInTraining.progress * 100 + '%';
       }
     },
+
+    statusIcons: function() {
+      let icons = [];
+
+      if (this.isMain && this.highlightMain) {
+        icons.push({
+          src: mainIcon,
+          label: 'This is your main character.',
+        });
+      }
+
+      if (this.character.opsec) {
+        icons.push({
+          src: opsecIcon,
+          label: 'The fact that you own this character is hidden. Only members with opsec access can see it.',
+        });
+      }
+
+      return icons;
+    },
+
+    menuItems: function() {
+      let items = [];
+      if (this.access.isMember &&
+          !this.isMain &&
+          this.access.designateMain == 2) {
+        items.push({
+          tag: 'designate-main',
+          label: 'Designate as main',
+        });
+      }
+      if (this.access.isMember &&
+          !this.isMain &&
+          this.character.corpStatus == 'external') {
+        items.push({
+          tag: 'designate-opsec',
+          label: this.character.opsec ? 'Don\'t show in roster' : 'Show in roster',
+        });
+      }
+
+      return items;
+    },
   },
 
   created: function() {
@@ -157,13 +210,33 @@ export default {
       }
     },
 
-    onDesignateAsMainClick(e) {
+    onMenuItemClick(menuItem) {
       this.$refs.menu.hide();
+      switch (menuItem.tag) {
+        case 'designate-main':
+          this.designateAsMain();
+          break;
+        case 'designate-opsec':
+          this.setIsOpsec(!this.character.opsec);
+          break;
+      }
+    },
+
+    designateAsMain() {
       this.designateMainPromise = ajaxer
       .putAccountMainCharacter(this.accountId, this.character.id)
       .then(() => {
-        this.$emit('designatedNewMain', this.character.id);
+        this.$emit('requireRefresh', this.character.id);
         this.designateMainPromise = null;
+      });
+    },
+
+    setIsOpsec(isOpsec) {
+      this.setIsOpsecPromise = ajaxer
+      .putCharacterIsOpsec(this.character.id, !this.character.opsec)
+      .then(() => {
+        this.$emit('requireRefresh', this.character.id);
+        this.setIsOpsecPromise = null;
       });
     },
   },
@@ -200,6 +273,7 @@ export default {
   font-size: 16px;
   color: #cdcdcd;
   text-decoration: none;
+  margin-right: 5px;
 }
 
 .name:hover {
@@ -216,6 +290,23 @@ export default {
   margin-left: 2px;
   position: relative;
   top: -1px;
+}
+
+.status-icon {
+  position: relative;
+  top: 1px;
+  padding: 2px;
+  margin-right: 2px;
+  border-radius: 3px;
+}
+
+.status-icon:hover {
+  background-color: #1b1b1b;
+}
+
+.status-icon-img {
+  width: 14px;
+  height: 14px;
 }
 
 .training-track {
@@ -307,7 +398,7 @@ export default {
 .designate-main-spinner {
   position: absolute;
   right: 24px;
-  top: 2px;
+  top: 4px;
 }
 
 </style>
