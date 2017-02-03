@@ -1,2 +1,3 @@
 config.local.json
+config.local.enc
 *.sqlite
