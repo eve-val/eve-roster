@@ -21,6 +21,7 @@ router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));
 router.get('/roster', require('./roster'));
 
 router.get('/character/:id', require('./character'));
+router.put('/character/:id', require('./character/characterPut'));
 router.get('/character/:id/skills', require('./character/skills'));
 router.get('/character/:id/skillQueue', require('./character/skillQueue'));
 

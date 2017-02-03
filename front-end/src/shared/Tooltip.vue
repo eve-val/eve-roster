@@ -13,9 +13,11 @@
           v-if="$slots.message && hovering"
           :style="nosizeContainerStyle"
           >
-        <div class="message-container" :style="messageContainerStyle">
-          <!-- tooltip content goes here -->
-          <slot name="message"></slot>
+        <div class="message-max-sizer" :style="messageMaxSizerStyle">
+          <div class="message-container" :style="messageContainerStyle">
+            <!-- tooltip content goes here -->
+            <slot name="message"></slot>
+          </div>
         </div>
         <div class="hover-triangle" :style="triangleStyle">
             <div class="hover-triangle-inset"
@@ -220,6 +222,24 @@ export default {
       return style;
     },
 
+    messageMaxSizerStyle() {
+      let style = {};
+
+      switch (this.horizontalGravity) {
+        case 'left':
+          style['text-align'] = 'right';
+          break;
+        case 'center':
+          style['text-align'] = 'center';
+          break;
+        case 'right':
+          style['text-align'] = 'left';
+          break;
+      }
+
+      return style;
+    },
+
     messageContainerStyle() {
       let style = {};
 
@@ -333,10 +353,17 @@ function splitGravString(str) {
   position: absolute;
 }
 
+.message-max-sizer {
+  width: 250px;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
 .message-container {
-  display: block;
+  display: inline-block;
   padding: 7px 8px;
   max-width: 250px;
+  box-sizing: border-box;
   background: #202020;
   border: 1px solid #3e3e3e;
   position: relative;
