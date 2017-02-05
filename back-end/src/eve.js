@@ -19,7 +19,7 @@ let pendingTokenRequests = {};
 
 module.exports = {
   // Make one shared instance of the ESI module so that everything uses the same cache
-  esi: esi({agent: 'SOUND Eve Roster app'}),
+  esi: esi({ agent: CONFIG.userAgent }),
 
   getAccessToken: function (characterId) {
     console.log('getAccessToken', characterId);
