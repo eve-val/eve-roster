@@ -1,6 +1,7 @@
 const querystring = require('querystring');
 
 const axios = require('axios');
+const esi = require('eve_swagger_interface');
 
 const MissingTokenError = require('./error/MissingTokenError');
 const configLoader = require('./config-loader');
@@ -18,9 +19,7 @@ let pendingTokenRequests = {};
 
 module.exports = {
   // Make one shared instance of the ESI module so that everything uses the same cache
-  esi: require('eve_swagger_interface')({
-    // defaults are okay
-  }),
+  esi: esi({agent: 'SOUND Eve Roster app'}),
 
   getAccessToken: function (characterId) {
     console.log('getAccessToken', characterId);

@@ -74,7 +74,7 @@ function fetchNewSkills(characterId) {
   // do when there's no access token easier (i.e. always read the DB)
   return eve.getAccessToken(characterId)
   .then(accessToken => {
-    return eve.esi.character.getSkills(characterId, accessToken);
+    return eve.esi.characters(characterId, accessToken).skills();
   })
   .then(data => {
     return data.skills;

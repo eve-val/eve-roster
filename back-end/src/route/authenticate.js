@@ -86,7 +86,7 @@ function getCharInfo(charTokens) {
     charData.scopes = response.data.Scopes;
 
     console.log('Getting ESI character info...');
-    return eve.esi.character.get(charData.id)
+    return eve.esi.characters(charData.id).info()
     .then(esiCharData => {
       console.log('ESI character info:', esiCharData);
       charData.corporationId = esiCharData.corporation_id;
