@@ -20,7 +20,7 @@ const TASKS = [
   },
   {
     name: 'syncKillboard',
-    executor: require('./task/syncKillboard'),
+    executor: require('./task/syncZKillboard'),
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
     interval: moment.duration(1, 'day').asMilliseconds(),
     schedule: '0 2 * * *',  // Once a day at 2AM
