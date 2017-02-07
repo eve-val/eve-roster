@@ -13,7 +13,7 @@
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-alpha.2",
-    "eve_swagger_interface": "git://github.com/lhkbob/eve-swagger-js.git#0.1.2",
+    "eve_swagger_interface": "git://github.com/lhkbob/eve-swagger-js.git#0.2.1",
     "express": "^4.14.0",
     "htmlparser": "^1.7.7",
     "knex": "^0.12.6",

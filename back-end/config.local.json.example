@@ -4,6 +4,8 @@
   "ssoClientId": "<fillmein>",
   "ssoSecretKey": "<fillmein>",
 
+  "userAgent": "SOUND roster app / <character> (<email>) / <github url>"
+
   "primaryCorporations": [
     {
       "id": 123456,

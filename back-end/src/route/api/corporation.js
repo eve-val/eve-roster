@@ -14,7 +14,7 @@ module.exports = protectedEndpoint('json', function(req, res) {
 
   let corporationId = req.params.id;
 
-  return eve.esi.corporation.get(corporationId)
+  return eve.esi.corporations(corporationId).info()
   .then(function(data) {
     return {
       id: corporationId,

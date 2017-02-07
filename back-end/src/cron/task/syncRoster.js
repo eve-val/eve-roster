@@ -85,7 +85,7 @@ function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
   .then(function(rows) {
     return asyncUtil.parallelize(rows, row => {
       if (!processedCharactersIds[row.id]) {
-        return eve.esi.character.get(row.id)
+        return eve.esi.characters(row.id).info()
         .then(function(character) {
           return dao.updateCharacter(row.id, {
             corporationId: character.corporation_id,
