@@ -148,7 +148,7 @@ function getPriceMap() {
     return pendingMarketRequest;
   } else {
     console.log('Loading market prices');
-    pendingMarketRequest = eve.esi.market.getPrices()
+    pendingMarketRequest = eve.esi.types.prices()
       .then((allPrices) => {
         let priceMap = {};
         for (let item of allPrices) {
@@ -249,8 +249,6 @@ function fetchKillHistory(character) {
     .catch((error) => {
       console.warn('Unable to fetch kills for', character);
       if (!(error instanceof MissingTokenError)) {
-        console.error('Unexpected exception type:');
-        console.error(error);
         // Probably best to continue to fail in this case instead of swallowing the error
         throw error;
       }
@@ -265,11 +263,6 @@ function fetchKillHistory(character) {
 function fetchKills(character, maxKillmailID) {
   return eve.getAccessToken(character)
     .then((accessToken) => {
-      return eve.esi.character.getKillmails(character, accessToken, maxKillmailID);
-    })
-    .then((killmails) => {
-      return Promise.map(killmails, (km) => {
-        return eve.esi.killmails.get(km.killmail_id, km.killmail_hash);
-      });
+      return eve.esi.characters(character, accessToken).recentKills(maxKillmailID);
     });
 }

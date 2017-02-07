@@ -15,6 +15,9 @@
 
   "dbFileName": "roster.sqlite",
 
+  // A default, not terribly great user agent, that's better than nothing
+  "userAgent": "SOUND roster app",
+
   // "production" (80), "dev-backend" (8081), or "dev-frontend" (8082).
   "serveMode": "dev-backend"
 }

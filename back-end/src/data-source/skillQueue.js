@@ -4,7 +4,7 @@ module.exports = {
   getQueue: function(characterId) {
     return eve.getAccessToken(characterId)
       .then(accessToken => {
-        return eve.esi.character.getSkillQueue(characterId, accessToken);
+        return eve.esi.characters(characterId, accessToken).skillqueue();
       })
       .then(pruneCompletedSkills);
   },

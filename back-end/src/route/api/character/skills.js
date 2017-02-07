@@ -54,12 +54,17 @@ function fetchSkills(characterId) {
     return loadSkillsFromDB(characterId);
   })
   .catch(function(err) {
-    if (err instanceof MissingTokenError) {
+    let esiFailure = err.name && err.name.startsWith('esi:');
+    if (err instanceof MissingTokenError || esiFailure) {
       // This error is thrown only in fetchNewSkills so execute the DB load
       // that was never reached and wrap the result in a warning message.
       return loadSkillsFromDB(characterId)
       .then(skills => {
-        skills.warning = 'Missing access token for character. Skills are out of date.';
+        if (esiFailure) {
+          skills.warning = 'ESI request failed. Skills are out of date.';
+        } else {
+          skills.warning = 'Missing access token for character. Skills are out of date.';
+        }
         return skills;
       });
     } else {
@@ -74,7 +79,7 @@ function fetchNewSkills(characterId) {
   // do when there's no access token easier (i.e. always read the DB)
   return eve.getAccessToken(characterId)
   .then(accessToken => {
-    return eve.esi.character.getSkills(characterId, accessToken);
+    return eve.esi.characters(characterId, accessToken).skills();
   })
   .then(data => {
     return data.skills;
