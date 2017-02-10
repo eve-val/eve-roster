@@ -13,7 +13,23 @@
     "esi-fleets.write_fleet.v1"
   ],
 
+  // Absolute or relative path (with respect to back-end/)
   "dbFileName": "roster.sqlite",
+
+  // Absolute or relative path (with respect to back-end/)
+  // If undefined, null, or '', logging will be performed to the console only
+  "logDir": "logs",
+
+  // Specify minimum recorded log level for named loggers. Use 'root' for the
+  // default log level all loggers use unless a more specific setting is given.
+  // Child loggers are named by prepending their parents' names, a '.', and then
+  // their own name (e.g. 'p1' is just "p1", 'p2' of 'p1' is "p1.p2", and
+  // 'child' of 'p2' is "p1.p2.child"). You do NOT prepend "root." to the names.
+  // Child loggers inherit the most specific parent level if their own level is
+  // not explicitly provided.
+  "logLevels": {
+    "root": "trace"
+  },
 
   // A default, not terribly great user agent, that's better than nothing
   "userAgent": "SOUND roster app",
