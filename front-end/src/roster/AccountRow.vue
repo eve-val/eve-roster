@@ -29,6 +29,7 @@
         }"
         >
       <character-row v-for="alt in account.alts"
+          :key="alt.id"
           :character="alt"
           :columns="columns"
           :isMain="false"

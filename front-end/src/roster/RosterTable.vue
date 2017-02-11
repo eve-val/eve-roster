@@ -53,7 +53,7 @@ export default {
 
     sortedRows: function() {
       // Sort accounts
-      return this.rows.sort((a, b) => {
+      this.rows.sort((a, b) => {
         return stringAwareCmp(
             getSortVal(this.sortColumn, a.aggregate, a.account),
             getSortVal(this.sortColumn, b.aggregate, b.account),
@@ -62,7 +62,7 @@ export default {
       });
 
       // Sort alts
-      for (let row of rows) {
+      for (let row of this.rows) {
         row.alts.sort((a, b) => {
           return stringAwareCmp(
               getSortVal(this.sortColumn, a, null),
@@ -71,6 +71,8 @@ export default {
           );
         });
       }
+
+      return this.rows;
     },
   },
 

@@ -44,9 +44,12 @@ class AccountPrivileges {
         {
           level: priv.level,
           ownerLevel: priv.ownerLevel,
+          requiresMembership: !!priv.requiresMembership,
         }
       );
     }
+
+    this._precomputedLevels = new Map();
   }
 
   isMember() {
@@ -96,14 +99,24 @@ class AccountPrivileges {
   }
 
   _getEffectiveLevel(privilegeName, isOwner) {
+    let key = `${isOwner},${privilegeName}`;
+    let effectiveLevel = this._precomputedLevels.get(key);
+    if (effectiveLevel != undefined) {
+      return effectiveLevel;
+    }
+
     let priv = this._privs.get(privilegeName);
     if (priv == null) {
       throw new Error('Unknown privilege: ' + privilegeName);
     }
-    let effectiveLevel = priv.level || 0;
+    effectiveLevel = priv.level || 0;
     if (isOwner) {
       effectiveLevel = Math.max(priv.level, priv.ownerLevel);
     }
+    if (priv.requiresMembership && !this.isMember()) {
+      effectiveLevel = 0;
+    }
+    this._precomputedLevels.set(key, effectiveLevel);
     return effectiveLevel;
   }
 }

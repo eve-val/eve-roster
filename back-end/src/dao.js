@@ -265,7 +265,8 @@ Dao.prototype = {
         .select(
             'privilege.name',
             'grantedPrivs.level',
-            'privilege.ownerLevel')
+            'privilege.ownerLevel',
+            'privilege.requiresMembership')
         .leftJoin(function() {
           // Subquery: all the privileges this account has been granted
           this.select(
@@ -286,7 +287,8 @@ Dao.prototype = {
         .select(
             'privilege.name',
             'grantedPrivs.level',
-            'privilege.ownerLevel')
+            'privilege.ownerLevel',
+            'privilege.requiresMembership')
         .leftJoin(function() {
           // Subquery: all the privileges these roles have been granted
           this.select(
