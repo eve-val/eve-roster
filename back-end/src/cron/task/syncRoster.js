@@ -168,7 +168,11 @@ function getCorpXml(keyConfig, path, query) {
       )
   );
 
-  return axios.get(fullpath)
+  return axios.get(fullpath, {
+    headers: {
+      'User-Agent': CONFIG.userAgent
+    }
+  })
   .then(function(response) {
     return parseXml(response.data);
   });
