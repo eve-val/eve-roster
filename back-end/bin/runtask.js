@@ -6,7 +6,6 @@
 const path = require('path');
 
 if (process.argv.length != 3) {
-  // Check if any remaining arguments are --revert or --rollback
   console.error('Must provide task name to run');
   process.exit(1);
 }
