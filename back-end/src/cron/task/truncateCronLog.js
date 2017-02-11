@@ -11,12 +11,3 @@ module.exports = function truncateCronLog() {
     return 'success';
   });
 };
-
-
-
-if (require.main == module) {
-  module.exports()
-  .catch(function(e) {
-    console.log(e);
-  });
-}
