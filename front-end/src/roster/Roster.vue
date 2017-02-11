@@ -6,13 +6,14 @@
       <div class="title-row">
         <div class="title">
           Roster
-          <loading-spinner
+        </div>
+        <loading-spinner
               class="loading-spinner"
               v-if="rosterPromise != null"
               :size="33"
               :promise="rosterPromise"
               />
-        </div>
+        <div class="title-spacer"></div>
         <search-box class="search-box"
             v-if="tableRows != null"
             @change="onSearchStringChange"
@@ -73,6 +74,7 @@ export default {
         let providedColumns = response.data.columns;
         this.displayColumns = rosterColumns.filter(item => {
           return item.key == 'warning' ||
+              item.key == 'alts' ||
               providedColumns.indexOf(item.key) != -1;
         });
 
@@ -179,10 +181,6 @@ function getLastSeen(character) {
   margin: 0 auto;
 }
 
-.loading-spinner {
-  margin-left: 2px;
-}
-
 .table-cnt {
   display: inline-block;
   margin: 0 33px 0 33px;
@@ -194,10 +192,18 @@ function getLastSeen(character) {
 }
 
 .title {
-  flex: 1;
   font-size: 30px;
   color: #a7a29c;
   font-weight: 100;
+}
+
+.loading-spinner {
+  margin-left: 20px;
+  align-self: center;
+}
+
+.title-spacer {
+  flex: 1;
 }
 
 .search-box {

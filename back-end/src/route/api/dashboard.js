@@ -61,7 +61,7 @@ function getRealOutput(account, privs) {
         id: row.id,
         name: row.name,
         needsReauth: !!row.needsUpdate,
-        opsec: !!row.opsec,
+        opsec: !!row.opsec && privs.isMember(),
         corpStatus: policy.corpStatus(row.corporationId),
       });
     }

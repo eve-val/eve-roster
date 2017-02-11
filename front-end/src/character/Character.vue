@@ -54,13 +54,15 @@
               {{ account.activeTimezone || '-' }}
             </div>
 
-            <div class="factoid-title">Citadel</div>
-            <factoid-selector v-if="canWriteCitadel"
-                :options="citadelOptions"
-                :initialValue="account.citadelName"
-                :submitHandler="submitHousing.bind(this)"
-                />
-            <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+            <template v-if="access.memberHousing > 0">
+              <div class="factoid-title">Citadel</div>
+              <factoid-selector v-if="canWriteCitadel"
+                  :options="citadelOptions"
+                  :initialValue="account.citadelName"
+                  :submitHandler="submitHousing.bind(this)"
+                  />
+              <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+            </template>
           </template>
         </div>
         <div class="content">

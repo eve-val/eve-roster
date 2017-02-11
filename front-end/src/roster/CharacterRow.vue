@@ -37,10 +37,14 @@
         v-if="i >= 3"
         :style="cellStyle(i)"
         >
-      <tooltip gravity="right" inline:="false">
+      <template v-if="!tooltipMessage(i)">
         {{ displayVal | dashDefault }}
-        <span slot="message" v-if="tooltipMessage(i)"
-            >{{ tooltipMessage(i) }}</span>
+      </template>
+      <tooltip v-else gravity="right" :inline="true">
+        <span :style="{ 'text-align': cellAlignment(i) }">
+          {{ displayVal | dashDefault }}
+        </span>
+        <span slot="message">{{ tooltipMessage(i) }}</span>
       </tooltip>
     </div>
   </div>
@@ -133,18 +137,13 @@ export default {
         paddingLeft = 20;
         width -= paddingLeft;
       }
-      let align = 'left';
-      if (col.key == 'warning') {
-        align = 'center';
-      } else if (col.numeric) {
-        align = 'right';
-      }
 
       return {
         width: width + 'px',
         'margin-left': col.margin != undefined ? col.margin + 'px' : undefined,
-        'text-align': align,
+        'text-align': this.cellAlignment(idx),
         'padding-left': paddingLeft ? paddingLeft + 'px' : undefined,
+        'cursor': col.key != 'name' ? 'default' : undefined,
       };
     },
 
@@ -209,6 +208,17 @@ export default {
           }
       }
     },
+
+    cellAlignment(colIdx) {
+      let col = this.columns[colIdx];
+      let align = 'left';
+      if (col.key == 'warning') {
+        align = 'center';
+      } else if (col.numeric) {
+        align = 'right';
+      }
+      return align;
+    },
   },
 }
 
@@ -220,7 +230,7 @@ function iskLabel(isk) {
     // ISK_VALUE_STOPS is in descending order so stop after first minimum is reached
     if (isk > stop.min) {
       iskUnit = stop.symbol;
-      fixedValue = (isk / stop.min).toFixed(2);
+      fixedValue = (isk / stop.min).toFixed(1);
       break;
     }
   }
