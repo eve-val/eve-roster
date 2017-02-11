@@ -198,7 +198,6 @@ class Logger {
     // add the time And don't use alwaysTags because this._tags changes based on
     // the logger (but this way we don't need to create multiple console
     // instances).
-    console.log(this._tags.length);
     if (this._tags.length > 0) {
       CONSOLE.time().tag(...this._tags)[level](...message);
     } else {
