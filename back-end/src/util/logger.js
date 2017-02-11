@@ -1,4 +1,5 @@
 // Wrap scribe-js with some defined loggers and conditional logging
+// USAGE: require('util/logger')('name').fatal/error/warn/info/debug/trace(...)
 
 const path = require('path');
 const CONFIG = require('../config-loader').load();
@@ -149,7 +150,7 @@ class Logger {
     return LOGGER_PRIORITY[this._logLevel] <= LOGGER_PRIORITY[level];
   }
 
-  log(level = 'info', ...message) {
+  _log(level = 'info', ...message) {
     if (hasFatalError || !this._isLevelLogged(level)) {
       return;
     }
@@ -179,30 +180,28 @@ class Logger {
   }
 
   fatal(...message) {
-    this.log('fatal', ...message);
+    this._log('fatal', ...message);
   }
 
   error(...message) {
-    this.log('error', ...message);
+    this._log('error', ...message);
   }
 
   warn(...message) {
-    this.log('warn', ...message);
+    this._log('warn', ...message);
   }
 
   info(...message) {
-    this.log('info', ...message);
+    this._log('info', ...message);
   }
 
   debug(...message) {
-    this.log('debug', ...message);
+    this._log('debug', ...message);
   }
 
   trace(...message) {
-    this.log('trace', ...message);
+    this._log('trace', ...message);
   }
 }
-
-new Logger('').info('test');
 
 module.exports = Logger;
