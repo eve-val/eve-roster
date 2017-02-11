@@ -239,4 +239,4 @@ class Logger {
   }
 }
 
-module.exports = Logger;
+module.exports = name => new Logger(name);
