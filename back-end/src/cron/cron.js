@@ -8,6 +8,7 @@ const schedule = require('node-schedule');
 
 const asyncUtil = require('../util/asyncUtil');
 const dao = require('../dao');
+const logger = require('../util/logger')(__filename);
 
 
 const TASKS = [
@@ -68,7 +69,7 @@ module.exports = {
 };
 
 function initTask(task) {
-  console.log('[cron] Register task "%s"', task.name);
+  logger.info('Register task "%s"', task.name);
   return enqueueTaskIfOverdue(task)
   .then(() => {
     schedule.scheduleJob(task.schedule, function() {
@@ -76,8 +77,8 @@ function initTask(task) {
     });
   })
   .catch(e => {
-    console.error('[cron] Error while initializing task "%s".', task.name);
-    console.error(e);
+    logger.error('Error while initializing task "%s".', task.name);
+    logger.error(e);
   });
 }
 
@@ -98,8 +99,8 @@ function enqueueTask(task) {
     pendingTasks.push(task);
     maybeRunNextTask();
   } else {
-    console.error(
-        '[cron] WARNING: Tried to enqueue task "%s" but it is already ' +
+    logger.warn(
+        'Tried to enqueue task "%s" but it is already ' +
             'enqueued.',
         task.name);
   }
@@ -125,10 +126,10 @@ function runTask(task) {
   .then(id => {
     job.id = id;
 
-    console.log('[cron] START task "%s" (job %s)', task.name, job.id);
+    logger.info('START task "%s" (job %s)', task.name, job.id);
     setTimeout(function() {
       if (activeJob == job) {
-        console.error('[cron] task "%s" (job %s) TIMED OUT', task.name, job.id);
+        logger.error('Task "%s" (job %s) TIMED OUT', task.name, job.id);
         activeJob = null;
         maybeRunNextTask();
       }
@@ -137,25 +138,28 @@ function runTask(task) {
   })
   .then(result => {
     if (JOB_RESULTS.indexOf(result) == -1) {
-      console.warn('[cron] Warning: task "%s" (job %s) returned a strange ' +
+      logger.warn('Task "%s" (job %s) returned a strange ' +
           'result: "%s".', task.name, job.id, result);
       result = 'unknown';
     }
-    let logMethod = result == 'success' ? console.log : console.error;
+
+    let logMethod = result == 'success'
+        ? (...args) => logger.info(...args)
+        : (...args) => logger.error(...args);
 
     logMethod(
-        '[cron] FINISH task "%s" (job %s) with result "%s".',
+        'FINISH task "%s" (job %s) with result "%s".',
         task.name,
         job.id,
         result);
     return dao.finishCronJob(job.id, result);
   })
   .catch(e => {
-    console.error(
-        '[cron] FAIL task "%s" (job %s)',
+    logger.error(
+        'FAIL task "%s" (job %s)',
         task.name,
         job.id);
-    console.error(e);
+    logger.error(e);
     return dao.finishCronJob(job.id, 'failure');
   })
   .then(() => {
@@ -168,8 +172,8 @@ function runTask(task) {
       activeJob = null;
     }
 
-    console.error('FAILURE when trying to log cron job failure');
-    console.error(e);
+    logger.error('FAILURE when trying to log cron job failure');
+    logger.error(e);
   });
 }
 

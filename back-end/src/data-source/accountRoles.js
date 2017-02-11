@@ -2,6 +2,7 @@ const _ = require('underscore');
 
 const asyncUtil = require('../util/asyncUtil');
 const CONFIG = require('../config-loader').load();
+const logger = require('../util/logger')(__filename);
 
 
 const primaryCorpIds = _.pluck(CONFIG.primaryCorporations, 'id');
@@ -29,13 +30,13 @@ const accountRoles = module.exports = {
         .join('character', 'character.id', '=', 'ownership.character')
         .where('account.id', '=', accountId)
     .then(rows => {
-      console.log('updateAccount, accountId =', accountId);
+      logger.debug('updateAccount, accountId =', accountId);
       let roles = [];
       for (let row of rows) {
-        console.log('Checking char', row.id);
+        logger.trace('Checking char', row.id);
         if (row.id == row.mainCharacter) {
           if (!isPrimaryCorp(row.corporationId)) {
-            console.log(  'Main char not in SOUND, stripping...');
+            logger.trace(  'Main char not in SOUND, stripping...');
             // Account is no longer a member: strip all roles
             roles = [];
             // TODO: Add a warning flag to account if any SOUND members still
@@ -47,23 +48,23 @@ const accountRoles = module.exports = {
         }
 
         if (!isPrimaryCorp(row.corporationId)) {
-          console.log('  Not in primary corp, skipping...');
+          logger.trace('  Not in primary corp, skipping...');
           continue;
         }
 
         let titles = JSON.parse(row.titles || '[]');
-        console.log('  titles:', titles);
+        logger.trace('  titles:', titles);
         let titleMap = getTitleMap(row.corporationId);
         for (let title of titles) {
           let role = titleMap[title];
           if (role) {
-            console.log(' adding role:', role);
+            logger.trace(' adding role:', role);
             roles.push(role);
           }
         }
       }
       roles = _.uniq(roles);
-      console.log('Final roles:', roles);
+      logger.debug('Final roles:', roles);
 
       return setAccountRoles(dao, accountId, roles);
     });
@@ -128,9 +129,9 @@ function setAccountRoles(dao, accountId, roles) {
 if (require.main == module) {
   accountRoles.updateAll()
   .then(function() {
-    console.log('Done.');
+    logger.info('Done.');
   })
   .catch(function(e) {
-    console.log(e);
+    logger.error(e);
   });
 }

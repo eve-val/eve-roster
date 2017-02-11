@@ -11,6 +11,7 @@ const configLoader = require('./config-loader');
 const cron = require('./cron/cron.js');
 const dao = require('./dao');
 const routes = require('../../shared/src/routes');
+const logger = require('./util/logger')(__filename);
 
 
 const CONFIG = configLoader.load();
@@ -59,7 +60,7 @@ let api = require('./route/api/api.js');
 app.use('/api', api);
 
 let server = app.listen(getServingPort(), function() {
-  console.log('Listening on port %s...', server.address().port);
+  logger.info('Listening on port %s...', server.address().port);
   cron.init();
 });
 

@@ -16,6 +16,7 @@ const UserVisibleError = require('../error/UserVisibleError');
 const dao = require('../dao');
 const privileges = require('./privileges');
 const CONFIG = require('../config-loader').load();
+const logger = require('../util/logger')(__filename);
 
 
 function protectedEndpoint(type, handler) {
@@ -74,13 +75,11 @@ module.exports = protectedEndpoint;
 
 
 function handleError(type, e, req, res) {
-  console.error('ERROR while handling endpoint %s', req.originalUrl);
-  console.error('  accountId:', req.session.accountId);
-  console.error(e);
+  logger.error('ERROR while handling endpoint %s', req.originalUrl);
+  logger.error('  accountId:', req.session.accountId);
+  logger.error(e);
 
-  let message;
-
-  if (type == 'html' && 
+  if (type == 'html' &&
       (e instanceof NotLoggedInError || e instanceof NoSuchAccountError)) {
     req.session = null;
     res.redirect('/login');
@@ -96,9 +95,9 @@ function handleError(type, e, req, res) {
       case 'html':
         res.send(message);
         break;
-    };
+    }
   }
-};
+}
 
 function getResponse(e) {
   if (e instanceof BadRequestError) {
