@@ -1,14 +1,17 @@
 const dao = require('../../dao');
 const CONFIG = require('../../config-loader').load();
+const logger = require('../../util/logger')(__filename);
 
 const _ = require('underscore');
 const axios = require('axios');
 const moment = require('moment');
 const Promise = require('bluebird');
 
+let expectedCharCount;
+
 module.exports = function syncKillboard() {
-  // clear the cached market map
-  marketMap = null;
+  // clear the cached character count
+  expectedCharCount = 0;
   return Promise.resolve()
   .then(resetScores)
   .then(getStartTime)
@@ -16,8 +19,8 @@ module.exports = function syncKillboard() {
   .then(calcCharacterStats)
   .then(saveStats)
   .then((updateCount) => {
-    console.log('Updated', updateCount, 'characters');
-    return 'success';
+    logger.info('Updated', updateCount, 'characters');
+    return updateCount == expectedCharCount ? 'success' : 'partial';
   });
 };
 
@@ -53,6 +56,7 @@ function resetScores() {
 // Returns an array of objects {id: characterId, kills: [], losses: []}
 function fetchAll(since) {
   return dao.getCharacters().then((characters) => {
+    expectedCharCount = characters.length;
     return Promise.map(_.pluck(characters, 'id'), (id) => {
       // In conjunction with concurrency: 1 in the map, this delay is a crude
       // way of rate limiting our queries to zkillboard, kill and loss use
@@ -84,9 +88,9 @@ function fetchMails(kind, characterID, since) {
   })
   .then(response => {
     if (!response.data || response.data.error) {
-      console.error('Unable to fetch', kind, 'for', characterID);
+      logger.warn('Unable to fetch', kind, 'for', characterID);
       if (response.data && response.data.error) {
-        console.error(response.data.error);
+        logger.error(response.data.error);
       }
 
       return null;
