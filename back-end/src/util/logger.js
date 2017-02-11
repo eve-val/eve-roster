@@ -110,40 +110,70 @@ Object.keys(LOGGERS).forEach(logger => {
 // made, even when waiting for the asynchronous file writes to finish.
 let hasFatalError = false;
 
+// Convenience function to allow passing in __filename and turn it into a
+// nice set of tags
+const srcRoot = path.join(__dirname, '..');
+const binRoot = path.join(__dirname, '../../bin');
+function getNameFromFile(fileName) {
+  if (!fileName) {
+    return '';
+  }
+
+  let isFile = false;
+  if (fileName.startsWith(srcRoot)) {
+    fileName = fileName.substring(srcRoot.length + 1);
+    isFile = true;
+  } else if (fileName.startsWith(binRoot)) {
+    fileName = fileName.substring(binRoot.length + 1);
+    isFile = true;
+  }
+
+  if (fileName.endsWith('.js')) {
+    fileName = fileName.substring(0, fileName.length - 3);
+    isFile = true;
+  }
+
+  if (isFile) {
+    return fileName.replace(/\//g, '.');
+  } else {
+    return fileName;
+  }
+}
+
 // A friendlier interface for logging to the defined log levels, which handles
 // error stack traces, child loggers, and log level suppression.
 class Logger {
-  constructor(name, parentLogger = null) {
-    let tags;
-    if (parentLogger) {
-      tags = [...parentLogger._tags];
-    } else {
-      tags = [];
-    }
-    tags.push(name);
-
-    this._tags = tags;
+  constructor(name = '') {
+    let finalName = getNameFromFile(name);
+    this._tags = finalName ? finalName.split('.') : [];
 
     // Cache the log level for the time being, since with configuration tied
     // to a file loaded at startup, this won't be able to change during an
     // application's lifetime.
-    let levelKey = tags.join('.');
-    if (levelKey in CONFIG.logLevels) {
-      this._logLevel = CONFIG.logLevels[levelKey];
-    } else if (parentLogger) {
-      // Inherit level
-      this._logLevel = parentLogger._logLevel;
-    } else if ('root' in CONFIG.logLevels) {
-      // Check default level
-      this._logLevel = CONFIG.logLevels['root'];
-    } else {
-      // Default to info
-      this._logLevel = 'info';
+
+    // Default to the root config or trace to show everything
+    let level = CONFIG.logLevels['root'] || 'trace';
+
+    // Check if the exact log name is configured
+    if (finalName in CONFIG.logLevels) {
+      level = CONFIG.logLevels[finalName];
+    } else if (this._tags.length > 1) {
+      // Proceed from farthest to nearest parent for an inherited level
+      let key = '';
+      for (let i = 0; i < this._tags.length - 1; i++) {
+        if (i > 0) {
+          key += '.';
+        }
+        key += this._tags[i];
+        level = CONFIG.logLevels[key] || level;
+      }
     }
+
+    this._logLevel = level;
   }
 
   childLogger(name) {
-    return new Logger(name, this);
+    return new Logger(this._tags.join('.') + name);
   }
 
   _isLevelLogged(level) {
@@ -168,7 +198,12 @@ class Logger {
     // add the time And don't use alwaysTags because this._tags changes based on
     // the logger (but this way we don't need to create multiple console
     // instances).
-    CONSOLE.time().tag(...this._tags)[level](...message);
+    console.log(this._tags.length);
+    if (this._tags.length > 0) {
+      CONSOLE.time().tag(...this._tags)[level](...message);
+    } else {
+      CONSOLE.time()[level](...message);
+    }
 
     if (level == 'fatal') {
       hasFatalError = true;
