@@ -1,3 +1,4 @@
+const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const CONFIG = require('../../config-loader').load();
 
@@ -6,18 +7,27 @@ const axios = require('axios');
 const moment = require('moment');
 const Promise = require('bluebird');
 
+
+const KB_EXPIRATION_DURATION = moment.duration(12, 'hours').asMilliseconds();
+const PROGRESS_INTERVAL_PERC = 0.05;
+const ZKILL_MAX_RESULTS_PER_PAGE = 200;
+const MAX_FAILURES_BEFORE_BAILING = 10;
+
 module.exports = function syncKillboard() {
-  // clear the cached market map
-  marketMap = null;
   return Promise.resolve()
-  .then(resetScores)
   .then(getStartTime)
   .then(fetchAll)
-  .then(calcCharacterStats)
-  .then(saveStats)
-  .then((updateCount) => {
-    console.log('Updated', updateCount, 'characters');
-    return 'success';
+  .then(([updateCount, failureCount]) => {
+    console.log(`Updated ${updateCount} characters' killboards.`);
+    let result;
+    if (failureCount > 0 && updateCount == 0) {
+      result = 'failure'
+    } else if (failureCount > 0 && updateCount > 0) {
+      result = 'partial';
+    } else {
+      result = 'success';
+    }
+    return result;
   });
 };
 
@@ -36,119 +46,109 @@ function getStartTime() {
   return start.format('YYYYMMDDHHmm');
 }
 
-// Reset all scores to null (null == unknown, differentiated from a 0, which
-// implies character access with no known kills)
-function resetScores() {
-  return dao.transaction((trx) => {
-    return trx.builder('character').update({
-      killsInLastMonth: null,
-      killValueInLastMonth: null,
-      lossesInLastMonth: null,
-      lossValueInLastMonth: null
+// For each character, fetches their killboard stats and stores them.
+function fetchAll(since) {
+  return dao.getCharacterKillboardTimestamps()
+  .then((rows) => {
+    let currentProgress = 0;
+    let updateCount = 0;
+    let failureCount = 0;
+    return asyncUtil.serialize(rows, (row, idx) => {
+      if (Date.now() - row.updated < KB_EXPIRATION_DURATION) {
+        // Already up-to-date, skip it...
+        return;
+      }
+      currentProgress = logProgressUpdate(currentProgress, idx, rows.length);
+      return syncKillboard(row.id, since)
+      .then(() => {
+        updateCount++;
+      })
+      .catch(e => {
+        console.error(`Error fetching killboard for ${row.name}:`, e);
+        failureCount++;
+        if (failureCount > MAX_FAILURES_BEFORE_BAILING) {
+          throw new Error('syncKillboard aborted (failure count too high)');
+        }
+      });
+    })
+    .then(() => {
+      return [updateCount, failureCount];
     });
   });
 }
 
-// Get the value-annotated 30-day history for all known characters.
-// Returns an array of objects {id: characterId, kills: [], losses: []}
-function fetchAll(since) {
-  return dao.getCharacters().then((characters) => {
-    return Promise.map(_.pluck(characters, 'id'), (id) => {
-      // In conjunction with concurrency: 1 in the map, this delay is a crude
-      // way of rate limiting our queries to zkillboard, kill and loss use
-      // different delays so that a pair of requests isn't made simultaneously
-      let workKills = Promise.delay(500)
-      .then(() => fetchMails('kills', id, since));
-      let workLosses = Promise.delay(1000)
-      .then(() => fetchMails('losses', id, since));
+function syncKillboard(characterId, since) {
+  return asyncUtil.serialize(
+      ['kills', 'losses'],
+      kind => fetchMails(kind, characterId, since)
+  )
+  .then(([kills, losses]) => {
+    let killCount = kills.length;
+    let lossCount = losses.length;
 
-      return Promise.all([workKills, workLosses])
-      .then(([kills, losses]) => {
-        return {
-          id: id,
-          kills: kills,
-          losses: losses
-        };
-      });
-    }, { concurrency: 1 });
+    let killValue =
+        kills.reduce((accum, kill) => accum + kill.zkb.totalValue, 0);
+    let lossValue =
+        losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0);
+
+    return dao.updateCharacterKillboard(
+        characterId,
+        killCount,
+        lossCount,
+        killValue,
+        lossValue);
+  })
+  .then(() => {
+    // Add another delay to avoid spamming zKill too much
+    return Promise.delay(500);
   });
 }
 
-function fetchMails(kind, characterID, since) {
-  let url = 'https://zkillboard.com/api/' + kind + '/characterID/' + characterID
-      + '/startTime/' + since + '/zkbOnly/';
-  return axios.get(url, {
-    headers: {
-      'User-Agent': CONFIG.userAgent
-    }
+function logProgressUpdate(currentProgress, idx, length) {
+  let progress = Math.floor(idx / length / PROGRESS_INTERVAL_PERC);
+  if (progress > currentProgress || idx == 0) {
+    currentProgress = progress;
+    const perc = Math.round(100 * currentProgress * PROGRESS_INTERVAL_PERC);
+    console.log(`syncKillboard (${perc}% complete)`);
+  }
+  return currentProgress;
+}
+
+function fetchMails(kind, characterId, since) {
+  let mails = [];
+  // zKill will paginate results if there are too many, so we need to make sure
+  // to fetch all pages.
+  return asyncUtil.doWhile(1, page => {
+    return fetchMailsPage(kind, characterId, since, page)
+    .then(mailsPage => {
+      mails = mails.concat(mailsPage);
+      if (mailsPage.length >= ZKILL_MAX_RESULTS_PER_PAGE) {
+        return page + 1;
+      }
+    });
   })
+  .then(() => {
+    return mails;
+  });
+}
+
+function fetchMailsPage(kind, characterId, since, page) {
+  let url = `https://zkillboard.com/api/${kind}/characterID/${characterId}`
+      + `/startTime/${since}/page/${page}/zkbOnly/`;
+  return Promise.resolve(axios.get(url, {
+    headers: {
+      'User-Agent': CONFIG.userAgent,
+      'Accept-Encoding': 'gzip',
+    }
+  }))
+  // Add a delay here in order to prevent going over zKill's API limit.
+  .delay(500)
   .then(response => {
     if (!response.data || response.data.error) {
-      console.error('Unable to fetch', kind, 'for', characterID);
-      if (response.data && response.data.error) {
-        console.error(response.data.error);
-      }
-
-      return null;
-    } else {
-      return response.data;
+      let errorMessage = response.data && response.data.error;
+      throw new Error(
+          `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`);
     }
-  });
-}
-
-// Return an array of all known characters and their kill/loss stats in the last
-// 30 days, based on the collected character mails, which is an array from with
-// character id to a blob holding a kills array and a losses array of killmails
-// from zKillboard.
-function calcCharacterStats(characterMails) {
-  let characterStats = [];
-
-  for (let forChar of characterMails) {
-    let stats = {
-      id: forChar.id
-    };
-
-    if (forChar.kills) {
-      stats.killCount = forChar.kills.length;
-
-      let values = forChar.kills.map(m => m.zkb.totalValue);
-      stats.killValue = values.reduce((a, b) => a + b, 0.0);
-    } else {
-      // There was an error fetching the kills so keep fields null
-      stats.killValue = null;
-      stats.killCount = null;
-    }
-
-    if (forChar.losses) {
-      stats.lossCount = forChar.losses.length;
-
-      let values = forChar.losses.map(m => m.zkb.totalValue);
-      stats.lossValue = values.reduce((a, b) => a + b, 0.0);
-    } else {
-      // There was an error fetching the kills so keep fields null
-      stats.lossValue = null;
-      stats.lossCount = null;
-    }
-
-    characterStats.push(stats);
-  }
-
-  return characterStats;
-}
-
-// Persist character stats into the DB, resolves to total number of updates
-function saveStats(characterStats) {
-  return dao.transaction((trx) => {
-    return Promise.map(characterStats, (stats) => {
-      return trx.updateCharacter(stats.id, {
-        killsInLastMonth: stats.killCount,
-        killValueInLastMonth: stats.killValue,
-        lossesInLastMonth: stats.lossCount,
-        lossValueInLastMonth: stats.lossValue
-      });
-    });
-  })
-  .then((updates) => {
-    return updates.reduce((a, b) => a + b, 0);
+    return response.data;
   });
 }
