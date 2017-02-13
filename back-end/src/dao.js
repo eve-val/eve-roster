@@ -31,10 +31,10 @@ const BASIC_CHARACTER_COLUMNS = [
   'character.startDate',
   'character.logonDate',
   'character.logoffDate',
-  'character.killsInLastMonth',
-  'character.killValueInLastMonth',
-  'character.lossesInLastMonth',
-  'character.lossValueInLastMonth',
+  'killboard.killsInLastMonth',
+  'killboard.killValueInLastMonth',
+  'killboard.lossesInLastMonth',
+  'killboard.lossValueInLastMonth',
   'character.siggyScore',
 ];
 const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
@@ -321,7 +321,8 @@ Dao.prototype = {
         .join('account', 'account.id', '=', 'memberAccount.id')
         .join('ownership', 'ownership.account', '=', 'memberAccount.id')
         .join('character', 'character.id', '=', 'ownership.character')
-        .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel');
+        .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel')
+        .leftJoin('killboard', 'killboard.character', '=', 'character.id');
   },
 
   getCharactersOwnedByAccount(accountId) {
@@ -339,6 +340,7 @@ Dao.prototype = {
     return this.builder('character')
         .select(BASIC_CHARACTER_COLUMNS)
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')
+        .leftJoin('killboard', 'killboard.character', '=', 'character.id')
         .whereNull('ownership.account');
   },
 
@@ -425,7 +427,28 @@ Dao.prototype = {
         .limit(200);
   },
 
+  getCharacterKillboardTimestamps() {
+    return this.builder('character')
+        .select('character.id', 'character.name', 'killboard.updated')
+        .leftJoin('killboard', 'killboard.character', '=', 'character.id');
+  },
+
+  updateCharacterKillboard(characterId, kills, losses, killValue, lossValue) {
+    return this._upsert('killboard', {
+      character: characterId,
+      killsInLastMonth: kills,
+      killValueInLastMonth: killValue,
+      lossesInLastMonth: losses,
+      lossValueInLastMonth: lossValue,
+      updated: Date.now(),
+    }, 'character');
+  },
+
   _upsert(table, row, primaryKey) {
+    if (row[primaryKey] == undefined) {
+      throw new Error(`Primary key "${primaryKey}" not defined on input row.`);
+    }
+
     if (knex.CLIENT == 'sqlite3') {
       // Manually convert booleans to 0/1 for sqlite
       for (let v in row) {

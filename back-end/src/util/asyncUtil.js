@@ -6,7 +6,7 @@ module.exports = {
    * Calls `callback(item, index)` on each item in `list`. Returns a Promise
    * wrapping all of the values returned by the callback calls.
    */
-  parallelize: function(list, callback) {
+  parallelize(list, callback) {
     let work = [];
 
     for (let i = 0; i < list.length; i++) {
@@ -20,7 +20,7 @@ module.exports = {
    * returns a `Promise`, waits until the promise resolves before calling
    * `callback` on the next item in the list.
    */
-  serialize: function(list, callback) {
+  serialize(list, callback) {
     let i = -1;
     let results = [];
 
@@ -45,4 +45,29 @@ module.exports = {
     });
   },
 
+  /**
+   * Repeatedly executes `callback` until it returns `undefined` (or a Promise
+   * that resolves to `undefined`). `callback` is passed the result of the
+   * previous execution. If this is the first execution, `initialValue` is
+   * passed instead.
+   */
+  doWhile(initialValue, callback) {
+    return new Promise((resolve, reject) => {
+      onResult(initialValue);
+
+      function onResult(previousResult) {
+        if (previousResult == undefined) {
+          resolve();
+        } else {
+          Promise.resolve(callback(previousResult))
+            .then(onResult)
+            .catch(onError);
+        }
+      }
+
+      function onError(e) {
+        reject(e);
+      }
+    });
+  },
 };
