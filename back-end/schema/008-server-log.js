@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
       {
         name: 'serverLogs',
         category: 'admin',
+        requiresMembership: true,
         ownerLevel: 0,
         description: 'If an account can read server console logs.',
       }
