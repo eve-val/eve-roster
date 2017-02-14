@@ -1,4 +1,5 @@
 const _ = require('underscore');
+const Promise = require('bluebird');
 
 const dao = require('../../../dao');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');

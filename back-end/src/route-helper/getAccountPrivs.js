@@ -7,6 +7,7 @@
  * @param accountId
  * @returns {Promise}
  */
+const Promise = require('bluebird');
 
 const NoSuchAccountError = require('../error/NoSuchAccountError');
 const NotLoggedInError = require('../error/NotLoggedInError');

@@ -1,3 +1,5 @@
+const Promise = require('bluebird');
+
 const dao = require('../../../dao');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const policy = require('../../../route-helper/policy');

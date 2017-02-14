@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
 const util = require('util');
+const Promise = require('bluebird');
 
 const _ = require('underscore');
 const axios = require('axios');
