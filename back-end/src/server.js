@@ -10,6 +10,8 @@ const cookieSession = require('cookie-session');
 const configLoader = require('./config-loader');
 const cron = require('./cron/cron.js');
 const dao = require('./dao');
+
+const getAccountPrivs = require('./route-helper/getAccountPrivs');
 const routes = require('../../shared/src/routes');
 const logger = require('./util/logger')(__filename);
 
@@ -56,9 +58,22 @@ app.get('/logout', function(req, res) {
 app.use(express.static(path.join(__dirname, '../static')));
 
 // Manually include the API routes defined in api/
-let api = require('./route/api/api.js');
-app.use('/api', api);
+app.use('/api', require('./route/api/api.js'));
 
+// Mount the web panel provided by scribe but guard it with a privilege check
+app.use('/logs', (req, res, next) => {
+  getAccountPrivs(req.session.accountId)
+  .then(accountPrivs => {
+    accountPrivs.privs.requireRead('serverLogs', false);
+    next();
+  })
+  .catch(e => {
+    logger.error('Error when attempting to view server logs', e);
+    res.redirect('/');
+  });
+}, logger.webPanel());
+
+// Start the server
 let server = app.listen(getServingPort(), function() {
   logger.info('Listening on port %s...', server.address().port);
   cron.init();
