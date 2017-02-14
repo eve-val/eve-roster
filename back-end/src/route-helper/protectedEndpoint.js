@@ -13,9 +13,8 @@ const NotLoggedInError = require('../error/NotLoggedInError');
 const UnauthorizedClientError = require('../error/UnauthorizedClientError');
 const UserVisibleError = require('../error/UserVisibleError');
 
-const dao = require('../dao');
-const privileges = require('./privileges');
 const CONFIG = require('../config-loader').load();
+const getAccountPrivs = require('./getAccountPrivs');
 const logger = require('../util/logger')(__filename);
 
 
@@ -28,23 +27,10 @@ function protectedEndpoint(type, handler) {
     let account;
     let payload;
 
-    Promise.resolve()
-    .then(() => {
-      let accountId = req.session.accountId;
-      if (accountId == null) {
-        throw new NotLoggedInError();
-      }
-      return dao.getAccountDetails(accountId);
-    })
-    .then(([accountRow]) => {
-      if (accountRow == null) {
-        throw new NoSuchAccountError();
-      }
-      account = accountRow;
-      return privileges.get(account.id)
-    })
-    .then(privs => {
-      return handler(req, res, account, privs);
+    getAccountPrivs(req.session.accountId)
+    .then(accountPrivs => {
+      account = accountPrivs.account;
+      return handler(req, res, account, accountPrivs.privs);
     })
     .then(_payload => {
       payload = _payload;
