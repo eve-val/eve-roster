@@ -145,7 +145,13 @@ function getNameFromFile(fileName) {
 class Logger {
   constructor(name = '') {
     let finalName = getNameFromFile(name);
-    this._tags = finalName ? finalName.split('.') : [];
+
+    // Split by '.' and then remove duplicates (such as resulting from
+    // cron/cron.js) but handle generally here since the web panel glitches out
+    // on duplicate tags anyways (otherwise we could just override cron's logger
+    // name). Set preserves insertion order so Array.from(Set) just removes
+    // duplicates but maintains same order.
+    this._tags = finalName ? Array.from(new Set(finalName.split('.'))) : [];
 
     // Cache the log level for the time being, since with configuration tied
     // to a file loaded at startup, this won't be able to change during an
@@ -174,6 +180,10 @@ class Logger {
 
   childLogger(name) {
     return new Logger(this._tags.join('.') + name);
+  }
+
+  webPanel() {
+    return scribe.webPanel();
   }
 
   _isLevelLogged(level) {
