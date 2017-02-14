@@ -62,7 +62,6 @@ if (revert) {
       } else {
         console.log('No schema changes to roll back');
       }
-      throw "test failure";
     })
     .catch(function(error) {
       console.error('Revert unsuccessful');
