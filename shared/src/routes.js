@@ -18,5 +18,7 @@ module.exports = {
     '/logout',
     '/api/*',
     '/static/*',
+    '/logs',
+    '/logs/*'
   ],
-}
+};

@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
 const util = require('util');
+const Promise = require('bluebird');
 
 const _ = require('underscore');
 const axios = require('axios');
@@ -21,6 +22,7 @@ const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const eve = require('../../eve');
 const CONFIG = require('../../config-loader').load();
+const logger = require('../../util/logger')(__filename);
 
 
 const allConfigs = CONFIG.primaryCorporations.concat(CONFIG.altCorporations);
@@ -35,13 +37,13 @@ function syncRoster() {
     return accountRoles.updateAll(dao);
   })
   .then(function() {
-    console.log('syncRoster() complete');
+    logger.info('syncRoster() complete');
     return 'success';
   });
 }
 
 function updateAllCorporations() {
-  console.log('updateAllCorporations');
+  logger.info('updateAllCorporations');
   return Promise.all(
     allConfigs.map(function(config) {
       return updateCorporation(config);
@@ -59,7 +61,7 @@ function updateAllCorporations() {
 }
 
 function updateCorporation(corpConfig) {
-  console.log('updateCorporation', corpConfig.id);
+  logger.info('updateCorporation', corpConfig.id);
 
   return Promise.all([
     getCorpXml(corpConfig, 'corp/MemberTracking', { extended: 1 }),
@@ -77,7 +79,7 @@ function updateCorporation(corpConfig) {
  * Also updates any characters with null corporationIds.
  */
 function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
-  console.log('updateOrphanedOrUnknownCharacters');
+  logger.info('updateOrphanedOrUnknownCharacters');
   return dao.builder('character')
       .select('id', 'corporationId')
       .whereIn('corporationId', allCorpIds)
@@ -93,13 +95,13 @@ function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
           });
         })
         .then(function() {
-          console.log(
+          logger.info(
               'Updated orphaned character %s', row.id);
         })
         .catch(function(e) {
-          console.error(
+          logger.error(
               'FAILED to update orphaned character %s', row.id);
-          console.error(e);
+          logger.error(e);
         });
       }
     });
@@ -126,7 +128,7 @@ function parseAndStoreXml(corpId, [memberXml, securityXml]) {
     });
   })
   .then(function(result) {
-    console.log('Processed %s members for corp %s', result.length, corpId);
+    logger.info('Processed %s members for corp %s', result.length, corpId);
     return result;
   });
 }
@@ -187,14 +189,5 @@ function parseXml(xmlStr) {
         resolve(result);
       }
     });
-  });
-}
-
-
-
-if (require.main == module) {
-  syncRoster()
-  .catch(function(e) {
-    console.log(e);
   });
 }

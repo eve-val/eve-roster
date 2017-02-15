@@ -11,13 +11,15 @@ const UserVisibleError = require('../error/UserVisibleError');
 
 
 const CONFIG = configLoader.load();
+const logger = require('../util/logger')(__filename);
+
 const SSO_AUTH_CODE =
       Buffer.from(CONFIG.ssoClientId + ':' + CONFIG.ssoSecretKey)
           .toString('base64');
 
 module.exports = function(req, res) {
-  console.log('~~~ Auth request ~~~');
-  console.log('query:', req.query);
+  logger.info('~~~ Auth request ~~~');
+  logger.info('query:', req.query);
 
   let charTokens;
   let charData;
@@ -33,21 +35,21 @@ module.exports = function(req, res) {
     return handleCharLogin(req.session.accountId, charData, charTokens);
   })
   .then(accountId => {
-    console.log('accountId =', accountId);
-    console.log('~~ Auth complete ~~');
+    logger.info('accountId =', accountId);
+    logger.info('~~ Auth complete ~~');
     req.session.accountId = accountId;
     res.redirect('/');
   })
   .catch(e => {
     // TODO
-    console.log(e);
+    logger.error('Auth failure:', e);
     res.status(500);
     res.send('<pre>' + e.stack + '</pre>');
   });
 };
 
 function getAccessToken(queryCode) {
-  console.log('Getting access tokens from auth code...');
+  logger.debug('Getting access tokens from auth code...');
   return axios.post(
       'https://login.eveonline.com/oauth/token',
       querystring.stringify({
@@ -59,7 +61,7 @@ function getAccessToken(queryCode) {
         },
       })
   .then(response => {
-    console.log('tokens:', response.data);
+    logger.debug('tokens:', response.data);
     return response.data;
   });
 }
@@ -72,36 +74,35 @@ function getCharInfo(charTokens) {
     corporationId: null,
   };
 
-  console.log('Getting auth info...');
+  logger.debug('Getting auth info...');
   return axios.get('https://login.eveonline.com/oauth/verify', {
     headers: {
       'Authorization': 'Bearer ' + charTokens.access_token,
     },
   })
   .then(response => {
-    console.log('Auth info:', response.data);
+    logger.debug('Auth info:', response.data);
 
     charData.id = response.data.CharacterID;
     charData.name = response.data.CharacterName;
     charData.scopes = response.data.Scopes;
 
-    console.log('Getting ESI character info...');
+    logger.debug('Getting ESI character info...');
     return eve.esi.characters(charData.id).info()
     .then(esiCharData => {
-      console.log('ESI character info:', esiCharData);
+      logger.debug('ESI character info:', esiCharData);
       charData.corporationId = esiCharData.corporation_id;
     })
     .catch(e => {
       if (error.isAnyEsiError(e)) {
-        console.error('ESI is unavailable, moving on with our lives...');
-        console.error(e);
+        logger.warn('ESI is unavailable, moving on with our lives...');
+        logger.warn(e);
       } else {
-        console.log('GOT HERE MATE');
         throw e;
       }
     })
     .then(() => {
-      console.log('Final char data:', charData);
+      logger.debug('Final char data:', charData);
       return charData;
     });
   })
@@ -137,14 +138,14 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
       charTokens.expires_in)
   .then(() => {
     if (accountId == null) {
-      console.log('Now logged in as account', owningAccount);
+      logger.info('Now logged in as account', owningAccount);
     }
     return owningAccount;
   });
 }
 
 function handleUnownedChar(accountId, charData, charTokens, charRow) {
-  console.log(
+  logger.debug(
       'handleUnownedChar for charId=%s, accountId=%s',
       charData.id,
       accountId);
@@ -157,7 +158,7 @@ function handleUnownedChar(accountId, charData, charTokens, charRow) {
       if (isNewAccount) {
         return trx.createAccount()
         .then(newAccountId => {
-          console.log('Created new account with ID:', newAccountId);
+          logger.info('Created new account with ID:', newAccountId);
           accountId = newAccountId;
         });
       }

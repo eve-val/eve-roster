@@ -8,6 +8,7 @@ const tough = require('tough-cookie');
 
 const dao = require('../../dao');
 const CONFIG = require('../../config-loader').load();
+const logger = require('../../util/logger')(__filename);
 
 
 const SIGGY_PATH = 'https://siggy.borkedlabs.com';
@@ -32,9 +33,9 @@ module.exports = function syncSiggy() {
   .then(getRecentScores)
   .then(saveScrapedScores)
   .then((updateCount) => {
-    console.log('Updated', updateCount, 'characters');
-  })
-  .then(() => {
+    logger.info('Updated', updateCount, 'characters');
+    // Always return success since siggy only reports characters that scanned,
+    // so missing characters is expected
     return 'success';
   });
 };
@@ -242,7 +243,7 @@ function isLastPage(dom, page) {
  * a map from character ID to siggy net score.
  */
 function getLeaderboard(year, weekInYear, cookieJar) {
-  console.log('Scraping scores for', year, '-', weekInYear);
+  logger.info('Scraping scores for', year, '-', weekInYear);
 
   let _getPageScores = function(page) {
     return getLeaderboardPage(year, weekInYear, page, cookieJar)
@@ -314,7 +315,7 @@ function getRecentScores(cookieJar) {
     work.push(getLeaderboard(year, weekOfYear, cookieJar));
     daysFetched += 7;
   }
-  console.log('Siggy scores based on last', daysFetched, 'days');
+  logger.info('Siggy scores based on last', daysFetched, 'days');
 
   return Promise.all(work).then((weeklyScores) => {
     // Join all per-week scores into a summed score per character

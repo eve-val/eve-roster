@@ -2,13 +2,16 @@ const Promise = require('bluebird');
 
 const MissingTokenError = require('../../../error/MissingTokenError');
 const dao = require('../../../dao');
+const error = require('../../../util/error');
 const eve = require('../../../eve');
 
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const getStub = require('../../../route-helper/getStub');
 
+
 const STATIC = require('../../../static-data').get();
 const CONFIG = require('../../../config-loader').load();
+const logger = require('../../../util/logger')(__filename);
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   if (CONFIG.useStubOutput) {
@@ -54,7 +57,7 @@ function fetchSkills(characterId) {
     return loadSkillsFromDB(characterId);
   })
   .catch(function(err) {
-    let esiFailure = err.name && err.name.startsWith('esi:');
+    let esiFailure = error.isAnyEsiError(err);
     if (err instanceof MissingTokenError || esiFailure) {
       // This error is thrown only in fetchNewSkills so execute the DB load
       // that was never reached and wrap the result in a warning message.
@@ -86,7 +89,7 @@ function fetchNewSkills(characterId) {
   })
   .then(esiSkills => {
     return dao.transaction((trx) => {
-      console.log('Dropping skillsheet...');
+      logger.debug('Dropping skillsheet...');
       return trx.builder('skillsheet')
       .del()
       .where('character', '=', characterId)
@@ -101,7 +104,7 @@ function fetchNewSkills(characterId) {
             skillpoints: s.skillpoints_in_skill,
           });
         }
-        console.log('Inserting %s records', insertObjs.length);
+        logger.debug('Inserting %s records', insertObjs.length);
 
         return trx.batchInsert('skillsheet', insertObjs, 100);
       });

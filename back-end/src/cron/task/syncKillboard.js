@@ -1,12 +1,12 @@
 const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const CONFIG = require('../../config-loader').load();
+const logger = require('../../util/logger')(__filename);
 
 const _ = require('underscore');
 const axios = require('axios');
 const moment = require('moment');
 const Promise = require('bluebird');
-
 
 const KB_EXPIRATION_DURATION = moment.duration(12, 'hours').asMilliseconds();
 const PROGRESS_INTERVAL_PERC = 0.05;
@@ -18,7 +18,7 @@ module.exports = function syncKillboard() {
   .then(getStartTime)
   .then(fetchAll)
   .then(([updateCount, failureCount]) => {
-    console.log(`Updated ${updateCount} characters' killboards.`);
+    logger.info(`Updated ${updateCount} characters' killboards.`);
     let result;
     if (failureCount > 0 && updateCount == 0) {
       result = 'failure'
@@ -64,7 +64,7 @@ function fetchAll(since) {
         updateCount++;
       })
       .catch(e => {
-        console.error(`Error fetching killboard for ${row.name}:`, e);
+        logger.warn(`Error fetching killboard for ${row.name}:`, e);
         failureCount++;
         if (failureCount > MAX_FAILURES_BEFORE_BAILING) {
           throw new Error('syncKillboard aborted (failure count too high)');
@@ -109,7 +109,7 @@ function logProgressUpdate(currentProgress, idx, length) {
   if (progress > currentProgress || idx == 0) {
     currentProgress = progress;
     const perc = Math.round(100 * currentProgress * PROGRESS_INTERVAL_PERC);
-    console.log(`syncKillboard (${perc}% complete)`);
+    logger.info(`syncKillboard (${perc}% complete)`);
   }
   return currentProgress;
 }

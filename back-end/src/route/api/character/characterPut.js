@@ -1,7 +1,10 @@
+const Promise = require('bluebird');
+
 const dao = require('../../../dao');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const policy = require('../../../route-helper/policy');
 const BadRequestError = require('../../../error/BadRequestError');
+const logger = require('../../../util/logger')(__filename);
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let characterId = req.params.id;
@@ -15,7 +18,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 });
 
 function setIsOpsec(account, privs, characterId, isOpsec) {
-  console.log('setIsOpsec', account, characterId, isOpsec);
+  logger.debug('setIsOpsec', account, characterId, isOpsec);
   isOpsec = !!isOpsec;
 
   return dao.getCharacterAndOwner(characterId, ['corporationId', 'account'])

@@ -38,6 +38,7 @@ function loadLocalConfig() {
                 'utf8')));
   } catch (e) {
     if (e.code === 'ENOENT') {
+      // Cannot use util/logger because it depends on config-loader
       console.error('FATAL: You must create config.local.json');
       process.exit(2);
     } else {

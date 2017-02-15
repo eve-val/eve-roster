@@ -15,6 +15,9 @@
       >
         Cron log
       </router-link>
+      <a href="/logs" class="sidebar-link">
+        Server log
+      </a>
     </div>
     <div class="main">
       <div class="title">{{ title }}</div>

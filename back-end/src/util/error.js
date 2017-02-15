@@ -1,5 +1,5 @@
 module.exports = {
   isAnyEsiError(error) {
-    return error.status != undefined;
+    return error.name && error.name.startsWith('esi:');
   },
 };

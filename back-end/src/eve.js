@@ -6,6 +6,7 @@ const esi = require('eve_swagger_interface');
 const MissingTokenError = require('./error/MissingTokenError');
 const configLoader = require('./config-loader');
 const dao = require('./dao');
+const logger = require('./util/logger')(__filename);
 
 
 const CONFIG = configLoader.load();
@@ -22,12 +23,12 @@ module.exports = {
   esi: esi({ agent: CONFIG.userAgent }),
 
   getAccessToken: function (characterId) {
-    console.log('getAccessToken', characterId);
+    logger.debug('getAccessToken', characterId);
     if (pendingTokenRequests[characterId]) {
-      console.log('  request for this character already pending, waiting...');
+      logger.trace('  request for this character already pending, waiting...');
       return pendingTokenRequests[characterId];
     }
-    console.log('  no pending requests, starting a new one...');
+    logger.trace('  no pending requests, starting a new one...');
 
     let work = dao.builder('accessToken')
       .select(
@@ -43,10 +44,10 @@ module.exports = {
         }
 
         if (Date.now() <= row.accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS) {
-          console.log('  Reusing existing access token:', printSafeToken(row.accessToken));
+          logger.debug('  Reusing existing access token:', printSafeToken(row.accessToken));
           return row.accessToken;
         } else {
-          console.log('  Existing token has expired, fetching a new one...');
+          logger.debug('  Existing token has expired, fetching a new one...');
           return refreshAccessToken(characterId, row.refreshToken);
         }
       })
@@ -87,12 +88,12 @@ function refreshAccessToken(characterId, refreshToken) {
       })
   .then(function(response) {
     tokenResponse = response.data;
-    console.log(
+    logger.debug(
         '  Got a new access token:',
         printSafeToken(tokenResponse.access_token));
   })
   .then(function() {
-    console.log('  Updating database...');
+    logger.debug('  Updating database...');
     return dao.builder('accessToken')
         .update({
           accessToken: tokenResponse.access_token,
@@ -101,7 +102,7 @@ function refreshAccessToken(characterId, refreshToken) {
         .where('character', '=', characterId);
   })
   .then(function() {
-    console.log('  Token fetch complete.');
+    logger.debug('  Token fetch complete.');
 
     return tokenResponse.access_token;
   });
