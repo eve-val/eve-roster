@@ -97,14 +97,9 @@ if (isDeveloping) {
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.get('/home.build.js', function response(req, res) {
+  app.get('/dist/home.build.js', function response(req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/home.build.js')));
     res.end();
-  });
-} else {
-  app.use(express.static(__dirname + '/dist'));
-  app.get('/home.build.js', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/home.build.js'));
   });
 }
 
