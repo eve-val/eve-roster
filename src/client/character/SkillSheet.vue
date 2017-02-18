@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import skillGroups from '../../../shared/src/data/skill-groups.js'
+import skillGroups from '../../data/skill-groups.js'
 
 import ajaxer from '../shared/ajaxer';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';

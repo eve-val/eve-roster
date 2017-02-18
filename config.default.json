@@ -13,10 +13,10 @@
     "esi-fleets.write_fleet.v1"
   ],
 
-  // Absolute or relative path (with respect to back-end/)
+  // Absolute or relative path
   "dbFileName": "roster.sqlite",
 
-  // Absolute or relative path (with respect to back-end/)
+  // Absolute or relative path
   // If undefined, null, or '', logging will be performed to the console only
   "logDir": "logs",
 
@@ -32,8 +32,5 @@
   },
 
   // A default, not terribly great user agent, that's better than nothing
-  "userAgent": "SOUND roster app",
-
-  // "production" (80), "dev-backend" (8081), or "dev-frontend" (8082).
-  "serveMode": "dev-backend"
+  "userAgent": "SOUND roster app"
 }

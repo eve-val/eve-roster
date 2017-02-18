@@ -30,9 +30,9 @@
  */
 
 const knex = require('../src/util/knex-loader');
-// Directory is relative to project root (e.g. back-end/)
+// Directory is relative to project root
 const migrateConfig = {
-  directory: './schema'
+  directory: './schema'  // TODO(wfurr): Does this need to change after refactor?
 };
 
 let revert = false;

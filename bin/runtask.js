@@ -1,6 +1,6 @@
 /**
  * Manually run a cron task from the command line. Takes a single argument: the
- * name of the task to run, which are assumed located in back-end/src/cron/task
+ * name of the task to run, which are assumed located in src/cron/task
  */
 
 const path = require('path');

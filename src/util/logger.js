@@ -54,8 +54,8 @@ class FatalLogWriter extends scribe.LogWriter {
 // custom FatalLogWriter to handle killing the process when fatal() is saved.
 let logDir = CONFIG.logDir;
 if (logDir && logDir[0] != '/') {
-  // A relative path, make it relative to back-end/
-  logDir = path.join(__dirname, '../../', logDir);
+  // A relative path
+  logDir = path.join(__dirname, '../', logDir);
 }
 
 let CONSOLE;

@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const pathToRegexp = require('path-to-regexp');
 
-const routes = require('../shared/src/routes');
+const routes = require('./src/routes');
 
 
 const ROUTE_PATTERNS = [].concat(
@@ -12,7 +12,7 @@ const ROUTE_PATTERNS = [].concat(
 
 module.exports = {
   entry: {
-    home: './src/home.js',
+    home: './src/client/home.js',
   },
   output: {
     path: path.resolve(__dirname, './dist'),

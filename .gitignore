@@ -1,6 +1,20 @@
+# OS and editor files
 .DS_Store
-node_modules/
-/front-end/dist/
-npm-debug.log
 .vscode
 .idea/
+
+# NPM-installed files
+node_modules/
+npm-debug.log
+
+# Webpack-generated files
+dist/
+
+# Config files
+config.local.json
+
+# DB files
+*.sqlite
+
+# Logs
+logs
