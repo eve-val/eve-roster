@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "updatedb": "node bin/updatedb.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "build-dev": "cross-env NODE_ENV=development webpack --progress --hide-modules"
+    "build": "webpack --progress --hide-modules"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -40,7 +39,6 @@
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
-    "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
     "vue-loader": "^9.7.0",
