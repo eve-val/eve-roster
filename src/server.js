@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const querystring = require('querystring');
 
@@ -20,6 +21,10 @@ const webpackConfig = require('../webpack.config.js');
 
 const CONFIG = configLoader.load();
 
+const isDeveloping = process.env.NODE_ENV !== 'production';
+const port = isDeveloping ? 8081 : process.env.PORT;
+const hostname = isDeveloping ? 'localhost' : os.hostname();
+
 let app = express();
 
 app.use(bodyParser.json());
@@ -40,7 +45,7 @@ app.get('/login', function(req, res) {
   res.render('login', {
     loginParams: querystring.stringify({
       'response_type': 'code',
-      'redirect_uri': 'http://localhost:8080/authenticate',  // TODO: Make this the actual serving path
+      'redirect_uri': `http://${hostname}:${port}/authenticate`,
       'client_id':  CONFIG.ssoClientId,
       'scope': CONFIG.ssoScope.join(' '),
       'state': '12345',
@@ -75,9 +80,6 @@ app.use('/logs', (req, res, next) => {
   });
 }, logger.webPanel());
 
-const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 8080 : process.env.PORT;
-
 if (isDeveloping) {
   const webpackMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -105,6 +107,6 @@ if (isDeveloping) {
 
 // Start the server
 let server = app.listen(port, function() {
-  logger.info('Listening on port %s...', server.address().port);
+  logger.info(`Server is running at http://${hostname}:${port}`);
   cron.init();
 });
