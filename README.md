@@ -61,3 +61,31 @@ data slightly. Check out the comments in the file for more info.
 `npm run dev` will set you up with hotloading and other development goodness.
 For an IDE I recommend [VSCode](https://code.visualstudio.com), but you can use
 whatever you like best.
+
+## Deployment
+
+TODO:  Remove `config.local.json` and replace with environment variables,
+       node-foreman, and database records as appropriate.
+
+You must be one of the authorized dokku users on the linode instance to deploy.
+This means your ssh key is in dokku's authorized_keys list.  If you want to manage dokku itself, you must also be a sudoer on the linode instance.
+
+To deploy, you have to have the production `config.local.json` file.
+
+Differences from a regular `config.local.json` file:
+```json
+{
+  "dbFileName": "/eve-roster/storage/roster.sqlite",
+  "logDir": "/eve-roster/storage/logs",
+  "ssoClientId": "<production app client ID>",
+  "ssoSecretKey": "<production app secret key>"
+}
+```
+
+Make sure your local repository has what you want to push, e.g. no local changes and up to date with `7sempra/master`.
+
+Commit the config.local.json file: `git add -f config.local.json && git commit -m "Committing config.local.json for deployment"`
+
+Push to dokku: `git push -f dokku master`
+
+Wait for the dokku output to complete, then check the app at the production URL.
