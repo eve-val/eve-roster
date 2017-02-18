@@ -24,7 +24,7 @@ const CONFIG = configLoader.load();
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const listenPort = isDeveloping ? 8081 : process.env.PORT;
 const externalPort = isDeveloping ? 8081 : process.env.DOKKU_NGINX_PORT;
-const externalHostname = isDeveloping ? 'localhost' : '45.33.88.60';
+const externalHostname = isDeveloping ? 'localhost' : process.env.HOSTNAME;
 
 let app = express();
 
