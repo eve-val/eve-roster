@@ -1,6 +1,6 @@
 {
   "name": "eve-roster",
-  "description": "EVE Roster app for sOUND alliance",
+  "description": "EVE Roster app for SOUND alliance",
   "keywords": [
     "nodejs",
     "express"
@@ -11,5 +11,5 @@
       "predeploy": "npm run build && npm run updatedb",
       "postdeploy": ""
     }
-  },
+  }
 }
