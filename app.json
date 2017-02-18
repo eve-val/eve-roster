@@ -1,0 +1,15 @@
+{
+  "name": "eve-roster",
+  "description": "EVE Roster app for sOUND alliance",
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "repository": "https://github.com/7sempra/eve-roster",
+  "scripts": {
+    "dokku": {
+      "predeploy": "npm run build && npm run updatedb",
+      "postdeploy": ""
+    }
+  },
+}
