@@ -22,8 +22,9 @@ const webpackConfig = require('../webpack.config.js');
 const CONFIG = configLoader.load();
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 8081 : process.env.PORT;
-const hostname = isDeveloping ? 'localhost' : os.hostname();
+const listenPort = isDeveloping ? 8081 : process.env.PORT;
+const externalPort = isDeveloping ? 8081 : process.env.DOKKU_NGINX_PORT;
+const externalHostname = isDeveloping ? 'localhost' : '45.33.88.60';
 
 let app = express();
 
@@ -45,7 +46,7 @@ app.get('/login', function(req, res) {
   res.render('login', {
     loginParams: querystring.stringify({
       'response_type': 'code',
-      'redirect_uri': `http://${hostname}:${port}/authenticate`,
+      'redirect_uri': `http://${externalHostname}:${externalPort}/authenticate`,
       'client_id':  CONFIG.ssoClientId,
       'scope': CONFIG.ssoScope.join(' '),
       'state': '12345',
@@ -106,7 +107,7 @@ if (isDeveloping) {
 }
 
 // Start the server
-let server = app.listen(port, function() {
-  logger.info(`Server is running at http://${hostname}:${port}`);
+let server = app.listen(listenPort, function() {
+  logger.info(`Server is running at http://${externalHostname}:${externalPort}`);
   cron.init();
 });
