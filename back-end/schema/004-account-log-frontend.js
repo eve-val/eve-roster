@@ -59,6 +59,9 @@ exports.up = function(knex, Promise) {
             { role: 'admin', privilege: 'accountLogs', level: 2 },
             { role: 'admin', privilege: 'cronLogs', level: 2 }
           ]);
+    })
+    .then(() => {
+      return knex.schema.dropTable('tmp');
     });
   });
 };
@@ -102,6 +105,9 @@ exports.down = function(knex, Promise) {
       return knex('rolePriv')
           .del()
           .whereIn('privilege', ['adminConsole', 'accountLogs', 'cronLogs']);
+    })
+    .then(() => {
+      return knex.schema.dropTable('tmp');
     });
   });
 };
