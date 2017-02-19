@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
     .then(function() {
       return knex.schema.createTable('accountLog', (table) => {
         table.bigInteger('timestamp').index().notNullable();
-        table.integer('account').references('accound.id').index().notNullable();
+        table.integer('account').references('account.id').index().notNullable();
         table.enum('event', [
           'CREATE_ACCOUNT',
           'OWN_CHARACTER',
