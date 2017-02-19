@@ -8,12 +8,17 @@ const getStub = require('../../route-helper/getStub');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 const policy = require('../../route-helper/policy');
 
+// TODO delete this and have LOGIN_PARAMS in one place
+const isDeveloping = process.env.NODE_ENV !== 'production';
+const listenPort = isDeveloping ? 8081 : process.env.PORT;
+const externalPort = isDeveloping ? 8081 : process.env.DOKKU_NGINX_PORT;
+const externalHostname = isDeveloping ? 'localhost' : process.env.HOSTNAME;
 
 const CONFIG = require('../../config-loader').load();
 
 const LOGIN_PARAMS = querystring.stringify({
   'response_type': 'code',
-  'redirect_uri': 'http://localhost:8081/authenticate',
+  'redirect_uri': `http://${externalHostname}:${externalPort}/authenticate`,
   'client_id':  CONFIG.ssoClientId,
   'scope': CONFIG.ssoScope.join(' '),
   'state': '12345',

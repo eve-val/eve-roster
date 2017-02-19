@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const querystring = require('querystring');
 
@@ -12,11 +13,18 @@ const cron = require('./cron/cron.js');
 const dao = require('./dao');
 
 const getAccountPrivs = require('./route-helper/getAccountPrivs');
-const routes = require('../../shared/src/routes');
+const routes = require('./routes');
 const logger = require('./util/logger')(__filename);
 
+const webpack = require('webpack');
+const webpackConfig = require('../webpack.config.js');
 
 const CONFIG = configLoader.load();
+
+const isDeveloping = process.env.NODE_ENV !== 'production';
+const listenPort = isDeveloping ? 8081 : process.env.PORT;
+const externalPort = isDeveloping ? 8081 : process.env.DOKKU_NGINX_PORT;
+const externalHostname = isDeveloping ? 'localhost' : process.env.HOSTNAME;
 
 let app = express();
 
@@ -38,7 +46,7 @@ app.get('/login', function(req, res) {
   res.render('login', {
     loginParams: querystring.stringify({
       'response_type': 'code',
-      'redirect_uri': 'http://localhost:8081/authenticate',
+      'redirect_uri': `http://${externalHostname}:${externalPort}/authenticate`,
       'client_id':  CONFIG.ssoClientId,
       'scope': CONFIG.ssoScope.join(' '),
       'state': '12345',
@@ -73,21 +81,33 @@ app.use('/logs', (req, res, next) => {
   });
 }, logger.webPanel());
 
+if (isDeveloping) {
+  const webpackMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const compiler = webpack(webpackConfig);
+  const middleware = webpackMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+    contentBase: 'src',
+    stats: {
+      colors: true,
+      hash: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  });
+
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+  app.get('/dist/home.build.js', function response(req, res) {
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/home.build.js')));
+    res.end();
+  });
+}
+
 // Start the server
-let server = app.listen(getServingPort(), function() {
-  logger.info('Listening on port %s...', server.address().port);
+let server = app.listen(listenPort, function() {
+  logger.info(`Server is running at http://${externalHostname}:${externalPort}`);
   cron.init();
 });
-
-function getServingPort() {
-  switch (CONFIG.serveMode) {
-    case 'production':
-      return 80;
-    case 'dev-backend':
-      return 8081;
-    case 'dev-frontend':
-      return 8082;
-    default:
-      throw new Error('Invalid serveMode: ' + CONFIG.serveMode);
-  }
-}

@@ -30,7 +30,7 @@
  */
 
 const knex = require('../src/util/knex-loader');
-// Directory is relative to project root (e.g. back-end/)
+// Directory is relative to project root
 const migrateConfig = {
   directory: './schema'
 };
