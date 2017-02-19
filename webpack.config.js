@@ -1,23 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
-const pathToRegexp = require('path-to-regexp');
 
-const routes = require('./src/routes');
+const IS_PROD = process.env.NODE_ENV === 'production';
 
-
-const ROUTE_PATTERNS = [].concat(
-  routes.frontEnd.map((path) => pathToRegexp(path)),
-  routes.backEnd.map((path) => pathToRegexp(path))
-);
-
-module.exports = {
-  entry: {
-    home: './src/client/home.js',
-  },
+let config = module.exports = {
+  entry: ['./src/client/home.js'],
   output: {
     path: path.resolve(__dirname, './static/dist'),
     publicPath: '/dist/',
-    filename: '[name].build.js'
+    filename: 'build.js'
   },
   module: {
     rules: [
@@ -56,33 +47,19 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
       },
-      __DEV__: process.env.NODE_ENV != 'production',
     }),
   ],
-  devServer: {
-    port: 8081,
-    noInfo: true,
-    proxy: [
-      {
-        context: function(pathname, req) {
-          for (let i = 0; i < ROUTE_PATTERNS.length; i++) {
-            if (ROUTE_PATTERNS[i].test(pathname)) {
-              return true;
-            }
-          }
-          return false;
-        },
-        target: 'http://localhost:8082',
-      },
-    ],
-  },
   devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+if (IS_PROD) {
+  // Production
   // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
+
+  config.devtool = '#source-map';
+
+  config.plugins = [
+    ...config.plugins,
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -90,6 +67,19 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
-  ])
+    }),
+  ];
+} else {
+  // Development
+
+  config.entry = [
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    ...config.entry,
+  ];
+
+  config.plugins = [
+    ...config.plugins,
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ];
 }

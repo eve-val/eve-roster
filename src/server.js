@@ -87,7 +87,6 @@ if (isDeveloping) {
   const compiler = webpack(webpackConfig);
   const middleware = webpackMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    contentBase: 'src',
     stats: {
       colors: true,
       hash: false,
@@ -100,10 +99,6 @@ if (isDeveloping) {
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.get('/dist/home.build.js', function response(req, res) {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/home.build.js')));
-    res.end();
-  });
 }
 
 // Start the server
