@@ -3,6 +3,7 @@
 
 const path = require('path');
 const CONFIG = require('../config-loader').load();
+const config = require('../util/config');
 
 // Import the scribe-js module with the given root log directory
 // (and don't have it create process.console since that's not how we'll use it)
@@ -55,7 +56,7 @@ class FatalLogWriter extends scribe.LogWriter {
 let logDir = CONFIG.logDir;
 if (logDir && logDir[0] != '/') {
   // A relative path
-  logDir = path.join(__dirname, '../', logDir);
+  logDir = path.join(__dirname, '../../', logDir);
 }
 
 let CONSOLE;
@@ -63,7 +64,7 @@ if (logDir) {
   // Only log to the actual console when not in production, when in production
   // only log to the web portal.
   CONSOLE = scribe.console({
-    console: { logInConsole: CONFIG.serveMode != 'production' },
+    console: { logInConsole: !config.isProduction() },
     createBasic: false
   }, new FatalLogWriter(logDir));
 } else {

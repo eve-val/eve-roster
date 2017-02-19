@@ -4,17 +4,17 @@
 .idea/
 
 # NPM-installed files
-node_modules/
-npm-debug.log
+/node_modules/
+/npm-debug.log
 
 # Webpack-generated files
-dist/
+/static/dist/
 
 # Config files
-config.local.json
+/config.local.json
 
 # DB files
-*.sqlite
+/*.sqlite
 
 # Logs
-logs
+/logs

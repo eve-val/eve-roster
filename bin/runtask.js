@@ -4,11 +4,11 @@
  */
 
 const path = require('path');
+const config = require('../src/util/config');
 
 // Don't allow manual running on production since this does not update the cron
 // DB at all.
-const CONFIG = require('../src/config-loader').load();
-if (CONFIG.serveMode == 'production') {
+if (config.isProduction()) {
   console.error('Cannot execute cron task manually in production');
   process.exit(2);
 }

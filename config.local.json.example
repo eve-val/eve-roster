@@ -34,9 +34,6 @@
   //   "password": "<fillmein>"
   // }
 
-  // Uncomment this line if doing front-end development
-  // "serveMode": "dev-frontend",
-
   // Force all requests to be handled as if the client's account had the
   // following roles. Set to [] to designate a client with no roles whatsoever.
   // "debugRoles": ["admin"],
