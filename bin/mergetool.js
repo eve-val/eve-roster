@@ -23,6 +23,7 @@ const Promise = require('bluebird');
 const accountRoles = require('../src/data-source/accountRoles');
 const dao = require('../src/dao');
 const UserVisibleError = require('../src/error/UserVisibleError');
+const logger = require('../src/util/logger')(__filename)
 
 
 console.log('****************************');
@@ -55,6 +56,13 @@ Promise.resolve()
       'Enter the name of any character on the second account:');
 })
 .then(() => {
+  // Test for duplicate accounts
+  if (_.uniq(accounts, false, account => account.id).length
+          != accounts.length) {
+    console.error('You cannot merge an account with itself.');
+    process.exit();
+  }
+
   // Always retain the oldest account, so it's not possible to bypass the
   // restrictions on changing mains.
   accounts.sort((a, b) => {
@@ -86,34 +94,48 @@ Promise.resolve()
   }
 })
 .then(() => {
+  logger.info(`Beginning account merge`);
+
   let targetAccountId = accounts[0].id;
   let deadAccounts = _.pluck(accounts, 'id').slice(1);
-  console.log('targetAccountId', targetAccountId);
-  console.log('deadAccounts', deadAccounts);
+  logger.info('targetAccountId', targetAccountId);
+  logger.info('deadAccounts', deadAccounts);
 
   return dao.transaction(trx => {
-    console.log('Transferring character ownership...');
+    logger.info('Transferring character ownership...');
     return trx.builder('ownership')
         .update({
           account: targetAccountId
         })
         .whereIn('account', deadAccounts)
     .then(count => {
-      console.log('  Modified %s rows', count);
-      console.log('Dropping account roles...');
+      logger.info('  Modified %s rows', count);
+
+      logger.info('Dropping account roles...');
       return trx.builder('accountRole')
           .del()
           .whereIn('account', deadAccounts);
     })
     .then(count => {
-      console.log('  Modified %s rows', count);
-      console.log('Deleting accounts...');
+      logger.info('  Modified %s rows', count);
+
+      logger.info('Relinking audit logs...');
+      return trx.builder('accountLog')
+          .update({
+            account: targetAccountId
+          })
+          .whereIn('account', deadAccounts);
+    })
+    .then(count => {
+      logger.info('  Modified %s rows', count);
+
+      logger.info('Deleting older accounts...');
       return trx.builder('account')
           .del()
           .whereIn('id', deadAccounts);
     })
     .then(count => {
-      console.log('  Modified %s rows', count);
+      logger.info('  Modified %s rows', count);
 
       return trx.logEvent(targetAccountId, 'MERGE_ACCOUNTS', null, {
         targetAccount: accounts[0],
@@ -122,18 +144,18 @@ Promise.resolve()
     });
   })
   .then(() => {
-    console.log('Updating roles on remaining account...');
+    logger.info('Updating roles on remaining account...');
     return accountRoles.updateAccount(dao, targetAccountId);
   });
 })
 .then(() => {
-  console.log('Done');
+  logger.info('Done');
 })
 .catch(e => {
   if (e instanceof UserVisibleError) {
-    console.log(e.message);
+    console.error(e.message);
   } else {
-    console.log(e);
+    logger.error(e);
   }
 })
 .then(() => {
@@ -158,7 +180,7 @@ function getAccountSummary(characterName) {
   let account;
   return dao.getOwnerByCharacterName(characterName.trim())
   .then(row => {
-    if (row.id == null) {
+    if (row == null || row.id == null) {
       throw new UserVisibleError('No account associated with that character.');
     }
     account = row;

@@ -482,6 +482,7 @@ Dao.prototype = {
         .insert({
           timestamp: Date.now(),
           account: accountId,
+          originalAccount: accountId,
           event: event,
           relatedCharacter: relatedCharacter,
           data: JSON.stringify(data),
