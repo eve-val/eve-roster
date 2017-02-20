@@ -173,8 +173,7 @@ export default {
 
     menuItems: function() {
       let items = [];
-      if (this.access.isMember &&
-          !this.isMain &&
+      if (!this.isMain &&
           this.access.designateMain == 2) {
         items.push({
           tag: 'designate-main',
