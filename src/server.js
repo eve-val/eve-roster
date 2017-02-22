@@ -39,6 +39,28 @@ app.use(cookieSession({
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+// Development serving
+if (isDeveloping) {
+  const webpackMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const compiler = webpack(webpackConfig);
+  const middleware = webpackMiddleware(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath,
+    stats: {
+      colors: true,
+      hash: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  });
+
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+}
+
 // Includes root ('/')
 app.get(routes.frontEnd, require('./route/home'));
 
@@ -62,9 +84,6 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// Static files in static/
-app.use(express.static(path.join(__dirname, '../static')));
-
 // Manually include the API routes defined in api/
 app.use('/api', require('./route/api/api.js'));
 
@@ -81,25 +100,8 @@ app.use('/logs', (req, res, next) => {
   });
 }, logger.webPanel());
 
-if (isDeveloping) {
-  const webpackMiddleware = require('webpack-dev-middleware');
-  const webpackHotMiddleware = require('webpack-hot-middleware');
-  const compiler = webpack(webpackConfig);
-  const middleware = webpackMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath,
-    stats: {
-      colors: true,
-      hash: false,
-      timings: true,
-      chunks: false,
-      chunkModules: false,
-      modules: false
-    }
-  });
-
-  app.use(middleware);
-  app.use(webpackHotMiddleware(compiler));
-}
+// Static files in static/
+app.use(express.static(path.join(__dirname, '../static')));
 
 // Start the server
 let server = app.listen(listenPort, function() {

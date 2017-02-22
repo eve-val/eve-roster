@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import moment from 'moment';
-
 import eveConstants from '../shared/eveConstants';
 import filter from './filter';
 import rosterColumns from './rosterColumns';
@@ -189,13 +187,7 @@ export default {
           }
           break;
         case 'lastSeen':
-          if (this.character.lastSeen == null) {
-            return '-';
-          } else if (this.character.logonDate > this.character.logoffDate) {
-            return 'now';
-          } else {
-            return moment(this.character.lastSeen).fromNow();
-          }
+          return this.character.lastSeenLabel || '-';
         default:
           if (col.account) {
             if (!this.isMain) {
