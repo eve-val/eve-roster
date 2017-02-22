@@ -7,8 +7,10 @@
 3. `$ npm install`
 4. `$ cp config.local.json.example config.local.json`
 5. Edit `config.local.json` and fill in missing values
-6. `$ npm run updatedb`
+6. `$ node bin/updatedb.js`
 7. `$ npm start`
+8. Load up the site and log in with at least one character
+9. `$ node bin/quicksetup.js import config.local.json`
 
 ## Workflow
 

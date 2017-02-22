@@ -21,7 +21,9 @@ function setIsOpsec(account, privs, characterId, isOpsec) {
   logger.debug('setIsOpsec', account, characterId, isOpsec);
   isOpsec = !!isOpsec;
 
-  return dao.getCharacterAndOwner(characterId, ['corporationId', 'account'])
+  return dao.getCharacterAndOwner(
+      characterId,
+      ['corporationId', 'account', 'membership'])
   .then(([row]) => {
     if (!row) {
       throw new BadRequestError(`Character not found: ${characterId}.`);
@@ -29,7 +31,7 @@ function setIsOpsec(account, privs, characterId, isOpsec) {
 
     privs.requireWrite('characterIsOpsec', account.id == row.account);
 
-    if (isOpsec && policy.isAffiliatedCorp(row.corporationId)) {
+    if (isOpsec && isMemberCorp(row.membership)) {
       throw new BadRequestError(
           `Cannot set character ${characterId} to opsec: character is in an ` +
           `affiliated corp (${row.corporationId})`);
@@ -37,4 +39,8 @@ function setIsOpsec(account, privs, characterId, isOpsec) {
 
     return dao.setCharacterIsOpsec(characterId, isOpsec);
   });
+}
+
+function isMemberCorp(membership) {
+  return membership == 'full' || membership == 'affiliated';
 }

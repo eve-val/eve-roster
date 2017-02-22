@@ -6,34 +6,6 @@
 
   "userAgent": "SOUND roster app / <character> (<email>) / <github url>"
 
-  "primaryCorporations": [
-    {
-      "id": 123456,
-      "keyId": 123456,
-      "vCode": "z8alsdALsd...lasdA0923"
-    }
-  ],
-
-  "altCorporations": [
-    {
-      "id": 123456,
-      "keyId": 123456,
-      "vCode": "z8alsdALsd...lasdA0923",
-      "titles": {
-        "Staff": "admin",
-        "Rocketstar": "full_member",
-        "Junior Rocketstar": "limited_member"
-      }
-    }
-  ],
-
-  // Uncomment and provide account name and password for siggy in order to
-  // scrap siggy stats. The account must be registered directly with siggy
-  // "siggy": {
-  //   "username": "<fillmein>",
-  //   "password": "<fillmein>"
-  // }
-
   // Force all requests to be handled as if the client's account had the
   // following roles. Set to [] to designate a client with no roles whatsoever.
   // "debugRoles": ["admin"],
@@ -44,4 +16,30 @@
 
   // Uncomment this to use stub output responses for routes, stored in api-stubs/
   // "useStubOutput": true,
+
+  "corporations": [
+    {
+      "id": 123456,
+      "primary": true,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923",
+      "titles": {
+        "Staff": "admin",
+        "Rocketstar": "full_member",
+        "Junior Rocketstar": "limited_member"
+      }
+    },
+    {
+      "id": 123456,
+      "keyId": 123456,
+      "vCode": "z8alsdALsd...lasdA0923"
+    }
+  ],
+
+  // Uncomment and provide account name and password for siggy in order to
+  // scrap siggy stats. The account must be registered directly with siggy
+  // "siggy": {
+  //   "username": "<fillmein>",
+  //   "password": "<fillmein>"
+  // }
 }

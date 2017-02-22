@@ -44,6 +44,7 @@ exports.down = function(knex, Promise) {
     })
     .then(() => {
       return knex.schema.createTable('accountLog', (table) => {
+        table.increments('id');
         table.bigInteger('timestamp').index().notNullable();
         table.integer('account').references('account.id').index().notNullable();
         table.enum('event', [

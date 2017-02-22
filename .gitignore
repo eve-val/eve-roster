@@ -11,7 +11,7 @@
 /static/dist/
 
 # Config files
-/config.local.json
+/config.local.json*
 
 # DB files
 /*.sqlite

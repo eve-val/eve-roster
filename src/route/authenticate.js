@@ -19,23 +19,29 @@ const SSO_AUTH_CODE =
 
 module.exports = function(req, res) {
   logger.info('~~~ Auth request ~~~');
-  logger.info('query:', req.query);
 
   let charTokens;
   let charData;
 
-  return getAccessToken(req.query.code)
+  return Promise.resolve()
+  .then(() => {
+    logger.info(`  Getting access token from request code ${req.query.code}`);
+    return getAccessToken(req.query.code)
+  })
   .then(characterTokens => {
+    logger.info(
+        `  Getting char data via access token ${characterTokens.access_token}`);
     charTokens = characterTokens;
     return getCharInfo(charTokens);
   })
   .then(characterData => {
-    charData = characterData;
+    logger.info(`  Character: ${characterData.name}`);
 
+    charData = characterData;
     return handleCharLogin(req.session.accountId, charData, charTokens);
   })
   .then(accountId => {
-    logger.info('accountId =', accountId);
+    logger.info('  accountId =', accountId);
     logger.info('~~ Auth complete ~~');
     req.session.accountId = accountId;
     res.redirect('/');
@@ -49,7 +55,6 @@ module.exports = function(req, res) {
 };
 
 function getAccessToken(queryCode) {
-  logger.debug('Getting access tokens from auth code...');
   return axios.post(
       'https://login.eveonline.com/oauth/token',
       querystring.stringify({
@@ -61,7 +66,6 @@ function getAccessToken(queryCode) {
         },
       })
   .then(response => {
-    logger.debug('tokens:', response.data);
     return response.data;
   });
 }
@@ -74,23 +78,20 @@ function getCharInfo(charTokens) {
     corporationId: null,
   };
 
-  logger.debug('Getting auth info...');
+  logger.debug(`    Getting basic char+auth info...`);
   return axios.get('https://login.eveonline.com/oauth/verify', {
     headers: {
       'Authorization': 'Bearer ' + charTokens.access_token,
     },
   })
   .then(response => {
-    logger.debug('Auth info:', response.data);
-
     charData.id = response.data.CharacterID;
     charData.name = response.data.CharacterName;
     charData.scopes = response.data.Scopes;
 
-    logger.debug('Getting ESI character info...');
+    logger.debug(`    Getting character's corporation (ESI)...`);
     return eve.esi.characters(charData.id).info()
     .then(esiCharData => {
-      logger.debug('ESI character info:', esiCharData);
       charData.corporationId = esiCharData.corporation_id;
     })
     .catch(e => {
@@ -102,7 +103,6 @@ function getCharInfo(charTokens) {
       }
     })
     .then(() => {
-      logger.debug('Final char data:', charData);
       return charData;
     });
   })
@@ -117,8 +117,11 @@ function handleCharLogin(accountId, charData, charTokens) {
         .where('character.id', charData.id)
   .then(([row]) => {
     if (row != null && row.account != null) {
+      logger.info(
+          `  Character already owned. Logging in as account ${row.account.id}`);
       return handleOwnedChar(accountId, charData, charTokens, row);
     } else {
+      logger.info(`  Character is unowned.`);
       return handleUnownedChar(accountId, charData, charTokens, row);
     }
   });
@@ -146,9 +149,7 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
 
 function handleUnownedChar(accountId, charData, charTokens, charRow) {
   logger.debug(
-      'handleUnownedChar for charId=%s, accountId=%s',
-      charData.id,
-      accountId);
+      `  handleUnownedChar for charId=${charData.id}, accountId=${accountId}`);
 
   return dao.transaction(function(trx) {
     let isNewAccount = accountId == null;
@@ -158,7 +159,7 @@ function handleUnownedChar(accountId, charData, charTokens, charRow) {
       if (isNewAccount) {
         return trx.createAccount()
         .then(newAccountId => {
-          logger.info('Created new account with ID:', newAccountId);
+          logger.info('  Created new account with ID:', newAccountId);
           accountId = newAccountId;
         });
       }

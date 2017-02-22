@@ -16,14 +16,10 @@ const path = require('path');
 
 const _ = require('underscore');
 
+const asyncUtil = require('./util/asyncUtil');
 const accountRoles = require('./data-source/accountRoles');
 const knex = require('./util/knex-loader');
 
-const CONFIG = require('../src/config-loader').load();
-const allCorpIds = _.pluck(
-    CONFIG.primaryCorporations.concat(CONFIG.altCorporations),
-    'id'
-);
 const BASIC_CHARACTER_COLUMNS = [
   'character.id',
   'character.name',
@@ -56,6 +52,8 @@ const LOGGABLE_EVENTS = [
   'LOSE_MEMBERSHIP',
 ];
 
+const MEMBER_ROLE = accountRoles.MEMBER_ROLE;
+
 function Dao(builder) {
   this.builder = builder;
 }
@@ -87,6 +85,30 @@ Dao.prototype = {
     return work;
   },
 
+  getMemberCorporations() {
+    return this.builder('memberCorporation')
+        .select('corporationId', 'membership', 'apiKeyId', 'apiVerificationCode');
+  },
+
+  getExplicitRoles(accountId) {
+    return this.builder('roleExplicit')
+        .select('role')
+        .where('account', '=', accountId)
+    .then(rows => {
+      return _.pluck(rows, 'role');
+    });
+  },
+
+  getTitleRoles(corporationId, titles) {
+    return this.builder('roleTitle')
+        .select('role')
+        .whereIn('title', titles)
+        .andWhere('corporation', '=', corporationId)
+    .then(rows => {
+      return _.pluck(rows, 'role');
+    });
+  },
+
   getCitadels() {
     return this.builder('citadel').select();
   },
@@ -112,7 +134,9 @@ Dao.prototype = {
         .select(columns)
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')
         .leftJoin('account', 'account.id', '=', 'ownership.account')
-        .where('character.id', '=', characterId)
+        .leftJoin('memberCorporation as memberCorp',
+            'memberCorp.corporationId', '=', 'character.corporationId')
+        .where('character.id', '=', characterId);
   },
 
   upsertCharacter(id, name, extraColumns) {
@@ -245,12 +269,46 @@ Dao.prototype = {
   },
 
   getAccountRoles(accountId) {
-    return this.builder('account')
-        .select('accountRole.role')
-        .join('accountRole', 'accountRole.account', '=', 'account.id')
-        .where('account.id', '=', accountId)
-    .then(rows => {
-      return _.pluck(rows, 'role');
+    return this.builder('accountRole')
+        .select('role')
+        .where('account', '=', accountId)
+    .then(rows => _.pluck(rows, 'role'));
+  },
+
+  setAccountRoles(accountId, roles) {
+    return this.transaction(trx => {
+      let oldRoles;
+      roles.sort((a, b) => a.localeCompare(b));
+
+      return trx.getAccountRoles(accountId)
+      .then(_oldRoles => {
+        oldRoles = _oldRoles;
+        return trx.builder('accountRole')
+            .del()
+            .where('account', '=', accountId)
+      })
+      .then(() => {
+        if (roles.length > 0) {
+          return trx.builder('accountRole')
+              .insert(roles.map(role => ({ account: accountId, role: role }) ));
+        }
+      })
+      .then(() => {
+        if (!_.isEqual(oldRoles, roles)) {
+          return trx.logEvent(accountId, 'MODIFY_ROLES', null, {
+            old: oldRoles,
+            new: roles,
+          });
+        }
+      })
+      .then(() => {
+        if (!oldRoles.includes(MEMBER_ROLE) && roles.includes(MEMBER_ROLE)) {
+          return trx.logEvent(accountId, 'GAIN_MEMBERSHIP');
+        } else if (oldRoles.includes(MEMBER_ROLE) &&
+            !roles.includes(MEMBER_ROLE)) {
+          return trx.logEvent(accountId, 'LOSE_MEMBERSHIP');
+        }
+      });
     });
   },
 
@@ -310,12 +368,13 @@ Dao.prototype = {
     return this.builder
         .select(OWNED_CHARACTER_COLUMNS)
         .from(function() {
-          this.select()
+          this.select('account.id')
             .distinct('account.id')
-            .from('character')
+            .from('memberCorporation as memberCorp')
+            .join('character',
+                'character.corporationId', '=', 'memberCorp.corporationId')
             .join('ownership', 'ownership.character', '=', 'character.id')
             .join('account', 'account.id', '=', 'ownership.account')
-            .whereIn('character.corporationId', allCorpIds)
             .as('memberAccount')
         })
         .join('account', 'account.id', '=', 'memberAccount.id')
@@ -325,14 +384,16 @@ Dao.prototype = {
         .leftJoin('killboard', 'killboard.character', '=', 'character.id');
   },
 
-  getCharactersOwnedByAccount(accountId) {
+  getCharactersOwnedByAccount(
+      accountId,
+      columns=['character.id', 'character.name']) {
     return this.builder('account')
-        .select(
-            'character.id',
-            'character.name'
-        )
+        .select(...columns)
         .join('ownership', 'ownership.account', '=', 'account.id')
         .join('character', 'character.id', '=', 'ownership.character')
+        .leftJoin('accessToken', 'accessToken.character', '=', 'character.id')
+        .leftJoin('memberCorporation',
+            'memberCorporation.corporationId', '=', 'character.corporationId')
         .where('account.id', '=', accountId);
   },
 
@@ -442,6 +503,32 @@ Dao.prototype = {
       lossValueInLastMonth: lossValue,
       updated: Date.now(),
     }, 'character');
+  },
+
+  getConfig(...names) {
+    return this.builder('config')
+        .select('key', 'value')
+        .whereIn('key', names)
+    .then(rows => {
+      let config = {};
+      for (let row of rows) {
+        config[row.key] = JSON.parse(row.value);
+      }
+      return config;
+    })
+  },
+
+  setConfig(values) {
+    return asyncUtil.serialize(Object.entries(values), ([key, value]) => {
+      return this.builder('config')
+          .update({ value: JSON.stringify(value) })
+          .where('key', '=', key)
+      .then(updated => {
+        if (updated != 1) {
+          throw new Error(`Cannot write to nonexistent config value "${key}"`);
+        }
+      });
+    });
   },
 
   _upsert(table, row, primaryKey) {
