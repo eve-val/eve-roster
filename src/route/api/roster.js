@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
@@ -97,8 +98,19 @@ function getCharOutput(row, privs) {
   };
 
   if (privs.canRead('characterActivityStats')) {
-    obj.logonDate = row.logonDate;
-    obj.logoffDate = row.logoffDate;
+    let lastSeen;
+    let lastSeenLabel;
+    if (row.logonDate != null && row.logoffDate != null) {
+      lastSeen = row.logonDate > row.logoffDate ? Date.now() : row.logoffDate;
+      lastSeenLabel = row.logonDate > row.logoffDate ?
+          'now' : moment(row.logoffDate).fromNow();
+    } else {
+      lastSeen = 0;
+      lastSeenLabel = null;
+    }
+
+    obj.lastSeen = lastSeen;
+    obj.lastSeenLabel = lastSeenLabel;
     obj.killsInLastMonth = row.killsInLastMonth;
     obj.killValueInLastMonth = row.killValueInLastMonth;
     obj.lossesInLastMonth = row.lossesInLastMonth;
@@ -123,8 +135,7 @@ function getProvidedColumns(privs) {
 
   if (privs.canRead('characterActivityStats')) {
     providedColumns.push(
-      'logonDate',
-      'logoffDate',
+      'lastSeen',
       'killsInLastMonth',
       'killValueInLastMonth',
       'lossesInLastMonth',
