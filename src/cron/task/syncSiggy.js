@@ -7,7 +7,6 @@ const select = require('soupselect').select;
 const tough = require('tough-cookie');
 
 const dao = require('../../dao');
-const CONFIG = require('../../config-loader').load();
 const logger = require('../../util/logger')(__filename);
 
 
@@ -52,7 +51,8 @@ function saveScrapedScores(recentScores) {
   return dao.transaction((trx) => {
     return Promise.map(recentScores, (score) => {
       return trx.updateCharacter(score.id, {
-        // Schema currently stores integers, so convert the floating point scraped score
+        // Schema currently stores integers, so convert the floating point
+        // scraped score
         siggyScore: Math.round(score.score)
       });
     });
@@ -64,16 +64,23 @@ function saveScrapedScores(recentScores) {
 
 // Initiate login with siggy site using an existing account credentials
 function postLogin() {
-  let siggyConfig = CONFIG.siggy;
-  if (!siggyConfig || !siggyConfig.username || !siggyConfig.password) {
-    throw 'Must set siggy.username and siggy.password in config.local.json';
-  }
+  return dao.getConfig('siggyUsername', 'siggyPassword')
+  .then(config => {
+    if (!config.siggyUsername || !config.siggyPassword) {
+      throw 'Siggy credentials have not been set.';
+    }
 
-  let formData = querystring.stringify({username: siggyConfig.username, password: siggyConfig.password});
-  return axios.post('/account/login', formData, {
-    maxRedirects: 0,
-    validateStatus: status => status == 302
-  });
+    let formData = querystring.stringify({
+      username: config.siggyUsername,
+      password: config.siggyPassword,
+    });
+
+    return axios.post('/account/login', formData, {
+      maxRedirects: 0,
+      validateStatus: status => status == 302
+    });
+  })
+  
 }
 
 // Return all cookies in a set-cookie header of the response
@@ -141,8 +148,8 @@ function parseLeaderboardPage(response) {
   let parseError = null;
 
   // The parsing uses a callback but happens synchronously when parseComplete
-  // is called, so the handler just extracts the parsed dom into the local variable
-  // for subsequent returns (or the error for failing).
+  // is called, so the handler just extracts the parsed dom into the local
+  // variable for subsequent returns (or the error for failing).
   let parser = new htmlparser.Parser(new htmlparser.DefaultHandler((err, dom) => {
     if (err) {
       parseError = err;
@@ -181,8 +188,9 @@ function getCharacterIDFromPortraitURL(url) {
 
 function extractPoints(dom) {
   let charMap = {};
-  // The siggy page does not include element ids or very descriptive classes, so selecting for table rows
-  // brings in more rows than what actually hold character data.
+  // The siggy page does not include element ids or very descriptive classes,
+  // so selecting for table rows brings in more rows than what actually hold
+  // character data.
   let tableRows = select(dom, 'table.table.table-striped tr');
   if (tableRows.length == 0) {
     throw 'siggy leaderboard DOM appears to have changed: missing table';
@@ -195,8 +203,9 @@ function extractPoints(dom) {
       continue;
     }
 
-    // And the image source ends with _32.jpg, so if that isn't included then assume the image was
-    // representing something other than a character portrait
+    // And the image source ends with _32.jpg, so if that isn't included then
+    // assume the image was representing something other than a character
+    // portrait
     let charID = getCharacterIDFromPortraitURL(portrait[0].attribs['src']);
     if (!charID) {
       continue;
@@ -205,13 +214,16 @@ function extractPoints(dom) {
     // The score is in the last td of the row
     let tds = select(row, 'td');
     if (tds.length != SIGGY_TABLE_COLUMN_CT) {
-      // At this point, an unexpected count most likely means that siggy has changed their page so an
-      // exception should be thrown so this script can be updated ASAP.
-      throw 'siggy leaderboard DOM appears to have changed: missing score column';
+      // At this point, an unexpected count most likely means that siggy has
+      // changed their page so an exception should be thrown so this script can
+      // be updated ASAP.
+      throw 'siggy leaderboard DOM appears to have changed: missing score'
+          + ' column';
     }
     let rawScore = tds[SIGGY_SCORE_COLUMN];
     if (rawScore.children.length != 1 || rawScore.children[0].type != 'text') {
-      throw 'siggy leaderboard DOM appears to have changed: unable to parse score';
+      throw 'siggy leaderboard DOM appears to have changed: unable to parse'
+          + ' score';
     }
 
     charMap[charID] = Number.parseFloat(rawScore.children[0].data);
@@ -224,23 +236,24 @@ function extractPoints(dom) {
  * Assumes 1-indexing for page instead of starting at 0
  */
 function isLastPage(dom, page) {
-  // This will return the pagination widget, if present. For pages with fewer than the character page limit
-  // the widget is omitted.
+  // This will return the pagination widget, if present. For pages with fewer
+  // than the character page limit the widget is omitted.
   let pages = select(dom, 'ul.pagination');
   if (pages.length == 0) {
     // No more than one page, so any page is the last page basically
     return true;
   }
 
-  // At least one widget (but probably two, one for top and bottom of page). The provided page is last
-  // if it is greater than or equal to the length of the li's in the widget. This does not confirm
-  // that the last li has the active class applied to it.
+  // At least one widget (but probably two, one for top and bottom of page).
+  // The provided page is last if it is greater than or equal to the length of
+  // the li's in the widget. This does not confirm that the last li has the
+  // active class applied to it.
   return page >= select(pages[0], 'li').length;
 }
 
 /*
- * Load the entire table for a given time period (fetching all pages as needed) and scrape the HTML to return
- * a map from character ID to siggy net score.
+ * Load the entire table for a given time period (fetching all pages as needed)
+ * and scrape the HTML to return a map from character ID to siggy net score.
  */
 function getLeaderboard(year, weekInYear, cookieJar) {
   logger.info('Scraping scores for', year, '-', weekInYear);
@@ -256,13 +269,16 @@ function getLeaderboard(year, weekInYear, cookieJar) {
           // Fetch next page for the year/week
           return _getPageScores(page + 1)
             .then((lowerScores) => {
-              // Merge the two maps (shouldn't have any overlapping character IDs)
+              // Merge the two maps (shouldn't have any overlapping character
+              // IDs)
               for (let char in lowerScores) {
                 if (!lowerScores.hasOwnProperty(char))
                   continue;
 
-                // Don't overwrite scores from an earlier page, this one is either the same or lower
-                // (although this scenario would only happen if a character's position changed between page fetches)
+                // Don't overwrite scores from an earlier page, this one is
+                // either the same or lower (although this scenario would only
+                // happen if a character's position changed between page
+                // fetches)
                 if (!(char in currentScores)) {
                   currentScores[char] = lowerScores[char];
                 }
@@ -278,8 +294,9 @@ function getLeaderboard(year, weekInYear, cookieJar) {
 }
 
 /*
- * Calculate recent siggy scores over the last 27 to 33 days. Since siggy is fixed to calendar weeks and weeks are
- * its lowest resolution, this combines the last 4-5 calendar weeks into a single score per character.
+ * Calculate recent siggy scores over the last 27 to 33 days. Since siggy is
+ * fixed to calendar weeks and weeks are its lowest resolution, this combines
+ * the last 4-5 calendar weeks into a single score per character.
  * Week break down based on day into the week:
  *   1 -> 0 full days + prior four weeks = 28 days
  *   2 -> 1 full day + prior four weeks = 29 days
@@ -289,10 +306,12 @@ function getLeaderboard(year, weekInYear, cookieJar) {
  *   6 -> 5 full days + prior four weeks = 33 days
  *   7 -> 6 full days + prior three weeks = 27 days
  *
- * Resolves to an array of {id: characterID, score: Number}, sorted with highest score first.
+ * Resolves to an array of {id: characterID, score: Number}, sorted with
+ * highest score first.
  */
 function getRecentScores(cookieJar) {
-  // Using utc time for now, assuming that siggy's date breakdowns are based on Eve time...
+  // Using utc time for now, assuming that siggy's date breakdowns are based on
+  // Eve time...
   let now = moment.utc([]);
   let dayOfWeek = now.day(); // This is 0-based, Sunday = 0
   let weekOfYear = now.week();

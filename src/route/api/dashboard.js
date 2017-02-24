@@ -40,23 +40,19 @@ function getRealOutput(account, privs) {
   let mainCharacter = null;
   let accountCreated = null;
 
-  return dao.builder('account')
-      .select('mainCharacter', 'created')
-      .where({ id: account.id })
+  return dao.getAccountDetails(account.id)
   .then(([row]) => {
     mainCharacter = row.mainCharacter;
     accountCreated = row.created;
 
-    return dao.builder('ownership')
-      .select(
-          'character.id',
-          'character.name',
-          'character.corporationId',
-          'ownership.opsec',
-          'accessToken.needsUpdate')
-      .join('character', 'character.id', '=', 'ownership.character')
-      .join('accessToken', 'accessToken.character', '=', 'ownership.character')
-      .where('ownership.account', account.id);
+    return dao.getCharactersOwnedByAccount(account.id, [
+      'character.id',
+      'character.name',
+      'character.corporationId',
+      'ownership.opsec',
+      'accessToken.needsUpdate',
+      'memberCorporation.membership'
+    ])
   })
   .then(rows => {
     let characters = [];
@@ -67,7 +63,7 @@ function getRealOutput(account, privs) {
         name: row.name,
         needsReauth: !!row.needsUpdate,
         opsec: !!row.opsec && privs.isMember(),
-        corpStatus: policy.corpStatus(row.corporationId),
+        corpStatus: getCorpStatus(row.membership),
       });
     }
 
@@ -84,4 +80,17 @@ function getRealOutput(account, privs) {
       access: access,
     };
   });
+}
+
+function getCorpStatus(membership) {
+  // TODO: Push this schema all the way down to the client and remove the need
+  // for this transform
+  switch (membership) {
+    case 'full':
+      return 'primary';
+    case 'affiliated':
+      return 'alt';
+    default:
+      return 'external';
+  }
 }

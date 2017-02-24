@@ -69,7 +69,6 @@ module.exports = {
 };
 
 function initTask(task) {
-  logger.info('Register task "%s"', task.name);
   return enqueueTaskIfOverdue(task)
   .then(() => {
     schedule.scheduleJob(task.schedule, function() {

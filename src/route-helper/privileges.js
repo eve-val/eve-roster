@@ -118,6 +118,9 @@ class AccountPrivileges {
     if (priv.requiresMembership && !this.isMember()) {
       effectiveLevel = 0;
     }
+    if (this.hasRole('__admin')) {
+      effectiveLevel = 2;
+    }
     this._precomputedLevels.set(key, effectiveLevel);
     return effectiveLevel;
   }

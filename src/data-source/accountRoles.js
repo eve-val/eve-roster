@@ -1,14 +1,18 @@
 const _ = require('underscore');
+const Promise = require('bluebird');
 
 const asyncUtil = require('../util/asyncUtil');
 const CONFIG = require('../config-loader').load();
 const logger = require('../util/logger')(__filename);
 
-
 const primaryCorpIds = _.pluck(CONFIG.primaryCorporations, 'id');
+const ADMIN_ROLE = '__admin';
 const MEMBER_ROLE = '__member';
 
 const accountRoles = module.exports = {
+  MEMBER_ROLE,
+  ADMIN_ROLE,
+
   updateAll: function(dao) {
     return dao.builder('account')
         .select('account.id')
@@ -20,118 +24,62 @@ const accountRoles = module.exports = {
   },
 
   updateAccount: function(dao, accountId) {
-    return dao.builder('account')
-        .select(
-            'character.id',
-            'character.corporationId',
-            'character.titles',
-            'account.mainCharacter')
-        .join('ownership', 'ownership.account', '=', 'account.id')
-        .join('character', 'character.id', '=', 'ownership.character')
-        .where('account.id', '=', accountId)
-    .then(rows => {
-      logger.debug('updateAccount, accountId =', accountId);
-      let roles = [];
-      for (let row of rows) {
-        logger.trace('Checking char', row.id);
-        if (row.id == row.mainCharacter) {
-          if (!isPrimaryCorp(row.corporationId)) {
-            logger.trace(  'Main char not in SOUND, stripping...');
-            // Account is no longer a member: strip all roles
-            roles = [];
-            // TODO: Add a warning flag to account if any SOUND members still
-            // present?
-            break;
-          } else {
-            roles.push(MEMBER_ROLE);
-          }
-        }
-
-        if (!isPrimaryCorp(row.corporationId)) {
-          logger.trace('  Not in primary corp, skipping...');
-          continue;
-        }
-
-        let titles = JSON.parse(row.titles || '[]');
-        logger.trace('  titles:', titles);
-        let titleMap = getTitleMap(row.corporationId);
-        for (let title of titles) {
-          let role = titleMap[title];
-          if (role) {
-            logger.trace(' adding role:', role);
-            roles.push(role);
-          }
-        }
+    return Promise.resolve()
+    .then(() => {
+      return Promise.all([
+        dao.getExplicitRoles(accountId),
+        getCharacterDerivedRoles(dao, accountId),
+      ]);
+    })
+    .then(([accountRoles, { roles: characterRoles, ownsAffiliatedChar }]) => {
+      roles = _.uniq(accountRoles.concat(characterRoles));
+      if (!roles.includes(MEMBER_ROLE) && !roles.includes(ADMIN_ROLE)) {
+        logger.trace(  'Main char is not a member, stripping roles...');
+        roles = [];
       }
-      roles = _.uniq(roles);
-      logger.debug('Final roles:', roles);
 
-      return setAccountRoles(dao, accountId, roles);
+      logger.debug(`updateAccount ${accountId}, roles= ${roles.join(', ')}`);
+      if (!roles.includes(MEMBER_ROLE) && ownsAffiliatedChar) {
+        // TODO: Flag the account somehow
+      }
+      return roles;
+    })
+    .then(roles => {
+      return dao.setAccountRoles(accountId, roles);
     });
   },
-
 };
 
-function isPrimaryCorp(corpId) {
-  return corpId != null && primaryCorpIds.indexOf(corpId) != -1;
-}
-
-function getTitleMap(corpId) {
-  for (let corp of CONFIG.primaryCorporations) {
-    if (corp.id == corpId) {
-      return corp.titles;
-    }
-  }
-  return null;
-}
-
-function setAccountRoles(dao, accountId, roles) {
-  return dao.transaction(trx => {
-    let oldRoles;
-    roles.sort((a, b) => a.localeCompare(b));
-
-    return trx.builder('accountRole')
-        .select('role')
-        .where('account', '=', accountId)
-    .then(roles => {
-      oldRoles = _.pluck(roles, 'role');
-      return trx.builder('accountRole')
-          .del()
-          .where('account', '=', accountId)
-    })
-    .then(() => {
-      if (roles.length > 0) {
-        return trx.builder('accountRole')
-            .insert(roles.map(role => ({ account: accountId, role: role }) ));
-      }
-    })
-    .then(() => {
-      if (!_.isEqual(oldRoles, roles)) {
-        return trx.logEvent(accountId, 'MODIFY_ROLES', null, {
-          old: oldRoles,
-          new: roles,
-        });
-      }
-    })
-    .then(() => {
-      if (!oldRoles.includes(MEMBER_ROLE) && roles.includes(MEMBER_ROLE)) {
-        return trx.logEvent(accountId, 'GAIN_MEMBERSHIP');
-      } else if (oldRoles.includes(MEMBER_ROLE) &&
-          !roles.includes(MEMBER_ROLE)) {
-        return trx.logEvent(accountId, 'LOSE_MEMBERSHIP');
-      }
-    });
+function getCharacterDerivedRoles(dao, accountId) {
+  return dao.getCharactersOwnedByAccount(accountId, [
+      'character.id',
+      'character.corporationId',
+      'character.titles',
+      'account.mainCharacter',
+      'memberCorporation.membership'
+  ])
+  .then(characterRows => {
+    return Promise.reduce(
+        characterRows,
+        getCharacterRoles,
+        { dao, roles: [], ownsAffiliatedChar: false }
+    );
   });
 }
 
+function getCharacterRoles({ dao, roles, ownsAffiliatedChar }, row) {
+  if (row.id == row.mainCharacter && row.membership == 'full') {
+    roles.push(MEMBER_ROLE);
+  }
+  if (row.membership == 'full' || row.membership == 'affiliated') {
+    ownsAffiliatedChar = true;
+  }
 
+  let titles = JSON.parse(row.titles || '[]');
+  return dao.getTitleRoles(row.corporationId, titles)
+  .then(titleRoles => {
+    roles.push(...titleRoles);
 
-if (require.main == module) {
-  accountRoles.updateAll()
-  .then(function() {
-    logger.info('Done.');
-  })
-  .catch(function(e) {
-    logger.error(e);
+    return { dao, roles, ownsAffiliatedChar };
   });
 }

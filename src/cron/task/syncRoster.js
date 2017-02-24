@@ -25,17 +25,12 @@ const CONFIG = require('../../config-loader').load();
 const logger = require('../../util/logger')(__filename);
 
 
-const allConfigs = CONFIG.primaryCorporations.concat(CONFIG.altCorporations);
-const allCorpIds = _.pluck(allConfigs, 'id');
-
 module.exports = syncRoster;
 
 function syncRoster() {
   return updateAllCorporations()
   .then(updateOrphanedOrUnknownCharacters)
-  .then(() => {
-    return accountRoles.updateAll(dao);
-  })
+  .then(() => accountRoles.updateAll(dao))
   .then(function() {
     logger.info('syncRoster() complete');
     return 'success';
@@ -44,54 +39,55 @@ function syncRoster() {
 
 function updateAllCorporations() {
   logger.info('updateAllCorporations');
-  return Promise.all(
-    allConfigs.map(function(config) {
-      return updateCorporation(config);
-    })
-  )
-  .then(function(processedIds) {
-    let processedSet = {};
-    for (let processedChunk of processedIds) {
-      for (let charId of processedChunk) {
-        processedSet[charId] = true;
-      }
-    }
-    return processedSet;
+  return dao.getMemberCorporations()
+  .then(rows => {
+    return asyncUtil.serialize(rows, row => {
+      return updateCorporation(row);
+    });
+  })
+  .then(function(corpResults) {
+    return new Set([].concat(...corpResults));
   });
 }
 
 function updateCorporation(corpConfig) {
-  logger.info('updateCorporation', corpConfig.id);
+  logger.info('updateCorporation', corpConfig.corporationId);
 
   return Promise.all([
     getCorpXml(corpConfig, 'corp/MemberTracking', { extended: 1 }),
     getCorpXml(corpConfig, 'corp/MemberSecurity'),
   ])
   .then(function(results) {
-    return parseAndStoreXml(corpConfig.id, results);
+    return parseAndStoreXml(corpConfig.corporationId, results);
   })
 }
 
 /**
  * Updates any characters that used to be members of our corporations but which
  * were not present in the most recent roster update.
- *
- * Also updates any characters with null corporationIds.
  */
 function updateOrphanedOrUnknownCharacters(processedCharactersIds) {
   logger.info('updateOrphanedOrUnknownCharacters');
-  return dao.builder('character')
-      .select('id', 'corporationId')
-      .whereIn('corporationId', allCorpIds)
-      .orWhereNull('corporationId')
+  return dao.builder('memberCorporation as memberCorp')
+      .select('character.id', 'character.corporationId')
+      .join('character',
+          'character.corporationId', '=', 'memberCorp.corporationId')
   .then(function(rows) {
     return asyncUtil.parallelize(rows, row => {
-      if (!processedCharactersIds[row.id]) {
-        return eve.esi.characters(row.id).info()
+      if (!processedCharactersIds.has(row.id)) {
+        return Promise.resolve()
+        .then(() => {
+          return dao.updateCharacter(row.id, {
+            corporationId: null,
+            titles: null,
+          })
+        })
+        .then(() => {
+          return eve.esi.characters(row.id).info()
+        })
         .then(function(character) {
           return dao.updateCharacter(row.id, {
             corporationId: character.corporation_id,
-            titles: null,
           });
         })
         .then(function() {
@@ -155,7 +151,7 @@ function scrapeTitles(securityXml) {
   return titlesMap;
 }
 
-function getCorpXml(keyConfig, path, query) {
+function getCorpXml(corpConfig, path, query) {
   let fullpath = util.format(
       'https://api.eveonline.com/%s.xml.aspx?%s',
       path,
@@ -163,8 +159,8 @@ function getCorpXml(keyConfig, path, query) {
           Object.assign(
               query || {},
               {
-                keyID: keyConfig.keyId,
-                vCode: keyConfig.vCode,
+                keyID: corpConfig.apiKeyId,
+                vCode: corpConfig.apiVerificationCode,
               }
           )
       )

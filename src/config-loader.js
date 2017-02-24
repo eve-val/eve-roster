@@ -8,7 +8,6 @@ const REQUIRED_CONFIGS = [
   'ssoClientId',
   'ssoSecretKey',
   'dbFileName',
-  'primaryCorporations',
 ];
 
 let loadedConfig = null;
