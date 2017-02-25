@@ -4,14 +4,12 @@ const axios = require('axios');
 const esi = require('eve_swagger_interface');
 
 const MissingTokenError = require('./error/MissingTokenError');
-const configLoader = require('./config-loader');
 const dao = require('./dao');
 const logger = require('./util/logger')(__filename);
 
 
-const CONFIG = configLoader.load();
 const SSO_AUTH_CODE =
-      Buffer.from(CONFIG.ssoClientId + ':' + CONFIG.ssoSecretKey)
+      Buffer.from(process.env.SSO_CLIENT_ID + ':' + process.env.SSO_SECRET_KEY)
           .toString('base64');
 const TOKEN_EXPIRATION_FUDGE_MS = 10000;   // 10 seconds
 const REQUEST_TIMEOUT = 10000;
@@ -20,7 +18,7 @@ let pendingTokenRequests = {};
 
 module.exports = {
   // Make one shared instance of the ESI module so that everything uses the same cache
-  esi: esi({ agent: CONFIG.userAgent }),
+  esi: esi({ agent: process.env.USER_AGENT || 'Sound Roster App' }),
 
   getAccessToken: function (characterId) {
     logger.debug('getAccessToken', characterId);

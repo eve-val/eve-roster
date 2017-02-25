@@ -1,11 +1,10 @@
 // Isolates DB initialization into one place.
 
 const path = require('path');
-const CONFIG = require('../config-loader').load();
 
 const CLIENT = 'sqlite3';
 
-let dbFile = CONFIG.dbFileName;
+let dbFile = process.env.DB_FILE_NAME;
 if (dbFile[0] != '/') {
   // A relative path, make it relative to back-end/
   dbFile = path.join(__dirname, '../../', dbFile);

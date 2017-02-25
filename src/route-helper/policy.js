@@ -1,7 +1,6 @@
 const _ = require('underscore');
 
 const moment = require('moment');
-const CONFIG = require('../config-loader').load();
 
 
 const MODIFY_MAIN_WINDOW_DURATION =

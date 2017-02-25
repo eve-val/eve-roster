@@ -2,10 +2,8 @@ const _ = require('underscore');
 const Promise = require('bluebird');
 
 const asyncUtil = require('../util/asyncUtil');
-const CONFIG = require('../config-loader').load();
 const logger = require('../util/logger')(__filename);
 
-const primaryCorpIds = _.pluck(CONFIG.primaryCorporations, 'id');
 const ADMIN_ROLE = '__admin';
 const MEMBER_ROLE = '__member';
 

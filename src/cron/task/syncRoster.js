@@ -21,7 +21,6 @@ const accountRoles = require('../../data-source/accountRoles');
 const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const eve = require('../../eve');
-const CONFIG = require('../../config-loader').load();
 const logger = require('../../util/logger')(__filename);
 
 
@@ -168,7 +167,7 @@ function getCorpXml(corpConfig, path, query) {
 
   return axios.get(fullpath, {
     headers: {
-      'User-Agent': CONFIG.userAgent
+      'User-Agent': process.env.USER_AGENT || 'Sound Roster App'
     }
   })
   .then(function(response) {

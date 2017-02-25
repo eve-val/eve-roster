@@ -13,7 +13,6 @@ const NotLoggedInError = require('../error/NotLoggedInError');
 const UnauthorizedClientError = require('../error/UnauthorizedClientError');
 const UserVisibleError = require('../error/UserVisibleError');
 
-const CONFIG = require('../config-loader').load();
 const getAccountPrivs = require('./getAccountPrivs');
 const logger = require('../util/logger')(__filename);
 
@@ -24,23 +23,11 @@ function protectedEndpoint(type, handler) {
   }
 
   return function(req, res) {
-    let account;
-    let payload;
-
     getAccountPrivs(req.session.accountId)
     .then(accountPrivs => {
-      account = accountPrivs.account;
-      return handler(req, res, account, accountPrivs.privs);
+      return handler(req, res, accountPrivs.account, accountPrivs.privs);
     })
-    .then(_payload => {
-      payload = _payload;
-      if (CONFIG.debugRequestLatency) {
-        return new Promise((resolve, reject) =>  {
-          setTimeout(resolve, CONFIG.debugRequestLatency);
-        });
-      }
-    })
-    .then(() => {
+    .then(payload => {
       switch (type) {
         case 'json':
           let space = req.query.pretty != undefined ? 2 : undefined;

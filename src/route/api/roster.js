@@ -2,15 +2,9 @@ const moment = require('moment');
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
-const getStub = require('../../route-helper/getStub');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
-const CONFIG = require('../../config-loader').load();
-
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
-  if (CONFIG.useStubOutput) {
-    return Promise.resolve(getStub('roster.json'));
-  }
   privs.requireRead('roster');
 
   return Promise.all([

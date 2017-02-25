@@ -8,39 +8,44 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
-const configLoader = require('./config-loader');
 const cron = require('./cron/cron.js');
 const dao = require('./dao');
 
 const getAccountPrivs = require('./route-helper/getAccountPrivs');
 const routes = require('./routes');
+
+const config = require('./util/config');
 const logger = require('./util/logger')(__filename);
+const eve_sso = require('./util/eve-sso');
 
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config.js');
 
-const CONFIG = configLoader.load();
+const REQUIRED_VARS = [
+  'COOKIE_SECRET',
+  'SSO_CLIENT_ID',
+  'SSO_SECRET_KEY',
+  'DB_FILE_NAME'
+];
 
-const isDeveloping = process.env.NODE_ENV !== 'production';
-const listenPort = isDeveloping ? 8081 : process.env.PORT;
-const externalPort = isDeveloping ? 8081 : process.env.DOKKU_NGINX_PORT;
-const externalHostname = isDeveloping ? 'localhost' : process.env.HOSTNAME;
+if(REQUIRED_VARS.some(envVar => !(envVar in process.env))) {
+  console.error(`Missing config param ${env_var} (check your .env file).`);
+  process.exit(2);
+}
 
 let app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cookieParser(CONFIG.cookieSecret));
-app.use(cookieSession({
-  secret: CONFIG.cookieSecret
-}));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieSession({ secret: process.env.COOKIE_SECRET }));
 
 app.set('view engine', 'pug');
 app.set('views', './views');
 
 // Development serving
-if (isDeveloping) {
+if (config.isDevelopment()) {
   const webpackMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
   const compiler = webpack(webpackConfig);
@@ -66,13 +71,7 @@ app.get(routes.frontEnd, require('./route/home'));
 
 app.get('/login', function(req, res) {
   res.render('login', {
-    loginParams: querystring.stringify({
-      'response_type': 'code',
-      'redirect_uri': `http://${externalHostname}:${externalPort}/authenticate`,
-      'client_id':  CONFIG.ssoClientId,
-      'scope': CONFIG.ssoScope.join(' '),
-      'state': '12345',
-    }),
+    loginParams: eve_sso.LOGIN_PARAMS,
     backgroundUrl: Math.floor(Math.random() * 5) + '.jpg',
   });
 });
@@ -104,7 +103,8 @@ app.use('/logs', (req, res, next) => {
 app.use(express.static(path.join(__dirname, '../static')));
 
 // Start the server
-let server = app.listen(listenPort, function() {
-  logger.info(`Server is running at http://${externalHostname}:${externalPort}`);
+const port = process.env.PORT || 8081;
+let server = app.listen(port, function() {
+  logger.info(`Magic happens on port ${port}.`);
   cron.init();
 });

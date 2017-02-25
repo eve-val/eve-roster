@@ -2,7 +2,6 @@ const axios = require('axios');
 const express = require('express');
 const querystring = require('querystring');
 
-const configLoader = require('../config-loader');
 const dao = require('../dao');
 const error = require('../util/error');
 const eve = require('../eve');
@@ -10,11 +9,10 @@ const accountRoles = require('../data-source/accountRoles');
 const UserVisibleError = require('../error/UserVisibleError');
 
 
-const CONFIG = configLoader.load();
 const logger = require('../util/logger')(__filename);
 
 const SSO_AUTH_CODE =
-      Buffer.from(CONFIG.ssoClientId + ':' + CONFIG.ssoSecretKey)
+      Buffer.from(process.env.SSO_CLIENT_ID + ':' + process.env.SSO_SECRET_KEY)
           .toString('base64');
 
 module.exports = function(req, res) {

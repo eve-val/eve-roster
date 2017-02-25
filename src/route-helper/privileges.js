@@ -3,8 +3,7 @@ const Promise = require('bluebird');
 const dao = require('../dao');
 const MissingPrivilegeError = require('../error/MissingPrivilegeError');
 
-const CONFIG = require('../config-loader').load();
-
+const debugRoles = process.env.DEBUG_ROLES || null;
 
 module.exports = {
   get(accountId) {
@@ -12,21 +11,11 @@ module.exports = {
 
     return Promise.resolve()
     .then(() => {
-      // Get roles
-      if (CONFIG.debugRoles != undefined) {
-        return CONFIG.debugRoles;
-      } else {
-        return dao.getAccountRoles(accountId);
-      }
+      return debugRoles || dao.getAccountRoles(accountId);
     })
     .then(_roles => {
       roles = _roles;
-
-      // Get privs
-      return (CONFIG.debugRoles == undefined
-          ? dao.getPrivilegesForAccount(accountId)
-          : dao.getPrivilegesForRoles(CONFIG.debugRoles)
-      );
+      return dao.getPrivilegesForAccount(debugRoles || accountId);
     })
     .then(privs => {
       return new AccountPrivileges(accountId, roles, privs);
