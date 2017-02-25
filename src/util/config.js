@@ -1,8 +1,4 @@
-const isProd = function() {
-  return process.env.NODE_ENV == 'production';
-}
-
-module.exports = {
-  isProduction: isProd,
-  isDevelopment() { return !isProd(); }
+const config = module.exports = {
+  isProduction() { return process.env.NODE_ENV == 'production'; },
+  isDevelopment() { return !config.isProduction(); }
 };
