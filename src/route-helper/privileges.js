@@ -11,7 +11,7 @@ module.exports = {
 
     return Promise.resolve()
     .then(() => {
-        return debugRoles || dao.getAccountRoles(accountId);
+      return debugRoles || dao.getAccountRoles(accountId);
     })
     .then(_roles => {
       roles = _roles;
