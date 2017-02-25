@@ -164,11 +164,11 @@ function storeCorpConfig(trx, corpConfig) {
   .then(() => {
     if (corpConfig.titles) {
       let rows = [];
-      for (let [title, role] of Object.entries(corpConfig.titles)) {
+      for (const title in corpConfig.titles) {
         rows.push({
           corporation: corpConfig.id,
           title: title,
-          role: role
+          role: corpConfig.titles[title]
         });
       }
       return trx.builder('roleTitle')
