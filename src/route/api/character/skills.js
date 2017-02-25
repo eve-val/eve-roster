@@ -6,18 +6,12 @@ const error = require('../../../util/error');
 const eve = require('../../../eve');
 
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
-const getStub = require('../../../route-helper/getStub');
 
 
 const STATIC = require('../../../static-data').get();
-const CONFIG = require('../../../config-loader').load();
 const logger = require('../../../util/logger')(__filename);
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
-  if (CONFIG.useStubOutput) {
-    return Promise.resolve(getStub('character.skills.json'));
-  }
-
   let characterId = req.params.id;
 
   return dao.getOwner(characterId)

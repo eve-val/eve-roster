@@ -1,5 +1,8 @@
+const isProd = function() {
+  return process.env.NODE_ENV == 'production';
+}
+
 module.exports = {
-  isProduction() {
-    return process.env.NODE_ENV == 'production';
-  },
+  isProduction: isProd,
+  isDevelopment() { return !isProd(); }
 };

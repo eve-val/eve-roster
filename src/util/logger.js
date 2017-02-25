@@ -2,7 +2,6 @@
 // USAGE: require('util/logger')('name').fatal/error/warn/info/debug/trace(...)
 
 const path = require('path');
-const CONFIG = require('../config-loader').load();
 const config = require('../util/config');
 
 // Import the scribe-js module with the given root log directory
@@ -53,7 +52,7 @@ class FatalLogWriter extends scribe.LogWriter {
 
 // Create a shared console that is used by all instances of Logger, with a
 // custom FatalLogWriter to handle killing the process when fatal() is saved.
-let logDir = CONFIG.logDir;
+let logDir = process.env.LOG_DIR;
 if (logDir && logDir[0] != '/') {
   // A relative path
   logDir = path.join(__dirname, '../../', logDir);
@@ -64,7 +63,7 @@ if (logDir) {
   // Only log to the actual console when not in production, when in production
   // only log to the web portal.
   CONSOLE = scribe.console({
-    console: { logInConsole: !config.isProduction() },
+    console: { logInConsole: config.isDevelopment() },
     createBasic: false
   }, new FatalLogWriter(logDir));
 } else {
@@ -153,30 +152,6 @@ class Logger {
     // name). Set preserves insertion order so Array.from(Set) just removes
     // duplicates but maintains same order.
     this._tags = finalName ? Array.from(new Set(finalName.split('.'))) : [];
-
-    // Cache the log level for the time being, since with configuration tied
-    // to a file loaded at startup, this won't be able to change during an
-    // application's lifetime.
-
-    // Default to the root config or trace to show everything
-    let level = CONFIG.logLevels['root'] || 'trace';
-
-    // Check if the exact log name is configured
-    if (finalName in CONFIG.logLevels) {
-      level = CONFIG.logLevels[finalName];
-    } else if (this._tags.length > 1) {
-      // Proceed from farthest to nearest parent for an inherited level
-      let key = '';
-      for (let i = 0; i < this._tags.length - 1; i++) {
-        if (i > 0) {
-          key += '.';
-        }
-        key += this._tags[i];
-        level = CONFIG.logLevels[key] || level;
-      }
-    }
-
-    this._logLevel = level;
   }
 
   childLogger(name) {
@@ -188,7 +163,8 @@ class Logger {
   }
 
   _isLevelLogged(level) {
-    return LOGGER_PRIORITY[this._logLevel] <= LOGGER_PRIORITY[level];
+    const logLevel = process.env.LOG_LEVEL || 'trace';
+    return LOGGER_PRIORITY[logLevel] <= LOGGER_PRIORITY[level];
   }
 
   _log(level = 'info', ...message) {

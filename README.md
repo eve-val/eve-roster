@@ -3,14 +3,17 @@
 ## Setup
 
 1. Install the latest version of [Node.js](https://nodejs.org/en/).
-2. `$ cd <this dir>`
-3. `$ npm install`
-4. `$ cp config.local.json.example config.local.json`
-5. Edit `config.local.json` and fill in missing values
-6. `$ node bin/updatedb.js`
-7. `$ npm start`
-8. Load up the site and log in with at least one character
-9. `$ node bin/quicksetup.js import config.local.json`
+2. Install [node-foreman]() `npm install -g node-foreman`
+3. `$ cd <this dir>`
+4. `$ npm install`
+5. `$ cp env.example .env`
+6. Edit `.env` and fill in missing values
+7. `$ nf run node bin/updatedb.js`
+8. `$ nf start`
+9. Load up the site and log in with at least one character
+10. `$ cp config.local.json.example config.local.json`
+11. Edit `config.local.json` and fill in missing values
+12. `$ nf run bin/quicksetup.js import config.local.json`
 
 ## Workflow
 
@@ -20,6 +23,11 @@ effect.
 
 The recommended IDE is [VSCode](https://code.visualstudio.com), but you can use
 whatever you like best.
+
+`node-foreman` is used for running the server: `nf start` or running one-off
+commands `nf run`.  It starts the Node process using the environment
+variables defined in the .env file, which lets us match the production
+environment as needed.
 
 ## Front-end development
 
@@ -42,48 +50,20 @@ worth a skim. The structure of the JavaScript also relies heavily on the
 
 ## Deployment
 
-TODO:  Remove `config.local.json` and replace with environment variables,
-       node-foreman, and database records as appropriate.
-
 You must be one of the authorized dokku users on the linode instance to deploy.
 This means your ssh key is in dokku's authorized_keys list.  If you want to
 manage dokku itself, you must also be a sudoer on the linode instance.
 
-To deploy, you have to have the production `config.local.json` file.
-
-Differences from a regular `config.local.json` file:
-```json
-{
-  "dbFileName": "/eve-roster/storage/roster.sqlite",
-  "logDir": "/eve-roster/storage/logs",
-  "ssoClientId": "<production app client ID>",
-  "ssoSecretKey": "<production app secret key>"
-}
-```
+You must also add the git remote for the Dokku instance you want to deploy to,
+e.g. `git remote add staging dokku@pepperoni.of-sound-mind.com:roster-staging`
 
 Make sure your local repository has what you want to push, e.g. no local changes
 and up to date with `7sempra/master`.
 
-You'll need to commit `config.local.json` before pushing to dokku. Here's a
-handy script to do that automatically: 
-``` bash
-#!/bin/bash
-print_usage() {
-  echo "Usage: ./deploy.sh [staging|prod]"
-  exit 1
-}
-ENVS=( prod staging )
-if [[ $# -lt 1 ]]; then
-  print_usage
-fi
-if ! [[ ${ENVS[*]} =~ "$1" ]]; then
-  print_usage
-fi
-echo "Deploying to $1"
-git add -f config.local.json
-git commit -m "Committing config.local.json for deployment"
-git push -f $1 master
-git reset HEAD^
-```
+If you have added code that uses new environment variables, make sure those are
+set before deploying.  Use `dokku config <app>` and
+`dokku config:set <app> VAR=value` to inspect and set new environment variables.
+
+Push your changes to the Dokku remote: `git push staging master`
 
 Wait for the dokku output to complete, then check the app at the production URL.

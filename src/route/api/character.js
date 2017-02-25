@@ -3,17 +3,10 @@ const Promise = require('bluebird');
 
 const dao = require('../../dao');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
-const getStub = require('../../route-helper/getStub');
 const policy = require('../../route-helper/policy');
 const NotFoundError = require('../../error/NotFoundError');
 
-const CONFIG = require('../../config-loader').load();
-
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
-  if (CONFIG.useStubOutput) {
-    return Promise.resolve(getStub('character.json'));
-  }
-
   let characterId = req.params.id;
   let isOwned = false;
   let payload;

@@ -1,6 +1,5 @@
 const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
-const CONFIG = require('../../config-loader').load();
 const logger = require('../../util/logger')(__filename);
 
 const _ = require('underscore');
@@ -137,7 +136,7 @@ function fetchMailsPage(kind, characterId, since, page) {
       + `/startTime/${since}/page/${page}/zkbOnly/`;
   return Promise.resolve(axios.get(url, {
     headers: {
-      'User-Agent': CONFIG.userAgent,
+      'User-Agent': process.env.USER_AGENT || 'Sound Roster App',
       'Accept-Encoding': 'gzip',
     }
   }))

@@ -1,19 +1,12 @@
 const Promise = require('bluebird');
 
 const dao = require('../../../dao');
-const getStub = require('../../../route-helper/getStub');
 const MissingTokenError = require('../../../error/MissingTokenError');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const skillQueue = require('../../../data-source/skillQueue');
 const time = require('../../../util/time');
 
-const CONFIG = require('../../../config-loader').load();
-
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
-  if (CONFIG.useStubOutput) {
-    return Promise.resolve(getStub('character.skillqueue.json'));
-  }
-
   let characterId = req.params.id;
 
   return dao.getOwner(characterId)
