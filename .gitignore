@@ -12,6 +12,7 @@
 
 # Config files
 /config.local.json*
+/.env
 
 # DB files
 /*.sqlite
