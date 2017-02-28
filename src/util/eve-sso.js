@@ -3,13 +3,17 @@ const querystring = require('querystring');
 // Use DOKKU_NGINX_PORT because we need the external port for the EVE SSO
 // redirect URL, not the port in the Docker container that the Node server
 // is listening on.
-const port = process.env.DOKKU_NGINX_PORT || process.env.PORT || 8081;
+const port = process.env.DOKKU_NGINX_SSL_PORT ||
+             process.env.DOKKU_NGINX_PORT ||
+             process.env.PORT ||
+             8081;
 const hostname = process.env.HOSTNAME || 'localhost';
+const protocol = process.env.DOKKU_NGINX_SSL_PORT ? 'https' : 'http';
 
 module.exports = {
   LOGIN_PARAMS: querystring.stringify({
     'response_type': 'code',
-    'redirect_uri': `http://${hostname}:${port}/authenticate`,
+    'redirect_uri': `${protocol}://${hostname}:${port}/authenticate`,
     'client_id':  process.env.SSO_CLIENT_ID,
     'scope': [
       'esi-ui.open_window.v1',
