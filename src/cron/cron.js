@@ -176,7 +176,7 @@ function runTask(task) {
   });
 }
 
-function isTaskQueuedOrRunning(name) {
-  return (activeJob != null && activeJob.task.name == name) ||
-      _.findWhere(pendingTasks, { name: name }) != null;
+function isTaskQueuedOrRunning(task) {
+  return (activeJob != null && activeJob.task.name == task.name) ||
+      _.findWhere(pendingTasks, { name: task.name }) != null;
 }

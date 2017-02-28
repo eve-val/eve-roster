@@ -519,9 +519,9 @@ Dao.prototype = {
   },
 
   setConfig(values) {
-    return asyncUtil.serialize(Object.entries(values), ([key, value]) => {
+    return asyncUtil.serialize(Object.keys(values), key => {
       return this.builder('config')
-          .update({ value: JSON.stringify(value) })
+          .update({ value: JSON.stringify(values[key]) })
           .where('key', '=', key)
       .then(updated => {
         if (updated != 1) {

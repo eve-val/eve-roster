@@ -12,6 +12,7 @@
             >{{ character.name }}</router-link><!--
      --><tooltip class="status-icon"
             v-for="icon in statusIcons"
+            :key="icon.key"
             :inline="true"
             gravity="center top"
             >
@@ -156,6 +157,7 @@ export default {
 
       if (this.isMain && this.highlightMain) {
         icons.push({
+          key: 'main',
           src: mainIcon,
           label: 'This is your main character.',
         });
@@ -163,6 +165,7 @@ export default {
 
       if (this.character.opsec) {
         icons.push({
+          key: 'opsec',
           src: opsecIcon,
           label: 'The fact that you own this character is hidden. Only members with opsec access can see it.',
         });

@@ -21,28 +21,21 @@ module.exports = {
    * `callback` on the next item in the list.
    */
   serialize(list, callback) {
-    let i = -1;
     let results = [];
 
-    return new Promise(function(resolve, reject) {
-      callNext();
+    return iterate(0);
 
-      function callNext() {
-        i++;
-        if (i < list.length) {
-          Promise.resolve(callback(list[i], i))
-          .then(function(result) {
-            results.push(result);
-            callNext();
-          })
-          .catch(function(e) {
-            reject(e);
-          });
-        } else {
-          resolve(results);
-        }
+    function iterate(i) {
+      if (i >= list.length) {
+        return results;
+      } else {
+        return Promise.resolve(callback(list[i], i))
+        .then(result => {
+          results.push(result);
+          return iterate(i + 1);
+        });
       }
-    });
+    }
   },
 
   /**
