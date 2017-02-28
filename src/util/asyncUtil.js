@@ -27,7 +27,7 @@ module.exports = {
 
     function iterate(i) {
       if (i >= list.length) {
-        return results;
+        return Promise.resolve(results);
       } else {
         return Promise.resolve(callback(list[i], i))
         .then(result => {
