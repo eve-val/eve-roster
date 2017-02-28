@@ -13,6 +13,7 @@
         />
     <template v-if="queue && skillGroups">
       <queue-entry v-for="(queueItem, i) in queue"
+          :key="i"
           :skill="skillMap[queueItem.id]"
           :queueData="queueItem"
           :position="i"

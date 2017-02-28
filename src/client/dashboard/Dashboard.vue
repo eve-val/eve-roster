@@ -13,6 +13,7 @@
     <div class="characters-container">
       <character-slab v-for="character in sortedCharacters"
           class="slab"
+          :key="character.id"
           :accountId="accountId"
           :character="character"
           :loginParams="loginParams"

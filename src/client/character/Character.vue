@@ -13,67 +13,65 @@
           messageMode="text"
           />
     </div>
-    <template v-if="character">
-      <div class="root-container">
-        <div class="sidebar">
-          <eve-image :id="characterId" type="Character" :size="274"
-              style="border: 1px solid #463830;"
+    <div class="root-container" v-if="character">
+      <div class="sidebar">
+        <eve-image :id="characterId" type="Character" :size="274"
+            style="border: 1px solid #463830;"
+            />
+        <div class="factoid-title">Corporation</div>
+        <div class="factoid">{{ corporationName || '-' }}</div>
+
+        <template v-if="account.main">
+          <div class="factoid-title">Main</div>
+          <div class="factoid">
+            <router-link
+                class="character-link"
+                :to="'/character/' + account.main.id"
+                >{{ account.main.name }}</router-link>
+          </div>
+        </template>
+
+        <template v-if="account.alts">
+          <div class="factoid-title">Alts</div>
+          <div v-for="alt in account.alts"
+              class="factoid">
+            <router-link
+                class="character-link"
+                :to="'/character/' + alt.id"
+                >{{ alt.name }}</router-link>
+          </div>
+        </template>
+
+        <template v-if="account.id != null">
+          <div class="factoid-title">Timezone</div>
+          <factoid-selector v-if="canWriteTimezone"
+              :options="timezoneOptions"
+              :initialValue="account.activeTimezone"
+              :submitHandler="submitTimezone.bind(this)"
               />
-          <div class="factoid-title">Corporation</div>
-          <div class="factoid">{{ corporationName || '-' }}</div>
+          <div v-else class="factoid">
+            {{ account.activeTimezone || '-' }}
+          </div>
 
-          <template v-if="account.main">
-            <div class="factoid-title">Main</div>
-            <div class="factoid">
-              <router-link
-                  class="character-link"
-                  :to="'/character/' + account.main.id"
-                  >{{ account.main.name }}</router-link>
-            </div>
-          </template>
-
-          <template v-if="account.alts">
-            <div class="factoid-title">Alts</div>
-            <div v-for="alt in account.alts"
-                class="factoid">
-              <router-link
-                  class="character-link"
-                  :to="'/character/' + alt.id"
-                  >{{ alt.name }}</router-link>
-            </div>
-          </template>
-
-          <template v-if="account.id != null">
-            <div class="factoid-title">Timezone</div>
-            <factoid-selector v-if="canWriteTimezone"
-                :options="timezoneOptions"
-                :initialValue="account.activeTimezone"
-                :submitHandler="submitTimezone.bind(this)"
+          <template v-if="access.memberHousing > 0">
+            <div class="factoid-title">Citadel</div>
+            <factoid-selector v-if="canWriteCitadel"
+                :options="citadelOptions"
+                :initialValue="account.citadelName"
+                :submitHandler="submitHousing.bind(this)"
                 />
-            <div v-else class="factoid">
-              {{ account.activeTimezone || '-' }}
-            </div>
-
-            <template v-if="access.memberHousing > 0">
-              <div class="factoid-title">Citadel</div>
-              <factoid-selector v-if="canWriteCitadel"
-                  :options="citadelOptions"
-                  :initialValue="account.citadelName"
-                  :submitHandler="submitHousing.bind(this)"
-                  />
-              <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
-            </template>
+            <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
           </template>
-        </div>
-        <div class="content">
-          <skill-sheet
-              :characterId="characterId"
-              :access="access"
-              />
-        </div>
+        </template>
+      </div>
+      <div class="content">
+        <skill-sheet
+            :characterId="characterId"
+            :access="access"
+            />
       </div>
     </div>
-  </template>
+  </div>
 </div>
 </template>
 

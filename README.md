@@ -3,7 +3,7 @@
 ## Setup
 
 1. Install the latest version of [Node.js](https://nodejs.org/en/).
-2. Install [node-foreman]() `npm install -g node-foreman`
+2. Install [node-foreman]() `npm install -g foreman`
 3. `$ cd <this dir>`
 4. `$ npm install`
 5. `$ cp env.example .env`
@@ -11,9 +11,9 @@
 7. `$ nf run node bin/updatedb.js`
 8. `$ nf start`
 9. Load up the site and log in with at least one character
-10. `$ cp config.local.json.example config.local.json`
-11. Edit `config.local.json` and fill in missing values
-12. `$ nf run bin/quicksetup.js import config.local.json`
+10. `$ cp setup.json.example setup.json`
+11. Edit `setup.json` and fill in missing values
+12. `$ nf run node bin/quicksetup.js import setup.json`
 
 ## Workflow
 

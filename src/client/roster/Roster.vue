@@ -30,7 +30,7 @@
     <div class="member-count" v-if="tableRows != null">
       {{ tableRows.length }} members
     </div>
-  <div>
+  </div>
 </div>
 </template>
 

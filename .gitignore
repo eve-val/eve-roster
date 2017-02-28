@@ -11,7 +11,7 @@
 /static/dist/
 
 # Config files
-/config.local.json*
+/setup.json
 /.env
 
 # DB files

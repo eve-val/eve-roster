@@ -105,6 +105,6 @@ app.use(express.static(path.join(__dirname, '../static')));
 // Start the server
 const port = process.env.PORT || 8081;
 let server = app.listen(port, function() {
-  logger.info(`Magic happens on port ${port}.`);
+  logger.info(`Serving from port ${port}.`);
   cron.init();
 });
