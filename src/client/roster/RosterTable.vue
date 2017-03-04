@@ -54,9 +54,9 @@ export default {
     sortedRows: function() {
       // Sort accounts
       this.rows.sort((a, b) => {
-        return stringAwareCmp(
-            getSortVal(this.sortColumn, a.aggregate, a.account),
-            getSortVal(this.sortColumn, b.aggregate, b.account),
+        return generalPurposeCompare(
+            getSortVal(this.sortColumn, a.aggregate, a),
+            getSortVal(this.sortColumn, b.aggregate, b),
             this.sort.reverse
         );
       });
@@ -64,7 +64,7 @@ export default {
       // Sort alts
       for (let row of this.rows) {
         row.alts.sort((a, b) => {
-          return stringAwareCmp(
+          return generalPurposeCompare(
               getSortVal(this.sortColumn, a, null),
               getSortVal(this.sortColumn, b, null),
               this.sort.reverse
@@ -90,27 +90,32 @@ export default {
 
 function getSortVal(column, character, account) {
   if (column.account) {
-    if (account != null) {
-      return account[column.key];
-    } else {
-      return character.name;
-    }
+    return account && account[column.key];
   } else {
     return character[column.key];
   }
 }
 
-function stringAwareCmp(a, b, reverse) {
-  // TODO: deal with null values
+function generalPurposeCompare(a, b, reverse) {
   let cmp;
-  if (typeof a == 'string' && typeof b == 'string') {
-    cmp = a.localeCompare(b);
-  } else {
+
+  if (a == null && b != null) {
+    cmp = -1;
+  } else if (b == null && a != null) {
+    cmp = 1;
+  } else if (a == null && b == null) {
     cmp = 0;
-    if (a > b) {
-      cmp = 1;
-    } else if (b > a) {
-      cmp = -1;
+  } else {
+    if (typeof a == 'string' && typeof b == 'string') {
+      cmp = a.localeCompare(b);
+    } else {
+      if (a > b) {
+        cmp = 1;
+      } else if (b > a) {
+        cmp = -1;
+      } else {
+        cmp = 0;
+      }
     }
   }
 
