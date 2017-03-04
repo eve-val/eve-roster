@@ -72,10 +72,15 @@ export default {
     this.rosterPromise = ajaxer.getRoster()
       .then(response => {
         let providedColumns = response.data.columns;
-        this.displayColumns = rosterColumns.filter(item => {
-          return item.key == 'warning' ||
-              item.key == 'alts' ||
-              providedColumns.indexOf(item.key) != -1;
+
+        this.displayColumns = rosterColumns.filter(col => {
+          let sourceColumns = col.derivedFrom || [col.key];
+
+          return _.reduce(
+              sourceColumns,
+              (accum, sourceCol) =>
+                  accum && providedColumns.includes(sourceCol),
+              true);
         });
 
         let rows = injectDerivedData(response.data.rows);
@@ -102,6 +107,7 @@ const SUM_ATTRS = new Set([
   'lossesInLastMonth',
   'lossValueInLastMonth',
   'siggyScore',
+  'activityScore',
 ]);
 
 const MAX_ATTRS = new Set([
@@ -110,20 +116,24 @@ const MAX_ATTRS = new Set([
 
 function injectDerivedData(data) {
   for (let account of data) {
-    injectLastSeen(account);
-    let aggregate = {};
-    for (let v in account.main) {
-      if (SUM_ATTRS.has(v)) {
-        aggregate[v] = sumProp(v, account.main, ...account.alts);
-      } else if (MAX_ATTRS.has(v)) {
-        aggregate[v] = maxProp(v, account.main, ...account.alts);
-      } else {
-        aggregate[v] = account.main[v];
-      }
-    }
-    account.aggregate = aggregate;
+    injectDerivedProps(account);
+    account.aggregate = computeAggregateCharacter(account);
   }
   return data;
+}
+
+function computeAggregateCharacter(account) {
+  let aggregate = {};
+  for (let v in account.main) {
+    if (SUM_ATTRS.has(v)) {
+      aggregate[v] = sumProp(v, account.main, ...account.alts);
+    } else if (MAX_ATTRS.has(v)) {
+      aggregate[v] = maxProp(v, account.main, ...account.alts);
+    } else {
+      aggregate[v] = account.main[v];
+    }
+  }
+  return aggregate;
 }
 
 function sumProp(prop, ...chars) {
@@ -150,12 +160,13 @@ function maxProp(prop, ...chars) {
   return sawNotNull ? best : null;
 }
 
-function injectLastSeen(account) {
+function injectDerivedProps(account) {
   for (let character of [account.main, ...account.alts]) {
     let lastSeen = getLastSeen(character);
     if (lastSeen != null) {
       character.lastSeen = lastSeen;
     }
+    character.activityScore = getActivity(character);
   }
 }
 
@@ -166,6 +177,14 @@ function getLastSeen(character) {
     return Math.floor(Date.now() / 1000);
   } else {
     return character.logoffDate;
+  }
+}
+
+function getActivity(character) {
+  if (character.siggyScore == null || character.killsInLastMonth == null) {
+    return null;
+  } else {
+    return Math.round(character.siggyScore / 50 + character.killsInLastMonth);
   }
 }
 
