@@ -312,35 +312,13 @@ Dao.prototype = {
     });
   },
 
-  getPrivilegesForAccount(accountId) {
+  getPrivilegesForRoles(roles) {
     // This query has an odd structure because we need to select all privileges,
     // not just those that have been granted to this account. This is because
     // some privileges are inherently granted to the owner of the resource even
     // if the owner doesn't have that privilege in general. Thus, we need to
     // know the owner level for every privilege in order to know whether the
     // account has access.
-    return this.builder('privilege')
-        .select(
-            'privilege.name',
-            'grantedPrivs.level',
-            'privilege.ownerLevel',
-            'privilege.requiresMembership')
-        .leftJoin(function() {
-          // Subquery: all the privileges this account has been granted
-          this.select(
-                  'rolePriv.privilege',
-                  knex.raw('max(rolePriv.level) as level'))
-              .from('account')
-              .where('account.id', '=', accountId)
-              .join('accountRole', 'accountRole.account', '=', 'account.id')
-              .join('rolePriv', 'rolePriv.role', '=', 'accountRole.role')
-              .groupBy('rolePriv.privilege')
-              .as('grantedPrivs');
-        }, 'grantedPrivs.privilege', '=', 'privilege.name');
-  },
-
-  getPrivilegesForRoles(roles) {
-    // See similar comment in getPrivilegesForAccount
     return this.builder('privilege')
         .select(
             'privilege.name',

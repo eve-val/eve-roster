@@ -1,9 +1,12 @@
 const Promise = require('bluebird');
 
 const dao = require('../dao');
+const logger = require('../util/logger')(__filename);
 const MissingPrivilegeError = require('../error/MissingPrivilegeError');
 
-const debugRoles = process.env.DEBUG_ROLES || null;
+const debugRoles =
+    process.env.DEBUG_ROLES && JSON.parse(process.env.DEBUG_ROLES);
+checkDebugRoles(debugRoles);
 
 module.exports = {
   get(accountId) {
@@ -15,7 +18,7 @@ module.exports = {
     })
     .then(_roles => {
       roles = _roles;
-      return dao.getPrivilegesForAccount(debugRoles || accountId);
+      return dao.getPrivilegesForRoles(roles);
     })
     .then(privs => {
       return new AccountPrivileges(accountId, roles, privs);
@@ -80,7 +83,7 @@ class AccountPrivileges {
   _require(privilege, level, isOwner=false) {
     if (!this._satisfies(privilege, level, isOwner)) {
       throw new MissingPrivilegeError(
-          this._accountId, privilege, level, isOwner, this._privs);
+          this._accountId, privilege, level, isOwner, this._roles, this._privs);
     }
     return this;
   }
@@ -112,5 +115,17 @@ class AccountPrivileges {
     }
     this._precomputedLevels.set(key, effectiveLevel);
     return effectiveLevel;
+  }
+}
+
+function checkDebugRoles() {
+  if (debugRoles) {
+    logger.info(`Using hard-coded roles for all requests: [${debugRoles}].`)
+    if (debugRoles.length > 0 && !debugRoles.includes('__member')) {
+      logger.warn('###########################################');
+      logger.warn(`WARNING: debugRoles is nonempty, but is missing the`
+          + `"__member" role. This is probably a mistake.`);
+      logger.warn('###########################################');
+    }
   }
 }
