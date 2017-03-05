@@ -11,6 +11,9 @@
         messageMode="text"
         :promise="queuePromise"
         />
+    <div class="empty-queue" v-if="queueStatus == 'loaded' && queue == null">
+      Skill queue is empty
+    </div>
     <template v-if="queue && skillGroups">
       <queue-entry v-for="(queueItem, i) in queue"
           :key="i"
@@ -279,5 +282,10 @@ function groupifySkills(skills){
 
 .skill-pips {
   margin: 0 13px 0 13px;
+}
+
+.empty-queue {
+  font-size: 14px;
+  padding: 10px 0px 9px 13px;
 }
 </style>

@@ -15,7 +15,10 @@
       <span class="numeral-level"
           >{{ queueData.targetLevel | numeralize }}</span>
     </div>
-    <div class="duration">{{ queueData.durationLabel }}</div>
+    <div v-if="queueData.durationLabel" class="duration">
+      {{ queueData.durationLabel }}
+    </div>
+    <div v-else class="duration">Paused</div>
   </div>
   <div class="queue-bar"
       :style="{
