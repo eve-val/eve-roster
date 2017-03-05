@@ -15,7 +15,9 @@
       <span class="numeral-level"
           >{{ queueData.targetLevel | numeralize }}</span>
     </div>
-    <div class="duration">{{ queueData.durationLabel }}</div>
+    <div class="duration">
+      {{ queueData.durationLabel || 'Paused' }}
+    </div>
   </div>
   <div class="queue-bar"
       :style="{

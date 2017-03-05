@@ -36,7 +36,8 @@
             >{{ skillInTraining.timeRemaining }}</span>
       </div>
       <div class="queue-summary" v-if="queue != null">
-        {{ queue.timeRemaining }} left in queue
+        <span v-if="queue.timeRemaining != ''"
+            >{{ queue.timeRemaining }} left in queue</span>
         ({{ queue.count}} {{queue.count == 1 ? 'skill' : 'skills' }})
       </div>
     </div>
@@ -124,8 +125,7 @@ export default {
 
     errorState: function() {
       return this.character.needsReauth ||
-          this.queueFetchStatus == 'error' ||
-          this.queueFetchStatus == 'loaded' && this.queue == null;
+             this.queueFetchStatus == 'error';
     },
 
     trainingLabel: function() {
@@ -138,7 +138,9 @@ export default {
       } else if (this.queueFetchStatus == 'error') {
         return 'Error loading skill queue';
       } else if (this.skillInTraining == null) {
-        return 'No skill training';
+        return 'Skill queue empty';
+      } else if (this.skillInTraining.timeRemaining == '') {
+        return 'Skill queue paused';
       } else {
         return this.skillInTraining.name;
       }
