@@ -15,6 +15,24 @@
 11. Edit `setup.json` and fill in missing values
 12. `$ nf run node bin/quicksetup.js import setup.json`
 
+## Testing
+
+Tests live in `/test/` and are executed using the
+[Jest](https://facebook.github.io/jest/) framework.
+
+Run all tests:
+```
+$ npm test
+```
+
+Run a specific test:
+```
+$ npm test -- test/path/to/my.test.js
+```
+
+There are a bunch of other
+[CLI options](https://facebook.github.io/jest/docs/cli.html).
+
 ## Workflow
 
 Modifications to front-end code should appear without the need to reload the
