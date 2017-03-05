@@ -139,7 +139,7 @@ export default {
         return 'Error loading skill queue';
       } else if (this.skillInTraining == null) {
         return 'Skill queue empty';
-      } else if(this.skillInTraining.timeRemaining == '') {
+      } else if (this.skillInTraining.timeRemaining == '') {
         return 'Skill queue paused';
       } else {
         return this.skillInTraining.name;
