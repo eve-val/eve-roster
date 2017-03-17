@@ -1,6 +1,9 @@
 const axios = require('axios');
 const express = require('express');
 const querystring = require('querystring');
+const util = require('util');
+
+const Promise = require('bluebird');
 
 const dao = require('../dao');
 const error = require('../util/error');
@@ -45,10 +48,11 @@ module.exports = function(req, res) {
     res.redirect('/');
   })
   .catch(e => {
-    // TODO
-    logger.error('Auth failure:', e);
+    let message = (e instanceof UserVisibleError) ? e.message : 'Server error';
+    logger.error('Auth failure');
+    logger.error(e);
     res.status(500);
-    res.send('<pre>' + e.stack + '</pre>');
+    res.send(message);
   });
 };
 
@@ -130,7 +134,9 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
 
   if (accountId != null && accountId != owningAccount) {
     throw new UserVisibleError(
-        'This character has already been claimed by another account.');
+        'This character has already been claimed by another account.'
+            + ' You may have accidentally created multiple accounts. Please'
+            + ' contact an admin to merge them for you.');
   }
   return dao.upsertAccessTokens(
       charData.id,
