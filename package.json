@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "updatedb": "node bin/updatedb.js",
-    "build": "webpack --progress --hide-modules"
+    "build": "webpack --progress --hide-modules",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -43,7 +44,12 @@
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
+    "jest": "^19.0.2",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-hot-middleware": "^2.17.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "(\\.|/)test\\.js$"
   }
 }
