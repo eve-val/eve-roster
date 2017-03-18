@@ -120,7 +120,7 @@ function handleCharLogin(accountId, charData, charTokens) {
   .then(([row]) => {
     if (row != null && row.account != null) {
       logger.info(
-          `  Character already owned. Logging in as account ${row.account.id}`);
+          `  Character already owned. Logging in as account ${row.account}`);
       return handleOwnedChar(accountId, charData, charTokens, row);
     } else {
       logger.info(`  Character is unowned.`);
