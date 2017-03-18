@@ -23,7 +23,7 @@ function setIsOpsec(account, privs, characterId, isOpsec) {
 
   return dao.getCharacterAndOwner(
       characterId,
-      ['corporationId', 'account', 'membership'])
+      ['character.corporationId', 'account', 'membership'])
   .then(([row]) => {
     if (!row) {
       throw new BadRequestError(`Character not found: ${characterId}.`);
