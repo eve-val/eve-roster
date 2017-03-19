@@ -10,6 +10,8 @@ import CronLog from './admin/CronLog.vue';
 
 const router = new VueRouter({
   mode: 'history',
+  // Anything added here should also be in server.js:FRONTEND_ROUTES
+  // TODO(aiiane): make server.js just read it directly from here
   routes: [
     { path: '/', component: Dashboard, meta: { keepAlive: false } },
     { path: '/roster', component: Roster, meta: { keepAlive: true } },

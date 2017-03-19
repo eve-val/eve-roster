@@ -12,7 +12,6 @@ const cron = require('./cron/cron.js');
 const dao = require('./dao');
 
 const getAccountPrivs = require('./route-helper/getAccountPrivs');
-const routes = require('./routes');
 
 const config = require('./util/config');
 const logger = require('./util/logger')(__filename);
@@ -26,6 +25,16 @@ const REQUIRED_VARS = [
   'SSO_CLIENT_ID',
   'SSO_SECRET_KEY',
   'DB_FILE_NAME'
+];
+
+const FRONTEND_ROUTES = [
+  '/',
+  '/roster',
+  '/character/:id',
+  '/housing',
+  '/admin',
+  '/admin/cron-logs',
+  '/admin/account-logs',
 ];
 
 if(REQUIRED_VARS.some(envVar => !(envVar in process.env))) {
@@ -67,7 +76,7 @@ if (config.isDevelopment()) {
 }
 
 // Includes root ('/')
-app.get(routes.frontEnd, require('./route/home'));
+app.get(FRONTEND_ROUTES, require('./route/home'));
 
 app.get('/login', function(req, res) {
   res.render('login', {
