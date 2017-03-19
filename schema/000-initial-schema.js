@@ -52,7 +52,7 @@ exports.up = function(knex, Promise) {
         table.integer('mainCharacter')
           .references('character.id').nullable();
 
-        table.enu('activeTimezone',
+        table.enum('activeTimezone',
           ['US East', 'US Central', 'US West', 'EU', 'AU']).nullable();
         table.string('homeCitadel').nullable().references('citadel.id');
       });
