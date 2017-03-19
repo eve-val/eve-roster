@@ -4,7 +4,7 @@ const dao = require('../../dao');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
-  privs.requireRead('roster');
+  privs.requireRead('citadels');
 
   return Promise.resolve(dao.getCitadels())
       .then(function(citadelList) {

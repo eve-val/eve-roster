@@ -10,6 +10,8 @@ const router = express.Router();
 
 router.get('/admin/accountLog', require('./admin/accountLog'));
 router.get('/admin/cronLog', require('./admin/cronLog'));
+router.put('/admin/citadel/:id', require('./admin/citadelPut'));
+router.delete('/admin/citadel/:id', require('./admin/citadelDelete'));
 
 router.put('/account/:id/activeTimezone', require('./account/activeTimezone'));
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
