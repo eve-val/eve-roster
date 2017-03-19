@@ -115,7 +115,7 @@ export default {
 }
 
 .centering-container {
-  width: 1200px;
+  max-width: 1056px;
   margin: 0 auto;
 }
 
@@ -123,23 +123,23 @@ export default {
   font-size: 30px;
   color: #a7a29c;
   font-weight: 100;
-  margin: 40px 0 40px 33px;
+  margin: 40px 0 40px 32px;
 }
 
 .main-spinner {
-  margin-left: 33px;
+  margin-left: 32px;
 }
 
 .characters-container {
-  margin: 0 33px 0 0;
+  margin: 0 32px 0 0;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
 }
 
 .slab, .add-character {
-  margin-left: 33px;
-  margin-bottom: 33px;
+  margin-left: 32px;
+  margin-bottom: 32px;
   flex: 0 0 auto;
 }
 
@@ -153,6 +153,7 @@ export default {
   font-size: 18px;
   color: #a7a29c;
   font-weight: 300;
+  box-sizing: border-box;
 }
 
 .add-character-link {

@@ -282,6 +282,7 @@ export default {
   color: #cdcdcd;
   text-decoration: none;
   margin-right: 5px;
+  font-weight: bold;
 }
 
 .name:hover {
