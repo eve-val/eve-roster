@@ -41,6 +41,10 @@ export default {
     return axios.get('/api/character/' + id);
   },
 
+  getCitadels() {
+    return axios.get('/api/citadels');
+  },
+
   getSkills(id) {
     return axios.get('/api/character/' + id + '/skills');
   },

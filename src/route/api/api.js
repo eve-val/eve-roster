@@ -25,6 +25,8 @@ router.put('/character/:id', require('./character/characterPut'));
 router.get('/character/:id/skills', require('./character/skills'));
 router.get('/character/:id/skillQueue', require('./character/skillQueue'));
 
+router.get('/citadels', require('./citadels'));
+
 router.get('/corporation/:id', require('./corporation'));
 
 module.exports = router;
