@@ -20,7 +20,10 @@ module.exports = {
     let trainedProgress = (new Date() - trainingStart) /
         (new Date(queueEntry.finish_date) - trainingStart);
 
-    return pretrainedProgress + trainedProgress * (1 - pretrainedProgress);
+    // Bound the result between 0 and 1, otherwise a skill that finished
+    // since the last time a character logged in can show as > 100%
+    let fraction = pretrainedProgress + trainedProgress * (1 - pretrainedProgress);
+    return Math.min(Math.max(fraction, 0), 1);
   },
 };
 
