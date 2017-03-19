@@ -259,6 +259,9 @@ function altsLabel(altsCount) {
   flex: 0 0 auto;
   color: #A7A29C;
   margin-left: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .warning {
