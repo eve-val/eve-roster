@@ -2,6 +2,7 @@
 .DS_Store
 .vscode
 .idea/
+.*.swp
 
 # NPM-installed files
 /node_modules/
