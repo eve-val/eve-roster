@@ -282,7 +282,6 @@ export default {
   color: #cdcdcd;
   text-decoration: none;
   margin-right: 5px;
-  font-weight: bold;
 }
 
 .name:hover {
@@ -321,9 +320,9 @@ export default {
 .training-track {
   position: relative;
   display: inline-block;
-  width: 270px;
+  width: 300px;
   height: 22px;
-  margin: 9px 0 11px 0;
+  margin: 12px 0 11px 0;
   padding-top: 5px;
   background: #26221e;
 }
@@ -355,7 +354,7 @@ export default {
   margin-left: 6px;
 }
 
-.queue-summary, .training-remaining, {
+.queue-summary, .training-remaining {
   font-size: 12px;
   color: #a7a29c;
 }
