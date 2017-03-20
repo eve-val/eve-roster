@@ -32,11 +32,11 @@ function pruneCompletedSkills(queueData) {
   let now = new Date();
   let startIndex = 0;
   for (let i = 0; i < queueData.length; i++) {
-    startIndex = i;
     let endDate = new Date(queueData[i].finish_date);
     if (endDate > now) {
       break;
     }
+    startIndex += 1;
   }
   return queueData.slice(startIndex);
 }
