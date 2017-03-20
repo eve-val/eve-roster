@@ -17,7 +17,7 @@ const path = require('path');
 const _ = require('underscore');
 
 const asyncUtil = require('./util/asyncUtil');
-const accountRoles = require('./data-source/accountRoles');
+const accountGroups = require('./data-source/accountGroups');
 const knex = require('./util/knex-loader');
 
 const BASIC_CHARACTER_COLUMNS = [
@@ -47,12 +47,12 @@ const LOGGABLE_EVENTS = [
   'OWN_CHARACTER',
   'DESIGNATE_MAIN',
   'MERGE_ACCOUNTS',
-  'MODIFY_ROLES',
+  'MODIFY_GROUPS',
   'GAIN_MEMBERSHIP',
   'LOSE_MEMBERSHIP',
 ];
 
-const MEMBER_ROLE = accountRoles.MEMBER_ROLE;
+const MEMBER_GROUP = accountGroups.MEMBER_GROUP;
 
 function Dao(builder) {
   this.builder = builder;
@@ -87,25 +87,29 @@ Dao.prototype = {
 
   getMemberCorporations() {
     return this.builder('memberCorporation')
-        .select('corporationId', 'membership', 'apiKeyId', 'apiVerificationCode');
+        .select(
+            'corporationId',
+            'membership',
+            'apiKeyId',
+            'apiVerificationCode');
   },
 
-  getExplicitRoles(accountId) {
-    return this.builder('roleExplicit')
-        .select('role')
+  getExplicitGroups(accountId) {
+    return this.builder('groupExplicit')
+        .select('group')
         .where('account', '=', accountId)
     .then(rows => {
-      return _.pluck(rows, 'role');
+      return _.pluck(rows, 'group');
     });
   },
 
-  getTitleRoles(corporationId, titles) {
-    return this.builder('roleTitle')
-        .select('role')
+  getTitleDerivedGroups(corporationId, titles) {
+    return this.builder('groupTitle')
+        .select('group')
         .whereIn('title', titles)
         .andWhere('corporation', '=', corporationId)
     .then(rows => {
-      return _.pluck(rows, 'role');
+      return _.pluck(rows, 'group');
     });
   },
 
@@ -234,7 +238,7 @@ Dao.prototype = {
         if (isMain) {
           return trx.setAccountMain(accountId, characterId);
         } else {
-          return accountRoles.updateAccount(trx, accountId);
+          return accountGroups.updateAccount(trx, accountId);
         }
       });
     });
@@ -275,7 +279,7 @@ Dao.prototype = {
         return trx.logEvent(accountId, 'DESIGNATE_MAIN', mainCharacterId);
       })
       .then(() => {
-        return accountRoles.updateAccount(trx, accountId);
+        return accountGroups.updateAccount(trx, accountId);
       });
     });
   },
@@ -292,51 +296,53 @@ Dao.prototype = {
         .update({ activeTimezone: activeTimezone });
   },
 
-  getAccountRoles(accountId) {
-    return this.builder('accountRole')
-        .select('role')
+  getAccountGroups(accountId) {
+    return this.builder('accountGroup')
+        .select('group')
         .where('account', '=', accountId)
-    .then(rows => _.pluck(rows, 'role'));
+    .then(rows => _.pluck(rows, 'group'));
   },
 
-  setAccountRoles(accountId, roles) {
+  setAccountGroups(accountId, groups) {
     return this.transaction(trx => {
-      let oldRoles;
-      roles.sort((a, b) => a.localeCompare(b));
+      let oldGroups;
+      groups.sort((a, b) => a.localeCompare(b));
 
-      return trx.getAccountRoles(accountId)
-      .then(_oldRoles => {
-        oldRoles = _oldRoles;
-        return trx.builder('accountRole')
+      return trx.getAccountGroups(accountId)
+      .then(_oldGroups => {
+        oldGroups = _oldGroups;
+        return trx.builder('accountGroup')
             .del()
             .where('account', '=', accountId)
       })
       .then(() => {
-        if (roles.length > 0) {
-          return trx.builder('accountRole')
-              .insert(roles.map(role => ({ account: accountId, role: role }) ));
+        if (groups.length > 0) {
+          return trx.builder('accountGroup')
+              .insert(
+                  groups.map(group => ({ account: accountId, group: group }) ));
         }
       })
       .then(() => {
-        if (!_.isEqual(oldRoles, roles)) {
-          return trx.logEvent(accountId, 'MODIFY_ROLES', null, {
-            old: oldRoles,
-            new: roles,
+        if (!_.isEqual(oldGroups, groups)) {
+          return trx.logEvent(accountId, 'MODIFY_GROUPS', null, {
+            old: oldGroups,
+            new: groups,
           });
         }
       })
       .then(() => {
-        if (!oldRoles.includes(MEMBER_ROLE) && roles.includes(MEMBER_ROLE)) {
+        if (!oldGroups.includes(MEMBER_GROUP) &&
+            groups.includes(MEMBER_GROUP)) {
           return trx.logEvent(accountId, 'GAIN_MEMBERSHIP');
-        } else if (oldRoles.includes(MEMBER_ROLE) &&
-            !roles.includes(MEMBER_ROLE)) {
+        } else if (oldGroups.includes(MEMBER_GROUP) &&
+            !groups.includes(MEMBER_GROUP)) {
           return trx.logEvent(accountId, 'LOSE_MEMBERSHIP');
         }
       });
     });
   },
 
-  getPrivilegesForRoles(roles) {
+  getPrivilegesForGroups(groups) {
     // This query has an odd structure because we need to select all privileges,
     // not just those that have been granted to this account. This is because
     // some privileges are inherently granted to the owner of the resource even
@@ -350,12 +356,12 @@ Dao.prototype = {
             'privilege.ownerLevel',
             'privilege.requiresMembership')
         .leftJoin(function() {
-          // Subquery: all the privileges these roles have been granted
+          // Subquery: all the privileges these groups have been granted
           this.select(
                   'privilege',
                   knex.raw('max(level) as level'))
-              .from('rolePriv')
-              .whereIn('role', roles)
+              .from('groupPriv')
+              .whereIn('group', groups)
               .groupBy('privilege')
               .as('grantedPrivs')
         }, 'grantedPrivs.privilege', '=', 'privilege.name');

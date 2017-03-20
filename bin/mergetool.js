@@ -20,7 +20,7 @@ const _ = require('underscore');
 const moment = require('moment');
 const Promise = require('bluebird');
 
-const accountRoles = require('../src/data-source/accountRoles');
+const accountGroups = require('../src/data-source/accountGroups');
 const dao = require('../src/dao');
 const UserVisibleError = require('../src/error/UserVisibleError');
 const logger = require('../src/util/logger')(__filename)
@@ -111,8 +111,8 @@ Promise.resolve()
     .then(count => {
       logger.info('  Modified %s rows', count);
 
-      logger.info('Dropping account roles...');
-      return trx.builder('accountRole')
+      logger.info('Dropping account groups...');
+      return trx.builder('accountGroup')
           .del()
           .whereIn('account', deadAccounts);
     })
@@ -144,8 +144,8 @@ Promise.resolve()
     });
   })
   .then(() => {
-    logger.info('Updating roles on remaining account...');
-    return accountRoles.updateAccount(dao, targetAccountId);
+    logger.info('Updating groups on remaining account...');
+    return accountGroups.updateAccount(dao, targetAccountId);
   });
 })
 .then(() => {

@@ -2,34 +2,38 @@ const Promise = require('bluebird');
 
 const dao = require('../dao');
 const logger = require('../util/logger')(__filename);
+const specialGroups = require('../route-helper/specialGroups');
 const MissingPrivilegeError = require('../error/MissingPrivilegeError');
 
-const debugRoles =
-    process.env.DEBUG_ROLES && JSON.parse(process.env.DEBUG_ROLES);
-checkDebugRoles(debugRoles);
+const ADMIN_GROUP = specialGroups.ADMIN_GROUP;
+const MEMBER_GROUP = specialGroups.MEMBER_GROUP;
+
+const debugGroups =
+    process.env.DEBUG_GROUPS && JSON.parse(process.env.DEBUG_GROUPS);
+checkDebugGroups(debugGroups);
 
 module.exports = {
   get(accountId) {
-    let roles;
+    let groups;
 
     return Promise.resolve()
     .then(() => {
-      return debugRoles || dao.getAccountRoles(accountId);
+      return debugGroups || dao.getAccountGroups(accountId);
     })
-    .then(_roles => {
-      roles = _roles;
-      return dao.getPrivilegesForRoles(roles);
+    .then(_groups => {
+      groups = _groups;
+      return dao.getPrivilegesForGroups(groups);
     })
     .then(privs => {
-      return new AccountPrivileges(accountId, roles, privs);
+      return new AccountPrivileges(accountId, groups, privs);
     });
   }
 };
 
 class AccountPrivileges {
-  constructor(accountId, roles, privs) {
+  constructor(accountId, groups, privs) {
     this._accountId = accountId;
-    this._roles = roles;
+    this._groups = groups;
 
     this._privs = new Map();
     for (let priv of privs) {
@@ -47,11 +51,11 @@ class AccountPrivileges {
   }
 
   isMember() {
-    return this.hasRole('__member');
+    return this.belongsToGroup(MEMBER_GROUP);
   }
 
-  hasRole(role) {
-    return this._roles.includes(role);
+  belongsToGroup(group) {
+    return this._groups.includes(group);
   }
 
   canRead(privilege, isOwner=false) {
@@ -83,7 +87,12 @@ class AccountPrivileges {
   _require(privilege, level, isOwner=false) {
     if (!this._satisfies(privilege, level, isOwner)) {
       throw new MissingPrivilegeError(
-          this._accountId, privilege, level, isOwner, this._roles, this._privs);
+          this._accountId,
+          privilege,
+          level,
+          isOwner,
+          this._groups,
+          this._privs);
     }
     return this;
   }
@@ -110,7 +119,7 @@ class AccountPrivileges {
     if (priv.requiresMembership && !this.isMember()) {
       effectiveLevel = 0;
     }
-    if (this.hasRole('__admin')) {
+    if (this.belongsToGroup(ADMIN_GROUP)) {
       effectiveLevel = 2;
     }
     this._precomputedLevels.set(key, effectiveLevel);
@@ -118,13 +127,14 @@ class AccountPrivileges {
   }
 }
 
-function checkDebugRoles() {
-  if (debugRoles) {
-    logger.info(`Using hard-coded roles for all requests: [${debugRoles}].`)
-    if (debugRoles.length > 0 && !debugRoles.includes('__member')) {
+function checkDebugGroups() {
+  if (debugGroups) {
+    logger.info(
+        `Using hard-coded ACL groups for all requests: [${debugGroups}].`)
+    if (debugGroups.length > 0 && !debugGroups.includes(MEMBER_GROUP)) {
       logger.warn('###########################################');
-      logger.warn(`WARNING: debugRoles is nonempty, but is missing the`
-          + `"__member" role. This is probably a mistake.`);
+      logger.warn(`WARNING: debugGroups is nonempty, but is missing the`
+          + `"${MEMBER_GROUP}" group. This is probably a mistake.`);
       logger.warn('###########################################');
     }
   }

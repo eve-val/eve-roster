@@ -75,6 +75,12 @@ export default {
   text-decoration: underline;
 }
 
+.sidebar-link.router-link-active {
+  color: #D7D7D7;
+  text-shadow: 0 0 6px rgba(166, 116, 54, 58);
+  text-decoration: none;
+}
+
 .main {
   flex: 1;
   padding-bottom: 200px;
