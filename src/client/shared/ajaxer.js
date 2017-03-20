@@ -45,6 +45,15 @@ export default {
     return axios.get('/api/citadels');
   },
 
+  postCitadel(name, type, allianceAccess, allianceOwned) {
+    return axios.post('/api/admin/citadel', {
+      name: name,
+      type: type,
+      allianceAccess: parseInt(allianceAccess),
+      allianceOwned: parseInt(allianceOwned),
+    });
+  },
+
   putCitadelName(citadelId, name) {
     return axios.put(`/api/admin/citadel/${citadelId}`, {
       name: name

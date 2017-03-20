@@ -1,11 +1,35 @@
 <template>
 <admin-wrapper title="Citadel management" :identity="identity">
+<div class="add-citadel">
+  <input class="citadel-name" v-model="newCitadel.name"
+    @keydown="addLogic"
+    placeholder="Type a new citadel name, then press enter to add...">
+  <label>Type:
+    <select class="citadel-type" v-model="newCitadel.type">
+      <option value="Astrahus">Astrahus</option>
+      <option value="Fortizar">Fortizar</option>
+      <option value="Keepstar">Keepstar</option>
+      <option value="Raitaru">Raitaru</option>
+      <option value="Azbel">Azbel</option>
+    </select>
+  </label>
+  <label>Alliance Access:
+    <select class="alliance-access" v-model="newCitadel.allianceAccess">
+      <option value="1">YES</option>
+      <option value="0">NO</option>
+    </select>
+  </label>
+  <label>Alliance Owned:
+    <select class="alliance-owned" v-model="newCitadel.allianceOwned">
+      <option value="1">YES</option>
+      <option value="0">NO</option>
+    </select>
+  </label>
+</div>
 <div v-for="citadel in sortedCitadels" class="citadel">
-  <span class="name" contenteditable
+  <input class="name" :value="citadel.name"
     @blur="validate(citadel.id, citadel.name, $event)"
-    @keydown="editLogic(citadel.name, $event)"
-  >{{ citadel.name }}</span>
-
+    @keydown="editLogic(citadel.name, $event)">
   <button class="remove" @click="removeCitadel(citadel.id)">Remove</button>
 </div>
 </admin-wrapper>
@@ -27,6 +51,12 @@ export default {
   data: function() {
     return {
       citadels: [],
+      newCitadel: {
+        name: '',
+        type: 'Astrahus',
+        allianceAccess: 1,
+        allianceOwned: 1,
+      },
     };
   },
 
@@ -49,6 +79,15 @@ export default {
       this.citadelsPromise = ajaxer.getCitadels()
           .then(response => {
             this.citadels = response.data.citadels;
+          });
+    },
+
+    addCitadel() {
+      let c = this.newCitadel;
+      this.addPromise = ajaxer.postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
+          .then(response => {
+            this.citadels.push(response.data)
+            this.newCitadel.name = '';
           });
     },
 
@@ -75,14 +114,23 @@ export default {
           });
     },
 
-    editLogic(oldName, event) {
-      let text = event.target.innerText;
-
-      // Enforce single line only
-      text = text.split("\n")[0];
-      if(text !== event.target.innerText) {
-        event.target.innerText = text;
+    addLogic(event) {
+      // Check for editing finish
+      if(event.which === /* Enter */ 13) {
+        event.preventDefault();
+        event.target.blur();
+        if(event.target.value) {
+          this.addCitadel();
+        }
+      } else if(event.which === /* Esc */ 27) {
+        event.preventDefault();
+        event.target.value = '';
+        event.target.blur();
       }
+    },
+
+    editLogic(oldName, event) {
+      let text = event.target.value;
 
       // Check for editing finish
       if(event.which === /* Enter */ 13) {
@@ -90,14 +138,14 @@ export default {
         event.target.blur();
       } else if(event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.innerText = oldName;
+        event.target.value = oldName;
         event.target.blur();
       }
     },
 
     validate(id, name, event) {
       this.editLogic(name, event);
-      let newName = event.target.innerText;
+      let newName = event.target.value;
       if(newName !== name) {
         this.renameCitadel(id, newName);
       }
@@ -107,6 +155,39 @@ export default {
 </script>
 
 <style scoped>
+.add-citadel {
+  margin-bottom: 32px;
+  display: flex;
+}
+
+.citadel-name {
+  border: 1px dotted #514f4d;
+  flex: 1;
+  padding: 3px;
+  color: #cdcdcd;
+  background: transparent;
+  font-size: 16px;
+}
+
+.add-citadel label {
+  display: inline-block;
+  vertical-align: middle;
+  color: #a7a29c;
+  height: auto;
+  padding: 3px 0;
+  margin-left: 10px;
+}
+
+.citadel-type,
+.alliance-access,
+.alliance-owned {
+  background: transparent;
+  border: 1px solid #514f4d;
+  font-size: 14px;
+  color: #a7a29c;
+  background: transparent;
+}
+
 .citadel {
   display: flex;
   margin-bottom: 16px;
@@ -114,7 +195,13 @@ export default {
 
 .name {
   flex: 1;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
   border-bottom: 1px dotted #514f4d;
+  background: transparent;
+  color: #cdcdcd;
+  font-size: 16px;
 }
 
 .remove {
