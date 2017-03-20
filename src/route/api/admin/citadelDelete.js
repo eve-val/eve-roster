@@ -7,7 +7,7 @@ const BadRequestError = require('../../../error/BadRequestError');
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let citadelId = req.params.id;
 
-  return dao.getCitadel(id)
+  return dao.getCitadel(citadelId)
   .then(([row]) => {
     if(!row) {
       throw new BadRequestError(`Citadel not found: ${citadelId}.`);

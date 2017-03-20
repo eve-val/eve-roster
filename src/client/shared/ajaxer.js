@@ -45,6 +45,16 @@ export default {
     return axios.get('/api/citadels');
   },
 
+  putCitadelName(citadelId, name) {
+    return axios.put(`/api/admin/citadel/${citadelId}`, {
+      name: name
+    });
+  },
+
+  deleteCitadel(citadelId) {
+    return axios.delete(`/api/admin/citadel/${citadelId}`);
+  },
+
   getSkills(id) {
     return axios.get('/api/character/' + id + '/skills');
   },

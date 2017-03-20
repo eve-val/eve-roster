@@ -53,22 +53,26 @@ export default {
     },
 
     removeCitadel(id) {
-      alert("TODO: remove citadel #" + id);
-      for(let i=0; i < this.citadels.length; i++) {
-        if(this.citadels[i].id === id) {
-          this.citadels.splice(i, 1);
-          break;
-        }
-      }
+      this.deletePromise = ajaxer.deleteCitadel(id)
+          .then(response => {
+            for(let i=0; i < this.citadels.length; i++) {
+              if(this.citadels[i].id === id) {
+                this.citadels.splice(i, 1);
+                break;
+              }
+            }
+          });
     },
 
     renameCitadel(id, name) {
-      console.log("TODO: rename citadel #" + id + " to '" + name + "'.");
-      this.citadels.map(citadel => {
-        if(citadel.id === id) {
-          citadel.name = name;
-        }
-      });
+      this.renamePromise = ajaxer.putCitadelName(id, name)
+          .then(response => {
+            this.citadels.map(citadel => {
+              if(citadel.id === id) {
+                citadel.name = name;
+              }
+            });
+          });
     },
 
     editLogic(oldName, event) {
