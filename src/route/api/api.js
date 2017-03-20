@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/admin/accountLog', require('./admin/accountLog'));
 router.get('/admin/cronLog', require('./admin/cronLog'));
+router.post('/admin/citadel', require('./admin/citadelAdd'));
 router.put('/admin/citadel/:id', require('./admin/citadelPut'));
 router.delete('/admin/citadel/:id', require('./admin/citadelDelete'));
 
