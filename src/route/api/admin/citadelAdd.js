@@ -3,7 +3,6 @@ const Promise = require('bluebird');
 const dao = require('../../../dao');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const BadRequestError = require('../../../error/BadRequestError');
-const NotFoundError = require('../../../error/NotFoundError');
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   return Promise.resolve()
