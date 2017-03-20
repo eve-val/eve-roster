@@ -36,7 +36,7 @@ function pruneCompletedSkills(queueData) {
     if (endDate > now) {
       break;
     }
-    startIndex += 1;
+    startIndex++;
   }
   return queueData.slice(startIndex);
 }
