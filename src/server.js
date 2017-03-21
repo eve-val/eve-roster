@@ -76,6 +76,11 @@ if (config.isDevelopment()) {
   app.use(webpackHotMiddleware(compiler));
 }
 
+// For healthchecks
+app.get('/healthz', function(req, res) {
+  res.send('ok');
+});
+
 // Includes root ('/')
 app.get(FRONTEND_ROUTES, require('./route/home'));
 
