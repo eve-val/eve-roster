@@ -41,6 +41,29 @@ export default {
     return axios.get('/api/character/' + id);
   },
 
+  getCitadels() {
+    return axios.get('/api/citadels');
+  },
+
+  postCitadel(name, type, allianceAccess, allianceOwned) {
+    return axios.post('/api/admin/citadel', {
+      name: name,
+      type: type,
+      allianceAccess: parseInt(allianceAccess),
+      allianceOwned: parseInt(allianceOwned),
+    });
+  },
+
+  putCitadelName(citadelId, name) {
+    return axios.put(`/api/admin/citadel/${citadelId}`, {
+      name: name
+    });
+  },
+
+  deleteCitadel(citadelId) {
+    return axios.delete(`/api/admin/citadel/${citadelId}`);
+  },
+
   getSkills(id) {
     return axios.get('/api/character/' + id + '/skills');
   },

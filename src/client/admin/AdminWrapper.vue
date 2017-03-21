@@ -18,6 +18,12 @@
       <a href="/logs" class="sidebar-link">
         Server log
       </a>
+      <router-link
+          class="sidebar-link"
+          to="/admin/citadels"
+      >
+        Citadels
+      </router-link>
     </div>
     <div class="main">
       <div class="title">{{ title }}</div>

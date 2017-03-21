@@ -113,8 +113,32 @@ Dao.prototype = {
     return this.builder('citadel').select();
   },
 
+  getCitadel(id) {
+    return this.builder('citadel').select().where('id', '=', id);
+  },
+
   getCitadelByName(name) {
     return this.builder('citadel').select().where({name: name});
+  },
+
+  setCitadelName(id, name) {
+    return this.builder('citadel').update({ name: name }).where('id', '=', id);
+  },
+
+  addCitadel(name, type, allianceAccess, allianceOwned) {
+    return this.builder('citadel').insert({
+        name: name,
+        type: type,
+        allianceAccess: allianceAccess,
+        allianceOwned: allianceOwned,
+      })
+      .then(([id]) => {
+        return id;
+      });
+  },
+
+  dropCitadel(id) {
+    return this.builder('citadel').del().where('id', '=', id);
   },
 
   getCharacters() {

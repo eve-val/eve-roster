@@ -7,6 +7,7 @@ import Roster from './roster/Roster.vue';
 
 import AccountLog from './admin/AccountLog.vue';
 import CronLog from './admin/CronLog.vue';
+import CitadelManagement from './admin/CitadelManagement.vue';
 
 const router = new VueRouter({
   mode: 'history',
@@ -19,6 +20,7 @@ const router = new VueRouter({
     { path: '/admin', redirect: '/admin/account-logs', },
     { path: '/admin/account-logs', component: AccountLog, },
     { path: '/admin/cron-logs', component: CronLog, },
+    { path: '/admin/citadels', component: CitadelManagement, },
   ],
 });
 
