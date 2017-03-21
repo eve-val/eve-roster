@@ -1,37 +1,39 @@
 <template>
 <admin-wrapper title="Citadel management" :identity="identity">
-<div class="add-citadel">
-  <input class="citadel-name" v-model="newCitadel.name"
-    @keydown="addLogic"
-    placeholder="Type a new citadel name, then press enter to add...">
-  <label>Type:
-    <select class="citadel-type" v-model="newCitadel.type">
-      <option value="Astrahus">Astrahus</option>
-      <option value="Fortizar">Fortizar</option>
-      <option value="Keepstar">Keepstar</option>
-      <option value="Raitaru">Raitaru</option>
-      <option value="Azbel">Azbel</option>
-    </select>
-  </label>
-  <label>Alliance Access:
-    <select class="alliance-access" v-model="newCitadel.allianceAccess">
-      <option value="1">YES</option>
-      <option value="0">NO</option>
-    </select>
-  </label>
-  <label>Alliance Owned:
-    <select class="alliance-owned" v-model="newCitadel.allianceOwned">
-      <option value="1">YES</option>
-      <option value="0">NO</option>
-    </select>
-  </label>
-</div>
-<div v-for="citadel in sortedCitadels" class="citadel">
-  <input class="name" :value="citadel.name"
-    @blur="validate(citadel.id, citadel.name, $event)"
-    @keydown="editLogic(citadel.name, $event)">
-  <button class="remove" @click="removeCitadel(citadel.id)">Remove</button>
-</div>
+  <div class="add-citadel">
+    <input class="citadel-name" v-model="newCitadel.name"
+        @keydown="addLogic"
+        placeholder="Type a new citadel name, then press enter to add..."
+    >
+    <label>Type:
+      <select class="citadel-type" v-model="newCitadel.type">
+        <option value="Astrahus">Astrahus</option>
+        <option value="Fortizar">Fortizar</option>
+        <option value="Keepstar">Keepstar</option>
+        <option value="Raitaru">Raitaru</option>
+        <option value="Azbel">Azbel</option>
+      </select>
+    </label>
+    <label>Alliance Access:
+      <select class="alliance-access" v-model="newCitadel.allianceAccess">
+        <option value="1">YES</option>
+        <option value="0">NO</option>
+      </select>
+    </label>
+    <label>Alliance Owned:
+      <select class="alliance-owned" v-model="newCitadel.allianceOwned">
+        <option value="1">YES</option>
+        <option value="0">NO</option>
+      </select>
+    </label>
+  </div>
+  <div v-for="citadel in sortedCitadels" class="citadel">
+    <input class="name" :value="citadel.name"
+        @blur="validate(citadel.id, citadel.name, $event)"
+        @keydown="editLogic(citadel.name, $event)"
+    >
+    <button class="remove" @click="removeCitadel(citadel.id)">Remove</button>
+  </div>
 </admin-wrapper>
 </template>
 
@@ -94,8 +96,8 @@ export default {
     removeCitadel(id) {
       this.deletePromise = ajaxer.deleteCitadel(id)
           .then(response => {
-            for(let i=0; i < this.citadels.length; i++) {
-              if(this.citadels[i].id === id) {
+            for (let i = 0; i < this.citadels.length; i++) {
+              if (this.citadels[i].id === id) {
                 this.citadels.splice(i, 1);
                 break;
               }
@@ -107,7 +109,7 @@ export default {
       this.renamePromise = ajaxer.putCitadelName(id, name)
           .then(response => {
             this.citadels.map(citadel => {
-              if(citadel.id === id) {
+              if (citadel.id === id) {
                 citadel.name = name;
               }
             });
@@ -116,13 +118,13 @@ export default {
 
     addLogic(event) {
       // Check for editing finish
-      if(event.which === /* Enter */ 13) {
+      if (event.which === /* Enter */ 13) {
         event.preventDefault();
         event.target.blur();
         if(event.target.value) {
           this.addCitadel();
         }
-      } else if(event.which === /* Esc */ 27) {
+      } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
         event.target.value = '';
         event.target.blur();
@@ -133,10 +135,10 @@ export default {
       let text = event.target.value;
 
       // Check for editing finish
-      if(event.which === /* Enter */ 13) {
+      if (event.which === /* Enter */ 13) {
         event.preventDefault();
         event.target.blur();
-      } else if(event.which === /* Esc */ 27) {
+      } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
         event.target.value = oldName;
         event.target.blur();
@@ -146,7 +148,7 @@ export default {
     validate(id, name, event) {
       this.editLogic(name, event);
       let newName = event.target.value;
-      if(newName !== name) {
+      if (newName !== name) {
         this.renameCitadel(id, newName);
       }
     },
