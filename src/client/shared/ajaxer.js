@@ -33,6 +33,12 @@ export default {
     });
   },
 
+  putTransferCharacter(accountId, characterId) {
+    return axios.put(`/api/account/${accountId}/transfer`, {
+      characterId: characterId,
+    });
+  },
+
   getRoster() {
     return axios.get('/api/roster');
   },

@@ -12,6 +12,9 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
   let mainCharacter = null;
   let accountCreated = null;
 
+  let characters = [];
+  let access = null;
+
   return dao.getAccountDetails(account.id)
   .then(([row]) => {
     mainCharacter = row.mainCharacter;
@@ -27,8 +30,6 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
     ])
   })
   .then(rows => {
-    let characters = [];
-
     for (let row of rows) {
       characters.push({
         id: row.id,
@@ -39,14 +40,23 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
       });
     }
 
-    let access = {
+    access = {
       "designateMain": policy.canDesignateMain(accountCreated) ? 2 : 0,
       isMember: privs.isMember(),
     };
 
+    return dao.builder('pendingOwnership')
+        .select('pendingOwnership.character', 'character.name')
+        .leftJoin('character', 'character.id', 'pendingOwnership.character')
+        .where('account', account.id);
+  })
+  .then(rows => {
+    let transfers = rows;
+
     return {
       accountId: account.id,
       characters: characters,
+      transfers: transfers,
       loginParams: eve_sso.LOGIN_PARAMS,
       mainCharacter: mainCharacter,
       access: access,
