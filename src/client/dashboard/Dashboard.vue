@@ -14,9 +14,10 @@
       <pending-transfer-slab v-for="transfer in transfers"
           class="slab"
           :key="transfer.character"
-          :character="transfer.character"
+          :characterId="transfer.character"
           :accountId="accountId"
           :name="transfer.name"
+          @requireRefresh="onRequireRefresh"
           />
       <character-slab v-for="character in sortedCharacters"
           class="slab"

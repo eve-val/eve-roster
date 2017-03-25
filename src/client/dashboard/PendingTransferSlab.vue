@@ -1,12 +1,12 @@
 <template>
 <div class="slab-root">
   <div class="slab-main">
-    <eve-image :id="character" :size="105" type="Character" />
+    <eve-image :id="characterId" :size="105" type="Character" />
     <div class="body">
       <div>
         <router-link
             class="name"
-            :to="'/character/' + character"
+            :to="'/character/' + characterId"
             >{{ name }}</router-link>
         <div class="mt7">
           Are you sure you want to transfer this character to this account?
@@ -31,7 +31,7 @@ export default {
 
   props: {
     accountId: { type: Number, required: true, },
-    character: { type: Number, required: true },
+    characterId: { type: Number, required: true },
     name: {type: String, required: true },
   },
 
@@ -41,18 +41,23 @@ export default {
 
   methods: {
     transferCharacter() {
+      // TODO: spinner
       this.transferCharacterPromise = ajaxer
-      .putTransferCharacter(this.accountId, this.character)
+      .putTransferCharacter(this.accountId, this.characterId)
       .then(() => {
-        // TODO(wfurr): emitRefresh might not work since this isn't a real character slab
-        this.$emit('requireRefresh', this.character.id);
+        this.$emit('requireRefresh', this.characterId);
         this.transferCharacterPromise = null;
       });
     },
 
     cancelTransfer() {
-      // TODO(wfurr): Add endpoint to delete character transfer request
-    }
+      this.transferCharacterPromise = ajaxer
+      .deleteCharacterTransfer(this.accountId, this.characterId)
+      .then(() => {
+        this.$emit('requireRefresh', this.characterId);
+        this.transferCharacterPromise = null;
+      });
+    },
   },
 }
 </script>

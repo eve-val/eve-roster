@@ -39,6 +39,10 @@ export default {
     });
   },
 
+  deleteCharacterTransfer(accountId, characterId) {
+    return axios.delete(`/api/account/${accountId}/transfer/${characterId}`);
+  },
+
   getRoster() {
     return axios.get('/api/roster');
   },
