@@ -8,11 +8,11 @@
             class="name"
             :to="'/character/' + character"
             >{{ name }}</router-link>
-        <div>
+        <div class="mt7">
           Are you sure you want to transfer this character to this account?
-          <div>
-            <a @click="transferCharacter()">Yes</a> |
-            <a @click="cancelTransfer()">No</a>
+          <div class="mt7">
+            <button @click="transferCharacter()">Yes</button>
+            <button @click="cancelTransfer()">No</button>
           </div>
         </div>
       </div>
@@ -96,5 +96,14 @@ export default {
 
 .name:active {
   color: #aaa;
+}
+
+.mt7 {
+  margin-top: 7px;
+}
+
+.slab-main button {
+  width: 50px;
+  margin-right: 20px;
 }
 </style>
