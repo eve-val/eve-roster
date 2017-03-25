@@ -118,8 +118,7 @@ function handleCharLogin(accountId, charData, charTokens) {
         .where('character.id', charData.id)
   .then(([row]) => {
     if (row != null && row.account != null) {
-      logger.info(
-          `  Character already owned. Logging in as account ${row.account}`);
+      logger.info(`  Character already owned.`);
       return handleOwnedChar(accountId, charData, charTokens, row);
     } else {
       logger.info(`  Character is unowned.`);
@@ -132,10 +131,17 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
   let owningAccount = charRow.account;
 
   if (accountId != null && accountId != owningAccount) {
-    throw new UserVisibleError(
-        'This character has already been claimed by another account.'
-            + ' You may have accidentally created multiple accounts. Please'
-            + ' contact an admin to merge them for you.');
+    logger.info(`  Adding pending ownership request for ${charData.id}`);
+    return dao.transaction(trx =>
+      trx.builder('pendingOwnership').del().where('character', charData.id)
+      .then(() =>
+        trx.builder('pendingOwnership').insert({
+          character: charData.id,
+          account: accountId,
+        })
+      )
+    )
+    .then(() => accountId);
   }
   return dao.upsertAccessTokens(
       charData.id,
@@ -144,7 +150,7 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
       charTokens.expires_in)
   .then(() => {
     if (accountId == null) {
-      logger.info('Now logged in as account', owningAccount);
+      logger.info(`  Now logged in as account ${owningAccount}`);
     }
     return owningAccount;
   });
