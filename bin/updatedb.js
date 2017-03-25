@@ -36,7 +36,8 @@ const knex = require('../src/util/knex-loader');
 
 // Directory is relative to project root
 const MIGRATE_CONFIG = {
-  directory: './schema'
+  directory: './schema',
+  disableTransactions: true,
 };
 
 const updateDb = module.exports = function(revert) {

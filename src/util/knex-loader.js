@@ -16,7 +16,13 @@ const knex = require('knex')({
   useNullAsDefault: true,
   connection: {
     filename: dbFile,
-  }
+  },
+  pool: {
+    afterCreate(conn, done) {
+      // We must manually enable foreign key support for each SQLite connection
+      conn.run('PRAGMA foreign_keys = ON;', done);
+    },
+  },
 });
 knex.CLIENT = CLIENT;
 
