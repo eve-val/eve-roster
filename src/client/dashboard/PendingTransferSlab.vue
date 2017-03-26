@@ -11,23 +11,37 @@
         <div class="mt7">
           Are you sure you want to transfer this character to this account?
           <div class="mt7">
-            <button @click="transferCharacter()">Yes</button>
-            <button @click="cancelTransfer()">No</button>
+            <button :disabled="this.transferCharacterPromise"
+                    @click="transferCharacter()">Yes</button>
+            <button :disabled="this.transferCharacterPromise"
+                    @click="cancelTransfer()">No</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </div> <!-- end body -->
+    <loading-spinner
+        v-if="transferCharacterPromise != null"
+        class="transfer-character-spinner"
+        :size="20"
+        :promise="transferCharacterPromise"
+        gravity="left"
+        actionLabel="transferring character..."
+        />
+  </div> <!-- end slab-main -->
+</div> <!-- end slab-root -->
 </template>
 
 <script>
 import ajaxer from '../shared/ajaxer';
 
 import EveImage from '../shared/EveImage.vue';
+import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
 export default {
-  components: { EveImage },
+  components: {
+    EveImage,
+    LoadingSpinner,
+  },
 
   props: {
     accountId: { type: Number, required: true, },
@@ -41,7 +55,6 @@ export default {
 
   methods: {
     transferCharacter() {
-      // TODO: spinner
       this.transferCharacterPromise = ajaxer
       .putTransferCharacter(this.accountId, this.characterId)
       .then(() => {
@@ -110,5 +123,11 @@ export default {
 .slab-main button {
   width: 50px;
   margin-right: 20px;
+}
+
+.transfer-character-spinner {
+  position: absolute;
+  bottom: 3px;
+  left: 167px;
 }
 </style>
