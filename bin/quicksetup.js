@@ -247,7 +247,7 @@ let EXAMPLE_INPUT =
         "Staff": "admin",
         "Demi-dog": "admin",
         "Official SOUND FC": "full_member",
-        "Junior SOUND FC": "limited_member"
+        "Junior SOUND FC": "provisional_member"
       }
     },
     {
