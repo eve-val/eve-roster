@@ -9,9 +9,10 @@ const path = require('path');
 
 const rjson = require('relaxed-json');
 
+const accountGroups = require('../src/data-source/accountGroups');
 const asyncUtil = require('../src/util/asyncUtil');
 const dao = require('../src/dao');
-const accountRoles = require('../src/data-source/accountRoles');
+const specialGroups = require('../src/route-helper/specialGroups');
 const updateDbSchema = require('./updatedb');
 
 
@@ -94,7 +95,7 @@ function verifyCorporation(config) {
 
   for (let v in config.titles) {
     if (typeof config.titles[v] != 'string') {
-      die(`Invalid role for title "${v}". must be a string.`);
+      die(`Invalid group for title "${v}". must be a string.`);
     }
   }
 }
@@ -149,7 +150,7 @@ function storeConfig(config) {
 
 function dropExistingCorpConfig(trx) {
   return Promise.resolve()
-  .then(() => trx.builder('roleTitle').del())
+  .then(() => trx.builder('groupTitle').del())
   .then(() => trx.builder('memberCorporation').del());
 }
 
@@ -168,10 +169,10 @@ function storeCorpConfig(trx, corpConfig) {
         rows.push({
           corporation: corpConfig.id,
           title: title,
-          role: corpConfig.titles[title]
+          group: corpConfig.titles[title]
         });
       }
-      return trx.builder('roleTitle')
+      return trx.builder('groupTitle')
           .insert(rows);
     }
   });
@@ -189,9 +190,9 @@ function storeSiggyConfig(trx, config) {
 function setFirstAccountAsAdmin(trx) {
   return Promise.resolve()
   .then(() => {
-    return trx.builder('roleExplicit')
+    return trx.builder('groupExplicit')
         .del()
-        .where('role', '=', '__admin');
+        .where('group', '=', specialGroups.ADMIN_GROUP);
   })
   .then(() => {
     return trx.builder('account')
@@ -203,13 +204,13 @@ function setFirstAccountAsAdmin(trx) {
   })
   .then(([row]) => {
     console.log(`Setting account ${row.id} (${row.name}) as admin...`);
-    return trx.builder('roleExplicit')
+    return trx.builder('groupExplicit')
         .insert({
           account: row.id,
-          role: '__admin',
+          group: specialGroups.ADMIN_GROUP,
         })
     .then(() => {
-      return accountRoles.updateAccount(trx, row.id);
+      return accountGroups.updateAccount(trx, row.id);
     });
   });
 }

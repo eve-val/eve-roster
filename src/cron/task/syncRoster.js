@@ -1,6 +1,7 @@
 /**
  * Fetches rosters of all member corps and updates roster data as appropriate.
- * Also grants/revokes all title- and membership-derived roles for all accounts.
+ * Also grants/revokes all title- and membership-derived groups for all
+ * accounts.
  * 
  * This script can be run from the command line:
  * `$ node src/cron/syncRoster.js`
@@ -17,7 +18,7 @@ const axios = require('axios');
 const moment = require('moment');
 const xml2js = require('xml2js');
 
-const accountRoles = require('../../data-source/accountRoles');
+const accountGroups = require('../../data-source/accountGroups');
 const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao');
 const eve = require('../../eve');
@@ -29,7 +30,7 @@ module.exports = syncRoster;
 function syncRoster() {
   return updateAllCorporations()
   .then(updateOrphanedOrUnknownCharacters)
-  .then(() => accountRoles.updateAll(dao))
+  .then(() => accountGroups.updateAll(dao))
   .then(function() {
     logger.info('syncRoster() complete');
     return 'success';

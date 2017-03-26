@@ -8,7 +8,6 @@ const Promise = require('bluebird');
 const dao = require('../dao');
 const error = require('../util/error');
 const eve = require('../eve');
-const accountRoles = require('../data-source/accountRoles');
 const UserVisibleError = require('../error/UserVisibleError');
 
 
