@@ -11,9 +11,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 
   return Promise.resolve()
   .then(() => {
-    const targetAccountId = req.params.id;
-    const isOwner = targetAccountId == account.id;
-    if (!isOwner) {
+    if (req.params.id != account.id) {
       throw new UnauthorizedClientError('Not the right owner.');
     }
     charId = req.body.characterId;
@@ -27,18 +25,18 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   .then(rows => {
     if (rows.length == 0) {
       throw new BadRequestError(`No pending transfer found for account
-                                ${accound.id} and character ${newMainId}`);
+                                ${account.id} and character ${newMainId}`);
     }
     return dao.builder('ownership').select().where('character', charId);
   })
-  .then (([row]) => { // row.account is the character's old account ID
+  .then (([row]) => {  // row.account is the character's old account ID
     return dao.transaction(trx => {
       return trx.logEvent(account.id, 'TRANSFER_CHARACTER', charId)
       .then(() => trx.builder('ownership').del().where('character', charId))
+      .then(() => trx.setAccountMain(row.account, null))  // Also updates account roles
+      .then(() => trx.deleteAccountIfEmpty(row.account, account.id))
       .then(() => trx.ownCharacter(charId, account.id))
-      .then(() => trx.builder('pendingOwnership').del().where('character', charId))
-      .then(() => accountRoles.updateAccount(trx, row.account))
-      .then(() => trx.deleteAccountIfEmpty(row.account, account.id));
+      .then(() => trx.builder('pendingOwnership').del().where('character', charId));
     });
   }).then(() => ({}));
 });

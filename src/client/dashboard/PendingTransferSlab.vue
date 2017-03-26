@@ -12,9 +12,9 @@
           Are you sure you want to transfer this character to this account?
           <div class="mt7">
             <button :disabled="this.transferCharacterPromise"
-                    @click="transferCharacter()">Yes</button>
+                    @click="transferCharacter">Yes</button>
             <button :disabled="this.transferCharacterPromise"
-                    @click="cancelTransfer()">No</button>
+                    @click="cancelTransfer">No</button>
           </div>
         </div>
       </div>
@@ -93,7 +93,6 @@ export default {
 }
 
 .slab-main:hover {
-  /*box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);*/
   border-color: #352d24;
 }
 

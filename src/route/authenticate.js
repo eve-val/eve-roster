@@ -131,7 +131,7 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
   let owningAccount = charRow.account;
 
   if (accountId != null && accountId != owningAccount) {
-    logger.info(`  Adding pending ownership request for ${charData.id}`);
+    logger.info(`  Adding pending ownership request for ${charData.id} to account ${accountId}`);
     return dao.transaction(trx => {
       return trx.builder('pendingOwnership').del().where('character', charData.id)
       .then(() => {
