@@ -11,7 +11,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 
   privs.requireWrite('memberHousing', isOwner);
 
-  return dao.getCitadelByName(citadelName)
+  return dao.citadel.getByName(citadelName)
   .then(([row]) => {
     if (!row) {
       throw new BadRequestError('Unknown citadel: ' + citadelName);

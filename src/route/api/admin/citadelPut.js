@@ -12,7 +12,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
     privs.requireWrite('citadels');
 
     if(req.body.name) {
-      return dao.setCitadelName(citadelId, req.body.name);
+      return dao.citadel.setName(citadelId, req.body.name);
     } else {
       throw new BadRequestError(
           `Cannot set citadel ${citadelId} name: no name provided.`);

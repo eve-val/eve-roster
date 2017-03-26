@@ -19,6 +19,9 @@ const _ = require('underscore');
 const asyncUtil = require('./util/asyncUtil');
 const accountGroups = require('./data-source/accountGroups');
 const knex = require('./util/knex-loader');
+const CitadelDao = require('./dao/CitadelDao');
+const ConfigDao = require('./dao/ConfigDao');
+const CronDao = require('./dao/CronDao');
 
 const BASIC_CHARACTER_COLUMNS = [
   'character.id',
@@ -56,6 +59,10 @@ const MEMBER_GROUP = accountGroups.MEMBER_GROUP;
 
 function Dao(builder) {
   this.builder = builder;
+
+  this.citadel = new CitadelDao(this, builder);
+  this.config = new ConfigDao(this, builder);
+  this.cron = new CronDao(this, builder);
 }
 Dao.prototype = {
   transaction(callback) {
@@ -85,15 +92,6 @@ Dao.prototype = {
     return work;
   },
 
-  getMemberCorporations() {
-    return this.builder('memberCorporation')
-        .select(
-            'corporationId',
-            'membership',
-            'apiKeyId',
-            'apiVerificationCode');
-  },
-
   getExplicitGroups(accountId) {
     return this.builder('groupExplicit')
         .select('group')
@@ -111,38 +109,6 @@ Dao.prototype = {
     .then(rows => {
       return _.pluck(rows, 'group');
     });
-  },
-
-  getCitadels() {
-    return this.builder('citadel').select();
-  },
-
-  getCitadel(id) {
-    return this.builder('citadel').select().where('id', '=', id);
-  },
-
-  getCitadelByName(name) {
-    return this.builder('citadel').select().where({name: name});
-  },
-
-  setCitadelName(id, name) {
-    return this.builder('citadel').update({ name: name }).where('id', '=', id);
-  },
-
-  addCitadel(name, type, allianceAccess, allianceOwned) {
-    return this.builder('citadel').insert({
-        name: name,
-        type: type,
-        allianceAccess: allianceAccess,
-        allianceOwned: allianceOwned,
-      })
-      .then(([id]) => {
-        return id;
-      });
-  },
-
-  dropCitadel(id) {
-    return this.builder('citadel').del().where('id', '=', id);
   },
 
   getCharacters() {
@@ -413,69 +379,6 @@ Dao.prototype = {
         .whereNull('ownership.account');
   },
 
-  getMostRecentCronJob(taskName) {
-    return this.builder('cronLog')
-        .select('id', 'task', 'start', 'end')
-        .where('task', '=', taskName)
-        .orderBy('start', 'desc')
-        .orderBy('id', 'desc')
-        .limit(1)
-    .then(([row]) => {
-      return row;
-    });
-  },
-
-  startCronJob(taskName) {
-    return this.builder('cronLog')
-        .insert({
-          task: taskName,
-          start: Date.now(),
-        })
-    .then(([id]) => {
-      return id;
-    });
-  },
-
-  finishCronJob(jobId, result) {
-    return this.builder('cronLog')
-        .update({
-          end: Date.now(),
-          result: result
-        })
-        .where('id', '=', jobId);
-  },
-
-  dropOldCronJobs(startCutoff) {
-    return this.builder('cronLog')
-        .del()
-        .where('start', '<', startCutoff);
-
-    /*
-    // This is the "more correct" way to to this -- it guarantees that we leave
-    // the most recent completed entry in the log even if it's "too old".
-    // However, SQLite doesn't support joins on deletes. Womp.
-    return this.builder('cronLog as c1')
-        .del('c1')
-        .leftJoin(function() {
-          // The most recent completed entry for each task
-          this.select('id', 'max(start) as start')
-              .from('cronLog')
-              .whereNotNull('end')
-              .groupBy('task')
-              .as('c2')
-        }, 'c1.task', '=', 'c2.task')
-        .where('c1.start', '<', 'c2.start')
-        .andWhere('c1.start', '<', startCutoff);
-    */
-  },
-
-  getCronLogsRecent() {
-    return this.builder('cronLog')
-        .select('id', 'task', 'start', 'end', 'result')
-        .orderBy('id', 'desc')
-        .limit(400);
-  },
-
   getAccountLogsRecent() {
     return this.builder('accountLog')
         .select(
@@ -511,32 +414,6 @@ Dao.prototype = {
       lossValueInLastMonth: lossValue,
       updated: Date.now(),
     }, 'character');
-  },
-
-  getConfig(...names) {
-    return this.builder('config')
-        .select('key', 'value')
-        .whereIn('key', names)
-    .then(rows => {
-      let config = {};
-      for (let row of rows) {
-        config[row.key] = JSON.parse(row.value);
-      }
-      return config;
-    })
-  },
-
-  setConfig(values) {
-    return asyncUtil.serialize(Object.keys(values), key => {
-      return this.builder('config')
-          .update({ value: JSON.stringify(values[key]) })
-          .where('key', '=', key)
-      .then(updated => {
-        if (updated != 1) {
-          throw new Error(`Cannot write to nonexistent config value "${key}"`);
-        }
-      });
-    });
   },
 
   _upsert(table, row, primaryKey) {

@@ -10,7 +10,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
     privs.requireWrite('citadels');
 
     validate(req.body);
-    return dao.addCitadel(
+    return dao.citadel.add(
       req.body.name,
       req.body.type,
       req.body.allianceAccess,
@@ -18,7 +18,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
     );
   })
   .then(id => {
-    return dao.getCitadel(id);
+    return dao.citadel.getById(id);
   })
   .then(([row]) => {
     return row;

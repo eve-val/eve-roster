@@ -70,7 +70,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       payload.timezones = policy.TIMEZONE_LABELS;
     }
     if (privs.canWrite('memberHousing', isOwned)) {
-      return dao.getCitadels()
+      return dao.citadel.getAll()
       .then(rows => {
         payload.citadels = _.pluck(rows, 'name');
       });

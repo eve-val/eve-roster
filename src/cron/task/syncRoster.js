@@ -39,7 +39,7 @@ function syncRoster() {
 
 function updateAllCorporations() {
   logger.info('updateAllCorporations');
-  return dao.getMemberCorporations()
+  return dao.config.getMemberCorporations()
   .then(rows => {
     return asyncUtil.serialize(rows, row => {
       return updateCorporation(row);
