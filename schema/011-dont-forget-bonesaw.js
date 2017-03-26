@@ -1,16 +1,27 @@
-exports.up = function(knex, Promise) {
-  return Promise.resolve()
-    .then(function() {
-      return knex('citadel').insert([
-          {name: 'BONESAW', type: 'Astrahus', allianceAccess: true, allianceOwned: true}]);
-    })
-};
+const Promise = require('bluebird');
+const migrate = require('./util/migrate');
 
-exports.down = function(knex, Promise) {
+
+exports.up = migrate(trx => {
   return Promise.resolve()
-    .then(function() {
-      return knex('citadel')
-          .del()
-          .where('name', '=', 'BONESAW');
-    })
-};
+  .then(() => {
+    return trx('citadel')
+        .insert(
+          {
+            name: 'BONESAW',
+            type: 'Astrahus',
+            allianceAccess: true,
+            allianceOwned: true
+          }
+        );
+  });
+});
+
+exports.down = migrate(trx => {
+  return Promise.resolve()
+  .then(() => {
+    return trx('citadel')
+        .del()
+        .where('name', '=', 'BONESAW');
+  });
+});

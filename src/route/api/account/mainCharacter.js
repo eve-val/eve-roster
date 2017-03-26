@@ -35,7 +35,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   .then(rows => {
     if (!_.findWhere(rows, { id: newMainId })) {
       throw new BadRequestError(
-          `Account ${accound.id} doesn't own character ${newMainId}`);
+          `Account ${account.id} doesn't own character ${newMainId}`);
     }
     return dao.setAccountMain(account.id, newMainId);
   })
