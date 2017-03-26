@@ -205,8 +205,8 @@ Dao.prototype = {
         .then(() => trx.builder('accountRole').del().where('account', accountId))
         .then(() => trx.builder('roleExplicit').del().where('account', accountId))
         .then(() => trx.builder('pendingOwnership').del().where('account', accountId))
-        .then(() => trx.builder('account').del().where('id', accountId))
-      })
+        .then(() => trx.builder('account').del().where('id', accountId));
+      });
     });
   },
 

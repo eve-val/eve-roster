@@ -38,7 +38,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       .then(() => trx.ownCharacter(charId, account.id))
       .then(() => trx.builder('pendingOwnership').del().where('character', charId))
       .then(() => accountRoles.updateAccount(trx, row.account))
-      .then(() => trx.deleteAccountIfEmpty(row.account, account.id))
-    })
+      .then(() => trx.deleteAccountIfEmpty(row.account, account.id));
+    });
   }).then(() => ({}));
 });

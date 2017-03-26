@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
   .then(() => {
     return knex.schema.createTable('pendingOwnership', table => {
         table.integer('character').primary().references('character.id');
-        table.integer('account').references('account.id').index().notNullable();
+        table.integer('account').references('account.id').notNullable();
       });
     });
 };

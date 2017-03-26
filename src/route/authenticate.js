@@ -132,15 +132,15 @@ function handleOwnedChar(accountId, charData, charTokens, charRow) {
 
   if (accountId != null && accountId != owningAccount) {
     logger.info(`  Adding pending ownership request for ${charData.id}`);
-    return dao.transaction(trx =>
-      trx.builder('pendingOwnership').del().where('character', charData.id)
-      .then(() =>
-        trx.builder('pendingOwnership').insert({
+    return dao.transaction(trx => {
+      return trx.builder('pendingOwnership').del().where('character', charData.id)
+      .then(() => {
+        return trx.builder('pendingOwnership').insert({
           character: charData.id,
           account: accountId,
-        })
-      )
-    )
+        });
+      });
+    })
     .then(() => accountId);
   }
   return dao.upsertAccessTokens(
