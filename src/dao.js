@@ -57,6 +57,7 @@ const LOGGABLE_EVENTS = [
   'MODIFY_GROUPS',
   'GAIN_MEMBERSHIP',
   'LOSE_MEMBERSHIP',
+  'TRANSFER_CHARACTER',
 ];
 
 const MEMBER_GROUP = accountGroups.MEMBER_GROUP;
@@ -188,6 +189,24 @@ Dao.prototype = {
       .then(() => {
         return id;
       });
+    });
+  },
+
+  deleteAccountIfEmpty(accountId, newAccountId) {
+    return this.transaction(trx => {
+      return trx.builder('ownership').select().where('account', accountId)
+      .then(rows => {
+        if (rows.length > 0) { return; }  // Not empty, don't delete
+
+        return trx.builder('accountLog').where('account', accountId).update({
+          account: newAccountId || null,
+          originalAccount: accountId
+        })
+        .then(() => trx.builder('accountRole').del().where('account', accountId))
+        .then(() => trx.builder('roleExplicit').del().where('account', accountId))
+        .then(() => trx.builder('pendingOwnership').del().where('account', accountId))
+        .then(() => trx.builder('account').del().where('id', accountId))
+      })
     });
   },
 
