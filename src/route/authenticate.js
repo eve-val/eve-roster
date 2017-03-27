@@ -166,7 +166,7 @@ function handleUnownedChar(accountId, charData, charTokens, charRow) {
     return createOrUpdateCharacter(trx, charData, charTokens)
     .then(function() {
       if (isNewAccount) {
-        return trx.createAccount()
+        return trx.createAccount(charData.id)
         .then(newAccountId => {
           logger.info('  Created new account with ID:', newAccountId);
           accountId = newAccountId;

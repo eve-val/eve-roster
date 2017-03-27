@@ -32,9 +32,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   .then (([row]) => {  // row.account is the character's old account ID
     return dao.transaction(trx => {
       return trx.logEvent(account.id, 'TRANSFER_CHARACTER', charId)
-      .then(() => trx.builder('ownership').del().where('character', charId))
-      .then(() => trx.setAccountMain(row.account, null))  // Also updates account roles
-      .then(() => trx.deleteAccountIfEmpty(row.account, account.id))
+      .then(() => trx.deleteOwnership(charId, row.account, account.id))
       .then(() => trx.ownCharacter(charId, account.id))
       .then(() => trx.builder('pendingOwnership').del().where('character', charId));
     });

@@ -167,11 +167,11 @@ Dao.prototype = {
     }, 'character');
   },
 
-  createAccount() {
+  createAccount(charId, accountId) {
     let id;
     return this.transaction(trx => {
       return trx.builder('account')
-          .insert({ created: Date.now(), })
+          .insert({ created: Date.now(), mainCharacter: charId })
       .then(([_id]) => {
         id = _id;
         return trx.logEvent(id, 'CREATE_ACCOUNT');
@@ -199,7 +199,7 @@ Dao.prototype = {
         if (rows.length > 0) { return; }  // Not empty, don't delete
 
         return trx.builder('accountLog').where('account', accountId).update({
-          account: newAccountId || null,
+          account: newAccountId,
           originalAccount: accountId
         })
         .then(() => trx.builder('accountRole').del().where('account', accountId))
@@ -239,6 +239,29 @@ Dao.prototype = {
         } else {
           return accountGroups.updateAccount(trx, accountId);
         }
+      });
+    });
+  },
+
+  deleteOwnership(characterId, accountId, newAccountId) {
+    return this.transaction(trx => {
+      return trx.builder('ownership')
+        .select('account.mainCharacter', 'ownership.character')
+        .leftJoin('account', 'ownership.account', 'account.id')
+        .where('ownership.account', accountId)
+      .then(rows => {
+        // Designate a new main if necessary
+        if (rows.length > 1 && characterId == rows[0].mainCharacter) {
+          for (const row of rows) {
+            if (row.character != row.mainCharacter) {
+              return trx.setAccountMain(accountId, row.character);
+            }
+          }
+        }
+      })
+      .then(() => {
+        return trx.builder('ownership').del().where('character', characterId)
+        .then(() => trx.deleteAccountIfEmpty(accountId, newAccountId));
       });
     });
   },
