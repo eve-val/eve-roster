@@ -67,7 +67,7 @@ function postLogin() {
   return dao.getConfig('siggyUsername', 'siggyPassword')
   .then(config => {
     if (!config.siggyUsername || !config.siggyPassword) {
-      throw 'Siggy credentials have not been set.';
+      throw new Error('Siggy credentials have not been set.');
     }
 
     let formData = querystring.stringify({
@@ -111,7 +111,7 @@ function validateLogin(cookies) {
     }
 
     if (!found) {
-      throw 'Missing required cookie from siggy response: ' + key;
+      throw new Error('Missing required cookie from siggy response: ${key}');
     }
   }
 
@@ -172,7 +172,7 @@ function parseLeaderboardPage(response) {
       return parseResult;
     }
 
-    throw 'Unable to parse html response, missing \'html\' tag';
+    throw new Error('Unable to parse html response, missing \'html\' tag');
   }
 }
 
@@ -193,7 +193,8 @@ function extractPoints(dom) {
   // character data.
   let tableRows = select(dom, 'table.table.table-striped tr');
   if (tableRows.length == 0) {
-    throw 'siggy leaderboard DOM appears to have changed: missing table';
+    throw new Error(
+        'siggy leaderboard DOM appears to have changed: missing table');
   }
 
   for (let row of tableRows) {
@@ -217,13 +218,13 @@ function extractPoints(dom) {
       // At this point, an unexpected count most likely means that siggy has
       // changed their page so an exception should be thrown so this script can
       // be updated ASAP.
-      throw 'siggy leaderboard DOM appears to have changed: missing score'
-          + ' column';
+      throw new Error('siggy leaderboard DOM appears to have changed: missing '
+              + ' score column');
     }
     let rawScore = tds[SIGGY_SCORE_COLUMN];
     if (rawScore.children.length != 1 || rawScore.children[0].type != 'text') {
-      throw 'siggy leaderboard DOM appears to have changed: unable to parse'
-          + ' score';
+      throw new Error('siggy leaderboard DOM appears to have changed: unable to'
+          + ' parse score');
     }
 
     charMap[charID] = Number.parseFloat(rawScore.children[0].data);
