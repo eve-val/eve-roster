@@ -82,7 +82,7 @@ function initTask(task) {
 }
 
 function enqueueTaskIfOverdue(task) {
-  return dao.getMostRecentCronJob(task.name)
+  return dao.cron.getMostRecentJob(task.name)
   .then(row => {
     let runTask = row == null
         || row.end == null
@@ -121,7 +121,7 @@ function runTask(task) {
   };
   activeJob = job;
 
-  return dao.startCronJob(task.name)
+  return dao.cron.startJob(task.name)
   .then(id => {
     job.id = id;
 
@@ -151,7 +151,7 @@ function runTask(task) {
         task.name,
         job.id,
         result);
-    return dao.finishCronJob(job.id, result);
+    return dao.cron.finishJob(job.id, result);
   })
   .catch(e => {
     logger.error(
@@ -159,7 +159,7 @@ function runTask(task) {
         task.name,
         job.id);
     logger.error(e);
-    return dao.finishCronJob(job.id, 'failure');
+    return dao.cron.finishJob(job.id, 'failure');
   })
   .then(() => {
     if (activeJob == job) {

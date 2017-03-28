@@ -64,7 +64,7 @@ function saveScrapedScores(recentScores) {
 
 // Initiate login with siggy site using an existing account credentials
 function postLogin() {
-  return dao.getConfig('siggyUsername', 'siggyPassword')
+  return dao.config.get('siggyUsername', 'siggyPassword')
   .then(config => {
     if (!config.siggyUsername || !config.siggyPassword) {
       throw 'Siggy credentials have not been set.';

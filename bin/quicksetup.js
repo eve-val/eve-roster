@@ -180,7 +180,7 @@ function storeCorpConfig(trx, corpConfig) {
 
 function storeSiggyConfig(trx, config) {
   if (config.siggy) {
-    return trx.setConfig({
+    return trx.config.set({
       'siggyUsername': config.siggy.username,
       'siggyPassword': config.siggy.password,
     });
