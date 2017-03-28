@@ -19,9 +19,13 @@ const _ = require('underscore');
 const asyncUtil = require('./util/asyncUtil');
 const accountGroups = require('./data-source/accountGroups');
 const knex = require('./util/knex-loader');
+const specialGroups = require('./route-helper/specialGroups')
 const CitadelDao = require('./dao/CitadelDao');
 const ConfigDao = require('./dao/ConfigDao');
 const CronDao = require('./dao/CronDao');
+
+
+const logger = require('./util/logger')(__filename);
 
 const BASIC_CHARACTER_COLUMNS = [
   'character.id',
@@ -170,6 +174,16 @@ Dao.prototype = {
       .then(([_id]) => {
         id = _id;
         return trx.logEvent(id, 'CREATE_ACCOUNT');
+      })
+      .then(() => {
+        if (id == 1) {
+          logger.info('First account login! Setting as admin...');
+          return trx.builder('groupExplicit')
+              .insert({
+                account: id,
+                group: specialGroups.ADMIN_GROUP,
+              });
+        }
       })
       .then(() => {
         return id;
