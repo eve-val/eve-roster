@@ -45,13 +45,10 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
       isMember: privs.isMember(),
     };
 
-    return dao.builder('pendingOwnership')
-        .select('pendingOwnership.character', 'character.name')
-        .leftJoin('character', 'character.id', 'pendingOwnership.character')
-        .where('account', account.id);
+    return dao.getPendingOwnership(account.id);
   })
   .then(rows => {
-    let transfers = rows;
+    const transfers = rows;
 
     return {
       accountId: account.id,

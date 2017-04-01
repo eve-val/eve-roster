@@ -1,6 +1,5 @@
 const Promise = require('bluebird');
 
-const accountRoles = require('../../../data-source/accountRoles');
 const dao = require('../../../dao');
 const protectedEndpoint = require('../../../route-helper/protectedEndpoint');
 const BadRequestError = require('../../../error/BadRequestError');
@@ -18,23 +17,25 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
     if (!charId) {
       throw new BadRequestError('Invalid character id: ' + charId);
     }
-    return dao.builder('pendingOwnership').select()
-           .where('account', account.id)
-           .andWhere('character', charId);
+    return (dao.builder('pendingOwnership')
+           .select('ownership.account')
+           .leftJoin('ownership', 'ownership.character', 'pendingOwnership.character')
+           .where('pendingOwnership.account', account.id)
+           .andWhere('pendingOwnership.character', charId))
   })
   .then(rows => {
     if (rows.length == 0) {
       throw new BadRequestError(`No pending transfer found for account
                                 ${account.id} and character ${newMainId}`);
     }
-    return dao.builder('ownership').select().where('character', charId);
-  })
-  .then (([row]) => {  // row.account is the character's old account ID
+    const newAccountId = account.id;
+    const oldAccountId = rows[0].account;
     return dao.transaction(trx => {
-      return trx.logEvent(account.id, 'TRANSFER_CHARACTER', charId)
-      .then(() => trx.deleteOwnership(charId, row.account, account.id))
-      .then(() => trx.ownCharacter(charId, account.id))
+      return trx.logEvent(newAccountId, 'TRANSFER_CHARACTER', charId)
+      .then(() => trx.deleteOwnership(charId, oldAccountId, newAccountId))
+      .then(() => trx.ownCharacter(charId, newAccountId))
       .then(() => trx.builder('pendingOwnership').del().where('character', charId));
     });
-  }).then(() => ({}));
+  })
+  .then(() => ({}));
 });

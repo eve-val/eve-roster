@@ -167,7 +167,7 @@ Dao.prototype = {
     }, 'character');
   },
 
-  createAccount(charId, accountId) {
+  createAccount(charId) {
     let id;
     return this.transaction(trx => {
       return trx.builder('account')
@@ -202,8 +202,8 @@ Dao.prototype = {
           account: newAccountId,
           originalAccount: accountId
         })
-        .then(() => trx.builder('accountRole').del().where('account', accountId))
-        .then(() => trx.builder('roleExplicit').del().where('account', accountId))
+        .then(() => trx.builder('accountGroup').del().where('account', accountId))
+        .then(() => trx.builder('groupExplicit').del().where('account', accountId))
         .then(() => trx.builder('pendingOwnership').del().where('account', accountId))
         .then(() => trx.builder('account').del().where('id', accountId));
       });
@@ -264,6 +264,25 @@ Dao.prototype = {
         .then(() => trx.deleteAccountIfEmpty(accountId, newAccountId));
       });
     });
+  },
+
+  createPendingOwnership(characterId, accountId) {
+    return this.transaction(trx => {
+      return trx.builder('pendingOwnership').del().where('character', characterId)
+      .then(() => {
+        return trx.builder('pendingOwnership').insert({
+          character: characterId,
+          account: accountId,
+        });
+      });
+    })
+  },
+
+  getPendingOwnership(accountId) {
+    return this.builder('pendingOwnership')
+        .select('pendingOwnership.character', 'character.name')
+        .leftJoin('character', 'character.id', 'pendingOwnership.character')
+        .where('account', accountId);
   },
 
   getOwner(characterId) {

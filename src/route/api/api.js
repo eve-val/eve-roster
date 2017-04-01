@@ -17,7 +17,8 @@ router.delete('/admin/citadel/:id', require('./admin/citadelDelete'));
 router.put('/account/:id/activeTimezone', require('./account/activeTimezone'));
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
 router.put('/account/:id/mainCharacter', require('./account/mainCharacter'));
-router.put('/account/:id/transfer', require('./account/transferCharacter'));
+
+router.post('/account/:id/transfer', require('./account/transferCharacter'));
 router.delete('/account/:id/transfer/:charId', require('./account/deleteTransfer'));
 
 router.get('/dashboard', require('./dashboard'));

@@ -33,8 +33,8 @@ export default {
     });
   },
 
-  putTransferCharacter(accountId, characterId) {
-    return axios.put(`/api/account/${accountId}/transfer`, {
+  postCharacterTransfer(accountId, characterId) {
+    return axios.post(`/api/account/${accountId}/transfer`, {
       characterId: characterId,
     });
   },

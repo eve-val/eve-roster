@@ -8,9 +8,9 @@
             class="name"
             :to="'/character/' + characterId"
             >{{ name }}</router-link>
-        <div class="mt7">
+        <div style="margin-top: 7px">
           Are you sure you want to transfer this character to this account?
-          <div class="mt7">
+          <div style="margin-top: 7px">
             <button :disabled="this.transferCharacterPromise"
                     @click="transferCharacter">Yes</button>
             <button :disabled="this.transferCharacterPromise"
@@ -56,7 +56,7 @@ export default {
   methods: {
     transferCharacter() {
       this.transferCharacterPromise = ajaxer
-      .putTransferCharacter(this.accountId, this.characterId)
+      .postCharacterTransfer(this.accountId, this.characterId)
       .then(() => {
         this.$emit('requireRefresh', this.characterId);
         this.transferCharacterPromise = null;
@@ -113,10 +113,6 @@ export default {
 
 .name:active {
   color: #aaa;
-}
-
-.mt7 {
-  margin-top: 7px;
 }
 
 .slab-main button {
