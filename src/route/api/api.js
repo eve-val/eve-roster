@@ -18,6 +18,9 @@ router.put('/account/:id/activeTimezone', require('./account/activeTimezone'));
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
 router.put('/account/:id/mainCharacter', require('./account/mainCharacter'));
 
+router.post('/account/:id/transfer', require('./account/transferCharacter'));
+router.delete('/account/:id/transfer/:charId', require('./account/deleteTransfer'));
+
 router.get('/dashboard', require('./dashboard'));
 router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));
 

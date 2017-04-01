@@ -57,6 +57,7 @@ const LOGGABLE_EVENTS = [
   'MODIFY_GROUPS',
   'GAIN_MEMBERSHIP',
   'LOSE_MEMBERSHIP',
+  'TRANSFER_CHARACTER',
 ];
 
 const MEMBER_GROUP = accountGroups.MEMBER_GROUP;
@@ -166,11 +167,11 @@ Dao.prototype = {
     }, 'character');
   },
 
-  createAccount() {
+  createAccount(charId) {
     let id;
     return this.transaction(trx => {
       return trx.builder('account')
-          .insert({ created: Date.now(), })
+          .insert({ created: Date.now(), mainCharacter: charId })
       .then(([_id]) => {
         id = _id;
         return trx.logEvent(id, 'CREATE_ACCOUNT');
@@ -187,6 +188,24 @@ Dao.prototype = {
       })
       .then(() => {
         return id;
+      });
+    });
+  },
+
+  deleteAccountIfEmpty(accountId, newAccountId) {
+    return this.transaction(trx => {
+      return trx.builder('ownership').select().where('account', accountId)
+      .then(rows => {
+        if (rows.length > 0) { return; }  // Not empty, don't delete
+
+        return trx.builder('accountLog').where('account', accountId).update({
+          account: newAccountId,
+          originalAccount: accountId
+        })
+        .then(() => trx.builder('accountGroup').del().where('account', accountId))
+        .then(() => trx.builder('groupExplicit').del().where('account', accountId))
+        .then(() => trx.builder('pendingOwnership').del().where('account', accountId))
+        .then(() => trx.builder('account').del().where('id', accountId));
       });
     });
   },
@@ -222,6 +241,48 @@ Dao.prototype = {
         }
       });
     });
+  },
+
+  deleteOwnership(characterId, accountId, newAccountId) {
+    return this.transaction(trx => {
+      return trx.builder('ownership')
+        .select('account.mainCharacter', 'ownership.character')
+        .leftJoin('account', 'ownership.account', 'account.id')
+        .where('ownership.account', accountId)
+      .then(rows => {
+        // Designate a new main if necessary
+        if (rows.length > 1 && characterId == rows[0].mainCharacter) {
+          for (const row of rows) {
+            if (row.character != row.mainCharacter) {
+              return trx.setAccountMain(accountId, row.character);
+            }
+          }
+        }
+      })
+      .then(() => {
+        return trx.builder('ownership').del().where('character', characterId)
+        .then(() => trx.deleteAccountIfEmpty(accountId, newAccountId));
+      });
+    });
+  },
+
+  createPendingOwnership(characterId, accountId) {
+    return this.transaction(trx => {
+      return trx.builder('pendingOwnership').del().where('character', characterId)
+      .then(() => {
+        return trx.builder('pendingOwnership').insert({
+          character: characterId,
+          account: accountId,
+        });
+      });
+    })
+  },
+
+  getPendingOwnership(accountId) {
+    return this.builder('pendingOwnership')
+        .select('pendingOwnership.character', 'character.name')
+        .leftJoin('character', 'character.id', 'pendingOwnership.character')
+        .where('account', accountId);
   },
 
   getOwner(characterId) {

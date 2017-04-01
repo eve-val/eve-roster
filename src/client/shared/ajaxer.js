@@ -33,6 +33,16 @@ export default {
     });
   },
 
+  postCharacterTransfer(accountId, characterId) {
+    return axios.post(`/api/account/${accountId}/transfer`, {
+      characterId: characterId,
+    });
+  },
+
+  deleteCharacterTransfer(accountId, characterId) {
+    return axios.delete(`/api/account/${accountId}/transfer/${characterId}`);
+  },
+
   getRoster() {
     return axios.get('/api/roster');
   },

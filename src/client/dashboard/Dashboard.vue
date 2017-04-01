@@ -11,6 +11,14 @@
         messageMode="text"
         />
     <div class="characters-container">
+      <pending-transfer-slab v-for="transfer in transfers"
+          class="slab"
+          :key="transfer.character"
+          :characterId="transfer.character"
+          :accountId="accountId"
+          :name="transfer.name"
+          @requireRefresh="onRequireRefresh"
+          />
       <character-slab v-for="character in sortedCharacters"
           class="slab"
           :key="character.id"
@@ -39,6 +47,7 @@ import AppHeader from '../shared/AppHeader.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
 import CharacterSlab from './CharacterSlab.vue';
+import PendingTransferSlab from './PendingTransferSlab.vue';
 
 
 export default {
@@ -46,6 +55,7 @@ export default {
     AppHeader,
     LoadingSpinner,
     CharacterSlab,
+    PendingTransferSlab,
   },
 
   props: {
@@ -56,6 +66,7 @@ export default {
     return {
       accountId: null,
       characters: [],
+      transfers: [],
       loginParams: null,
       mainCharacter: null,
       access: null,
@@ -86,6 +97,7 @@ export default {
   methods: {
     fetchData() {
       this.characters = [];
+      this.transfers = [];
       this.loginParams = null;
       this.mainCharacter = null;
       this.access = null;
@@ -93,6 +105,7 @@ export default {
         .then(response => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
+          this.transfers = response.data.transfers;
           this.loginParams = response.data.loginParams;
           this.mainCharacter = response.data.mainCharacter;
           this.access = response.data.access;
