@@ -29,5 +29,6 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
                                 ${accound.id} and character ${newMainId}`);
     }
     return dao.builder('pendingOwnership').del().where('character', charId);
-  }).then(() => ({}));
+  })
+  .then(() => ({}));
 });
