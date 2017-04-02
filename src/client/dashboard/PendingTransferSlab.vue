@@ -8,7 +8,7 @@
             class="name"
             :to="'/character/' + characterId"
             >{{ name }}</router-link>
-        <div style="margin-top: 7px">
+        <div style="margin-top: 7px" class="prompt">
           Are you sure you want to transfer this character to this account?
           <div style="margin-top: 7px">
             <button :disabled="this.transferCharacterPromise"
@@ -115,9 +115,16 @@ export default {
   color: #aaa;
 }
 
+.prompt {
+  color: #a7a29c;
+}
+
 .slab-main button {
   width: 50px;
-  margin-right: 20px;
+  margin-right: 7px;
+  border: 1px solid #362d24;
+  background: #222;
+  color: #a7a29c;
 }
 
 .transfer-character-spinner {
