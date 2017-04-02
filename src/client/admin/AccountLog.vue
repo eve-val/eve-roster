@@ -12,6 +12,9 @@
       <div class="row" v-for="row in rows" :key="row.id">
         <div class="cell timestamp">{{ row.timestamp | displayDate }}</div>
         <div class="cell account">
+          <span class="original-account" v-if="row.originalAccount != row.accountId">
+            {{ row.originalAccount }} &rightarrow;
+          </span>
           {{ row.accountId }}
           <span class="main-character">/ {{ row.mainCharacter }}</span>
         </div>

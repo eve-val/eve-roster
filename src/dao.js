@@ -460,6 +460,7 @@ Dao.prototype = {
             'accountLog.id as id',
             'timestamp',
             'account as accountId',
+            'originalAccount',
             'mainChar.name as mainCharacter',
             'event',
             'relatedCharacter',
