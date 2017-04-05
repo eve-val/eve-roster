@@ -129,6 +129,8 @@ export default {
         let message;
         if (typeof e == 'string') {
           message = e;
+        } else if (e.response && e.response.data && e.response.data.message) {
+          message = e.response.data.message;
         } else if (e.message) {
           message =
               `There was an error while ${actionLabel}. ("${e.message}").`;

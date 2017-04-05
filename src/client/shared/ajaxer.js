@@ -93,4 +93,12 @@ export default {
   getAdminCronLog() {
     return axios.get('/api/admin/cronLog');
   },
+
+  getAdminSetup() {
+    return axios.get('/api/admin/setup');
+  },
+
+  putAdminSetup(setupObj) {
+    return axios.put('/api/admin/setup', setupObj);
+  },
 }

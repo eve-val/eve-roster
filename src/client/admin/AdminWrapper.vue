@@ -3,26 +3,20 @@
   <app-header :identity="identity" />
   <div class="split-container">
     <div class="sidebar">
-      <router-link
-          class="sidebar-link"
-          to="/admin/account-logs"
-      >
+      <router-link class="sidebar-link" to="/admin/account-logs">
         Account log
       </router-link>
-      <router-link
-          class="sidebar-link"
-          to="/admin/cron-logs"
-      >
+      <router-link class="sidebar-link" to="/admin/cron-logs">
         Cron log
       </router-link>
       <a href="/logs" class="sidebar-link">
         Server log
       </a>
-      <router-link
-          class="sidebar-link"
-          to="/admin/citadels"
-      >
+      <router-link class="sidebar-link" to="/admin/citadels">
         Citadels
+      </router-link>
+      <router-link class="sidebar-link" to="/admin/setup">
+        Setup
       </router-link>
     </div>
     <div class="main">
