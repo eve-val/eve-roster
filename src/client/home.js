@@ -9,6 +9,7 @@ import AccountLog from './admin/AccountLog.vue';
 import CronLog from './admin/CronLog.vue';
 import CitadelManagement from './admin/CitadelManagement.vue';
 
+
 const router = new VueRouter({
   mode: 'history',
   // Anything added here should also be in server.js:FRONTEND_ROUTES

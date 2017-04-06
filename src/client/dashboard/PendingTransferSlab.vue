@@ -8,14 +8,18 @@
             class="name"
             :to="'/character/' + characterId"
             >{{ name }}</router-link>
-        <div style="margin-top: 7px" class="prompt">
-          Are you sure you want to transfer this character to this account?
-          <div style="margin-top: 7px">
-            <button :disabled="this.transferCharacterPromise"
-                    @click="transferCharacter">Yes</button>
-            <button :disabled="this.transferCharacterPromise"
-                    @click="cancelTransfer">No</button>
-          </div>
+        <div class="prompt">
+          This character is owned by another account. Are you sure?
+        </div>
+        <div>
+          <button
+              class="roster-btn confirm-deny-btn"
+              :disabled="this.transferCharacterPromise"
+              @click="transferCharacter">Transfer character</button><!--
+        --><button
+              class="roster-btn secondary confirm-deny-btn"
+              :disabled="this.transferCharacterPromise"
+              @click="cancelTransfer">Cancel</button>
         </div>
       </div>
     </div> <!-- end body -->
@@ -98,6 +102,7 @@ export default {
 
 .body {
   padding: 11px 10px 0 10px;
+  flex: 1;
 }
 
 .name {
@@ -117,14 +122,18 @@ export default {
 
 .prompt {
   color: #a7a29c;
+  display: flex;
+  height: 40px;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  top: -1px;
 }
 
-.slab-main button {
-  width: 50px;
+.confirm-deny-btn {
+  font-size: 12px;
+  height: 26px;
   margin-right: 7px;
-  border: 1px solid #362d24;
-  background: #222;
-  color: #a7a29c;
 }
 
 .transfer-character-spinner {
