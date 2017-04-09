@@ -448,8 +448,10 @@ Dao.prototype = {
   },
 
   getUnownedCorpCharacters() {
-    return this.builder('character')
+    return this.builder('memberCorporation')
         .select(BASIC_CHARACTER_COLUMNS)
+        .join('character',
+            'character.corporationId', '=', 'memberCorporation.corporationId')
         .leftJoin('ownership', 'ownership.character', '=', 'character.id')
         .leftJoin('killboard', 'killboard.character', '=', 'character.id')
         .whereNull('ownership.account');
