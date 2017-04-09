@@ -39,7 +39,7 @@ function protectedEndpoint(type, handler) {
           break;
       }
     })
-    .catch(function(e) {
+    .catch(e => {
       handleError(type, e, req, res);
     });
   }
@@ -48,9 +48,11 @@ module.exports = protectedEndpoint;
 
 
 function handleError(type, e, req, res) {
-  logger.error('ERROR while handling endpoint %s', req.originalUrl);
-  logger.error('  accountId:', req.session.accountId);
-  logger.error(e);
+  if (isLoggableError(e)) {
+    logger.error('ERROR while handling endpoint %s', req.originalUrl);
+    logger.error('  accountId:', req.session.accountId);
+    logger.error(e);
+  }
 
   if (type == 'html' &&
       (e instanceof NotLoggedInError || e instanceof NoSuchAccountError)) {
@@ -89,4 +91,8 @@ function getResponse(e) {
     }
     return [500, message];
   }
+}
+
+function isLoggableError(e) {
+  return !(e instanceof NotLoggedInError);
 }
