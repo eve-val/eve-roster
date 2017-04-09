@@ -6,6 +6,7 @@ import Character from './character/Character.vue';
 import Roster from './roster/Roster.vue';
 
 import AccountLog from './admin/AccountLog.vue';
+import AdminSetup from './admin/Setup.vue';
 import CronLog from './admin/CronLog.vue';
 import CitadelManagement from './admin/CitadelManagement.vue';
 
@@ -19,6 +20,7 @@ const router = new VueRouter({
     { path: '/roster', component: Roster, meta: { keepAlive: true } },
     { path: '/character/:id', component: Character, meta: { keepAlive: false } },
     { path: '/admin', redirect: '/admin/account-logs', },
+    { path: '/admin/setup', component: AdminSetup, },
     { path: '/admin/account-logs', component: AccountLog, },
     { path: '/admin/cron-logs', component: CronLog, },
     { path: '/admin/citadels', component: CitadelManagement, },

@@ -10,10 +10,9 @@
 6. Edit `.env` and fill in missing values
 7. `$ nf run node bin/updatedb.js`
 8. `$ nf start`
-9. Load up the site and log in with at least one character
-10. `$ cp setup.json.example setup.json`
-11. Edit `setup.json` and fill in missing values
-12. `$ nf run node bin/quicksetup.js import setup.json`
+9. Load up the site and log in. This account will be marked as the admin.
+10. (optional) On the web UI, go to Admin > Setup and fill in/paste in config
+details.
 
 ## Testing
 
