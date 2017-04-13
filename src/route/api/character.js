@@ -8,6 +8,7 @@ const NotFoundError = require('../../error/NotFoundError');
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   let characterId = req.params.id;
+  let characterRow;
   let isOwned = false;
   let payload;
 
@@ -15,7 +16,8 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   return dao.builder('character')
       .select(
           'character.name',
-          'character.corporationId', 
+          'character.corporationId',
+          'character.titles',
           'account.activeTimezone',
           'citadel.id as citadelId',
           'citadel.name as citadelName',
@@ -29,12 +31,14 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
     if (row == null) {
       throw new NotFoundError();
     }
+    characterRow = row;
     isOwned = account.id == row.accountId;
 
     payload = {
       character: {
         name: row.name,
         corporationId: row.corporationId,
+        titles: JSON.parse(row.titles || '[]'),
       },
       account: {
         id: row.accountId,
@@ -73,6 +77,14 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       return dao.citadel.getAll()
       .then(rows => {
         payload.citadels = _.pluck(rows, 'name');
+      });
+    }
+  })
+  .then(() => {
+    if (privs.canRead('memberGroups')) {
+      return dao.getAccountGroups(characterRow.accountId)
+      .then(groups => {
+        payload.account.groups = groups;
       });
     }
   })
