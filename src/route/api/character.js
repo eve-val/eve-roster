@@ -42,6 +42,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       },
       account: {
         id: row.accountId,
+        groups: null,
       },
       access: privs.dumpForFrontend(
         [

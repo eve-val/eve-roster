@@ -63,9 +63,11 @@
             <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
           </template>
 
-          <div class="factoid-title">Groups</div>
-          <div class="factoid" v-for="group in account.groups">{{ group }}</div>
-          <div class="factoid" v-if="account.groups.length == 0">-</div>
+          <template v-if="account.groups != null">
+            <div class="factoid-title">Groups</div>
+            <div class="factoid" v-for="group in account.groups">{{ group }}</div>
+            <div class="factoid" v-if="account.groups.length == 0">-</div>
+          </template>
         </template>
 
         <div class="factoid-title">Titles</div>
