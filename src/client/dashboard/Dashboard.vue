@@ -19,7 +19,7 @@
           :name="transfer.name"
           @requireRefresh="onRequireRefresh"
           />
-      <character-slab v-for="character in sortedCharacters"
+      <owned-character-slab v-for="character in sortedCharacters"
           class="slab"
           :key="character.id"
           :accountId="accountId"
@@ -46,7 +46,7 @@ import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
-import CharacterSlab from './CharacterSlab.vue';
+import OwnedCharacterSlab from './OwnedCharacterSlab.vue';
 import PendingTransferSlab from './PendingTransferSlab.vue';
 
 
@@ -54,7 +54,7 @@ export default {
   components: {
     AppHeader,
     LoadingSpinner,
-    CharacterSlab,
+    OwnedCharacterSlab,
     PendingTransferSlab,
   },
 

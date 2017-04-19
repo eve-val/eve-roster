@@ -1,10 +1,8 @@
 <template>
-<div class="slab-root">
-  <div class="slab-main"
-    @mouseleave="onMouseOut"
-    >
-    <eve-image :id="character.id" :size="105" type="Character" />
-    <div class="body">
+<character-slab-frame :characterId="character.id">
+  <div class="_owned-character-slab"
+      @mouseleave="onMouseOut">
+    <div class="body" >
       <div>
         <router-link
             class="name"
@@ -67,6 +65,7 @@
         />
   </div>
   <div class="auth-bother-container"
+      slot="sub-slab-hanger"
       v-if="character.needsReauth"
       >
     <div class="auth-bother-title">Character needs to be re-authorized</div>
@@ -75,14 +74,14 @@
         >log in</a>
     as {{ character.name }}.
   </div>
-</div>
+</character-slab-frame>
 </template>
 
 <script>
 import ajaxer from '../shared/ajaxer';
 
+import CharacterSlabFrame from './CharacterSlabFrame.vue';
 import DropMenu from '../shared/DropMenu.vue';
-import EveImage from '../shared/EveImage.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
@@ -91,8 +90,8 @@ import opsecIcon from '../assets/dashboard-hidden-icon.svg';
 
 export default {
   components: {
+    CharacterSlabFrame,
     DropMenu,
-    EveImage,
     LoadingSpinner,
     Tooltip,
   },
@@ -252,27 +251,6 @@ export default {
 </script>
 
 <style scoped>
-.slab-root {
-  width: 480px;
-}
-
-.slab-main {
-  border: 1px solid #2d2318;
-  background: #101010;
-  height: 105px;
-  display: flex;
-  position: relative;
-  user-select: none;
-  cursor: default;
-
-  transition: box-shadow 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.slab-main:hover {
-  /*box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);*/
-  border-color: #352d24;
-}
-
 .body {
   padding: 11px 10px 0 10px;
 }
@@ -379,7 +357,7 @@ export default {
   transition: opacity 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.slab-main:hover > .menu {
+._owned-character-slab:hover > .menu {
   opacity: 1;
 }
 

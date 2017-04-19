@@ -1,7 +1,6 @@
 <template>
-<div class="slab-root">
-  <div class="slab-main">
-    <eve-image :id="characterId" :size="105" type="Character" />
+<character-slab-frame :characterId="characterId">
+  <div class="_pending-transfer-slab">
     <div class="body">
       <div>
         <router-link
@@ -31,26 +30,26 @@
         gravity="left"
         actionLabel="transferring character..."
         />
-  </div> <!-- end slab-main -->
-</div> <!-- end slab-root -->
+  </div> <!-- end _pending-transfer-slab -->
+</character-slab-frame>
 </template>
 
 <script>
 import ajaxer from '../shared/ajaxer';
 
-import EveImage from '../shared/EveImage.vue';
+import CharacterSlabFrame from './CharacterSlabFrame.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 
 export default {
   components: {
-    EveImage,
+    CharacterSlabFrame,
     LoadingSpinner,
   },
 
   props: {
     accountId: { type: Number, required: true, },
     characterId: { type: Number, required: true },
-    name: {type: String, required: true },
+    name: { type: String, required: true },
   },
 
   data: function() {
@@ -80,36 +79,15 @@ export default {
 </script>
 
 <style scoped>
-.slab-root {
-  width: 480px;
-}
-
-.slab-main {
-  border: 1px solid #2d2318;
-  background: #101010;
-  height: 105px;
-  display: flex;
-  position: relative;
-  user-select: none;
-  cursor: default;
-
-  transition: box-shadow 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.slab-main:hover {
-  border-color: #352d24;
-}
-
-.body {
-  padding: 11px 10px 0 10px;
-  flex: 1;
-}
-
 .name {
   font-size: 16px;
   color: #cdcdcd;
   text-decoration: none;
   margin-right: 5px;
+}
+
+.body {
+  padding: 11px 10px 0 10px;
 }
 
 .name:hover {
