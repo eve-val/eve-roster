@@ -19,7 +19,7 @@
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-alpha.2",
     "css-loader": "^0.26.2",
-    "eve_swagger_interface": "git://github.com/lhkbob/eve-swagger-js.git",
+    "eve-swagger": "^0.3.0",
     "express": "^4.14.0",
     "file-loader": "^0.10.1",
     "htmlparser": "^1.7.7",
