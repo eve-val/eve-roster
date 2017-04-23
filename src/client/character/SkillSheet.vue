@@ -138,10 +138,10 @@ export default {
             this.queue = queueResponse.data.queue;
             this.maybeInjectQueueDataIntoSkillsMap();
 
-            if (queueResponse.data.warning) {
+            if (queueResponse.data.dataStatus != 'fresh') {
               return {
                 state: 'warning',
-                message: queueResponse.data.warning,
+                message: 'Skill queue may be out of date',
               };
             }
           });

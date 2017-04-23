@@ -2,15 +2,16 @@ const Promise = require('bluebird');
 
 const moment = require('moment');
 
+const asyncUtil = require('../../util/asyncUtil');
 const dao = require('../../dao.js');
+const eve_sso = require('../../util/eve-sso.js');
 const getStub = require('../../route-helper/getStub');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 const policy = require('../../route-helper/policy');
-const eve_sso = require('../../util/eve-sso.js');
+const skillQueueSummarizer = require('../../route-helper/skillQueueSummarizer');
 
 module.exports = protectedEndpoint('json', function(req, res, account, privs) {
   let mainCharacter = null;
-  let accountCreated = null;
 
   let characters = [];
   let access = null;
@@ -18,7 +19,11 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
   return dao.getAccountDetails(account.id)
   .then(([row]) => {
     mainCharacter = row.mainCharacter;
-    accountCreated = row.created;
+
+    access = {
+      designateMain: policy.canDesignateMain(row.created) ? 2 : 0,
+      isMember: privs.isMember(),
+    };
 
     return dao.getCharactersOwnedByAccount(account.id, [
       'character.id',
@@ -30,26 +35,27 @@ module.exports = protectedEndpoint('json', function(req, res, account, privs) {
     ])
   })
   .then(rows => {
-    for (let row of rows) {
-      characters.push({
-        id: row.id,
-        name: row.name,
-        needsReauth: !!row.needsUpdate,
-        opsec: !!row.opsec && privs.isMember(),
-        corpStatus: getCorpStatus(row.membership),
+    return asyncUtil.parallelize(rows, row => {
+      return skillQueueSummarizer.fetchSkillQueueSummary(
+          dao, row.id, 'cached')
+      .then(queue => {
+        return {
+          id: row.id,
+          name: row.name,
+          needsReauth: !!row.needsUpdate,
+          opsec: !!row.opsec && privs.isMember(),
+          corpStatus: getCorpStatus(row.membership),
+          skillQueue: queue,
+        };
       });
-    }
-
-    access = {
-      "designateMain": policy.canDesignateMain(accountCreated) ? 2 : 0,
-      isMember: privs.isMember(),
-    };
+    });
+  })
+  .then(_characters => {
+    characters = _characters;
 
     return dao.getPendingOwnership(account.id);
   })
-  .then(rows => {
-    const transfers = rows;
-
+  .then(transfers => {
     return {
       accountId: account.id,
       characters: characters,

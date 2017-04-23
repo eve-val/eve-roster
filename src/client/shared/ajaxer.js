@@ -82,8 +82,8 @@ export default {
     return axios.get('/api/character/' + id + '/skillQueue');
   },
 
-  getSkillQueueSummary(id) {
-    return axios.get('/api/dashboard/' + id + '/queueSummary');
+  getFreshSkillQueueSummaries() {
+    return axios.get('/api/dashboard/queueSummary');
   },
 
   getAdminAccountLog() {

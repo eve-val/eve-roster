@@ -2,14 +2,14 @@
 <div class="root">
   <app-header :identity="identity" />
   <div class="centering-container">
-  <div class="title">Dashboard</div>
-    <loading-spinner
-        class="main-spinner"
-        ref="spinner"
-        display="block"
-        defaultState="hidden"
-        size="34px"
-        />
+    <div class="title">
+      Dashboard
+      <loading-spinner
+          class="main-spinner"
+          ref="spinner"
+          defaultState="hidden"
+          />
+    </div>
     <div class="characters-container">
       <pending-transfer-slab v-for="transfer in transfers"
           class="slab"
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import _ from 'underscore';
+
 import ajaxer from '../shared/ajaxer';
 
 import AppHeader from '../shared/AppHeader.vue';
@@ -99,6 +101,7 @@ export default {
       this.loginParams = null;
       this.mainCharacter = null;
       this.access = null;
+
       this.$refs.spinner.observe(ajaxer.getDashboard())
       .then(response => {
         this.accountId = response.data.accountId;
@@ -107,6 +110,17 @@ export default {
         this.loginParams = response.data.loginParams;
         this.mainCharacter = response.data.mainCharacter;
         this.access = response.data.access;
+
+        return this.$refs.spinner.observe(ajaxer.getFreshSkillQueueSummaries());
+      })
+      .then(response => {
+        let freshSummaries = response.data;
+        for (let character of this.characters) {
+          let updatedEntry = _.findWhere(freshSummaries, { id: character.id });
+          if (updatedEntry) {
+            character.skillQueue = updatedEntry.skillQueue;
+          }
+        }
       });
     },
 
@@ -136,7 +150,7 @@ export default {
 }
 
 .main-spinner {
-  margin-left: 32px;
+  margin-left: 5px;
 }
 
 .characters-container {
