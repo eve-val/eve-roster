@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 const axios = require('axios');
-const esi = require('eve_swagger_interface');
+const esi = require('eve-swagger');
 
 const MissingTokenError = require('./error/MissingTokenError');
 const dao = require('./dao');
