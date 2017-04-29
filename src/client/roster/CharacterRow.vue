@@ -20,21 +20,26 @@
         </template>
         <template v-else>{{ displayVals[1] }}</template>
       </router-link>
-      <eve-image v-if="!inPrimaryCorp"
-          :id="character.corporationId"
-          :type="'Corporation'"
-          :size="26"
-          class="corp-icon"
-          />
+    </div>
+
+    <div class="col" :style="cellStyle(2)">
+      <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
+        <eve-image :id="character.corporationId"
+                   :type="'Corporation'"
+                   :size="26"
+                   class="corp-icon"
+        />
+        <span slot="message">{{ character.corporationName }}</span>
+      </tooltip>
     </div>
 
     <div class="alts col"
-        :style="cellStyle(2)"
+        :style="cellStyle(3)"
         @mousedown="$emit('toggleExpanded')"
-        >{{ displayVals[2] }}</div>
+        >{{ displayVals[3] }}</div>
 
     <div class="col" v-for="(displayVal, i) in displayVals"
-        v-if="i >= 3"
+        v-if="i >= 4"
         :style="cellStyle(i)"
         >
       <template v-if="!tooltipMessage(i)">
@@ -65,7 +70,7 @@ const ISK_VALUE_STOPS = [
   { symbol: 'm', min: 1e6 },
   { symbol: 'k', min: 1e3 },
   { symbol: '', min: 0 }
-]
+];
 
 export default {
   components: {
@@ -136,13 +141,20 @@ export default {
         width -= paddingLeft;
       }
 
-      return {
+      let style= {
         width: width + 'px',
         'margin-left': col.margin != undefined ? col.margin + 'px' : undefined,
         'text-align': this.cellAlignment(idx),
         'padding-left': paddingLeft ? paddingLeft + 'px' : undefined,
         'cursor': col.key != 'name' ? 'default' : undefined,
       };
+      if (!this.columns[idx].metaKey) {
+        // Add clipping to the column boundaries, but can't clip when there
+        // is a tooltip message otherwise the overflow: hidden hides its popup
+        style['overflow'] = 'hidden';
+      }
+
+      return style;
     },
 
     tooltipMessage: function(idx) {
@@ -251,7 +263,7 @@ function altsLabel(altsCount) {
 
 .horiz-aligner {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   padding-right: 30px;
 }
 
@@ -260,7 +272,6 @@ function altsLabel(altsCount) {
   color: #A7A29C;
   margin-left: 20px;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -270,7 +281,7 @@ function altsLabel(altsCount) {
 
 .warning-icon {
   width: 15px;
-  height: 13px;
+  height: 15px;
 }
 
 .name {
@@ -294,7 +305,6 @@ function altsLabel(altsCount) {
 }
 
 .corp-icon {
-  margin-left: 9px;
   background: rgba(0, 0, 0, 0.2);
   align-self: center;
 }

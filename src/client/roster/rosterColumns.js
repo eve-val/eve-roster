@@ -1,6 +1,7 @@
 export default [
   { label: '', key: 'warning', width: 35, margin: 0, derivedFrom: []},
-  { label: 'Name', key: 'name', width: 230, margin: 0},
+  { label: 'Name', key: 'name', width: 200, margin: 0},
+  { label: '', key: 'corp', width: 35, margin: 0, derivedFrom: [], metaKey: 'corporationName' },
   { label: '', key: 'alts', width: 40, derivedFrom: []},
 
   { label: 'Citadel', key: 'homeCitadel', width: 110, account: true },
