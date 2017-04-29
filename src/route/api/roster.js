@@ -2,23 +2,52 @@ const moment = require('moment');
 const Promise = require('bluebird');
 
 const dao = require('../../dao');
+const error = require('../../util/error');
+const eve = require('../../eve');
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   privs.requireRead('roster');
 
-  return Promise.all([
-    dao.getCharactersOwnedByMembers(),
-    dao.getUnownedCorpCharacters(),
-  ])
-  .then(function([ownedChars, unownedChars]) {
+  return dao.getAllCorporations()
+  .then(corpIds => {
+    let idsOnly = corpIds.map(e => e.corporationId);
+    return eve.esi.corporations.names(idsOnly);
+  })
+  .then(corpNames => {
+    let corpNameMap = new Map();
+    for (let cn of corpNames) {
+      corpNameMap.set(cn.id, cn.name);
+    }
+    return corpNameMap;
+  })
+  .catch(e => {
+    if (error.isAnyEsiError(e)) {
+      // Move on with a null map and show a warning later
+      // FIXME attach warning to response object once warnings are supported
+      // in the roster client view
+      return null;
+    } else {
+      // Re-throw since it's something more serious
+      throw e;
+    }
+  })
+  .then(corpNames => {
+    return Promise.all([
+      dao.getCharactersOwnedByMembers(),
+      dao.getUnownedCorpCharacters(),
+      Promise.resolve(corpNames) // Pass through
+    ]);
+  })
+  .then(function([ownedChars, unownedChars, corpNames]) {
     let accountList = [];
 
-    pushOwnedChars(ownedChars, accountList, privs);
+    pushOwnedChars(ownedChars, accountList, privs, corpNames);
 
     for (let unownedChar of unownedChars) {
       accountList.push(
-          getAccountOutput(unownedChar, null, false /* not owned */, privs));
+          getAccountOutput(unownedChar, null, false /* not owned */, privs,
+              corpNames));
     }
 
     return {
@@ -29,7 +58,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 
 });
 
-function pushOwnedChars(ownedRows, outList, privs) {
+function pushOwnedChars(ownedRows, outList, privs, corpNames) {
   let accountGroups = new Map();
 
   for (let row of ownedRows) {
@@ -55,20 +84,21 @@ function pushOwnedChars(ownedRows, outList, privs) {
   for (let group of accountGroups.values()) {
     // TODO: Should we add a warning flag here if !(main.corporation in corps)?
     outList.push(
-        getAccountOutput(group.main, group.alts, true /* is owned */, privs));
+        getAccountOutput(group.main, group.alts, true /* is owned */, privs,
+            corpNames));
   }
 }
 
-function getAccountOutput(mainRow, altRows, isOwned, privs) {
+function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   let obj = {
-    main: getCharOutput(mainRow, privs),
+    main: getCharOutput(mainRow, privs, corpNames),
     alts: null,
     isOwned: isOwned,
   };
 
   if (altRows != null && privs.canRead('memberAlts')) {
     // TODO: Filter out external alts if missing memberExternalAlts perm
-    obj.alts = altRows.map(char => getCharOutput(char, privs))
+    obj.alts = altRows.map(char => getCharOutput(char, privs, corpNames))
   } else {
     obj.alts = [];
   }
@@ -84,11 +114,13 @@ function getAccountOutput(mainRow, altRows, isOwned, privs) {
   return obj;
 }
 
-function getCharOutput(row, privs) {
+function getCharOutput(row, privs, corpNames) {
   let obj = {
     id: row.id,
     name: row.name,
     corporationId: row.corporationId,
+    corporationName: corpNames ? corpNames.get(row.corporationId)
+        : 'Name unavailable'
   };
 
   if (privs.canRead('characterActivityStats')) {
@@ -116,7 +148,8 @@ function getCharOutput(row, privs) {
 }
 
 function getProvidedColumns(privs) {
-  let providedColumns = ['id', 'name', 'corporationId', 'isOwned'];
+  let providedColumns = ['id', 'name', 'corporationId', 'corporationName',
+    'isOwned'];
   if (privs.canRead('memberAlts')) {
     providedColumns.push('alts');
   }
