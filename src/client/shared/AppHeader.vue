@@ -12,6 +12,11 @@
         v-if="canAccessAdminConsole"
         class="nav-link"
         >Admin</router-link>
+    <router-link
+        to="/dev"
+        v-if="canAccessDev"
+        class="nav-link"
+        >Dev</router-link>
     <div class="spacer"></div>
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
@@ -41,6 +46,10 @@ export default {
 
     canAccessAdminConsole() {
       return this.identity.access['adminConsole'] >= 1;
+    },
+
+    canAccessDev() {
+      return process.env.NODE_ENV == 'development';
     },
   },
 }

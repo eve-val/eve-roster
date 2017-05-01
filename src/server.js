@@ -37,6 +37,8 @@ const FRONTEND_ROUTES = [
   '/admin/account-logs',
   '/admin/citadels',
   '/admin/setup',
+  '/dev/',
+  '/dev/:section',
 ];
 
 if(REQUIRED_VARS.some(envVar => !(envVar in process.env))) {
