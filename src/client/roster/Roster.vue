@@ -9,9 +9,8 @@
         </div>
         <loading-spinner
               class="loading-spinner"
-              v-if="rosterPromise != null"
-              :size="33"
-              :promise="rosterPromise"
+              ref="spinner"
+              size="33px"
               />
         <div class="title-spacer"></div>
         <search-box class="search-box"
@@ -63,31 +62,27 @@ export default {
       displayColumns: null,
       tableRows: null,
       searchString: null,
-
-      rosterPromise: null,
     };
   },
 
-  created: function() {
-    this.rosterPromise = ajaxer.getRoster()
-      .then(response => {
-        let providedColumns = response.data.columns;
+  mounted: function() {
+    this.$refs.spinner.observe(ajaxer.getRoster())
+    .then(response => {
+      let providedColumns = response.data.columns;
 
-        this.displayColumns = rosterColumns.filter(col => {
-          let sourceColumns = col.derivedFrom || [col.key];
+      this.displayColumns = rosterColumns.filter(col => {
+        let sourceColumns = col.derivedFrom || [col.key];
 
-          return _.reduce(
-              sourceColumns,
-              (accum, sourceCol) =>
-                  accum && providedColumns.includes(sourceCol),
-              true);
-        });
-
-        let rows = injectDerivedData(response.data.rows);
-        this.tableRows = rows;
-
-        this.rosterPromise = null;
+        return _.reduce(
+            sourceColumns,
+            (accum, sourceCol) =>
+                accum && providedColumns.includes(sourceCol),
+            true);
       });
+
+      let rows = injectDerivedData(response.data.rows);
+      this.tableRows = rows;
+    });
   },
 
   methods: {

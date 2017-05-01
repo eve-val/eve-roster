@@ -30,11 +30,10 @@
     <div class="length-reminder">Showing most recent 400 records</div>
   </div>
   <loading-spinner
-        v-if="dataPromise != null"
-        :size="34"
-        :promise="dataPromise"
-        messageMode="text"
-        />
+      ref="spinner"
+      display="block"
+      size="34px"
+      />
 </admin-wrapper>
 </template>
 
@@ -61,17 +60,15 @@ export default {
 
   data: function() {
     return {
-      dataPromise: null,
       rows: null,
     };
   },
 
-  created: function() {
-    this.dataPromise = ajaxer.getAdminCronLog()
+  mounted: function() {
+    this.$refs.spinner.observe(ajaxer.getAdminCronLog())
     .then(response => {
       let rows = response.data.rows;
       this.rows = rows;
-      this.dataPromise = null;
     });
   },
 

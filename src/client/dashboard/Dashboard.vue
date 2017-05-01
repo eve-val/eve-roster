@@ -4,11 +4,11 @@
   <div class="centering-container">
   <div class="title">Dashboard</div>
     <loading-spinner
-        v-if="dashboardPromise != null"
         class="main-spinner"
-        :size="34"
-        :promise="dashboardPromise"
-        messageMode="text"
+        ref="spinner"
+        display="block"
+        defaultState="hidden"
+        size="34px"
         />
     <div class="characters-container">
       <pending-transfer-slab v-for="transfer in transfers"
@@ -70,8 +70,6 @@ export default {
       loginParams: null,
       mainCharacter: null,
       access: null,
-
-      dashboardPromise: null,
     };
   },
 
@@ -90,7 +88,7 @@ export default {
     }
   },
 
-  created: function() {
+  mounted: function() {
     this.fetchData();
   },
 
@@ -101,17 +99,15 @@ export default {
       this.loginParams = null;
       this.mainCharacter = null;
       this.access = null;
-      this.dashboardPromise = ajaxer.getDashboard()
-        .then(response => {
-          this.accountId = response.data.accountId;
-          this.characters = response.data.characters;
-          this.transfers = response.data.transfers;
-          this.loginParams = response.data.loginParams;
-          this.mainCharacter = response.data.mainCharacter;
-          this.access = response.data.access;
-
-          this.dashboardPromise = null;
-        });
+      this.$refs.spinner.observe(ajaxer.getDashboard())
+      .then(response => {
+        this.accountId = response.data.accountId;
+        this.characters = response.data.characters;
+        this.transfers = response.data.transfers;
+        this.loginParams = response.data.loginParams;
+        this.mainCharacter = response.data.mainCharacter;
+        this.access = response.data.access;
+      });
     },
 
     onRequireRefresh(characterId) {

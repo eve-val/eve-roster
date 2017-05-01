@@ -7,10 +7,11 @@
       <template v-if="character">
         {{ character.name }}
       </template>
-      <loading-spinner v-else
-          :size="34"
-          :promise="characterPromise"
-          messageMode="text"
+      <loading-spinner
+          ref="spinner"
+          display="block"
+          defaultState="hidden"
+          size="34px"
           />
     </div>
     <div class="root-container" v-if="character">
@@ -151,7 +152,7 @@ export default {
     },
   },
 
-  created: function() {
+  mounted: function() {
     this.fetchData();
   },
 
@@ -182,17 +183,17 @@ export default {
 
   methods: {
     fetchData() {
-      this.characterPromise = ajaxer.getCharacter(this.characterId)
-          .then(response => {
-            this.character = response.data.character;
-            this.account = response.data.account;
-            this.access = response.data.access;
-            if (response.data.citadels) {
-              response.data.citadels.sort((a, b) => a.localeCompare(b));
-            }
-            this.citadels = response.data.citadels;
-            this.timezones = response.data.timezones;
-          });
+      this.$refs.spinner.observe(ajaxer.getCharacter(this.characterId))
+      .then(response => {
+        this.character = response.data.character;
+        this.account = response.data.account;
+        this.access = response.data.access;
+        if (response.data.citadels) {
+          response.data.citadels.sort((a, b) => a.localeCompare(b));
+        }
+        this.citadels = response.data.citadels;
+        this.timezones = response.data.timezones;
+      });
     },
 
     processSkillsData(skills) {

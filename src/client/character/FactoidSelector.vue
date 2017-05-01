@@ -11,10 +11,9 @@
     </option>
   </select>
   <loading-spinner class="loading-spinner"
-      v-show="requestStatus != null"
-      :size="16"
-      :promise="requestPromise"
-      messageMode="icon"
+      ref="spinner"
+      defaultState="hidden"
+      size="16px"
       />
 </div>
 </template>
@@ -36,22 +35,12 @@ export default {
   data: function() {
     return {
       selectedValue: this.initialValue,
-      requestStatus: null,
-      requestPromise: null,
     };
   },
 
   watch: {
     selectedValue: function(value) {
-      this.requestStatus = 'loading';
-      this.requestPromise = this.submitHandler(value || null)
-      .then(response => {
-        this.requestStatus = null;
-      })
-      .catch(e => {
-        this.requestStatus = 'error';
-        throw e;
-      });
+      this.$refs.spinner.observe(this.submitHandler(value || null));
     },
   },
 }

@@ -5,11 +5,9 @@
       Training queue
     </div>
     <loading-spinner
-        v-if="queueStatus != 'loaded'"
-        :message="queueMessage"
-        :size="30"
-        messageMode="text"
-        :promise="queuePromise"
+        ref="queueSpinner"
+        display="block"
+        size="30px"
         />
     <div class="empty-queue" v-if="queueStatus == 'loaded' && queue == null">
       Skill queue is empty
@@ -28,11 +26,9 @@
       Skills
     </div>
     <loading-spinner
-        v-if="skillStatus != 'loaded'"
-        :message="skillMessage"
-        :size="30"
-        messageMode="text"
-        :promise="skillPromise"
+        ref="skillSpinner"
+        display="block"
+        size="30px"
         />
     <template v-if="skillGroups">
       <template v-for="skillGroup in skillGroups">
@@ -100,21 +96,15 @@ export default {
     },
   },
 
-  created: function() {
+  mounted: function() {
     this.fetchData();
   },
 
   watch: {
     character: function(value) {
-      console.log('Changed!', value);
       this.queue = null;
       this.skillMap = null;
       this.skillGroups = null;
-
-      this.queueStatus = null;
-      this.skillStatus = null;
-      this.queueMessage = null;
-      this.skillMessage = null;
 
       this.fetchData();
     },
@@ -122,40 +112,40 @@ export default {
 
   methods: {
     fetchData() {
+      let skillPromise;
+
       if (this.canReadSkills) {
-        this.skillStatus = 'loading';
-        this.skillPromise = ajaxer.getSkills(this.characterId)
-          .then(response => {
-            this.skillMessage = response.data.warning;
-            this.skillStatus = this.skillMessage ? 'loaded-warning' : 'loaded';
-            this.processSkillsData(response.data.skills);
-          })
-          .catch(e => {
-            this.skillStatus = 'error';
-            // Let the loading spinner catch the error
-            throw e;
-          });
+        skillPromise = this.$refs.skillSpinner.observe(
+            ajaxer.getSkills(this.characterId),
+            response => {
+              this.processSkillsData(response.data.skills);
+              if (response.data.warning) {
+                return {
+                  state: 'warning',
+                  message: response.data.warning,
+                };
+              }
+            });
       }
 
       if (this.canReadSkillQueue) {
-        this.queueStatus = 'loading';
-        this.queuePromise = Promise.all([
-          this.skillPromise,
-          ajaxer.getSkillQueue(this.characterId),
-        ])
-        .then(([skillResponse, queueResponse]) => {
-          this.queue = queueResponse.data.queue;
-          this.maybeInjectQueueDataIntoSkillsMap();
-          this.queueMessage = queueResponse.data.warning;
-          this.queueStatus = this.queueMessage ? 'loaded-warning' : 'loaded';
-        })
-        .catch(e => {
-          this.queueStatus = 'error';
-          // Let the loading spinner catch the error
-          throw e;
-        });
+        this.$refs.queueSpinner.observe(
+          Promise.all([
+            skillPromise || Promise.resolve(),
+            ajaxer.getSkillQueue(this.characterId),
+          ]),
+          ([skillResponse, queueResponse]) => {
+            this.queue = queueResponse.data.queue;
+            this.maybeInjectQueueDataIntoSkillsMap();
+
+            if (queueResponse.data.warning) {
+              return {
+                state: 'warning',
+                message: queueResponse.data.warning,
+              };
+            }
+          });
       }
-      
     },
 
     processSkillsData(skills) {

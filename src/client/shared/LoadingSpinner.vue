@@ -1,46 +1,103 @@
 <template>
-<div
-    :style="{
-      display: messageMode == 'text' ? 'block' : 'inline'
-    }">
-  <tooltip
-      v-if="status == 'loading' || (messageMode == 'icon' && errOrMsg != null)"
-      :gravity="gravity"
-      >
-    <img class="spinner"
-        :src="spinnerSrc"
-        :style="{
-          width: size + 'px',
-          height: size + 'px',
-        }"
+<div :style="{ display: display }"
+    v-if="derivedState != 'hidden'">
+  <img class="spinner"
+        v-if="derivedState == 'spinning'"
+        src="../assets/LoadingSpinner-spinner.svg"
+        :style="{ width: size, height: size, }"
         >
-    <span slot="message" v-if="errOrMsg != null">{{ errOrMsg }}</span>
+  <tooltip
+      v-if="derivedState != 'spinning' && display == 'inline'"
+      :gravity="tooltipGravity || 'center top'"
+      style="vertical-align: text-bottom"
+      >
+    <img class="inline-style-icon"
+        :src="errorIconSrc"
+        :style="{ width: size, height: size, }"
+        >
+    <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
   </tooltip>
 
-  <div class="block-message"
-       v-if="messageMode == 'text' && (status == 'error' || errOrMsg != null)">
-    <img class="text-icon" :src="iconSrc">{{ errOrMsg }}
+  <div class="block-style-message"
+       v-if="derivedState != 'spinning' && display == 'block'">
+    <img class="block-style-icon" :src="errorIconSrc">{{ derivedMessage }}
   </div>
 </div>
 </template>
 
 <script>
 
+/**
+ * Generic loading spinner
+ * 
+ * The spinner can be in either manual or automatic modes. In manual mode,
+ * simply set the `state` and `adversityMessage` properties to
+ * appropriate values.
+ * 
+ * In automatic mode, you must tell the spinner to observe a Promise. The
+ * spinner will automatically hide itself when the Promise resolves, or display
+ * an error message if the Promise rejects.
+ * 
+ * <pre>
+ * {@code
+ *   mount() {
+ *     this.$refs.spinner.observe(this.getSomeData())
+ *     .then(data => {
+ *       this.foo = data.foo;
+ *       this.bar = data.bar;
+ *     });
+ *   }
+ * }
+ * </pre>
+ * 
+ * Notice that we are accessing the spinner via a ref (`this.$refs.spinner`).
+ * You will need to specify a ref name in your markup:
+ * 
+ * <pre>
+ * {@code
+ *   <loading-spinner ref="spinner" />
+ * }
+ * </pre>
+ * 
+ * Note: Refs are only available during `mount()` and later -- don't try to
+ * access them in anything earlier, such as `create()`!
+ * 
+ * If you would like to modify the appearance of a successful Promise (say, by
+ * turning it into a warning or error), add an onSuccess handler:
+ * 
+ * <pre>
+ * {@code
+ *   mount() {
+ *     this.$refs.spinner.observe(
+ *         this.getSomeData(),
+ *         data => {
+ *           if (data.warning) {
+ *             return { state: 'warning', message: result.warning, };
+ *           }
+ *         })
+ *     .then(data => {
+ *       this.foo = data.foo;
+ *       this.bar = data.bar;
+ *     });
+ *   }
+ * }
+ * </pre>
+ * 
+ * Notice that `data` is passed to both the onSuccess handler and the chained
+ * Promise handler. You can move all of your mode into `onSuccess` if you want;
+ * up to you.
+ */
+
+import _ from 'underscore';
 import Tooltip from './Tooltip.vue';
 
-const MESSAGE_MODES = ['text', 'icon'];
+const inlineErrorIcon = require('../assets/LoadingSpinner-inline-error.svg');
+const inlineWarningIcon = require('../assets/LoadingSpinner-inline-warning.svg');
+const blockErrorIcon = require('../assets/LoadingSpinner-block-error.svg');
+const blockWarningIcon = require('../assets/LoadingSpinner-block-warning.svg');
 
-const spinnerPath = {
-  'loading': require('../assets/spinner.svg'),
-  'loaded': require('../assets/spinner-warning.svg'),
-  'error': require('../assets/spinner-error.svg'),
-};
-
-const iconPath = {
-  'loading': require('../assets/spinner.svg'),
-  'loaded': require('../assets/warning-icon.svg'),
-  'error': require('../assets/error-icon.svg'),
-};
+const DISPLAY_VALUES = ['inline', 'block'];
+const STATE_VALUES = ['hidden', 'spinning', 'error', 'warning'];
 
 export default {
   components: {
@@ -48,96 +105,177 @@ export default {
   },
 
   props: {
-    size: { type: Number, required: true, },
-    promise: { type: Promise, required: false, },
-    messageMode: {
+    /** Any CSS dimension, e.g. '12px'. */
+    size: { type: String, required: false, default: '1.1em', },
+
+    /**
+     * Any of 'inline' | 'block'. Default: 'inline'.
+     * Determines whether the spinner is rendered as an inline or block element.
+     * In an error state, uses two different rendering styles:
+     * 'inline': Replace spinner with icon. Hover tooltip on icon contains error
+     *           message.
+     * 'block': Replace spinner with icon and error message.
+     */
+    display: {
       type: String,
       required: false,
-      default: 'icon', 
-      validator: function(value) {
-        for (let e of MESSAGE_MODES) {
-          if (value == e) {
-            return true;
-          }
-        }
-        return false;
-      },
+      default: 'inline',
+      validator: value => _.contains(DISPLAY_VALUES, value),
     },
-    gravity: {
+
+    /**
+     * Any of 'hidden' | 'spinning' | 'error' | 'warning'.
+     * In the case of 'error' or 'warning', an appropriate icon is displayed
+     * instead of the spinner. This value overrides anything set by a promise.
+     */
+    state: {
       type: String,
       required: false,
-      default: 'right',
+      validator: value => _.contains(STATE_VALUES, value),
     },
-    message: { type: String, required: false, },
+
+    /**
+     * Default state for the spinner, before `state` or promises are applied.
+     * See `state` for appropriate values. Default: 'spinning'.
+     */
+    defaultState: {
+      type: String,
+      required: false,
+      default: 'spinning',
+      validator: value => _.contains(STATE_VALUES, value),
+    },
+
+    /** Displayed if state is 'error' or 'warning'. */
+    adversityMessage: {
+      type: String,
+      required: false,
+    },
+
+    /**
+     * The gravity of the hover tooltip. Only applies when state is
+     * 'error'/'warning' and `display` is 'inline'.
+     */
+    tooltipGravity: {
+      type: String,
+      required: false,
+    },
+
+    /**
+     * In the case of a rejected promise, used to describe what was being
+     * attempted. Displayed in the form
+     * "There was an error while <actionLabel>."
+     */
     actionLabel: { type: String, required: false, },
-    rethrowError: { type: Boolean, required: false, default: false, },
+
+    /**
+     * In the case of a rejected promise, rethrow the error that caused the
+     * rejection. This will cause the promise returned by `observe()` to
+     * be rejected with the original error. Default: true.
+     */
+    rethrowError: { type: Boolean, required: false, default: true },
   },
 
   data: function() {
     return {
-      status: 'loading',
-      errorMessage: null,
+      stateFromPromise: null,
+      messageFromPromise: null,
     };
   },
 
   computed: {
-    spinnerSrc() {
-      if (this.status in spinnerPath) {
-        return spinnerPath[this.status];
-      } else {
-        return spinnerPath['loading'];
+    derivedState() {
+      return this.state || this.stateFromPromise || this.defaultState;
+    },
+
+    derivedMessage() {
+      return this.messageFromPromise || this.adversityMessage;
+    },
+
+    errorIconSrc() {
+      switch (this.display) {
+        case 'inline':
+          switch (this.derivedState) {
+            case 'warning':
+              return inlineWarningIcon;
+            case 'error':
+            default:
+              return inlineErrorIcon;
+          }
+        case 'block':
+          switch (this.derivedState) {
+            case 'warning':
+              return blockWarningIcon;
+            case 'error':
+            default:
+              return blockErrorIcon;
+          }
       }
     },
-
-    iconSrc() {
-      if (this.status in iconPath) {
-        return iconPath[this.status];
-      } else {
-        return iconPath['loading'];
-      }
-    },
-
-    errOrMsg() {
-      return this.errorMessage || this.message;
-    }
-  },
-
-  watch: {
-    promise: function(value) {
-      this.updatePromiseHandling(value);
-    },
-  },
-
-  created: function() {
-    this.updatePromiseHandling(this.promise);
   },
 
   methods: {
-    updatePromiseHandling(promise) {
-      this.status = 'loading';
-      this.errorMessage = null;
-      if (!promise) {
+    /**
+     * If set, the state of the spinner will reflect the promise:
+     * - Unresolved: 'spinning'
+     * - Resolved: 'hidden'
+     * - Rejected: 'error'
+     * If the promise is rejected, `adversityMessage` will be the rejecting
+     * error's message.
+     * This behavior overrides the `defaultState` property but can be
+     * overridden by the `state` property.
+     * 
+     * @param onSuccess A method that can be used to adjust the "result" of
+     *        the promise. Passed the payload from the promise. Should return
+     *        An object of the form `{ state: String, message?: String }`.
+     */
+    observe(promise, onSuccess) {
+      this.messageFromPromise = null;
+      if (promise == null) {
+        this.stateFromPromise = null;
         return;
       }
-      promise
-      .then(() => {
-        this.status = 'loaded';
+      this.stateFromPromise = 'spinning';
+
+      return promise
+      .then(payload => {
+        let newState = 'hidden';
+        
+        this.stateFromPromise = 'hidden';
+
+        let result = onSuccess && onSuccess(payload);
+        if (result) {
+          if (_.contains(STATE_VALUES, result.state)) {
+            newState = result.state;
+          } else if (result.state != null) {
+            console.warn('WARNING: Bad spinner state:', result.state);
+          }
+          if ((newState == 'error' || newState == 'warning')
+              && result.message) {
+            this.messageFromPromise = result.message;
+          }
+        }
+
+        this.stateFromPromise = newState;
+
+        // Pass data payload along to actual consumer.
+        return payload;
       })
       .catch(e =>  {
-        this.status = 'error';
-        let actionLabel = this.actionLabel || 'retrieving this resource';
+        this.stateFromPromise = 'error';
+
+        let preface = `There was an error while `
+            + `${this.actionLabel || 'performing this action'}. `;
         let message;
         if (typeof e == 'string') {
           message = e;
         } else if (e.response && e.response.data && e.response.data.message) {
           message = e.response.data.message;
         } else if (e.message) {
-          message =
-              `There was an error while ${actionLabel}. ("${e.message}").`;
+          message = e.message;
         } else {
-          message = `There was an error while ${actionLabel}.`;
+          message = '';
         }
-        this.errorMessage = message;
+        this.messageFromPromise = preface + message;
 
         if (this.rethrowError) {
           throw e;
@@ -153,7 +291,7 @@ export default {
   vertical-align: text-bottom;
 }
 
-.text-icon {
+.block-style-icon {
   width: 15px;
   height: 15px;
   margin-right: 5px;
@@ -161,7 +299,7 @@ export default {
   top: 1px;
 }
 
-.block-message {
+.block-style-message {
   display: inline-block;
   padding: 8px 9px;
   font-size: 14px;
