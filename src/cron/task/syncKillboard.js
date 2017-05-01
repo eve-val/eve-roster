@@ -32,7 +32,7 @@ module.exports = function syncKillboard() {
 
 function getStartTime() {
   let now = moment.utc([]);
-  let start = now.subtract(30, 'days');
+  let start = now.subtract(60, 'days');
 
   // zKillboard requires start times to end with 00, so add an hour and then
   // round down to the start (this gives us the nextHour:00). The moment
