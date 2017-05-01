@@ -11,21 +11,21 @@
   <div style="margin-top: 8px">
     <button
         class="roster-btn submit-btn"
-        :enabled="dataPromise != null"
+        :enabled="!savingSetup"
         @click="onSubmitClick"
         >Submit</button>
     <loading-spinner
-        v-if="dataPromise != null"
         class="spinner"
-        :size="34"
-        :promise="dataPromise"
-        messageMode="text"
+        ref="spinner"
+        display="block"
+        size="34px"
         />
   </div>
 </admin-wrapper>
 </template>
 
 <script>
+import Promise from 'bluebird';
 import moment from 'moment';
 
 import ajaxer from '../shared/ajaxer';
@@ -49,12 +49,12 @@ export default {
   data() {
     return {
       setupJson: "",
-      dataPromise: null,
+      savingSetup: false,
     };
   },
 
-  created() {
-    this.dataPromise = ajaxer.getAdminSetup()
+  mounted() {
+    this.$refs.spinner.observe(ajaxer.getAdminSetup())
     .then(response => {
       this.setupJson = JSON.stringify(response.data, null, 2);
     });
@@ -62,13 +62,22 @@ export default {
 
   methods: {
     onSubmitClick() {
-      this.dataPromise = Promise.resolve()
-      .then(() => {
-        let cleanedJson = this.setupJson.replace(JSON_COMMENT_PATTERN, '');
-        return JSON.parse(cleanedJson);
-      })
-      .then(setupJson => {
-        return ajaxer.putAdminSetup(setupJson);
+      if (this.savingSetup) {
+        return;
+      }
+      this.savingSetup = true;
+
+      this.$refs.spinner.observe(
+          Promise.resolve()
+          .then(() => {
+            let cleanedJson = this.setupJson.replace(JSON_COMMENT_PATTERN, '');
+            return JSON.parse(cleanedJson);
+          })
+          .then(setupJson => {
+            return ajaxer.putAdminSetup(setupJson);
+          }))
+      .finally(() => {
+        this.savingSetup = false;
       });
     },
   },

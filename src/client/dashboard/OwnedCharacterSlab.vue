@@ -1,7 +1,8 @@
 <template>
 <character-slab-frame :characterId="character.id">
   <div class="_owned-character-slab"
-      @mouseleave="onMouseOut">
+      @mouseleave="onMouseOut"
+      >
     <div class="body" >
       <div>
         <router-link
@@ -56,11 +57,11 @@
       </drop-menu>
     </div>
     <loading-spinner
-        v-if="ajaxPromise != null"
         class="designate-main-spinner"
-        :size="13"
-        :promise="ajaxPromise"
-        gravity="left"
+        ref="spinner"
+        defaultState="hidden"
+        size="13px"
+        tooltipGravity="left"
         actionLabel="designating this character as your main"
         />
   </div>
@@ -103,6 +104,7 @@ export default {
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
     access: { type: Object, required: true },
+    isPuppet: { type: Boolean, required: false, default: false, }
   },
 
   data: function() {
@@ -111,17 +113,10 @@ export default {
       skillInTraining: null,
       queue: null,
       warningMessage: null,
-
-      designateMainPromise: null,
-      setIsOpsecPromise: null,
     };
   },
 
   computed: {
-    ajaxPromise: function() {
-      return this.designateMainPromise || this.setIsOpsecPromise;
-    },
-
     errorState: function() {
       return this.character.needsReauth ||
              this.queueFetchStatus == 'error';
@@ -189,7 +184,9 @@ export default {
           this.character.corpStatus == 'external') {
         items.push({
           tag: 'designate-opsec',
-          label: this.character.opsec ? 'Show in roster' : 'Don\'t show in roster',
+          label: this.character.opsec
+              ? 'Show in roster'
+              : 'Don\'t show in roster',
         });
       }
 
@@ -198,6 +195,10 @@ export default {
   },
 
   created: function() {
+    if (this.isPuppet) {
+      return;
+    }
+
     ajaxer.getSkillQueueSummary(this.character.id)
       .then(response => {
         this.queueFetchStatus = 'loaded';
@@ -230,20 +231,18 @@ export default {
     },
 
     designateAsMain() {
-      this.designateMainPromise = ajaxer
-      .putAccountMainCharacter(this.accountId, this.character.id)
+      this.$refs.spinner.observe(
+          ajaxer.putAccountMainCharacter(this.accountId, this.character.id))
       .then(() => {
         this.$emit('requireRefresh', this.character.id);
-        this.designateMainPromise = null;
       });
     },
 
     setIsOpsec(isOpsec) {
-      this.setIsOpsecPromise = ajaxer
-      .putCharacterIsOpsec(this.character.id, !this.character.opsec)
+      this.$refs.spinner.observe(
+          ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec))
       .then(() => {
         this.$emit('requireRefresh', this.character.id);
-        this.setIsOpsecPromise = null;
       });
     },
   },
@@ -373,6 +372,8 @@ export default {
 }
 
 .menu-item {
+  font-size: 14px;
+  font-weight: 300;
   padding: 8px 11px;
   white-space: nowrap;
 }

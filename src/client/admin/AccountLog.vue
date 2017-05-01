@@ -35,11 +35,10 @@
     <div class="length-reminder">Showing most recent 200 records</div>
   </div>
   <loading-spinner
-        v-if="dataPromise != null"
-        :size="34"
-        :promise="dataPromise"
-        messageMode="text"
-        />
+      ref="spinner"
+      display="block"
+      size="34px"
+      />
 </admin-wrapper>
 </template>
 
@@ -64,19 +63,17 @@ export default {
     identity: { type: Object, required: true, },
   },
 
-  data: function() {
+  data() {
     return {
-      dataPromise: null,
       rows: null,
     };
   },
 
-  created: function() {
-    this.dataPromise = ajaxer.getAdminAccountLog()
+  mounted() {
+    this.$refs.spinner.observe(ajaxer.getAdminAccountLog())
     .then(response => {
       let rows = response.data.rows;
       this.rows = rows;
-      this.dataPromise = null;
     });
   },
 

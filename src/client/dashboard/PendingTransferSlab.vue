@@ -23,12 +23,12 @@
       </div>
     </div> <!-- end body -->
     <loading-spinner
-        v-if="transferCharacterPromise != null"
         class="transfer-character-spinner"
-        :size="20"
-        :promise="transferCharacterPromise"
-        gravity="left"
-        actionLabel="transferring character..."
+        ref="spinner"
+        defaultState="hidden"
+        size="20px"
+        tooltipGravity="left center"
+        actionLabel="transferring this character to you"
         />
   </div> <!-- end _pending-transfer-slab -->
 </character-slab-frame>
@@ -58,8 +58,8 @@ export default {
 
   methods: {
     transferCharacter() {
-      this.transferCharacterPromise = ajaxer
-      .postCharacterTransfer(this.accountId, this.characterId)
+      this.$refs.spinner.observe(
+          ajaxer.postCharacterTransfer(this.accountId, this.characterId))
       .then(() => {
         this.$emit('requireRefresh', this.characterId);
         this.transferCharacterPromise = null;
@@ -67,8 +67,8 @@ export default {
     },
 
     cancelTransfer() {
-      this.transferCharacterPromise = ajaxer
-      .deleteCharacterTransfer(this.accountId, this.characterId)
+      this.$refs.spinner.observe(
+          ajaxer.deleteCharacterTransfer(this.accountId, this.characterId))
       .then(() => {
         this.$emit('requireRefresh', this.characterId);
         this.transferCharacterPromise = null;
