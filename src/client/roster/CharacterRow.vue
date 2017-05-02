@@ -11,7 +11,7 @@
     </div>
     <div class="name col" :style="cellStyle(1)">
       <router-link
-          class="char-link"
+          class="char-link col-text"
           :to="'/character/' + character.id"
           >
         <template v-if="filterMatch">
@@ -20,33 +20,29 @@
         </template>
         <template v-else>{{ displayVals[1] }}</template>
       </router-link>
-    </div>
-
-    <div class="col" :style="cellStyle(2)">
       <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
         <eve-image :id="character.corporationId"
                    :type="'Corporation'"
                    :size="26"
-                   class="corp-icon"
-        />
+                   class="corp-icon" />
         <span slot="message">{{ character.corporationName }}</span>
       </tooltip>
     </div>
 
     <div class="alts col"
-        :style="cellStyle(3)"
+        :style="cellStyle(2)"
         @mousedown="$emit('toggleExpanded')"
-        >{{ displayVals[3] }}</div>
+        >{{ displayVals[2] }}</div>
 
     <div class="col" v-for="(displayVal, i) in displayVals"
-        v-if="i >= 4"
+        v-if="i >= 3"
         :style="cellStyle(i)"
         >
       <template v-if="!tooltipMessage(i)">
-        {{ displayVal | dashDefault }}
+        <span class="col-text">{{ displayVal | dashDefault }}</span>
       </template>
       <tooltip v-else gravity="right" :inline="true">
-        <span :style="{ 'text-align': cellAlignment(i) }">
+        <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
           {{ displayVal | dashDefault }}
         </span>
         <span slot="message">{{ tooltipMessage(i) }}</span>
@@ -141,20 +137,13 @@ export default {
         width -= paddingLeft;
       }
 
-      let style= {
+      return {
         width: width + 'px',
         'margin-left': col.margin != undefined ? col.margin + 'px' : undefined,
         'text-align': this.cellAlignment(idx),
         'padding-left': paddingLeft ? paddingLeft + 'px' : undefined,
         'cursor': col.key != 'name' ? 'default' : undefined,
       };
-      if (!this.columns[idx].metaKey) {
-        // Add clipping to the column boundaries, but can't clip when there
-        // is a tooltip message otherwise the overflow: hidden hides its popup
-        style['overflow'] = 'hidden';
-      }
-
-      return style;
     },
 
     tooltipMessage: function(idx) {
@@ -272,7 +261,13 @@ function altsLabel(altsCount) {
   color: #A7A29C;
   margin-left: 20px;
   white-space: nowrap;
+}
+
+.col-text {
+  overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 .warning {
@@ -305,6 +300,7 @@ function altsLabel(altsCount) {
 }
 
 .corp-icon {
+  margin-left: 9px;
   background: rgba(0, 0, 0, 0.2);
   align-self: center;
 }
