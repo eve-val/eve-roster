@@ -24,7 +24,8 @@
         <eve-image :id="character.corporationId"
                    :type="'Corporation'"
                    :size="26"
-                   class="corp-icon" />
+                   class="corp-icon"
+                   />
         <span slot="message">{{ character.corporationName }}</span>
       </tooltip>
     </div>
