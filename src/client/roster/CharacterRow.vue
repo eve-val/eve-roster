@@ -67,7 +67,7 @@ const ISK_VALUE_STOPS = [
   { symbol: 'm', min: 1e6 },
   { symbol: 'k', min: 1e3 },
   { symbol: '', min: 0 }
-];
+]
 
 export default {
   components: {
