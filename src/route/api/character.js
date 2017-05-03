@@ -23,9 +23,11 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
           'citadel.name as citadelName',
           'account.id as accountId',
           'account.mainCharacter')
+      .sum('skillsheet.skillpoints as totalSp')
       .leftJoin('ownership', 'character.id', '=', 'ownership.character')
       .leftJoin('account', 'account.id', '=', 'ownership.account')
       .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel')
+      .leftJoin('skillsheet', 'character.id', '=', 'skillsheet.character')
       .where('character.id', '=', characterId)
   .then(([row]) => {
     if (row == null) {
@@ -39,6 +41,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
         name: row.name,
         corporationId: row.corporationId,
         titles: JSON.parse(row.titles || '[]'),
+        totalSp: row.totalSp,
       },
       account: {
         id: row.accountId,
