@@ -495,6 +495,19 @@ Dao.prototype = {
     }, 'character');
   },
 
+  // Get all unique corporation IDs in the roster, which can include
+  // non-member corporations if someone leaves but their character is still
+  // in the roster. Or for opsec alts, etc.
+  getRosterCharacterCorps() {
+    return this.builder('character')
+        .distinct('corporationId')
+        .select()
+    .then(corpIds => {
+      // Map from [{corporationId: num}] to [num]
+      return corpIds.map(e => e.corporationId);
+    });
+  },
+
   _upsert(table, row, primaryKey) {
     if (row[primaryKey] == undefined) {
       throw new Error(`Primary key "${primaryKey}" not defined on input row.`);

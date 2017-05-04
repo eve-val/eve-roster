@@ -11,7 +11,7 @@
     </div>
     <div class="name col" :style="cellStyle(1)">
       <router-link
-          class="char-link"
+          class="char-link col-text"
           :to="'/character/' + character.id"
           >
         <template v-if="filterMatch">
@@ -20,12 +20,14 @@
         </template>
         <template v-else>{{ displayVals[1] }}</template>
       </router-link>
-      <eve-image v-if="!inPrimaryCorp"
-          :id="character.corporationId"
-          :type="'Corporation'"
-          :size="26"
-          class="corp-icon"
-          />
+      <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
+        <eve-image :id="character.corporationId"
+                   :type="'Corporation'"
+                   :size="26"
+                   class="corp-icon"
+                   />
+        <span slot="message">{{ character.corporationName }}</span>
+      </tooltip>
     </div>
 
     <div class="alts col"
@@ -38,10 +40,10 @@
         :style="cellStyle(i)"
         >
       <template v-if="!tooltipMessage(i)">
-        {{ displayVal | dashDefault }}
+        <span class="col-text">{{ displayVal | dashDefault }}</span>
       </template>
       <tooltip v-else gravity="right" :inline="true">
-        <span :style="{ 'text-align': cellAlignment(i) }">
+        <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
           {{ displayVal | dashDefault }}
         </span>
         <span slot="message">{{ tooltipMessage(i) }}</span>
@@ -251,7 +253,7 @@ function altsLabel(altsCount) {
 
 .horiz-aligner {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   padding-right: 30px;
 }
 
@@ -260,8 +262,13 @@ function altsLabel(altsCount) {
   color: #A7A29C;
   margin-left: 20px;
   white-space: nowrap;
+}
+
+.col-text {
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 .warning {
@@ -270,7 +277,7 @@ function altsLabel(altsCount) {
 
 .warning-icon {
   width: 15px;
-  height: 13px;
+  height: 15px;
 }
 
 .name {
