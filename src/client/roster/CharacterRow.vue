@@ -56,18 +56,11 @@
 <script>
 import eveConstants from '../shared/eveConstants';
 import filter from './filter';
+import numberFormat from '../shared/numberFormat';
 import rosterColumns from './rosterColumns';
 
 import EveImage from '../shared/EveImage.vue';
 import Tooltip from '../shared/Tooltip.vue';
-
-const ISK_VALUE_STOPS = [
-  { symbol: 't', min: 1e12 },
-  { symbol: 'b', min: 1e9 },
-  { symbol: 'm', min: 1e6 },
-  { symbol: 'k', min: 1e3 },
-  { symbol: '', min: 0 }
-]
 
 export default {
   components: {
@@ -217,19 +210,7 @@ export default {
 }
 
 function iskLabel(isk) {
-  let iskUnit = '';
-  let fixedValue = '';
-
-  for (let stop of ISK_VALUE_STOPS) {
-    // ISK_VALUE_STOPS is in descending order so stop after first minimum is reached
-    if (isk > stop.min) {
-      iskUnit = stop.symbol;
-      fixedValue = (isk / stop.min).toFixed(1);
-      break;
-    }
-  }
-
-  return fixedValue + iskUnit + ' ISK';
+  return numberFormat(isk) + ' ISK';
 }
 
 function altsLabel(altsCount) {

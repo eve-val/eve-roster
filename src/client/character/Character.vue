@@ -22,6 +22,13 @@
         <div class="factoid-title">Corporation</div>
         <div class="factoid">{{ corporationName || '-' }}</div>
 
+        <template v-if="character">
+          <div class="factoid-title">Total SP</div>
+          <div class="factoid">
+            {{ formatSp() }}
+          </div>
+        </template>
+
         <template v-if="account.main">
           <div class="factoid-title">Main</div>
           <div class="factoid">
@@ -93,6 +100,7 @@ import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import numberFormat from '../shared/numberFormat';
 
 import FactoidSelector from './FactoidSelector.vue';
 import SkillSheet from './SkillSheet.vue';
@@ -194,6 +202,14 @@ export default {
         this.citadels = response.data.citadels;
         this.timezones = response.data.timezones;
       });
+    },
+
+    formatSp() {
+      if (this.character.totalSp) {
+        return numberFormat(this.character.totalSp, { decimalPlaces: 2 });
+      } else {
+        return '-';
+      }
     },
 
     processSkillsData(skills) {
