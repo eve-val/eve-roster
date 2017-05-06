@@ -24,7 +24,7 @@ router.post('/account/:id/transfer', require('./account/transferCharacter'));
 router.delete('/account/:id/transfer/:charId', require('./account/deleteTransfer'));
 
 router.get('/dashboard', require('./dashboard'));
-router.get('/dashboard/:id/queueSummary', require('./dashboard/queueSummary'));
+router.get('/dashboard/queueSummary', require('./dashboard/queueSummary'));
 
 router.get('/roster', require('./roster'));
 

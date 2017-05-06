@@ -20,6 +20,7 @@ const asyncUtil = require('./util/asyncUtil');
 const accountGroups = require('./data-source/accountGroups');
 const knex = require('./util/knex-loader');
 const specialGroups = require('./route-helper/specialGroups')
+const CharacterDao = require('./dao/CharacterDao');
 const CitadelDao = require('./dao/CitadelDao');
 const ConfigDao = require('./dao/ConfigDao');
 const CronDao = require('./dao/CronDao');
@@ -66,6 +67,7 @@ const MEMBER_GROUP = accountGroups.MEMBER_GROUP;
 function Dao(builder) {
   this.builder = builder;
 
+  this.character = new CharacterDao(this, builder);
   this.citadel = new CitadelDao(this, builder);
   this.config = new ConfigDao(this, builder);
   this.cron = new CronDao(this, builder);

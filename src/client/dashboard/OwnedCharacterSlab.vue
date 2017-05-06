@@ -21,24 +21,18 @@
       </div>
       <div class="training-summary">
         <div class="training-track"
-            :class="{ errorState: errorState }"
+            :class="{ errorState: isInErrorState }"
             >
           <div class="training-progress"
               :style="{ width: progressTrackWidth }"
               ></div>
-          <span class="training-label"
-              :class="{ loading: queueFetchStatus == 'loading' }"
-              >{{ trainingLabel }}</span>
+          <span class="training-label">{{ trainingLabel }}</span>
         </div><span
-            v-if="skillInTraining != null"
+            v-if="character.skillQueue.queueStatus == 'active'"
             class="training-remaining"
             >{{ skillInTraining.timeRemaining }}</span>
       </div>
-      <div class="queue-summary" v-if="queue != null">
-        <span v-if="queue.timeRemaining != ''"
-            >{{ queue.timeRemaining }} left in queue</span>
-        ({{ queue.count}} {{queue.count == 1 ? 'skill' : 'skills' }})
-      </div>
+      <div class="queue-summary">{{ queueLabel }}</div>
     </div>
     <div class="menu" v-if="menuItems.length > 0">
       <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
@@ -88,6 +82,7 @@ import Tooltip from '../shared/Tooltip.vue';
 
 import mainIcon from '../assets/dashboard-main-star.svg';
 import opsecIcon from '../assets/dashboard-hidden-icon.svg';
+import warningIcon from '../assets/Dashboard-warning-icon.svg';
 
 export default {
   components: {
@@ -104,51 +99,60 @@ export default {
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
     access: { type: Object, required: true },
-    isPuppet: { type: Boolean, required: false, default: false, }
   },
 
   data: function() {
     return {
-      queueFetchStatus: 'loading',
-      skillInTraining: null,
-      queue: null,
-      warningMessage: null,
     };
   },
 
   computed: {
-    errorState: function() {
-      return this.character.needsReauth ||
-             this.queueFetchStatus == 'error';
+    skillInTraining() {
+      return this.character.skillQueue.skillInTraining;
     },
 
-    trainingLabel: function() {
-      if (this.warningMessage) {
-        return this.warningMessage;
-      } else if (this.character.needsReauth) {
+    queue() {
+      return this.character.skillQueue.queue;
+    },
+
+    isInErrorState() {
+      return this.character.needsReauth;
+    },
+
+    trainingLabel() {
+       if (this.character.needsReauth) {
         return 'Needs authorization!';
-      } else if (this.queueFetchStatus == 'loading') {
-        return 'Loading...';
-      } else if (this.queueFetchStatus == 'error') {
-        return 'Error loading skill queue';
-      } else if (this.skillInTraining == null) {
+      } else if (this.character.skillQueue.queueStatus == 'empty') {
         return 'Skill queue empty';
-      } else if (this.skillInTraining.timeRemaining == '') {
+      } else if (this.character.skillQueue.queueStatus == 'paused') {
         return 'Skill queue paused';
       } else {
         return this.skillInTraining.name;
       }
     },
 
-    progressTrackWidth: function() {
-      if (this.skillInTraining == null) {
+    queueLabel() {
+      switch (this.character.skillQueue.queueStatus) {
+        case 'active':
+          return `${this.queue.timeRemaining} in queue`
+              + ` (${this.queue.count} skills)`;
+        case 'paused':
+          return `${this.queue.count} skills in queue`;
+        case 'empty':
+        default:
+          return '';
+      }
+    },
+
+    progressTrackWidth() {
+      if (this.character.skillQueue.queueStatus != 'active') {
         return '0';
       } else {
         return this.skillInTraining.progress * 100 + '%';
       }
     },
 
-    statusIcons: function() {
+    statusIcons() {
       let icons = [];
 
       if (this.isMain && this.highlightMain) {
@@ -163,14 +167,24 @@ export default {
         icons.push({
           key: 'opsec',
           src: opsecIcon,
-          label: 'The fact that you own this character is hidden. Only members with opsec access can see it.',
+          label: 'The fact that you own this character is hidden.'
+              + ' Only members with opsec access can see it.',
         });
+      }
+
+      let queueStatus = this.character.skillQueue.dataStatus;
+      if (queueStatus != 'fresh' && queueStatus != 'cached-preview') {
+        icons.push({
+          key: 'esi-failure',
+          src: warningIcon,
+          label: getEsiFailureLabel(queueStatus),
+        })
       }
 
       return icons;
     },
 
-    menuItems: function() {
+    menuItems() {
       let items = [];
       if (!this.isMain &&
           this.access.designateMain == 2) {
@@ -192,23 +206,6 @@ export default {
 
       return items;
     },
-  },
-
-  created: function() {
-    if (this.isPuppet) {
-      return;
-    }
-
-    ajaxer.getSkillQueueSummary(this.character.id)
-      .then(response => {
-        this.queueFetchStatus = 'loaded';
-        this.warningMessage = response.data.warning;
-        this.skillInTraining = response.data.skillInTraining;
-        this.queue = response.data.queue;
-      })
-      .catch(e => {
-        this.queueFetchStatus = 'error';
-      });
   },
 
   methods: {
@@ -246,6 +243,19 @@ export default {
       });
     },
   },
+}
+
+function getEsiFailureLabel(dataStatus) {
+  let generalWarning = 'Skill queue may be out of date.';
+
+  switch (dataStatus) {
+    case 'bad_credentials':
+      return `This character's auth tokens may have expired. ` + generalWarning;
+    case 'fetch_failure':
+      return `There was an error when talking to CCP. ` + generalWarning;
+    default:
+      return generalWarning;
+  }
 }
 </script>
 
@@ -294,6 +304,11 @@ export default {
   height: 14px;
 }
 
+.training-summary {
+  font-size: 14px;
+  font-weight: 300;
+}
+
 .training-track {
   position: relative;
   display: inline-block;
@@ -321,10 +336,6 @@ export default {
 .training-label {
   margin-left: 6px;
   position: relative;
-}
-
-.training-label.loading {
-  color: #a7a29c;
 }
 
 .training-remaining {

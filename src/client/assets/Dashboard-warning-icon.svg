@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>warning-icon-centered</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="general" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M10.9862888,3.23019052 C11.5464093,2.28046498 12.454231,2.27993412 13.0146646,3.23019052 L23.1265173,20.3755808 C23.6866379,21.3253063 23.2477551,22.095211 22.1330764,22.095211 L1.86787699,22.095211 C0.759094188,22.095211 0.314002441,21.3258372 0.874436042,20.3755808 L10.9862888,3.23019052 Z M10.745253,19.2362314 L13.427108,19.2362314 L13.427108,17.5270083 L10.745253,17.5270083 L10.745253,19.2362314 Z M11.1892088,16.3367801 L12.9831523,16.3367801 L13.427108,11.0430324 L13.427108,8.99473269 L10.745253,8.99473269 L10.745253,11.0430324 L11.1892088,16.3367801 Z" id="Combined-Shape-Copy" fill="#A47A46"></path>
+    </g>
+</svg>
