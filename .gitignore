@@ -1,8 +1,10 @@
 # OS and editor files
 .DS_Store
-.vscode
 .idea/
 .*.swp
+
+# Compiled server code
+/out/
 
 # NPM-installed files
 /node_modules/

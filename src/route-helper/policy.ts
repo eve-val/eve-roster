@@ -1,0 +1,15 @@
+import _ = require('underscore');
+import moment = require('moment');
+
+
+const MODIFY_MAIN_WINDOW_DURATION =
+    moment.duration(7, 'days').asMilliseconds();
+
+
+export function canDesignateMain(accountCreated: number) {
+  return Date.now() < accountCreated + MODIFY_MAIN_WINDOW_DURATION;
+}
+
+export let TIMEZONE_LABELS = [
+  'US West', 'US East', 'EU West', 'EU East', 'Aus', 'Other',
+];

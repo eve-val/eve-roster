@@ -16,14 +16,14 @@
     </label>
     <label>Alliance Access:
       <select class="alliance-access" v-model="newCitadel.allianceAccess">
-        <option value="1">YES</option>
-        <option value="0">NO</option>
+        <option :value="true">YES</option>
+        <option :value="false">NO</option>
       </select>
     </label>
     <label>Alliance Owned:
       <select class="alliance-owned" v-model="newCitadel.allianceOwned">
-        <option value="1">YES</option>
-        <option value="0">NO</option>
+        <option :value="true">YES</option>
+        <option :value="false">NO</option>
       </select>
     </label>
   </div>
@@ -56,8 +56,8 @@ export default {
       newCitadel: {
         name: '',
         type: 'Astrahus',
-        allianceAccess: 1,
-        allianceOwned: 1,
+        allianceAccess: true,
+        allianceOwned: true,
       },
     };
   },

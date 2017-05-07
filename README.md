@@ -1,18 +1,65 @@
 # eve-roster
 
+A corporation management tool for intergalactic spreadsheets.
+
 ## Setup
 
-1. Install the latest version of [Node.js](https://nodejs.org/en/).
-2. Install [node-foreman]() `npm install -g foreman`
-3. `$ cd <this dir>`
-4. `$ npm install`
-5. `$ cp env.example .env`
-6. Edit `.env` and fill in missing values
-7. `$ nf run node bin/updatedb.js`
-8. `$ nf start`
+1. Install the "current" version of [Node.js](https://nodejs.org/en/).
+2. Install [node-foreman](https://github.com/strongloop/node-foreman):  
+`npm install -g foreman`
+3. Install NPM packages:  
+`$ cd <this dir>`  
+`$ npm install`
+4. Create your `.env` file and fill in missing values:  
+`$ cp env.sample .env`
+5. Initialize the database:  
+`$ nf run node bin/updatedb.js`
+8. Compile the server (see _Compiling the server_, below).
+9. Start the server:  
+`$ nf start`
 9. Load up the site and log in. This account will be marked as the admin.
 10. (optional) On the web UI, go to Admin > Setup and fill in/paste in config
 details.
+
+## Compiling the server
+
+In order to run the server, you must first compile it. There are a few ways to
+do this:
+
+```bash
+# Recompiles when code changes; recommended for development
+$ npm run watch-server
+
+# One-off build
+$ npm run build-server
+
+# Build both server and front-end. Used in production.
+$ npm run build
+```
+
+If you're doing development, it's recommended that you use the
+`npm run watch-server` option.
+
+Whenever you change code on the _backend_, you'll need to kill the server and
+run `nf start` again. This is not necessary when you make _frontend_ code
+changes.
+
+## Workflow
+
+It is _highly_ recommended that you use an IDE with Typescript support.
+[VS Code](https://code.visualstudio.com) in particular has excellent Typescript integration. Sublime Text also has a pretty good Typescript plugin.
+
+VS Code can watch your files and recompile them automatically: Go to
+`View > Command Palette > Tasks: Run Task` and select `build-server`.
+
+Modifications to front-end code should appear without the need to reload the
+current page. Modifications to back-end code require a server restart to take
+effect.
+
+`node-foreman` is used for running the server: `nf start` or running one-off
+commands `nf run`.  It starts the Node process using the environment
+variables defined in the .env file, which lets us match the production
+environment as needed.
 
 ## Testing
 
@@ -31,20 +78,6 @@ $ npm test -- test/path/to/my.test.js
 
 There are a bunch of other
 [CLI options](https://facebook.github.io/jest/docs/cli.html).
-
-## Workflow
-
-Modifications to front-end code should appear without the need to reload the
-current page. Modifications to back-end code require a server restart to take
-effect.
-
-The recommended IDE is [VSCode](https://code.visualstudio.com), but you can use
-whatever you like best.
-
-`node-foreman` is used for running the server: `nf start` or running one-off
-commands `nf run`.  It starts the Node process using the environment
-variables defined in the .env file, which lets us match the production
-environment as needed.
 
 ## Front-end development
 
