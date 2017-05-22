@@ -35,6 +35,7 @@ const BASIC_CHARACTER_COLUMNS = [
   'character.startDate',
   'character.logonDate',
   'character.logoffDate',
+  'character.titles',
   'killboard.killsInLastMonth',
   'killboard.killValueInLastMonth',
   'killboard.lossesInLastMonth',
