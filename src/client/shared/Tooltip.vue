@@ -373,6 +373,7 @@ function splitGravString(str) {
   font-weight: normal;
   line-height: 1.25;
   text-align: left;
+  white-space: initial;
 
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
 }
