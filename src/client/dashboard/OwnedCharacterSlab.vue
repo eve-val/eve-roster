@@ -80,9 +80,9 @@ import DropMenu from '../shared/DropMenu.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
-import mainIcon from '../assets/dashboard-main-star.svg';
-import opsecIcon from '../assets/dashboard-hidden-icon.svg';
-import warningIcon from '../assets/Dashboard-warning-icon.svg';
+import mainIcon from '../assets/Dashboard-main-star.svg';
+import opsecIcon from '../assets/Dashboard-hidden-icon.svg';
+import warningIcon from '../assets/Generic-triangle-warning.svg';
 
 export default {
   components: {
@@ -320,7 +320,7 @@ function getEsiFailureLabel(dataStatus) {
 }
 
 .training-track.errorState {
-  background: url('../assets/barberpole-error.png');
+  background: url('../assets/Dashboard-barberpole-error.png');
 }
 
 .training-progress {
@@ -374,7 +374,7 @@ function getEsiFailureLabel(dataStatus) {
 .menu-arrow {
   width: 25px;
   height: 22px;
-  background-image: url('../assets/dashbaord-character-menu-arrow.png');
+  background-image: url('../assets/Dashbaord-character-menu-arrow.png');
   background-size: cover;
 }
 

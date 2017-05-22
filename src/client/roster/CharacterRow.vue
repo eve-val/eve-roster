@@ -5,7 +5,7 @@
       <img
           v-if="warningMessage != null"
           class="warning-icon"
-          src="../assets/warning-icon.svg"
+          src="../assets/Generic-triangle-warning.svg"
           :title="warningMessage"
           >
     </div>
