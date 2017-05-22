@@ -2,13 +2,12 @@
 <div class="_character-row">
   <div class="horiz-aligner">
     <div class="warning col" :style="cellStyle(0)">
-      <img
-          v-if="warningMessage != null"
-          class="warning-icon"
-          src="../assets/Generic-triangle-warning.svg"
-          :title="warningMessage"
-          >
+      <tooltip v-if="warningMessage != null" gravity="right" :inline="false">
+        <img class="warning-icon" :src="warningIconSrc" />
+        <span slot="message">{{ warningMessage }}</span>
+      </tooltip>
     </div>
+
     <div class="name col" :style="cellStyle(1)">
       <router-link
           class="char-link col-text"
@@ -62,6 +61,10 @@ import rosterColumns from './rosterColumns';
 import EveImage from '../shared/EveImage.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
+const infoIcon = require('../assets/Generic-circle-info.svg');
+const warningIcon = require('../assets/Generic-triangle-warning.svg');
+const errorIcon = require('../assets/Generic-triangle-error.svg');
+
 export default {
   components: {
     EveImage,
@@ -91,11 +94,41 @@ export default {
       return labels;
     },
 
-    warningMessage: function() {
-      if (this.account != null && !this.account.isOwned) {
-        return 'This character has not been claimed.';
+    warningIconSrc: function() {
+      let level = 0;
+      if (this.isMain) {
+        level = Math.max(this.account.warningLevel || 0,
+            this.character.warningLevel || 0);
+      } else {
+        level = this.character.warningLevel || 0;
+      }
+
+      if (level == 1) {
+        return infoIcon;
+      } else if (level == 2) {
+        return warningIcon;
+      } else if (level == 3) {
+        return errorIcon;
       } else {
         return null;
+      }
+    },
+
+    warningMessage: function() {
+      if (this.isMain) {
+        // Must include any account message
+        let accountMessage = this.account.warning || '';
+        let charMessage = this.character.warning || '';
+
+        if (accountMessage.length > 0 || charMessage.length > 0) {
+          // A message exists
+          return (accountMessage + ' ' + charMessage).trim();
+        } else {
+          return null;
+        }
+      } else {
+        // Just the character message if it exists
+        return this.character.warning;
       }
     },
 
@@ -259,6 +292,7 @@ function altsLabel(altsCount) {
 .warning-icon {
   width: 15px;
   height: 15px;
+  margin-left: 9px;
 }
 
 .name {
