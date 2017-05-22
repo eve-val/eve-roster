@@ -96,6 +96,10 @@ export default {
   }
 }
 
+const APPEND_ATTRS = new Set([
+  'warning',
+]);
+
 const SUM_ATTRS = new Set([
   'killsInLastMonth',
   'killValueInLastMonth',
@@ -107,6 +111,7 @@ const SUM_ATTRS = new Set([
 
 const MAX_ATTRS = new Set([
   'lastSeen',
+  'warningLevel',
 ]);
 
 function injectDerivedData(data) {
@@ -119,8 +124,17 @@ function injectDerivedData(data) {
 
 function computeAggregateCharacter(account) {
   let aggregate = {};
-  for (let v in account.main) {
-    if (SUM_ATTRS.has(v)) {
+
+  // Calculate key set as union of keys in main and all alts
+  let keys = Object.keys(account.main);
+  for (let alt of account.alts) {
+    keys.push(...Object.keys(alt));
+  }
+
+  for (let v of new Set(keys)) {
+    if (APPEND_ATTRS.has(v)) {
+      aggregate[v] = aggProp(v, account.main, ...account.alts);
+    } else if (SUM_ATTRS.has(v)) {
       aggregate[v] = sumProp(v, account.main, ...account.alts);
     } else if (MAX_ATTRS.has(v)) {
       aggregate[v] = maxProp(v, account.main, ...account.alts);
@@ -129,6 +143,19 @@ function computeAggregateCharacter(account) {
     }
   }
   return aggregate;
+}
+
+function aggProp(prop, ...chars) {
+  let text = '';
+  for (let char of chars) {
+    if (char[prop]) {
+      if (text.length > 0) {
+        text += ' ';
+      }
+      text += char[prop];
+    }
+  }
+  return text;
 }
 
 function sumProp(prop, ...chars) {
