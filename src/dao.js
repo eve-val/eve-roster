@@ -41,6 +41,7 @@ const BASIC_CHARACTER_COLUMNS = [
   'killboard.lossesInLastMonth',
   'killboard.lossValueInLastMonth',
   'character.siggyScore',
+  'memberCorporation.membership as corpMembership',
 ];
 const OWNED_CHARACTER_COLUMNS = BASIC_CHARACTER_COLUMNS.concat([
   'account.activeTimezone',
@@ -433,6 +434,8 @@ Dao.prototype = {
         .join('account', 'account.id', '=', 'memberAccount.id')
         .join('ownership', 'ownership.account', '=', 'memberAccount.id')
         .join('character', 'character.id', '=', 'ownership.character')
+        .leftJoin('memberCorporation',
+            'character.corporationId', '=', 'memberCorporation.corporationId')
         .leftJoin('citadel', 'citadel.id', '=', 'account.homeCitadel')
         .leftJoin('killboard', 'killboard.character', '=', 'character.id');
   },
