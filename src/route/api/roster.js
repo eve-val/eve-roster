@@ -7,6 +7,7 @@ const eve = require('../../eve');
 const logger = require('../../util/logger')(__filename);
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
+// Must match src/client/roster/CharacterRow.vue MSG_x
 const MSG_INFO = 1;
 const MSG_WARNING = 2;
 const MSG_ERROR = 3;
@@ -14,29 +15,16 @@ const MSG_ERROR = 3;
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   privs.requireRead('roster');
 
-  let memberCorps;
-  let corpNames;
-  return dao.config.getMemberCorporations()
-  .then(corpRows => {
-    memberCorps = { mainCorpIds: [], altCorpIds: [] };
-    for (let c of corpRows) {
-      if (c.membership == 'full') {
-        memberCorps.mainCorpIds.push(c.corporationId);
-      } else if (c.membership == 'affiliated') {
-        memberCorps.altCorpIds.push(c.corporationId);
-      }
-    }
-
-    return dao.getRosterCharacterCorps();
-  })
+  return dao.getRosterCharacterCorps()
   .then(corpIds => {
     return eve.esi.corporations.names(corpIds);
   })
-  .then(response => {
-    corpNames = new Map();
-    for (let cn of response) {
-      corpNames.set(cn.id, cn.name);
+  .then(corpNames => {
+    let corpNameMap = new Map();
+    for (let cn of corpNames) {
+      corpNameMap.set(cn.id, cn.name);
     }
+    return corpNameMap;
   })
   .catch(e => {
     if (error.isAnyEsiError(e)) {
@@ -44,28 +32,28 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       // FIXME attach warning to response object once warnings are supported
       // in the roster client view
       logger.error('ESI error fetching corporation names', e);
-      corpNames = null;
       return null;
     } else {
       // Re-throw since it's something more serious
       throw e;
     }
   })
-  .then(() => {
+  .then(corpNames => {
     return Promise.all([
       dao.getCharactersOwnedByMembers(),
       dao.getUnownedCorpCharacters(),
+      Promise.resolve(corpNames) // Pass through
     ]);
   })
-  .then(([ownedChars, unownedChars]) => {
+  .then(([ownedChars, unownedChars, corpNames]) => {
     let accountList = [];
 
-    pushOwnedChars(ownedChars, accountList, privs, memberCorps, corpNames);
+    pushOwnedChars(ownedChars, accountList, privs, corpNames);
 
     for (let unownedChar of unownedChars) {
       accountList.push(
-          getAccountOutput(unownedChar, null, false /* not owned */, privs,
-              memberCorps, corpNames));
+          getAccountOutput(
+              unownedChar, null, false /* not owned */, privs, corpNames));
     }
 
     return Promise.all(accountList);
@@ -79,19 +67,19 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
 
 });
 
-function addMessage(data, message, level) {
-  if (data.warning) {
+function addAlert(data, message, level) {
+  if (data.alertMessage) {
     // Append message and possibly increase level
-    data.warning = data.warning + '\n' + message;
-    data.warningLevel = Math.max(data.warningLevel, level);
+    data.alertMessage = data.alertMessage + '\n' + message;
+    data.alertLevel = Math.max(data.alertLevel, level);
   } else {
     // No previous message so set as-is
-    data.warning = message;
-    data.warningLevel = level;
+    data.alertMessage = message;
+    data.alertLevel = level;
   }
 }
 
-function pushOwnedChars(ownedRows, outList, privs, memberCorps, corpNames) {
+function pushOwnedChars(ownedRows, outList, privs, corpNames) {
   let accountGroups = new Map();
 
   for (let row of ownedRows) {
@@ -117,37 +105,34 @@ function pushOwnedChars(ownedRows, outList, privs, memberCorps, corpNames) {
   for (let group of accountGroups.values()) {
     outList.push(
         getAccountOutput(
-            group.main, group.alts, true /* is owned */, privs, memberCorps,
-            corpNames));
+            group.main, group.alts, true /* is owned */, privs, corpNames));
   }
 }
 
-function getAccountOutput(mainRow, altRows, isOwned, privs, memberCorps,
-    corpNames) {
+function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   let obj = {
-    main: getCharOutput(mainRow, privs, memberCorps, corpNames),
+    main: getCharOutput(mainRow, privs, corpNames),
     alts: null,
   };
 
   if (!isOwned) {
-    addMessage(obj, 'Character is not claimed.', MSG_WARNING);
+    addAlert(obj, 'Character is not claimed.', MSG_WARNING);
   }
 
-  let mainInFullCorp = memberCorps.mainCorpIds.includes(mainRow.corporationId);
-  let mainInAffilCorp = memberCorps.altCorpIds.includes(mainRow.corporationId);
+  let mainInFullCorp = mainRow.corpMembership == 'full';
+  let mainInAffilCorp = mainRow.corpMembership == 'affiliated';
   if (!mainInFullCorp && !mainInAffilCorp) {
-    addMessage(mainRow, 'Main character is not in any affiliated corporation.',
+    addAlert(mainRow, 'Main character is not in any affiliated corporation.',
         MSG_ERROR);
   } else if (!mainInFullCorp) {
-    addMessage(mainRow, 'Main character is not in primary corporation.',
+    addAlert(mainRow, 'Main character is not in primary corporation.',
         MSG_WARNING);
   }
 
   if (altRows != null && privs.canRead('memberAlts')) {
     // pushOwnedChars already filters out opsec alts, so no additional filtering
     // is necessary.
-    obj.alts = altRows.map(char =>
-        getCharOutput(char, privs, memberCorps, corpNames));
+    obj.alts = altRows.map(char => getCharOutput(char, privs, corpNames));
   } else {
     obj.alts = [];
   }
@@ -170,7 +155,7 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, memberCorps,
     return dao.getAccountGroups(mainRow.accountId)
     .then(groups => {
       if (groups.includes('provisional_member')) {
-        addMessage(obj, 'Trial member.', MSG_INFO);
+        addAlert(obj, 'Trial member.', MSG_INFO);
       }
       return obj;
     });
@@ -180,15 +165,7 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, memberCorps,
   return Promise.resolve(obj);
 }
 
-function parseTitles(titleString) {
-  if (titleString) {
-    return JSON.parse(titleString);
-  } else {
-    return [];
-  }
-}
-
-function getCharOutput(row, privs, memberCorps, corpNames) {
+function getCharOutput(row, privs, corpNames) {
   let obj = {
     id: row.id,
     name: row.name,
@@ -197,11 +174,14 @@ function getCharOutput(row, privs, memberCorps, corpNames) {
         corpNames.get(row.corporationId) : 'Name unavailable'
   };
 
-  let titles = parseTitles(row.titles);
-  let inMemberCorp = memberCorps.mainCorpIds.includes(row.corporationId)
-      || memberCorps.altCorpIds.includes(row.corporationId);
-  if (inMemberCorp && titles.length == 0) {
-    addMessage(obj, 'Character does not have roles.', MSG_ERROR);
+  
+  if (row.corpMembership == 'full' || row.corpMembership == 'affiliated') {
+    // This is only concerned with # of titles, so a null value, empty string
+    //  or an empty JSON array are bad. Any other text value is presumably
+    //  a JSON array with at least one title element.
+    if (row.titles == null || row.titles.length == 0 || row.titles == '[]') {
+      addAlert(obj, 'Character does not have roles.', MSG_ERROR);
+    }
   }
 
   if (privs.canRead('characterActivityStats')) {
