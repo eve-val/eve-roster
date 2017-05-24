@@ -7,10 +7,9 @@ const eve = require('../../eve');
 const logger = require('../../util/logger')(__filename);
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
-const CHAR_NO_MSG = 0;
-const CHAR_INFO_MSG = 1;
-const CHAR_WARNING_MSG = 2;
-const CHAR_ERROR_MSG = 3;
+const MSG_INFO = 1;
+const MSG_WARNING = 2;
+const MSG_ERROR = 3;
 
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   privs.requireRead('roster');
@@ -131,17 +130,17 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, memberCorps,
   };
 
   if (!isOwned) {
-    addMessage(obj, 'Character is not claimed.', CHAR_WARNING_MSG);
+    addMessage(obj, 'Character is not claimed.', MSG_WARNING);
   }
 
   let mainInFullCorp = memberCorps.mainCorpIds.includes(mainRow.corporationId);
   let mainInAffilCorp = memberCorps.altCorpIds.includes(mainRow.corporationId);
   if (!mainInFullCorp && !mainInAffilCorp) {
     addMessage(mainRow, 'Main character is not in any affiliated corporation.',
-        CHAR_ERROR_MSG);
+        MSG_ERROR);
   } else if (!mainInFullCorp) {
     addMessage(mainRow, 'Main character is not in primary corporation.',
-        CHAR_WARNING_MSG);
+        MSG_WARNING);
   }
 
   if (altRows != null && privs.canRead('memberAlts')) {
@@ -171,7 +170,7 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, memberCorps,
     return dao.getAccountGroups(mainRow.accountId)
     .then(groups => {
       if (groups.includes('provisional_member')) {
-        addMessage(obj, 'Trial member.', CHAR_INFO_MSG);
+        addMessage(obj, 'Trial member.', MSG_INFO);
       }
       return obj;
     });
@@ -202,7 +201,7 @@ function getCharOutput(row, privs, memberCorps, corpNames) {
   let inMemberCorp = memberCorps.mainCorpIds.includes(row.corporationId)
       || memberCorps.altCorpIds.includes(row.corporationId);
   if (inMemberCorp && titles.length == 0) {
-    addMessage(obj, 'Character does not have roles.', CHAR_ERROR_MSG);
+    addMessage(obj, 'Character does not have roles.', MSG_ERROR);
   }
 
   if (privs.canRead('characterActivityStats')) {
