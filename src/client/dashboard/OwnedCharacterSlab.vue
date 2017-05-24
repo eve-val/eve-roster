@@ -374,7 +374,7 @@ function getEsiFailureLabel(dataStatus) {
 .menu-arrow {
   width: 25px;
   height: 22px;
-  background-image: url('../assets/Dashbaord-character-menu-arrow.png');
+  background-image: url('../assets/Dashboard-character-menu-arrow.png');
   background-size: cover;
 }
 
