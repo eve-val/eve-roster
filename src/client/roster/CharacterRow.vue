@@ -65,10 +65,8 @@ const infoIcon = require('../assets/Generic-circle-info.svg');
 const warningIcon = require('../assets/Generic-triangle-warning.svg');
 const errorIcon = require('../assets/Generic-triangle-error.svg');
 
-// Must match src/route/roster.js MSG_x
-const MSG_INFO = 1;
-const MSG_WARNING = 2;
-const MSG_ERROR = 3;
+// Indices must match levels in src/route/roster.js MSG_x
+const MSG_ICONS = [ null, infoIcon, warningIcon, errorIcon ];
 
 export default {
   components: {
@@ -108,15 +106,7 @@ export default {
         level = this.character.alertLevel || 0;
       }
 
-      if (level == MSG_INFO) {
-        return infoIcon;
-      } else if (level == MSG_WARNING) {
-        return warningIcon;
-      } else if (level == MSG_ERROR) {
-        return errorIcon;
-      } else {
-        return null;
-      }
+      return MSG_ICONS[level];
     },
 
     alertMessage: function() {
