@@ -97,7 +97,7 @@ export default {
 }
 
 const APPEND_ATTRS = new Set([
-  'warning',
+  'alertMessage',
 ]);
 
 const SUM_ATTRS = new Set([
@@ -111,7 +111,7 @@ const SUM_ATTRS = new Set([
 
 const MAX_ATTRS = new Set([
   'lastSeen',
-  'warningLevel',
+  'alertLevel',
 ]);
 
 function injectDerivedData(data) {

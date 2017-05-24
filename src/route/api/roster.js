@@ -214,8 +214,8 @@ function getProvidedColumns(privs) {
     'name',
     'corporationId',
     'corporationName',
-    'warning',
-    'warningLevel'
+    'alertMessage',
+    'alertLevel'
   ];
 
   if (privs.canRead('memberAlts')) {
