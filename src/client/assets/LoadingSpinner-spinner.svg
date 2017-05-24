@@ -13,6 +13,6 @@ Q 109 -38.15 109 -2.45 109 42.7 77.05 74.6 45.15 106.55 0 106.55 -45.15 106.55 -
                 <use xlink:href="#spinner_0_Layer0_0_MEMBER_1_1_STROKES"/>
             </g>
         </g>
-        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" repeatCount="indefinite" dur="1s"></animateTransform>
+        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" repeatCount="indefinite" dur="1.7s"></animateTransform>
     </g>
 </svg>
