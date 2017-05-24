@@ -115,21 +115,16 @@ export default {
     },
 
     warningMessage: function() {
+      let message;
       if (this.isMain) {
         // Must include any account message
-        let accountMessage = this.account.warning || '';
-        let charMessage = this.character.warning || '';
-
-        if (accountMessage.length > 0 || charMessage.length > 0) {
-          // A message exists
-          return (accountMessage + ' ' + charMessage).trim();
-        } else {
-          return null;
-        }
+        message = ((this.account.warning || '') + ' '
+            + (this.character.warning || '')).trim();
       } else {
         // Just the character message if it exists
-        return this.character.warning;
+        message = (this.character.warning || '').trim();
       }
+      return message.length > 0 ? message : null;
     },
 
     filterMatch: function() {
