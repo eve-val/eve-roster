@@ -1,10 +1,10 @@
 <template>
 <div class="_character-row">
   <div class="horiz-aligner">
-    <div class="warning col" :style="cellStyle(0)">
-      <tooltip v-if="warningMessage != null" gravity="right" :inline="false">
-        <img class="warning-icon" :src="warningIconSrc" />
-        <span slot="message">{{ warningMessage }}</span>
+    <div class="alert col" :style="cellStyle(0)">
+      <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
+        <img class="alert-icon" :src="alertIconSrc" />
+        <span slot="message">{{ alertMessage }}</span>
       </tooltip>
     </div>
 
@@ -65,6 +65,11 @@ const infoIcon = require('../assets/Generic-circle-info.svg');
 const warningIcon = require('../assets/Generic-triangle-warning.svg');
 const errorIcon = require('../assets/Generic-triangle-error.svg');
 
+// Must match src/route/roster.js MSG_x
+const MSG_INFO = 1;
+const MSG_WARNING = 2;
+const MSG_ERROR = 3;
+
 export default {
   components: {
     EveImage,
@@ -94,35 +99,35 @@ export default {
       return labels;
     },
 
-    warningIconSrc: function() {
+    alertIconSrc: function() {
       let level = 0;
       if (this.isMain) {
-        level = Math.max(this.account.warningLevel || 0,
-            this.character.warningLevel || 0);
+        level = Math.max(this.account.alertLevel || 0,
+            this.character.alertLevel || 0);
       } else {
-        level = this.character.warningLevel || 0;
+        level = this.character.alertLevel || 0;
       }
 
-      if (level == 1) {
+      if (level == MSG_INFO) {
         return infoIcon;
-      } else if (level == 2) {
+      } else if (level == MSG_WARNING) {
         return warningIcon;
-      } else if (level == 3) {
+      } else if (level == MSG_ERROR) {
         return errorIcon;
       } else {
         return null;
       }
     },
 
-    warningMessage: function() {
+    alertMessage: function() {
       let message;
       if (this.isMain) {
         // Must include any account message
-        message = ((this.account.warning || '') + ' '
-            + (this.character.warning || '')).trim();
+        message = ((this.account.alertMessage || '') + ' '
+            + (this.character.alertMessage || '')).trim();
       } else {
         // Just the character message if it exists
-        message = (this.character.warning || '').trim();
+        message = (this.character.alertMessage || '').trim();
       }
       return message.length > 0 ? message : null;
     },
@@ -280,11 +285,11 @@ function altsLabel(altsCount) {
   display: block;
 }
 
-.warning {
+.alert {
   text-align: center;
 }
 
-.warning-icon {
+.alert-icon {
   width: 15px;
   height: 15px;
   margin-left: 9px;
