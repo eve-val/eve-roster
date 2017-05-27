@@ -1,5 +1,5 @@
 export default [
-  { label: '', key: 'warning', width: 35, margin: 0, derivedFrom: []},
+  { label: '', key: 'alertMessage', width: 35, margin: 0, derivedFrom: []},
   { label: 'Name', key: 'name', width: 200, margin: 0, metaKey: 'corporationName'  },
   { label: '', key: 'alts', width: 40, derivedFrom: []},
 

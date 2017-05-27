@@ -91,10 +91,10 @@
 import _ from 'underscore';
 import Tooltip from './Tooltip.vue';
 
-const inlineErrorIcon = require('../assets/LoadingSpinner-inline-error.svg');
-const inlineWarningIcon = require('../assets/LoadingSpinner-inline-warning.svg');
-const blockErrorIcon = require('../assets/LoadingSpinner-block-error.svg');
-const blockWarningIcon = require('../assets/LoadingSpinner-block-warning.svg');
+const inlineErrorIcon = require('../assets/Generic-circle-error.svg');
+const inlineWarningIcon = require('../assets/Generic-circle-warning.svg');
+const blockErrorIcon = require('../assets/Generic-triangle-error.svg');
+const blockWarningIcon = require('../assets/Generic-triangle-warning.svg');
 
 const DISPLAY_VALUES = ['inline', 'block'];
 const STATE_VALUES = ['hidden', 'spinning', 'error', 'warning'];

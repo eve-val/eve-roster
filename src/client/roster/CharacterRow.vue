@@ -1,14 +1,13 @@
 <template>
 <div class="_character-row">
   <div class="horiz-aligner">
-    <div class="warning col" :style="cellStyle(0)">
-      <img
-          v-if="warningMessage != null"
-          class="warning-icon"
-          src="../assets/warning-icon.svg"
-          :title="warningMessage"
-          >
+    <div class="alert col" :style="cellStyle(0)">
+      <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
+        <img class="alert-icon" :src="alertIconSrc" />
+        <span slot="message">{{ alertMessage }}</span>
+      </tooltip>
     </div>
+
     <div class="name col" :style="cellStyle(1)">
       <router-link
           class="char-link col-text"
@@ -62,6 +61,13 @@ import rosterColumns from './rosterColumns';
 import EveImage from '../shared/EveImage.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
+const infoIcon = require('../assets/Generic-circle-info.svg');
+const warningIcon = require('../assets/Generic-triangle-warning.svg');
+const errorIcon = require('../assets/Generic-triangle-error.svg');
+
+// Indices must match levels in src/route/roster.js MSG_x
+const MSG_ICONS = [ null, infoIcon, warningIcon, errorIcon ];
+
 export default {
   components: {
     EveImage,
@@ -91,12 +97,29 @@ export default {
       return labels;
     },
 
-    warningMessage: function() {
-      if (this.account != null && !this.account.isOwned) {
-        return 'This character has not been claimed.';
+    alertIconSrc: function() {
+      let level = 0;
+      if (this.isMain) {
+        level = Math.max(this.account.alertLevel || 0,
+            this.character.alertLevel || 0);
       } else {
-        return null;
+        level = this.character.alertLevel || 0;
       }
+
+      return MSG_ICONS[level];
+    },
+
+    alertMessage: function() {
+      let message;
+      if (this.isMain) {
+        // Must include any account message
+        message = ((this.account.alertMessage || '') + ' '
+            + (this.character.alertMessage || '')).trim();
+      } else {
+        // Just the character message if it exists
+        message = (this.character.alertMessage || '').trim();
+      }
+      return message.length > 0 ? message : null;
     },
 
     filterMatch: function() {
@@ -252,13 +275,14 @@ function altsLabel(altsCount) {
   display: block;
 }
 
-.warning {
+.alert {
   text-align: center;
 }
 
-.warning-icon {
+.alert-icon {
   width: 15px;
   height: 15px;
+  margin-left: 9px;
 }
 
 .name {

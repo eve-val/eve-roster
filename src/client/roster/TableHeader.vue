@@ -13,7 +13,7 @@
     <img v-if="column.key == sortKey"
         class="sort-arrow"
         :class="arrowClasses"
-        src="../assets/sort-order-arrow.png"
+        src="../assets/Roster-sort-order-arrow.png"
         >{{ column.label }}
   </div>
 </div>

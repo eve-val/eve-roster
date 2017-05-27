@@ -7,6 +7,11 @@ const eve = require('../../eve');
 const logger = require('../../util/logger')(__filename);
 const protectedEndpoint = require('../../route-helper/protectedEndpoint');
 
+// Must match src/client/roster/CharacterRow.vue MSG_x
+const MSG_INFO = 1;
+const MSG_WARNING = 2;
+const MSG_ERROR = 3;
+
 module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   privs.requireRead('roster');
 
@@ -40,7 +45,7 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
       Promise.resolve(corpNames) // Pass through
     ]);
   })
-  .then(function([ownedChars, unownedChars, corpNames]) {
+  .then(([ownedChars, unownedChars, corpNames]) => {
     let accountList = [];
 
     pushOwnedChars(ownedChars, accountList, privs, corpNames);
@@ -51,6 +56,9 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
               unownedChar, null, false /* not owned */, privs, corpNames));
     }
 
+    return Promise.all(accountList);
+  })
+  .then((accountList) => {
     return {
       columns: getProvidedColumns(privs),
       rows: accountList
@@ -58,6 +66,18 @@ module.exports = protectedEndpoint('json', (req, res, account, privs) => {
   });
 
 });
+
+function addAlert(data, message, level) {
+  if (data.alertMessage) {
+    // Append message and possibly increase level
+    data.alertMessage = data.alertMessage + '\n' + message;
+    data.alertLevel = Math.max(data.alertLevel, level);
+  } else {
+    // No previous message so set as-is
+    data.alertMessage = message;
+    data.alertLevel = level;
+  }
+}
 
 function pushOwnedChars(ownedRows, outList, privs, corpNames) {
   let accountGroups = new Map();
@@ -83,7 +103,6 @@ function pushOwnedChars(ownedRows, outList, privs, corpNames) {
   }
 
   for (let group of accountGroups.values()) {
-    // TODO: Should we add a warning flag here if !(main.corporation in corps)?
     outList.push(
         getAccountOutput(
             group.main, group.alts, true /* is owned */, privs, corpNames));
@@ -94,11 +113,25 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   let obj = {
     main: getCharOutput(mainRow, privs, corpNames),
     alts: null,
-    isOwned: isOwned,
   };
 
+  if (!isOwned) {
+    addAlert(obj, 'Character is not claimed.', MSG_WARNING);
+  }
+
+  let mainInFullCorp = mainRow.corpMembership == 'full';
+  let mainInAffilCorp = mainRow.corpMembership == 'affiliated';
+  if (!mainInFullCorp && !mainInAffilCorp) {
+    addAlert(mainRow, 'Main character is not in any affiliated corporation.',
+        MSG_ERROR);
+  } else if (!mainInFullCorp) {
+    addAlert(mainRow, 'Main character is not in primary corporation.',
+        MSG_WARNING);
+  }
+
   if (altRows != null && privs.canRead('memberAlts')) {
-    // TODO: Filter out external alts if missing memberExternalAlts perm
+    // pushOwnedChars already filters out opsec alts, so no additional filtering
+    // is necessary.
     obj.alts = altRows.map(char => getCharOutput(char, privs, corpNames));
   } else {
     obj.alts = [];
@@ -112,7 +145,24 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
     obj.homeCitadel = mainRow.homeCitadel || null;
   }
 
-  return obj;
+  // Do not bother checking for memberGroups privilege, since warnings are
+  // accessible to all members, and the trial member status is almost always
+  // determined by a title (which is public info in Eve). But checking via
+  // access groups is more robust here since the roster sync code has already
+  // resolved all custom titles to groups (no need to duplicate).
+  // - This does mean that unclaimed accounts cannot be marked as trial members.
+  if (mainRow.accountId) {
+    return dao.getAccountGroups(mainRow.accountId)
+    .then(groups => {
+      if (groups.includes('provisional_member')) {
+        addAlert(obj, 'Trial member.', MSG_INFO);
+      }
+      return obj;
+    });
+  }
+
+  // No further asynchronous data is needed so just return obj
+  return Promise.resolve(obj);
 }
 
 function getCharOutput(row, privs, corpNames) {
@@ -123,6 +173,16 @@ function getCharOutput(row, privs, corpNames) {
     corporationName: corpNames ?
         corpNames.get(row.corporationId) : 'Name unavailable'
   };
+
+  
+  if (row.corpMembership == 'full' || row.corpMembership == 'affiliated') {
+    // This is only concerned with # of titles, so a null value, empty string
+    //  or an empty JSON array are bad. Any other text value is presumably
+    //  a JSON array with at least one title element.
+    if (row.titles == null || row.titles.length == 0 || row.titles == '[]') {
+      addAlert(obj, 'Character does not have roles.', MSG_ERROR);
+    }
+  }
 
   if (privs.canRead('characterActivityStats')) {
     let lastSeen;
@@ -149,8 +209,14 @@ function getCharOutput(row, privs, corpNames) {
 }
 
 function getProvidedColumns(privs) {
-  let providedColumns =
-      ['id', 'name', 'corporationId', 'corporationName', 'isOwned'];
+  let providedColumns = [
+    'id',
+    'name',
+    'corporationId',
+    'corporationName',
+    'alertMessage',
+    'alertLevel'
+  ];
 
   if (privs.canRead('memberAlts')) {
     providedColumns.push('alts');
