@@ -15,6 +15,7 @@ router.delete('/admin/citadel/:id', require('./admin/citadelDelete'));
 router.get('/admin/setup/', require('./admin/setup_get'));
 router.put('/admin/setup/', require('./admin/setup_put'));
 router.get('/admin/cronLog', require('./admin/cronLog'));
+router.put('/admin/cronLog/:task', require('./admin/cronPut'));
 
 router.put('/account/:id/activeTimezone', require('./account/activeTimezone'));
 router.put('/account/:id/homeCitadel', require('./account/homeCitadel'));
