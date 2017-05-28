@@ -65,6 +65,25 @@ module.exports = {
       isTaskQueueFrozen = false;
       maybeRunNextTask();
     });
+  },
+
+  enqueue(taskName) {
+    for (let task of TASKS) {
+      if (task.name == taskName) {
+        return enqueueTask(task);
+      }
+    }
+
+    throw new Error('unknown task name: ' + taskName);
+  },
+
+  isTask(taskName) {
+    for (let task of TASKS) {
+      if (task.name == taskName) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
@@ -97,11 +116,13 @@ function enqueueTask(task) {
   if (!isTaskQueuedOrRunning(task)) {
     pendingTasks.push(task);
     maybeRunNextTask();
+    return true;
   } else {
     logger.warn(
         'Tried to enqueue task "%s" but it is already ' +
             'enqueued.',
         task.name);
+    return false;
   }
 }
 
