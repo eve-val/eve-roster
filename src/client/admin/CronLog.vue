@@ -1,5 +1,25 @@
 <template>
 <admin-wrapper title="Cron log" :identity="identity">
+  <div class="task-runner">
+    <select class="task-name" v-model="taskName">
+      <option value="syncRoster">Sync Roster</option>
+      <option value="syncKillboard">Sync Killboard</option>
+      <option value="syncSiggy">Sync Siggy</option>
+      <option value="truncateCronLog">Truncate Cron Log</option>
+    </select>
+    <button
+        class="roster-btn submit-btn"
+        :enabled="!submittingTask"
+        @click="onSubmitClick"
+        >Run Manually</button>
+    <loading-spinner
+        ref="submitSpinner"
+        display="inline"
+        defaultState="hidden"
+        size="18px"
+        />
+  </div>
+
   <div class="table" v-if="rows">
     <div class="headers">
       <div class="cell task">Task</div>
@@ -38,6 +58,7 @@
 </template>
 
 <script>
+import Promise from 'bluebird';
 import moment from 'moment';
 
 import ajaxer from '../shared/ajaxer';
@@ -61,15 +82,13 @@ export default {
   data: function() {
     return {
       rows: null,
+      taskName: 'syncRoster',
+      submittingTask: false
     };
   },
 
   mounted: function() {
-    this.$refs.spinner.observe(ajaxer.getAdminCronLog())
-    .then(response => {
-      let rows = response.data.rows;
-      this.rows = rows;
-    });
+    this.refreshRows();
   },
 
   filters: {
@@ -84,6 +103,34 @@ export default {
       return moment.duration(value).asSeconds().toFixed(1) + 's';
     },
   },
+
+  methods: {
+    onSubmitClick() {
+      if (this.submittingTask) {
+        return;
+      }
+      this.submittingTask = true;
+      this.$refs.submitSpinner.observe(
+          // Use a bluebird promise so the finally() function exists
+          Promise.resolve().then(() => ajaxer.putAdminCronTask(this.taskName)),
+          response => {
+            if (response.data.warning) {
+              return { state: 'warning', message: response.data.warning };
+            }
+          })
+      .finally(() => {
+        this.submittingTask = false;
+        this.refreshRows();
+      });
+    },
+
+    refreshRows() {
+      this.$refs.spinner.observe(ajaxer.getAdminCronLog())
+      .then(response => {
+        this.rows = response.data.rows;
+      });
+    }
+  }
 }
 </script>
 
@@ -91,6 +138,7 @@ export default {
 .table {
   margin-right: 100px;
   display: inline-block;
+  border-top: 1px solid #312C24;
 }
 
 .headers, .row {
@@ -131,8 +179,26 @@ export default {
   color: #a7a29c;
 }
 
+.submit-btn {
+  font-size: 14px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .task {
   width: 150px;
+}
+
+.task-name {
+  background: transparent;
+  border: 1px solid #514f4d;
+  font-size: 14px;
+  color: #a7a29c;
+}
+
+.task-runner {
+  margin-bottom: 14px;
+  position: relative;
 }
 
 .start {

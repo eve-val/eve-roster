@@ -94,6 +94,10 @@ export default {
     return axios.get('/api/admin/cronLog');
   },
 
+  putAdminCronTask(taskName) {
+    return axios.put('/api/admin/cronLog/' + taskName);
+  },
+
   getAdminSetup() {
     return axios.get('/api/admin/setup');
   },
