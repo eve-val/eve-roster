@@ -4,43 +4,46 @@
  */
 const _ = require('underscore');
 const moment = require('moment');
+const path = require('path');
 const schedule = require('node-schedule');
 
 const asyncUtil = require('../util/asyncUtil');
 const dao = require('../dao');
 const logger = require('../util/logger')(__filename);
 
-
-const TASKS = [
-  {
-    name: 'syncRoster',
-    executor: require('./task/syncRoster'),
+// If executable module does not follow the pattern require('./task/<NAME>')
+// where <NAME> is the key in the TASKS object, it may be set explicitly;
+// otherwise it that pattern is assumed.
+const TASKS = {
+  'syncRoster': {
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
     interval: moment.duration(20, 'minutes').asMilliseconds(),
     schedule: '*/20 * * * *', // Every 20 minutes
   },
-  {
-    name: 'syncKillboard',
-    executor: require('./task/syncKillboard'),
+  'syncKillboard': {
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
     interval: moment.duration(1, 'day').asMilliseconds(),
     schedule: '0 2 * * *',  // Once a day at 2AM
   },
-  {
-    name: 'syncSiggy',
-    executor: require('./task/syncSiggy'),
+  'syncSiggy': {
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
     interval: moment.duration(1, 'day').asMilliseconds(),
     schedule: '0 2 * * *',  // Once a day at 2AM
   },
-  {
-    name: 'truncateCronLog',
-    executor: require('./task/truncateCronLog'),
+  'truncateCronLog': {
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
     interval: moment.duration(90, 'days').asMilliseconds(),
     schedule: '0 0 */90 * *',  // Every 90 days
   },
-];
+};
+
+// Add name and executor properties to the task objects
+for (let taskName of Object.keys(TASKS)) {
+  TASKS[taskName].name = taskName;
+  if (!TASKS[taskName].executor) {
+    TASKS[taskName].executor = require(path.join(__dirname, './task/', taskName));
+  }
+}
 
 const JOB_RESULTS = ['success', 'failure', 'partial', 'unknown'];
 
@@ -56,7 +59,8 @@ module.exports = {
     }
     isTaskQueueFrozen = true;
 
-    asyncUtil.serialize(TASKS, task => {
+    let tasks = Object.keys(TASKS).map(name => TASKS[name]);
+    asyncUtil.serialize(tasks, task => {
       return initTask(task);
     })
     .then(function() {
@@ -68,22 +72,15 @@ module.exports = {
   },
 
   enqueue(taskName) {
-    for (let task of TASKS) {
-      if (task.name == taskName) {
-        return enqueueTask(task);
-      }
+    if (taskName in TASKS) {
+      return enqueueTask(TASKS[taskName]);
+    } else {
+      throw new Error('unknown task name: ' + taskName);
     }
-
-    throw new Error('unknown task name: ' + taskName);
   },
 
   isTask(taskName) {
-    for (let task of TASKS) {
-      if (task.name == taskName) {
-        return true;
-      }
-    }
-    return false;
+    return taskName in TASKS;
   }
 };
 
