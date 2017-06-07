@@ -11,7 +11,7 @@
         class="roster-btn submit-btn"
         :enabled="!submittingTask"
         @click="onSubmitClick"
-        >Run Manually</button>
+        >Queue</button>
     <loading-spinner
         ref="submitSpinner"
         display="inline"
