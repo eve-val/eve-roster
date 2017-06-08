@@ -45,21 +45,14 @@ module.exports = {
    * passed instead.
    */
   doWhile(initialValue, callback) {
-    return new Promise((resolve, reject) => {
-      onResult(initialValue);
-
-      function onResult(previousResult) {
-        if (previousResult == undefined) {
-          resolve();
-        } else {
-          Promise.resolve(callback(previousResult))
-            .then(onResult)
-            .catch(onError);
-        }
-      }
-
-      function onError(e) {
-        reject(e);
+    return Promise.try(() => {
+      return callback(initialValue);
+    })
+    .then(result => {
+      if (result == undefined) {
+        return undefined;
+      } else {
+        return this.doWhile(result, callback);
       }
     });
   },
