@@ -111,7 +111,7 @@ function pushOwnedChars(ownedRows, outList, privs, corpNames) {
 
 function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   let obj = {
-    main: getCharOutput(mainRow, privs, corpNames),
+    main: getCharOutput(mainRow, true /* isMain */, privs, corpNames),
     alts: null,
   };
 
@@ -122,17 +122,18 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   let mainInFullCorp = mainRow.corpMembership == 'full';
   let mainInAffilCorp = mainRow.corpMembership == 'affiliated';
   if (!mainInFullCorp && !mainInAffilCorp) {
-    addAlert(mainRow, 'Main character is not in any affiliated corporation.',
+    addAlert(obj, 'Main character is not in any affiliated corporation.',
         MSG_ERROR);
   } else if (!mainInFullCorp) {
-    addAlert(mainRow, 'Main character is not in primary corporation.',
+    addAlert(obj, 'Main character is not in primary corporation.',
         MSG_WARNING);
   }
 
   if (altRows != null && privs.canRead('memberAlts')) {
     // pushOwnedChars already filters out opsec alts, so no additional filtering
     // is necessary.
-    obj.alts = altRows.map(char => getCharOutput(char, privs, corpNames));
+    obj.alts = altRows.map(char => getCharOutput(
+        char, false /* isMain */, privs, corpNames));
   } else {
     obj.alts = [];
   }
@@ -165,7 +166,7 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
   return Promise.resolve(obj);
 }
 
-function getCharOutput(row, privs, corpNames) {
+function getCharOutput(row, isMain, privs, corpNames) {
   let obj = {
     id: row.id,
     name: row.name,
@@ -180,7 +181,11 @@ function getCharOutput(row, privs, corpNames) {
     //  or an empty JSON array are bad. Any other text value is presumably
     //  a JSON array with at least one title element.
     if (row.titles == null || row.titles.length == 0 || row.titles == '[]') {
-      addAlert(obj, 'Character does not have roles.', MSG_ERROR);
+      if (isMain) {
+        addAlert(obj, 'Main does not have roles.', MSG_ERROR);
+      } else {
+        addAlert(obj, 'Alt does not have roles.', MSG_WARNING);
+      }
     }
   }
 
