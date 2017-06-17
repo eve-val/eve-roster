@@ -115,18 +115,16 @@ function getAccountOutput(mainRow, altRows, isOwned, privs, corpNames) {
     alts: null,
   };
 
-  if (!isOwned) {
+  if (isOwned) {
+    let mainInFullCorp = mainRow.corpMembership == 'full';
+    let mainInAffilCorp = mainRow.corpMembership == 'affiliated';
+    if (!mainInFullCorp && !mainInAffilCorp) {
+      addAlert(obj, 'Main is not in any affiliated corporation.', MSG_ERROR);
+    } else if (!mainInFullCorp) {
+      addAlert(obj, 'Main is not in primary corporation.', MSG_WARNING);
+    }
+  } else {
     addAlert(obj, 'Character is not claimed.', MSG_WARNING);
-  }
-
-  let mainInFullCorp = mainRow.corpMembership == 'full';
-  let mainInAffilCorp = mainRow.corpMembership == 'affiliated';
-  if (!mainInFullCorp && !mainInAffilCorp) {
-    addAlert(obj, 'Main character is not in any affiliated corporation.',
-        MSG_ERROR);
-  } else if (!mainInFullCorp) {
-    addAlert(obj, 'Main character is not in primary corporation.',
-        MSG_WARNING);
   }
 
   if (altRows != null && privs.canRead('memberAlts')) {
