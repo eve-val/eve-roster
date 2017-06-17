@@ -508,6 +508,7 @@ Dao.prototype = {
     return this.builder('character')
         .distinct('corporationId')
         .select()
+        .whereNotNull('corporationId')
     .then(corpIds => {
       // Map from [{corporationId: num}] to [num]
       return corpIds.map(e => e.corporationId);
