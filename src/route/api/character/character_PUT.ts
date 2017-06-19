@@ -1,0 +1,58 @@
+import Promise = require('bluebird');
+
+import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
+import { dao } from '../../../dao';
+import { Tnex } from '../../../tnex';
+import { AccountPrivileges } from '../../../route-helper/privileges';
+
+import { BadRequestError } from '../../../error/BadRequestError';
+
+const logger = require('../../../util/logger')(__filename);
+
+
+export default jsonEndpoint((req, res, db, account, privs) => {
+  let characterId = parseInt(req.params.id);
+
+  return Promise.resolve()
+  .then(() => {
+    if (req.body.opsec != undefined) {
+      return setIsOpsec(db, account.id, privs, characterId, !!req.body.opsec);
+    } else {
+      return 0;
+    }
+  })
+  .then(() => {
+    return {};
+  })
+});
+
+function setIsOpsec(
+    db: Tnex,
+    accountId: number,
+    privs: AccountPrivileges,
+    characterId: number,
+    isOpsec: boolean,
+    ) {
+  logger.debug('setIsOpsec', accountId, characterId, isOpsec);
+
+  return dao.character.getCoreData(db, characterId)
+  .then(row => {
+    if (!row) {
+      throw new BadRequestError(`Character not found: ${characterId}.`);
+    }
+
+    privs.requireWrite('characterIsOpsec', accountId == row.account_id);
+
+    if (isOpsec && isMemberCorp(row.memberCorporation_membership)) {
+      throw new BadRequestError(
+          `Cannot set character ${characterId} to opsec: character is in an ` +
+          `affiliated corp (${row.character_corporationId})`);
+    }
+
+    return dao.character.setCharacterIsOpsec(db, characterId, isOpsec);
+  });
+}
+
+function isMemberCorp(membership: string | null) {
+  return membership == 'full' || membership == 'affiliated';
+}

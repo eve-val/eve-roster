@@ -59,8 +59,8 @@ export default {
     return axios.post('/api/admin/citadel', {
       name: name,
       type: type,
-      allianceAccess: parseInt(allianceAccess),
-      allianceOwned: parseInt(allianceOwned),
+      allianceAccess: allianceAccess,
+      allianceOwned: allianceOwned,
     });
   },
 
@@ -95,7 +95,7 @@ export default {
   },
 
   putAdminCronTask(taskName) {
-    return axios.put('/api/admin/cronLog/' + taskName);
+    return axios.put('/api/admin/cron/' + taskName);
   },
 
   getAdminSetup() {
