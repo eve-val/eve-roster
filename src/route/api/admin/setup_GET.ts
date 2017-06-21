@@ -6,7 +6,7 @@ import { Tnex } from '../../../tnex';
 import { MemberCorporation, GroupTitle } from '../../../dao/tables';
 import { SimpleMap } from '../../../util/simpleTypes';
 import { censor } from './_censor';
-import { Input as Output } from './setup_put';
+import { Input as Output } from './setup_PUT';
 
 type CorporationConfig = Output['corporations'][0];
 
