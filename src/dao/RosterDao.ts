@@ -126,6 +126,7 @@ export default class RosterDao {
         .select(t.character)
         .distinct('character_corporationId')
         .columns('character_corporationId')
+        .whereNotNull('character_corporationId')
         .run()
     .then(rows => {
       return _.pluck(rows, 'character_corporationId');
