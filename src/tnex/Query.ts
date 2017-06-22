@@ -9,12 +9,19 @@ export class Query<T extends object, R /* return type */> {
   protected _scoper: Scoper;
   protected _query: Knex.QueryBuilder;
 
-  constructor(scoper: Scoper, query: Knex.QueryBuilder) {
+  private _wasRun = false;
+
+  constructor(scoper: Scoper, query: Knex.QueryBuilder, shouldBeRun: boolean) {
     this._scoper = scoper;
     this._query = query;
+
+    if (shouldBeRun) {
+      checkQueryWasRunOnNextTick(this);
+    }
   }
 
   public run(): Promise<R> {
+    this._wasRun = true;
     return this._query;
   }
 
@@ -67,4 +74,31 @@ export class Query<T extends object, R /* return type */> {
       return this._scoper.scopeColumn(rval);
     }
   }
+
+  public assertWasRun() {
+    if (!this._wasRun) {
+      throw new Error(`The following query was created but not run:`
+          + ` ${this._query.toString()}`);
+    }
+  }
+}
+
+
+let timeoutRegistered = false;
+let queriesToCheck = [] as Query<any, any>[];
+
+function checkQueryWasRunOnNextTick(query: Query<any, any>) {
+  queriesToCheck.push(query);
+  if (!timeoutRegistered) {
+    timeoutRegistered = true;
+    setTimeout(checkPendingQueries, 0);
+  }
+}
+
+function checkPendingQueries() {
+  for (let query of queriesToCheck) {
+    query.assertWasRun();
+  }
+  timeoutRegistered = false;
+  queriesToCheck.length = 0;
 }

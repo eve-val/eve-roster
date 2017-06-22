@@ -44,8 +44,10 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       table: J,
       subqueryTableName?: string,
       ) {
-    super(scoper.mirror(), knex(scoper.getTableName(table)));
-
+    super(
+        scoper.mirror(),
+        knex(scoper.getTableName(table)),
+        subqueryTableName == undefined);
     this._subqueryTableName = subqueryTableName;
   }
 
@@ -53,8 +55,9 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     if (this._subqueryTableName != null) {
       throw new Error(`Subqueries can't be run().`);
     }
+    this._query = this._query.select(this._getPendingColumnSelectStatements());
 
-    return this._query.select(this._getPendingColumnSelectStatements());
+    return super.run();
   }
 
   public fetchFirst(): Promise<S | null> {
