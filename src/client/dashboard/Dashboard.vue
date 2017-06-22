@@ -19,14 +19,14 @@
           :name="transfer.name"
           @requireRefresh="onRequireRefresh"
           />
-      <owned-character-slab v-for="character in sortedCharacters"
+      <owned-character-slab v-for="character in characters"
           class="slab"
           :key="character.id"
           :accountId="accountId"
           :character="character"
           :loginParams="loginParams"
           :isMain="character.id == mainCharacter"
-          :highlightMain="sortedCharacters.length > 1"
+          :highlightMain="characters.length > 1"
           :access="access"
           @requireRefresh="onRequireRefresh"
           />
@@ -75,21 +75,6 @@ export default {
     };
   },
 
-  computed: {
-    sortedCharacters: function() {
-      this.characters.sort((a, b) => {
-        if (a.id == this.mainCharacter) {
-          return -1;
-        } else if (b.id == this.mainCharacter) {
-          return 1;
-        } else {
-          return a.name.localeCompare(b.name);
-        }
-      });
-      return this.characters;
-    }
-  },
-
   mounted: function() {
     this.fetchData();
   },
@@ -111,6 +96,8 @@ export default {
         this.mainCharacter = response.data.mainCharacter;
         this.access = response.data.access;
 
+        this.sortCharacters();
+
         return this.$refs.spinner.observe(ajaxer.getFreshSkillQueueSummaries());
       })
       .then(response => {
@@ -121,14 +108,53 @@ export default {
             character.skillQueue = updatedEntry.skillQueue;
           }
         }
+
+        this.sortCharacters();
       });
     },
 
     onRequireRefresh(characterId) {
       this.fetchData();
     },
+
+    sortCharacters() {
+      this.characters.sort((a, b) => {
+        let result = compareIsMainCharacter(a, b, this.mainCharacter);
+        if (result == 0) {
+          result = compareHasActiveSkillQueue(a, b);
+        }
+        if (result == 0) {
+          result = a.name.localeCompare(b.name);
+        }
+        return result;
+      });
+    }
   },
 }
+
+function compareIsMainCharacter(a, b, mainCharacterId) {
+  if (a.id == mainCharacterId) {
+    return -1;
+  } else if (b.id == mainCharacterId) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function compareHasActiveSkillQueue(a, b) {
+  let aActive = a.skillQueue.queueStatus == 'active';
+  let bActive = b.skillQueue.queueStatus == 'active';
+
+  if (aActive && !bActive) {
+    return -1;
+  } else if (bActive && !aActive) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 </script>
 
 <style scoped>
