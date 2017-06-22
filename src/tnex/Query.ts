@@ -45,6 +45,13 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
+  public whereNotNull(column: keyof T): this {
+    this._query = this._query
+        .whereNotNull(this._scoper.scopeColumn(column));
+
+    return this;
+  }
+
   public whereNull(column: keyof T): this {
     this._query = this._query
         .whereNull(this._scoper.scopeColumn(column));
