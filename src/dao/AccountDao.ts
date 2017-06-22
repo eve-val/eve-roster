@@ -120,17 +120,6 @@ export default class AccountDao {
     });
   }
 
-  getGroups(db: Tnex, accountId: number) {
-    return db
-        .select(accountGroup)
-        .where('accountGroup_account', '=', db.val(accountId))
-        .columns('accountGroup_group')
-        .run()
-    .then(rows => {
-        return pluck(rows, 'accountGroup_group');
-    });
-  }
-
   setActiveTimezone(db: Tnex, accountId: number, timezone: string) {
     return db
         .update(account, { account_activeTimezone: timezone })
@@ -167,22 +156,26 @@ export default class AccountDao {
         .then(() => {
           return db
               .del(accountGroup)
-              .where('accountGroup_account', '=', val(accountId));
+              .where('accountGroup_account', '=', val(accountId))
+              .run();
         })
         .then(() => {
           return db
               .del(groupExplicit)
-              .where('groupExplicit_account', '=', val(accountId));
+              .where('groupExplicit_account', '=', val(accountId))
+              .run();
         })
         .then(() => {
           return db
               .del(pendingOwnership)
-              .where('pendingOwnership_account', '=', val(accountId));
+              .where('pendingOwnership_account', '=', val(accountId))
+              .run();
         })
         .then(() => {
           return db
               .del(account)
-              .where('account_id', '=', val(accountId));
+              .where('account_id', '=', val(accountId))
+              .run();
         })
         .then(() => {
           return 1;

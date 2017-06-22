@@ -57,7 +57,8 @@ export default class GroupsDao {
         oldGroups = _oldGroups;
         return db
             .del(accountGroup)
-            .where('accountGroup_account', '=', val(accountId));
+            .where('accountGroup_account', '=', val(accountId))
+            .run();
       })
       .then(() => {
         if (groups.length > 0) {
