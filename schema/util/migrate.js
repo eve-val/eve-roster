@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const asyncUtil = require('../../src/util/asyncUtil');
+const asyncUtil = require('../../out/util/asyncUtil');
 
 
 module.exports = function migrate(fn) {
@@ -37,7 +37,7 @@ function runMigration(knex, fn) {
     .then(() => {
       // Check to see if we're violating any foreign keys. If so, print a
       // summary. This step is not necessary, but the usual error message
-      // is completely opaque and unhepful.
+      // is completely opaque and unhelpful.
       return trx.raw('PRAGMA foreign_key_check');
     })
     .then(rows => {
