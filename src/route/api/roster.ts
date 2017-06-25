@@ -226,7 +226,7 @@ function getJsonForCharacter(
       } else if (status == 'alt') {
         addAlert(obj, alert.LEVEL_WARNING, 'Alt does not have roles.');
       } else if (status == 'unowned') {
-        addAlert(obj, alert.LEVEL_ERROR, 'New member does not have roles.');
+        addAlert(obj, alert.LEVEL_ERROR, 'Character does not have roles.');
       }
     }
   }
