@@ -10,9 +10,12 @@ import { MissingTokenError } from '../../../error/MissingTokenError';
 import * as skillQueue from '../../../data-source/skillQueue';
 import * as time from '../../../util/time';
 
+type Output = Payload | { warning: string };
+
 export interface Payload {
   dataStatus: string,
   queue: QueueItemJson[],
+  queueDurationLabel: string | null,
 }
 
 export interface QueueItemJson {
@@ -24,7 +27,7 @@ export interface QueueItemJson {
   progress: number,
 }
 
-export default jsonEndpoint((req, res, db, account, privs) => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   let characterId = req.params.id;
 
   return dao.character.getOwner(db, characterId)
@@ -70,6 +73,7 @@ export default jsonEndpoint((req, res, db, account, privs) => {
     return {
       dataStatus: queueResult.status,
       queue: transformedQueue,
+      queueDurationLabel: getRemainingDurationLabel(queue, now),
     };
   })
   .catch(e => {
@@ -88,4 +92,13 @@ function getRemainingDuration(queue: SkillQueueEntry[], now: number) {
     totalDuration = lastItem.endTime - now;
   }
   return totalDuration;
+}
+
+function getRemainingDurationLabel(queue: SkillQueueEntry[], now: number) {
+  let lastItem = queue[queue.length - 1];
+  if (lastItem != null && lastItem.endTime != null) {
+    return time.shortDurationString(now, lastItem.endTime);
+  } else {
+    return null;
+  }
 }

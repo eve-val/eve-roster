@@ -19,6 +19,12 @@
           :queueData="queueItem"
           :position="i"
           />
+      <div class="queue-total-container" v-if="queueDuration != null">
+        <div class="queue-total">
+          <span style="color: #cdcdcd">Total:</span>
+          {{ queueDuration }}
+        </div>
+      </div>
     </template>
   </template>
   <template v-if="canReadSkills">
@@ -75,6 +81,8 @@ export default {
   data: function() {
     return {
       queue: null,
+      queueDuration: null,
+
       skillMap: null,
       skillGroups: null,
 
@@ -136,6 +144,7 @@ export default {
           ]),
           ([skillResponse, queueResponse]) => {
             this.queue = queueResponse.data.queue;
+            this.queueDuration = queueResponse.data.queueDurationLabel;
             this.maybeInjectQueueDataIntoSkillsMap();
 
             if (queueResponse.data.dataStatus != 'fresh') {
@@ -277,5 +286,20 @@ function groupifySkills(skills){
 .empty-queue {
   font-size: 14px;
   padding: 10px 0px 9px 13px;
+}
+
+.queue-total-container {
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: -35px;
+}
+
+.queue-total {
+  color: #8a8a8a;
+  font-size: 14px;
+  margin-right: 13px;
 }
 </style>

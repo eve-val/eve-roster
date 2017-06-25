@@ -29,7 +29,8 @@ export default class AccessTokenDao {
       row: TokenUpdate) {
     return db
         .update(accessToken, row)
-        .where('accessToken_character', '=', val(characterId));
+        .where('accessToken_character', '=', val(characterId))
+        .run();
   }
 
   upsert(

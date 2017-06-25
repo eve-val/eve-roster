@@ -1,5 +1,4 @@
 const Promise = require('bluebird');
-const asyncUtil = require('../../out/util/asyncUtil');
 
 
 module.exports = function migrate(fn) {
@@ -43,7 +42,7 @@ function runMigration(knex, fn) {
     .then(rows => {
       if (rows.length > 0) {
         console.error('FATAL: Foreign key violation(s) detected.')
-        return asyncUtil.serialize(rows, row => {
+        return Promise.each(rows, row => {
           return trx(row.table).select().where('rowid', '=', row.rowid)
           .then(sourceRows => {
             console.error('  Violation:', row);

@@ -103,7 +103,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   })
   .then(() => {
     if (accountId != null && privs.canRead('memberGroups')) {
-      return dao.account.getGroups(db, accountId)
+      return dao.group.getAccountGroups(db, accountId)
       .then(groups => {
         payload.account.groups = groups;
       });

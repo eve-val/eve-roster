@@ -9,12 +9,19 @@ export class Query<T extends object, R /* return type */> {
   protected _scoper: Scoper;
   protected _query: Knex.QueryBuilder;
 
-  constructor(scoper: Scoper, query: Knex.QueryBuilder) {
+  private _wasRun = false;
+
+  constructor(scoper: Scoper, query: Knex.QueryBuilder, shouldBeRun: boolean) {
     this._scoper = scoper;
     this._query = query;
+
+    if (shouldBeRun) {
+      checkQueryWasRunOnNextTick(this);
+    }
   }
 
   public run(): Promise<R> {
+    this._wasRun = true;
     return this._query;
   }
 
@@ -25,15 +32,6 @@ export class Query<T extends object, R /* return type */> {
    * Not comprehensive. Add as necessary. See where() for warning about how
    * knex handles value bindings in its generated queries.
    */
-
-  private _scopeRVal<K extends keyof T, R extends keyof T>(
-      rval: R | ValueWrapper<T[K]>) {
-    if (rval instanceof ValueWrapper) {
-      return rval.value;
-    } else {
-      return this._scoper.scopeColumn(rval);
-    }
-  }
 
   public where<K extends keyof T, R extends keyof T>(
       column: K,
@@ -90,4 +88,31 @@ export class Query<T extends object, R /* return type */> {
 
     return this;
   }
+
+  public assertWasRun() {
+    if (!this._wasRun) {
+      throw new Error(`The following query was created but not run:`
+          + ` ${this._query.toString()}`);
+    }
+  }
+}
+
+
+let timeoutRegistered = false;
+let queriesToCheck = [] as Query<any, any>[];
+
+function checkQueryWasRunOnNextTick(query: Query<any, any>) {
+  queriesToCheck.push(query);
+  if (!timeoutRegistered) {
+    timeoutRegistered = true;
+    setTimeout(checkPendingQueries, 0);
+  }
+}
+
+function checkPendingQueries() {
+  for (let query of queriesToCheck) {
+    query.assertWasRun();
+  }
+  timeoutRegistered = false;
+  queriesToCheck.length = 0;
 }

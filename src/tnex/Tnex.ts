@@ -92,14 +92,16 @@ export class Tnex {
     return new Query<T, number>(
         this._registry,
         this._knex(this._registry.getTableName(table))
-            .update(this._prepForInsert(values, table)));
+            .update(this._prepForInsert(values, table)),
+        true);
   }
 
   public del<T extends object>(table: T): Query<T, number> {
     return new Query<T, number>(
         this._registry,
         this._knex(this._registry.getTableName(table))
-            .del());
+            .del(),
+        true);
   }
 
   public upsert<T extends object, R extends T>(
