@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node out/server.js",
-    "updatedb": "node bin/updatedb.js",
+    "updatedb": "nf run node bin/updatedb.js",
+    "revertdb": "nf run node bin/updatedb.js -- --revert",
     "build": "npm run build-server && webpack --progress --hide-modules",
     "build-server": "tsc",
     "watch-server": "tsc -w",
