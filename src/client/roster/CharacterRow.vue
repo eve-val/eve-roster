@@ -65,7 +65,7 @@ const infoIcon = require('../assets/Generic-circle-info.svg');
 const warningIcon = require('../assets/Generic-triangle-warning.svg');
 const errorIcon = require('../assets/Generic-triangle-error.svg');
 
-// Indices must match levels in src/route/roster.js MSG_x
+// Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [ null, infoIcon, warningIcon, errorIcon ];
 
 export default {

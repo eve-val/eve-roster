@@ -149,19 +149,19 @@ function getJsonForAccount(
     corpNames: Map<number, string> | null,
     ): AccountJson {
   let accountJson: AccountJson = {
-    main: getJsonForCharacter(mainRow, privs, corpNames),
+    main: getJsonForCharacter(mainRow, 'main', privs, corpNames),
     alts: [],
   };
 
   if (mainRow.memberCorporation_membership != 'full') {
     if (mainRow.memberCorporation_membership == 'affiliated') {
       addAlert(
-        mainRow,
+        accountJson,
         alert.LEVEL_WARNING,
         'Main character is not in primary corporation.');
     } else {
       addAlert(
-        mainRow,
+        accountJson,
         alert.LEVEL_ERROR,
         'Main character is not in any affiliated corporation.');
     }
@@ -169,7 +169,7 @@ function getJsonForAccount(
 
   if (altRows != null && privs.canRead('memberAlts')) {
     accountJson.alts = altRows.map(
-        char => getJsonForCharacter(char, privs, corpNames));
+        char => getJsonForCharacter(char, 'alt', privs, corpNames));
   }
 
   if (privs.canRead('memberHousing')) {
@@ -194,7 +194,7 @@ function getJsonForUnownedCharacter(
     ): AccountJson {
 
   let json: AccountJson = {
-    main: getJsonForCharacter(character, privs, corpNames),
+    main: getJsonForCharacter(character, 'unowned', privs, corpNames),
     alts: [],
   };
 
@@ -205,6 +205,7 @@ function getJsonForUnownedCharacter(
 
 function getJsonForCharacter(
     row: BasicRosterCharacter,
+    status: 'main' | 'alt' | 'unowned',
     privs: AccountPrivileges,
     corpNames: Map<number, string> | null,
     ): CharacterJson {
@@ -220,7 +221,13 @@ function getJsonForCharacter(
       || row.memberCorporation_membership == 'affiliated') {
     let titles: string[] = JSON.parse(row.character_titles || '[]');
     if (titles.length == 0) {
-      addAlert(obj, alert.LEVEL_ERROR, 'Character does not have roles.');
+      if (status == 'main') {
+        addAlert(obj, alert.LEVEL_ERROR, 'Main does not have roles.');
+      } else if (status == 'alt') {
+        addAlert(obj, alert.LEVEL_WARNING, 'Alt does not have roles.');
+      } else if (status == 'unowned') {
+        addAlert(obj, alert.LEVEL_ERROR, 'Character does not have roles.');
+      }
     }
   }
 
