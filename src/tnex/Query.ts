@@ -52,7 +52,7 @@ export class Query<T extends object, R /* return type */> {
       // To get around this, build up a raw query part.
       let rawLeft = this._scoper.scopeColumn(column);
       let rawRight = this._scoper.scopeColumn(right);
-      this._query = this._query.whereRaw(`${rawLeft} ${cmp} ${rawRight}`);
+      this._query = this._query.whereRaw(`?? ${cmp} ??`, [rawLeft, rawRight]);
     }
 
     return this;
