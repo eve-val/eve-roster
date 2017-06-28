@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="36px" viewBox="0 0 35 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.06">
+        <g fill="#000000">
+            <polygon points="0 0 0 36 11 18"></polygon>
+            <polygon points="18 0 29 18 18 36 35 36 35 0"></polygon>
+        </g>
+    </g>
+</svg>

@@ -1,6 +1,6 @@
 <template>
 <div class="_dev-frame">
-  <app-header :identity="identity" />
+  <app-header :identity="identity"></app-header>
   <div class="split-container">
     <div class="sidebar">
       <router-link class="sidebar-link"
@@ -34,11 +34,13 @@ import AppHeader from '../shared/AppHeader.vue';
 
 import DevLoadingSpinner from './DevLoadingSpinner.vue';
 import DevOwnedCharacterSlab from './DevOwnedCharacterSlab.vue';
+import DevTaskSlab from './DevTaskSlab.vue';
 
 export default {
   components: {
     AppHeader,
     DevLoadingSpinner,
+    DevTaskSlab,
   },
 
   props: {
@@ -57,6 +59,11 @@ export default {
           component: DevOwnedCharacterSlab,
           label: 'OwnedCharacterSlab',
           path: 'owned-character-slab',
+        },
+        {
+          component: DevTaskSlab,
+          label: 'TaskSlab',
+          path: 'dev-task-slab',
         },
       ],
     };

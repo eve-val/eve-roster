@@ -29,7 +29,8 @@
         size="20px"
         tooltipGravity="left center"
         actionLabel="transferring this character to you"
-        />
+        >
+    </loading-spinner>
   </div> <!-- end _pending-transfer-slab -->
 </character-slab-frame>
 </template>
