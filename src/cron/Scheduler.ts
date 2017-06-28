@@ -7,15 +7,17 @@ import { dao } from '../dao';
 import { notNil } from '../util/assert';
 import { findWhere, pluck } from '../util/underscore';
 
-import { TaskExecutor, ExecutorResult, JobResult, } from './cronTypes';
-import { Job } from './Job';
+import { Job, TaskExecutor } from './Job';
+import { JobImpl } from './JobImpl';
 
 const logger = require('../util/logger')(__filename);
 
 
+let _nextExecutionId = 0;
+
 export class Scheduler {
   private _db: Tnex;
-  private _runningJobs = new Map<string, Job>();
+  private _runningJobs = [] as JobImpl[];
   private _channels = new Map<string, JobChannel>();
 
   constructor(db: Tnex) {
@@ -46,9 +48,13 @@ export class Scheduler {
       timeout: number,
       channelName?: string,
       ): Job {
-    return this._runningJobs.get(taskName)
+    return this._findRunningJob(taskName)
         || this._findQueuedTaskInChannel(taskName, channelName)
         || this._createAndRunJob(taskName, executor, timeout, channelName);
+  }
+
+  public getRunningJobs(): ReadonlyArray<Job> {
+    return this._runningJobs;
   }
 
   private _createAndRunJob(
@@ -57,8 +63,9 @@ export class Scheduler {
       timeout: number,
       channelName?: string,
       ) {
-
-    let job = new Job(taskName, executor, timeout, channelName);
+    let job = new JobImpl(
+        _nextExecutionId, taskName, executor, timeout, channelName);
+    _nextExecutionId++;
 
     if (channelName == undefined) {
       this._executeJob(job);
@@ -69,35 +76,34 @@ export class Scheduler {
     return job;
   }
 
-  private _executeJob(job: Job) {
-    if (job.id != undefined) {
+  private _executeJob(job: JobImpl) {
+    if (job.status != `queued`) {
       throw new Error(`Job already executed: ${inspect(job)}.`);
     }
-    if (this._runningJobs.has(job.taskName)) {
+    if (this._isRunning(job.taskName)) {
       throw new Error(`Task ${job.taskName} already running.`);
     }
-    this._runningJobs.set(job.taskName, job);
+    this._runningJobs.push(job);
 
     dao.cron.startJob(this._db, job.taskName)
     .then(jobId => {
-      job.id = jobId;
+      job.logId = jobId;
+      job.startTime = Date.now();
 
-      logger.info(`START task "${job.taskName}" (job ${job.id})`
-          + ` channel=${job.channel}`);
+      logger.info(`START ${jobSummary(job)}.`);
 
-      const work = job.executor();
+      const work = job.executor(job);
       job.timeoutId = setTimeout(() => this._timeoutJob(job), job.timeout);
       job.status = 'running';
       return work;
     })
     .catch(e => {
-      logger.error(`Error while executing task "${job.taskName}" (${job.id}}.`);
+      logger.error(`Error while executing ${jobSummary(job)}.`);
       logger.error(e);
       return 'failure';
     })
     .then(result => {
-      const logMessage = `FINISH task "${job.taskName}" (job ${job.id}) with`
-          + ` result "${result}".`;
+      const logMessage = `FINISH ${jobSummary(job)} with result "${result}".`;
 
       if (result == 'success') {
         logger.info(logMessage);
@@ -109,7 +115,7 @@ export class Scheduler {
       if (!job.timedOut) {
         clearTimeout(notNil(job.timeoutId));
       }
-      return dao.cron.finishJob(this._db, notNil(job.id), result);
+      return dao.cron.finishJob(this._db, notNil(job.logId), result);
     })
     .catch(e => {
       logger.error('DB failure when trying to log cron job failure :(');
@@ -124,16 +130,18 @@ export class Scheduler {
     });
   }
 
-  private _timeoutJob(job: Job) {
+  private _timeoutJob(job: JobImpl) {
     this._unregisterJob(job);
     job.timedOut = true;
   }
 
-  private _unregisterJob(job: Job) {
-    if (this._runningJobs.get(job.taskName) != job) {
+  private _unregisterJob(job: JobImpl) {
+    let jobIndex = this._runningJobs.indexOf(job);
+
+    if (jobIndex < 0) {
       throw new Error(`Orphaned job detected. ${inspect(job)}.`);
     }
-    this._runningJobs.delete(job.taskName);
+    this._runningJobs.splice(jobIndex, 1);
 
     this._removeJobFromChannel(job.channel, job);
     this._tryToUnstallChannels();
@@ -149,6 +157,14 @@ export class Scheduler {
     return channel;
   }
 
+  private _findRunningJob(taskName: string) {
+    return findWhere(this._runningJobs, { taskName: taskName });
+  }
+
+  private _isRunning(taskName: string) {
+    return this._findRunningJob(taskName) != undefined;
+  }
+
   private _findQueuedTaskInChannel(
       taskName: string, channelName: string | undefined) {
     if (channelName == undefined) {
@@ -158,7 +174,7 @@ export class Scheduler {
         this._getChannel(channelName).queue, { taskName: taskName });
   }
 
-  private _queueJobToChannel(job: Job, channel: JobChannel) {
+  private _queueJobToChannel(job: JobImpl, channel: JobChannel) {
     channel.queue.push(job);
     this._tryRunNextJobInChannel(channel);
     if (channel.runningJob != job) {
@@ -174,7 +190,7 @@ export class Scheduler {
 
     for (let i = 0; i < channel.queue.length; i++) {
       let job = channel.queue[i];
-      if (!this._runningJobs.has(job.taskName)) {
+      if (!this._isRunning(job.taskName)) {
         channel.queue.splice(i, 1);
         channel.runningJob = job;
         this._executeJob(job);
@@ -188,7 +204,7 @@ export class Scheduler {
     }
   }
 
-  private _removeJobFromChannel(channelName: string | undefined, job: Job) {
+  private _removeJobFromChannel(channelName: string | undefined, job: JobImpl) {
     if (channelName == undefined) {
       return;
     }
@@ -215,10 +231,15 @@ export class Scheduler {
 class JobChannel {
   public readonly name: string;
 
-  public runningJob: Job | undefined;
-  public queue = [] as Job[];
+  public runningJob: JobImpl | undefined;
+  public queue = [] as JobImpl[];
 
   constructor(name: string) {
     this.name = name;
   }
+}
+
+function jobSummary(job: JobImpl) {
+  return `job "${job.taskName}" (id ${job.executionId}, logId ${job.logId},`
+      + ` channel=${job.channel || 'none'})`
 }

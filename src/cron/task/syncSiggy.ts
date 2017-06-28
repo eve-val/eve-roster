@@ -10,7 +10,7 @@ import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { character } from '../../dao/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
-import { ExecutorResult } from '../cronTypes';
+import { ExecutorResult } from '../Job';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');

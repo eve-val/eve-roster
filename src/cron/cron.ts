@@ -3,34 +3,64 @@
  * task can be run at a time. The rest wait in a queue until it's their turn.
  */
 import Promise = require('bluebird');
+import moment = require('moment');
 import schedule = require('node-schedule');
 
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { serialize } from '../util/asyncUtil';
-import { TaskDescriptor } from './cronTypes';
 import { Scheduler } from './Scheduler';
+import { TaskName } from './tasks';
+import * as tasks from './tasks';
 
 const logger = require('../util/logger')(__filename);
 
-export function init(db: Tnex, scheduler: Scheduler, tasks: TaskDescriptor[]) {
-  new Cron(db, scheduler, tasks);
+
+interface TaskSchedule {
+  name: TaskName,
+  schedule: string,
+  interval: number,
+}
+
+const CRON_SCHEDULES: TaskSchedule[] = [
+  {
+    name: 'syncRoster',
+    schedule: '*/20 * * * *', // Every 20 minutes
+    interval: moment.duration(20, 'minutes').asMilliseconds(),
+  },
+  {
+    name: 'syncKillboard',
+    schedule: '0 2 * * *',  // Once a day at 2AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
+  },
+  {
+    name: 'syncSiggy',
+    schedule: '0 2 * * *',  // Once a day at 2AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
+  },
+  {
+    name: 'truncateCronLog',
+    schedule: '0 0 */90 * *',  // Every 90 days
+    interval: moment.duration(90, 'days').asMilliseconds(),
+  },
+];
+
+export function init(db: Tnex) {
+  new Cron(db);
 }
 
 class Cron {
   private _db: Tnex;
-  private _scheduler: Scheduler;
 
-  constructor(db: Tnex, scheduler: Scheduler, tasks: TaskDescriptor[]) {
+  constructor(db: Tnex) {
     this._db = db;
-    this._scheduler = scheduler;
 
-    serialize(tasks, task => {
-      return this._initTask(task);
+    serialize(CRON_SCHEDULES, schedule => {
+      return this._initTask(schedule);
     })
   }
 
-  private _initTask(task: TaskDescriptor) {
+  private _initTask(task: TaskSchedule) {
     return this._runTaskIfOverdue(task)
     .then(() => {
       schedule.scheduleJob(task.schedule, () => this._runTask(task));
@@ -41,7 +71,7 @@ class Cron {
     });
   }
 
-  private _runTaskIfOverdue(task: TaskDescriptor) {
+  private _runTaskIfOverdue(task: TaskSchedule) {
     return dao.cron.getMostRecentJob(this._db, task.name)
     .then(row => {
       let runTask = row == null
@@ -55,7 +85,7 @@ class Cron {
     });
   }
 
-  private _runTask(task: TaskDescriptor) {
-    this._scheduler.runTask(task.name, task.executor, task.timeout, 'cron');
+  private _runTask(task: TaskSchedule) {
+    tasks.runTask(task.name, 'cron');
   }
 }

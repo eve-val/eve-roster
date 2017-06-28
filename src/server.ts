@@ -31,7 +31,7 @@ for (let envVar of REQUIRED_VARS) {
 let scheduler = new Scheduler(db);
 
 tasks.init(db, scheduler);
-cron.init(db, scheduler, tasks.TASKS);
+cron.init(db);
 express.init(port => {
   logger.info(`Serving from port ${port}.`);
 });
