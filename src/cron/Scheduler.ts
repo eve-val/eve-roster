@@ -7,7 +7,7 @@ import { dao } from '../dao';
 import { notNil } from '../util/assert';
 import { findWhere, pluck } from '../util/underscore';
 
-import { Job, TaskExecutor } from './Job';
+import { Job, JobResult, TaskExecutor } from './Job';
 import { JobImpl } from './JobImpl';
 
 const logger = require('../util/logger')(__filename);
@@ -85,6 +85,8 @@ export class Scheduler {
     }
     this._runningJobs.push(job);
 
+    let jobResult: JobResult;
+
     dao.cron.startJob(this._db, job.taskName)
     .then(jobId => {
       job.logId = jobId;
@@ -94,7 +96,7 @@ export class Scheduler {
 
       const work = job.executor(job);
       job.timeoutId = setTimeout(() => this._timeoutJob(job), job.timeout);
-      job.status = 'running';
+      job.setStatus('running', 'pending');
       return work;
     })
     .catch(e => {
@@ -111,7 +113,7 @@ export class Scheduler {
         logger.error(logMessage);
       }
 
-      job.result = result;
+      jobResult = result;
       if (!job.timedOut) {
         clearTimeout(notNil(job.timeoutId));
       }
@@ -126,7 +128,7 @@ export class Scheduler {
         this._unregisterJob(job);
         this._tryToUnstallChannels();
       }
-      job.status = 'finished';
+      job.setStatus('finished', jobResult);
     });
   }
 

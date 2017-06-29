@@ -52,9 +52,6 @@ export type TaskName =
     | 'syncKillboard'
     | 'syncSiggy'
     | 'truncateCronLog'
-    | 'dummyTask1'
-    | 'dummyTask2'
-    | 'dummyTask3'
     ;
 
 export interface Task {

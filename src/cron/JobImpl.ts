@@ -14,7 +14,7 @@ export class JobImpl extends EventEmitter implements Job {
   private _logId: number | undefined = undefined;
   private _startTime: number | undefined = undefined;
   private _status: JobStatus = 'queued';
-  private _result: JobResult | undefined = undefined;
+  private _result: JobResult = 'pending';
   private _timedOut: boolean | undefined = undefined;
 
   private _progress: number | undefined = undefined;
@@ -67,22 +67,24 @@ export class JobImpl extends EventEmitter implements Job {
     return this._status;
   }
 
-  public set status(status: JobStatus) {
+  public get result() {
+    return this._result;
+  }
+
+  public setStatus(status: JobStatus, result: JobResult) {
+    if (this._status == 'finished') {
+      throw new Error('Cannot set the status of a finished job.');
+    }
+    if (result != 'pending' && status != 'finished') {
+      throw new Error(
+          `Cannot set job result to ${result} when status is not 'finished'.`);
+    }
+    this._result = result;
+
     if (status != this._status) {
       this._status = status;
       this.emit('status', this._status);
     }
-  }
-
-  public get result() {
-    return this._result || 'pending';
-  }
-
-  public set result(value: JobResult) {
-    if (this._result != undefined) {
-      throw new Error(`Cannot set the result of a job twice.`);
-    }
-    this._result = value;
   }
 
   public get timedOut() {
