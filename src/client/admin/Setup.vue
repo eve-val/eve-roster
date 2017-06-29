@@ -19,7 +19,8 @@
         ref="spinner"
         display="block"
         size="34px"
-        />
+        >
+    </loading-spinner>
   </div>
 </admin-wrapper>
 </template>

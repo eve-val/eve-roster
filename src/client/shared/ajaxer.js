@@ -90,12 +90,22 @@ export default {
     return axios.get('/api/admin/accountLog');
   },
 
-  getAdminCronLog() {
-    return axios.get('/api/admin/cronLog');
+  getAdminTasks() {
+    return axios.get('/api/admin/tasks/task');
   },
 
-  putAdminCronTask(taskName) {
-    return axios.put('/api/admin/cron/' + taskName);
+  getAdminJobs() {
+    return axios.get('/api/admin/tasks/job');
+  },
+
+  putAdminTask(taskName) {
+    return axios.put('/api/admin/tasks/job', {
+      task: taskName,
+    });
+  },
+
+  getAdminTaskLog() {
+    return axios.get('/api/admin/tasks/logs');
   },
 
   getAdminSetup() {

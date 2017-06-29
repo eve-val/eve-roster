@@ -28,10 +28,10 @@ const FRONTEND_ROUTES = [
   '/character/:id',
   '/housing',
   '/admin',
-  '/admin/cron-logs',
   '/admin/account-logs',
   '/admin/citadels',
   '/admin/setup',
+  '/admin/tasks',
   '/dev/',
   '/dev/:section',
 ];

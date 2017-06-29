@@ -1,13 +1,13 @@
 <template>
 <div class="_admin-wrapper">
-  <app-header :identity="identity" />
+  <app-header :identity="identity"></app-header>
   <div class="split-container">
     <div class="sidebar">
       <router-link class="sidebar-link" to="/admin/account-logs">
         Account log
       </router-link>
-      <router-link class="sidebar-link" to="/admin/cron-logs">
-        Cron log
+      <router-link class="sidebar-link" to="/admin/tasks">
+        Tasks
       </router-link>
       <a href="/logs" class="sidebar-link">
         Server log
