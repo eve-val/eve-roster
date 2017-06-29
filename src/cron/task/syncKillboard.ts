@@ -6,7 +6,7 @@ import { db as rootDb } from '../../db';
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { serialize, doWhile } from '../../util/asyncUtil';
-import { ExecutorResult } from '../cronTypes';
+import { JobTracker, ExecutorResult } from '../Job';
 
 
 const logger = require('../../util/logger')(__filename);
@@ -16,10 +16,10 @@ const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
-export function syncKillboard(): Promise<ExecutorResult> {
+export function syncKillboard(job: JobTracker): Promise<ExecutorResult> {
   return Promise.resolve()
   .then(getStartTime)
-  .then(startTime => fetchAll(rootDb, startTime))
+  .then(startTime => fetchAll(rootDb, job, startTime))
   .then(([updateCount, failureCount]) => {
     logger.info(`Updated ${updateCount} characters' killboards.`);
     let result: ExecutorResult;
@@ -50,7 +50,7 @@ function getStartTime() {
 }
 
 // For each character, fetches their killboard stats and stores them.
-function fetchAll(db: Tnex, since: string) {
+function fetchAll(db: Tnex, job: JobTracker, since: string) {
   return dao.killboard.getAllCharacterKillboardTimestamps(db)
   .then(rows => {
     let currentProgress = 0;
@@ -62,7 +62,8 @@ function fetchAll(db: Tnex, since: string) {
         // Already up-to-date, skip it...
         return;
       }
-      currentProgress = logProgressUpdate(currentProgress, idx, rows.length);
+      currentProgress =
+          logProgressUpdate(job, currentProgress, idx, rows.length);
       return syncCharacterKillboard(
           db, row.character_id, row.character_name, since)
       .then(() => {
@@ -112,13 +113,14 @@ function syncCharacterKillboard(
 }
 
 function logProgressUpdate(
-    lastLoggedProgress: number, idx: number, length: number) {
+    job: JobTracker, lastLoggedProgress: number, idx: number, length: number) {
   let progress = Math.floor(idx / length / PROGRESS_INTERVAL_PERC);
   if (progress > lastLoggedProgress || idx == 0) {
     const perc = Math.round(100 * lastLoggedProgress * PROGRESS_INTERVAL_PERC);
     logger.info(`syncKillboard (${perc}% complete)`);
     lastLoggedProgress = progress;
   }
+  job.setProgress(idx / length, undefined);
   return lastLoggedProgress;
 }
 

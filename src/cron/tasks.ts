@@ -4,7 +4,7 @@ import moment = require('moment');
 import { Tnex } from '../tnex';
 
 import { Scheduler } from './Scheduler';
-import { TaskExecutor } from './cronTypes';
+import { TaskExecutor } from './Job';
 import * as cron from './cron';
 import { findWhere } from '../util/underscore';
 
@@ -16,36 +16,55 @@ import { truncateCronLog } from './task/truncateCronLog';
 const logger = require('../util/logger')(__filename);
 
 
-export const TASKS = [
+const TASKS: TaskInternal[] = [
   {
     name: 'syncRoster',
+    displayName: 'Sync roster',
+    description: 'Updates the list of corporation members.',
     executor: syncRoster,
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
-    interval: moment.duration(20, 'minutes').asMilliseconds(),
-    schedule: '*/20 * * * *', // Every 20 minutes
   },
   {
     name: 'syncKillboard',
+    displayName: 'Sync killboard',
+    description: 'Updates members\' recent kills/losses.',
     executor: syncKillboard,
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
-    interval: moment.duration(1, 'day').asMilliseconds(),
-    schedule: '0 2 * * *',  // Once a day at 2AM
   },
   {
     name: 'syncSiggy',
+    displayName: 'Sync Siggy',
+    description: 'Updates members\' Siggy stats.',
     executor: syncSiggy,
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
-    interval: moment.duration(1, 'day').asMilliseconds(),
-    schedule: '0 2 * * *',  // Once a day at 2AM
   },
   {
     name: 'truncateCronLog',
+    displayName: 'Truncate cron log',
+    description: 'Prunes very old cron logs.',
     executor: truncateCronLog,
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
-    interval: moment.duration(90, 'days').asMilliseconds(),
-    schedule: '0 0 */90 * *',  // Every 90 days
   },
 ];
+
+export type TaskName =
+    'syncRoster'
+    | 'syncKillboard'
+    | 'syncSiggy'
+    | 'truncateCronLog'
+    ;
+
+export interface Task {
+  readonly name: TaskName,
+  readonly displayName: string,
+  readonly description: string,
+}
+
+interface TaskInternal extends Task {
+  executor: TaskExecutor,
+  timeout: number,
+}
+
 
 let _scheduler: Scheduler;
 
@@ -53,11 +72,19 @@ export function init(db: Tnex, scheduler: Scheduler) {
   _scheduler = scheduler;
 }
 
-export function isTask(taskName: string) {
-  return findWhere(TASKS, { name: taskName }) != undefined;
+export function isTaskName(taskName: string): taskName is TaskName {
+  return findWhere(TASKS, { name: taskName as TaskName }) != undefined;
 }
 
-export function runTask(taskName: string) {
+export function getTasks(): Task[] {
+  return TASKS;
+}
+
+export function getRunningTasks() {
+  return _scheduler.getRunningJobs();
+}
+
+export function runTask(taskName: TaskName, channel?: string) {
   if (_scheduler == undefined) {
     throw new Error(`Tasks not yet initialized`);
   }
@@ -66,5 +93,5 @@ export function runTask(taskName: string) {
   if (task == undefined) {
     throw new Error(`runTask(): No such task "${taskName}".`);
   }
-  _scheduler.runTask(task.name, task.executor, task.timeout);
+  return _scheduler.runTask(task.name, task.executor, task.timeout, channel);
 }

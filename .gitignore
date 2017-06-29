@@ -22,3 +22,6 @@
 
 # Logs
 /logs
+
+# Downloaded files
+/tmp

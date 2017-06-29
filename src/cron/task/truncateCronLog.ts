@@ -4,7 +4,7 @@ import moment = require('moment');
 import { db as rootDb } from '../../db';
 import { Tnex, DEFAULT_NUM } from '../../tnex';
 import { dao } from '../../dao';
-import { ExecutorResult } from '../cronTypes';
+import { ExecutorResult } from '../Job';
 
 
 export function truncateCronLog(): Promise<ExecutorResult> {

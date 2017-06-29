@@ -21,7 +21,7 @@ import { MemberCorporation } from '../../dao/tables';
 import { serialize, parallelize } from '../../util/asyncUtil';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
-import { ExecutorResult } from '../cronTypes';
+import { ExecutorResult } from '../Job';
 
 import esi from '../../esi';
 
