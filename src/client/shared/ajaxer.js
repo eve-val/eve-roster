@@ -90,8 +90,8 @@ export default {
     return axios.get('/api/admin/accountLog');
   },
 
-  getAdminTasksSummary() {
-    return axios.get('/api/admin/tasks/summary');
+  getAdminTasks() {
+    return axios.get('/api/admin/tasks/task');
   },
 
   getAdminJobs() {

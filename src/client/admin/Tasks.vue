@@ -86,10 +86,15 @@ export default {
   },
 
   mounted: function() {
-    this.$refs.root_spinner.observe(ajaxer.getAdminTasksSummary())
-    .then(response => {
-      this.initializeTasks(response.data.tasks, response.data.jobs);
-      this.taskLog = response.data.taskLog;
+    this.$refs.root_spinner.observe(
+        Promise.all([
+          ajaxer.getAdminTasks(),
+          ajaxer.getAdminJobs(),
+          ajaxer.getAdminTaskLog(),
+        ]))
+    .then(([tasks, jobs, logs]) => {
+      this.initializeTasks(tasks.data, jobs.data);
+      this.taskLog = logs.data;
     });
   },
 

@@ -15,7 +15,7 @@ import admin_setup_PUT from './admin/setup_PUT';
 import admin_tasks_job_PUT from './admin/tasks/job_PUT';
 import admin_tasks_job from './admin/tasks/job';
 import admin_tasks_logs from './admin/tasks/logs';
-import admin_tasks_summary from './admin/tasks/summary';
+import admin_tasks_task from './admin/tasks/task';
 
 import character from './character';
 import character_character_PUT from './character/character_PUT';
@@ -46,7 +46,7 @@ router.put('/admin/setup/', admin_setup_PUT);
 router.put('/admin/tasks/job', admin_tasks_job_PUT);
 router.get('/admin/tasks/job', admin_tasks_job);
 router.get('/admin/tasks/logs', admin_tasks_logs);
-router.get('/admin/tasks/summary', admin_tasks_summary);
+router.get('/admin/tasks/task', admin_tasks_task);
 
 router.get('/character/:id', character);
 router.put('/character/:id', character_character_PUT);
