@@ -27,6 +27,10 @@ export class Tnex {
     this._rootKnex = rootKnex;
   }
 
+  knex(): Knex {
+    return this._knex;
+  }
+
   transaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
     if (this._isTransaction()) {
       return callback(this); 

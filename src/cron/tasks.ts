@@ -11,6 +11,7 @@ import { findWhere } from '../util/underscore';
 import { syncKillboard } from './task/syncKillboard';
 import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
+import { syncSkills } from './task/syncSkills';
 import { truncateCronLog } from './task/truncateCronLog';
 
 const logger = require('../util/logger')(__filename);
@@ -39,6 +40,13 @@ const TASKS: TaskInternal[] = [
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
   },
   {
+    name: 'syncSkills',
+    displayName: 'Sync skills',
+    description: 'Updates all members\' skillsheets.',
+    executor: syncSkills,
+    timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'truncateCronLog',
     displayName: 'Truncate cron log',
     description: 'Prunes very old cron logs.',
@@ -51,6 +59,7 @@ export type TaskName =
     'syncRoster'
     | 'syncKillboard'
     | 'syncSiggy'
+    | 'syncSkills'
     | 'truncateCronLog'
     ;
 

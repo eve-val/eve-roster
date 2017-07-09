@@ -4,6 +4,8 @@ import * as _ from '../util/underscore';
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import * as t from '../dao/tables';
+import { pluck } from '../util/underscore';
+import { MEMBER_GROUP } from '../route-helper/specialGroups';
 
 
 export interface BasicRosterCharacter {
@@ -37,7 +39,32 @@ export default class RosterDao {
       ) {
   }
 
-  getCharactersOwnedByMembers(db: Tnex): Promise<OwnedRosterCharacter[]> {
+  getMemberAccounts(db: Tnex) {
+    return db
+        .select(t.account)
+        .join(t.accountGroup, 'accountGroup_account', '=', 'account_id')
+        .where('accountGroup_group', '=', val(MEMBER_GROUP))
+        .columns('account_id')
+        .run()
+    .then(rows => {
+        return pluck(rows, 'account_id');
+    });
+  }
+
+  getCharacterIdsOwnedByMemberAccounts(db: Tnex) {
+    return db
+        .select(t.account)
+        .join(t.accountGroup, 'accountGroup_account', '=', 'account_id')
+        .join(t.ownership, 'ownership_account', '=', 'account_id')
+        .join(t.character, 'character_id', '=', 'ownership_character')
+        .where('accountGroup_group', '=', val(MEMBER_GROUP))
+        .columns('character_id')
+        .run()
+    .then(rows => pluck(rows, 'character_id'));
+  }
+
+  getCharactersOwnedByAssociatedAccounts(
+      db: Tnex): Promise<OwnedRosterCharacter[]> {
     return db.select(t.account)
         .join(
             // This complex subquery is required because we want to select the

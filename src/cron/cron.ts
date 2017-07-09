@@ -39,6 +39,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
+    name: 'syncSkills',
+    schedule: '0 2 * * *',  // Once a day at 2AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
+  },
+  {
     name: 'truncateCronLog',
     schedule: '0 0 */90 * *',  // Every 90 days
     interval: moment.duration(90, 'days').asMilliseconds(),

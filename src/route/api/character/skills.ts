@@ -6,6 +6,7 @@ import { Tnex } from '../../../tnex';
 
 import { isAnyEsiError } from '../../../util/error';
 import { getAccessTokenForCharacter } from '../../../data-source/accessToken';
+import { updateSkills } from '../../../data-source/skills';
 import { MissingTokenError } from '../../../error/MissingTokenError';
 import esi from '../../../esi';
 
@@ -40,7 +41,7 @@ export default jsonEndpoint(function(req, res, db, account, privs)
 });
 
 function fetchSkills(db: Tnex, characterId: number) {
-  return fetchNewSkills(db, characterId)
+  return updateSkills(db, characterId)
   .then(() => {
     return loadSkillsFromDb(db, characterId);
   })
@@ -64,29 +65,6 @@ function fetchSkills(db: Tnex, characterId: number) {
       throw e;
     }
   })
-}
-
-function fetchNewSkills(db: Tnex, characterId: number) {
-  return getAccessTokenForCharacter(db, characterId)
-  .then(accessToken => {
-    return esi.characters(characterId, accessToken).skills();
-  })
-  .then(data => {
-    return data.skills;
-  })
-  .then(esiSkills => {
-    logger.debug('Inserting %s records', esiSkills.length);
-    return db.transaction(db => {
-      return dao.skillsheet.set(db, characterId, esiSkills.map(esiSkill => {
-        return {
-          skillsheet_character: characterId,
-          skillsheet_skill: esiSkill.skill_id,
-          skillsheet_level: esiSkill.current_skill_level,
-          skillsheet_skillpoints: esiSkill.skillpoints_in_skill,
-        };
-      }))
-    });
-  });
 }
 
 function loadSkillsFromDb(db: Tnex, characterId: number): Promise<Payload> {
