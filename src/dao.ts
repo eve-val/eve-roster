@@ -11,6 +11,7 @@ import OwnershipDao from './dao/OwnershipDao';
 import RosterDao from './dao/RosterDao';
 import SkillsheetDao from './dao/SkillsheetDao';
 import SkillQueueDao from './dao/SkillQueueDao';
+import StatisticsDao from './dao/StatisticsDao';
 
 
 export class Dao {
@@ -31,6 +32,7 @@ export class Dao {
   public roster = new RosterDao(this);
   public skillQueue = new SkillQueueDao(this);
   public skillsheet = new SkillsheetDao(this);
+  public statistics = new StatisticsDao(this);
 }
 
 export const dao = new Dao();

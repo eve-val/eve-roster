@@ -122,13 +122,13 @@ export default class CharacterDao {
   }
 
   getMemberCharacters(db: Tnex) {
-      return db
-          .select(memberCorporation)
-          .join(character, 
-                'character_corporationId',
-                '=',
-                'memberCorporation_corporationId')
-          .columns('character_id', 'character_corporationId')
-          .run();
+    return db
+        .select(memberCorporation)
+        .join(character, 
+            'character_corporationId',
+            '=',
+            'memberCorporation_corporationId')
+        .columns('character_id', 'character_corporationId')
+        .run();
   }
 }

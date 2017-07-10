@@ -48,7 +48,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   privs.requireRead('roster');
 
   return Promise.all([
-    dao.roster.getCharactersOwnedByMembers(db),
+    dao.roster.getCharactersOwnedByAssociatedAccounts(db),
     dao.roster.getUnownedCorpCharacters(db),
     getCorpNames(db),
   ])

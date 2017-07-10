@@ -25,6 +25,8 @@ import character_skills from './character/skills';
 import dashboard from './dashboard';
 import dashboard_queueSummary from './dashboard/queueSummary';
 
+import statistics_skills from './statistics/skills';
+
 import roster from './roster';
 import citadels from './citadels';
 import corporation from './corporation';
@@ -55,6 +57,8 @@ router.get('/character/:id/skillQueue', character_skillQueue);
 
 router.get('/dashboard', dashboard);
 router.get('/dashboard/queueSummary', dashboard_queueSummary);
+
+router.get('/statistics/skills', statistics_skills);
 
 router.get('/roster', roster);
 router.get('/citadels', citadels);
