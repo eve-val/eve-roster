@@ -1,3 +1,3 @@
 export function isAnyEsiError(error: Error) {
-  return error.name && error.name.startsWith('esi:');
+  return error.name != undefined && error.name.startsWith('esi:');
 }
