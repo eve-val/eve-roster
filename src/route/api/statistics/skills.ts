@@ -21,6 +21,8 @@ export interface Output {
 }
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead('characterSkills', false);
+
   // Format: <skillId>:<minLevel>,...
   // eg. "3333:5,3335:5,3337:5"
   let skillRequirements = parseQuery(req.query.q);
