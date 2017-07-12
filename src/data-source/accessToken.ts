@@ -19,12 +19,9 @@ const pendingTokenRequests = {} as {[key: number]: Promise<any>};
 
 export function getAccessTokenForCharacter(db: Tnex, characterId: number)
     : Promise<string> {
-  logger.debug('getAccessToken', characterId);
   if (pendingTokenRequests[characterId]) {
-    logger.trace('  request for this character already pending, waiting...');
     return pendingTokenRequests[characterId];
   }
-  logger.trace('  no pending requests, starting a new one...');
 
   let work = dao.accessToken.getForCharacter(db, characterId)
     .then(row => {
@@ -34,12 +31,8 @@ export function getAccessTokenForCharacter(db: Tnex, characterId: number)
 
       if (Date.now() 
           <= row.accessToken_accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS) {
-        logger.debug(
-            '  Reusing existing access token:',
-            printSafeToken(row.accessToken_accessToken));
         return row.accessToken_accessToken;
       } else {
-        logger.debug('  Existing token has expired, fetching a new one...');
         return refreshAccessToken(
             db, characterId, row.accessToken_refreshToken);
       }
@@ -70,6 +63,7 @@ function refreshAccessToken(
     characterId: number,
     refreshToken: string,
     ): Promise<string> {
+  logger.debug(`getAccessToken for ${characterId}`);
   let tokenResponse: RefreshedToken;
   return Promise.resolve()
   .then(() => {
@@ -87,12 +81,8 @@ function refreshAccessToken(
   })
   .then(function(response) {
     tokenResponse = response.data;
-    logger.debug(
-        '  Got a new access token:',
-        printSafeToken(tokenResponse.access_token));
   })
   .then(function() {
-    logger.debug('  Updating database...');
     return dao.accessToken.updateForCharacter(db, characterId, {
       accessToken_accessToken: tokenResponse.access_token,
       accessToken_accessTokenExpires:
@@ -100,8 +90,6 @@ function refreshAccessToken(
     })
   })
   .then(function() {
-    logger.debug('  Token fetch complete.');
-
     return tokenResponse.access_token;
   });
 }
