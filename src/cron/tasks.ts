@@ -9,12 +9,12 @@ import * as cron from './cron';
 import { findWhere } from '../util/underscore';
 
 import { syncKillboard } from './task/syncKillboard';
-import { syncLocations } from './task/syncLocations';
+import { syncCharacterLocations } from './task/syncCharacterLocations';
 import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
 import { syncSkills } from './task/syncSkills';
 import { truncateCronLog } from './task/truncateCronLog';
-import { truncateLocations } from './task/truncateLocations';
+import { truncateCharacterLocations } from './task/truncateCharacterLocations';
 
 const logger = require('../util/logger')(__filename);
 
@@ -26,6 +26,13 @@ const TASKS: TaskInternal[] = [
     description: 'Updates the list of corporation members.',
     executor: syncRoster,
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  },
+  {
+    name: 'syncCharLocations',
+    displayName: 'Sync locations',
+    description: 'Updates all members\' locations.',
+    executor: syncCharacterLocations,
+    timeout:moment.duration(10, 'minutes').asMilliseconds(),
   },
   {
     name: 'syncKillboard',
@@ -49,17 +56,10 @@ const TASKS: TaskInternal[] = [
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
   },
   {
-    name: 'syncLocations',
-    displayName: 'Sync locations',
-    description: 'Updates all members\' locations.',
-    executor: syncLocations,
-    timeout:moment.duration(5, 'minutes').asMilliseconds(),
-  },
-  {
-    name: 'truncateLocations',
+    name: 'truncateCharacterLocations',
     displayName: 'Truncate location log',
-    description: 'Prunes very old locations.',
-    executor: truncateLocations,
+    description: 'Prunes very old character locations.',
+    executor: truncateCharacterLocations,
     timeout: moment.duration(10, 'minutes').asMilliseconds(),
   },
   {
@@ -74,10 +74,10 @@ const TASKS: TaskInternal[] = [
 export type TaskName =
     'syncRoster'
     | 'syncKillboard'
+    | 'syncCharLocations'
     | 'syncSiggy'
     | 'syncSkills'
-    | 'syncLocations'
-    | 'truncateLocations'
+    | 'truncateCharacterLocations'
     | 'truncateCronLog'
     ;
 

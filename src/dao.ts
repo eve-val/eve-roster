@@ -6,7 +6,7 @@ import ConfigDao from './dao/ConfigDao';
 import CronDao from './dao/CronDao';
 import GroupsDao from './dao/GroupsDao';
 import KillboardDao from './dao/KillboardDao';
-import LocationDao from './dao/LocationDao';
+import CharacterLocationDao from './dao/CharacterLocationDao';
 import LogDao from './dao/LogDao';
 import OwnershipDao from './dao/OwnershipDao';
 import RosterDao from './dao/RosterDao';
@@ -28,7 +28,7 @@ export class Dao {
   public config = new ConfigDao(this);
   public group = new GroupsDao(this);
   public killboard = new KillboardDao(this);
-  public location = new LocationDao(this);
+  public characterLocation = new CharacterLocationDao(this);
   public log = new LogDao(this);
   public ownership = new OwnershipDao(this);
   public roster = new RosterDao(this);

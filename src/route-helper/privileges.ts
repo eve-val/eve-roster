@@ -32,7 +32,7 @@ export function getPrivileges(db: Tnex, accountId: number) {
         name: row.priv_name as PrivilegeName,
         level: row.granted_level || 0,
         ownerLevel: row.priv_ownerLevel,
-        requiresMembership: !!row.priv_requiresMembership,
+        requiresMembership: row.priv_requiresMembership,
       }
     });
 

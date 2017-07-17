@@ -165,8 +165,6 @@ function handleOwnedChar(
       logger.info(`  Adding pending ownership request for character`
           + `${charData.id} to account ${accountId}`);
       return dao.ownership.createPendingOwnership(db, charData.id, accountId)
-    } else {
-      return -1;
     }
   })
   .then(() => {

@@ -1,6 +1,6 @@
 import Promise = require('bluebird');
 
-import { Tnex, Nullable, val, toNum } from '../tnex';
+import { Tnex, Nullable, val } from '../tnex';
 import { Dao } from '../dao';
 import { account, character, ownership, pendingOwnership } from './tables';
 import { updateGroupsForAccount } from '../data-source/accountGroups';
@@ -17,7 +17,7 @@ export default class OwnershipDao {
           .insert(ownership, {
             ownership_account: accountId,
             ownership_character: characterId,
-            ownership_opsec: toNum(false),
+            ownership_opsec: false,
           })
       .then(() => {
         return this._dao.log.logEvent(
@@ -92,7 +92,7 @@ export default class OwnershipDao {
     return db
         .select(pendingOwnership)
         .leftJoin(ownership,
-            'ownership_account', '=', 'pendingOwnership_account')
+            'ownership_character', '=', 'pendingOwnership_character')
         .where('pendingOwnership_account', '=', val(account))
         .andWhere('pendingOwnership_character', '=', val(character))
         .columns('ownership_account')

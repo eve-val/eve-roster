@@ -1,6 +1,4 @@
 import { tables } from './dao/tables';
-import { Tnex } from './tnex';
+import { getPostgresKnex } from './db/getPostgresKnex';
 
-const knex = require('./util/knex-loader');
-
-export const db = tables.build(knex);
+export const db = tables.build(getPostgresKnex());

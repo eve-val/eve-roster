@@ -56,7 +56,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
         name: row.character_name,
         corporationId: row.character_corporationId,
         titles: JSON.parse(row.character_titles || '[]'),
-        totalSp: row.totalSp || 0,
+        totalSp: row.sp_total || 0,
       },
       account: {
         id: row.account_id,

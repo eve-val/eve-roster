@@ -12,7 +12,8 @@ import { isAnyEsiError } from '../../util/error';
 const logger = require('../../util/logger')(__filename);
 
 
-export function syncLocations(job: JobTracker): Promise<ExecutorResult> {
+export function syncCharacterLocations(
+    job: JobTracker): Promise<ExecutorResult> {
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(rootDb)
   .then(characterIds => {
     job.setProgress(0, undefined);
@@ -64,17 +65,15 @@ function updateLocation(db: Tnex, characterId: number) {
   })
   .then(([locationResults, shipResults]) => {
     return {
-      location_character: characterId,
-      location_timestamp: Date.now(),
-      location_shipName: shipResults.ship_name,
-      location_shipTypeId: shipResults.ship_type_id,
-      location_shipItemId: shipResults.ship_item_id,
-      location_solarSystemId: locationResults.solar_system_id,
+      charloc_character: characterId,
+      charloc_timestamp: Date.now(),
+      charloc_shipName: shipResults.ship_name,
+      charloc_shipTypeId: shipResults.ship_type_id,
+      charloc_shipItemId: shipResults.ship_item_id,
+      charloc_solarSystemId: locationResults.solar_system_id,
     };
   })
   .then(data => {
-    return db.transaction(db => {
-      return dao.location.put(db, data);
-    });
+    return dao.characterLocation.put(db, data);
   });
 }

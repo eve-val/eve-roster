@@ -35,7 +35,7 @@ export default class CronDao {
           cronLog_start: Date.now(),
           cronLog_end: null,
           cronLog_result: null,
-        });
+        }, 'cronLog_id');
   }
 
   finishJob(db: Tnex, jobId: number, result: string) {
@@ -76,7 +76,7 @@ export default class CronDao {
   getRecentLogs(db: Tnex) {
     return db
         .select(cronLog)
-        .orderBy('cronLog_id', 'desc')
+        .orderBy('cronLog_start', 'desc')
         .limit(400)
         .columns(
             'cronLog_id',

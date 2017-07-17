@@ -29,7 +29,7 @@ export interface OwnedRosterCharacter extends BasicRosterCharacter {
   account_mainCharacter: number,
   account_activeTimezone: string | null,
   citadel_name: string | null,
-  ownership_opsec: number,
+  ownership_opsec: boolean,
   trialCheck_group: string | null,
 }
 
@@ -80,9 +80,9 @@ export default class RosterDao {
                 .join(t.ownership,'ownership_character', '=', 'character_id')
                 .join(t.account, 'account_id', '=', 'ownership_account')
                 .distinct('account_id')
-                .columnAs('account_id', 'memberAccount_id'),
-            'memberAccount_id', '=', 'account_id')
-        .join(t.ownership, 'ownership_account', '=', 'memberAccount_id')
+                .columnAs('account_id', 'memberAccount_mid'),
+            'memberAccount_mid', '=', 'account_id')
+        .join(t.ownership, 'ownership_account', '=', 'memberAccount_mid')
         .join(t.character, 'character_id', '=', 'ownership_character')
         .leftJoin(t.citadel, 'citadel_id', '=', 'account_homeCitadel')
         .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')

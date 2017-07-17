@@ -73,8 +73,6 @@ class SkillQueueDao {
           });
           return db
             .insertAll(characterSkillQueue, items)
-        } else {
-          return [0];
         }
       });
     });

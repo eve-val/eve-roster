@@ -46,7 +46,7 @@ export default class AccessTokenDao {
       accessToken_refreshToken: refreshToken,
       accessToken_accessToken: accessTokenVal,
       accessToken_accessTokenExpires: Date.now() + expiresIn * 1000,
-      accessToken_needsUpdate: 0,
+      accessToken_needsUpdate: false,
     }, 'accessToken_character');
   }
 }

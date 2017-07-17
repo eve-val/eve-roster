@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 
 import { Dao } from '../dao';
-import { Tnex, Nullable, toNum, val } from '../tnex';
+import { Tnex, Nullable, val } from '../tnex';
 import {
     accessToken,
     account,
@@ -77,8 +77,14 @@ export default class CharacterDao {
         .leftJoin(account, 'account_id', '=', 'ownership_account')
         .leftJoin(citadel, 'citadel_id', '=', 'account_homeCitadel')
         .leftJoin(skillsheet, 'skillsheet_character', '=', 'character_id')
+        .leftJoin(
+            db.subselect(skillsheet, 'sp')
+                .sum('skillsheet_skillpoints', 'sp_total')
+                .columnAs('skillsheet_character', 'sp_character')
+                .groupBy('skillsheet_character')
+                .where('skillsheet_character', '=', val(id)),
+            'sp_character', '=', 'character_id')
         .where('character_id', '=', val(id))
-        .sum('skillsheet_skillpoints', 'totalSp')
         .columns(
             'character_id',
             'character_name',
@@ -89,6 +95,7 @@ export default class CharacterDao {
             'account_activeTimezone',
             'citadel_id',
             'citadel_name',
+            'sp_total',
             )
       .fetchFirst()
   }
@@ -106,7 +113,7 @@ export default class CharacterDao {
 
   setCharacterIsOpsec(db: Tnex, id:number, isOpsec:boolean) {
     return db
-        .update(ownership, { ownership_opsec: toNum(isOpsec) })
+        .update(ownership, { ownership_opsec: isOpsec })
         .where('ownership_character', '=', val(id))
         .run();
   }
