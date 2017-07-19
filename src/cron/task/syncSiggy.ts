@@ -20,7 +20,6 @@ const logger = require('../../util/logger')(__filename);
 
 
 const SIGGY_PATH = 'https://siggy.borkedlabs.com';
-const SIGGY_HEADERS = ['session', 'sessionID', 'userID', 'passHash'];
 
 // Currently the siggy leaderboard has 8 columns
 const SIGGY_TABLE_COLUMN_CT = 8;
@@ -34,9 +33,8 @@ const axios = axiosModule.create({
 export function syncSiggy(): Promise<ExecutorResult> {
   return Promise.resolve()
   .then(resetSavedScores)
-  .then(postLogin)
-  .then(getLoginCookies)
-  .then(validateLogin)
+  .then(getSiggyCredentials)
+  .then(handleLogin)
   .then(getRecentScores)
   .then(saveScrapedScores)
   .then((updateCount) => {
@@ -72,69 +70,82 @@ function saveScrapedScores(recentScores: SiggyScore[]) {
   });
 }
 
-// Initiate login with siggy site using an existing account credentials
-function postLogin() {
-  return dao.config.getSiggyCredentials(db)
-  .then(config => {
-    if (!config.username || !config.password) {
-      throw new Error('Siggy credentials have not been set.');
-    }
+function getSiggyCredentials() {
+  return dao.config.getSiggyCredentials(db);
+}
 
+// siggy tracks login status through its session, stored in a cookie with the
+// request; however, it also uses a token generated when first visiting the
+// login form to validate POST requests completing the form.
+// handleLogin() is a one-stop-shop to login and return the final state of
+// a cookie jar that can be used for authenticated requests to siggy.
+function handleLogin(config: {username: string|null, password: string|null}) {
+  if (!config.username || !config.password) {
+    throw new Error('Siggy credentials have not been set.');
+  }
+
+  let cookies = new tough.CookieJar();
+
+  // Initiate login flow with a get request to the form's page
+  return axios.get('/account/login').then(response => {
+    updateCookies(cookies, response);
+
+    // Do a simpler regex matching to strip out the token value instead of
+    // full dom parsing.
+    let tokenPattern = /input name="_token" type="hidden" value="(\w+)"/
+    let matches = response.data.match(tokenPattern);
+    if (matches) {
+      return matches[1];
+    } else {
+      throw new Error('Unable to extract Siggy _token');
+    }
+  })
+  .then(token => {
+    // Make a POST to the login URL with the provided token and credentials
     let formData = querystring.stringify({
       username: config.username,
       password: config.password,
+      _token: token
     });
 
     return axios.post('/account/login', formData, {
       maxRedirects: 0,
-      validateStatus: status => status == 302
+      validateStatus: status => status == 302,
+      headers: {
+        'Cookie': cookies.getCookieStringSync(SIGGY_PATH)
+      }
     });
   })
-  
+  .then(response => {
+    // On a successful login the response is a 302, which is already confirmed
+    // by axios' built-in validateStatus setting. All that is left is to
+    // return the updated cookie jar
+    updateCookies(cookies, response);
+    return cookies;
+  });
 }
 
-// Return all cookies in a set-cookie header of the response
-function getLoginCookies(
-    response: AxiosResponse): Array<tough.Cookie | undefined> {
+// Update a cookie jar based on a response
+function updateCookies(cookieJar: tough.CookieJar,
+    response: AxiosResponse) {
+  // Parse the set-cookie header in the response
+  let cookies: Array<tough.Cookie | undefined>;
   if (response.headers && 'set-cookie' in response.headers) {
     if (response.headers['set-cookie'] instanceof Array) {
-      return response.headers['set-cookie'].map(tough.Cookie.parse);
+      cookies = response.headers['set-cookie'].map(tough.Cookie.parse);
     } else {
-      return [tough.Cookie.parse(response.headers['set-cookie'])];
+      cookies = [tough.Cookie.parse(response.headers['set-cookie'])];
     }
   } else {
-    return [];
-  }
-}
-
-// Make sure cookies have session, sessionID, userID, and passHash or assume
-// that something has gone wrong with the login process.
-// If valid, resolves to a tough.CookieJar with all the cookies in it
-function validateLogin(cookies: Array<tough.Cookie | undefined>) {
-  // First search for all required cookie keys
-  for (let key of SIGGY_HEADERS) {
-    let found = false;
-    for (let cookie of cookies) {
-      if (cookie != undefined && cookie.key == key) {
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      throw new Error('Missing required cookie from siggy response: ${key}');
-    }
+    cookies = [];
   }
 
-  // Made it here, so all required cookies were found and can store in a jar
-  let jar = new tough.CookieJar();
+  // And store them into the jar
   for (let cookie of cookies) {
     if (cookie != undefined) {
-      jar.setCookieSync(cookie, SIGGY_PATH, {});
+      cookieJar.setCookieSync(cookie, SIGGY_PATH, {});
     }
   }
-
-  return jar;
 }
 
 // Resolve to webpage content (parsed by htmlparser) of siggy's weekly stat page
@@ -144,22 +155,26 @@ function getLeaderboardPage(
     page: number,
     cookieJar: tough.CookieJar,
     ) {
-  // The week must be two digits or siggy doesn't understand the URL properly
-  let week = weekInYear < 10 ? '0' + weekInYear : weekInYear.toString();
-  let path = '/stats/leaderboard/year/' + year + '/week/' + week;
+
   let params = {} as MixedObject;
+  params['year'] = year;
+  params['week'] = weekInYear;
   if (page) {
     params['page'] = page;
   }
 
   return Promise.resolve()
   .then(() => {
-    return axios.get(path, {
+    return axios.get('/stats/leaderboard/', {
       params: params,
       headers: {
         'Cookie': cookieJar.getCookieStringSync(SIGGY_PATH)
       }
     })
+  })
+  .then(response => {
+    updateCookies(cookieJar, response);
+    return response;
   })
   .then(parseLeaderboardPage);
 }
