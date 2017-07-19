@@ -43,7 +43,7 @@ export function syncSiggy(): Promise<ExecutorResult> {
     // so missing characters is expected
     return <ExecutorResult>'success';
   });
-};
+}
 
 // Set all siggy scores to 0 in database, so that anyone not present in
 // scraped leaderboards has the expected score of 0.
@@ -334,17 +334,17 @@ function getLeaderboard(
 }
 
 /*
- * Calculate recent siggy scores over the last 27 to 33 days. Since siggy is
+ * Calculate recent siggy scores over the last 55 to 61 days. Since siggy is
  * fixed to calendar weeks and weeks are its lowest resolution, this combines
- * the last 4-5 calendar weeks into a single score per character.
+ * the last 7-8 calendar weeks into a single score per character.
  * Week break down based on day into the week:
- *   1 -> 0 full days + prior four weeks = 28 days
- *   2 -> 1 full day + prior four weeks = 29 days
- *   3 -> 2 full days + prior four weeks = 30 days
- *   4 -> 3 full days + prior four weeks = 31 days
- *   5 -> 4 full days + prior four weeks = 32 days
- *   6 -> 5 full days + prior four weeks = 33 days
- *   7 -> 6 full days + prior three weeks = 27 days
+ *   1 -> 0 full days + prior eight weeks = 56 days
+ *   2 -> 1 full day + prior eight weeks = 57 days
+ *   3 -> 2 full days + prior eight weeks = 58 days
+ *   4 -> 3 full days + prior eight weeks = 59 days
+ *   5 -> 4 full days + prior eight weeks = 60 days
+ *   6 -> 5 full days + prior eight weeks = 61 days
+ *   7 -> 6 full days + prior seven weeks = 55 days
  *
  * Resolves to an array of {id: characterID, score: Number}, sorted with
  * highest score first.
@@ -364,7 +364,7 @@ function getRecentScores(cookieJar: tough.CookieJar) {
   work.push(getLeaderboard(year, weekOfYear, cookieJar));
 
   // Get prior full weeks until approximately a month has passed
-  while (daysFetched < 27) {
+  while (daysFetched < 55) {
     weekOfYear = weekOfYear - 1;
     if (weekOfYear < 1) {
       weekOfYear = 52;
