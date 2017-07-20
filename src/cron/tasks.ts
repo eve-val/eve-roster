@@ -9,6 +9,7 @@ import * as cron from './cron';
 import { findWhere } from '../util/underscore';
 
 import { syncKillboard } from './task/syncKillboard';
+import { syncLocations } from './task/syncLocations';
 import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
 import { syncSkills } from './task/syncSkills';
@@ -47,6 +48,13 @@ const TASKS: TaskInternal[] = [
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
   },
   {
+    name: 'syncLocations',
+    displayName: 'Sync locations',
+    description: 'Updates all members\' locations.',
+    executor: syncLocations,
+    timeout:moment.duration(30, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'truncateCronLog',
     displayName: 'Truncate cron log',
     description: 'Prunes very old cron logs.',
@@ -60,6 +68,7 @@ export type TaskName =
     | 'syncKillboard'
     | 'syncSiggy'
     | 'syncSkills'
+    | 'syncLocations'
     | 'truncateCronLog'
     ;
 
