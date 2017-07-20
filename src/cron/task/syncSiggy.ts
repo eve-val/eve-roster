@@ -18,7 +18,7 @@ const select = require('soupselect').select;
 
 const logger = require('../../util/logger')(__filename);
 
-
+const SIGGY_CONFIG_ERROR = 'Siggy credentials have not been set.';
 const SIGGY_PATH = 'https://siggy.borkedlabs.com';
 
 // Currently the siggy leaderboard has 8 columns
@@ -42,6 +42,14 @@ export function syncSiggy(): Promise<ExecutorResult> {
     // Always return success since siggy only reports characters that scanned,
     // so missing characters is expected
     return <ExecutorResult>'success';
+  })
+  .catch(error => {
+    if (error instanceof Error && error.message === SIGGY_CONFIG_ERROR) {
+      logger.warn(SIGGY_CONFIG_ERROR);
+      return <ExecutorResult>'partial';
+    } else {
+      throw error;
+    }
   });
 }
 
@@ -81,7 +89,7 @@ function getSiggyCredentials() {
 // a cookie jar that can be used for authenticated requests to siggy.
 function handleLogin(config: {username: string|null, password: string|null}) {
   if (!config.username || !config.password) {
-    throw new Error('Siggy credentials have not been set.');
+    throw new Error(SIGGY_CONFIG_ERROR);
   }
 
   let cookies = new tough.CookieJar();
