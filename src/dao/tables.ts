@@ -129,6 +129,16 @@ export class Killboard {
 }
 export const killboard = tables.register(new Killboard());
 
+export class Location {
+  location_character = number();
+  location_timestamp = number();
+  location_shipName = string();
+  location_shipTypeId = number();
+  location_shipItemId = number();
+  location_solarSystemId = number();
+}
+export const location = tables.register(new Location());
+
 export class MemberCorporation {
   memberCorporation_corporationId = number();
   memberCorporation_membership = string();

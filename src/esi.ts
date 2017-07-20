@@ -23,6 +23,8 @@ export interface Swagger {
 
 interface CharacterSection {
   info(): Promise<PublicCharacterInfo>,
+  location(): Promise<Location>,
+  ship(): Promise<Ship>,
   skillqueue(): Promise<SkillQueueEntry[]>,
   skills(): Promise<{ skills: SkillsheetEntry[]}>,
 }
@@ -61,6 +63,18 @@ export interface PublicCharacterInfo {
   name: string,
   race_id: number,
   security_status: number,
+}
+
+export interface Location {
+  solar_system_id: number,
+  structure_id?: number,
+  station_id?: number,
+}
+
+export interface Ship {
+  ship_name: string,
+  ship_type_id: number,
+  ship_item_id: number,
 }
 
 export default swaggerInstance as Swagger;
