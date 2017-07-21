@@ -29,6 +29,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(20, 'minutes').asMilliseconds(),
   },
   {
+    name: 'syncCharLocations',
+    schedule: '* * * * *', // Every minute
+    interval: moment.duration(1, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'syncKillboard',
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
@@ -44,14 +49,9 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
-    name: 'syncLocations',
-    schedule: '* * * * *', // Every minute
-    interval: moment.duration(1, 'minutes').asMilliseconds(),
-  },
-  {
-    name: 'truncateLocations',
-    schedule: '0 0 */90 * *',  // Every 90 days
-    interval: moment.duration(90, 'days').asMilliseconds(),
+    name: 'truncateCharacterLocations',
+    schedule: '0 0 */30 * *',  // Every 30 days
+    interval: moment.duration(30, 'days').asMilliseconds(),
   },
   {
     name: 'truncateCronLog',

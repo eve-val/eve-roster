@@ -61,24 +61,44 @@ export class Tnex {
     return new ValueWrapper(value);
   }
 
-  public insert<T extends object, R extends T>(
-      table: T, row: R): Promise<number> {
+  public insert<T extends object>(table: T, row: T): Promise<void>;
+  public insert<T extends object, K extends keyof T>(
+      table: T, row: T, returning: K): Promise<T[K]>;
+  public insert<T extends object, K extends keyof T, L extends keyof T>(
+      table: T, row: T, returning: [K, L]): Promise<[T[K], T[L]]>;
+  public insert<
+      T extends object,
+      K extends keyof T,
+      L extends keyof T,
+      M extends keyof T>
+      (table: T, row: T, returning: [K, L, M]): Promise<[T[K], T[L], T[M]]>;
+  public insert<T extends object>(
+      table: T, row: T, returning?: string|string[]) {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
-        .insert(this._prepForInsert(row, table))
-        .then(rows => rows[0]);
+        .insert(
+            this._prepForInsert(row, table),
+            this._prepReturningKeys(returning))
+        .then(rows => {
+          return rows[0];
+        });
   }
 
-  public insertAll<T extends object, R extends T>(
-      table: T, rows: R[]): Promise<number[]> {
+  public insertAll<T extends object>(table: T, rows: T[]): Promise<void>;
+  public insertAll<T extends object, K extends keyof T>(
+      table: T, rows: T[], returning: K): Promise<T[K][]>;
+  public insertAll<T extends object>(
+      table: T, rows: T[], returning?: string|string[]) {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
-        .insert(rows.map(row => this._prepForInsert(row, table)));
+        .insert(
+            rows.map(row => this._prepForInsert(row, table)),
+            this._prepReturningKeys(returning));
   }
 
   public batchInsert<T extends Object, R extends T>(
       table: T,
-      rows: R[],
+      rows: T[],
       chunkSize?: number,
       ): Promise<number[]> {
     return this._knex.batchInsert(
@@ -110,7 +130,7 @@ export class Tnex {
 
   public upsert<T extends object, R extends T>(
       table: T, row: R, primaryColumn: keyof T): Promise<void> {
-    let clientType = (this._knex as any).CLIENT as string;
+    let clientType = (this._rootKnex as any).CLIENT as string;
 
     let tableName = this._registry.getTableName(table);
     let strippedPrimary = this._registry.stripPrefix(primaryColumn);
@@ -136,6 +156,40 @@ export class Tnex {
 
         return this._knex.raw(rawQuery);
       });
+
+    } else if (clientType == 'pg') {
+      let strippedCols = Object.keys(strippedRow);
+      let data = [tableName];
+
+      let colQs = [];
+      for (let colName of strippedCols) {
+        colQs.push('??');
+        data.push(colName);
+      }
+
+      let valQs = [];
+      for (let colName of strippedCols) {
+        valQs.push('?');
+        data.push(strippedRow[colName]);
+      }
+
+      data.push(strippedPrimary);
+
+      let updates = [];
+      for (let colName of strippedCols) {
+        if (colName != strippedPrimary) {
+          updates.push(`??=EXCLUDED.??`);
+          data.push(colName, colName);
+        }
+      }
+
+      let query = `INSERT INTO ?? (${colQs.join(',')})
+          VALUES(${valQs.join(',')})
+          ON CONFLICT(??) DO UPDATE
+          SET ${updates.join(',')}`;
+
+      return this._knex.raw(query, data);
+
     } else {
       console.log(this._knex);
       throw new Error(`Client not supported: ${clientType}.`);
@@ -143,7 +197,7 @@ export class Tnex {
   }
 
   private _isTransaction() {
-    return this._knex == this._rootKnex;
+    return this._knex != this._rootKnex;
   }
 
   private _prepForInsert<T extends object>(row: T, table: T): SimpleObj {
@@ -161,5 +215,16 @@ export class Tnex {
       out[this._registry.stripPrefix(key)] = row[key];
     }
     return out;
+  }
+
+  private _prepReturningKeys(returning: undefined|string|string[]) {
+    // TODO: Throw exception if returning is not supported by current DB.
+    if (returning == undefined) {
+      return returning;
+    } else if (typeof returning == 'string') {
+      return this._registry.stripPrefix(returning);
+    } else {
+      return returning.map(col => this._registry.stripPrefix(col));
+    }
   }
 }

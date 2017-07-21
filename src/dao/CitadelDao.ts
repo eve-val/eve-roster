@@ -42,7 +42,7 @@ export default class CitadelDao {
 
   add(db: Tnex, newCitadel: Citadel) {
     return db
-        .insert(citadel, newCitadel);
+        .insert(citadel, newCitadel, 'citadel_id');
   }
 
   drop(db: Tnex, id: number) {

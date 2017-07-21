@@ -42,7 +42,7 @@ export default class AccountDao {
             account_mainCharacter: mainCharacterId,
             account_activeTimezone: null,
             account_homeCitadel: null,
-          })
+          }, 'account_id')
       .then(_id => {
         id = _id;
         return this._dao.log.logEvent(db, id, 'CREATE_ACCOUNT');
@@ -55,7 +55,7 @@ export default class AccountDao {
                 groupExplicit_id: DEFAULT_NUM,
                 groupExplicit_account: id,
                 groupExplicit_group: ADMIN_GROUP,
-              })
+              }, 'groupExplicit_id')
         }
         return -1;
       })

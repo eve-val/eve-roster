@@ -7,10 +7,10 @@ import { dao } from '../../dao';
 import { ExecutorResult } from '../Job';
 
 
-export function truncateLocations(): Promise<ExecutorResult> {
-  let cutoff = moment().subtract(90, 'days').valueOf();
+export function truncateCharacterLocations(): Promise<ExecutorResult> {
+  let cutoff = moment().subtract(120, 'days').valueOf();
 
-  return dao.location.deleteOldLocations(rootDb, cutoff)
+  return dao.characterLocation.deleteOldLocations(rootDb, cutoff)
   .then(() => {
     return <ExecutorResult>'success';
   });

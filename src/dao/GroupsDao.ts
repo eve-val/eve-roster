@@ -70,8 +70,6 @@ export default class GroupsDao {
           });
           return db
               .insertAll(accountGroup, rows);
-        } else {
-          return [0];
         }
       })
       .then(() => {

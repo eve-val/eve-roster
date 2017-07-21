@@ -94,9 +94,11 @@ function syncCharacterKillboard(
     let lossCount = losses.length;
 
     let killValue =
-        kills.reduce((accum, kill) => accum + kill.zkb.totalValue, 0);
+        Math.round(
+            kills.reduce((accum, kill) => accum + kill.zkb.totalValue, 0));
     let lossValue =
-        losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0);
+        Math.round(
+            losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0));
 
     return dao.killboard.updateCharacterKillboard(
         db,

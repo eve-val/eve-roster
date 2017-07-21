@@ -29,8 +29,8 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
       citadel_id: DEFAULT_NUM,
       citadel_name: input.name,
       citadel_type: input.type,
-      citadel_allianceAccess: toNum(input.allianceAccess),
-      citadel_allianceOwned: toNum(input.allianceOwned),
+      citadel_allianceAccess: input.allianceAccess,
+      citadel_allianceOwned: input.allianceOwned,
     });
   })
   .then(id => {

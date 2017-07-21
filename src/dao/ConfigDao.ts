@@ -109,8 +109,6 @@ export default class ConfigDao {
         if (corpConfigs.length > 0) {
           return db
               .insertAll(memberCorporation, corpConfigs);
-        } else {
-          return [0];
         }
       })
       .then(() => {

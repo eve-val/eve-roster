@@ -31,20 +31,22 @@
  * };
  * ```
  */
-const knex = require('../src/util/knex-loader');
+
+import { getPostgresKnex } from '../db/getPostgresKnex';
 
 
 // Directory is relative to project root
 const MIGRATE_CONFIG = {
   directory: './schema',
-  disableTransactions: true,
 };
 
-const updateDb = module.exports = function(revert) {
+const knex = getPostgresKnex();
+
+export function updateDb(revert: boolean) {
   if (revert) {
     console.log('Reverting schema changes...');
     return knex.migrate.rollback(MIGRATE_CONFIG)
-    .then(function(reverts) {
+    .then(reverts => {
       let batch = reverts[0];
       let scripts = reverts[1];
       if (scripts.length > 0) {
@@ -60,7 +62,7 @@ const updateDb = module.exports = function(revert) {
     // Proceed with an update to latest schema
     console.log('Updating...');
     return knex.migrate.latest(MIGRATE_CONFIG)
-    .then(function(updates) {
+    .then(updates => {
       let batch = updates[0];
       let scripts = updates[1];
       if (scripts.length > 0) {
@@ -91,9 +93,9 @@ if (require.main == module) {
   }
 
   updateDb(revert)
-  .catch(function(error) {
+  .catch(e => {
     console.error('Migration unsuccessful');
-    console.error(error);
+    console.error(e);
   })
   .then(function() {
     process.exit();
