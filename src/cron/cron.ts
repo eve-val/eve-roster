@@ -45,8 +45,8 @@ const CRON_SCHEDULES: TaskSchedule[] = [
   },
   {
     name: 'syncLocations',
-    schedule: '*/5 * * * *', // Every 5 minutes
-    interval: moment.duration(5, 'minutes').asMilliseconds(),
+    schedule: '* * * * *', // Every minute
+    interval: moment.duration(1, 'minutes').asMilliseconds(),
   },
   {
     name: 'truncateLocations',

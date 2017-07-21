@@ -53,7 +53,7 @@ const TASKS: TaskInternal[] = [
     displayName: 'Sync locations',
     description: 'Updates all members\' locations.',
     executor: syncLocations,
-    timeout:moment.duration(30, 'minutes').asMilliseconds(),
+    timeout:moment.duration(5, 'minutes').asMilliseconds(),
   },
   {
     name: 'truncateLocations',
