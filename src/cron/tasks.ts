@@ -14,6 +14,7 @@ import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
 import { syncSkills } from './task/syncSkills';
 import { truncateCronLog } from './task/truncateCronLog';
+import { truncateLocations } from './task/truncateLocations';
 
 const logger = require('../util/logger')(__filename);
 
@@ -55,6 +56,13 @@ const TASKS: TaskInternal[] = [
     timeout:moment.duration(30, 'minutes').asMilliseconds(),
   },
   {
+    name: 'truncateLocations',
+    displayName: 'Truncate location log',
+    description: 'Prunes very old locations.',
+    executor: truncateLocations,
+    timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'truncateCronLog',
     displayName: 'Truncate cron log',
     description: 'Prunes very old cron logs.',
@@ -69,6 +77,7 @@ export type TaskName =
     | 'syncSiggy'
     | 'syncSkills'
     | 'syncLocations'
+    | 'truncateLocations'
     | 'truncateCronLog'
     ;
 

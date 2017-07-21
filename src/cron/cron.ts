@@ -49,6 +49,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(5, 'minutes').asMilliseconds(),
   },
   {
+    name: 'truncateLocations',
+    schedule: '0 0 */90 * *',  // Every 90 days
+    interval: moment.duration(90, 'days').asMilliseconds(),
+  },
+  {
     name: 'truncateCronLog',
     schedule: '0 0 */90 * *',  // Every 90 days
     interval: moment.duration(90, 'days').asMilliseconds(),
