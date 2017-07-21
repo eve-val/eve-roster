@@ -60,7 +60,7 @@ const TASKS: TaskInternal[] = [
     displayName: 'Truncate location log',
     description: 'Prunes very old locations.',
     executor: truncateLocations,
-    timeout: moment.duration(5, 'minutes').asMilliseconds(),
+    timeout: moment.duration(10, 'minutes').asMilliseconds(),
   },
   {
     name: 'truncateCronLog',
