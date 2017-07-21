@@ -13,4 +13,11 @@ export default class LocationDao {
   put(db: Tnex, locationData: Location) {
     return db.insert(location, locationData);
   }
+
+  deleteOldLocations(db: Tnex, cutoff: number) {
+    return db
+        .del(location)
+        .where('location_timestamp', '<', val(cutoff))
+        .run();
+  }
 }
