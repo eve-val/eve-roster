@@ -14,16 +14,31 @@ pg.types.setTypeParser(20, function (value) {
   return parseInt(value);
 });
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL env var must be specified');
-}
-
 const CLIENT = 'pg';
+
+function getConnection(env: any) {
+  if (env.DATABASE_URL) {
+    return env.DATABASE_URL;
+  } else if (
+      env.DATABASE_HOST &&
+      env.DATABASE_USER &&
+      env.DATABASE_NAME &&
+      env.DATABASE_PASS) {
+    return {
+      host: env.DATABASE_HOST,
+      user: env.DATABASE_USER,
+      database: env.DATABASE_NAME,
+      password: env.DATABASE_PASS,
+    };
+  } else {
+    throw new Error('DATABASE_URL (or DATABASE_{HOST,USER,NAME,PASS}) env var must be specified.');
+  }
+}
 
 const CONFIG = {
   client: CLIENT,
   debug: false,
-  connection: process.env.DATABASE_URL,
+  connection: getConnection(process.env),
 };
 
 export function getPostgresKnex() {
