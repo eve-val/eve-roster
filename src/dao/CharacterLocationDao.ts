@@ -39,6 +39,21 @@ export default class LocationDao {
         .where('charloc_timestamp', '<', val(cutoff))
         .run();
   }
+
+  getLatestTimestamp(db: Tnex, characterId: number) {
+    return db
+      .select(characterLocation)
+      .where('charloc_character', '=', val(characterId))
+      .orderBy('charloc_timestamp', 'desc')
+      .limit(1)
+      .columns('charloc_timestamp')
+      .fetchFirst()
+      .then(row => {
+        if (row) {
+          return row.charloc_timestamp;
+        }
+      });
+  }
 }
 
 function locationsDiffer(a: CharacterLocation, b: CharacterLocation) {

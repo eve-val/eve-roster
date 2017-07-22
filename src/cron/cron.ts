@@ -46,8 +46,8 @@ const CRON_SCHEDULES: TaskSchedule[] = [
   },
   {
     name: 'syncCharacterLocations',
-    schedule: '* * * * *', // Every 1 minute
-    interval: moment.duration(1, 'minutes').asMilliseconds(),
+    schedule: '*/10 * * * * *', // Every 10 seconds - note the extra *
+    interval: moment.duration(10, 'seconds').asMilliseconds(),
     channel: 'location',
   },
   {
