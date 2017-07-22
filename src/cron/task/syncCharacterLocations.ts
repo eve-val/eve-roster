@@ -1,4 +1,5 @@
 import Promise = require('bluebird');
+import moment = require('moment');
 
 import { getAccessTokenForCharacter } from '../../data-source/accessToken';
 import { db as rootDb } from '../../db';
@@ -10,6 +11,9 @@ import { MissingTokenError } from '../../error/MissingTokenError';
 import { isAnyEsiError } from '../../util/error';
 
 const logger = require('../../util/logger')(__filename);
+
+const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
+const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 
 export function syncCharacterLocations(
@@ -26,7 +30,7 @@ export function syncCharacterLocations(
     let failedCharacterIds: number[] = []
 
     return Promise.map(characterIds, (characterId, i, len) => {
-      return updateLocation(rootDb, characterId)
+      return maybeUpdateLocation(rootDb, characterId)
       .catch(MissingTokenError, e => {
         noTokenCharacterIds.push(characterId);
       })
@@ -56,6 +60,22 @@ export function syncCharacterLocations(
   .then((): ExecutorResult => {
     logger.info(`syncLocation finished for ${completedCharacters} characters.`);
     return 'success';
+  });
+}
+
+function maybeUpdateLocation(db: Tnex, characterId: number) {
+  return dao.characterLocation.getLatestTimestamp(db, characterId)
+  .then(timestamp => {
+    let staleness = timestamp ? (Date.now() - timestamp) : 0;
+    if (staleness > SLOW_UPDATE_THRESHOLD) {
+      // 100x slower average polling - do nothing 99% of the time.
+      if (Math.random() > 0.01) { return; }
+    } else if (staleness > RAPID_UPDATE_THRESHOLD) {
+      // 10x slower average polling - do nothing 90% of the time.
+      if (Math.random() > 0.1) { return; }
+    }
+    // Actually update the location
+    return updateLocation(db, characterId);
   });
 }
 
