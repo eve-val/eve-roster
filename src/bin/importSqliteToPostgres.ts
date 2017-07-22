@@ -37,12 +37,13 @@ function migrateData(sqlite: knex, postgres: knex) {
       .then(_ => copyTable(sqlite, trx, 'account'))
       .then(_ => copyTable(sqlite, trx, 'accountGroup'))
       .then(_ => copyTable(sqlite, trx, 'accountLog'))
-      .then(_ => copyTableIfExists(sqlite, trx, 'characterLocation'))
+      .then(_ => copyTableIfExists(
+          sqlite, trx, 'location', 'characterLocation'))
       .then(_ => copyTable(sqlite, trx, 'characterSkillQueue'))
       .then(_ => copyTable(sqlite, trx, 'cronLog'))
       .then(_ => copyTable(sqlite, trx, 'groupExplicit'))
       .then(_ => copyTable(sqlite, trx, 'groupTitle'))
-      .then(_ => copyTable(sqlite, trx, 'killboard', row => {
+      .then(_ => copyTable(sqlite, trx, 'killboard', 'killboard', row => {
         row.killValueInLastMonth = Math.round(row.killValueInLastMonth);
         row.lossValueInLastMonth = Math.round(row.lossValueInLastMonth);
         return row;
@@ -77,15 +78,20 @@ function migrateData(sqlite: knex, postgres: knex) {
 function copyTable(
     sqlite: knex,
     postgres: knex,
-    table: string,
+    srcTable: string,
+    dstTable=srcTable,
     transformer?: (row: any) => any) {
-  console.log(`Copying table "${table}"...`);
-  return sqlite(table).select()
+  if (srcTable != dstTable) {
+    console.log(`Copying table "${srcTable}" -> "${dstTable}"...`);
+  } else {
+    console.log(`Copying table "${srcTable}"...`);
+  }
+  return sqlite(srcTable).select()
   .then(rows => {
     if (transformer) {
       rows = rows.map(transformer);
     }
-    return batchInsert(postgres, table, rows)
+    return batchInsert(postgres, dstTable, rows)
   })
   .then(insertCount => {
     console.log(`  Inserted ${insertCount} rows.`);
@@ -95,16 +101,18 @@ function copyTable(
 function copyTableIfExists(
     sqlite: knex,
     postgres: knex,
-    table: string,
-    transformer?: (row: any) => any) {
+    srcTable: string,
+    dstTable=srcTable,
+    transformer?: (row: any) => any,
+    ) {
   return sqlite.raw(
       `SELECT name FROM sqlite_master WHERE type='table' AND name=?`,
-      [table])
+      [srcTable])
   .then(rows => {
     if (rows.length > 0) {
-      return copyTable(sqlite, postgres, table, transformer);
+      return copyTable(sqlite, postgres, srcTable, dstTable, transformer);
     } else {
-      console.log(`Skipping copy of "${table}": table doesn't exist.`);
+      console.log(`Skipping copy of "${srcTable}": table doesn't exist.`);
     }
   });
 }
