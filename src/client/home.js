@@ -7,7 +7,6 @@ import Roster from './roster/Roster.vue';
 
 import AccountLog from './admin/AccountLog.vue';
 import AdminSetup from './admin/Setup.vue';
-import CronLog from './admin/CronLog.vue';
 import Tasks from './admin/Tasks.vue';
 import CitadelManagement from './admin/CitadelManagement.vue';
 import Dev from './dev/Dev.vue';
