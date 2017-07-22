@@ -1,8 +1,11 @@
+import { EventEmitter } from 'events';
 import Promise = require('bluebird');
 
-import { EventEmitter } from 'events';
+import { Tnex } from '../tnex';
 
-export type TaskExecutor = (job: JobTracker) => Promise<ExecutorResult>;
+
+export type TaskExecutor =
+    (db: Tnex, job: JobTracker) => Promise<ExecutorResult>;
 export type ExecutorResult = 'success' | 'partial';
 export type JobResult = 'pending' | ExecutorResult | 'failure';
 export type JobStatus = 'queued' | 'running' | 'finished';

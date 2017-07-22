@@ -1,6 +1,5 @@
 import Promise = require('bluebird');
 
-import { db as rootDb } from '../../db';
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { JobTracker, ExecutorResult } from '../Job';
@@ -11,16 +10,16 @@ import { isAnyEsiError } from '../../util/error';
 const logger = require('../../util/logger')(__filename);
 
 
-export function syncSkills(job: JobTracker): Promise<ExecutorResult> {
+export function syncSkills(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
   
-  return dao.roster.getCharacterIdsOwnedByMemberAccounts(rootDb)
+  return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
   .then(characterIds => {
     job.setProgress(0, undefined);
 
     let successCount = 0;
 
     return Promise.each(characterIds, (characterId, i, len) => {
-      return updateSkills(rootDb, characterId)
+      return updateSkills(db, characterId)
       .then(() => {
         successCount++;
       })

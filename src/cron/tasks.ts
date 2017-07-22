@@ -95,7 +95,7 @@ interface TaskInternal extends Task {
 
 let _scheduler: Scheduler;
 
-export function init(db: Tnex, scheduler: Scheduler) {
+export function init(scheduler: Scheduler) {
   _scheduler = scheduler;
 }
 

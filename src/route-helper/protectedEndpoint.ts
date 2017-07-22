@@ -16,7 +16,6 @@ import { NotLoggedInError } from '../error/NotLoggedInError';
 import { UnauthorizedClientError } from '../error/UnauthorizedClientError';
 import { UserVisibleError } from '../error/UserVisibleError';
 
-import { db } from '../db';
 import { Tnex } from '../tnex';
 import { AccountPrivileges } from './privileges';
 import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
@@ -61,10 +60,11 @@ export function htmlEndpoint(handler: HtmlEndpointHandler): ExpressHandler {
   return function (req, res) {
     return Promise.resolve()
     .then(() => {
-      return getAccountPrivs(req.session.accountId)
+      return getAccountPrivs(req.db, req.session.accountId)
     })
     .then(accountPrivs => {
-      return handler(req, res, db, accountPrivs.account, accountPrivs.privs);
+      return handler(
+          req, res, req.db, accountPrivs.account, accountPrivs.privs);
     })
     .then(payload => {
       res.render(payload.template, payload.data);
@@ -79,10 +79,11 @@ export function jsonEndpoint(handler: JsonEndpointHandler): ExpressHandler {
   return function(req, res) {
     return Promise.resolve()
     .then(() => {
-      return getAccountPrivs(req.session.accountId)
+      return getAccountPrivs(req.db, req.session.accountId)
     })
     .then(accountPrivs => {
-      return handler(req, res, db, accountPrivs.account, accountPrivs.privs);
+      return handler(
+          req, res, req.db, accountPrivs.account, accountPrivs.privs);
     })
     .then(payload => {
       let space = req.query.pretty != undefined ? 2 : undefined;

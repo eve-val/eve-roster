@@ -9,6 +9,7 @@ import cookieParser = require('cookie-parser');
 import cookieSession = require('cookie-session');
 import webpack = require('webpack');
 
+import { Tnex } from './tnex';
 import { isDevelopment } from './util/config';
 import { LOGIN_PARAMS } from './util/ccpSso';
 import { getAccountPrivs } from './route-helper/getAccountPrivs';
@@ -36,7 +37,7 @@ const FRONTEND_ROUTES = [
   '/dev/:section',
 ];
 
-export function init(onServing: (port: number) => void) {
+export function init(db: Tnex, onServing: (port: number) => void) {
   let app = express();
 
   app.use(bodyParser.json());
@@ -73,6 +74,11 @@ export function init(onServing: (port: number) => void) {
     app.use(webpackHotMiddleware(compiler));
   }
 
+  app.all('*', (req, res, next) => {
+    req.db = db;
+    next();
+  });
+
   // For healthchecks
   app.get('/healthz', function(req, res) {
     res.send('ok');
@@ -102,7 +108,7 @@ export function init(onServing: (port: number) => void) {
   app.use('/logs', (req, res, next) => {
     Promise.resolve()
     .then(() => {
-      return getAccountPrivs(req.session.accountId);
+      return getAccountPrivs(req.db, req.session.accountId);
     })
     .then(accountPrivs => {
       accountPrivs.privs.requireRead('serverLogs', false);

@@ -14,14 +14,13 @@ import axios from 'axios';
 import moment = require('moment');
 import xml2js = require('xml2js');
 
-import { db as rootDb } from '../../db';
 import { Tnex, DEFAULT_NUM } from '../../tnex';
 import { dao } from '../../dao';
 import { MemberCorporation } from '../../dao/tables';
 import { serialize, parallelize } from '../../util/asyncUtil';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
-import { ExecutorResult } from '../Job';
+import { JobTracker, ExecutorResult } from '../Job';
 
 import esi from '../../esi';
 
@@ -30,10 +29,10 @@ const logger = require('../../util/logger')(__filename);
 
 type Xml = any;
 
-export function syncRoster(): Promise<ExecutorResult> {
-  return updateAllCorporations(rootDb)
-  .then(processedIds => updateOrphanedOrUnknownCharacters(rootDb, processedIds))
-  .then(() => updateGroupsOnAllAccounts(rootDb))
+export function syncRoster(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
+  return updateAllCorporations(db)
+  .then(processedIds => updateOrphanedOrUnknownCharacters(db, processedIds))
+  .then(() => updateGroupsOnAllAccounts(db))
   .then(function() {
     logger.info('syncRoster() complete');
     return <ExecutorResult>'success';

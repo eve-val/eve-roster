@@ -2,7 +2,6 @@ import Promise = require('bluebird');
 import moment = require('moment');
 import axios from 'axios';
 
-import { db as rootDb } from '../../db';
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { serialize, doWhile } from '../../util/asyncUtil';
@@ -16,10 +15,11 @@ const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
-export function syncKillboard(job: JobTracker): Promise<ExecutorResult> {
+export function syncKillboard(
+    db: Tnex, job: JobTracker): Promise<ExecutorResult> {
   return Promise.resolve()
   .then(getStartTime)
-  .then(startTime => fetchAll(rootDb, job, startTime))
+  .then(startTime => fetchAll(db, job, startTime))
   .then(([updateCount, failureCount]) => {
     logger.info(`Updated ${updateCount} characters' killboards.`);
     let result: ExecutorResult;

@@ -5,7 +5,6 @@ import Promise = require('bluebird');
 import axios from 'axios';
 import express = require('express');
 
-import { db as rootDb } from '../db';
 import { dao } from '../dao';
 import { Tnex, Nullable } from '../tnex';
 import { isAnyEsiError } from '../util/error';
@@ -55,7 +54,7 @@ export default function(req: express.Request, res: express.Response) {
     logger.info(`  Character: ${characterData.name}`);
 
     charData = characterData;
-    return handleCharLogin(rootDb, accountId, charData, charTokens);
+    return handleCharLogin(req.db, accountId, charData, charTokens);
   })
   .then(accountId => {
     logger.info('  accountId =', accountId);

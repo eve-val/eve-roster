@@ -41,8 +41,13 @@ const CONFIG = {
   connection: getConnection(process.env),
 };
 
+let pgKnex: knex | null = null;
+
 export function getPostgresKnex() {
-  const pgKnex = knex(CONFIG);
-  (pgKnex as any).CLIENT = CLIENT;
+  if (pgKnex == null) {
+    pgKnex = knex(CONFIG);
+    (pgKnex as any).CLIENT = CLIENT;
+  }
+
   return pgKnex;
 }

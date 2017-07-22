@@ -3,8 +3,9 @@ require('source-map-support').install();
 
 import Promise = require('bluebird');
 
-import { db } from './db';
 import { isDevelopment } from './util/config';
+import { tables } from './dao/tables';
+import { getPostgresKnex } from './db/getPostgresKnex';
 import { Scheduler } from './cron/Scheduler';
 
 import * as express from './express';
@@ -28,10 +29,11 @@ for (let envVar of REQUIRED_VARS) {
   }
 }
 
-let scheduler = new Scheduler(db);
+const db = tables.build(getPostgresKnex());
 
-tasks.init(db, scheduler);
+let scheduler = new Scheduler(db);
+tasks.init(scheduler);
 cron.init(db);
-express.init(port => {
+express.init(db, port => {
   logger.info(`Serving from port ${port}.`);
 });
