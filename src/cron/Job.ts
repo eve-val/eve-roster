@@ -15,6 +15,7 @@ export interface Job extends EventEmitter {
   readonly executionId: number;
   readonly taskName: string;
   readonly channel: string | undefined;
+  readonly silent: boolean;
   readonly status: JobStatus;
   /**
    * Set to 'pending' until status is 'finished'.

@@ -8,9 +8,7 @@ import { ExecutorResult } from '../Job';
 
 
 export function truncateCronLog(): Promise<ExecutorResult> {
-  let cutoff = moment().subtract(90, 'days').valueOf();
-
-  return dao.cron.dropOldJobs(rootDb, cutoff)
+  return dao.cron.dropOldJobs(rootDb, 10000)
   .then(() => {
     return <ExecutorResult>'success';
   });

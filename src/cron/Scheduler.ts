@@ -15,6 +15,11 @@ const logger = require('../util/logger')(__filename);
 
 let _nextExecutionId = 0;
 
+export interface TaskOptions {
+  channel?: string,
+  silent?: boolean,
+}
+
 export class Scheduler {
   private _db: Tnex;
   private _runningJobs = [] as JobImpl[];
@@ -46,11 +51,11 @@ export class Scheduler {
       taskName: string,
       executor: TaskExecutor,
       timeout: number,
-      channelName?: string,
+      options = {} as TaskOptions,
       ): Job {
     return this._findRunningJob(taskName)
-        || this._findQueuedTaskInChannel(taskName, channelName)
-        || this._createAndRunJob(taskName, executor, timeout, channelName);
+        || this._findQueuedTaskInChannel(taskName, options.channel)
+        || this._createAndRunJob(taskName, executor, timeout, options);
   }
 
   public getRunningJobs(): ReadonlyArray<Job> {
@@ -61,16 +66,21 @@ export class Scheduler {
       taskName: string,
       executor: TaskExecutor,
       timeout: number,
-      channelName?: string,
+      options: TaskOptions,
       ) {
     let job = new JobImpl(
-        _nextExecutionId, taskName, executor, timeout, channelName);
+        _nextExecutionId,
+        taskName,
+        executor,
+        timeout,
+        options.channel,
+        options.silent || false);
     _nextExecutionId++;
 
-    if (channelName == undefined) {
+    if (options.channel == undefined) {
       this._executeJob(job);
     } else {
-      this._queueJobToChannel(job, this._getChannel(channelName));
+      this._queueJobToChannel(job, this._getChannel(options.channel));
     }
 
     return job;
@@ -92,7 +102,9 @@ export class Scheduler {
       job.logId = jobId;
       job.startTime = Date.now();
 
-      logger.info(`START ${jobSummary(job)}.`);
+      if (!job.silent) {
+        logger.info(`START ${jobSummary(job)}.`);
+      }
 
       const work = job.executor(job);
       job.timeoutId = setTimeout(() => this._timeoutJob(job), job.timeout);
@@ -108,7 +120,9 @@ export class Scheduler {
       const logMessage = `FINISH ${jobSummary(job)} with result "${result}".`;
 
       if (result == 'success') {
-        logger.info(logMessage);
+        if (!job.silent) {
+          logger.info(logMessage);
+        }
       } else {
         logger.error(logMessage);
       }

@@ -291,6 +291,11 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     return this;
   }
 
+  public offset(count: number): this {
+    this._query = this._query.offset(count);
+    return this;
+  }
+
 
   /*
    * Helper methods

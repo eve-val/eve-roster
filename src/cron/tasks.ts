@@ -3,7 +3,7 @@ import moment = require('moment');
 
 import { Tnex } from '../tnex';
 
-import { Scheduler } from './Scheduler';
+import { Scheduler, TaskOptions } from './Scheduler';
 import { TaskExecutor } from './Job';
 import * as cron from './cron';
 import { findWhere } from '../util/underscore';
@@ -111,7 +111,7 @@ export function getRunningTasks() {
   return _scheduler.getRunningJobs();
 }
 
-export function runTask(taskName: TaskName, channel?: string) {
+export function runTask(taskName: TaskName, options?: TaskOptions) {
   if (_scheduler == undefined) {
     throw new Error(`Tasks not yet initialized`);
   }
@@ -120,5 +120,5 @@ export function runTask(taskName: TaskName, channel?: string) {
   if (task == undefined) {
     throw new Error(`runTask(): No such task "${taskName}".`);
   }
-  return _scheduler.runTask(task.name, task.executor, task.timeout, channel);
+  return _scheduler.runTask(task.name, task.executor, task.timeout, options);
 }

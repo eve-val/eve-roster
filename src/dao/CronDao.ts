@@ -1,8 +1,11 @@
 import Promise = require('bluebird');
+import moment = require('moment');
 
 import { Tnex, val, DEFAULT_NUM } from '../tnex';
 import { Dao } from '../dao';
 import { cronLog } from './tables';
+
+const logger = require('../util/logger')(__filename);
 
 
 export default class CronDao {
@@ -15,7 +18,6 @@ export default class CronDao {
     return db
         .select(cronLog)
         .where('cronLog_task', '=', val(taskName))
-        .orderBy('cronLog_start', 'desc')
         .orderBy('cronLog_id', 'desc')
         .limit(1)
         .columns(
@@ -48,43 +50,65 @@ export default class CronDao {
         .run();
   }
 
-  dropOldJobs(db: Tnex, startCutoff: number) {
+  dropOldJobs(db: Tnex, maxRecordsToRetainPerJobType: number) {
     return db
-        .del(cronLog)
-        .where('cronLog_start', '<', val(startCutoff))
-        .run();
-
-    /*
-    // This is the "more correct" way to to this -- it guarantees that we leave
-    // the most recent completed entry in the log even if it's "too old".
-    // However, SQLite doesn't support joins on deletes. Womp.
-    return knex('cronLog as c1')
-        .del('c1')
-        .leftJoin(function() {
-          // The most recent completed entry for each task
-          this.select('id', 'max(start) as start')
-              .from('cronLog')
-              .whereNotNull('end')
-              .groupBy('task')
-              .as('c2')
-        }, 'c1.task', '=', 'c2.task')
-        .where('c1.start', '<', 'c2.start')
-        .andWhere('c1.start', '<', startCutoff);
-    */
+        .select(cronLog)
+        .groupBy('cronLog_task')
+        .columns('cronLog_task')
+        .run()
+    .then(rows => {
+      return Promise.each(rows, row => {
+        const task = row.cronLog_task;
+        return db
+            .select(cronLog)
+            .columns('cronLog_id')
+            .orderBy('cronLog_id', 'desc')
+            .offset(maxRecordsToRetainPerJobType)
+            .limit(1)
+            .where('cronLog_task', '=', val(task))
+            .fetchFirst()
+        .then(row => {
+          if (row == null) {
+            return 0;
+          } else {
+            return db
+                .del(cronLog)
+                .where('cronLog_id', '<=', val(row.cronLog_id))
+                .andWhere('cronLog_task', '=', val(task))
+                .run();
+          }
+        })
+        .then(deleteCount => {
+          logger.info(
+              `Truncated ${deleteCount} cronLog rows for task "${task}".`);
+        })
+      })
+    });
   }
 
   getRecentLogs(db: Tnex) {
     return db
         .select(cronLog)
-        .orderBy('cronLog_start', 'desc')
-        .limit(400)
         .columns(
             'cronLog_id',
             'cronLog_task',
             'cronLog_start',
             'cronLog_end',
             'cronLog_result',
-            )
+        )
+
+        // HACK to limit log spam until we get better UI
+        // Filter out all syncCharacter location entries unless they ended in
+        // error or were run in the last minute. 
+        .where('cronLog_task', '!=', val('syncCharacterLocations'))
+        .orWhere('cronLog_result', '!=', val('success'))
+        .orWhere(
+            'cronLog_start',
+            '>=',
+            val(moment().subtract(1, 'minute').valueOf()))
+
+        .orderBy('cronLog_id', 'desc')
+        .limit(400)
         .run();
   }
 }

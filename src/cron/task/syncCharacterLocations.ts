@@ -23,7 +23,6 @@ export function syncCharacterLocations(
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(rootDb)
   .then(characterIds => {
     job.setProgress(0, undefined);
-    logger.info(`syncLocation beginning for ${characterIds.length} characters.`);
 
     let noTokenCharacterIds: number[] = [];
     let esiErrorCharacterIds: number[] = [];
@@ -58,7 +57,6 @@ export function syncCharacterLocations(
     });
   })
   .then((): ExecutorResult => {
-    logger.info(`syncLocation finished for ${completedCharacters} characters.`);
     return 'success';
   });
 }
