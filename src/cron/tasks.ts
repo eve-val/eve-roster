@@ -28,7 +28,7 @@ const TASKS: TaskInternal[] = [
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
   },
   {
-    name: 'syncCharLocations',
+    name: 'syncCharacterLocations',
     displayName: 'Sync locations',
     description: 'Updates all members\' locations.',
     executor: syncCharacterLocations,
@@ -74,7 +74,7 @@ const TASKS: TaskInternal[] = [
 export type TaskName =
     'syncRoster'
     | 'syncKillboard'
-    | 'syncCharLocations'
+    | 'syncCharacterLocations'
     | 'syncSiggy'
     | 'syncSkills'
     | 'truncateCharacterLocations'

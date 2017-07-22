@@ -20,6 +20,7 @@ interface TaskSchedule {
   name: TaskName,
   schedule: string,
   interval: number,
+  channel?: string,
 }
 
 const CRON_SCHEDULES: TaskSchedule[] = [
@@ -27,11 +28,6 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     name: 'syncRoster',
     schedule: '*/20 * * * *', // Every 20 minutes
     interval: moment.duration(20, 'minutes').asMilliseconds(),
-  },
-  {
-    name: 'syncCharLocations',
-    schedule: '* * * * *', // Every minute
-    interval: moment.duration(1, 'minutes').asMilliseconds(),
   },
   {
     name: 'syncKillboard',
@@ -47,6 +43,12 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     name: 'syncSkills',
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
+  },
+  {
+    name: 'syncCharacterLocations',
+    schedule: '*/10 * * * * *', // Every 10 seconds, note the extra *
+    interval: moment.duration(10, 'seconds').asMilliseconds(),
+    channel: 'location',
   },
   {
     name: 'truncateCharacterLocations',
@@ -101,6 +103,6 @@ class Cron {
   }
 
   private _runTask(task: TaskSchedule) {
-    tasks.runTask(task.name, 'cron');
+    tasks.runTask(task.name, task.channel || 'cron');
   }
 }

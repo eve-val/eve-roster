@@ -14,6 +14,8 @@ const logger = require('../../util/logger')(__filename);
 
 export function syncCharacterLocations(
     job: JobTracker): Promise<ExecutorResult> {
+  let completedCharacters = 0;
+
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(rootDb)
   .then(characterIds => {
     job.setProgress(0, undefined);
@@ -23,7 +25,7 @@ export function syncCharacterLocations(
     let esiErrorCharacterIds: number[] = [];
     let failedCharacterIds: number[] = []
 
-    return Promise.each(characterIds, (characterId, i, len) => {
+    return Promise.map(characterIds, (characterId, i, len) => {
       return updateLocation(rootDb, characterId)
       .catch(MissingTokenError, e => {
         noTokenCharacterIds.push(characterId);
@@ -35,7 +37,8 @@ export function syncCharacterLocations(
         failedCharacterIds.push(characterId);
       })
       .then(() => {
-        job.setProgress(i / len, undefined);
+        completedCharacters++;
+        job.setProgress(completedCharacters / len, undefined);
       });
     })
     .then(() => {
@@ -51,6 +54,7 @@ export function syncCharacterLocations(
     });
   })
   .then((): ExecutorResult => {
+    logger.info(`syncLocation finished for ${completedCharacters} characters.`);
     return 'success';
   });
 }
