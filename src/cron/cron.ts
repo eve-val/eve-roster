@@ -30,11 +30,6 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(20, 'minutes').asMilliseconds(),
   },
   {
-    name: 'syncCharLocations',
-    schedule: '* * * * *', // Every minute
-    interval: moment.duration(1, 'minutes').asMilliseconds(),
-  },
-  {
     name: 'syncKillboard',
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
@@ -50,7 +45,7 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
-    name: 'syncLocations',
+    name: 'syncCharacterLocations',
     schedule: '*/10 * * * * *', // Every 10 seconds, note the extra *
     interval: moment.duration(10, 'seconds').asMilliseconds(),
     channel: 'location',
