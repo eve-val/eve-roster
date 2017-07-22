@@ -54,7 +54,6 @@ export default class CronDao {
     return db
         .select(cronLog)
         .groupBy('cronLog_task')
-        .count('cronLog_id', 'rowCount')
         .columns('cronLog_task')
         .run()
     .then(rows => {
