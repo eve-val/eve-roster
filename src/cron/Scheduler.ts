@@ -106,7 +106,7 @@ export class Scheduler {
         logger.info(`START ${jobSummary(job)}.`);
       }
 
-      const work = job.executor(job);
+      const work = job.executor(this._db, job);
       job.timeoutId = setTimeout(() => this._timeoutJob(job), job.timeout);
       job.setStatus('running', 'pending');
       return work;

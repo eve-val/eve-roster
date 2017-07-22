@@ -9,7 +9,7 @@
  */
 import Promise = require('bluebird');
 
-import { db } from '../db';
+import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { getPrivileges } from './privileges';
 
@@ -22,7 +22,7 @@ export interface AccountSummary {
   created: number,
 }
 
-export function getAccountPrivs(accountId: number | undefined) {
+export function getAccountPrivs(db: Tnex, accountId: number | undefined) {
   if (accountId == undefined) {
     throw new NotLoggedInError();
   }

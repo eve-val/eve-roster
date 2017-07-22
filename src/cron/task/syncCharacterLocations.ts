@@ -2,7 +2,6 @@ import Promise = require('bluebird');
 import moment = require('moment');
 
 import { getAccessTokenForCharacter } from '../../data-source/accessToken';
-import { db as rootDb } from '../../db';
 import { dao } from '../../dao';
 import { default as esi } from '../../esi';
 import { Tnex } from '../../tnex';
@@ -17,10 +16,10 @@ const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 
 export function syncCharacterLocations(
-    job: JobTracker): Promise<ExecutorResult> {
+    db: Tnex, job: JobTracker): Promise<ExecutorResult> {
   let completedCharacters = 0;
 
-  return dao.roster.getCharacterIdsOwnedByMemberAccounts(rootDb)
+  return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
   .then(characterIds => {
     job.setProgress(0, undefined);
 
@@ -29,7 +28,7 @@ export function syncCharacterLocations(
     let failedCharacterIds: number[] = []
 
     return Promise.map(characterIds, (characterId, i, len) => {
-      return maybeUpdateLocation(rootDb, characterId)
+      return maybeUpdateLocation(db, characterId)
       .catch(MissingTokenError, e => {
         noTokenCharacterIds.push(characterId);
       })

@@ -5,12 +5,11 @@ import moment = require('moment');
 import { default as axiosModule, AxiosResponse } from 'axios';
 import tough = require('tough-cookie');
 
-import { db } from '../../db';
 import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { character } from '../../dao/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
-import { ExecutorResult } from '../Job';
+import { JobTracker, ExecutorResult } from '../Job';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');
@@ -30,13 +29,13 @@ const axios = axiosModule.create({
   baseURL: SIGGY_PATH
 });
 
-export function syncSiggy(): Promise<ExecutorResult> {
+export function syncSiggy(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
   return Promise.resolve()
-  .then(resetSavedScores)
-  .then(getSiggyCredentials)
-  .then(handleLogin)
-  .then(getRecentScores)
-  .then(saveScrapedScores)
+  .then(_ => resetSavedScores(db))
+  .then(_ => getSiggyCredentials(db))
+  .then(config => handleLogin(config))
+  .then(cookieJar => getRecentScores(cookieJar))
+  .then(recentScores => saveScrapedScores(db, recentScores))
   .then((updateCount) => {
     logger.info('Updated', updateCount, 'characters');
     // Always return success since siggy only reports characters that scanned,
@@ -55,7 +54,7 @@ export function syncSiggy(): Promise<ExecutorResult> {
 
 // Set all siggy scores to 0 in database, so that anyone not present in
 // scraped leaderboards has the expected score of 0.
-function resetSavedScores() {
+function resetSavedScores(db: Tnex) {
   return db.transaction(db => {
     return db
       .update(character, { character_siggyScore: 0 })
@@ -63,7 +62,7 @@ function resetSavedScores() {
   });
 }
 
-function saveScrapedScores(recentScores: SiggyScore[]) {
+function saveScrapedScores(db: Tnex, recentScores: SiggyScore[]) {
   return db.transaction(db => {
     return Promise.map(recentScores, (score) => {
       return dao.character.updateCharacter(db, score.id, {
@@ -78,7 +77,7 @@ function saveScrapedScores(recentScores: SiggyScore[]) {
   });
 }
 
-function getSiggyCredentials() {
+function getSiggyCredentials(db: Tnex) {
   return dao.config.getSiggyCredentials(db);
 }
 
