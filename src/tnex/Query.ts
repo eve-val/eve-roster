@@ -68,6 +68,22 @@ export class Query<T extends object, R /* return type */> {
     return this.where(column, cmp, right);
   }
 
+  public orWhere<K extends keyof T, R extends keyof T>(
+    column: K,
+    cmp: Comparison,
+    right: R | ValueWrapper<T[K]>): this {
+
+    if (right instanceof ValueWrapper) {
+      this._query = this._query
+          .orWhere(this._scoper.scopeColumn(column), cmp, right.value);
+    } else {
+      let rawLeft = this._scoper.scopeColumn(column);
+      let rawRight = this._scoper.scopeColumn(right);
+      this._query = this._query.orWhereRaw(`?? ${cmp} ??`, [rawLeft, rawRight]);
+    }
+    return this;
+  }
+
   public whereNotNull(column: keyof T): this {
     this._query = this._query
         .whereNotNull(this._scoper.scopeColumn(column));

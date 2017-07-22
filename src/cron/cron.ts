@@ -21,6 +21,7 @@ interface TaskSchedule {
   schedule: string,
   interval: number,
   channel?: string,
+  silent?: boolean,
 }
 
 const CRON_SCHEDULES: TaskSchedule[] = [
@@ -49,6 +50,7 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     schedule: '*/10 * * * * *', // Every 10 seconds - note the extra *
     interval: moment.duration(10, 'seconds').asMilliseconds(),
     channel: 'location',
+    silent: true,
   },
   {
     name: 'truncateCharacterLocations',
@@ -57,8 +59,8 @@ const CRON_SCHEDULES: TaskSchedule[] = [
   },
   {
     name: 'truncateCronLog',
-    schedule: '0 0 */90 * *',  // Every 90 days
-    interval: moment.duration(90, 'days').asMilliseconds(),
+    schedule: '0 2 * * *',  // Once a day at 2AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
   },
 ];
 
@@ -103,6 +105,9 @@ class Cron {
   }
 
   private _runTask(task: TaskSchedule) {
-    tasks.runTask(task.name, task.channel || 'cron');
+    tasks.runTask(task.name, {
+      channel: task.channel || 'cron',
+      silent: task.silent,
+    });
   }
 }

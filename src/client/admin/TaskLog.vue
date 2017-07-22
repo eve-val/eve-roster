@@ -103,7 +103,7 @@ export default {
 }
 
 .task {
-  width: 150px;
+  width: 220px;
 }
 
 .start {

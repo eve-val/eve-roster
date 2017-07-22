@@ -8,6 +8,7 @@ export class JobImpl extends EventEmitter implements Job {
   public readonly executor: TaskExecutor;
   public readonly timeout: number;
   public readonly channel: string | undefined;
+  public readonly silent: boolean;
 
   public timeoutId: NodeJS.Timer | undefined;
 
@@ -25,7 +26,8 @@ export class JobImpl extends EventEmitter implements Job {
       taskName: string,
       executor: TaskExecutor,
       timeout: number,
-      channel: string | undefined) {
+      channel: string | undefined,
+      silent: boolean) {
     super();
 
     this.executionId = executionId;
@@ -33,6 +35,7 @@ export class JobImpl extends EventEmitter implements Job {
     this.executor = executor;
     this.timeout = timeout;
     this.channel = channel;
+    this.silent = silent;
   }
 
   public get logId() {
