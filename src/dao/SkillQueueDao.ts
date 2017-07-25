@@ -47,35 +47,28 @@ class SkillQueueDao {
       characterId: number,
       queueItems: SkillQueueEntry[],
       ) {
-    return db.transaction(db => {
-      return Promise.resolve()
-      .then(() => {
-        return db
-            .del(characterSkillQueue)
-            .where('characterSkillQueue_character', '=', val(characterId))
-            .run();
-      })
-      .then(delCount => {
-        if (queueItems.length > 0) {
-          let items = queueItems.map((qi, index) => {
-            return {
-              characterSkillQueue_character: characterId,
-              characterSkillQueue_queuePosition: index,
+    
+    let items = queueItems.map((qi, index) => {
+      return {
+        characterSkillQueue_character: characterId,
+        characterSkillQueue_queuePosition: index,
 
-              characterSkillQueue_skill: qi.skill,
-              characterSkillQueue_targetLevel: qi.targetLevel,
-              characterSkillQueue_startTime: qi.startTime,
-              characterSkillQueue_endTime: qi.endTime,
-              characterSkillQueue_levelStartSp: qi.levelStartSp,
-              characterSkillQueue_levelEndSp: qi.levelEndSp,
-              characterSkillQueue_trainingStartSp: qi.trainingStartSp,
-            };
-          });
-          return db
-            .insertAll(characterSkillQueue, items)
-        }
-      });
+        characterSkillQueue_skill: qi.skill,
+        characterSkillQueue_targetLevel: qi.targetLevel,
+        characterSkillQueue_startTime: qi.startTime,
+        characterSkillQueue_endTime: qi.endTime,
+        characterSkillQueue_levelStartSp: qi.levelStartSp,
+        characterSkillQueue_levelEndSp: qi.levelEndSp,
+        characterSkillQueue_trainingStartSp: qi.trainingStartSp,
+      };
     });
+
+    return db
+        .replace(
+            characterSkillQueue,
+            'characterSkillQueue_character',
+            characterId,
+            items);
   }
 }
 export default SkillQueueDao;
@@ -86,7 +79,7 @@ export interface SkillQueueEntry {
   levelStartSp: number,
   levelEndSp: number,
   trainingStartSp: number,
-  // startTime and endTime wil be undefined if the queue is paused.
+  // startTime and endTime wil be null if the queue is paused.
   startTime: number | null,
   endTime: number | null,
 }

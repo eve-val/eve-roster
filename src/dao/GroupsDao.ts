@@ -55,22 +55,16 @@ export default class GroupsDao {
       return this.getAccountGroups(db, accountId)
       .then(_oldGroups => {
         oldGroups = _oldGroups;
+
+        let rows = groups.map(group => {
+          return {
+            accountGroup_account: accountId,
+            accountGroup_group: group
+          };
+        });
+
         return db
-            .del(accountGroup)
-            .where('accountGroup_account', '=', val(accountId))
-            .run();
-      })
-      .then(() => {
-        if (groups.length > 0) {
-          let rows = groups.map(group => {
-            return {
-              accountGroup_account: accountId,
-              accountGroup_group: group
-            };
-          });
-          return db
-              .insertAll(accountGroup, rows);
-        }
+            .replace(accountGroup, 'accountGroup_account', accountId, rows);
       })
       .then(() => {
         if (!_.isEqual(oldGroups, groups)) {

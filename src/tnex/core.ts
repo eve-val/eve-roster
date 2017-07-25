@@ -24,3 +24,7 @@ export function splitColumn(
   }
   return split as [string, string];
 }
+
+export function val<T extends ColumnType>(value: T) {
+  return new ValueWrapper(value);
+}

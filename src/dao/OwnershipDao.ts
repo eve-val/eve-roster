@@ -70,22 +70,11 @@ export default class OwnershipDao {
   }
 
   createPendingOwnership(db: Tnex, characterId: number, accountId: number) {
-    return db.transaction(db => {
-      return Promise.resolve()
-      .then(() => {
-        return db
-            .del(pendingOwnership)
-            .where('pendingOwnership_character', '=', val(characterId))
-            .run()
-      })
-      .then(() => {
-        return db
-            .insert(pendingOwnership, {
-              pendingOwnership_character: characterId,
-              pendingOwnership_account: accountId,
-            })
-      });
-    });
+    return db
+        .upsert(pendingOwnership, {
+          pendingOwnership_character: characterId,
+          pendingOwnership_account: accountId,
+        }, 'pendingOwnership_character');
   }
 
   getPendingOwnership(db: Tnex, account: number, character: number) {

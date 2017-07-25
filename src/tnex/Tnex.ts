@@ -1,7 +1,9 @@
+import { inspect } from 'util';
+
 import Promise = require('bluebird');
 import Knex = require('knex');
 
-import { ValueWrapper, ColumnType, SimpleObj } from './core';
+import { ValueWrapper, ColumnType, SimpleObj, val } from './core';
 import { Scoper } from './Scoper';
 import { Joiner } from './Joiner';
 import { Query } from './Query';
@@ -29,6 +31,10 @@ export class Tnex {
 
   knex(): Knex {
     return this._knex;
+  }
+
+  raw(query: string, bindings: any[]) {
+    return this._knex.raw(query, bindings);
   }
 
   transaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
@@ -194,6 +200,77 @@ export class Tnex {
       console.log(this._knex);
       throw new Error(`Client not supported: ${clientType}.`);
     }
+  }
+
+  /**
+   * Upsert, but for multiple rows. Given a set of rows in a table that all
+   * share the same value for a particular column, replaces those rows with a
+   * new set of rows. Uses locks to ensure that concurrent calls to replace()
+   * behave safely.
+   * 
+   * @param table The table to insert the columns into.
+   * @param sharedColumn The column that all rows have in common.
+   * @param sharedColumnValue The column's value. This must be an integer.
+   * @param rows The new rows.
+   */
+  public replace<T extends object, K extends keyof T>(
+      table: T,
+      sharedColumn: K,
+      sharedColumnValue: T[K] & number,
+      rows: T[],
+      ) {
+    for (let row of rows) {
+      if (row[sharedColumn] != sharedColumnValue) {
+        throw new Error(
+            `Column ${sharedColumn} should be ${sharedColumnValue} but is ` +
+            `${row[sharedColumn]} instead. In row: ${inspect(row)}.`);
+      }
+    }
+    return this.transaction(db => {
+      return db.acquireTransactionalLock(table, sharedColumnValue)
+      .then(_ => {
+        return db
+            .del(table)
+            .where(sharedColumn, '=', val(sharedColumnValue))
+            .run();
+      })
+      .then(_ => {
+        if (rows.length > 0) {
+          return db
+              .insertAll(table, rows);
+        }
+      })
+    });
+  }
+
+  /**
+   * Acquires an abstract lock that will last for the duration of the current
+   * transaction. If the lock has already been obtained, blocks until it is
+   * free. Throws an error if called outside of a transaction.
+   * 
+   * @param table The table that this lock represents. Note that the table
+   *   itself will not actually be locked.
+   * @param key A key that represents which part of the table is locked.
+   */
+  public acquireTransactionalLock(table: object, key: number) {
+    if (key != Math.round(key)) {
+      throw new Error(`key ${key} must be an integer`);
+    }
+    if (!this._isTransaction()) {
+      throw new Error(`Must be inside a transaction.`);
+    }
+
+    if (this._getClient() == 'pg') {
+      return this._knex.raw(
+          `SELECT pg_advisory_xact_lock('??'::regclass::int, ?);`,
+          [this._registry.getTableName(table), key])
+    } else {
+      throw new Error(`Unsupported client type: "${this._getClient()}".`)
+    }
+  }
+
+  private _getClient() {
+    return (this._rootKnex as any).CLIENT as string;
   }
 
   private _isTransaction() {
