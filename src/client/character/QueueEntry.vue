@@ -2,27 +2,27 @@
 <div class="root">
   <div v-if="position==0"
       class="progress-bar"
-      :style="{ width: queueData.progress * 100 + '%', }"
+      :style="{ width: entry.progress * 100 + '%', }"
       >
   </div>
   <div class="main-line">
     <skill-pips class="pips"
-        :trainedLevel="skill.level"
-        :queuedLevel="queueData.targetLevel"
+        :trainedLevel="entry.skill.level"
+        :queuedLevel="entry.targetLevel"
         />
     <div class="name">
-      {{ skill.name }}
+      {{ entry.skill.name }}
       <span class="numeral-level"
-          >{{ queueData.targetLevel | numeralize }}</span>
+          >{{ entry.targetLevel | numeralize }}</span>
     </div>
     <div class="duration">
-      {{ queueData.durationLabel || 'Paused' }}
+      {{ entry.durationLabel || 'Paused' }}
     </div>
   </div>
   <div class="queue-bar"
       :style="{
-        left: queueData.proportionalStart * 100 + '%',
-        width: (queueData.proportionalEnd - queueData.proportionalStart)
+        left: entry.proportionalStart * 100 + '%',
+        width: (entry.proportionalEnd - entry.proportionalStart)
             * 100 + '%',
       }"
       ></div>
@@ -41,8 +41,7 @@ export default {
   },
 
   props: {
-    skill: { type: Object, required: true },
-    queueData: { type: Object, required: true },
+    entry: { type: Object, required: true },
     position: { type: Number, required: true },
   },
 

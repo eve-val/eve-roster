@@ -1,47 +1,40 @@
 <template>
 <div class="skills-container">
-  <template v-if="canReadSkillQueue">
-    <div class="section-title">
-      Training queue
-    </div>
-    <loading-spinner
-        ref="queueSpinner"
-        display="block"
-        size="30px"
-        />
-    <div class="empty-queue" v-if="queueStatus == 'loaded' && queue == null">
-      Skill queue is empty
-    </div>
-    <template v-if="queue && skillGroups">
-      <queue-entry v-for="(queueItem, i) in queue"
-          :key="i"
-          :skill="skillMap[queueItem.id]"
-          :queueData="queueItem"
-          :position="i"
-          />
-      <div class="queue-total-container" v-if="queueDuration != null">
-        <div class="queue-total">
-          <span style="color: #cdcdcd">Total:</span>
-          {{ queueDuration }}
-        </div>
-      </div>
-    </template>
-  </template>
   <template v-if="canReadSkills">
-    <div class="section-title">
-      Skills
-    </div>
     <loading-spinner
-        ref="skillSpinner"
+        ref="spinner"
         display="block"
         size="30px"
         />
-    <template v-if="skillGroups">
-      <template v-for="skillGroup in skillGroups">
+
+    <template v-if="queue != null">
+      <div class="section-title">Training queue</div>
+      <div class="empty-queue" v-if="queue.entries.length == 0">
+        Skill queue is empty
+      </div>
+      <template v-else>
+        <queue-entry v-for="(queueEntry, i) in queue.entries"
+            :key="i"
+            :entry="queueEntry"
+            :position="i"
+            />
+        <div class="queue-total-container" v-if="queue.durationLabel != null">
+          <div class="queue-total">
+            <span style="color: #cdcdcd">Total:</span>
+            {{ queue.durationLabel }}
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <template v-if="skillGroups != null">
+      <div class="section-title">Skills</div>
+      <div v-for="skillGroup in skillGroups" :key="skillGroup.id">
         <div class="skillgroup-title">{{ skillGroup.name }}</div>
         <div class="skillgroup-container">
           <div v-for="skill in skillGroup.skills"
               class="skill"
+              :key="skill.id"
               >
             <skill-pips class="skill-pips"
                 :trainedLevel="skill.level"
@@ -50,8 +43,9 @@
             {{ skill.name }}
           </div>
         </div>
-      </template>
+      </div>
     </template>
+
   </template>
 </div>
 </template>
@@ -81,16 +75,7 @@ export default {
   data: function() {
     return {
       queue: null,
-      queueDuration: null,
-
-      skillMap: null,
       skillGroups: null,
-
-      queueStatus: null,
-      skillStatus: null,
-
-      queueMessage: null,
-      skillMessage: null,
     };
   },
 
@@ -111,7 +96,6 @@ export default {
   watch: {
     character: function(value) {
       this.queue = null;
-      this.skillMap = null;
       this.skillGroups = null;
 
       this.fetchData();
@@ -120,58 +104,32 @@ export default {
 
   methods: {
     fetchData() {
-      let skillPromise;
-
       if (this.canReadSkills) {
-        skillPromise = this.$refs.skillSpinner.observe(
+        this.$refs.spinner.observe(
             ajaxer.getSkills(this.characterId),
             response => {
-              this.processSkillsData(response.data.skills);
+              this.processData(response.data);
               if (response.data.warning) {
-                return {
-                  state: 'warning',
-                  message: response.data.warning,
-                };
+                return { state: 'warning', message: response.data.warning };
               }
             });
       }
-
-      if (this.canReadSkillQueue) {
-        this.$refs.queueSpinner.observe(
-          Promise.all([
-            skillPromise || Promise.resolve(),
-            ajaxer.getSkillQueue(this.characterId),
-          ]),
-          ([skillResponse, queueResponse]) => {
-            this.queue = queueResponse.data.queue;
-            this.queueDuration = queueResponse.data.queueDurationLabel;
-            this.maybeInjectQueueDataIntoSkillsMap();
-
-            if (queueResponse.data.dataStatus != 'fresh') {
-              return {
-                state: 'warning',
-                message: 'Skill queue may be out of date',
-              };
-            }
-          });
-      }
     },
 
-    processSkillsData(skills) {
-      let map = {};
+    processData({ skills, queue }) {
+      let skillMap = {};
       for (let skill of skills) {
-        map[skill.id] = skill;
+        skillMap[skill.id] = skill;
         skill.queuedLevel = null;
       }
-      this.skillMap = map;
       this.skillGroups = groupifySkills(skills);
-      this.maybeInjectQueueDataIntoSkillsMap();
-    },
 
-    maybeInjectQueueDataIntoSkillsMap() {
-      if (this.skillsMap != null && this.queue != null) {
-        for (let queueItem of this.queue) {
-          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
+      if (queue != undefined) {
+        this.queue = queue;
+        for (let qe of queue.entries) {
+          let skill = skillMap[qe.id];
+          skill.queuedLevel = qe.targetLevel;
+          qe.skill = skill;
         }
       }
     },

@@ -5,7 +5,7 @@ import { dao } from '../../../dao';
 import { SkillQueueEntry } from '../../../dao/SkillQueueDao';
 
 import { parallelize } from '../../../util/asyncUtil';
-import { fetchSkillQueueSummary, SkillQueueSummary } from '../../../route-helper/skillQueueSummarizer';
+import { loadSummarizedQueue, SkillQueueSummary } from '../../../route-helper/skillQueueSummarizer';
 
 
 export type Payload = Array<{
@@ -18,7 +18,7 @@ export default jsonEndpoint(function(req, res, db, account, privs)
   return dao.character.getCharacterIdsOwnedByAccount(db, account.id)
   .then(ids => {
     return parallelize(ids, id => {
-      return fetchSkillQueueSummary(db, id, 'fresh')
+      return loadSummarizedQueue(db, id, 'fresh')
       .then(summary => {
         return {
           id: id,
@@ -27,4 +27,4 @@ export default jsonEndpoint(function(req, res, db, account, privs)
       });
     });
   });
-})
+});
