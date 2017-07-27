@@ -38,6 +38,7 @@
     "eve-swagger": "^0.3.0",
     "express": "^4.14.0",
     "file-loader": "^0.10.1",
+    "heapdump": "^0.3.9",
     "htmlparser": "^1.7.7",
     "json-loader": "^0.5.4",
     "knex": "^0.12.6",

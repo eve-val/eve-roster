@@ -1,6 +1,8 @@
 // Causes stack traces to reference the original .ts files
 require('source-map-support').install();
 
+require('heapdump');
+
 import Promise = require('bluebird');
 
 import { isDevelopment } from './util/config';
