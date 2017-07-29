@@ -213,6 +213,9 @@ export class Tnex {
    * @param sharedColumnValue The column's value. This must be an integer.
    * @param rows The new rows.
    */
+  // TODO: add "primary" or "principle" column annotations to Tnex so that we
+  // don't have to ask what the important column in question is -- and, more
+  // importantly, so we can enforce that there's only one per table.
   public replace<T extends object, K extends keyof T>(
       table: T,
       sharedColumn: K,
