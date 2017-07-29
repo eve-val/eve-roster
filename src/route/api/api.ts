@@ -19,7 +19,6 @@ import admin_tasks_task from './admin/tasks/task';
 
 import character from './character';
 import character_character_PUT from './character/character_PUT';
-import character_skillQueue from './character/skillQueue';
 import character_skills from './character/skills';
 
 import dashboard from './dashboard';
@@ -53,7 +52,6 @@ router.get('/admin/tasks/task', admin_tasks_task);
 router.get('/character/:id', character);
 router.put('/character/:id', character_character_PUT);
 router.get('/character/:id/skills', character_skills);
-router.get('/character/:id/skillQueue', character_skillQueue);
 
 router.get('/dashboard', dashboard);
 router.get('/dashboard/queueSummary', dashboard_queueSummary);

@@ -172,12 +172,12 @@ export default {
         });
       }
 
-      let queueStatus = this.character.skillQueue.dataStatus;
-      if (queueStatus != 'fresh' && queueStatus != 'cached-preview') {
+      let queueWarning = this.character.skillQueue.warning;
+      if (queueWarning) {
         icons.push({
           key: 'esi-failure',
           src: warningIcon,
-          label: getEsiFailureLabel(queueStatus),
+          label: getQueueWarningLabel(queueWarning),
         })
       }
 
@@ -245,10 +245,10 @@ export default {
   },
 }
 
-function getEsiFailureLabel(dataStatus) {
+function getQueueWarningLabel(warning) {
   let generalWarning = 'Skill queue may be out of date.';
 
-  switch (dataStatus) {
+  switch (warning) {
     case 'bad_credentials':
       return `This character's auth tokens may have expired. ` + generalWarning;
     case 'fetch_failure':

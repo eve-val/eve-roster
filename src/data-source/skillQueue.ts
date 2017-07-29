@@ -7,48 +7,48 @@ import { SkillQueueEntry } from '../dao/SkillQueueDao';
 import esi from '../esi';
 import { getAccessTokenForCharacter } from '../data-source/accessToken';
 import { SkillQueueEntry as EsiSkillQueueEntry } from '../esi';
-import { isAnyEsiError } from '../util/error';
 
 const logger = require('../util/logger')(__filename);
 
 
-export type QueueStatus = 'empty' | 'paused' | 'active';
+/**
+ * Fetches fresh skill queue data from ESI and stores it in the DB. Returns a
+ * copy of the stored rows.
+ * @param accessToken If you already have an access token for this character,
+ *   pass it here to skip querying for it again.
+ */
+export function updateSkillQueue(
+    db: Tnex, characterId: number, accessToken?: string) {
+  let newQueue: SkillQueueEntry[];
 
-export function loadQueue(db: Tnex, characterId: number, freshness='fresh') {
-  if (freshness != 'cached' && freshness != 'fresh') {
-    throw new Error(`Illegal freshness argument: "${freshness}".`);
-  }
-
-  let status: string;
-  
   return Promise.resolve()
   .then(() => {
-    if (freshness == 'fresh') {
-      return getAndStoreEsiQueue(db, characterId);
-    } else {
-      return 'cached';
+    return accessToken || getAccessTokenForCharacter(db, characterId)
+  })
+  .then(accessToken => {
+    return esi.characters(characterId, accessToken).skillqueue();
+  })
+  .then(esiQueue => {
+    newQueue = convertEsiQueueToNativeQueue(esiQueue);
+
+    let set = new Set<string>();
+    for (let queueItem of newQueue) {
+      let key = characterId + ',' + queueItem.skill + ',' + queueItem.targetLevel;
+      if (set.has(key)) {
+        throw new Error(`Duplicate key: ${key}.`);
+      }
+      set.add(key);
     }
+
+    return dao.skillQueue.setCachedSkillQueue(db, characterId, newQueue);
   })
-  .then(_status => {
-    status = _status;
-    return getCachedQueue(db, characterId);
-  })
-  .then(skillQueue => {
-    return {
-      status: status,
-      queue: skillQueue,
-    };
+  .then(() => {
+    return newQueue;
   });
 }
 
-export function getCachedQueue(db: Tnex, characterId: number) {
-  return Promise.resolve()
-  .then(() => {
-    return dao.skillQueue.getCachedSkillQueue(db, characterId);
-  })
-  .then(skillQueue => {
-    return pruneCompletedSkills(skillQueue);
-  });
+export function isQueueEntryCompleted(queueEntry: SkillQueueEntry): boolean {
+  return queueEntry.endTime != null && queueEntry.endTime < Date.now();
 }
 
 export function getTrainingProgress(queueEntry: SkillQueueEntry) {
@@ -70,64 +70,22 @@ export function getTrainingProgress(queueEntry: SkillQueueEntry) {
       + trainedProgress * (1 - pretrainedProgress);
 }
 
-export function getQueueStatus(queue: SkillQueueEntry[]): QueueStatus {
-  if (queue.length == 0) {
-    return 'empty';
-  } else if (queue[0].startTime == null) {
-    return 'paused';
+function getProgressFraction(
+    start: number | null,
+    end: number | null,
+    current: number) {
+  if (start == null || end == null || end - start == 0) {
+    return 0;
   } else {
-    return 'active';
+    return (current - start) / (end - start);
   }
-}
-
-function getAndStoreEsiQueue(db: Tnex, characterId: number) {
-  let status = 'fresh';
-
-  return Promise.resolve()
-  .then(() => {
-    return getAccessTokenForCharacter(db, characterId)
-  })
-  .then(accessToken => {
-    return esi.characters(characterId, accessToken).skillqueue();
-  })
-  .then(esiQueue => {
-    return dao.skillQueue.setCachedSkillQueue(
-        db,
-        characterId,
-        convertEsiQueueToNativeQueue(esiQueue));
-  })
-  .catch(e => {
-    if (isAnyEsiError(e)) {
-      if (e.name == 'esi:ForbiddenError') {
-        status = 'bad_credentials';
-      } else {
-        status = 'fetch_failure';
-      }
-      logger.error(
-          `ESI error "${e.name}" while fetching skill queue for character`
-              + ` ${characterId}.`);
-      logger.error(e);
-    } else {
-      throw e;
-    }
-  })
-  .then(() => {
-    return status;
-  });
 }
 
 function convertEsiQueueToNativeQueue(
     esiQueue: EsiSkillQueueEntry[]
     ): SkillQueueEntry[] {
-  esiQueue.sort((a, b) => {
-    if (a.queue_position < b.queue_position) {
-      return -1;
-    } else if (a.queue_position > b.queue_position) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
+
+  esiQueue.sort(compareEsiQueueItem);
 
   return esiQueue.map(qi => {
     const nativeItem: SkillQueueEntry = {
@@ -149,27 +107,12 @@ function convertEsiQueueToNativeQueue(
   });
 }
 
-function pruneCompletedSkills(queueData: SkillQueueEntry[]) {
-  let now = moment().valueOf();
-  let i = 0;
-  for (; i < queueData.length; i++) {
-    let item = queueData[i];
-
-    if (item.endTime == null || item.endTime >= now) {
-      break;
-    }
-  }
-
-  return queueData.slice(i);
-}
-
-function getProgressFraction(
-    start: number | null,
-    end: number | null,
-    current: number) {
-  if (start == null || end == null || end - start == 0) {
-    return 0;
+function compareEsiQueueItem(a: EsiSkillQueueEntry, b: EsiSkillQueueEntry) {
+  if (a.queue_position < b.queue_position) {
+    return -1;
+  } else if (a.queue_position > b.queue_position) {
+    return 1;
   } else {
-    return (current - start) / (end - start);
+    return 0;
   }
 }

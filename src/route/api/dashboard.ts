@@ -5,7 +5,7 @@ import { SkillQueueEntry } from '../../dao/SkillQueueDao';
 import { NotFoundError } from '../../error/NotFoundError';
 import * as policy from '../../route-helper/policy';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import { fetchSkillQueueSummary, SkillQueueSummary } from '../../route-helper/skillQueueSummarizer';
+import { loadSummarizedQueue, SkillQueueSummary } from '../../route-helper/skillQueueSummarizer';
 import { parallelize } from '../../util/asyncUtil';
 import * as ccpSso from '../../util/ccpSso';
 
@@ -52,13 +52,12 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   })
   .then(rows => {
     return parallelize(rows, row => {
-      return fetchSkillQueueSummary(
-          db, row.character_id, 'cached')
+      return loadSummarizedQueue(db, row.character_id, 'cached')
       .then(queue => {
         return {
           id: row.character_id,
           name: row.character_name,
-          opsec: !!row.ownership_opsec && privs.isMember(),
+          opsec: row.ownership_opsec && privs.isMember(),
           corpStatus: getCorpStatus(row.memberCorporation_membership),
           skillQueue: queue,
         };

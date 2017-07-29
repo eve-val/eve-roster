@@ -5,9 +5,9 @@ import { Dao } from '../dao';
 import { skillsheet, Skillsheet } from './tables';
 
 export interface SkillsheetEntry {
-  skillsheet_skill: number,
-  skillsheet_level: number,
-  skillsheet_skillpoints: number,
+  skillsheet_skill: number;
+  skillsheet_level: number;
+  skillsheet_skillpoints: number;
 }
 
 export default class SkillQueueDao {
