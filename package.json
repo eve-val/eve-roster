@@ -5,7 +5,7 @@
   "author": "SOUND IT",
   "private": true,
   "scripts": {
-    "start": "node out/server.js",
+    "start": "node --max-old-space-size=512 --trace-gc out/server.js",
     "updatedb": "node out/bin/updatedb.js",
     "build": "npm run build-server && webpack --progress --hide-modules",
     "build-server": "tsc",
