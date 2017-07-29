@@ -5,7 +5,9 @@ import { Dao } from '../dao';
 import { skillsheet, Skillsheet } from './tables';
 
 export interface SkillsheetEntry {
-
+  skillsheet_skill: number,
+  skillsheet_level: number,
+  skillsheet_skillpoints: number,
 }
 
 export default class SkillQueueDao {
@@ -14,7 +16,7 @@ export default class SkillQueueDao {
       ) {
   }
 
-  get(db: Tnex, characterId: number) {
+  get(db: Tnex, characterId: number): Promise<SkillsheetEntry[]> {
     return db
         .select(skillsheet)
         .where('skillsheet_character', '=', val(characterId))
@@ -27,22 +29,7 @@ export default class SkillQueueDao {
   }
 
   set(db: Tnex, characterId: number, skills: Skillsheet[]) {
-    for (let skill of skills) {
-      if (skill.skillsheet_character != characterId) {
-        throw new Error(
-            `skillsheet_character is ${skill.skillsheet_character}`
-                + ` but was expecting ${characterId}.`)
-      }
-    }
-    return db.transaction(db => {
-      return db
-          .del(skillsheet)
-          .where('skillsheet_character', '=', val(characterId))
-          .run()
-      .then(() => {
-        return db
-            .batchInsert(skillsheet, skills, 100)
-      });
-    });
+    return db
+        .replace(skillsheet, 'skillsheet_character', characterId, skills);
   }
 }
