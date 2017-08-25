@@ -58,6 +58,7 @@ export default class RosterDao {
         .join(t.ownership, 'ownership_account', '=', 'account_id')
         .join(t.character, 'character_id', '=', 'ownership_character')
         .where('accountGroup_group', '=', val(MEMBER_GROUP))
+        .andWhere('character_deleted', '=', val(false))
         .columns('character_id')
         .run()
     .then(rows => pluck(rows, 'character_id'));
@@ -127,6 +128,7 @@ export default class RosterDao {
         .leftJoin(t.ownership, 'ownership_character', '=', 'character_id')
         .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')
         .whereNull('ownership_account')
+        .andWhere('character_deleted', '=', val(false))
         .columns(
             'character_id',
             'character_name',

@@ -28,6 +28,8 @@
           :isMain="character.id == mainCharacter"
           :highlightMain="characters.length > 1"
           :access="access"
+          :corp="character.corpId"
+          :deleted="character.deleted"
           @requireRefresh="onRequireRefresh"
           />
       <div class="add-character" v-if="loginParams">

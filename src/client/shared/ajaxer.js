@@ -27,6 +27,10 @@ export default {
     });
   },
 
+  putCharacterIsDeleted(characterId) {
+    return axios.delete('/api/character/' + characterId);
+  },
+
   putCharacterIsOpsec(characterId, isOpsec) {
     return axios.put(`/api/character/${characterId}`, {
       opsec: isOpsec

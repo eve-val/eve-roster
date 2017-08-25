@@ -48,6 +48,7 @@ export class Character {
   character_logonDate = nullable(number());
   character_logoffDate = nullable(number());
   character_siggyScore = nullable(number());
+  character_deleted = boolean();
 }
 export const character = tables.register(new Character());
 

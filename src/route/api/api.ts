@@ -19,6 +19,7 @@ import admin_tasks_task from './admin/tasks/task';
 
 import character from './character';
 import character_character_PUT from './character/character_PUT';
+import character_character_DELETE from './character/character_DELETE';
 import character_skills from './character/skills';
 
 import dashboard from './dashboard';
@@ -51,6 +52,7 @@ router.get('/admin/tasks/task', admin_tasks_task);
 
 router.get('/character/:id', character);
 router.put('/character/:id', character_character_PUT);
+router.delete('/character/:id', character_character_DELETE);
 router.get('/character/:id/skills', character_skills);
 
 router.get('/dashboard', dashboard);

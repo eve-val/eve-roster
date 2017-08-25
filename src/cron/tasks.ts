@@ -13,6 +13,7 @@ import { syncCharacterLocations } from './task/syncCharacterLocations';
 import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
 import { syncSkills } from './task/syncSkills';
+import { syncCorps } from './task/syncCorps';
 import { truncateCronLog } from './task/truncateCronLog';
 import { truncateCharacterLocations } from './task/truncateCharacterLocations';
 
@@ -56,6 +57,13 @@ const TASKS: TaskInternal[] = [
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
   },
   {
+    name: 'syncCorps',
+    displayName: 'Sync corporations',
+    description: 'Updates all characters\' corporations.',
+    executor: syncCorps,
+    timeout:moment.duration(20, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'truncateCharacterLocations',
     displayName: 'Truncate location log',
     description: 'Prunes very old character locations.',
@@ -77,6 +85,7 @@ export type TaskName =
     | 'syncCharacterLocations'
     | 'syncSiggy'
     | 'syncSkills'
+    | 'syncCorps'
     | 'truncateCharacterLocations'
     | 'truncateCronLog'
     ;
