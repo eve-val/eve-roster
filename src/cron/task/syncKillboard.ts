@@ -5,7 +5,7 @@ import axios from 'axios';
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { serialize, doWhile } from '../../util/asyncUtil';
-import { JobTracker, ExecutorResult } from '../Job';
+import { JobTracker } from '../Job';
 
 
 const logger = require('../../util/logger')(__filename);
@@ -16,21 +16,17 @@ const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
 export function syncKillboard(
-    db: Tnex, job: JobTracker): Promise<ExecutorResult> {
+    db: Tnex, job: JobTracker): Promise<void> {
   return Promise.resolve()
   .then(getStartTime)
   .then(startTime => fetchAll(db, job, startTime))
   .then(([updateCount, failureCount]) => {
     logger.info(`Updated ${updateCount} characters' killboards.`);
-    let result: ExecutorResult;
     if (failureCount > 0 && updateCount == 0) {
       throw new Error(`syncKillboard failed completely.`);
     } else if (failureCount > 0 && updateCount > 0) {
-      result = 'partial';
-    } else {
-      result = 'success';
+      job.warn(`Failed to update ${failureCount} character killboards.`)
     }
-    return result;
   });
 };
 

@@ -5,13 +5,14 @@ import { Tnex } from '../tnex';
 
 
 export type TaskExecutor =
-    (db: Tnex, job: JobTracker) => Promise<ExecutorResult>;
-export type ExecutorResult = 'success' | 'partial';
-export type JobResult = 'pending' | ExecutorResult | 'failure';
+    (db: Tnex, job: JobTracker) => Promise<void>;
+export type JobResult = 'pending' | 'success' | 'partial' | 'failure';
 export type JobStatus = 'queued' | 'running' | 'finished';
 
 export interface JobTracker {
-  setProgress(progress: number | undefined, label: string | undefined): void
+  setProgress(progress: number | undefined, label: string | undefined): void;
+  error(message: string): void;
+  warn(message: string): void;
 }
 
 export interface Job extends EventEmitter {

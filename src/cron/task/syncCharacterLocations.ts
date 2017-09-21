@@ -5,7 +5,7 @@ import { getAccessTokenForCharacter } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import { default as esi } from '../../esi';
 import { Tnex } from '../../tnex';
-import { JobTracker, ExecutorResult } from '../Job';
+import { JobTracker } from '../Job';
 import { MissingTokenError } from '../../error/MissingTokenError';
 import { isAnyEsiError } from '../../util/error';
 
@@ -16,7 +16,7 @@ const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 
 export function syncCharacterLocations(
-    db: Tnex, job: JobTracker): Promise<ExecutorResult> {
+    db: Tnex, job: JobTracker): Promise<void> {
   let completedCharacters = 0;
 
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
@@ -55,9 +55,6 @@ export function syncCharacterLocations(
       }
     });
   })
-  .then((): ExecutorResult => {
-    return 'success';
-  });
 }
 
 function maybeUpdateLocation(db: Tnex, characterId: number) {

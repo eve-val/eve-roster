@@ -2,7 +2,7 @@ import Promise = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
-import { JobTracker, ExecutorResult } from '../Job';
+import { JobTracker } from '../Job';
 import { updateSkills } from '../../data-source/skills';
 import { MissingTokenError } from '../../error/MissingTokenError';
 import { isAnyEsiError } from '../../util/error';
@@ -10,7 +10,7 @@ import { isAnyEsiError } from '../../util/error';
 const logger = require('../../util/logger')(__filename);
 
 
-export function syncSkills(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
+export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
   
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
   .then(characterIds => {
@@ -47,9 +47,11 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
     .then(() => {
       logger.info(`syncSkills updated ${successCount}/${characterIds.length} ` +
           `characters' skills.`);
+      let errorCount = characterIds.length - successCount;
+      if (errorCount > 0) {
+        job.warn(`Failed to update ${errorCount}/${characterIds.length}`
+            + ` characters' skills.`);
+      }
     })
-  })
-  .then((): ExecutorResult => {
-    return 'success';
   });
 }

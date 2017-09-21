@@ -20,7 +20,7 @@ import { MemberCorporation } from '../../dao/tables';
 import { serialize, parallelize } from '../../util/asyncUtil';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
-import { JobTracker, ExecutorResult } from '../Job';
+import { JobTracker } from '../Job';
 
 import esi from '../../esi';
 
@@ -29,22 +29,21 @@ const logger = require('../../util/logger')(__filename);
 
 type Xml = any;
 
-export function syncRoster(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
-  return updateAllCorporations(db)
+export function syncRoster(db: Tnex, job: JobTracker): Promise<void> {
+  return updateAllCorporations(db, job)
   .then(processedIds => updateOrphanedOrUnknownCharacters(db, processedIds))
   .then(() => updateGroupsOnAllAccounts(db))
   .then(function() {
     logger.info('syncRoster() complete');
-    return <ExecutorResult>'success';
   });
 }
 
-function updateAllCorporations(db: Tnex) {
+function updateAllCorporations(db: Tnex, job: JobTracker) {
   logger.info('updateAllCorporations');
   return dao.config.getMemberCorporations(db)
   .then(rows => {
     return serialize(rows, row => {
-      return updateCorporation(db, row);
+      return updateCorporation(db, job, row);
     });
   })
   .then(corpResults => {
@@ -52,7 +51,8 @@ function updateAllCorporations(db: Tnex) {
   });
 }
 
-function updateCorporation(db: Tnex, corpConfig: MemberCorporation) {
+function updateCorporation(
+    db: Tnex, job: JobTracker, corpConfig: MemberCorporation) {
   logger.info('updateCorporation', corpConfig.memberCorporation_corporationId);
 
   return Promise.all([
@@ -65,7 +65,7 @@ function updateCorporation(db: Tnex, corpConfig: MemberCorporation) {
   })
   .catch(e => {
     if (e.response) {
-      logger.error(`ESI responded with ${e.response.status} when`
+      job.error(`ESI responded with ${e.response.status} when`
           + ` processing corp ${corpConfig.memberCorporation_corporationId}.`
           + ` Has the corp key expired?`)
     } else {

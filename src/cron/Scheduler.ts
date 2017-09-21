@@ -96,6 +96,7 @@ export class Scheduler {
     this._runningJobs.push(job);
 
     let jobResult: JobResult;
+    let executorError: any = null;
 
     dao.cron.startJob(this._db, job.taskName)
     .then(jobId => {
@@ -112,14 +113,25 @@ export class Scheduler {
       return work;
     })
     .catch(e => {
-      logger.error(`Error while executing ${jobSummary(job)}.`);
-      logger.error(e);
-      return 'failure';
+      executorError = e;
     })
-    .then(result => {
-      const logMessage = `FINISH ${jobSummary(job)} with result "${result}".`;
+    .then(() => {
+      if (executorError) {
+        job.error(executorError.message || executorError.toString());
+      }
 
-      if (result == 'success') {
+      if (job.errors.length > 0) {
+        jobResult = 'failure';
+      } else if (job.warnings.length > 0) {
+        jobResult = 'partial';
+      } else {
+        jobResult = 'success';
+      }
+
+      const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}",`
+          + ` ${job.warnings.length} warning(s), ${job.error.length} error(s).`;
+
+      if (jobResult == 'success') {
         if (!job.silent) {
           logger.info(logMessage);
         }
@@ -127,11 +139,10 @@ export class Scheduler {
         logger.error(logMessage);
       }
 
-      jobResult = result;
       if (!job.timedOut) {
         clearTimeout(notNil(job.timeoutId));
       }
-      return dao.cron.finishJob(this._db, notNil(job.logId), result);
+      return dao.cron.finishJob(this._db, notNil(job.logId), jobResult);
     })
     .catch(e => {
       logger.error('DB failure when trying to log cron job failure :(');

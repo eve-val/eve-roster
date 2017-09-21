@@ -9,7 +9,7 @@ import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { character } from '../../dao/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
-import { JobTracker, ExecutorResult } from '../Job';
+import { JobTracker } from '../Job';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');
@@ -29,7 +29,7 @@ const axios = axiosModule.create({
   baseURL: SIGGY_PATH
 });
 
-export function syncSiggy(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
+export function syncSiggy(db: Tnex, job: JobTracker): Promise<void> {
   return Promise.resolve()
   .then(_ => resetSavedScores(db))
   .then(_ => getSiggyCredentials(db))
@@ -38,14 +38,10 @@ export function syncSiggy(db: Tnex, job: JobTracker): Promise<ExecutorResult> {
   .then(recentScores => saveScrapedScores(db, recentScores))
   .then((updateCount) => {
     logger.info('Updated', updateCount, 'characters');
-    // Always return success since siggy only reports characters that scanned,
-    // so missing characters is expected
-    return <ExecutorResult>'success';
   })
   .catch(error => {
     if (error instanceof Error && error.message === SIGGY_CONFIG_ERROR) {
-      logger.warn(SIGGY_CONFIG_ERROR);
-      return <ExecutorResult>'partial';
+      job.warn(SIGGY_CONFIG_ERROR);
     } else {
       throw error;
     }
