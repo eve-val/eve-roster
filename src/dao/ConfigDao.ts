@@ -35,7 +35,7 @@ export default class ConfigDao {
         let value = row.config_value != null
             ? JSON.parse(row.config_value)
             : null;
-        config[row.config_key] = value;
+        config[row.config_key as K] = value;
       }
       return config;
     })
