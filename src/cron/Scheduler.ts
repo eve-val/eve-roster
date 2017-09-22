@@ -130,8 +130,8 @@ export class Scheduler {
         jobResult = 'success';
       }
 
-      const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}",`
-          + ` ${job.warnings.length} warning(s), ${job.error.length} error(s).`;
+      const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}", `
+          + `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
 
       if (jobResult == 'success') {
         if (!job.silent) {
