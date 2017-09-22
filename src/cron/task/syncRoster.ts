@@ -63,6 +63,15 @@ function updateCorporation(db: Tnex, corpConfig: MemberCorporation) {
     return parseAndStoreXml(
         db, corpConfig.memberCorporation_corporationId, results);
   })
+  .catch(e => {
+    if (e.response) {
+      logger.error(`ESI responded with ${e.response.status} when`
+          + ` processing corp ${corpConfig.memberCorporation_corporationId}.`
+          + ` Has the corp key expired?`)
+    } else {
+      throw e;
+    }
+  });
 }
 
 /**
