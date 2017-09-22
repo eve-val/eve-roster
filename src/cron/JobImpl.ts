@@ -2,6 +2,9 @@ import { EventEmitter } from 'events';
 
 import { Job, JobStatus, JobResult, TaskExecutor, } from './Job';
 
+const logger = require('../util/logger')(__filename);
+
+
 export class JobImpl extends EventEmitter implements Job {
   public readonly executionId: number;
   public readonly taskName: string;
@@ -20,6 +23,9 @@ export class JobImpl extends EventEmitter implements Job {
 
   private _progress: number | undefined = undefined;
   private _progressLabel: string | undefined = undefined;
+
+  public readonly warnings: string[] = [];
+  public readonly errors: string[] = [];
 
   constructor(
       executionId: number,
@@ -88,6 +94,16 @@ export class JobImpl extends EventEmitter implements Job {
       this._status = status;
       this.emit('status', this._status);
     }
+  }
+
+  public error(message: string) {
+    this.errors.push(message);
+    logger.error(`[${this.taskName}] ${message}`);
+  }
+
+  public warn(message: string) {
+    this.warnings.push(message);
+    logger.warn(`[${this.taskName}] ${message}`);
   }
 
   public get timedOut() {
