@@ -117,6 +117,8 @@ export class Scheduler {
     })
     .then(() => {
       if (executorError) {
+        logger.error(`Error while executing ${jobSummary(job)}.`);
+        logger.error(executorError);
         job.error(executorError.message || executorError.toString());
       }
 
