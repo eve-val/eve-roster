@@ -6,7 +6,7 @@ import { dao } from '../../dao';
 import { default as esi } from '../../esi';
 import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
-import { MissingTokenError } from '../../error/MissingTokenError';
+import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
 
 const logger = require('../../util/logger')(__filename);
@@ -29,7 +29,7 @@ export function syncCharacterLocations(
 
     return Promise.map(characterIds, (characterId, i, len) => {
       return maybeUpdateLocation(db, characterId)
-      .catch(MissingTokenError, e => {
+      .catch(AccessTokenError, e => {
         noTokenCharacterIds.push(characterId);
       })
       .catch(isAnyEsiError, e => {

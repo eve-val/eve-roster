@@ -6,12 +6,11 @@ import { Tnex } from '../../../tnex';
 
 import { AccountPrivileges } from '../../../route-helper/privileges';
 import { isAnyEsiError } from '../../../util/error';
-import { getAccessTokenForCharacter } from '../../../data-source/accessToken';
 import { updateSkills } from '../../../data-source/skills';
 import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source/skillQueue';
 import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
 import { SkillQueueEntry } from '../../../dao/SkillQueueDao';
-import { MissingTokenError } from '../../../error/MissingTokenError';
+import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
 import esi from '../../../esi';
 import * as time from '../../../util/time';
 
@@ -115,8 +114,14 @@ function loadCachedData(db: Tnex, characterId: number) {
 function consumeOrThrowError(e: any) {
   if (isAnyEsiError(e)) {
     return 'ESI request failed. Skills may be out of date.';
-  } else if (e instanceof MissingTokenError) {
-    return 'Missing access token for this character.'
+  } else if (e instanceof AccessTokenError) {
+    switch (e.type) {
+      case AccessTokenErrorType.TOKEN_MISSING:
+        return 'Missing access token for this character.';
+      case AccessTokenErrorType.TOKEN_REFRESH_REJECTED:
+        return 'Access token for this character appears to have expired.'
+            + ' Please log in with this character again.';
+    }
   } else {
     // Unknown failure
     throw e;

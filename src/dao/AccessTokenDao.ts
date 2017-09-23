@@ -28,9 +28,27 @@ export default class AccessTokenDao {
       characterId: number,
       row: TokenUpdate) {
     return db
-        .update(accessToken, row)
+        .update(accessToken, {
+          accessToken_accessToken: row.accessToken_accessToken,
+          accessToken_accessTokenExpires: row.accessToken_accessTokenExpires,
+          accessToken_needsUpdate: false,
+        })
         .where('accessToken_character', '=', val(characterId))
         .run();
+  }
+
+  markAsExpired(db: Tnex, characterId: number) {
+    return db
+        .update(accessToken, {
+          accessToken_needsUpdate: true
+        })
+        .where('accessToken_character', '=', val(characterId))
+        .run()
+    .then(updateCount => {
+      if (updateCount != 1) {
+        throw new Error(`No token to update for character ${characterId}.`);
+      }
+    })
   }
 
   upsert(
