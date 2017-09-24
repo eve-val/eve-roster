@@ -256,6 +256,7 @@ function createOrUpdateCharacter(
           character_logonDate: null,
           character_logoffDate: null,
           character_siggyScore: null,
+          character_deleted: false,
         });
       }
     })

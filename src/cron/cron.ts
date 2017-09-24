@@ -45,6 +45,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
+  {
+    name: 'syncCorps',
+    schedule: '0 2 * * *',  // Once a day at 2AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
+  },
 
   // TODO: Find the memory leak that this cron job is exercising so this can
   // be re-enabled.

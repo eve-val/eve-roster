@@ -25,8 +25,10 @@ interface CharacterJson {
   id: number,
   name: string,
   opsec: boolean,
+  deleted: boolean,
   corpStatus: string,
   skillQueue: SkillQueueSummary,
+  corpId: number,
 }
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
@@ -58,8 +60,10 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
           id: row.character_id,
           name: row.character_name,
           opsec: row.ownership_opsec && privs.isMember(),
+          deleted: row.character_deleted,
           corpStatus: getCorpStatus(row.memberCorporation_membership),
           skillQueue: queue,
+          corpId: row.character_corporationId,
         };
       });
     });

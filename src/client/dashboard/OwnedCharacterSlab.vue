@@ -51,12 +51,11 @@
       </drop-menu>
     </div>
     <loading-spinner
-        class="designate-main-spinner"
+        class="working-spinner"
         ref="spinner"
         defaultState="hidden"
         size="13px"
         tooltipGravity="left"
-        actionLabel="designating this character as your main"
         />
   </div>
   <div class="auth-bother-container"
@@ -99,6 +98,8 @@ export default {
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
     access: { type: Object, required: true },
+    corp: { type: Number, required: true },
+    deleted: { type: Boolean, required: true },
   },
 
   data: function() {
@@ -203,6 +204,12 @@ export default {
               : 'Don\'t show in roster',
         });
       }
+      if (!this.isMain && this.corp == 1000001) {
+        items.push({
+          tag: 'delete-char',
+          label: 'Delete character from roster',
+        });
+      }
 
       return items;
     },
@@ -224,6 +231,9 @@ export default {
         case 'designate-opsec':
           this.setIsOpsec(!this.character.opsec);
           break;
+        case 'delete-char':
+          this.markDeleted();
+	  break;
       }
     },
 
@@ -238,6 +248,13 @@ export default {
     setIsOpsec(isOpsec) {
       this.$refs.spinner.observe(
           ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec))
+      .then(() => {
+        this.$emit('requireRefresh', this.character.id);
+      });
+    },
+    markDeleted() {
+      this.$refs.spinner.observe(
+          ajaxer.putCharacterIsDeleted(this.character.id))
       .then(() => {
         this.$emit('requireRefresh', this.character.id);
       });
@@ -393,7 +410,7 @@ function getQueueWarningLabel(warning) {
   background: #4b4b4b;
 }
 
-.designate-main-spinner {
+.working-spinner {
   position: absolute;
   right: 24px;
   top: 4px;

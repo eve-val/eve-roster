@@ -26,11 +26,21 @@ export default class CharacterDao {
         .join(ownership, 'ownership_account', '=', 'account_id')
         .join(character, 'character_id', '=', 'ownership_character')
         .where('account_id', '=', val(accountId))
+        .andWhere('character_deleted', '=', val(false))
         .columns('character_id')
         .run()
     .then(rows => {
       return pluck(rows, 'character_id');
     });
+  }
+
+  getAllCharacterIds(db: Tnex) {
+    return db
+        .select(character)
+        .where('character_deleted', '=', val(false))
+        .columns('character_id')
+        .run()
+    .then(rows => pluck(rows, 'character_id'));
   }
 
   getCharactersOwnedByAccount(db: Tnex, accountId: number) {
@@ -42,11 +52,13 @@ export default class CharacterDao {
         .leftJoin(memberCorporation,
             'memberCorporation_corporationId', '=', 'character_corporationId')
         .where('account_id', '=', val(accountId))
+        .andWhere('character_deleted', '=', val(false))
         .columns(
             'character_id',
             'character_name',
             'character_corporationId',
             'character_titles',
+            'character_deleted',
             'ownership_opsec',
             'memberCorporation_membership',
             'account_mainCharacter',
