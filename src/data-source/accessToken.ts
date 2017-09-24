@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { dao } from '../dao';
 import { Tnex } from '../tnex';
-import { MissingTokenError } from '../error/MissingTokenError';
+import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
 
 const logger = require('../util/logger')(__filename);
 
@@ -26,7 +26,8 @@ export function getAccessTokenForCharacter(db: Tnex, characterId: number)
   let work = dao.accessToken.getForCharacter(db, characterId)
     .then(row => {
       if (!row) {
-        throw new MissingTokenError(characterId);
+        throw new AccessTokenError(
+            characterId, AccessTokenErrorType.TOKEN_MISSING);
       }
 
       if (Date.now() 
@@ -78,6 +79,18 @@ function refreshAccessToken(
         },
         timeout: REQUEST_TIMEOUT,
       })
+  })
+  .catch(e => {
+    if (e.response && e.response.status == 400) {
+      logger.error(
+          `Access token refresh request was rejected for char ${characterId}.`);
+      dao.accessToken.markAsExpired(db, characterId);
+      throw new AccessTokenError(
+          characterId, AccessTokenErrorType.TOKEN_REFRESH_REJECTED);
+    } else {
+      logger.error(`Access token refresh failed for character ${characterId}.`);
+      throw e;
+    }
   })
   .then(function(response) {
     tokenResponse = response.data;

@@ -4,7 +4,7 @@ import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
 import { updateSkills } from '../../data-source/skills';
-import { MissingTokenError } from '../../error/MissingTokenError';
+import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
 
 const logger = require('../../util/logger')(__filename);
@@ -23,7 +23,7 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
       .then(() => {
         successCount++;
       })
-      .catch(MissingTokenError, e => {
+      .catch(AccessTokenError, e => {
         logger.warn(`Missing access token for character ${characterId}, ` +
             `skipping...`);
       })
