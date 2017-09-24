@@ -27,7 +27,7 @@ export default {
     });
   },
 
-  putCharacterIsDeleted(characterId) {
+  deleteBiomassedCharacter(characterId) {
     return axios.delete('/api/character/' + characterId);
   },
 

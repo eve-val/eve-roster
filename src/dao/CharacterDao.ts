@@ -58,7 +58,6 @@ export default class CharacterDao {
             'character_name',
             'character_corporationId',
             'character_titles',
-            'character_deleted',
             'ownership_opsec',
             'memberCorporation_membership',
             'account_mainCharacter',
