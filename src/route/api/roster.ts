@@ -75,13 +75,6 @@ function getCorpNames(db: Tnex): Promise<Map<number, string> | null> {
   .then(corpIds => {
     return esi.corporations.names(corpIds);
   })
-  .then(corpNames => {
-    let corpNameMap = new Map<number, string>();
-    for (let cn of corpNames) {
-      corpNameMap.set(cn.id, cn.name);
-    }
-    return corpNameMap;
-  })
   .catch(e => {
     if (isAnyEsiError(e)) {
       // Move on with a null map and show a warning later
