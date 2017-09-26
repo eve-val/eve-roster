@@ -20,8 +20,7 @@ const logger = require('./util/logger')(__filename);
 const REQUIRED_VARS = [
   'COOKIE_SECRET',
   'SSO_CLIENT_ID',
-  'SSO_SECRET_KEY',
-  'DB_FILE_NAME'
+  'SSO_SECRET_KEY'
 ];
 
 for (let envVar of REQUIRED_VARS) {
