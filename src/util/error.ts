@@ -1,15 +1,21 @@
-export function isAnyEsiError(error: Error) {
-  return error.name != undefined && error.name.startsWith('esi:');
+import {ESIError, ErrorName, isESIError} from 'eve-swagger';
+
+export function isAnyEsiError(error: any) {
+  return error instanceof Error && isESIError(error);
 }
 
-export function isEsiNotFoundError(error: Error) {
-  return error.name != undefined && error.name.startsWith('esi:NotFoundError');
+export function isEsiNotFoundError(error: any) {
+  return error instanceof Error && isESIError(error, ErrorName.NOT_FOUND_ERROR);
 }
 
 export function isMissingCharError(error: any) {
-  if (isEsiNotFoundError(error)) {
-    return true;
-  } else if (error.jse_cause && error.jse_cause.status == 410) {
-    return true;
+  if (error instanceof Error && isESIError(error)) {
+    if (error.kind === ErrorName.NOT_FOUND_ERROR) {
+      return true;
+    } else if (error.info.response && error.info.response.status == 410) {
+      return true;
+    }
+  } else {
+    return false;
   }
 }
