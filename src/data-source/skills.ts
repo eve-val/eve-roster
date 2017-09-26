@@ -2,7 +2,7 @@ import { Tnex } from '../tnex';
 import { dao } from '../dao';
 
 import { getAccessTokenForCharacter } from './accessToken';
-import { default as esi, SkillsheetEntry as EsiSkill } from '../esi';
+import { default as swagger, esi } from '../esi';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { SkillQueueEntry } from '../dao/SkillQueueDao';
 import { SkillsheetEntry } from '../dao/SkillsheetDao';
@@ -42,7 +42,7 @@ export function updateSkills(db: Tnex, characterId: number) {
     // Convert the skills array to the final, merged set of skills
     let rows = esiSkills.map(esiSkill => {
       return esiSkillToRow(
-          characterId, esiSkill, completedSkills[esiSkill.skill_id])
+          characterId, esiSkill, completedSkills[esiSkill.skill_id!])
     });
     skills = rows;
 
@@ -57,17 +57,17 @@ export function updateSkills(db: Tnex, characterId: number) {
 }
 
 function getEsiSkills(characterId: number, accessToken: string) {
-  return esi.characters(characterId, accessToken).skills()
-  .then(data => data.skills);
+  return swagger.characters(characterId, accessToken).skills()
+  .then(data => data.skills || []);
 }
 
 function esiSkillToRow(
     characterId: number,
-    esiSkill: EsiSkill,
+    esiSkill: esi.character.Skill,
     completedEntry: SkillQueueEntry|undefined) {
   
-  let skillLevel = esiSkill.current_skill_level;
-  let skillSp = esiSkill.skillpoints_in_skill;
+  let skillLevel = esiSkill.current_skill_level || 0;
+  let skillSp = esiSkill.skillpoints_in_skill || 0;
 
   if (completedEntry != undefined) {
     skillLevel = completedEntry.targetLevel;
@@ -76,7 +76,7 @@ function esiSkillToRow(
 
   return {
     skillsheet_character: characterId,
-    skillsheet_skill: esiSkill.skill_id,
+    skillsheet_skill: esiSkill.skill_id!,
     skillsheet_level: skillLevel,
     skillsheet_skillpoints: skillSp,
   };

@@ -4,9 +4,8 @@ import moment = require('moment');
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { SkillQueueEntry } from '../dao/SkillQueueDao';
-import esi from '../esi';
+import {default as swagger, esi} from '../esi';
 import { getAccessTokenForCharacter } from '../data-source/accessToken';
-import { SkillQueueEntry as EsiSkillQueueEntry } from '../esi';
 
 const logger = require('../util/logger')(__filename);
 
@@ -26,7 +25,7 @@ export function updateSkillQueue(
     return accessToken || getAccessTokenForCharacter(db, characterId)
   })
   .then(accessToken => {
-    return esi.characters(characterId, accessToken).skillqueue();
+    return swagger.characters(characterId, accessToken).skillqueue();
   })
   .then(esiQueue => {
     newQueue = convertEsiQueueToNativeQueue(esiQueue);
@@ -82,7 +81,7 @@ function getProgressFraction(
 }
 
 function convertEsiQueueToNativeQueue(
-    esiQueue: EsiSkillQueueEntry[]
+    esiQueue: esi.character.Skillqueue[]
     ): SkillQueueEntry[] {
 
   esiQueue.sort(compareEsiQueueItem);
@@ -93,9 +92,9 @@ function convertEsiQueueToNativeQueue(
       targetLevel: qi.finished_level,
       startTime: null,
       endTime: null,
-      levelStartSp: qi.level_start_sp,
-      levelEndSp: qi.level_end_sp,
-      trainingStartSp: qi.training_start_sp,
+      levelStartSp: qi.level_start_sp || 0,
+      levelEndSp: qi.level_end_sp || 0,
+      trainingStartSp: qi.training_start_sp || 0,
     };
 
     if (qi.start_date != undefined && qi.finish_date != undefined) {
@@ -107,7 +106,7 @@ function convertEsiQueueToNativeQueue(
   });
 }
 
-function compareEsiQueueItem(a: EsiSkillQueueEntry, b: EsiSkillQueueEntry) {
+function compareEsiQueueItem(a: esi.character.Skillqueue, b: esi.character.Skillqueue) {
   if (a.queue_position < b.queue_position) {
     return -1;
   } else if (a.queue_position > b.queue_position) {
