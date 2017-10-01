@@ -1,10 +1,12 @@
 <template>
-<div class="_drop-menu"
-    v-if="shown"
-    :style="rootStyle"
-    @mousedown="onLocalMouseDown"
-    >
-  <slot></slot>
+<div class="_drop-menu">
+  <div class="content"
+      v-if="shown"
+      :style="rootStyle"
+      @mousedown="onLocalMouseDown"
+      >
+    <slot></slot>
+  </div>
 </div>
 </template>
 
@@ -22,6 +24,7 @@ export default {
 
   destroyed() {
     document.body.removeEventListener('mousedown', this.globalListener);
+    this.destroyed = true;
   },
 
   watch: {
@@ -29,6 +32,10 @@ export default {
       // Set a slight delay to allow for any currently-dispatching mousedown
       // event to finish dispatching.
       setTimeout(() => {
+        if (this.destroyed) {
+          return;
+        }
+
         if (this.globalListener == null) {
           this.globalListener = this.onGlobalMouseDown.bind(this);
         }
@@ -71,7 +78,7 @@ export default {
 </script>
 
 <style scoped>
-._drop-menu {
+.content {
   min-width: 150px;
   max-width: 350px;
   background: #3e3e3e;
