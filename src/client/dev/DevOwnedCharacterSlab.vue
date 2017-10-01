@@ -31,6 +31,16 @@
       :access="accessFull"
       />
   
+  <div class="entry-title">Biomassed character</div>
+  <owned-character-slab
+      :accountId="0"
+      :character="characterBiomassed"
+      :isMain="false"
+      :highlightMain="true"
+      :loginParams="loginParams"
+      :access="accessFull"
+      />
+  
   <!-- Skill queue variations -->
   <div class="section">Skill queue variations</div>
 
@@ -106,7 +116,8 @@
 </template>
 
 <script>
-import OwnedCharacterSlab from '../dashboard/OwnedCharacterSlab.vue'
+import OwnedCharacterSlab from '../dashboard/OwnedCharacterSlab.vue';
+import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 
 export default {
   components: {
@@ -117,6 +128,7 @@ export default {
     return {
       characterBasic: characterBasic(),
       characterOpsecAlt: characterOpsec(),
+      characterBiomassed: characterBiomassed(),
       characterNeedsReauth: characterNeedsReauth(),
       characterEmptyQueue: characterBasic(emptySkillQueue()),
       characterPausedQueue: characterBasic(pausedSkillQueue()),
@@ -157,6 +169,7 @@ function characterBasic(skillQueue) {
     opsec: false,
     corpStatus: 'primary',
     skillQueue: skillQueue || sampleSkillQueue(),
+    corp: 123456,
   };
 }
 
@@ -164,6 +177,12 @@ function characterOpsec() {
   let character = characterBasic();
   character.opsec = true;
   character.corpStatus = 'external';
+  return character;
+}
+
+function characterBiomassed() {
+  let character = characterBasic();
+  character.corp = CORP_DOOMHEIM;
   return character;
 }
 

@@ -45,7 +45,9 @@
           >
         <div class="menu-item"
             v-for="item in menuItems"
-            @click="onMenuItemClick(item)">
+            :key="item.tag"
+            @click="onMenuItemClick(item)"
+            >
           {{ item.label }}
         </div>
       </drop-menu>
@@ -81,7 +83,10 @@ import Tooltip from '../shared/Tooltip.vue';
 
 import mainIcon from '../assets/Dashboard-main-star.svg';
 import opsecIcon from '../assets/Dashboard-hidden-icon.svg';
+import biomassedIcon from '../assets/Dashboard-biomassed.svg';
 import warningIcon from '../assets/Generic-triangle-warning.svg';
+
+import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 
 export default {
   components: {
@@ -98,8 +103,6 @@ export default {
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
     access: { type: Object, required: true },
-    corp: { type: Number, required: true },
-    deleted: { type: Boolean, required: true },
   },
 
   data: function() {
@@ -108,6 +111,10 @@ export default {
   },
 
   computed: {
+    biomassed() {
+      return this.character.corp == CORP_DOOMHEIM;
+    },
+
     skillInTraining() {
       return this.character.skillQueue.skillInTraining;
     },
@@ -173,6 +180,15 @@ export default {
         });
       }
 
+      if (this.biomassed) {
+        icons.push({
+          key: 'biomassed',
+          src: biomassedIcon,
+          label: 'This character may have been biomassed.'
+              + ' You can delete it from the dropdown menu.',
+        });
+      }
+
       let queueWarning = this.character.skillQueue.warning;
       if (queueWarning) {
         icons.push({
@@ -188,7 +204,8 @@ export default {
     menuItems() {
       let items = [];
       if (!this.isMain &&
-          this.access.designateMain == 2) {
+          this.access.designateMain == 2 &&
+          !this.biomassed) {
         items.push({
           tag: 'designate-main',
           label: 'Designate as main',
@@ -204,10 +221,10 @@ export default {
               : 'Don\'t show in roster',
         });
       }
-      if (!this.isMain && this.corp == 1000001) {
+      if (this.biomassed && !this.isMain) {
         items.push({
           tag: 'delete-char',
-          label: 'Delete character from roster',
+          label: 'Delete biomassed character',
         });
       }
 
@@ -252,9 +269,10 @@ export default {
         this.$emit('requireRefresh', this.character.id);
       });
     },
+
     markDeleted() {
       this.$refs.spinner.observe(
-          ajaxer.putCharacterIsDeleted(this.character.id))
+          ajaxer.deleteBiomassedCharacter(this.character.id))
       .then(() => {
         this.$emit('requireRefresh', this.character.id);
       });

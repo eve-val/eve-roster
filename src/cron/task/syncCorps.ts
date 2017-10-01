@@ -8,7 +8,7 @@ import { JobTracker } from '../Job';
 import { isAnyEsiError } from '../../util/error';
 import { isMissingCharError } from '../../util/error';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
-import { DOOMHEIM_ID } from '../../util/constants';
+import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 import { serialize } from '../../util/asyncUtil';
 
 const logger = require('../../util/logger')(__filename);
@@ -61,7 +61,7 @@ function updateCorporation(db: Tnex, characterId: number) {
   })
   .catch(isMissingCharError, e => {
     return dao.character.updateCharacter(db, characterId, {
-      character_corporationId: DOOMHEIM_ID,
+      character_corporationId: CORP_DOOMHEIM,
     })
   });
 }
