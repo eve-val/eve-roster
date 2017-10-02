@@ -2,7 +2,7 @@ import Promise = require('bluebird');
 import moment = require('moment');
 
 import { dao } from '../../dao';
-import { default as esi } from '../../esi';
+import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
 import { isAnyEsiError } from '../../util/error';
@@ -49,7 +49,7 @@ function updateCorporation(db: Tnex, characterId: number) {
     })
   })
   .then(() => {
-    return esi.characters(characterId).info()
+    return swagger.characters(characterId).info()
   })
   .then(character => {
     return dao.character.updateCharacter(db, characterId, {

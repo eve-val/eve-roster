@@ -1,13 +1,13 @@
 import Promise = require('bluebird');
 
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import esi from '../../esi';
+import swagger from '../../swagger';
 
 
 export default jsonEndpoint(function(req, res) {
   let corporationId = req.params.id;
 
-  return esi.corporations(corporationId).info()
+  return swagger.corporations(corporationId).info()
   .then(function(data) {
     return {
       id: corporationId,

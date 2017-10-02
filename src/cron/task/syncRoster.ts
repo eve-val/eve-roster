@@ -22,7 +22,7 @@ import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
 import { JobTracker } from '../Job';
 
-import esi from '../../esi';
+import swagger from '../../swagger';
 
 const logger = require('../../util/logger')(__filename);
 
@@ -93,7 +93,7 @@ function updateOrphanedOrUnknownCharacters(
           })
         })
         .then(() => {
-          return esi.characters(row.character_id).info()
+          return swagger.characters(row.character_id).info()
         })
         .then(character => {
           return dao.character.updateCharacter(db, row.character_id, {

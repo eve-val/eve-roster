@@ -11,7 +11,7 @@ import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source
 import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
 import { SkillQueueEntry } from '../../../dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
-import esi from '../../../esi';
+import esi from '../../../swagger';
 import * as time from '../../../util/time';
 
 const STATIC = require('../../../static-data').get();

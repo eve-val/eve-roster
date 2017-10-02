@@ -1,8 +1,10 @@
+import { esi } from 'eve-swagger';
+
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 
 import { getAccessTokenForCharacter } from './accessToken';
-import { default as swagger, esi } from '../esi';
+import swagger from '../swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { SkillQueueEntry } from '../dao/SkillQueueDao';
 import { SkillsheetEntry } from '../dao/SkillsheetDao';

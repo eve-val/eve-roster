@@ -1,10 +1,11 @@
 import Promise = require('bluebird');
 import moment = require('moment');
+import { esi } from 'eve-swagger';
 
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { SkillQueueEntry } from '../dao/SkillQueueDao';
-import {default as swagger, esi} from '../esi';
+import swagger from '../swagger';
 import { getAccessTokenForCharacter } from '../data-source/accessToken';
 
 const logger = require('../util/logger')(__filename);

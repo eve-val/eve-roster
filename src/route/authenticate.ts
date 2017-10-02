@@ -9,7 +9,7 @@ import { dao } from '../dao';
 import { Tnex, Nullable } from '../tnex';
 import { isAnyEsiError } from '../util/error';
 
-import esi from '../esi';
+import swagger from '../swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
 
 const logger = require('../util/logger')(__filename);
@@ -111,7 +111,7 @@ function getCharInfo(charTokens: AccessToken): Promise<CharacterInfo> {
     }
 
     logger.debug(`    Getting character's corporation (ESI)...`);
-    return esi.characters(charData.id).info()
+    return swagger.characters(charData.id).info()
     .then(esiCharData => {
       charData.corporationId = esiCharData.corporation_id;
     })
