@@ -1,4 +1,4 @@
-import {ESIError, ErrorName, isESIError} from 'eve-swagger';
+import { ESIError, ErrorName, isESIError } from 'eve-swagger';
 
 export function isAnyEsiError(error: any) {
   return error instanceof Error && isESIError(error);
