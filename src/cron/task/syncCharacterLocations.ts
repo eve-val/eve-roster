@@ -3,7 +3,7 @@ import moment = require('moment');
 
 import { getAccessTokenForCharacter } from '../../data-source/accessToken';
 import { dao } from '../../dao';
-import { default as esi } from '../../esi';
+import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
 import { AccessTokenError } from '../../error/AccessTokenError';
@@ -77,8 +77,8 @@ function updateLocation(db: Tnex, characterId: number) {
   return getAccessTokenForCharacter(db, characterId)
   .then(accessToken => {
     return Promise.all([
-      esi.characters(characterId, accessToken).location(),
-      esi.characters(characterId, accessToken).ship(),
+      swagger.characters(characterId, accessToken).location(),
+      swagger.characters(characterId, accessToken).ship(),
     ]);
   })
   .then(([locationResults, shipResults]) => {

@@ -8,7 +8,7 @@ import { AccountPrivileges } from '../../route-helper/privileges';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
 import { isAnyEsiError } from '../../util/error';
 import * as alert from '../../shared/rosterAlertLevels';
-import esi from '../../esi';
+import swagger from '../../swagger';
 
 const logger = require('../../util/logger')(__filename);
 
@@ -73,14 +73,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 function getCorpNames(db: Tnex): Promise<Map<number, string> | null> {
   return dao.roster.getRosterCharacterCorps(db)
   .then(corpIds => {
-    return esi.corporations.names(corpIds);
-  })
-  .then(corpNames => {
-    let corpNameMap = new Map<number, string>();
-    for (let cn of corpNames) {
-      corpNameMap.set(cn.id, cn.name);
-    }
-    return corpNameMap;
+    return swagger.corporations.names(corpIds);
   })
   .catch(e => {
     if (isAnyEsiError(e)) {
