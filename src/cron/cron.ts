@@ -51,15 +51,13 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
 
-  // TODO: Find the memory leak that this cron job is exercising so this can
-  // be re-enabled.
-  // {
-  //   name: 'syncCharacterLocations',
-  //   schedule: '*/10 * * * * *', // Every 10 seconds - note the extra *
-  //   interval: moment.duration(10, 'seconds').asMilliseconds(),
-  //   channel: 'location',
-  //   silent: true,
-  // },
+  {
+    name: 'syncCharacterLocations',
+    schedule: '*/10 * * * * *', // Every 10 seconds - note the extra *
+    interval: moment.duration(10, 'seconds').asMilliseconds(),
+    channel: 'location',
+    silent: true,
+  },
 
   {
     name: 'truncateCharacterLocations',
