@@ -131,8 +131,8 @@ function consumeOrThrowError(e: any) {
 function transformSkills(skills: SkillsheetEntry[]) {
   return skills.map(skill => ({
     id: skill.skillsheet_skill,
-    name: STATIC.SKILLS[skill.skillsheet_skill].name,
-    group: STATIC.SKILLS[skill.skillsheet_skill].groupId,
+    name: (STATIC.SKILLS[skill.skillsheet_skill] || {}).name,
+    group: (STATIC.SKILLS[skill.skillsheet_skill] || {}).groupId,
     level: skill.skillsheet_level,
     sp: skill.skillsheet_skillpoints,
   }));
