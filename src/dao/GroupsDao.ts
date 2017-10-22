@@ -50,7 +50,6 @@ export default class GroupsDao {
   setAccountGroups(db: Tnex, accountId: number, groups: string[]) {
     return db.transaction(db => {
       let oldGroups: string[];
-      groups.sort((a, b) => a.localeCompare(b));
 
       return this.getAccountGroups(db, accountId)
       .then(_oldGroups => {
@@ -67,6 +66,8 @@ export default class GroupsDao {
             .replace(accountGroup, 'accountGroup_account', accountId, rows);
       })
       .then(() => {
+        groups.sort((a, b) => a.localeCompare(b));
+        oldGroups.sort((a, b) => a.localeCompare(b));
         if (!_.isEqual(oldGroups, groups)) {
           return this._parent.log.logEvent(
               db,
