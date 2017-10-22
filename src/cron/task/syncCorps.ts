@@ -57,7 +57,7 @@ function updateCorporation(db: Tnex, characterId: number) {
     });
   })
   .then(() => {
-    logger.info('Updated character %s', characterId);
+    logger.debug('Updated character %s', characterId);
   })
   .catch(isMissingCharError, e => {
     return dao.character.updateCharacter(db, characterId, {
