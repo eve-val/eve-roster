@@ -55,6 +55,12 @@ function updateCorporation(
     db: Tnex, job: JobTracker, corpConfig: MemberCorporation) {
   logger.info('updateCorporation', corpConfig.memberCorporation_corporationId);
 
+  if (corpConfig.memberCorporation_apiVerificationCode == "") {
+    logger.info(`Skipping corp ${corpConfig.memberCorporation_corporationId}`
+        + ` - blank vcode.`);
+    return [];
+  }
+
   return Promise.all([
     getCorpXml(corpConfig, 'corp/MemberTracking', { extended: 1 }),
     getCorpXml(corpConfig, 'corp/MemberSecurity'),
