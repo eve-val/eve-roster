@@ -23,7 +23,7 @@ export function censor(
     censoredLen: number,
     censorshipChar='*',
     ): string | null {
-  if (str == null) {
+  if (str == null || str === "") {
     return str;
   } else {
     return str.toString().substring(0, uncensoredLen)
