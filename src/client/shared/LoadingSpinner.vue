@@ -1,27 +1,28 @@
 <template>
-<div :style="{ display: display }"
-    v-if="derivedState != 'hidden'">
-  <img class="spinner"
-        v-if="derivedState == 'spinning'"
-        src="../assets/LoadingSpinner-spinner.svg"
-        :style="{ width: size, height: size, }"
+<div class="_loading-spinner" :style="{ display: derivedDisplay }">
+  <template v-if="derivedState != 'hidden'">
+    <img class="spinner"
+          v-if="derivedState == 'spinning'"
+          src="../assets/LoadingSpinner-spinner.svg"
+          :style="{ width: size, height: size, }"
+          >
+    <tooltip
+        v-if="derivedState != 'spinning' && display == 'inline'"
+        :gravity="tooltipGravity || 'center top'"
+        style="vertical-align: text-bottom"
         >
-  <tooltip
-      v-if="derivedState != 'spinning' && display == 'inline'"
-      :gravity="tooltipGravity || 'center top'"
-      style="vertical-align: text-bottom"
-      >
-    <img class="inline-style-icon"
-        :src="errorIconSrc"
-        :style="{ width: size, height: size, }"
-        >
-    <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
-  </tooltip>
+      <img class="inline-style-icon"
+          :src="errorIconSrc"
+          :style="{ width: size, height: size, }"
+          >
+      <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
+    </tooltip>
 
-  <div class="block-style-message"
-       v-if="derivedState != 'spinning' && display == 'block'">
-    <img class="block-style-icon" :src="errorIconSrc">{{ derivedMessage }}
-  </div>
+    <div class="block-style-message"
+          v-if="derivedState != 'spinning' && display == 'block'">
+      <img class="block-style-icon" :src="errorIconSrc">{{ derivedMessage }}
+    </div>
+  </template>
 </div>
 </template>
 
@@ -183,6 +184,14 @@ export default {
   },
 
   computed: {
+    derivedDisplay() {
+      if (this.derivedState == 'hidden') {
+        return 'none';
+      } else {
+        return this.display;
+      }
+    },
+
     derivedState() {
       return this.state || this.stateFromPromise || this.defaultState;
     },
