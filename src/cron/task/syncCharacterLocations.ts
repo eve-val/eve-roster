@@ -23,19 +23,20 @@ export function syncCharacterLocations(
   .then(characterIds => {
     job.setProgress(0, undefined);
 
-    let noTokenCharacterIds: number[] = [];
     let esiErrorCharacterIds: number[] = [];
     let failedCharacterIds: number[] = []
 
     return Promise.map(characterIds, (characterId, i, len) => {
       return maybeUpdateLocation(db, characterId)
       .catch(AccessTokenError, e => {
-        noTokenCharacterIds.push(characterId);
+        // Oh well
       })
       .catch(isAnyEsiError, e => {
         esiErrorCharacterIds.push(characterId);
       })
       .catch(e => {
+        logger.error(`Error while syncing location for ${characterId}.`);
+        logger.error(e);
         failedCharacterIds.push(characterId);
       })
       .then(() => {
@@ -44,9 +45,6 @@ export function syncCharacterLocations(
       });
     })
     .then(() => {
-      if (noTokenCharacterIds.length > 0) {
-        logger.warn(`syncLocation had no available token for ${noTokenCharacterIds}.`);
-      }
       if (esiErrorCharacterIds.length > 0) {
         logger.warn(`syncLocation got ESI errors for ${esiErrorCharacterIds}.`);
       }

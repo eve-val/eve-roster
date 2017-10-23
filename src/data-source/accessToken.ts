@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { dao } from '../dao';
 import { Tnex } from '../tnex';
+import { AccessToken } from '../dao/tables';
 import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
 
 const logger = require('../util/logger')(__filename);
@@ -12,7 +13,7 @@ const logger = require('../util/logger')(__filename);
 const SSO_AUTH_CODE =
       Buffer.from(process.env.SSO_CLIENT_ID + ':' + process.env.SSO_SECRET_KEY)
           .toString('base64');
-const TOKEN_EXPIRATION_FUDGE_MS = 10000;   // 10 seconds
+const TOKEN_EXPIRATION_FUDGE_MS = 3000;   // 3 seconds
 const REQUEST_TIMEOUT = 10000;
 
 const pendingTokenRequests = {} as {[key: number]: Promise<any>};
@@ -28,10 +29,10 @@ export function getAccessTokenForCharacter(db: Tnex, characterId: number)
       if (!row) {
         throw new AccessTokenError(
             characterId, AccessTokenErrorType.TOKEN_MISSING);
-      }
-
-      if (Date.now() 
-          <= row.accessToken_accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS) {
+      } else if (row.accessToken_needsUpdate) {
+        throw new AccessTokenError(
+            characterId, AccessTokenErrorType.TOKEN_REFRESH_REJECTED);
+      } else if (!tokenHasExpired(row)) {
         return row.accessToken_accessToken;
       } else {
         return refreshAccessToken(
@@ -49,6 +50,12 @@ export function getAccessTokenForCharacter(db: Tnex, characterId: number)
 
   pendingTokenRequests[characterId] = work;
   return work;
+}
+
+function tokenHasExpired(
+    row: Pick<AccessToken, 'accessToken_accessTokenExpires'>) {
+  return Date.now() > row.accessToken_accessTokenExpires
+      - TOKEN_EXPIRATION_FUDGE_MS;
 }
 
 function printSafeToken(token: string) {
@@ -82,7 +89,7 @@ function refreshAccessToken(
   })
   .catch(e => {
     if (e.response && e.response.status == 400) {
-      logger.warn(
+      logger.error(
           `Access token refresh request was rejected for char ${characterId}.`);
       dao.accessToken.markAsExpired(db, characterId);
       throw new AccessTokenError(

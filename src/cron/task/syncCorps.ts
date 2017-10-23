@@ -37,6 +37,8 @@ export function syncCorps(
       if (esiErrorCharacterIds.length > 0) {
         job.warn(`syncCorps got ESI errors for ${esiErrorCharacterIds}.`);
       }
+      logger.info(`syncCorps successfully synced ${completedCharacters}/`
+          + `${characterIds.length} characters.`);
     });
   });
 }
@@ -55,9 +57,6 @@ function updateCorporation(db: Tnex, characterId: number) {
     return dao.character.updateCharacter(db, characterId, {
       character_corporationId: character.corporation_id,
     });
-  })
-  .then(() => {
-    logger.debug('Updated character %s', characterId);
   })
   .catch(isMissingCharError, e => {
     return dao.character.updateCharacter(db, characterId, {
