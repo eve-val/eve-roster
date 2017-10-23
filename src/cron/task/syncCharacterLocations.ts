@@ -17,7 +17,7 @@ const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 export function syncCharacterLocations(
     db: Tnex, job: JobTracker): Promise<void> {
-  let completedCharacters = 0;
+  let processedCharacters = 0;
 
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
   .then(characterIds => {
@@ -29,7 +29,9 @@ export function syncCharacterLocations(
     return Promise.map(characterIds, (characterId, i, len) => {
       return maybeUpdateLocation(db, characterId)
       .catch(AccessTokenError, e => {
-        // Oh well
+        // No access token for this character (or token has expired). This can
+        // occur naturally due to unclaimed characters or revoked tokens (or
+        // CPP bugs). We can't do anything without one, so skip this character.
       })
       .catch(isAnyEsiError, e => {
         esiErrorCharacterIds.push(characterId);
@@ -40,8 +42,8 @@ export function syncCharacterLocations(
         failedCharacterIds.push(characterId);
       })
       .then(() => {
-        completedCharacters++;
-        job.setProgress(completedCharacters / len, undefined);
+        processedCharacters++;
+        job.setProgress(processedCharacters / len, undefined);
       });
     })
     .then(() => {

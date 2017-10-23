@@ -24,8 +24,9 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
         successCount++;
       })
       .catch(AccessTokenError, e => {
-        logger.warn(`Missing access token for character ${characterId}, ` +
-            `skipping...`);
+        // No access token for this character (or token has expired). This can
+        // occur naturally due to unclaimed characters or revoked tokens (or
+        // CPP bugs). We can't do anything without one, so skip this character.
       })
       .catch(isAnyEsiError, e => {
         logger.warn(`ESI error while fetching skills for char ${characterId}.`);

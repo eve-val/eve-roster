@@ -89,7 +89,7 @@ function refreshAccessToken(
   })
   .catch(e => {
     if (e.response && e.response.status == 400) {
-      logger.error(
+      logger.info(
           `Access token refresh request was rejected for char ${characterId}.`);
       dao.accessToken.markAsExpired(db, characterId);
       throw new AccessTokenError(
