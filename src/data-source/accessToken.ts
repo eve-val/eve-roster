@@ -88,12 +88,19 @@ function refreshAccessToken(
       })
   })
   .catch(e => {
-    if (e.response && e.response.status == 400) {
-      logger.info(
+    if (e.response) {
+      if (e.response.status == 400) {
+        logger.info(
           `Access token refresh request was rejected for char ${characterId}.`);
-      dao.accessToken.markAsExpired(db, characterId);
-      throw new AccessTokenError(
-          characterId, AccessTokenErrorType.TOKEN_REFRESH_REJECTED);
+        dao.accessToken.markAsExpired(db, characterId);
+        throw new AccessTokenError(
+            characterId, AccessTokenErrorType.TOKEN_REFRESH_REJECTED);
+      } else {
+        logger.error(`HTTP error while refreshing token for ${characterId}.`);
+        logger.error(e);
+        throw new AccessTokenError(
+            characterId, AccessTokenErrorType.HTTP_FAILURE);
+      }
     } else {
       logger.error(`Access token refresh failed for character ${characterId}.`);
       throw e;

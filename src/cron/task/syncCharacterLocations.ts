@@ -24,7 +24,6 @@ export function syncCharacterLocations(
     job.setProgress(0, undefined);
 
     let esiErrorCharacterIds: number[] = [];
-    let failedCharacterIds: number[] = []
 
     return Promise.map(characterIds, (characterId, i, len) => {
       return maybeUpdateLocation(db, characterId)
@@ -36,11 +35,6 @@ export function syncCharacterLocations(
       .catch(isAnyEsiError, e => {
         esiErrorCharacterIds.push(characterId);
       })
-      .catch(e => {
-        logger.error(`Error while syncing location for ${characterId}.`);
-        logger.error(e);
-        failedCharacterIds.push(characterId);
-      })
       .then(() => {
         processedCharacters++;
         job.setProgress(processedCharacters / len, undefined);
@@ -49,9 +43,6 @@ export function syncCharacterLocations(
     .then(() => {
       if (esiErrorCharacterIds.length > 0) {
         logger.warn(`syncLocation got ESI errors for ${esiErrorCharacterIds}.`);
-      }
-      if (failedCharacterIds.length > 0) {
-        logger.warn(`syncLocation got errors for ${failedCharacterIds}.`);
       }
     });
   })

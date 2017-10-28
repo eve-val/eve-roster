@@ -31,6 +31,16 @@
       :access="accessFull"
       />
   
+  <div class="entry-title">ESI failure</div>
+  <owned-character-slab
+      :accountId="0"
+      :character="characterEsiFailure"
+      :isMain="false"
+      :highlightMain="true"
+      :loginParams="loginParams"
+      :access="accessFull"
+      />
+  
   <div class="entry-title">Biomassed character</div>
   <owned-character-slab
       :accountId="0"
@@ -128,6 +138,7 @@ export default {
     return {
       characterBasic: characterBasic(),
       characterOpsecAlt: characterOpsec(),
+      characterEsiFailure: characterBasic(warningSkillQueue()),
       characterBiomassed: characterBiomassed(),
       characterNeedsReauth: characterNeedsReauth(),
       characterEmptyQueue: characterBasic(emptySkillQueue()),
@@ -239,6 +250,14 @@ function pausedSkillQueue() {
 function unfreshSkillQueue() {
   let queue = sampleSkillQueue();
   queue.dataStatus = 'bad_credentials';
+  return queue;
+}
+
+function warningSkillQueue() {
+  let queue = sampleSkillQueue();
+  queue.dataStatus = 'cached';
+  queue.warning = 'bad_credentials';
+
   return queue;
 }
 

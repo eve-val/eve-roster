@@ -11,12 +11,14 @@ const logger = require('../../util/logger')(__filename);
 
 
 export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
-  
+
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
   .then(characterIds => {
     job.setProgress(0, undefined);
 
     let successCount = 0;
+    let esiFailureCount = 0;
+    let accessTokenFailureCount = 0;
 
     return Promise.each(characterIds, (characterId, i, len) => {
       return updateSkills(db, characterId)
@@ -27,19 +29,12 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
         // No access token for this character (or token has expired). This can
         // occur naturally due to unclaimed characters or revoked tokens (or
         // CPP bugs). We can't do anything without one, so skip this character.
+        accessTokenFailureCount++;
       })
       .catch(isAnyEsiError, e => {
+        esiFailureCount++;
         logger.warn(`ESI error while fetching skills for char ${characterId}.`);
         logger.warn(e);
-      })
-      .catch(e => {
-        logger.error(`Error while fetching skills for char ${characterId}.`);
-        logger.error(e);
-        if (e.response) {
-          logger.error(e.response.status);
-          logger.error(e.response.data);
-          logger.error(e.response.headers);
-        }
       })
       .then(() => {
         job.setProgress(i / len, undefined);
@@ -51,7 +46,8 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
       let errorCount = characterIds.length - successCount;
       if (errorCount > 0) {
         job.warn(`Failed to update ${errorCount}/${characterIds.length}`
-            + ` characters' skills.`);
+            + ` characters' skills {${esiFailureCount} ESI errors,`
+            + ` ${accessTokenFailureCount} access token errors.`);
       }
     })
   });

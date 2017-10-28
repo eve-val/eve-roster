@@ -7,6 +7,7 @@ import { dao } from '../dao';
 import { SkillQueueEntry } from '../dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from '../data-source/skillQueue';
 import { isAnyEsiError } from '../util/error';
+import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
 
 const logger = require('../util/logger')(__filename);
 
@@ -97,13 +98,12 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
         `ESI error "${e.name}" while fetching skill queue for character`
             + ` ${characterId}.`);
     logger.error(e);
-  } else if (e.response) {
-    warningType = 'fetch_failure';
-
-    logger.error(`Error while fetching skill queue for ${characterId}.`);
-    logger.error(e);
-    logger.error(e.response.status);
-    logger.error(e.response.data);
+  } else if (e instanceof AccessTokenError) {
+    if (e.type == AccessTokenErrorType.HTTP_FAILURE) {
+      warningType = 'fetch_failure';
+    } else {
+      warningType = 'bad_credentials';
+    }
   } else {
     throw e;
   }
