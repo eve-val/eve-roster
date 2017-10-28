@@ -121,6 +121,8 @@ function consumeOrThrowError(e: any) {
       case AccessTokenErrorType.TOKEN_REFRESH_REJECTED:
         return 'Access token for this character appears to have expired.'
             + ' Please log in with this character again.';
+      case AccessTokenErrorType.HTTP_FAILURE:
+        return 'Error getting refreshed access token from CCP.';
     }
   } else {
     // Unknown failure
