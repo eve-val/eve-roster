@@ -28,6 +28,7 @@ interface CharacterJson {
   corpStatus: string,
   skillQueue: SkillQueueSummary,
   corpId: number,
+  needsReauth: boolean,
 }
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
@@ -62,6 +63,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
           corpStatus: getCorpStatus(row.memberCorporation_membership),
           skillQueue: queue,
           corpId: row.character_corporationId,
+          needsReauth: row.accessToken_needsUpdate !== false,
         };
       });
     });

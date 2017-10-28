@@ -61,6 +61,7 @@ export default class CharacterDao {
             'ownership_opsec',
             'memberCorporation_membership',
             'account_mainCharacter',
+            'accessToken_needsUpdate',
             )
         .run();
   }
