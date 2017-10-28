@@ -224,6 +224,10 @@ function getJsonForCharacter(
         addAlert(obj, alert.LEVEL_ERROR, 'Character does not have roles.');
       }
     }
+    if (row.accessToken_needsUpdate === true) {
+      addAlert(
+          obj, alert.LEVEL_ERROR, `Character needs to be reauthenticated.`);
+    }
   }
 
   if (privs.canRead('characterActivityStats')) {

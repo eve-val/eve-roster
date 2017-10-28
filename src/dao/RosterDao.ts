@@ -22,6 +22,7 @@ export interface BasicRosterCharacter {
   killboard_lossesInLastMonth: number | null,
   killboard_lossValueInLastMonth: number | null,
   memberCorporation_membership: string | null,
+  accessToken_needsUpdate: boolean | null,
 }
 
 export interface OwnedRosterCharacter extends BasicRosterCharacter {
@@ -87,6 +88,7 @@ export default class RosterDao {
         .join(t.character, 'character_id', '=', 'ownership_character')
         .leftJoin(t.citadel, 'citadel_id', '=', 'account_homeCitadel')
         .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')
+        .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .leftJoin(t.memberCorporation,
             'memberCorporation_corporationId', '=', 'character_corporationId')
         .leftJoin(
@@ -116,6 +118,7 @@ export default class RosterDao {
             'citadel_name',
             'ownership_opsec',
             'trialCheck_group',
+            'accessToken_needsUpdate',
             )
         .run();
   }
@@ -127,6 +130,7 @@ export default class RosterDao {
             'character_corporationId', '=', 'memberCorporation_corporationId')
         .leftJoin(t.ownership, 'ownership_character', '=', 'character_id')
         .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')
+        .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .whereNull('ownership_account')
         .andWhere('character_deleted', '=', val(false))
         .columns(
@@ -143,6 +147,7 @@ export default class RosterDao {
             'killboard_lossesInLastMonth',
             'killboard_lossValueInLastMonth',
             'memberCorporation_membership',
+            'accessToken_needsUpdate',
             )
         .run()
   }
