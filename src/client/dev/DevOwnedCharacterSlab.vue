@@ -256,7 +256,7 @@ function unfreshSkillQueue() {
 function warningSkillQueue() {
   let queue = sampleSkillQueue();
   queue.dataStatus = 'cached';
-  queue.warning = 'There was an ESI error blah blah blah.';
+  queue.warning = 'bad_credentials';
 
   return queue;
 }
