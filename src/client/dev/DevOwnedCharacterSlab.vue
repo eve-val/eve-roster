@@ -113,7 +113,7 @@
   <!-- Misc -->
   <div class="section">Misc</div>
 
-  <div class="entry-title">Needs reauth (needs rework)</div>
+  <div class="entry-title">Needs reauth</div>
   <owned-character-slab
       :accountId="0"
       :character="characterNeedsReauth"
@@ -140,7 +140,7 @@ export default {
       characterOpsecAlt: characterOpsec(),
       characterEsiFailure: characterBasic(warningSkillQueue()),
       characterBiomassed: characterBiomassed(),
-      characterNeedsReauth: characterNeedsReauth(),
+      characterNeedsReauth: characterNeedsReauth(warningSkillQueue()),
       characterEmptyQueue: characterBasic(emptySkillQueue()),
       characterPausedQueue: characterBasic(pausedSkillQueue()),
       characterUnfresQueue: characterBasic(unfreshSkillQueue()),

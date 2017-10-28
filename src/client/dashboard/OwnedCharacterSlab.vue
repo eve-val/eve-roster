@@ -20,9 +20,7 @@
         </tooltip>
       </div>
       <div class="training-summary">
-        <div class="training-track"
-            :class="{ errorState: isInErrorState }"
-            >
+        <div class="training-track">
           <div class="training-progress"
               :style="{ width: progressTrackWidth }"
               ></div>
@@ -60,16 +58,13 @@
         tooltipGravity="left"
         />
   </div>
-  <div class="auth-bother-container"
-      slot="sub-slab-hanger"
+  <reauthentication-prompt
       v-if="character.needsReauth"
+      slot="sub-slab-hanger"
+      :loginParams="loginParams"
+      :characterName="character.name"
       >
-    <div class="auth-bother-title">Character needs to be re-authorized</div>
-    Please
-    <a :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
-        >log in</a>
-    as {{ character.name }}.
-  </div>
+  </reauthentication-prompt>
 </character-slab-frame>
 </template>
 
@@ -77,6 +72,7 @@
 import ajaxer from '../shared/ajaxer';
 
 import CharacterSlabFrame from './CharacterSlabFrame.vue';
+import ReauthenticationPrompt from './ReauthenticationPrompt.vue';
 import DropMenu from '../shared/DropMenu.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import Tooltip from '../shared/Tooltip.vue';
@@ -91,6 +87,7 @@ import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 export default {
   components: {
     CharacterSlabFrame,
+    ReauthenticationPrompt,
     DropMenu,
     LoadingSpinner,
     Tooltip,
@@ -123,14 +120,8 @@ export default {
       return this.character.skillQueue.queue;
     },
 
-    isInErrorState() {
-      return this.character.needsReauth;
-    },
-
     trainingLabel() {
-       if (this.character.needsReauth) {
-        return 'Needs authorization!';
-      } else if (this.character.skillQueue.queueStatus == 'empty') {
+      if (this.character.skillQueue.queueStatus == 'empty') {
         return 'Skill queue empty';
       } else if (this.character.skillQueue.queueStatus == 'paused') {
         return 'Skill queue paused';
@@ -354,10 +345,6 @@ function getQueueWarningLabel(warning) {
   background: #26221e;
 }
 
-.training-track.errorState {
-  background: url('../assets/Dashboard-barberpole-error.png');
-}
-
 .training-progress {
   position: absolute;
   left: 0;
@@ -379,17 +366,6 @@ function getQueueWarningLabel(warning) {
 
 .queue-summary, .training-remaining {
   font-size: 12px;
-  color: #a7a29c;
-}
-
-.auth-bother-container {
-  background: #3d3d3d;
-  padding: 12px;
-}
-
-.auth-bother-title {
-  font-size: 16px;
-  margin-bottom: 6px;
   color: #a7a29c;
 }
 
