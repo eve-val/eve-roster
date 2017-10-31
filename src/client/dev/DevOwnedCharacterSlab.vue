@@ -193,7 +193,7 @@ function characterOpsec() {
 
 function characterBiomassed() {
   let character = characterBasic();
-  character.corp = CORP_DOOMHEIM;
+  character.corpId = CORP_DOOMHEIM;
   return character;
 }
 
