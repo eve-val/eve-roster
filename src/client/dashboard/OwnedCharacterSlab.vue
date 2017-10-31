@@ -109,7 +109,7 @@ export default {
 
   computed: {
     biomassed() {
-      return this.character.corp == CORP_DOOMHEIM;
+      return this.character.corpId == CORP_DOOMHEIM;
     },
 
     skillInTraining() {
