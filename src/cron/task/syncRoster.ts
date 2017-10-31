@@ -74,6 +74,7 @@ function updateCorporation(
       job.error(`ESI responded with ${e.response.status} when`
           + ` processing corp ${corpConfig.memberCorporation_corporationId}.`
           + ` Has the corp key expired?`)
+      return [];
     } else {
       throw e;
     }
