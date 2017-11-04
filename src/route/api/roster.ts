@@ -224,7 +224,7 @@ function getJsonForCharacter(
         addAlert(obj, alert.LEVEL_ERROR, 'Character does not have roles.');
       }
     }
-    if (row.accessToken_needsUpdate === true) {
+    if (row.accessToken_needsUpdate) {
       addAlert(
           obj, alert.LEVEL_ERROR, `Character needs to be reauthenticated.`);
     }
