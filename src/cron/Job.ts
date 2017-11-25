@@ -11,6 +11,7 @@ export type JobStatus = 'queued' | 'running' | 'finished';
 
 export interface JobTracker {
   setProgress(progress: number | undefined, label: string | undefined): void;
+  info(message: string): void;
   error(message: string): void;
   warn(message: string): void;
 }

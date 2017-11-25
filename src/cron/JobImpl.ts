@@ -106,6 +106,10 @@ export class JobImpl extends EventEmitter implements Job {
     logger.warn(`[${this.taskName}] ${message}`);
   }
 
+  public info(message: string) {
+    logger.info(`[${this.taskName}] ${message}`);
+  }
+
   public get timedOut() {
     return this._timedOut || false;
   }
@@ -131,6 +135,9 @@ export class JobImpl extends EventEmitter implements Job {
   public setProgress(progress: number | undefined, label: string | undefined) {
     if (progress != undefined) {
       progress = Math.min(1, Math.max(0, progress));
+    }
+    if (label != this._progressLabel) {
+      logger.info(`[${this.taskName}] ${label}`);
     }
     if (progress != this._progress || label != this._progressLabel) {
       this._progress = progress;

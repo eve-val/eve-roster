@@ -175,3 +175,53 @@ export class Skillsheet {
   skillsheet_skillpoints = number();
 }
 export const skillsheet = tables.register(new Skillsheet());
+
+export class SdeImport {
+  simp_id = number();
+  simp_md5 = string();
+  simp_importerVersion = number();
+  simp_timestamp = number();
+}
+export const sdeImport = tables.register(new SdeImport());
+
+export class SdeType {
+  styp_import = number();
+
+  styp_id = number();
+  styp_name = string();
+  styp_searchName = string();
+  styp_group = number();
+  styp_category = number();
+  styp_description = string();
+  styp_mass = number();
+  styp_volume = number();
+  styp_capacity = number();
+  styp_portionSize = number();
+  styp_race = number();
+  styp_basePrice = number();
+  styp_marketGroup = number();
+}
+export const sdeType = tables.register(new SdeType());
+
+export class SdeAttribute {
+  sattr_import = number();
+
+  sattr_id = number();
+  sattr_name = string();
+  sattr_description = string();
+  sattr_defaultValue = number();
+  sattr_icon = nullable(number());
+  sattr_displayName = nullable(string());
+  sattr_unit = nullable(number());
+  sattr_category = nullable(number());
+  sattr_published = boolean();
+}
+export const sdeAttribute = tables.register(new SdeAttribute());
+
+export class SdeTypeAttribute {
+  sta_type = number();
+  sta_attribute = number();
+  sta_valueInt = nullable(number());
+  sta_valueFloat = nullable(number());
+}
+export const sdeTypeAttribute = tables.register(new SdeTypeAttribute());

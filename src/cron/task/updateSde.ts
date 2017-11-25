@@ -1,0 +1,66 @@
+import * as fs from 'fs';
+import * as tmp from 'tmp';
+
+import Bluebird = require('bluebird');
+
+import { dao } from '../../dao';
+import { Tnex } from '../../tnex';
+import { JobTracker } from '../Job';
+import { acquireSde } from './updateSde/acquireSde';
+import { ingestSde } from './updateSde/ingestSde';
+
+
+/**
+ * Downloads the EVE static data export (SDE) and imports the parts that we
+ * need into the DB. In general, this means definitions for items, skills, and
+ * ships. Other stuff, like the locations of planets and NPCs, we discard.
+ *
+ * Instead of downloading the SDE directly from CCP, we use a streamlined
+ * version provided by Fuzzworks.
+ */
+export function updateSde(db: Tnex, job: JobTracker): Bluebird<void> {
+  return Bluebird.resolve(updateSdeInternal(db, job));
+}
+
+async function updateSdeInternal(db: Tnex, job: JobTracker) {
+  let zipPath: string|null = null;
+  let sqlPath: string|null = null;
+
+  try {
+    zipPath = await createTmpFile('sde_', '.sqlite.bz2');
+    sqlPath = await createTmpFile('sde_', '.sqlite');
+
+    job.info('Created temp files:');
+    job.info('  ' + zipPath);
+    job.info('  ' + sqlPath);
+
+    await acquireSde(job, zipPath, sqlPath);
+    await ingestSde(job, db, zipPath, sqlPath);
+
+  } finally {
+    deleteFile(zipPath);
+    deleteFile(sqlPath);
+  }
+}
+
+async function createTmpFile(prefix: string, postfix: string) {
+  return new Promise<string>((resolve, reject) => {
+    tmp.file(
+      { prefix: prefix, postfix: postfix, discardDescriptor: true },
+      (err, path, fd, cleanupCallback) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(path);
+        }
+      });
+  });
+}
+
+function deleteFile(path: string|null) {
+  if (path != null) {
+    fs.unlink(path, err => {
+      // If there's an error, ah well, we did our best.
+    })
+  }
+}
