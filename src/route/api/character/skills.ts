@@ -9,12 +9,13 @@ import { isAnyEsiError } from '../../../util/error';
 import { updateSkills } from '../../../data-source/skills';
 import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source/skillQueue';
 import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
-import { SkillQueueEntry } from '../../../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
 import esi from '../../../swagger';
 import * as time from '../../../util/time';
+import * as sde from '../../../eve/sde';
+import { defaultSkillName } from '../../../eve/sde/defaultSkillName';
 
-const STATIC = require('../../../static-data').get();
 const logger = require('../../../util/logger')(__filename);
 
 
@@ -22,7 +23,7 @@ export interface Payload {
   skills: Array<{
     id: number,
     name: string,
-    group: number,
+    group: number|null,
     level: number,
     sp: number,
   }>,
@@ -62,9 +63,9 @@ export default jsonEndpoint(function(req, res, db, account, privs)
     return fetchData(db, characterId);
   })
   .then(({ rawSkills, rawQueue, warningMessage }) => {
-    const payload = {
+    const payload: Payload = {
       skills: transformSkills(rawSkills),
-      queue: undefined as Payload['queue'],
+      queue: undefined,
       warning: warningMessage,
     };
 
@@ -87,28 +88,20 @@ function fetchData(db: Tnex, characterId: number) {
   return updateSkills(db, characterId)
   .catch(e => {
     warningMessage = consumeOrThrowError(e);
-    return loadCachedData(db, characterId);
   })
-  .then(({ queue, skills }) => {
+  .then(() => {
+    return Promise.all([
+      dao.skillQueue.getCachedSkillQueue(db, characterId),
+      dao.skillsheet.get(db, characterId),
+    ])
+  })
+  .then(([ queue, skills ]) => {
     return {
       rawSkills: skills,
       rawQueue: queue,
       warningMessage: warningMessage,
     }
   })
-}
-
-function loadCachedData(db: Tnex, characterId: number) {
-  return Promise.all([
-    dao.skillQueue.getCachedSkillQueue(db, characterId),
-    dao.skillsheet.get(db, characterId),
-  ])
-  .then(([queue, skills]) => {
-    return {
-      queue: queue,
-      skills: skills,
-    }
-  });
 }
 
 function consumeOrThrowError(e: any) {
@@ -131,16 +124,18 @@ function consumeOrThrowError(e: any) {
 }
 
 function transformSkills(skills: SkillsheetEntry[]) {
-  return skills.map(skill => ({
-    id: skill.skillsheet_skill,
-    name: (STATIC.SKILLS[skill.skillsheet_skill] || {}).name,
-    group: (STATIC.SKILLS[skill.skillsheet_skill] || {}).groupId,
-    level: skill.skillsheet_level,
-    sp: skill.skillsheet_skillpoints,
-  }));
+  return skills.map(skill => {
+    return {
+      id: skill.skillsheet_skill,
+      name: skill.styp_name || defaultSkillName(skill.skillsheet_skill),
+      group: skill.styp_group,
+      level: skill.skillsheet_level,
+      sp: skill.skillsheet_skillpoints,
+    };
+  });
 }
 
-function transformQueue(queue: SkillQueueEntry[]) {
+function transformQueue(queue: NamedSkillQueueRow[]) {
   let now = Date.now();
   let totalDuration = getRemainingDuration(queue, now);
 
@@ -188,7 +183,7 @@ function transformQueue(queue: SkillQueueEntry[]) {
   }
 }
 
-function getRemainingDuration(queue: SkillQueueEntry[], now: number) {
+function getRemainingDuration(queue: NamedSkillQueueRow[], now: number) {
   let totalDuration = null;
   let lastItem = queue.length > 0 ? queue[queue.length - 1] : null;
   if (lastItem != null && lastItem.endTime != null) {
@@ -197,7 +192,7 @@ function getRemainingDuration(queue: SkillQueueEntry[], now: number) {
   return totalDuration;
 }
 
-function getRemainingDurationLabel(queue: SkillQueueEntry[]) {
+function getRemainingDurationLabel(queue: NamedSkillQueueRow[]) {
   let lastItem = queue[queue.length - 1];
   if (lastItem != null && lastItem.endTime != null) {
     return time.shortDurationString(Date.now(), lastItem.endTime);

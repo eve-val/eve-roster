@@ -2,7 +2,7 @@ import Promise = require('bluebird');
 
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
-import { SkillQueueEntry } from '../../../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
 
 import { parallelize } from '../../../util/asyncUtil';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../../route-helper/skillQueueSummarizer';
