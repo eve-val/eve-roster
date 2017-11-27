@@ -94,8 +94,6 @@
 </template>
 
 <script>
-import skillGroups from '../../data/skill-groups.js'
-
 import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
 import EveImage from '../shared/EveImage.vue'; 
