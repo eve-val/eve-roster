@@ -25,8 +25,5 @@ export default jsonEndpoint((req, res, db, account, privs) => {
     if (updateCount == 0) {
       throw new BadRequestError(`No such citadel w/ id "${citadelId}`);
     }
-  })
-  .catch(SchemaVerificationError, e => {
-    throw new BadRequestError(e.message);
   });
 });
