@@ -67,19 +67,21 @@ export class Tnex {
     return new ValueWrapper(value);
   }
 
-  public insert<T extends object>(table: T, row: T): Promise<void>;
-  public insert<T extends object, K extends keyof T>(
-      table: T, row: T, returning: K): Promise<T[K]>;
-  public insert<T extends object, K extends keyof T, L extends keyof T>(
-      table: T, row: T, returning: [K, L]): Promise<[T[K], T[L]]>;
+  public insert<T extends object, R extends T = T>(table: T, row: R): Promise<void>;
+  public insert<T extends object, K extends keyof T, R extends T = T>(
+      table: T, row: R, returning: K): Promise<T[K]>;
+  public insert
+      <T extends object, K extends keyof T, L extends keyof T, R extends T = T>
+      (table: T, row: R, returning: [K, L]): Promise<[T[K], T[L]]>;
   public insert<
       T extends object,
       K extends keyof T,
       L extends keyof T,
-      M extends keyof T>
-      (table: T, row: T, returning: [K, L, M]): Promise<[T[K], T[L], T[M]]>;
-  public insert<T extends object>(
-      table: T, row: T, returning?: string|string[]) {
+      M extends keyof T,
+      R extends T = T>
+      (table: T, row: R, returning: [K, L, M]): Promise<[T[K], T[L], T[M]]>;
+  public insert<T extends object, R extends T = T>(
+      table: T, row: R, returning?: string|string[]) {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
