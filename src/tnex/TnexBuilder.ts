@@ -52,7 +52,7 @@ export class TnexBuilder {
         if (prefix != tablePrefix) {
           throw new Error(
               `Inconsistent prefixing in table "${tableName}".`
-                  + `Column "${p}" doesn't match inferred prefix`
+                  + ` Column "${p}" doesn't match inferred prefix`
                   + ` "${tablePrefix}".`);
         }
       }

@@ -16,6 +16,7 @@ import { syncSkills } from './task/syncSkills';
 import { syncCorps } from './task/syncCorps';
 import { truncateCronLog } from './task/truncateCronLog';
 import { truncateCharacterLocations } from './task/truncateCharacterLocations';
+import { updateSde } from './task/updateSde';
 
 const logger = require('../util/logger')(__filename);
 
@@ -77,10 +78,17 @@ const TASKS: TaskInternal[] = [
     executor: truncateCronLog,
     timeout: moment.duration(5, 'minutes').asMilliseconds(),
   },
+  {
+    name: 'updateSde',
+    displayName: 'Update SDE',
+    description: 'Installs latest version of EVE universe data.',
+    executor: updateSde,
+    timeout: moment.duration(20, 'minutes').asMilliseconds(),
+  },
 ];
 
 export type TaskName =
-    'syncRoster'
+    | 'syncRoster'
     | 'syncKillboard'
     | 'syncCharacterLocations'
     | 'syncSiggy'
@@ -88,6 +96,7 @@ export type TaskName =
     | 'syncCorps'
     | 'truncateCharacterLocations'
     | 'truncateCronLog'
+    | 'updateSde'
     ;
 
 export interface Task {
