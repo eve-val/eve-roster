@@ -4,7 +4,7 @@ import moment = require('moment');
 import * as time from '../util/time';
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
-import { SkillQueueEntry } from '../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from '../data-source/skillQueue';
 import { isAnyEsiError } from '../util/error';
 import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
@@ -12,7 +12,6 @@ import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenErro
 const logger = require('../util/logger')(__filename);
 
 
-const STATIC = require('../static-data').get();
 const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
 
 export type DataFreshness = 'fresh' | 'cached';
@@ -66,16 +65,16 @@ function loadQueue(db: Tnex, characterId: number, freshness: DataFreshness) {
 
   return Promise.resolve()
   .then(() => {
-    if (freshness == 'cached') {
-      return dao.skillQueue.getCachedSkillQueue(db, characterId);
-    } else {
-      return updateSkillQueue(db, characterId)
-      .catch(e => {
-        warning = consumeOrThrowError(e, characterId);
-        dataFreshness = 'cached';
-        return dao.skillQueue.getCachedSkillQueue(db, characterId);
-      })
+    if (freshness != 'cached') {
+      return updateSkillQueue(db, characterId) 
     }
+  })
+  .catch(e => {
+    warning = consumeOrThrowError(e, characterId);
+    dataFreshness = 'cached';
+  })
+  .then(() => {
+    return dao.skillQueue.getCachedSkillQueue(db, characterId);
   })
   .then(queue => {
     return {
@@ -111,7 +110,7 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
   return warningType;
 }
 
-function pruneCompletedSkills(queueData: SkillQueueEntry[]) {
+function pruneCompletedSkills(queueData: NamedSkillQueueRow[]) {
   let now = moment().valueOf();
   let i = 0;
   for (; i < queueData.length; i++) {
@@ -124,7 +123,7 @@ function pruneCompletedSkills(queueData: SkillQueueEntry[]) {
   return queueData.slice(i);
 }
 
-function getQueueStatus(queue: SkillQueueEntry[]): QueueStatus {
+function getQueueStatus(queue: NamedSkillQueueRow[]): QueueStatus {
   if (queue.length == 0) {
     return 'empty';
   } else if (queue[0].startTime == null) {
@@ -135,13 +134,13 @@ function getQueueStatus(queue: SkillQueueEntry[]): QueueStatus {
 }
 
 function getActiveSkillSummary(
-    queue: SkillQueueEntry[],
+    queue: NamedSkillQueueRow[],
     queueStatus: QueueStatus,
     ) {
   let summary = null;
   if (queue.length > 0) {
     let firstItem = queue[0];
-    let skillName = STATIC.SKILLS[firstItem.skill].name;
+    let skillName = firstItem.name;
     let skillLevelLabel = SKILL_LEVEL_LABELS[firstItem.targetLevel];
 
     summary = {
@@ -156,7 +155,7 @@ function getActiveSkillSummary(
 }
 
 function getQueueSummary(
-    queue: SkillQueueEntry[],
+    queue: NamedSkillQueueRow[],
     queueStatus: QueueStatus,
     ) {
   let finalEntry = queue[queue.length - 1];

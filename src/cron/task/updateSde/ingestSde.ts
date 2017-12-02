@@ -8,11 +8,16 @@ import { JobTracker } from '../../Job';
 import { notNil } from '../../../util/assert';
 import { normalizeSearchStr } from '../../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';
+import { fixupImport } from './fixupImport';
+import { verifyImport } from './verifyImport';
 
 
 const IMPORTER_VERSION = 0;
 const IMPORT_LABEL = 'Importing new SDE data...';
 
+/**
+ * Imports the SDE data from a Fuzzworks sqlite database.
+ */
 export async function ingestSde(
   job: JobTracker, db: Tnex, zipPath: string, sqlPath: string) {
   job.setProgress(undefined, IMPORT_LABEL);
@@ -39,9 +44,11 @@ async function ingestInternal(
     await importItems(job, db, sde, importId, categoryName, categoryId);
     job.setProgress((i + 1) / totalSteps, IMPORT_LABEL);
   }
-
   await importAttributes(job, db, sde, importId);
-  job.setProgress(1, IMPORT_LABEL);
+
+  job.setProgress(undefined, 'Verifying healthy import...');
+  await fixupImport(db);
+  await verifyImport(db);
 }
 
 function createNewImport(db: Tnex, md5: string) {

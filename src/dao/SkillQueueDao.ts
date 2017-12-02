@@ -2,7 +2,8 @@ import Promise = require('bluebird');
 
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
-import { characterSkillQueue } from './tables';
+import { characterSkillQueue, sdeType } from './tables';
+import { defaultSkillName } from '../eve/sde/defaultSkillName';
 
 
 class SkillQueueDao {
@@ -12,9 +13,10 @@ class SkillQueueDao {
   }
 
   getCachedSkillQueue(
-      db: Tnex, characterId: number): Promise<SkillQueueEntry[]> {
+      db: Tnex, characterId: number): Promise<NamedSkillQueueRow[]> {
     return db
         .select(characterSkillQueue)
+        .leftJoin(sdeType, 'styp_id', '=', 'characterSkillQueue_skill')
         .where('characterSkillQueue_character', '=', val(characterId))
         .orderBy('characterSkillQueue_queuePosition', 'asc')
         .columns(
@@ -25,12 +27,15 @@ class SkillQueueDao {
             'characterSkillQueue_levelStartSp',
             'characterSkillQueue_levelEndSp',
             'characterSkillQueue_trainingStartSp',
+            'styp_name',
             )
         .run()
     .then(rows => {
       return rows.map(row => {
         return {
           skill: row.characterSkillQueue_skill,
+          name:
+              row.styp_name || defaultSkillName(row.characterSkillQueue_skill),
           targetLevel: row.characterSkillQueue_targetLevel,
           startTime: row.characterSkillQueue_startTime,
           endTime: row.characterSkillQueue_endTime,
@@ -45,9 +50,9 @@ class SkillQueueDao {
   setCachedSkillQueue(
       db: Tnex,
       characterId: number,
-      queueItems: SkillQueueEntry[],
+      queueItems: SkillQueueRow[],
       ) {
-    
+
     let items = queueItems.map((qi, index) => {
       return {
         characterSkillQueue_character: characterId,
@@ -73,7 +78,7 @@ class SkillQueueDao {
 }
 export default SkillQueueDao;
 
-export interface SkillQueueEntry {
+export interface SkillQueueRow {
   skill: number,
   targetLevel: number,
   levelStartSp: number,
@@ -82,4 +87,8 @@ export interface SkillQueueEntry {
   // startTime and endTime wil be null if the queue is paused.
   startTime: number | null,
   endTime: number | null,
+}
+
+export interface NamedSkillQueueRow extends SkillQueueRow {
+  name: string,
 }

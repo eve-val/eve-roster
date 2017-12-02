@@ -4,7 +4,7 @@ import { esi } from 'eve-swagger';
 
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
-import { SkillQueueEntry } from '../dao/SkillQueueDao';
+import { SkillQueueRow } from '../dao/SkillQueueDao';
 import swagger from '../swagger';
 import { getAccessTokenForCharacter } from '../data-source/accessToken';
 
@@ -19,7 +19,7 @@ const logger = require('../util/logger')(__filename);
  */
 export function updateSkillQueue(
     db: Tnex, characterId: number, accessToken?: string) {
-  let newQueue: SkillQueueEntry[];
+  let newQueue: SkillQueueRow[];
 
   return Promise.resolve()
   .then(() => {
@@ -42,16 +42,13 @@ export function updateSkillQueue(
 
     return dao.skillQueue.setCachedSkillQueue(db, characterId, newQueue);
   })
-  .then(() => {
-    return newQueue;
-  });
 }
 
-export function isQueueEntryCompleted(queueEntry: SkillQueueEntry): boolean {
+export function isQueueEntryCompleted(queueEntry: SkillQueueRow): boolean {
   return queueEntry.endTime != null && queueEntry.endTime < Date.now();
 }
 
-export function getTrainingProgress(queueEntry: SkillQueueEntry) {
+export function getTrainingProgress(queueEntry: SkillQueueRow) {
   let pretrainedProgress = getProgressFraction(
     queueEntry.levelStartSp,
     queueEntry.levelEndSp,
@@ -83,12 +80,12 @@ function getProgressFraction(
 
 function convertEsiQueueToNativeQueue(
     esiQueue: esi.character.Skillqueue[]
-    ): SkillQueueEntry[] {
+    ): SkillQueueRow[] {
 
   esiQueue.sort(compareEsiQueueItem);
 
   return esiQueue.map(qi => {
-    const nativeItem: SkillQueueEntry = {
+    const nativeItem: SkillQueueRow = {
       skill: qi.skill_id,
       targetLevel: qi.finished_level,
       startTime: null,
@@ -107,7 +104,8 @@ function convertEsiQueueToNativeQueue(
   });
 }
 
-function compareEsiQueueItem(a: esi.character.Skillqueue, b: esi.character.Skillqueue) {
+function compareEsiQueueItem(
+    a: esi.character.Skillqueue, b: esi.character.Skillqueue) {
   if (a.queue_position < b.queue_position) {
     return -1;
   } else if (a.queue_position > b.queue_position) {

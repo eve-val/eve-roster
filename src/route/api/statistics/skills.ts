@@ -2,12 +2,11 @@ import Promise = require('bluebird');
 
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
+import * as sde from '../../../eve/sde';
 import { stringParam } from '../../../route-helper/paramVerifier';
 import { BadRequestError } from '../../../error/BadRequestError';
 
 import { SkillRequirement } from '../../../dao/StatisticsDao';
-
-const STATIC = require('../../../static-data').get();
 
 
 export interface Output {
@@ -41,7 +40,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   .then(rows => {
     return {
       query: skillRequirements.map(
-          sr => `${STATIC.SKILLS[sr.skill].name} ${sr.minLevel}`),
+          sr => `${sde.getSkillName(sr.skill)} ${sr.minLevel}`),
       stats: {
         matchingAccounts: rows.length,
         totalAccounts: numAccounts,

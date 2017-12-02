@@ -6,24 +6,24 @@ import { dao } from '../dao';
 import { getAccessTokenForCharacter } from './accessToken';
 import swagger from '../swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
-import { SkillQueueEntry } from '../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
 import { SkillsheetEntry } from '../dao/SkillsheetDao';
 import { SimpleNumMap } from '../util/simpleTypes';
 import { skillLevelToSp } from '../eve/skillLevelToSp';
+import * as sde from '../eve/sde';
+import { character } from '../dao/tables';
 
-const STATIC = require('../static-data').get();
 const logger = require('../util/logger')(__filename);
 
 
 /** Throws MissingTokenError and ESI failure errors. */
 export function updateSkills(db: Tnex, characterId: number) {
-  let skillQueue: SkillQueueEntry[];
-  let skills: SkillsheetEntry[];
+  let skillQueue: NamedSkillQueueRow[];
 
   return getAccessTokenForCharacter(db, characterId)
   .then(accessToken => {
     return Promise.all([
-      updateSkillQueue(db, characterId, accessToken),
+      getSkillQueue(db, characterId, accessToken),
       getEsiSkills(characterId, accessToken),
     ]);
   })
@@ -32,7 +32,7 @@ export function updateSkills(db: Tnex, characterId: number) {
 
     // Put all complete queue items into a map
     // More recent completions of the same skill will overwrite earlier entries
-    let completedSkills = {} as SimpleNumMap<SkillQueueEntry>;
+    let completedSkills = {} as SimpleNumMap<NamedSkillQueueRow>;
     for (let queueItem of queue) {
       if (isQueueEntryCompleted(queueItem)) {
         completedSkills[queueItem.skill] = queueItem;
@@ -46,16 +46,16 @@ export function updateSkills(db: Tnex, characterId: number) {
       return esiSkillToRow(
           characterId, esiSkill, completedSkills[esiSkill.skill_id!])
     });
-    skills = rows;
 
     return dao.skillsheet.set(db, characterId, rows);
   })
+}
+
+function getSkillQueue(db: Tnex, characterId: number, accessToken: string) {
+  return updateSkillQueue(db, characterId, accessToken)
   .then(() => {
-    return {
-      queue: skillQueue,
-      skills: skills,
-    };
-  })
+    return dao.skillQueue.getCachedSkillQueue(db, characterId);
+  })  
 }
 
 function getEsiSkills(characterId: number, accessToken: string) {
@@ -66,7 +66,7 @@ function getEsiSkills(characterId: number, accessToken: string) {
 function esiSkillToRow(
     characterId: number,
     esiSkill: esi.character.Skill,
-    completedEntry: SkillQueueEntry|undefined) {
+    completedEntry: NamedSkillQueueRow|undefined) {
   
   let skillLevel = esiSkill.current_skill_level || 0;
   let skillSp = esiSkill.skillpoints_in_skill || 0;
@@ -85,11 +85,5 @@ function esiSkillToRow(
 }
 
 function getSkillRank(skillId: number) {
-  let skill = STATIC.SKILLS[skillId];
-  if (skill == undefined) {
-    logger.error(`Unknown skill ${skillId}.`);
-    return 1;
-  } else {
-    return skill.rank;
-  }
+  return sde.getSkillDefinition(skillId).rank;
 }

@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 
 import { dao } from '../../dao';
-import { SkillQueueEntry } from '../../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
 import { NotFoundError } from '../../error/NotFoundError';
 import * as policy from '../../route-helper/policy';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';

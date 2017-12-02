@@ -13,6 +13,7 @@ import { Scheduler } from './cron/Scheduler';
 import * as express from './express';
 import * as cron from './cron/cron';
 import * as tasks from './cron/tasks';
+import * as sde from './eve/sde';
 
 const logger = require('./util/logger')(__filename);
 
@@ -30,11 +31,21 @@ for (let envVar of REQUIRED_VARS) {
   }
 }
 
-const db = tables.build(getPostgresKnex());
-
-let scheduler = new Scheduler(db);
-tasks.init(scheduler);
-cron.init(db);
-express.init(db, port => {
-  logger.info(`Serving from port ${port}.`);
+main()
+.catch(e => {
+  logger.error(`Fatal error during startup.`);
+  logger.error(e);
+  process.exit(2);
 });
+
+async function main() {
+  const db = tables.build(getPostgresKnex());
+
+  await sde.loadStaticData(db, false);
+
+  tasks.init(new Scheduler(db));
+  cron.init(db);
+  express.init(db, port => {
+    logger.info(`Serving from port ${port}.`);
+  });  
+}
