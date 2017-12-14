@@ -12,6 +12,9 @@
     "watch-server": "tsc -w",
     "test": "jest"
   },
+  "engines": {
+    "node": "8.9.3"
+  },
   "dependencies": {
     "@types/bluebird": "^3.5.3",
     "@types/body-parser": "^1.16.3",
