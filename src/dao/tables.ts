@@ -127,15 +127,16 @@ export class GroupTitle {
 }
 export const groupTitle = tables.register(new GroupTitle());
 
-export class Killboard {
-  killboard_character = number();
-  killboard_killsInLastMonth = number();
-  killboard_killValueInLastMonth = number();
-  killboard_lossesInLastMonth = number();
-  killboard_lossValueInLastMonth = number();
-  killboard_updated = number();
+export class CombatStats {
+  cstats_character = number();
+  cstats_killsInLastMonth = number();
+  cstats_killValueInLastMonth = number();
+  cstats_lossesInLastMonth = number();
+  cstats_lossValueInLastMonth = number();
+  cstats_updated = number();
 }
-export const killboard = tables.register(new Killboard());
+export const combatStats =
+    tables.register(new CombatStats(), 'characterCombatStats');
 
 export class MemberCorporation {
   memberCorporation_corporationId = number();

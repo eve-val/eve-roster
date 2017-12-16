@@ -26,7 +26,7 @@ export default class SkillQueueDao {
         .select(
             'mainCharacter.id as id',
             'mainCharacter.name as name',
-            'killboard.killsInLastMonth as kills')
+            'characterCombatStats.killsInLastMonth as kills')
         .join(
             // Subselect: all member accounts
             knex.select('account.id')
@@ -40,9 +40,10 @@ export default class SkillQueueDao {
         .join('character', 'character.id', '=', 'ownership.character')
         .join('character as mainCharacter',
             'mainCharacter.id', '=', 'account.mainCharacter')
-        .join('killboard', 'killboard.character', '=', 'mainCharacter.id')
+        .join('characterCombatStats',
+            'characterCombatStats.character', '=', 'mainCharacter.id')
         .distinct('account.id')
-        .orderBy('killboard.killsInLastMonth', 'desc');
+        .orderBy('characterCombatStats.killsInLastMonth', 'desc');
 
     for (let i = 0; i < requirements.length; i++) {
       let r = requirements[i];

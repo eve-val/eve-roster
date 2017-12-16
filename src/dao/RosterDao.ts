@@ -17,10 +17,10 @@ export interface BasicRosterCharacter {
   character_logoffDate: number | null,
   character_siggyScore: number | null,
   character_titles: string | null,
-  killboard_killsInLastMonth: number | null,
-  killboard_killValueInLastMonth: number | null,
-  killboard_lossesInLastMonth: number | null,
-  killboard_lossValueInLastMonth: number | null,
+  cstats_killsInLastMonth: number | null,
+  cstats_killValueInLastMonth: number | null,
+  cstats_lossesInLastMonth: number | null,
+  cstats_lossValueInLastMonth: number | null,
   memberCorporation_membership: string | null,
   accessToken_needsUpdate: boolean | null,
 }
@@ -87,7 +87,7 @@ export default class RosterDao {
         .join(t.ownership, 'ownership_account', '=', 'memberAccount_mid')
         .join(t.character, 'character_id', '=', 'ownership_character')
         .leftJoin(t.citadel, 'citadel_id', '=', 'account_homeCitadel')
-        .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')
+        .leftJoin(t.combatStats, 'cstats_character', '=', 'character_id')
         .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .leftJoin(t.memberCorporation,
             'memberCorporation_corporationId', '=', 'character_corporationId')
@@ -107,10 +107,10 @@ export default class RosterDao {
             'character_logoffDate',
             'character_siggyScore',
             'character_titles',
-            'killboard_killsInLastMonth',
-            'killboard_killValueInLastMonth',
-            'killboard_lossesInLastMonth',
-            'killboard_lossValueInLastMonth',
+            'cstats_killsInLastMonth',
+            'cstats_killValueInLastMonth',
+            'cstats_lossesInLastMonth',
+            'cstats_lossValueInLastMonth',
             'memberCorporation_membership',
             'account_id',
             'account_mainCharacter',
@@ -129,7 +129,8 @@ export default class RosterDao {
         .join(t.character,
             'character_corporationId', '=', 'memberCorporation_corporationId')
         .leftJoin(t.ownership, 'ownership_character', '=', 'character_id')
-        .leftJoin(t.killboard, 'killboard_character', '=', 'character_id')
+        .leftJoin(t.combatStats,
+            'cstats_character', '=', 'character_id')
         .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .whereNull('ownership_account')
         .andWhere('character_deleted', '=', val(false))
@@ -142,10 +143,10 @@ export default class RosterDao {
             'character_logoffDate',
             'character_siggyScore',
             'character_titles',
-            'killboard_killsInLastMonth',
-            'killboard_killValueInLastMonth',
-            'killboard_lossesInLastMonth',
-            'killboard_lossValueInLastMonth',
+            'cstats_killsInLastMonth',
+            'cstats_killValueInLastMonth',
+            'cstats_lossesInLastMonth',
+            'cstats_lossValueInLastMonth',
             'memberCorporation_membership',
             'accessToken_needsUpdate',
             )
