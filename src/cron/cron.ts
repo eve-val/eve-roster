@@ -31,7 +31,7 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(20, 'minutes').asMilliseconds(),
   },
   {
-    name: 'syncKillboard',
+    name: 'syncCombatStats',
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },

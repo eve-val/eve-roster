@@ -245,10 +245,10 @@ function getJsonForCharacter(
 
     obj.lastSeen = lastSeen;
     obj.lastSeenLabel = lastSeenLabel;
-    obj.killsInLastMonth = row.killboard_killsInLastMonth;
-    obj.killValueInLastMonth = row.killboard_killValueInLastMonth;
-    obj.lossesInLastMonth = row.killboard_lossesInLastMonth;
-    obj.lossValueInLastMonth = row.killboard_lossValueInLastMonth;
+    obj.killsInLastMonth = row.cstats_killsInLastMonth;
+    obj.killValueInLastMonth = row.cstats_killValueInLastMonth;
+    obj.lossesInLastMonth = row.cstats_lossesInLastMonth;
+    obj.lossValueInLastMonth = row.cstats_lossValueInLastMonth;
     obj.siggyScore = row.character_siggyScore;
   }
 

@@ -15,15 +15,14 @@ const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
-export function syncKillboard(
-    db: Tnex, job: JobTracker): Promise<void> {
+export function syncCombatStats(db: Tnex, job: JobTracker): Promise<void> {
   return Promise.resolve()
   .then(getStartTime)
   .then(startTime => fetchAll(db, job, startTime))
   .then(([updateCount, failureCount]) => {
     logger.info(`Updated ${updateCount} characters' killboards.`);
     if (failureCount > 0 && updateCount == 0) {
-      throw new Error(`syncKillboard failed completely.`);
+      throw new Error(`syncCombatStats failed completely.`);
     } else if (failureCount > 0 && updateCount > 0) {
       job.warn(`Failed to update ${failureCount} character killboards.`)
     }
@@ -47,13 +46,13 @@ function getStartTime() {
 
 // For each character, fetches their killboard stats and stores them.
 function fetchAll(db: Tnex, job: JobTracker, since: string) {
-  return dao.killboard.getAllCharacterKillboardTimestamps(db)
+  return dao.combatStats.getAllCharacterCombatStatsTimestamps(db)
   .then(rows => {
     let currentProgress = 0;
     let updateCount = 0;
     let failureCount = 0;
     return serialize(rows, (row, idx) => {
-      const updated = row.killboard_updated || 0;
+      const updated = row.cstats_updated || 0;
       if (Date.now() - updated < KB_EXPIRATION_DURATION) {
         // Already up-to-date, skip it...
         return;
@@ -69,7 +68,7 @@ function fetchAll(db: Tnex, job: JobTracker, since: string) {
         logger.warn(`Error fetching killboard for ${row.character_name}:`, e);
         failureCount++;
         if (failureCount > MAX_FAILURES_BEFORE_BAILING) {
-          throw new Error('syncKillboard aborted (failure count too high)');
+          throw new Error('syncCombatStats aborted (failure count too high)');
         }
       });
     })
@@ -96,7 +95,7 @@ function syncCharacterKillboard(
         Math.round(
             losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0));
 
-    return dao.killboard.updateCharacterKillboard(
+    return dao.combatStats.updateCharacterCombatStats(
         db,
         characterId,
         killCount,
@@ -115,7 +114,7 @@ function logProgressUpdate(
   let progress = Math.floor(idx / length / PROGRESS_INTERVAL_PERC);
   if (progress > lastLoggedProgress || idx == 0) {
     const perc = Math.round(100 * lastLoggedProgress * PROGRESS_INTERVAL_PERC);
-    logger.info(`syncKillboard (${perc}% complete)`);
+    logger.info(`syncCombatStats (${perc}% complete)`);
     lastLoggedProgress = progress;
   }
   job.setProgress(idx / length, undefined);
