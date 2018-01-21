@@ -6,6 +6,7 @@ import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { serialize, doWhile } from '../../util/asyncUtil';
 import { JobTracker } from '../Job';
+import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
 
 
 const logger = require('../../util/logger')(__filename);
@@ -17,7 +18,7 @@ const MAX_FAILURES_BEFORE_BAILING = 10;
 
 export function syncCombatStats(db: Tnex, job: JobTracker): Promise<void> {
   return Promise.resolve()
-  .then(getStartTime)
+  .then(() => formatZKillTimeArgument(moment().subtract(60, 'days')))
   .then(startTime => fetchAll(db, job, startTime))
   .then(([updateCount, failureCount]) => {
     logger.info(`Updated ${updateCount} characters' killboards.`);
@@ -28,21 +29,6 @@ export function syncCombatStats(db: Tnex, job: JobTracker): Promise<void> {
     }
   });
 };
-
-function getStartTime() {
-  let now = moment.utc([]);
-  let start = now.subtract(60, 'days');
-
-  // zKillboard requires start times to end with 00, so add an hour and then
-  // round down to the start (this gives us the nextHour:00). The moment
-  // endOf function would give us currentHour:59, which is not desired.
-  start = start.add(1, 'hour').startOf('hour');
-
-  // zKillboard says start time must be formatted YmdHi (as a PHP datetime) This
-  // translates to 4-digit year (YYYY); padded, 1-based month (MM); padded,
-  // 1-based day of month (DD); padded, 24 hour clock (HH); padded minutes (mm)
-  return start.format('YYYYMMDDHHmm');
-}
 
 // For each character, fetches their killboard stats and stores them.
 function fetchAll(db: Tnex, job: JobTracker, since: string) {

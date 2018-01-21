@@ -1,5 +1,7 @@
-import { TnexBuilder, nullable, number, string, boolean, enu } from '../tnex';
-import { PrivilegeName } from './enums';
+import { TnexBuilder, nullable, number, string, boolean, enu, json } from '../tnex';
+import { PrivilegeName, KillmailType, SrpVerdictStatus, HullCategory, SrpVerdictReason } from './enums';
+import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
+
 
 export const tables = new TnexBuilder();
 
@@ -138,6 +140,18 @@ export class CombatStats {
 export const combatStats =
     tables.register(new CombatStats(), 'characterCombatStats');
 
+export class Killmail {
+  km_id = number();
+  km_timestamp = number();
+  km_type = enu<KillmailType>();
+  km_hullCategory = enu<HullCategory>();
+  km_relatedLoss = nullable(number());
+  km_character = number();
+  km_sourceCorporation = number();
+  km_data = json<ZKillmail>();
+}
+export const killmail = tables.register(new Killmail());
+
 export class MemberCorporation {
   memberCorporation_corporationId = number();
   memberCorporation_membership = string();
@@ -226,3 +240,23 @@ export class SdeTypeAttribute {
   sta_valueFloat = nullable(number());
 }
 export const sdeTypeAttribute = tables.register(new SdeTypeAttribute());
+
+export class SrpReimbursement {
+  srpr_id = number();
+  srpr_recipientCharacter = number();
+  srpr_modified = number();
+  srpr_paid = boolean();
+  srpr_payingCharacter = nullable(number());
+}
+export const srpReimbursement = tables.register(new SrpReimbursement());
+
+export class SrpVerdict {
+  srpv_killmail = number();
+  srpv_status = enu<SrpVerdictStatus>();
+  srpv_reason = nullable(enu<SrpVerdictReason>());
+  srpv_payout = number();
+  srpv_reimbursement = nullable(number());
+  srpv_modified = number();
+  srpv_renderingAccount = nullable(number());
+}
+export const srpVerdict = tables.register(new SrpVerdict());

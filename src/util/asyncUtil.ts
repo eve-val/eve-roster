@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 /**
  * Calls `callback(item, index)` on each item in `list`. Returns a Promise
@@ -6,14 +6,14 @@ import Promise = require('bluebird');
  */
 export function parallelize<T, U>(
     list: T[],
-    callback: (value: T, index: number) => U | Promise<U>,
-    ): Promise<U[]> {
-  let work = [] as (U | Promise<U>)[];
+    callback: (value: T, index: number) => U | Bluebird<U>,
+    ): Bluebird<U[]> {
+  let work = [] as (U | Bluebird<U>)[];
 
   for (let i = 0; i < list.length; i++) {
     work.push(callback(list[i], i));
   }
-  return Promise.all(work);
+  return Bluebird.all(work);
 }
 
 /**
@@ -23,17 +23,17 @@ export function parallelize<T, U>(
  */
 export function serialize<T, U>(
     list: T[],
-    callback: (value: T, index: number) => U | Promise<U>,
-    ): Promise<U[]> {
+    callback: (value: T, index: number) => U | Bluebird<U>,
+    ): Bluebird<U[]> {
   let results = [] as U[];
 
   return iterate(0);
 
-  function iterate(i: number): Promise<U[]> {
+  function iterate(i: number): Bluebird<U[]> {
     if (i >= list.length) {
-      return Promise.resolve(results);
+      return Bluebird.resolve(results);
     } else {
-      return Promise.resolve(callback(list[i], i))
+      return Bluebird.resolve(callback(list[i], i))
       .then(result => {
         results.push(result);
         return iterate(i + 1);
@@ -50,9 +50,9 @@ export function serialize<T, U>(
  */
 export function doWhile<T>(
     initialValue: T,
-    callback: (value: T) => T | undefined | Promise<T | undefined>
-    ): Promise<void> {
-  return Promise.try(() => {
+    callback: (value: T) => T | undefined | Bluebird<T | undefined>
+    ): Bluebird<void> {
+  return Bluebird.try(() => {
     return callback(initialValue);
   })
   .then(result => {
@@ -61,5 +61,11 @@ export function doWhile<T>(
     } else {
       return doWhile(result, callback);
     }
+  });
+}
+
+export function delay(ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
   });
 }
