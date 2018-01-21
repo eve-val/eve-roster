@@ -35,6 +35,8 @@ const FRONTEND_ROUTES = [
   '/admin/tasks',
   '/dev/',
   '/dev/:section',
+  '/srp',
+  '/srp/*',
 ];
 
 export function init(db: Tnex, onServing: (port: number) => void) {

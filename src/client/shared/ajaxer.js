@@ -27,6 +27,10 @@ export default {
     });
   },
 
+  getAccountCharacters(accountId) {
+    return axios.get(`/api/account/${accountId}/characters`);
+  },
+
   deleteBiomassedCharacter(characterId) {
     return axios.delete('/api/character/' + characterId);
   },
@@ -118,5 +122,47 @@ export default {
 
   putAdminSetup(setupObj) {
     return axios.put('/api/admin/setup', setupObj);
+  },
+
+  getRecentSrpLosses(filter) {
+    return axios.get('/api/srp/loss', {
+      params: filter
+    });
+  },
+
+  putSrpLossVerdict(killmail, verdict, reason, payout) {
+    return axios.put(`/api/srp/loss/${killmail}`, {
+      verdict: verdict,
+      reason: reason,
+      payout: payout,
+    });
+  },
+
+  getSrpLossTriageOptions(killmail) {
+    return axios.get(`/api/srp/loss/${killmail}/triage`);
+  },
+
+  getSrpPaymentHistory(filter) {
+    return axios.get('/api/srp/payment', {
+      params: filter
+    });
+  },
+
+  getSrpPayment(paymentId) {
+    return axios.get(`/api/srp/payment/${paymentId}`);
+  },
+
+  putSrpPaymentStatus(srp, paid, payingCharacter) {
+    return axios.put(`/api/srp/payment/${srp}`, {
+      paid: paid,
+      payingCharacter: payingCharacter,
+    });
+  },
+
+  postOpenInformationWindow(character, targetId) {
+    return axios.post(`/api/control/openwindow/information`, {
+      character: character,
+      targetId: targetId,
+    });
   },
 }
