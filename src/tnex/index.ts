@@ -4,10 +4,10 @@ import { Tnex } from './Tnex';
 
 export { TnexBuilder } from './TnexBuilder';
 
-export { val } from './core';
+export { val, ResultOrder, } from './core';
 export { Tnex } from './Tnex';
 export { Nullable } from './Joiner';
-export { nullable, number, string, boolean, boolinum, enu } from './definers';
+export { nullable, number, string, boolean, boolinum, enu, json } from './definers';
 
 export {
   DEFAULT_NUM,

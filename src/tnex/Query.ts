@@ -14,10 +14,6 @@ export class Query<T extends object, R /* return type */> {
   constructor(scoper: Scoper, query: Knex.QueryBuilder, shouldBeRun: boolean) {
     this._scoper = scoper;
     this._query = query;
-
-    if (shouldBeRun) {
-      checkQueryWasRunOnNextTick(this);
-    }
   }
 
   public run(): Promise<R> {
@@ -33,10 +29,11 @@ export class Query<T extends object, R /* return type */> {
    * knex handles value bindings in its generated queries.
    */
 
-  public where<K extends keyof T, R extends keyof T>(
-      column: K,
+  public where<K1 extends keyof T, K2 extends keyof T>(
+      column: K1,
       cmp: Comparison,
-      right: R | ValueWrapper<T[K]>): this {
+      right: K2 | ValueWrapper<T[K1]>,
+  ): this {
     if (right instanceof ValueWrapper) {
       // This is a simple where clause that has every row compared to the
       // specified constant value. This works properly with knex's assumptions
@@ -58,20 +55,22 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
-  public andWhere<K extends keyof T, R extends keyof T>(
-      column: K,
+  public andWhere<K1 extends keyof T, K2 extends keyof T>(
+      column: K1,
       cmp: Comparison,
-      right: R | ValueWrapper<T[K]>): this {
+      right: K2 | ValueWrapper<T[K1]>,
+  ): this {
     // andWhere in knex is just an alias to where, so there's no need to
     // duplicate logic between the two. But keeping andWhere around can help
     // improve readability of queries.
     return this.where(column, cmp, right);
   }
 
-  public orWhere<K extends keyof T, R extends keyof T>(
-    column: K,
-    cmp: Comparison,
-    right: R | ValueWrapper<T[K]>): this {
+  public orWhere<K1 extends keyof T, K2 extends keyof T>(
+      column: K1,
+      cmp: Comparison,
+      right: K2 | ValueWrapper<T[K1]>,
+  ): this {
 
     if (right instanceof ValueWrapper) {
       this._query = this._query
@@ -111,24 +110,4 @@ export class Query<T extends object, R /* return type */> {
           + ` ${this._query.toString()}`);
     }
   }
-}
-
-
-let timeoutRegistered = false;
-let queriesToCheck = [] as Query<any, any>[];
-
-function checkQueryWasRunOnNextTick(query: Query<any, any>) {
-  queriesToCheck.push(query);
-  if (!timeoutRegistered) {
-    timeoutRegistered = true;
-    setTimeout(checkPendingQueries, 0);
-  }
-}
-
-function checkPendingQueries() {
-  for (let query of queriesToCheck) {
-    query.assertWasRun();
-  }
-  timeoutRegistered = false;
-  queriesToCheck.length = 0;
 }
