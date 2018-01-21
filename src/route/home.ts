@@ -9,9 +9,11 @@ export default htmlEndpoint((req, res, db, account, privs) => {
         [
           'roster',
           'adminConsole',
+          'srp',
         ],
         false
     ),
+    isMember: privs.isMember(),
   };
 
   return {

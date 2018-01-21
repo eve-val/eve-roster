@@ -1,5 +1,5 @@
 import { TnexBuilder, nullable, number, string, boolean, enu, json } from '../tnex';
-import { PrivilegeName, KillmailType, HullCategory } from './enums';
+import { PrivilegeName, KillmailType, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './enums';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 
 
@@ -254,3 +254,38 @@ export class SdeTypeAttribute {
   sta_valueFloat = nullable(number());
 }
 export const sdeTypeAttribute = tables.register(new SdeTypeAttribute());
+
+/**
+ * An SRP payment for a particular member. A single payment can include
+ * multiple losses across multiple characters (if all owned by the same
+ * account).
+ */
+export class SrpReimbursement {
+  srpr_id = number();
+  srpr_recipientCharacter = number();
+  srpr_modified = number();
+  srpr_paid = boolean();
+  srpr_payingCharacter = nullable(number());
+}
+export const srpReimbursement = tables.register(new SrpReimbursement());
+
+/**
+ * Whether a loss is eligible for SRP. If so, how much to pay. If not, why.
+ */
+export class SrpVerdict {
+  srpv_killmail = number();
+  srpv_status = enu<SrpVerdictStatus>();
+  /** Non-null iff status is Ineligible */
+  srpv_reason = nullable(enu<SrpVerdictReason>());
+  /** ISK */
+  srpv_payout = number();
+  /** Non-null iff status is Approved */
+  srpv_reimbursement = nullable(number());
+  srpv_modified = number();
+  /**
+   * The account that decided the verdict. Can be null even if a verdict has
+   * been rendered if the verdict was decided by a bot.
+   */
+  srpv_renderingAccount = nullable(number());
+}
+export const srpVerdict = tables.register(new SrpVerdict());

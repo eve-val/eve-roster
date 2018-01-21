@@ -1,5 +1,9 @@
 export type nil = null | undefined;
 
+export type Nullable<T>  = {
+  [P in keyof T]: T[P] | null
+};
+
 export type BasicType = number | boolean | string | object;
 
 export type SimpleMap<T> = {

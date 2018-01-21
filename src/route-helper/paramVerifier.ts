@@ -18,6 +18,38 @@ export function idParam(req: express.Request, key: string): number {
   return parseInt(strParam);
 }
 
+export function boolQuery(
+    req: express.Request, key: string): boolean | undefined {
+  if (req.query[key] == undefined) {
+    return undefined;
+  } else {
+    return req.query[key] == 'true' || req.query[key] == '';
+  }
+}
+
+export function intQuery(
+    req: express.Request, key: string): number | undefined {
+  if (isNaN(req.query[key])) {
+    return undefined;
+  } else {
+    return parseInt(req.query[key]);
+  }
+}
+
+export function enumQuery<EType extends string, Eobj extends object = object>(
+    req: express.Request, key: string, enu: Eobj): EType | undefined {
+  let value = req.query[key];
+  if (value === undefined) {
+    return value;
+  }
+  for (let v in enu) {
+    if (enu[v] == value) {
+      return value;
+    }
+  }
+  throw new BadRequestError(`Non-enum value "${value}" for key "${key}".`);
+}
+
 function getParam(req: express.Request, key: string): string {
   let param = req.params[key];
 
