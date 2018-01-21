@@ -224,7 +224,7 @@ export default class SrpDao {
     }
     if (filter.startingAfter != undefined) {
       subquery = subquery.andWhere(
-          filter.orderBy == 'id' ? 'srpr_id' : 'srpr_modified', 
+          filter.orderBy == 'id' ? 'srpr_id' : 'srpr_modified',
           filter.order == 'desc' ? '<' : '>',
           val(filter.startingAfter));
     }
