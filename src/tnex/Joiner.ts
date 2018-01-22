@@ -105,13 +105,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
    */
 
   
-  // Normal join
-  public join<T extends object>(
-      table: T,
-      left: keyof T,
-      cmp: Comparison,
-      right: keyof J,
-  ): Joiner<J & T, S>;
+
   // Subjoin
   public join<T extends object, E>(
       subselect: Joiner<T, E>,
@@ -126,6 +120,13 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       cmp: Comparison,
       right: keyof J,
       ): Joiner<J & E, S>;
+  // Normal join
+  public join<T extends object>(
+      table: T,
+      left: keyof T,
+      cmp: Comparison,
+      right: keyof J,
+  ): Joiner<J & T, S>;
   // Implementation
   public join(
       table: object,
@@ -142,6 +143,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       this._scoper.registerSyntheticPrefix(requiredPrefix);
     } else if (table instanceof RenamedJoin) {
       joinTarget = this._processRenamedJoin(table);
+      this._scoper.registerSyntheticPrefix(table.tableAlias);
     } else {
       joinTarget = this._processJoin(table);
     }
@@ -155,13 +157,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     return this;
   }
 
-  // Normal
-  public leftJoin<T extends object>(
-      table: T,
-      left: keyof T,
-      cmp: Comparison,
-      right: keyof J,
-      ): Joiner<J & Nullable<T>, S>;
+
   // Subselect
   public leftJoin<T extends object, E>(
       sub: Joiner<T, E>,
@@ -176,6 +172,13 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       cmp: Comparison,
       right: keyof J,
       ): Joiner<J & Nullable<E>, S>;
+  // Normal
+  public leftJoin<T extends object>(
+      table: T,
+      left: keyof T,
+      cmp: Comparison,
+      right: keyof J,
+      ): Joiner<J & Nullable<T>, S>;
   // Implementation
   public leftJoin(
       table: object,
@@ -192,8 +195,8 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       requiredPrefix = assertHasValue(table._subqueryTableName);
       this._scoper.registerSyntheticPrefix(requiredPrefix);
     } else if (table instanceof RenamedJoin) {
-      this._scoper.registerSyntheticPrefix(table.tableAlias);
       joinTarget = this._processRenamedJoin(table);
+      this._scoper.registerSyntheticPrefix(table.tableAlias);
     } else {
       joinTarget = this._processJoin(table);
     }

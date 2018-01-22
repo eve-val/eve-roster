@@ -22,3 +22,7 @@ export function boolinum(): number {
 export function enu<K extends string>(): K {
   return '' as K;
 }
+
+export function json<K extends object>(): K {
+  return {} as K;
+}
