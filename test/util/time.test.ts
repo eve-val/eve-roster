@@ -1,4 +1,5 @@
-const time = require('../../src/util/time');
+import * as time from '../../src/util/time';
+
 
 test('shortDurationString: output specificity = days', () => {
   expect(time.shortDurationString(

@@ -10,10 +10,9 @@ import { MissingPrivilegeError } from '../error/MissingPrivilegeError';
 
 const logger = require('../util/logger')(__filename);
 
-
+const debugStr = process.env.DEBUG_GROUPS;
 const debugGroups =
-    checkDebugGroups(
-        process.env.DEBUG_GROUPS && JSON.parse(process.env.DEBUG_GROUPS));
+    checkDebugGroups(debugStr && JSON.parse(debugStr));
 
 export function getPrivileges(db: Tnex, accountId: number) {
   let groups: string[];
@@ -141,7 +140,7 @@ export class AccountPrivileges {
   }
 }
 
-function checkDebugGroups(debugGroups: string[]) {
+function checkDebugGroups(debugGroups: string[] | undefined) {
   if (debugGroups) {
     logger.info(
         `Using hard-coded ACL groups for all requests: [${debugGroups}].`)

@@ -3,7 +3,7 @@ import knex = require('knex');
 
 const CLIENT = 'sqlite3';
 
-let dbFile = process.env.DB_FILE_NAME;
+let dbFile = process.env.DB_FILE_NAME || 'roster.sqlite';
 if (dbFile[0] != '/') {
   // A relative path, make it relative to back-end/
   dbFile = path.join(__dirname, '../../', dbFile);

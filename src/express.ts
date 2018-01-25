@@ -124,7 +124,7 @@ export function init(db: Tnex, onServing: (port: number) => void) {
   app.use(express.static(path.join(__dirname, '../static')));
 
   // Start the server
-  const port = process.env.PORT || 8081;
+  const port = parseInt(process.env.PORT || '8081');
   let server = app.listen(port, () => {
     onServing(port);
   });
