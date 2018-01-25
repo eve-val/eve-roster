@@ -10,6 +10,7 @@ import { normalizeSearchStr } from '../../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';
 import { fixupImport } from './fixupImport';
 import { verifyImport } from './verifyImport';
+import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../../eve/constants/types';
 
 
 const IMPORTER_VERSION = 0;
@@ -76,9 +77,12 @@ async function importItems(
 
   const rows = await queryAll(sde, SELECT_INV_TYPES, [categoryId]);
   for (let row of rows) {
-    const itemId = notNil(row.typeID as number);
+    const typeId = notNil(row.typeID as number);
 
-    if (!row.published) {
+    if (!row.published
+        // The capsules are not marked as published for...some reason
+        && typeId != TYPE_CAPSULE
+        && typeId != TYPE_CAPSULE_GENOLUTION) {
       skippedCount++;
       continue;
     }
@@ -87,7 +91,7 @@ async function importItems(
     // Step 1: Upsert item
     await db.upsert(sdeType, {
       styp_import: importId,
-      styp_id: itemId,
+      styp_id: typeId,
       styp_name: row.typeName,
       styp_searchName: normalizeSearchStr(row.typeName),
       styp_group: row.groupID,
@@ -105,14 +109,14 @@ async function importItems(
     // Step 2: Set itemAttrs
     await db
         .del(sdeTypeAttribute)
-        .where('sta_type', '=', val(itemId))
+        .where('sta_type', '=', val(typeId))
         .run();
 
     const attrRows = await queryAll(sde, SELECT_TYPE_ATTRS, [row.typeID]);
     await db
         .insertAll(sdeTypeAttribute, attrRows.map(attr => {
           return {
-            sta_type: itemId,
+            sta_type: typeId,
             sta_attribute: attr.attributeID,
             sta_valueInt: attr.valueInt,
             sta_valueFloat: attr.valueFloat,
