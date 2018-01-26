@@ -61,8 +61,6 @@ export function killmailsToRows(
   return rows;
 }
 
-// TODO: Would be great if this was less fragile in the face of CCP adding new
-// capsule types.
 function getHullCategory(killmail: ZKillmail) {
   if (killmail.victim.ship_type_id == TYPE_CAPSULE
       || killmail.victim.ship_type_id == TYPE_CAPSULE_GENOLUTION) {

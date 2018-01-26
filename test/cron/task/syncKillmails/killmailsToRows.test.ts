@@ -15,11 +15,11 @@ const TEN_MINUTES = moment.duration(10, 'minutes').asMilliseconds();
 test('Mails within window are associated', () => {
   const mails = [
     killmail({
-      killmail_id: 2,
-      killmail_time: '2018-01-14T05:51:15Z',
+      killmail_id: 0,
+      killmail_time: '2018-01-14T05:51:13Z',
       victim: {
         character_id: CHAR_A,
-        ship_type_id: TYPE_CAPSULE,
+        ship_type_id: 99,
       },
     }),
     killmail({
@@ -30,11 +30,11 @@ test('Mails within window are associated', () => {
       },
     }),
     killmail({
-      killmail_id: 0,
-      killmail_time: '2018-01-14T05:51:13Z',
+      killmail_id: 2,
+      killmail_time: '2018-01-14T05:51:15Z',
       victim: {
         character_id: CHAR_A,
-        ship_type_id: 99,
+        ship_type_id: TYPE_CAPSULE,
       },
     }),
   ];
@@ -48,14 +48,14 @@ test('Mails within window are associated', () => {
 test('Mails outside of window are not associated', () => {
   const mails = [
     killmail({
-      killmail_id: 2,
-      killmail_time: '2018-01-14T06:01:25Z',
-      victim: { character_id: CHAR_A, }
-    }),
-    killmail({
       killmail_id: 0,
       killmail_time: '2018-01-14T05:51:13Z',
       victim: { character_id: CHAR_A, ship_type_id: TYPE_CAPSULE, }
+    }),
+    killmail({
+      killmail_id: 2,
+      killmail_time: '2018-01-14T06:01:25Z',
+      victim: { character_id: CHAR_A, }
     }),
   ];
 
@@ -68,13 +68,13 @@ test('Mails outside of window are not associated', () => {
 test(`Association: first loss can't be a capsule`, () => {
   const mails = [
     killmail({
-      killmail_id: 2,
-      killmail_time: '2018-01-14T06:01:25Z',
+      killmail_id: 0,
+      killmail_time: '2018-01-14T05:51:13Z',
       victim: { character_id: CHAR_A, ship_type_id: TYPE_CAPSULE, }
     }),
     killmail({
-      killmail_id: 0,
-      killmail_time: '2018-01-14T05:51:13Z',
+      killmail_id: 2,
+      killmail_time: '2018-01-14T06:01:25Z',
       victim: { character_id: CHAR_A, ship_type_id: TYPE_CAPSULE, }
     }),
   ];
@@ -88,14 +88,14 @@ test(`Association: first loss can't be a capsule`, () => {
 test(`Association: second loss must be a capsule`, () => {
   const mails = [
     killmail({
-      killmail_id: 2,
-      killmail_time: '2018-01-14T06:01:25Z',
-      victim: { character_id: CHAR_A, ship_type_id: 33, }
-    }),
-    killmail({
       killmail_id: 0,
       killmail_time: '2018-01-14T05:51:13Z',
       victim: { character_id: CHAR_A, ship_type_id: 99, }
+    }),
+    killmail({
+      killmail_id: 2,
+      killmail_time: '2018-01-14T06:01:25Z',
+      victim: { character_id: CHAR_A, ship_type_id: 33, }
     }),
   ];
 
@@ -134,6 +134,22 @@ test('Hull category is properly set for capsules', () => {
   row = killmailsToRows([mail], SOURCE_CORP, TEN_MINUTES)[0];
   expect(row.km_hullCategory).toBe(HullCategory.CAPSULE);
 });
+
+test(`Out of order mails throws error`, () => {
+  const mails = [
+    killmail({
+      killmail_time: '2018-01-14T05:51:13Z',
+    }),
+    killmail({
+      killmail_time: '2018-01-14T04:01:25Z',
+    }),
+  ];
+
+  expect(() => {
+    killmailsToRows(mails, SOURCE_CORP, TEN_MINUTES)
+  }).toThrow();
+});
+
 
 /**
  * Generates a killmail based on {{source}}, filling in the rest of the fields

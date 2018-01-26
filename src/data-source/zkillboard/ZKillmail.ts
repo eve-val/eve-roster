@@ -1,3 +1,6 @@
+/**
+ * The JSON format that Zkillboard uses to represent killmails.
+ */
 export interface ZKillmail {
   killmail_id: number,
   killmail_time: string,

@@ -2,6 +2,9 @@ import moment = require('moment');
 import { Moment } from 'moment';
 
 
+/**
+ * Converts a timestamp to the format expected by the Zkillboard API.
+ */
 export function formatZKillTimeArgument(time: Moment) {
   let outTime = moment(time);
 

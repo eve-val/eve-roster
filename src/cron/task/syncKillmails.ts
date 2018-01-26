@@ -15,12 +15,12 @@ import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../eve/constants/types
 import { fetchZKillmails } from '../../data-source/zkillboard/fetchZkillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
 import { Killmail } from '../../dao/tables';
+import { inspect } from 'util';
 
 
 /**
  * Downloads and stores any recent killmails for all member and affiliated
- * corporations. Also generates SRP entries for each new loss and performs some
- * initial triage on them (auto-approve, auto-reject).
+ * corporations.
  *
  * For new corporations, fetches the last 60 days of losses; for
  * existing corporations, fetches all new losses since the last sync.
@@ -35,8 +35,14 @@ async function _syncKillmails(db: Tnex, job: JobTracker) {
   const memberCorps = await dao.config.getMemberCorporations(db);
 
   for (let memberCorp of memberCorps) {
-    await syncLossesForCorp(
-        db, job, memberCorp.memberCorporation_corporationId);
+    try {
+      await syncLossesForCorp(
+          db, job, memberCorp.memberCorporation_corporationId);
+    } catch (e) {
+      job.error(`Error while syncing kills for corp `
+          + `${memberCorp.memberCorporation_corporationId}`);
+      job.error(inspect(e));
+    }
   }
 }
 
@@ -52,29 +58,24 @@ async function syncLossesForCorp(
   job: JobTracker,
   corpId: number
 ) {
-  job.info(`Sync losses for ${corpId}`);
   const lastKillmail = await dao.killmail.getMostRecentKillmail(db, corpId);
-  job.info(`  Most recent killmail was on `
-      + (lastKillmail && lastKillmail.km_timestamp));
-  const since = lastKillmail != null
-      ? moment(lastKillmail.km_timestamp)
-          .subtract(CAPSULE_SHIP_ASSOCIATION_WINDOW, 'milliseconds')
-      : moment().subtract(60, 'days');
-  const sinceArg = formatZKillTimeArgument(since);
-  job.info(`  Fetching starting from ${sinceArg}`);
+  const url = getZkillboardQueryUrl(corpId, lastKillmail);
+  
+  job.info(`Sync losses for ${corpId}`);
+  job.info(`  Query: ${url}`);
 
-  let url = `corporationID/${corpId}/losses/startTime/${sinceArg}`;
-
-  const mails = await fetchZKillmails(job, url);
+  const mails = await fetchZKillmails(url);
   if (mails.length == 0) {
     return;
   }
 
   const rows = killmailsToRows(mails, corpId, CAPSULE_SHIP_ASSOCIATION_WINDOW);
 
+  let newRowCount = 0;
   for (let row of rows) {
-    await storeKillmail(db, job, row);
+    newRowCount += await storeKillmail(db, job, row);
   }
+  job.info(`  Added ${newRowCount} new mails.`);
 }
 
 async function storeKillmail(
@@ -83,21 +84,31 @@ async function storeKillmail(
     row: Killmail,
 ) {
   const killmailStored = await dao.killmail.hasKillmail(db, row.km_id);
+  let newRowCount = 0;
   if (!killmailStored) {
-    job.info(`  Storing ${row.km_id} ${row.km_data.killmail_time}`);
     await dao.killmail.storeKillmail(db, row);
+    newRowCount = 1;
   } else if (row.km_relatedLoss != null) {
     await dao.killmail.setRelatedLoss(db, row.km_id, row.km_relatedLoss);
   }
+  return newRowCount;
 }
 
-// TODO: Would be great if this was less fragile in the face of CCP adding new
-// capsule types.
-function getHullCategory(killmail: ZKillmail) {
-  if (killmail.victim.ship_type_id == TYPE_CAPSULE
-      || killmail.victim.ship_type_id == TYPE_CAPSULE_GENOLUTION) {
-    return HullCategory.CAPSULE;
+function getZkillboardQueryUrl(
+    sourceCorporation: number, mostRecentStoredMail: Killmail | null) {
+  let startTimestamp: Moment;
+  if (mostRecentStoredMail == null) {
+    startTimestamp = moment().subtract(60, 'days');
   } else {
-    return HullCategory.SHIP;
+    // Fetch a day's worth of previous killmails since it may take some time
+    // for all mails to get to zkill (CCP asplode, etc.)
+    startTimestamp = moment(mostRecentStoredMail.km_timestamp)
+        .subtract(1, 'day')
   }
+
+  const sinceArg = formatZKillTimeArgument(startTimestamp);
+
+  let url = `corporationID/${sourceCorporation}/losses/startTime/${sinceArg}`;
+
+  return url;
 }

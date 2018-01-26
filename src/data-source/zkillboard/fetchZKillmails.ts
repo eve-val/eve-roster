@@ -7,20 +7,20 @@ import { JobTracker } from '../../cron/Job';
 
 const BASE_ZKILL_API_URL = 'https://zkillboard.com/api/';
 
-export async function fetchZKillmails(
-    job: JobTracker, url: string, pageDelay = 500,
-) {
+/**
+ * Loads all killmails from a particular zkillboard query. Loads all pages
+ * and returns them in a single array.
+ */
+export async function fetchZKillmails(url: string, pageDelay = 500) {
   let fullUrl = `${BASE_ZKILL_API_URL}${url}`;
   if (!fullUrl.endsWith('/')) {
     fullUrl += '/';
   }
 
-  job.info(`Fetching ${fullUrl}`);
   let mails: ZKillmail[] = [];
 
   let currPage = 1;
   while (true) {
-    job.info(`  Loading page ${currPage}`);
     const response = await axios.get(`${fullUrl}page/${currPage}/`, {
       headers: {
         'User-Agent': process.env.USER_AGENT || 'Sound Roster App',

@@ -1,5 +1,5 @@
 import { TnexBuilder, nullable, number, string, boolean, enu, json } from '../tnex';
-import { PrivilegeName, KillmailType, SrpVerdictStatus, HullCategory, SrpVerdictReason } from './enums';
+import { PrivilegeName, KillmailType, HullCategory } from './enums';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 
 
@@ -140,14 +140,28 @@ export class CombatStats {
 export const combatStats =
     tables.register(new CombatStats(), 'characterCombatStats');
 
+/**
+ * A killmail from a member corporation.
+ */
 export class Killmail {
   km_id = number();
   km_timestamp = number();
+  km_character = number();
+  /** Currently always LOSS. */
   km_type = enu<KillmailType>();
   km_hullCategory = enu<HullCategory>();
+  /**
+   * If a ship, the related capsule loss for that character (if any), and
+   * vice-versa.
+   */
   km_relatedLoss = nullable(number());
-  km_character = number();
+  /**
+   * The corporation whose killboard this loss was fetched from.
+   */
   km_sourceCorporation = number();
+  /**
+   * The full JSON blob received from ZKillboard.
+   */
   km_data = json<ZKillmail>();
 }
 export const killmail = tables.register(new Killmail());
@@ -240,23 +254,3 @@ export class SdeTypeAttribute {
   sta_valueFloat = nullable(number());
 }
 export const sdeTypeAttribute = tables.register(new SdeTypeAttribute());
-
-export class SrpReimbursement {
-  srpr_id = number();
-  srpr_recipientCharacter = number();
-  srpr_modified = number();
-  srpr_paid = boolean();
-  srpr_payingCharacter = nullable(number());
-}
-export const srpReimbursement = tables.register(new SrpReimbursement());
-
-export class SrpVerdict {
-  srpv_killmail = number();
-  srpv_status = enu<SrpVerdictStatus>();
-  srpv_reason = nullable(enu<SrpVerdictReason>());
-  srpv_payout = number();
-  srpv_reimbursement = nullable(number());
-  srpv_modified = number();
-  srpv_renderingAccount = nullable(number());
-}
-export const srpVerdict = tables.register(new SrpVerdict());

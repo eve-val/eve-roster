@@ -8,6 +8,10 @@ export default class KillmailDao {
       ) {
   }
 
+  /**
+   * Looks up the most recent killmail that was retrieved from
+   * {{corporation}}'s killboard.
+   */
   async getMostRecentKillmail(
       db: Tnex, corporation: number): Promise<Killmail | null> {
     return await db
