@@ -1,5 +1,7 @@
-import { TnexBuilder, nullable, number, string, boolean, enu } from '../tnex';
-import { PrivilegeName } from './enums';
+import { TnexBuilder, nullable, number, string, boolean, enu, json } from '../tnex';
+import { PrivilegeName, KillmailType, HullCategory } from './enums';
+import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
+
 
 export const tables = new TnexBuilder();
 
@@ -137,6 +139,32 @@ export class CombatStats {
 }
 export const combatStats =
     tables.register(new CombatStats(), 'characterCombatStats');
+
+/**
+ * A killmail from a member corporation.
+ */
+export class Killmail {
+  km_id = number();
+  km_timestamp = number();
+  km_character = number();
+  /** Currently always LOSS. */
+  km_type = enu<KillmailType>();
+  km_hullCategory = enu<HullCategory>();
+  /**
+   * If a ship, the related capsule loss for that character (if any), and
+   * vice-versa.
+   */
+  km_relatedLoss = nullable(number());
+  /**
+   * The corporation whose killboard this loss was fetched from.
+   */
+  km_sourceCorporation = number();
+  /**
+   * The full JSON blob received from ZKillboard.
+   */
+  km_data = json<ZKillmail>();
+}
+export const killmail = tables.register(new Killmail());
 
 export class MemberCorporation {
   memberCorporation_corporationId = number();

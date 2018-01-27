@@ -1,19 +1,30 @@
 
 export type PrivilegeName =
-    'roster'
     | 'accountLogs'
     | 'adminConsole'
     | 'characterActivityStats'
+    | 'characterIsOpsec'
     | 'characterSkills'
     | 'characterSkillQueue'
-    | 'characterIsOpsec'
     | 'citadels'
     | 'cronLogs'
     | 'memberAlts'
+    | 'memberGroups'
     | 'memberHousing'
     | 'memberOpsecAlts'
     | 'memberTimezone'
-    | 'memberGroups'
-    | 'serverLogs'
+    | 'roster'
     | 'serverConfig'
+    | 'serverLogs'
+    | 'srp'
     ;
+
+export enum KillmailType {
+  KILL = 'kill',
+  LOSS = 'loss',
+}
+
+export enum HullCategory {
+  CAPSULE = 'capsule',
+  SHIP = 'ship',
+}

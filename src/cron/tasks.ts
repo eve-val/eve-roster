@@ -8,8 +8,9 @@ import { TaskExecutor } from './Job';
 import * as cron from './cron';
 import { findWhere } from '../util/underscore';
 
-import { syncCombatStats } from './task/syncCombatStats';
 import { syncCharacterLocations } from './task/syncCharacterLocations';
+import { syncCombatStats } from './task/syncCombatStats';
+import { syncKillmails } from './task/syncKillmails';
 import { syncRoster } from './task/syncRoster';
 import { syncSiggy } from './task/syncSiggy';
 import { syncSkills } from './task/syncSkills';
@@ -42,6 +43,13 @@ const TASKS: TaskInternal[] = [
     description: 'Updates members\' recent kills/losses.',
     executor: syncCombatStats,
     timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  },
+  {
+    name: 'syncKillmails',
+    displayName: 'Sync corp killmails',
+    description: 'Used to track SRP',
+    executor: syncKillmails,
+    timeout: moment.duration(5, 'minutes').asMilliseconds(),
   },
   {
     name: 'syncSiggy',
@@ -91,6 +99,7 @@ export type TaskName =
     | 'syncRoster'
     | 'syncCombatStats'
     | 'syncCharacterLocations'
+    | 'syncKillmails'
     | 'syncSiggy'
     | 'syncSkills'
     | 'syncCorps'

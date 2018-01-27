@@ -36,6 +36,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
+    name: 'syncKillmails',
+    schedule: '0 */2 * * *',  // Every 2 hours
+    interval: moment.duration(2, 'hours').asMilliseconds(),
+  },
+  {
     name: 'syncSiggy',
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
