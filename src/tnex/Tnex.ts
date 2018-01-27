@@ -39,7 +39,7 @@ export class Tnex {
 
   transaction<T>(callback: (db: Tnex) => Bluebird<T>): Bluebird<T> {
     if (this._isTransaction()) {
-      return callback(this); 
+      return callback(this);
     } else {
       return this._knex.transaction(trx => {
         return callback(new Tnex(trx, this._registry, this._knex));
@@ -53,7 +53,7 @@ export class Tnex {
    */
   asyncTransaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
     if (this._isTransaction()) {
-      return callback(this); 
+      return callback(this);
     } else {
       return Promise.resolve(this._knex.transaction(trx => {
         return callback(new Tnex(trx, this._registry, this._knex));
@@ -151,68 +151,84 @@ export class Tnex {
         true);
   }
 
+  /**
+   * Inserts a row if not present, otherwise updates it to new values.
+   *
+   * @returns The number of rows that were created. Computing this number
+   *   requires abusing an implementation detail of Postgres; it should only be
+   *   used for non-critical code paths such as logging or debugging.
+   */
   public upsert<T extends object, R extends T>(
-      table: T, row: R, primaryColumn: keyof T): Bluebird<void> {
-    let clientType = (this._rootKnex as any).CLIENT as string;
+      table: T, row: R, primaryColumn: keyof T): Bluebird<number> {
+    return this.upsertAll(table, [row], primaryColumn);
+  }
 
-    let tableName = this._registry.getTableName(table);
-    let strippedPrimary = this._registry.stripPrefix(primaryColumn);
-    let strippedRow = this._prepForInsert(row, table);
+  /**
+   * Upserts all supplied rows.
+   *
+   * @returns The number of rows that were created. Computing this number
+   *   requires abusing an implementation detail of Postgres; it should only be
+   *   used for non-critical code paths such as logging or debugging.
+   */
+  public upsertAll<T extends object, R extends T>(
+      table: T, rows: R[], primaryColumn: keyof T): Bluebird<number> {
+    if (rows.length == 0) {
+      return Bluebird.resolve(0);
+    }
 
-    if (clientType == 'sqlite3') {
-      // Manually convert booleans to 0/1 for sqlite
-      for (let v in strippedRow) {
-        let val = strippedRow[v];
-        if (typeof val == 'boolean') {
-          strippedRow[v] = val ? 1 : 0;
+    const clientType = (this._rootKnex as any).CLIENT as string;
+    const tableName = this._registry.getTableName(table);
+    const strippedPrimary = this._registry.stripPrefix(primaryColumn);
+    const strippedRows = rows.map(row => this._prepForInsert(row, table));
+
+    if (clientType == 'pg') {
+      const strippedCols = Object.keys(strippedRows[0]);
+      const queryArgs = [tableName];
+
+      // Enumerate column names
+      const colQs = [];
+      for (let colName of strippedCols) {
+        colQs.push('??');
+        queryArgs.push(colName);
+      }
+
+      // Enumerate rows to insert
+      const rowPattern = '(' + Array(colQs.length).fill('?').join(',') + ')';
+      const allRowsPattern = Array(rows.length).fill(rowPattern).join(',');
+      for (let strippedRow of strippedRows) {
+        // Iterate over strippedCols to ensure consistent column order for each
+        // row
+        for (let colName of strippedCols) {
+          queryArgs.push(strippedRow[colName]);
         }
       }
 
-      return this._knex(tableName)
-          .update(strippedRow)
-          .where(strippedPrimary, '=', strippedRow[strippedPrimary])
-      .then(() => {
-        let rawQuery = this._knex(tableName)
-            .insert(strippedRow)
-            .toString()
-            .replace(/^insert/i, 'insert or ignore');
-
-        return this._knex.raw(rawQuery);
-      });
-
-    } else if (clientType == 'pg') {
-      let strippedCols = Object.keys(strippedRow);
-      let data = [tableName];
-
-      let colQs = [];
-      for (let colName of strippedCols) {
-        colQs.push('??');
-        data.push(colName);
-      }
-
-      let valQs = [];
-      for (let colName of strippedCols) {
-        valQs.push('?');
-        data.push(strippedRow[colName]);
-      }
-
-      data.push(strippedPrimary);
+      queryArgs.push(strippedPrimary);
 
       let updates = [];
       for (let colName of strippedCols) {
         if (colName != strippedPrimary) {
           updates.push(`??=EXCLUDED.??`);
-          data.push(colName, colName);
+          queryArgs.push(colName, colName);
         }
       }
 
-      let query = `INSERT INTO ?? (${colQs.join(',')})
-          VALUES(${valQs.join(',')})
+      // The last line of this query uses an obscure implementation detail of
+      // Postgres to detect if a row was inserted or updated. It's very unlikely
+      // for this implementation detail to change, but code should treat this
+      // return as unreliable. Good for debugging or logging, but that's it.
+      // See https://stackoverflow.com/questions/39058213
+      const query = `INSERT INTO ?? (${colQs.join(',')})
+          VALUES ${ allRowsPattern }
           ON CONFLICT(??) DO UPDATE
-          SET ${updates.join(',')}`;
+          SET ${updates.join(',')}
+          RETURNING CASE WHEN xmax::text::int > 0 THEN 0 ELSE 1 END AS count`;
 
-      return this._knex.raw(query, data);
-
+      return this._knex.raw(query, queryArgs)
+      .then(response => {
+        return response.rows.reduce(
+            (accum: number, value: any) => accum + value.count, 0);
+      });
     } else {
       console.log(this._knex);
       throw new Error(`Client not supported: ${clientType}.`);
@@ -224,7 +240,7 @@ export class Tnex {
    * share the same value for a particular column, replaces those rows with a
    * new set of rows. Uses locks to ensure that concurrent calls to replace()
    * behave safely.
-   * 
+   *
    * @param table The table to insert the columns into.
    * @param sharedColumn The column that all rows have in common.
    * @param sharedColumnValue The column's value. This must be an integer.
@@ -267,7 +283,7 @@ export class Tnex {
    * Acquires an abstract lock that will last for the duration of the current
    * transaction. If the lock has already been obtained, blocks until it is
    * free. Throws an error if called outside of a transaction.
-   * 
+   *
    * @param table The table that this lock represents. Note that the table
    *   itself will not actually be locked.
    * @param key A key that represents which part of the table is locked.

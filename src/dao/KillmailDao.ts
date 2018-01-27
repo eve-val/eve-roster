@@ -47,24 +47,7 @@ export default class KillmailDao {
         .fetchFirst();
   }
 
-  async hasKillmail(db: Tnex, id: number) {
-    const row = await db
-        .select(killmail)
-        .where('km_id', '=', val(id))
-        .fetchFirst();
-    return row != null;
-  }
-
-  async storeKillmail(db: Tnex, mail: Killmail) {
-    return await db.insert(killmail, mail);
-  }
-
-  async setRelatedLoss(db: Tnex, loss: number, relatedLoss: number) {
-    return await db
-        .update(killmail, {
-          km_relatedLoss: relatedLoss,
-        })
-        .where('km_id', '=', val(loss))
-        .run();
+  async upsertKillmails(db: Tnex, rows: Killmail[]) {
+    return db.upsertAll(killmail, rows, 'km_id');
   }
 }

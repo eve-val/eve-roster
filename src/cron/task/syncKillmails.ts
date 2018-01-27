@@ -24,7 +24,7 @@ import { inspect } from 'util';
  *
  * For new corporations, fetches the last 60 days of losses; for
  * existing corporations, fetches all new losses since the last sync.
- * 
+ *
  * Uses Zkillboard as a backend.
  */
 export function syncKillmails(db: Tnex, job: JobTracker): Bluebird<void> {
@@ -60,38 +60,22 @@ async function syncLossesForCorp(
 ) {
   const lastKillmail = await dao.killmail.getMostRecentKillmail(db, corpId);
   const url = getZkillboardQueryUrl(corpId, lastKillmail);
-  
+
   job.info(`Sync losses for ${corpId}`);
   job.info(`  Query: ${url}`);
 
   const mails = await fetchZKillmails(url);
-  if (mails.length == 0) {
-    return;
-  }
-
-  const rows = killmailsToRows(mails, corpId, CAPSULE_SHIP_ASSOCIATION_WINDOW);
+  job.info(`  ${mails.length} hits`);
 
   let newRowCount = 0;
-  for (let row of rows) {
-    newRowCount += await storeKillmail(db, job, row);
-  }
-  job.info(`  Added ${newRowCount} new mails.`);
-}
 
-async function storeKillmail(
-    db: Tnex,
-    job: JobTracker,
-    row: Killmail,
-) {
-  const killmailStored = await dao.killmail.hasKillmail(db, row.km_id);
-  let newRowCount = 0;
-  if (!killmailStored) {
-    await dao.killmail.storeKillmail(db, row);
-    newRowCount = 1;
-  } else if (row.km_relatedLoss != null) {
-    await dao.killmail.setRelatedLoss(db, row.km_id, row.km_relatedLoss);
+  if (mails.length > 0) {
+    const rows =
+        killmailsToRows(mails, corpId, CAPSULE_SHIP_ASSOCIATION_WINDOW);
+    newRowCount = await dao.killmail.upsertKillmails(db, rows);
   }
-  return newRowCount;
+
+  job.info(`  Added ${newRowCount} new killmails`);
 }
 
 function getZkillboardQueryUrl(
@@ -108,7 +92,5 @@ function getZkillboardQueryUrl(
 
   const sinceArg = formatZKillTimeArgument(startTimestamp);
 
-  let url = `corporationID/${sourceCorporation}/losses/startTime/${sinceArg}`;
-
-  return url;
+  return `corporationID/${sourceCorporation}/losses/startTime/${sinceArg}`;
 }
