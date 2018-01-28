@@ -1,6 +1,7 @@
 import express = require('express');
 
 import account_activeTimezone_PUT from './account/activeTimezone_PUT';
+import account_characters_GET from './account/characters_GET';
 import account_homeCitadel_PUT from './account/homeCitadel_PUT';
 import account_mainCharacter_PUT from './account/mainCharacter_PUT';
 import account_transfer_DELETE from './account/transfer_DELETE';
@@ -22,8 +23,18 @@ import character_character_PUT from './character/character_PUT';
 import character_character_DELETE from './character/character_DELETE';
 import character_skills from './character/skills';
 
+import control_openwindow_information_POST from './control/openwindow/information_POST';
+
 import dashboard from './dashboard';
 import dashboard_queueSummary from './dashboard/queueSummary';
+
+import killmail_GET from './killmail/killmail_GET';
+
+import srp_loss_dir_GET from './srp/loss/loss_dir_GET';
+import srp_loss_PUT from './srp/loss/loss_PUT';
+import srp_payment_dir_GET from './srp/payment/payment_dir_GET';
+import srp_payment_GET from './srp/payment/payment_GET';
+import srp_payment_PUT from './srp/payment/payment_PUT';
 
 import statistics_skills from './statistics/skills';
 
@@ -34,6 +45,7 @@ import corporation from './corporation';
 const router = express.Router();
 
 router.put('/account/:id/activeTimezone', account_activeTimezone_PUT);
+router.get('/account/:id/characters', account_characters_GET);
 router.put('/account/:id/homeCitadel', account_homeCitadel_PUT);
 router.put('/account/:id/mainCharacter', account_mainCharacter_PUT);
 router.post('/account/:id/transfer', account_transfer_POST);
@@ -55,8 +67,20 @@ router.put('/character/:id', character_character_PUT);
 router.delete('/character/:id', character_character_DELETE);
 router.get('/character/:id/skills', character_skills);
 
+router.post(
+    '/control/openwindow/information',
+    control_openwindow_information_POST);
+
 router.get('/dashboard', dashboard);
 router.get('/dashboard/queueSummary', dashboard_queueSummary);
+
+router.get('/killmail/:id', killmail_GET);
+
+router.get('/srp/loss', srp_loss_dir_GET);
+router.put('/srp/loss/:id', srp_loss_PUT);
+router.get('/srp/payment', srp_payment_dir_GET);
+router.get('/srp/payment/:id', srp_payment_GET);
+router.put('/srp/payment/:id', srp_payment_PUT);
 
 router.get('/statistics/skills', statistics_skills);
 

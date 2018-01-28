@@ -62,6 +62,10 @@ export function boolean(): boolean {
   return new Schema('boolean') as any;
 }
 
+export function stringEnum<E extends string>(enu: object): E {
+  return new StringEnumSchema(enu) as any;
+}
+
 export function object<T extends object>(schema: T): T {
   return new ObjectSchema(schema) as any;
 }
@@ -108,8 +112,6 @@ class Schema {
   verify(value: any, path: string[]) {
     if (value === undefined && this.optional) {
       return;
-    } else {
-      
     }
 
     if (value === undefined && !this.optional) {
@@ -128,6 +130,38 @@ class Schema {
           `Bad type for ${pathToStr(path)}. Expected "${this.primitiveType}"`
               + ` but got "${typeof value}".`);
     }
+  }
+}
+
+class StringEnumSchema<T extends object> extends Schema {
+  constructor(
+      private enu: T,
+      ) {
+    super('string');
+  }
+
+  verify(value: any, path: string[]) {
+    super.verify(value, path);
+
+    if (value == undefined) {
+      // Whether this is allowed has already been checked by the super call.
+      return;
+    }
+
+    if (!this.isValueDefinedInEnum(value)) {
+      throw new SchemaVerificationError(
+          `Value "${value}" for ${pathToStr(path)} does not match any enum`
+              + ` values.`);
+    }
+  }
+
+  private isValueDefinedInEnum(s: string) {
+    for (let v in this.enu) {
+      if (s == this.enu[v]) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -169,7 +203,7 @@ class ArraySchema extends Schema {
   constructor(
       private _subSchema: Schema,
       ) {
-    super('object');
+    super('string');
   }
 
   verify(value: any, path: string[]) {

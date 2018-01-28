@@ -11,6 +11,7 @@ import KillmailDao from './dao/KillmailDao';
 import LogDao from './dao/LogDao';
 import OwnershipDao from './dao/OwnershipDao';
 import RosterDao from './dao/RosterDao';
+import SrpDao from './dao/SrpDao';
 import SkillsheetDao from './dao/SkillsheetDao';
 import SkillQueueDao from './dao/SkillQueueDao';
 import StatisticsDao from './dao/StatisticsDao';
@@ -34,6 +35,7 @@ export class Dao {
   public log = new LogDao(this);
   public ownership = new OwnershipDao(this);
   public roster = new RosterDao(this);
+  public srp = new SrpDao(this);
   public skillQueue = new SkillQueueDao(this);
   public skillsheet = new SkillsheetDao(this);
   public statistics = new StatisticsDao(this);
