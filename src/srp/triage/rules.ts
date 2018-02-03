@@ -441,17 +441,15 @@ const TALISMAN_IMPLANTS: FuncRule = {
   },
 }
 
-const MINDLINK_SHIPS = [
-  TYPE_DAMNATION,
-  TYPE_LOKI,
-  TYPE_VULTURE,
-];
-
 const BASIC_MINDLINK_IMPLANTS: FuncRule = {
   filter: {
     groupId: [GROUP_CAPSULE],
     relatedLoss: {
-      shipId: MINDLINK_SHIPS,
+      groupId: [
+        GROUP_COMMAND_SHIP,
+        GROUP_STRATEGIC_CRUISER,
+        GROUP_COMMAND_DESTROYER,
+      ],
     }
   },
   discriminant: (killmail, extra) => {
@@ -476,7 +474,11 @@ const NAVY_MINDLINK_IMPLANTS: FuncRule = {
   filter: {
     groupId: [GROUP_CAPSULE],
     relatedLoss: {
-      shipId: MINDLINK_SHIPS,
+      groupId: [
+        GROUP_COMMAND_SHIP,
+        GROUP_STRATEGIC_CRUISER,
+        GROUP_COMMAND_DESTROYER,
+      ],
     }
   },
   discriminant: (killmail, extra) => {

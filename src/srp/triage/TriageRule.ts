@@ -64,7 +64,7 @@ export interface TemplateRule extends CoreRule {
 }
 
 /**
- * Versatbile TriageRule. Can determine verdicts at runtime. Based on the
+ * Versatile TriageRule. Can determine verdicts at runtime. Based on the
  * particular details of a killmail.
  */
 export interface FuncRule extends CoreRule {
