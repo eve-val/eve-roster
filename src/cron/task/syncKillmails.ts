@@ -16,11 +16,13 @@ import { fetchZKillmails } from '../../data-source/zkillboard/fetchZkillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
 import { Killmail } from '../../dao/tables';
 import { inspect } from 'util';
+import { createSrpEntriesForNewLosses } from '../../srp/createSrpEntriesForNewLosses';
 
 
 /**
  * Downloads and stores any recent killmails for all member and affiliated
- * corporations.
+ * corporations. Also creates SRP entries for each loss, possibly rendering
+ * verdicts for some of them if the triage rules dictate it.
  *
  * For new corporations, fetches the last 60 days of losses; for
  * existing corporations, fetches all new losses since the last sync.
@@ -44,6 +46,7 @@ async function _syncKillmails(db: Tnex, job: JobTracker) {
       job.error(inspect(e));
     }
   }
+  await createSrpEntriesForNewLosses(db);
 }
 
 /**

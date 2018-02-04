@@ -14,6 +14,8 @@ import { srpLossToJson } from '../../../../srp/srpLossToJson';
 import { SrpLossFilter, SrpLossRow } from '../../../../dao/SrpDao';
 import { ResultOrder } from '../../../../tnex';
 import { SrpLossJson, SrpTriageJson } from '../../../../srp/SrpLossJson';
+import { triageLosses } from '../../../../srp/triage/triageLosses';
+import { triagedLossesToSuggestionJson } from '../../../../srp/triage/triagedLossesToSuggestionJson';
 
 
 export interface Output {
@@ -66,9 +68,11 @@ async function handleEndpoint(
   let srps = rows.map(row => srpLossToJson(row, unresolvedIds));
 
   if (includeTriage) {
-    // NEXT PR: Calculate loss triage
+    const triaged = await triageLosses(db, rows);
+    const suggestionsJson =
+        await triagedLossesToSuggestionJson(triaged);
     for (let srp of srps) {
-      // NEXT PR: Set loss triage here
+      srp.triage = suggestionsJson.get(srp.killmail) || null;
     }
   }
 

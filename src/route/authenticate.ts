@@ -1,7 +1,7 @@
 import querystring = require('querystring');
 import util = require('util');
 
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import axios from 'axios';
 import express = require('express');
 
@@ -39,7 +39,7 @@ export default function(req: express.Request, res: express.Response) {
   let charTokens: AccessToken;
   let charData;
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     logger.info(`  Getting access token from request code ${req.query.code}`);
     return getAccessToken(req.query.code)
@@ -71,8 +71,8 @@ export default function(req: express.Request, res: express.Response) {
   });
 };
 
-function getAccessToken(queryCode: string): Promise<AccessToken> {
-  return Promise.resolve()
+function getAccessToken(queryCode: string): Bluebird<AccessToken> {
+  return Bluebird.resolve()
   .then(() => {
     return axios.post(
       'https://login.eveonline.com/oauth/token',
@@ -90,11 +90,11 @@ function getAccessToken(queryCode: string): Promise<AccessToken> {
   });
 }
 
-function getCharInfo(charTokens: AccessToken): Promise<CharacterInfo> {
+function getCharInfo(charTokens: AccessToken): Bluebird<CharacterInfo> {
   let charData: CharacterInfo;
 
   logger.debug(`    Getting basic char+auth info...`);
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return axios.get('https://login.eveonline.com/oauth/verify', {
       headers: {
@@ -158,12 +158,14 @@ function handleOwnedChar(
     owningAccount: number,
     ) {
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     if (accountId != null && accountId != owningAccount) {
       logger.info(`  Adding pending ownership request for character`
           + `${charData.id} to account ${accountId}`);
       return dao.ownership.createPendingOwnership(db, charData.id, accountId)
+    } else {
+      return -1;
     }
   })
   .then(() => {
@@ -199,7 +201,7 @@ function handleUnownedChar(
   }
 
   return db.transaction(db => {
-    return Promise.resolve()
+    return Bluebird.resolve()
     .then(() => {
       return createOrUpdateCharacter(db, charData, charTokens);
     })
@@ -234,7 +236,7 @@ function createOrUpdateCharacter(
     charTokens: AccessToken,
     ) {
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return dao.character.getCoreData(db, charData.id)
     .then(row => {
@@ -257,7 +259,8 @@ function createOrUpdateCharacter(
           character_logoffDate: null,
           character_siggyScore: null,
           character_deleted: false,
-        });
+        })
+        .then(_ => {});
       }
     })
   })
