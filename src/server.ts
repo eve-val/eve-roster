@@ -47,5 +47,5 @@ async function main() {
   cron.init(db);
   express.init(db, port => {
     logger.info(`Serving from port ${port}.`);
-  });  
+  });
 }

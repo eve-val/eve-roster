@@ -61,12 +61,14 @@ export function init(db: Tnex, onServing: (port: number) => void) {
       noInfo: true,
       publicPath: webpackConfig.output.publicPath,
       stats: {
+        assets: false,
         colors: true,
         hash: false,
-        timings: true,
-        chunks: false,
+        timings: false,
+        chunks: true,
         chunkModules: false,
-        modules: false
+        modules: false,
+        version: false,
       }
     });
 

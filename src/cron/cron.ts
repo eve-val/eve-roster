@@ -75,7 +75,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
 ];
 
 export function init(db: Tnex) {
-  new Cron(db);
+  if (process.env.DEBUG_DISABLE_CRON == 'true') {
+    console.warn(`*** WARNING: Cron has been disabled via env flag. ***`);
+  } else {
+    new Cron(db).init();
+  }
 }
 
 class Cron {
@@ -83,10 +87,12 @@ class Cron {
 
   constructor(db: Tnex) {
     this._db = db;
+  }
 
+  public init() {
     serialize(CRON_SCHEDULES, schedule => {
       return this._initTask(schedule);
-    })
+    });
   }
 
   private _initTask(task: TaskSchedule) {
