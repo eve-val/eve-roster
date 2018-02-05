@@ -1,7 +1,7 @@
 import Knex = require('knex');
 import Promise = require('bluebird');
 
-import { Comparison, Link, ValueWrapper } from './core';
+import { Comparison, Link } from './core';
 import { Scoper } from './Scoper';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
@@ -26,7 +26,7 @@ interface ColumnSelect {
  * selected via calls to columns(), columnAs(), or aggregator functions like
  * sum(). In other words, J determines what columns _may_ be selected, while
  * S determines what columns _have_ been selected.
- * 
+ *
  * Because of the design of Joiner, calls to methods that select columns
  * usually occur at the _end_ of a chain of calls, not at the beginning as is
  * traditionally the case in SQL select statements.
@@ -83,12 +83,12 @@ export class Joiner<J extends object /* joined */, S /* selected */>
 
   /**
    * Select a column and give it a new name in the result row.
-   * 
+   *
    * IMPORTANT: If this is a subquery, `alias` must by scoped with the
    * subquery's table name. For example:
-   * 
+   *
    * tnex.subquery('foo', myTable).columnAs('myTable_id', 'foo_id')
-   * 
+   *
    * @param column The column to select.
    * @param alias The desired name of the column in the result set.
    */
@@ -104,7 +104,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
    * Join methods
    */
 
-  
+
 
   // Subjoin
   public join<T extends object, E>(
@@ -189,7 +189,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
 
     let joinTarget: string | Knex.QueryBuilder;
     let requiredPrefix: string | undefined;
-    
+
     if (table instanceof Joiner) {
       joinTarget = this._processSubJoin(table);
       requiredPrefix = assertHasValue(table._subqueryTableName);
@@ -235,7 +235,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
 
   /*
    * Aggregate methods
-   * 
+   *
    * Not comprehensive. Add as necessary.
    */
 
@@ -254,7 +254,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       ): Joiner<J, S & Link<J, K, L>> {
 
     // TODO: Flag that this might need to be converted from a string to a
-    // number. 
+    // number.
     this._query = this._query.count(this._prepForSelect(column, alias));
     return this as any;
   }

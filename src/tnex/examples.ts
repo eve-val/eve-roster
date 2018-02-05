@@ -1,4 +1,4 @@
-import { val } from './';
+import { val, number, string } from './';
 import { Tnex } from './Tnex';
 
 // Step 1: Define our table schemas
@@ -7,21 +7,21 @@ import { Tnex } from './Tnex';
 // singletons, so only create one per class!
 
 class CatTable {
-  cat_id: number;
-  cat_name: string;
+  cat_id = number();
+  cat_name = string();
 }
 let catTable = new CatTable();
 
 class DogTable {
-  dog_id: number;
-  dog_name: string;
-  dog_bark_count: number;
+  dog_id = number();
+  dog_name = string();
+  dog_bark_count = number();
 }
 let dogTable = new DogTable();
 
 class BirdTable {
-  bird_id: number;
-  bird_song: string;
+  bird_id = number();
+  bird_song = string();
 }
 let birdTable = new BirdTable();
 
@@ -87,7 +87,7 @@ function performSimpleJoin(db: Tnex) {
       // The left side of the join condition must be a column name in the
       // new table (dogTable in this case). The right side of the join
       // condition must be a column name in one of the already joined tables
-      // (just catTable in this case). 
+      // (just catTable in this case).
       .join(dogTable, 'dog_id', '=', 'cat_id')
 
       .columns(

@@ -3,7 +3,7 @@ import { ExtendableError } from '../error/ExtendableError';
 
 /**
  * Example:
- * 
+ *
  * verify(req.body, object('required', {
  *  id: string('required'),
  *  joinDate: number('required')
@@ -157,7 +157,7 @@ class StringEnumSchema<T extends object> extends Schema {
 
   private isValueDefinedInEnum(s: string) {
     for (let v in this.enu) {
-      if (s == this.enu[v]) {
+      if (s === this.enu[v] as any) {
         return true;
       }
     }

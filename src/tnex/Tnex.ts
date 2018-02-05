@@ -322,7 +322,7 @@ export class Tnex {
         throw new Error(
             `Column "${key}" is not defined in table "${tableName}".`)
       }
-      if (row[key] === USE_DEFAULT) {
+      if (row[key] === USE_DEFAULT as any) {
         continue;
       }
       out[this._registry.stripPrefix(key)] = row[key];

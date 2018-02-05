@@ -9,7 +9,7 @@ export enum ResultOrder {
 
 /**
  * Extracts and renames a property of T.
- * 
+ *
  * Given a type T and a key of T, K, creates a new type with a single
  * property named L that has type T[K].
  */

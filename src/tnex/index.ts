@@ -1,7 +1,3 @@
-import { ColumnType, ValueWrapper } from './core';
-import { Tnex } from './Tnex';
-
-
 export { TnexBuilder } from './TnexBuilder';
 
 export { val, ResultOrder, } from './core';

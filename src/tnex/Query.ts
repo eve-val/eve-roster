@@ -24,7 +24,7 @@ export class Query<T extends object, R /* return type */> {
 
   /*
    * WHERE methods
-   * 
+   *
    * Not comprehensive. Add as necessary. See where() for warning about how
    * knex handles value bindings in its generated queries.
    */
@@ -32,7 +32,7 @@ export class Query<T extends object, R /* return type */> {
   public where<K1 extends keyof T, K2 extends keyof T>(
       column: K1,
       cmp: Comparison,
-      right: K2 | ValueWrapper<T[K1]>,
+      right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
     if (right instanceof ValueWrapper) {
       // This is a simple where clause that has every row compared to the
@@ -58,7 +58,7 @@ export class Query<T extends object, R /* return type */> {
   public andWhere<K1 extends keyof T, K2 extends keyof T>(
       column: K1,
       cmp: Comparison,
-      right: K2 | ValueWrapper<T[K1]>,
+      right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
     // andWhere in knex is just an alias to where, so there's no need to
     // duplicate logic between the two. But keeping andWhere around can help
@@ -69,7 +69,7 @@ export class Query<T extends object, R /* return type */> {
   public orWhere<K1 extends keyof T, K2 extends keyof T>(
       column: K1,
       cmp: Comparison,
-      right: K2 | ValueWrapper<T[K1]>,
+      right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
 
     if (right instanceof ValueWrapper) {
@@ -97,7 +97,8 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
-  public whereIn<K extends keyof T>(column: K, values: T[K][]): this {
+  public whereIn<K extends keyof T>(
+      column: K, values: T[K][] & ColumnType[]): this {
     this._query = this._query
         .whereIn(this._scoper.scopeColumn(column), values);
 

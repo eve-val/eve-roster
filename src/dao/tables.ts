@@ -116,7 +116,7 @@ export const groupExplicit = tables.register(new GroupExplicit());
 
 export class GroupPriv {
   gp_group = string();
-  gp_privilege: string;
+  gp_privilege = string();
   gp_level = number();
 }
 export const groupPriv = tables.register(new GroupPriv());
