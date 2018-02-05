@@ -8,6 +8,11 @@
         class="nav-link"
         >Roster</router-link>
     <router-link
+        to="/srp"
+        v-if="identity.isMember"
+        class="nav-link"
+        >SRP</router-link>
+    <router-link
         to="/admin"
         v-if="canAccessAdminConsole"
         class="nav-link"
