@@ -18,6 +18,7 @@ import { syncCorps } from './task/syncCorps';
 import { truncateCronLog } from './task/truncateCronLog';
 import { truncateCharacterLocations } from './task/truncateCharacterLocations';
 import { updateSde } from './task/updateSde';
+import { triagePendingLosses } from './task/triagePendingLosses';
 
 const logger = require('../util/logger')(__filename);
 
@@ -73,6 +74,13 @@ const TASKS: TaskInternal[] = [
     timeout:moment.duration(20, 'minutes').asMilliseconds(),
   },
   {
+    name: 'triagePendingLosses',
+    displayName: 'Triage pending losses',
+    description: 'Reruns SRP autotriage on all pending losses.',
+    executor: triagePendingLosses,
+    timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  },
+  {
     name: 'truncateCharacterLocations',
     displayName: 'Truncate location log',
     description: 'Prunes very old character locations.',
@@ -103,6 +111,7 @@ export type TaskName =
     | 'syncSiggy'
     | 'syncSkills'
     | 'syncCorps'
+    | 'triagePendingLosses'
     | 'truncateCharacterLocations'
     | 'truncateCronLog'
     | 'updateSde'
