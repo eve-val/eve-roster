@@ -10,13 +10,14 @@ import { Promise } from 'bluebird';
 import { setTimeout } from 'timers';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
-import { KillmailType, HullCategory } from '../../dao/enums';
+import { KillmailType, HullCategory, SrpVerdictStatus } from '../../dao/enums';
 import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../eve/constants/types';
 import { fetchZKillmails } from '../../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
-import { Killmail } from '../../dao/tables';
+import { Killmail, SrpVerdict } from '../../dao/tables';
 import { inspect } from 'util';
-import { createSrpEntriesForNewLosses } from '../../srp/createSrpEntriesForNewLosses';
+import { autoTriageLosses } from '../../srp/triage/autoTriageLosses';
+import { pluck } from '../../util/underscore';
 
 
 /**
@@ -79,6 +80,12 @@ async function syncLossesForCorp(
   }
 
   job.info(`  Added ${newRowCount} new killmails`);
+}
+
+async function createSrpEntriesForNewLosses(db: Tnex) {
+  const rows = await dao.srp.listKillmailsMissingSrpEntries(db);
+  await dao.srp.createSrpEntries(db, pluck(rows, 'km_id'));
+  await autoTriageLosses(db, rows);
 }
 
 function getZkillboardQueryUrl(

@@ -33,11 +33,21 @@ export default class SrpDao {
       ) {
   }
 
-  async addSrpVerdictEntries(db: Tnex, rows: SrpVerdict[]) {
-    await db.insertAll(srpVerdict, rows);
+  async createSrpEntries(db: Tnex, killmailIds: number[]) {
+    await db.insertAll(srpVerdict, killmailIds.map(kmId => {
+      return {
+        srpv_killmail: kmId,
+        srpv_status: SrpVerdictStatus.PENDING,
+        srpv_reason: null,
+        srpv_payout: 0,
+        srpv_reimbursement: null,
+        srpv_modified: Date.now(),
+        srpv_renderingAccount: null,
+      };
+    }));
   }
 
-  async listUntriagedLosses(db: Tnex) {
+  async listKillmailsMissingSrpEntries(db: Tnex) {
     return db
         .select(killmail)
         .leftJoin(srpVerdict, 'srpv_killmail', '=', 'km_id')
@@ -51,6 +61,7 @@ export default class SrpDao {
         .whereNull('srpv_killmail')
         .orderBy('km_id', 'asc')
         .columns(
+            'km_id',
             'km_data',
             'related_data',
             'account_mainCharacter',

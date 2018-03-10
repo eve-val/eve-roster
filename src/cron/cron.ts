@@ -72,6 +72,11 @@ const CRON_SCHEDULES: TaskSchedule[] = [
     schedule: '0 2 * * *',  // Once a day at 2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
+  {
+    name: 'triagePendingLosses',
+    schedule: '0 5 * * *',  // Once a day at 5AM
+    interval: moment.duration(1, 'day').asMilliseconds(),
+  },
 ];
 
 export function init(db: Tnex) {

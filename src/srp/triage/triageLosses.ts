@@ -52,6 +52,9 @@ async function loadShipDefs(
   const ids = new Set<number>();
   for (let loss of losses) {
     ids.add(loss.km_data.victim.ship_type_id);
+    if (loss.related_data) {
+      ids.add(loss.related_data.victim.ship_type_id);
+    }
   }
 
   const rows = await dao.sde.getTypes(db, Array.from(ids), [
