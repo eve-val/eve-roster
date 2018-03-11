@@ -88,7 +88,7 @@ export const citadel = tables.register(new Citadel());
 
 export class Config {
   config_key = string();
-  config_value = nullable(string());
+  config_value = nullable(json<number | string | boolean | any[] | object>());
   config_description = nullable(string());
 }
 export const config = tables.register(new Config());
@@ -146,7 +146,7 @@ export const combatStats =
 export class Killmail {
   km_id = number();
   km_timestamp = number();
-  km_character = number();
+  km_character = nullable(number());
   /** Currently always LOSS. */
   km_type = enu<KillmailType>();
   km_hullCategory = enu<HullCategory>();

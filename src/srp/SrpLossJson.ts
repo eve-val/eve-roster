@@ -10,7 +10,7 @@ export interface SrpLossJson {
   killmail: number,
   timestamp: string,
   shipType: number,
-  victim: number,
+  victim: number | undefined,
   victimCorp: number,
   executioner: AttackerJson,
   relatedKillmail: {

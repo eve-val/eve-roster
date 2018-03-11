@@ -9,13 +9,14 @@ const logger = require('../../util/logger')(__filename);
 
 
 export interface LossRow {
+  km_timestamp: number,
   km_data: ZKillmail,
   related_data: ZKillmail | null,
   account_mainCharacter: number | null,
 }
 
 export interface TriagedLoss {
-  killmail: ZKillmail,
+  loss: LossRow,
   suggestedVerdicts: TriageVerdict[],
 }
 
@@ -31,7 +32,7 @@ export async function triageLosses(
 
   return rows.map(row => {
     return {
-      killmail: row.km_data,
+      loss: row,
       suggestedVerdicts:
           triageLoss(
               TRIAGE_RULES,
@@ -67,6 +68,15 @@ async function loadShipDefs(
   for (let row of rows) {
     map.set(row.styp_id, row);
   }
+
+  if (map.size < ids.size) {
+    for (let type of ids) {
+      if (!map.has(type)) {
+        logger.error(`Unknown ship ID "${type}".`);
+      }
+    }
+  }
+
   return map;
 }
 
@@ -100,7 +110,6 @@ function executeRule(
 ) {
   const shipDef = shipDefs.get(killmail.victim.ship_type_id);
   if (shipDef == undefined) {
-    logger.error(`Unknown ship ID "${killmail.victim.ship_type_id}".`);
     return undefined;
   }
 
@@ -113,7 +122,6 @@ function executeRule(
     }
     const shipDef = shipDefs.get(relatedKillmail.victim.ship_type_id);
     if (shipDef == undefined) {
-      logger.error(`Unknown ship ID "${relatedKillmail.victim.ship_type_id}".`);
       return undefined;
     }
     if (!testFilter(

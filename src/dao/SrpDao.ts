@@ -62,6 +62,7 @@ export default class SrpDao {
         .orderBy('km_id', 'asc')
         .columns(
             'km_id',
+            'km_timestamp',
             'km_data',
             'related_data',
             'account_mainCharacter',
@@ -182,13 +183,16 @@ export default class SrpDao {
       if (row.srpr_paid) {
         throw new Error(`Cannot change the verdict on a paid SRP.`);
       }
+      if (row.km_character == null && verdict != SrpVerdictStatus.INELIGIBLE) {
+        throw new Error(`Cannot approve SRP for losses with no recipient.`);
+      }
 
       let reimbursement: null | number = null;
 
       // Create a reimbursement if necessary
       if (verdict == SrpVerdictStatus.APPROVED) {
         reimbursement = row.acctReim_id || row.victimReim_id;
-        if (reimbursement == null) {
+        if (reimbursement == null && row.km_character != null) {
           reimbursement = await this.createReimbursement(db, row.km_character);
         }
       }
@@ -296,6 +300,37 @@ export default class SrpDao {
           srpr_payingCharacter: null,
         })
         .where('srpr_id', '=', val(reimbursement))
+        .run();
+  }
+
+  /**
+   * Given a time that the system's jurisdiction starts, sets all older,
+   * PENDING losses to INELIGIBLE - OUTSIDE_JURISDICTION.
+   *
+   * Also undoes this effect for any newer losses.
+   */
+  async adjustJurisdictionStatuses(db: Tnex, jurisdictionStarts: number) {
+    await db
+        .update(srpVerdict, {
+          srpv_status: SrpVerdictStatus.INELIGIBLE,
+          srpv_reason: SrpVerdictReason.OUTSIDE_JURISDICTION,
+        })
+        .from(killmail)
+        .where('km_id', '=', 'srpv_killmail')
+        .where('srpv_status', '=', val(SrpVerdictStatus.PENDING))
+        .where('km_timestamp', '<', val(jurisdictionStarts))
+        .run();
+
+    await db
+        .update(srpVerdict, {
+          srpv_status: SrpVerdictStatus.PENDING,
+          srpv_reason: null,
+        })
+        .from(killmail)
+        .where('km_id', '=', 'srpv_killmail')
+        .where('srpv_status', '=', val(SrpVerdictStatus.INELIGIBLE))
+        .where('srpv_reason', '=', val(SrpVerdictReason.OUTSIDE_JURISDICTION))
+        .where('km_timestamp', '>=', val(jurisdictionStarts))
         .run();
   }
 

@@ -16,6 +16,8 @@ import { Nullable } from '../util/simpleTypes';
 export interface ConfigEntries {
   siggyUsername: string,
   siggyPassword: string,
+  srpJurisdiction: { start: number, end: number | undefined },
+  killmailSyncRanges: { [key: number]: { start: number, end: number } }
 }
 
 export default class ConfigDao {
@@ -33,10 +35,7 @@ export default class ConfigDao {
     .then(rows => {
       let config = {} as Nullable<Pick<ConfigEntries, K>>;
       for (let row of rows) {
-        let value = row.config_value != null
-            ? JSON.parse(row.config_value)
-            : null;
-        config[row.config_key as K] = value;
+        config[row.config_key as K] = row.config_value as any;
       }
       return config;
     })
@@ -44,8 +43,9 @@ export default class ConfigDao {
 
   set(db: Tnex, values: Nullable<Partial<ConfigEntries>>) {
     return serialize(Object.keys(values), key => {
-      let transformedValue = values == null
-          ? null : JSON.stringify((values as any)[key]);
+      const value = (values as any)[key];
+      let transformedValue =
+          value instanceof Array ? JSON.stringify(value) : value;
       return db
           .update(config, { config_value: transformedValue })
           .where('config_key', '=', val(key))

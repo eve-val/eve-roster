@@ -25,7 +25,7 @@ export async function triagedLossesToSuggestionJson(
           label: suggestion.label,
           key: key,
           payout:
-              resolvePayout(suggestion, triagedLoss.killmail, marketValues),
+              resolvePayout(suggestion, triagedLoss.loss.km_data, marketValues),
           verdict: suggestion.status,
         });
       } else if (suggestion.status == SrpVerdictStatus.INELIGIBLE) {
@@ -36,7 +36,7 @@ export async function triagedLossesToSuggestionJson(
       }
     }
 
-    out.set(triagedLoss.killmail.killmail_id, {
+    out.set(triagedLoss.loss.km_data.killmail_id, {
       extraOptions: suggestedVerdicts,
       suggestedOption: suggestedKey || 'custom',
     });

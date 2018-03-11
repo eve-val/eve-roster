@@ -5,6 +5,7 @@ import { Killmail } from '../../../dao/tables';
 import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../../eve/constants/types';
 import { HullCategory, KillmailType } from '../../../dao/enums';
 import { Moment } from 'moment';
+import { inspect } from 'util';
 
 
 /**
@@ -22,13 +23,18 @@ export function killmailsToRows(
   const rows: Killmail[] = [];
   let prevTimestamp: Moment | null = null;
   for (let mail of mails) {
+    const victimCharacter = mail.victim.character_id;
+
     let timestamp = moment.utc(mail.killmail_time);
     if (prevTimestamp != null && prevTimestamp.isAfter(timestamp)) {
       throw new Error(`Killmails are not in order.`);
     }
     prevTimestamp = timestamp;
 
-    const prevLoss = prevLossDict.get(mail.victim.character_id) || null;
+    let prevLoss: PreviousLoss | null = null;
+    if (victimCharacter != undefined) {
+      prevLoss = prevLossDict.get(victimCharacter) || null;
+    }
 
     let associatedId: number | null = null;
     if (prevLoss != undefined) {
@@ -45,7 +51,7 @@ export function killmailsToRows(
 
     const row = {
       km_id: mail.killmail_id,
-      km_character: mail.victim.character_id,
+      km_character: victimCharacter || null,
       km_timestamp: moment(mail.killmail_time).valueOf(),
       km_type: KillmailType.LOSS,
       km_hullCategory: getHullCategory(mail),
@@ -55,7 +61,9 @@ export function killmailsToRows(
     };
     rows.push(row);
 
-    prevLossDict.set(mail.victim.character_id, { mail, row });
+    if (victimCharacter != undefined) {
+      prevLossDict.set(victimCharacter, { mail, row });
+    }
   }
 
   return rows;
