@@ -1,6 +1,6 @@
 import Promise = require('bluebird');
 
-import { Tnex, Nullable, val } from '../tnex';
+import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import {
     config,
@@ -11,6 +11,7 @@ import {
 } from '../dao/tables';
 import { serialize } from '../util/asyncUtil';
 import { UserVisibleError } from '../error/UserVisibleError';
+import { Nullable } from '../util/simpleTypes';
 
 export interface ConfigEntries {
   siggyUsername: string,
