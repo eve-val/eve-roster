@@ -52,7 +52,7 @@ function extractMarketLookups(losses: TriagedLoss[]) {
             lookupIds.add(item);
           }
         } else {
-          lookupIds.add(loss.killmail.victim.ship_type_id);
+          lookupIds.add(loss.loss.km_data.victim.ship_type_id);
         }
       }
     }

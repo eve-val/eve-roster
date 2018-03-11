@@ -43,11 +43,11 @@ in most other places).
 
   <srp-triplet
       class="victimlet"
-      :icon-id="srp.victim"
-      :icon-type="'Character'"
-      :top-line="name(srp.victim)"
+      :icon-id="this.srp.victim || srp.victimCorp"
+      :icon-type="victimIconType"
+      :top-line="name(this.srp.victim || srp.victimCorp)"
       :bottom-line="name(srp.victimCorp)"
-      :default-href="`/character/${srp.victim}`"
+      :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
       >
   </srp-triplet>
@@ -214,6 +214,22 @@ export default Vue.extend({
   },
 
   computed: {
+    victimIconType() {
+      if (this.srp.victim != undefined) {
+        return 'Character';
+      } else {
+        return 'Corporation';
+      }
+    },
+
+    victimHref() {
+      if (this.srp.victim != undefined) {
+        return `/character/${this.srp.victim}`;
+      } else {
+        return null;
+      }
+    },
+
     executionerIconType() {
       if (this.srp.executioner.alliance) {
         return 'Alliance';
@@ -349,8 +365,12 @@ export default Vue.extend({
             this.originalPayout = this.srp.payout;
             this.selectedVerdictKey = 'original_payout';
           } else {
-            // Otherwise it's ineligible; just use that as the key
-            this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+            if (_.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })) {
+              this.selectedVerdictKey = response.data.triage.suggestedOption;
+            } else {
+              // Otherwise it's ineligible; just use that as the key
+              this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+            }
           }
 
           this.editing = true;
@@ -448,6 +468,19 @@ const INELIGIBLE_STATUSES = [
     },
 ];
 
+const UNSETTABLE_STATUSES = [
+  {
+      status: 'ineligible',
+      reason: 'outside_jurisdiction',
+      label: 'Ineligible (outside jurisdiction)',
+    },
+    {
+      status: 'ineligible',
+      reason: 'no_recipient',
+      label: 'Ineligible (no recipient)',
+    },
+];
+
 const ALL_STATUSES = [
     {
       status: 'approved',
@@ -464,7 +497,7 @@ const ALL_STATUSES = [
       reason: null,
       label: 'Pending',
     },
-].concat(INELIGIBLE_STATUSES);
+].concat(INELIGIBLE_STATUSES, UNSETTABLE_STATUSES);
 
 function isValidInputPayout(inputPayout) {
   return typeof inputPayout == 'number' && inputPayout >= 0;

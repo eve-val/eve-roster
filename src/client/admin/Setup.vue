@@ -22,6 +22,9 @@
         >
     </loading-spinner>
   </div>
+
+  <div class="section-title">SRP</div>
+  <srp-setup></srp-setup>
 </admin-wrapper>
 </template>
 
@@ -33,6 +36,7 @@ import ajaxer from '../shared/ajaxer';
 
 import AdminWrapper from './AdminWrapper.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import SrpSetup from './setup/SrpSetup.vue';
 
 
 const JSON_COMMENT_PATTERN = /\s*\/\/[^\n]*\n?/g;
@@ -41,6 +45,7 @@ export default {
   components: {
     AdminWrapper,
     LoadingSpinner,
+    SrpSetup,
   },
 
   props: {
@@ -111,4 +116,11 @@ export default {
 .spinner {
   margin-top: 8px;
 }
+
+.section-title {
+  font-size: 20px;
+  color: #A7A29C;
+  margin: 50px 0 20px;
+}
+
 </style>

@@ -124,6 +124,16 @@ export default {
     return axios.put('/api/admin/setup', setupObj);
   },
 
+  getAdminSrpJurisdiction() {
+    return axios.get('/api/admin/srp/jurisdiction');
+  },
+
+  putAdminSrpJurisdiction(start) {
+    return axios.put('/api/admin/srp/jurisdiction', {
+      start: start,
+    });
+  },
+
   getRecentSrpLosses(filter) {
     return axios.get('/api/srp/loss', {
       params: filter

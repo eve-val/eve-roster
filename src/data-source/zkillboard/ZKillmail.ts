@@ -7,9 +7,9 @@ export interface ZKillmail {
   victim: {
     damage_taken: number,
     ship_type_id: number,
-    character_id: number,
+    character_id?: number,
     corporation_id: number,
-    alliance_id: number | undefined,
+    alliance_id?: number,
     items: (DestroyedItem | DroppedItem)[],
     position: {
       x: number,

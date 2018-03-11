@@ -54,4 +54,13 @@ export enum SrpVerdictReason {
   OBSOLETE = 'obsolete',
   /** Uncategorized reason for ignoring a loss. */
   MISC = 'misc',
+  /**
+   * Loss occurred before this system had jurisdiction over SRP. Can only be
+   * set by the system.
+   */
+  OUTSIDE_JURISDICTION = 'outside_jurisdiction',
+  /**
+   * Loss cannot be attributed to a character. Can only be set by the system.
+   */
+  NO_RECIPIENT = 'no_recipient',
 }

@@ -40,9 +40,15 @@ async function handleEndpoint(
 ) {
   privs.requireWrite('srp');
 
-  if (input.verdict == SrpVerdictStatus.INELIGIBLE && input.reason == null) {
-    throw new BadRequestError(
-        `Reason must be specified if status is ineligible.`);
+  if (input.verdict == SrpVerdictStatus.INELIGIBLE) {
+    if (input.reason == null) {
+      throw new BadRequestError(
+          `Reason must be specified if status is ineligible.`);
+    } else if (input.reason == SrpVerdictReason.OUTSIDE_JURISDICTION
+        || input.reason == SrpVerdictReason.NO_RECIPIENT) {
+      throw new BadRequestError(
+          `Only the system may specify this reason.`);
+    }
   }
   if (input.verdict != SrpVerdictStatus.INELIGIBLE && input.reason != null) {
     throw new BadRequestError(

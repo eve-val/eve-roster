@@ -40,7 +40,7 @@ function getCorpConfig(db: Tnex) {
   .then(configRows => {
     return Promise.map(
         configRows,
-        configRow => convertCorpConfigRowToJson(db, configRow)); 
+        configRow => convertCorpConfigRowToJson(db, configRow));
   });
 }
 

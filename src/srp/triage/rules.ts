@@ -28,6 +28,9 @@ const OPT_OUT_CHARS = [
 const ACCOUNT_IS_OPT_OUT: FuncRule = {
   filter: {},
   discriminant: (killmail, extra) => {
+    if (killmail.victim.character_id == undefined) {
+      return;
+    }
     if (OPT_OUT_CHARS.indexOf(killmail.victim.character_id) != -1
         || OPT_OUT_CHARS.indexOf(extra.mainCharacter!) != -1) {
       return [{
