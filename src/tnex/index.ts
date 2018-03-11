@@ -1,8 +1,7 @@
 export { TnexBuilder } from './TnexBuilder';
 
-export { val, ResultOrder, } from './core';
+export { val, ResultOrder } from './core';
 export { Tnex } from './Tnex';
-export { Nullable } from './Joiner';
 export { nullable, number, string, boolean, boolinum, enu, json } from './definers';
 
 export {

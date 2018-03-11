@@ -1,6 +1,6 @@
 import Promise = require('bluebird');
 
-import { Tnex, Nullable, val } from '../tnex';
+import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import { account, character, ownership, pendingOwnership } from './tables';
 import { updateGroupsForAccount } from '../data-source/accountGroups';
@@ -108,7 +108,7 @@ export default class OwnershipDao {
         .join(character, 'character_id', '=', 'pendingOwnership_character')
         .where('pendingOwnership_account', '=', val(accountId))
         .columns(
-            'pendingOwnership_character', 
+            'pendingOwnership_character',
             'character_name',
             )
         .run();

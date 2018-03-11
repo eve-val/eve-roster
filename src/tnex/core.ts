@@ -21,6 +21,10 @@ export type SimpleObj = {
   [key: string]: any
 };
 
+export type Nullable<T>  = {
+  [P in keyof T]: T[P] | null
+};
+
 export class ValueWrapper<T extends ColumnType> {
   constructor(
       public value: T,

@@ -5,9 +5,10 @@ import Knex = require('knex');
 
 import { ValueWrapper, ColumnType, SimpleObj, val } from './core';
 import { Scoper } from './Scoper';
-import { Joiner } from './Joiner';
+import { Select } from './Select';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
+import { Update } from './Update';
 
 const USE_DEFAULT = {};
 
@@ -61,12 +62,12 @@ export class Tnex {
     }
   }
 
-  public select<T extends object>(table: T): Joiner<T, {}> {
-    return new Joiner<T, {}>(this._knex, this._registry, table);
+  public select<T extends object>(table: T): Select<T, {}> {
+    return new Select<T, {}>(this._knex, this._registry, table);
   }
 
   public subselect<T extends object>(startingTable: T, asTableName: string) {
-    return new Joiner<T, {}>(
+    return new Select<T, {}>(
         this._knex,
         this._registry,
         startingTable,
@@ -134,21 +135,16 @@ export class Tnex {
   public update<T extends object>(
     table: T,
     values: Partial<T>,
-    ): Query<T, number> {
-
-    return new Query<T, number>(
-        this._registry,
-        this._knex(this._registry.getTableName(table))
-            .update(this._prepForInsert(values, table)),
-        true);
+  ): Update<T, {}> {
+    return new Update(
+        this._knex, this._registry, table, this._prepForInsert(values, table));
   }
 
   public del<T extends object>(table: T): Query<T, number> {
     return new Query<T, number>(
         this._registry,
         this._knex(this._registry.getTableName(table))
-            .del(),
-        true);
+            .del());
   }
 
   /**

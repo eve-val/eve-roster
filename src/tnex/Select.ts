@@ -1,16 +1,11 @@
 import Knex = require('knex');
 import Promise = require('bluebird');
 
-import { Comparison, Link } from './core';
+import { Comparison, Link, Nullable } from './core';
 import { Scoper } from './Scoper';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
 import { assertHasValue } from '../util/assert';
-
-
-export type Nullable<T>  = {
-  [P in keyof T]: T[P] | null
-};
 
 interface ColumnSelect {
   column: string,
@@ -31,7 +26,7 @@ interface ColumnSelect {
  * usually occur at the _end_ of a chain of calls, not at the beginning as is
  * traditionally the case in SQL select statements.
  */
-export class Joiner<J extends object /* joined */, S /* selected */>
+export class Select<J extends object /* joined */, S /* selected */>
     extends Query<J, S[]> {
   private _subqueryTableName: string | undefined;
 
@@ -46,8 +41,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
       ) {
     super(
         scoper.mirror(),
-        knex(scoper.getTableName(table)),
-        subqueryTableName == undefined);
+        knex(scoper.getTableName(table)));
     this._subqueryTableName = subqueryTableName;
   }
 
@@ -68,7 +62,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
   }
 
   public columns<K extends keyof J>(...columns: K[])
-      : Joiner<J, S & Pick<J, K>> {
+      : Select<J, S & Pick<J, K>> {
     if (this._subqueryTableName != null) {
       throw new Error(
           `Subqueries don't support columns(). Use columnAs() instead.`);
@@ -93,7 +87,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
    * @param alias The desired name of the column in the result set.
    */
   public columnAs<K extends keyof J, L extends string>(column: K, alias: L)
-      : Joiner<J, S & Link<J, K, L>> {
+      : Select<J, S & Link<J, K, L>> {
     this._pendingSelectedColumns.push({ column, alias });
 
     return this as any;
@@ -104,29 +98,27 @@ export class Joiner<J extends object /* joined */, S /* selected */>
    * Join methods
    */
 
-
-
   // Subjoin
   public join<T extends object, E>(
-      subselect: Joiner<T, E>,
+      subselect: Select<T, E>,
       left: keyof E,
       cmp: Comparison,
       right: keyof J,
-      ): Joiner<J & E, S>;
+      ): Select<J & E, S>;
   // Renamed join
   public join<T extends object, E>(
       renamedTable: RenamedJoin<T, E>,
       left: keyof E,
       cmp: Comparison,
       right: keyof J,
-      ): Joiner<J & E, S>;
+      ): Select<J & E, S>;
   // Normal join
   public join<T extends object>(
       table: T,
       left: keyof T,
       cmp: Comparison,
       right: keyof J,
-  ): Joiner<J & T, S>;
+  ): Select<J & T, S>;
   // Implementation
   public join(
       table: object,
@@ -137,7 +129,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     let joinTarget: string | Knex.QueryBuilder;
 
     let requiredPrefix: string | undefined;
-    if (table instanceof Joiner) {
+    if (table instanceof Select) {
       joinTarget = this._processSubJoin(table);
       requiredPrefix = assertHasValue(table._subqueryTableName);
       this._scoper.registerSyntheticPrefix(requiredPrefix);
@@ -160,25 +152,25 @@ export class Joiner<J extends object /* joined */, S /* selected */>
 
   // Subselect
   public leftJoin<T extends object, E>(
-      sub: Joiner<T, E>,
+      sub: Select<T, E>,
       left: keyof E,
       cmp: Comparison,
       right: keyof J,
-      ): Joiner<J & Nullable<E>, S>;
+      ): Select<J & Nullable<E>, S>;
   // Renamed join
   public leftJoin<T extends object, E>(
       join: RenamedJoin<T, E>,
       left: keyof E,
       cmp: Comparison,
       right: keyof J,
-      ): Joiner<J & Nullable<E>, S>;
+      ): Select<J & Nullable<E>, S>;
   // Normal
   public leftJoin<T extends object>(
       table: T,
       left: keyof T,
       cmp: Comparison,
       right: keyof J,
-      ): Joiner<J & Nullable<T>, S>;
+      ): Select<J & Nullable<T>, S>;
   // Implementation
   public leftJoin(
       table: object,
@@ -190,7 +182,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     let joinTarget: string | Knex.QueryBuilder;
     let requiredPrefix: string | undefined;
 
-    if (table instanceof Joiner) {
+    if (table instanceof Select) {
       joinTarget = this._processSubJoin(table);
       requiredPrefix = assertHasValue(table._subqueryTableName);
       this._scoper.registerSyntheticPrefix(requiredPrefix);
@@ -214,7 +206,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
     return this._scoper.getTableName(table);
   }
 
-  private _processSubJoin<T extends object, E>(sub: Joiner<T, E>) {
+  private _processSubJoin<T extends object, E>(sub: Select<T, E>) {
     if (sub._subqueryTableName == null) {
       throw new Error(
           `Query is not a subquery. Use subselect() instead of select()`);
@@ -242,7 +234,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
   public sum<K extends keyof J, L extends string>(
       column: K,
       alias: L,
-      ): Joiner<J, S & Link<J, K, L>> {
+      ): Select<J, S & Link<J, K, L>> {
 
     this._query = this._query.sum(this._prepForSelect(column, alias));
     return this as any;
@@ -251,7 +243,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
   public count<K extends keyof J, L extends string>(
       column: K,
       alias: L,
-      ): Joiner<J, S & Link<J, K, L>> {
+      ): Select<J, S & Link<J, K, L>> {
 
     // TODO: Flag that this might need to be converted from a string to a
     // number.
@@ -262,7 +254,7 @@ export class Joiner<J extends object /* joined */, S /* selected */>
   public max<K extends keyof J, L extends string>(
       column: K,
       alias: L,
-      ): Joiner<J, S & Link<J, K, L>> {
+      ): Select<J, S & Link<J, K, L>> {
 
     this._query = this._query.max(this._prepForSelect(column, alias));
     return this as any;
