@@ -9,15 +9,12 @@ export class Query<T extends object, R /* return type */> {
   protected _scoper: Scoper;
   protected _query: Knex.QueryBuilder;
 
-  private _wasRun = false;
-
-  constructor(scoper: Scoper, query: Knex.QueryBuilder, shouldBeRun: boolean) {
+  constructor(scoper: Scoper, query: Knex.QueryBuilder) {
     this._scoper = scoper;
     this._query = query;
   }
 
   public run(): Promise<R> {
-    this._wasRun = true;
     return this._query;
   }
 
@@ -103,12 +100,5 @@ export class Query<T extends object, R /* return type */> {
         .whereIn(this._scoper.scopeColumn(column), values);
 
     return this;
-  }
-
-  public assertWasRun() {
-    if (!this._wasRun) {
-      throw new Error(`The following query was created but not run:`
-          + ` ${this._query.toString()}`);
-    }
   }
 }

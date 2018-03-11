@@ -23,6 +23,6 @@ export function enu<K extends string>(): K {
   return '' as K;
 }
 
-export function json<K extends object>(): K {
+export function json<K>(): K {
   return {} as K;
 }

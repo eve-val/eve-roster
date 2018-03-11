@@ -6,7 +6,7 @@ import axios from 'axios';
 import express = require('express');
 
 import { dao } from '../dao';
-import { Tnex, Nullable } from '../tnex';
+import { Tnex } from '../tnex';
 import { isAnyEsiError } from '../util/error';
 
 import swagger from '../swagger';

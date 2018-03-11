@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 
 import { Dao } from '../dao';
-import { Tnex, Nullable, toNum, val } from '../tnex';
+import { Tnex, toNum, val } from '../tnex';
 import { characterLocation, CharacterLocation } from './tables';
 
 export default class LocationDao {

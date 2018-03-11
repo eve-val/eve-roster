@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 
 import { Dao } from '../dao';
-import { Tnex, Nullable, val } from '../tnex';
+import { Tnex, val } from '../tnex';
 import {
     accessToken,
     account,
@@ -143,7 +143,7 @@ export default class CharacterDao {
   getMemberCharacters(db: Tnex) {
     return db
         .select(memberCorporation)
-        .join(character, 
+        .join(character,
             'character_corporationId',
             '=',
             'memberCorporation_corporationId')
