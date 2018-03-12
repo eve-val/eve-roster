@@ -25,6 +25,17 @@ the reimbursement as paid.
       >
   </srp-triplet>
 
+  <div class="payout-cnt">
+    <span class="copy-label">Amount</span>
+    <input
+        class="payout-input"
+        ref="payoutInput"
+        readonly
+        :value="payment.totalPayout"
+        >
+    <button class="copy-btn" @click="onCopyPayoutClick">Copy &amp; Open</button>
+  </div>
+
   <div class="reason-cnt">
     <span class="copy-label">Reason</span>
     <input
@@ -33,18 +44,7 @@ the reimbursement as paid.
         readonly
         :value="'SRP #' + payment.id"
         >
-    <button class="copy-btn" @click="onCopyReasonClick">Copy &amp; Open</button>
-  </div>
-
-  <div class="payout-cnt">
-    <span class="copy-label">ISK</span>
-    <input
-        class="payout-input"
-        ref="payoutInput"
-        readonly
-        :value="payment.totalPayout"
-        >
-    <button class="copy-btn" @click="onCopyPayoutClick">Copy</button>
+    <button class="copy-btn" @click="onCopyReasonClick">Copy</button>
   </div>
 
   <div class="save-cnt">
@@ -123,8 +123,6 @@ export default Vue.extend({
       } catch(err) {
         console.log('Error while copying', err);
       }
-      ajaxer.postOpenInformationWindow(
-          this.payingCharacter, this.payment.recipient);
     },
 
     onCopyPayoutClick(e) {
@@ -134,6 +132,8 @@ export default Vue.extend({
       } catch(err) {
         console.log('Error while copying', err);
       }
+      ajaxer.postOpenInformationWindow(
+          this.payingCharacter, this.payment.recipient);
     },
 
     onSaveClick(e) {
@@ -227,17 +227,18 @@ export default Vue.extend({
 }
 
 .reason-input {
-  width: 87px;
+  width: 120px;
 }
 
 .payout-input {
-  width: 168px;
+  width: 120px;
   text-align: right;
 }
 
 .copy-btn {
   position: relative;
   left: -1px;
+  width: 105px;
   height: 36px;
   box-sizing: border-box;
   background-color: #67410D;

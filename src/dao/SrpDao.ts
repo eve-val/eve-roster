@@ -139,61 +139,38 @@ export default class SrpDao {
     return db.asyncTransaction(async db => {
       await db.acquireTransactionalLock(srpReimbursement, -1);
 
-      const row = await db
+      const lossRow = await db
           .select(srpVerdict)
           .join(killmail, 'km_id', '=', 'srpv_killmail')
-          .leftJoin(ownership, 'ownership_character', '=', 'km_character')
-          .leftJoin(account, 'account_id', '=', 'ownership_account')
-
-          // Any preexisting reimbursement associated with this *loss*
-          .leftJoin(srpReimbursement,
-              'srpr_recipientCharacter', '=', 'account_mainCharacter')
-
-          // Any preexisting reimbursement associated with this *account*
-          .leftJoin(
-              db.alias(srpReimbursement, 'acctReim')
-                  .using('srpr_id', 'acctReim_id')
-                  .using(
-                      'srpr_recipientCharacter',
-                      'acctReim_recipientCharacter'),
-              'acctReim_recipientCharacter', '=', 'account_mainCharacter')
-
-          // Any preexisting reimbursement associated with this *character*
-          // (used if above is null)
-          .leftJoin(
-              db.alias(srpReimbursement, 'victimReim')
-                  .using('srpr_id', 'victimReim_id')
-                  .using(
-                      'srpr_recipientCharacter',
-                      'victimReim_recipientCharacter'),
-              'victimReim_recipientCharacter', '=', 'km_character')
-
           .where('srpv_killmail', '=', val(killmailId))
+          .leftJoin(srpReimbursement,
+              'srpr_id', '=', 'srpv_reimbursement')
           .columns(
-              'km_character',
-              'srpv_status',
+              'srpr_id',
               'srpr_paid',
-              'acctReim_id',
-              'victimReim_id',
+              'km_character',
               )
           .fetchFirst();
-      if (row == null) {
+
+      if (lossRow == null) {
         return 0;
       }
-      if (row.srpr_paid) {
+      if (lossRow.srpr_paid) {
         throw new Error(`Cannot change the verdict on a paid SRP.`);
       }
-      if (row.km_character == null && verdict != SrpVerdictStatus.INELIGIBLE) {
-        throw new Error(`Cannot approve SRP for losses with no recipient.`);
-      }
 
-      let reimbursement: null | number = null;
-
-      // Create a reimbursement if necessary
+      // Create an associated reimbursement if necessary
+      let rid: number | null = null;
       if (verdict == SrpVerdictStatus.APPROVED) {
-        reimbursement = row.acctReim_id || row.victimReim_id;
-        if (reimbursement == null && row.km_character != null) {
-          reimbursement = await this.createReimbursement(db, row.km_character);
+        if (lossRow.km_character == null) {
+          throw new Error(`Cannot approve SRP for losses with no recipient.`);
+        }
+        rid = lossRow.srpr_id;
+        if (rid == null) {
+          rid = await this.findExistingReimbursement(db, lossRow.km_character);
+        }
+        if (rid == null) {
+          rid = await this.createReimbursement(db, lossRow.km_character);
         }
       }
 
@@ -202,7 +179,7 @@ export default class SrpDao {
             srpv_status: verdict,
             srpv_reason: reason,
             srpv_payout: payout,
-            srpv_reimbursement: reimbursement,
+            srpv_reimbursement: rid,
             srpv_renderingAccount: renderingAccount,
             srpv_modified: Date.now(),
           })
@@ -343,6 +320,40 @@ export default class SrpDao {
           srpr_paid: false,
           srpr_payingCharacter: null,
         }, 'srpr_id');
+  }
+
+  private async findExistingReimbursement(db: Tnex, characterId: number) {
+    // If the character is owned by an account, check to see if that account
+    // has an open reimbursement.
+    const accountReim = await db
+          .select(character)
+          .leftJoin(ownership, 'ownership_character', '=', 'character_id')
+          .leftJoin(account, 'account_id', '=', 'ownership_account')
+          .leftJoin(srpReimbursement,
+              'srpr_recipientCharacter', '=', 'account_mainCharacter')
+          .where('character_id', '=', val(characterId))
+          .where('srpr_paid', '=', val(false))
+          .columns(
+              'srpr_id'
+              )
+          .fetchFirst();
+
+      if (accountReim != null && accountReim.srpr_id != null) {
+        return accountReim.srpr_id;
+      }
+
+      // Otherwise, check to see if the character itself has an open
+      // reimbursement.
+      const characterReim = await db
+          .select(srpReimbursement)
+          .where('srpr_recipientCharacter', '=', val(characterId))
+          .where('srpr_paid', '=', val(false))
+          .columns(
+              'srpr_id'
+              )
+          .fetchFirst();
+
+      return characterReim && characterReim.srpr_id;
   }
 }
 
