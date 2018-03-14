@@ -134,6 +134,10 @@ export default {
     });
   },
 
+  getSrpApprovedLiability() {
+    return axios.get('/api/srp/approvedLiability');
+  },
+
   getRecentSrpLosses(filter) {
     return axios.get('/api/srp/loss', {
       params: filter
