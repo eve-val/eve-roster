@@ -192,6 +192,8 @@ export default class SrpDao {
       db: Tnex,
       filter: SrpReimbursementFilter,
   ) {
+    const orderByCol = filter.orderBy == 'id' ? 'srpr_id' : 'srpr_modified';
+
     // Subquery: for each reimbursement, the sum of its approved payouts
     let subquery = db
         .subselect(srpReimbursement, 'combined')
@@ -200,7 +202,7 @@ export default class SrpDao {
         .count('srpv_killmail', 'combined_losses')
         .columnAs('srpr_id', 'combined_id')
         .groupBy('srpr_id')
-        .orderBy('srpr_modified', filter.order);
+        .orderBy(orderByCol, filter.order);
 
     if (filter.paid != undefined) {
       subquery = subquery.where('srpr_paid', '=', val(filter.paid));
@@ -214,6 +216,7 @@ export default class SrpDao {
     if (filter.limit != undefined) {
       subquery = subquery.limit(filter.limit);
     }
+
     if (filter.startingAfter != undefined) {
       subquery = subquery.andWhere(
           filter.orderBy == 'id' ? 'srpr_id' : 'srpr_modified',
