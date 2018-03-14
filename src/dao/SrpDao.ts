@@ -237,6 +237,7 @@ export default class SrpDao {
                 .using('character_id', 'payingChar_id')
                 .using('character_corporationId', 'payingChar_corporationId'),
             'payingChar_id', '=', 'srpr_payingCharacter')
+        .orderBy(orderByCol, filter.order)
         .where('combined_losses', '>', val(0))
         .columns(
             'srpr_id',
