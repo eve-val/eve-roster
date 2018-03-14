@@ -311,6 +311,16 @@ export default class SrpDao {
         .run();
   }
 
+  /** Returns the total payout of all approved but unpaid losses. */
+  async getApprovedLiability(db: Tnex) {
+    return db
+        .select(srpReimbursement)
+        .join(srpVerdict, 'srpv_reimbursement', '=', 'srpr_id')
+        .where('srpr_paid', '=', val(false))
+        .sum('srpv_payout', 'liability')
+        .fetchFirst();
+  }
+
   private async createReimbursement(db: Tnex, character: number) {
     return db
         .insert(srpReimbursement, {

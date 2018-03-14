@@ -7,13 +7,20 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
 <template>
 <div class="_payment-triage">
 
-  <div class="selector-cnt">
-    <div class="selector-label">Paying with</div>
-    <character-selector
-        :accountId="identity.account.id"
-        v-model="payingCharacter"
-        >
-    </character-selector>
+  <div class="toolbar">
+    <div class="selector-cnt">
+      <div class="selector-label">Paying with</div>
+      <character-selector
+          :accountId="identity.account.id"
+          v-model="payingCharacter"
+          >
+      </character-selector>
+    </div>
+    <div class="liability-summary">
+      <span class="liability-label">Approved liability:</span>
+      <span class="liability-value">{{ approvedLiabilityDisplay }}</span>
+      <span class="liability-denom">ISK</span>
+    </div>
   </div>
 
   <template v-if="payments != null">
@@ -75,6 +82,14 @@ export default Vue.extend({
         return this.payments[this.payments.length - 1].id;
       }
     },
+
+    approvedLiabilityDisplay() {
+      if (!this.approvedLiability) {
+        return '0';
+      } else {
+        return this.approvedLiability.toLocaleString();
+      }
+    },
   },
 
   data() {
@@ -84,13 +99,18 @@ export default Vue.extend({
 
       payments: null,
       payingCharacter: null,
+
+      approvedLiability: 0,
     };
   },
 
-
-
   mounted() {
     this.fetchNextResults();
+
+    ajaxer.getSrpApprovedLiability()
+    .then(response => {
+      this.approvedLiability = response.data.approvedLiability;
+    });
   },
 
   methods: Object.assign({
@@ -125,16 +145,34 @@ export default Vue.extend({
   margin-bottom: 300px;
 }
 
+.toolbar {
+  display: flex;
+  margin: 40px 0;
+  align-items: center;
+}
+
 .selector-cnt {
   display: flex;
+  flex: 1;
   align-items: center;
-  margin: 40px 0;
 }
 
 .selector-label {
   font-size: 14px;
   color: #A7A29C;
   margin-right: 10px;
+}
+
+.liability-summary {
+  font-size: 14px;
+}
+
+.liability-label {
+  color: #A7A29C;
+}
+
+.liability-denom {
+  color: #8B8B8B;
 }
 
 .top-line {
