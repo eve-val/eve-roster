@@ -142,6 +142,8 @@ export default class SrpDao {
       const lossRow = await db
           .select(srpVerdict)
           .join(killmail, 'km_id', '=', 'srpv_killmail')
+          .leftJoin(ownership, 'ownership_character', '=', 'km_character')
+          .leftJoin(account, 'account_id', '=', 'ownership_account')
           .where('srpv_killmail', '=', val(killmailId))
           .leftJoin(srpReimbursement,
               'srpr_id', '=', 'srpv_reimbursement')
@@ -149,6 +151,7 @@ export default class SrpDao {
               'srpr_id',
               'srpr_paid',
               'km_character',
+              'account_mainCharacter',
               )
           .fetchFirst();
 
@@ -170,7 +173,8 @@ export default class SrpDao {
           rid = await this.findExistingReimbursement(db, lossRow.km_character);
         }
         if (rid == null) {
-          rid = await this.createReimbursement(db, lossRow.km_character);
+          rid = await this.createReimbursement(
+              db, lossRow.account_mainCharacter || lossRow.km_character);
         }
       }
 
