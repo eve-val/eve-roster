@@ -140,6 +140,87 @@ export class Tnex {
         this._knex, this._registry, table, this._prepForInsert(values, table));
   }
 
+  /**
+   * Updates multiple rows at once. Rows must have a unique ID column (as
+   * specified in the `idColumn` parameter).
+   */
+  public updateAll<T extends object, K extends keyof T>(
+      table: T,
+      idColumn: K,
+      rows: Array<Partial<T> & Pick<T, K>>,
+  ) {
+    // Query structure:
+    // UPDATE tableName SET
+    //     tableName.col1 = _synthTable.col1,
+    //     tableName.col2 = _synthTable.col2,
+    //     ...
+    // FROM (VALUES (col1_value, col2_value, ...), ...))
+    // AS _synthTable(col1, col2, ...)
+    // WHERE _synthTable.idCol = tableName.idCol
+
+    const tableName = this._registry.getTableName(table);
+    const strippedId = this._registry.stripPrefix(idColumn);
+    const synthTable = `__updatesFor_${tableName}`;
+
+    const query: string[] = [];
+    const bindings: string[] = [];
+    const cols: (keyof T)[] = [idColumn];
+
+    query.push(`UPDATE ?? SET`);
+    bindings.push(tableName);
+
+    const assignmentClause: string[] = [];
+    for (let v in rows[0]) {
+      if (!table.hasOwnProperty(v)) {
+        throw new Error(`Table ${tableName} doesn't have a column named ${v}.`);
+      }
+      if (v == idColumn) {
+        continue;
+      }
+      cols.push(v as any);
+
+      const stripped = this._registry.stripPrefix(v);
+
+      assignmentClause.push(`?? = ??.??`);
+      bindings.push(stripped, synthTable, stripped);
+    }
+    query.push(assignmentClause.join(', '));
+
+    query.push(`FROM (VALUES`);
+
+    const rowValueClause = `(${ new Array(cols.length).fill('?').join(',') })`;
+    query.push(new Array(rows.length).fill(rowValueClause).join(', '));
+    for (let row of rows) {
+      for (let col of cols) {
+        const val = (row as any)[col];
+        if (val == undefined) {
+          throw new Error(`Column ${col} is undefined in row ${inspect(row)}.`);
+        }
+        bindings.push(val);
+      }
+    }
+    query.push(')');
+
+    query.push(`AS ??(`);
+    bindings.push(synthTable);
+    query.push(new Array(cols.length).fill('??').join(','))
+    bindings.push(...cols.map(col => this._registry.stripPrefix(col)));
+    query.push(')');
+
+    query.push(`WHERE ??.?? = ??.??`);
+    bindings.push(tableName, strippedId, synthTable, strippedId);
+
+    // TODO: node-pg wraps all bound values in quotes (''), which causes
+    // Postgres to reject this query as it thinks we're trying to assign strings
+    // to numerical columns. However, Knex properly binds numerical values,
+    // so rendering to a string and then back to a raw query fixes things.
+    // The "fix" here is to include ::type casts to the VALUES rows.
+    // This requires us to know the exact column type for each column, however.
+    // See https://github.com/tgriesser/knex/issues/1001
+    const rawQuery = this._knex.raw(query.join(' '), bindings);
+    return this._knex.raw(rawQuery.toString());
+  }
+
   public del<T extends object>(table: T): Query<T, number> {
     return new Query<T, number>(
         this._registry,
