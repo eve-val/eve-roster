@@ -1,7 +1,7 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 
-import { getAccessTokenForCharacter } from '../../data-source/accessToken';
+import { getAccessToken } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
@@ -16,7 +16,7 @@ const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 
 export function syncCharacterLocations(
-    db: Tnex, job: JobTracker): Promise<void> {
+    db: Tnex, job: JobTracker): Bluebird<void> {
   let processedCharacters = 0;
 
   return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
@@ -25,7 +25,7 @@ export function syncCharacterLocations(
 
     let esiErrorCharacterIds: number[] = [];
 
-    return Promise.map(characterIds, (characterId, i, len) => {
+    return Bluebird.map(characterIds, (characterId, i, len) => {
       return maybeUpdateLocation(db, characterId)
       .catch(AccessTokenError, e => {
         // No access token for this character (or token has expired). This can
@@ -65,9 +65,9 @@ function maybeUpdateLocation(db: Tnex, characterId: number) {
 }
 
 function updateLocation(db: Tnex, characterId: number) {
-  return getAccessTokenForCharacter(db, characterId)
+  return getAccessToken(db, characterId)
   .then(accessToken => {
-    return Promise.all([
+    return Bluebird.all([
       swagger.characters(characterId, accessToken).location(),
       swagger.characters(characterId, accessToken).ship(),
     ]);
