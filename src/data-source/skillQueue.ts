@@ -6,7 +6,7 @@ import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { SkillQueueRow } from '../dao/SkillQueueDao';
 import swagger from '../swagger';
-import { getAccessTokenForCharacter } from '../data-source/accessToken';
+import { getAccessToken } from '../data-source/accessToken';
 
 const logger = require('../util/logger')(__filename);
 
@@ -23,7 +23,7 @@ export function updateSkillQueue(
 
   return Promise.resolve()
   .then(() => {
-    return accessToken || getAccessTokenForCharacter(db, characterId)
+    return accessToken || getAccessToken(db, characterId)
   })
   .then(accessToken => {
     return swagger.characters(characterId, accessToken).skillqueue();

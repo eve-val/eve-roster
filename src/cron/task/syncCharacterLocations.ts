@@ -1,88 +1,139 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 
-import { getAccessTokenForCharacter } from '../../data-source/accessToken';
+import { getAccessToken, getAccessTokens, getAccessTokensFromRows } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import swagger from '../../swagger';
-import { Tnex } from '../../tnex';
+import { Tnex, DEFAULT_NUM } from '../../tnex';
 import { JobTracker } from '../Job';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
+import { CharacterLocation } from '../../dao/tables';
+import { cached } from 'sqlite3';
 
 const logger = require('../../util/logger')(__filename);
 
 const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
 const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
+const CHARLOC_CACHE = new Map<number, CharacterLocation>();
 
 export function syncCharacterLocations(
-    db: Tnex, job: JobTracker): Promise<void> {
-  let processedCharacters = 0;
+    db: Tnex, job: JobTracker): Bluebird<void> {
 
-  return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
-  .then(characterIds => {
-    job.setProgress(0, undefined);
-
-    let esiErrorCharacterIds: number[] = [];
-
-    return Promise.map(characterIds, (characterId, i, len) => {
-      return maybeUpdateLocation(db, characterId)
-      .catch(AccessTokenError, e => {
-        // No access token for this character (or token has expired). This can
-        // occur naturally due to unclaimed characters or revoked tokens (or
-        // CPP bugs). We can't do anything without one, so skip this character.
-      })
-      .catch(isAnyEsiError, e => {
-        esiErrorCharacterIds.push(characterId);
-      })
-      .then(() => {
-        processedCharacters++;
-        job.setProgress(processedCharacters / len, undefined);
-      });
-    })
-    .then(() => {
-      if (esiErrorCharacterIds.length > 0) {
-        logger.warn(`syncLocation got ESI errors for ${esiErrorCharacterIds}.`);
-      }
-    });
-  })
+  return Bluebird.resolve(doTask(db, job));
 }
 
-function maybeUpdateLocation(db: Tnex, characterId: number) {
-  return dao.characterLocation.getLatestTimestamp(db, characterId)
-  .then(timestamp => {
-    let staleness = timestamp ? (Date.now() - timestamp) : 0;
-    if (staleness > SLOW_UPDATE_THRESHOLD) {
-      // 100x slower average polling - do nothing 99% of the time.
-      if (Math.random() > 0.01) { return; }
-    } else if (staleness > RAPID_UPDATE_THRESHOLD) {
-      // 10x slower average polling - do nothing 90% of the time.
-      if (Math.random() > 0.1) { return; }
+async function doTask(db: Tnex, job: JobTracker) {
+  if (CHARLOC_CACHE.size == 0) {
+    await fillLocationCache(db);
+  }
+
+  const initialRows =
+      await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
+  const tokenMap = await getAccessTokensFromRows(db, initialRows);
+
+  const tasks: Promise<CharacterLocation | null>[] = [];
+  for (let row of initialRows) {
+    const tokenResult = tokenMap.get(row.accessToken_character)!;
+    if (tokenResult.kind == 'error') {
+      job.warn(
+          `Error (${tokenResult.error}) while refreshing token for `
+              + `${row.accessToken_character}.`);
+      continue;
     }
-    // Actually update the location
-    return updateLocation(db, characterId);
-  });
+    tasks.push(
+        maybeUpdateLocation(row.accessToken_character, tokenResult.token)
+        .catch(e => {
+          job.error(
+              `Error while updating location for `
+                  + `${row.accessToken_character}:`);
+          return null;
+        }));
+  }
+
+  const results = await Promise.all(tasks);
+
+  const updatedRows: CharacterLocation[] = [];
+  for (let result of results) {
+    if (result != null) {
+      updatedRows.push(result);
+    }
+  }
+  if (updatedRows.length > 0) {
+    await dao.characterLocation.storeAll(db, updatedRows);
+  }
+
+  job.info(
+      `Checked ${results.length} character locations; stored `
+          + `${updatedRows.length} new locations`);
 }
 
-function updateLocation(db: Tnex, characterId: number) {
-  return getAccessTokenForCharacter(db, characterId)
-  .then(accessToken => {
-    return Promise.all([
-      swagger.characters(characterId, accessToken).location(),
-      swagger.characters(characterId, accessToken).ship(),
-    ]);
-  })
-  .then(([locationResults, shipResults]) => {
-    return {
-      charloc_character: characterId,
-      charloc_timestamp: Date.now(),
-      charloc_shipName: shipResults.ship_name,
-      charloc_shipTypeId: shipResults.ship_type_id,
-      charloc_shipItemId: shipResults.ship_item_id,
-      charloc_solarSystemId: locationResults.solar_system_id,
-    };
-  })
-  .then(data => {
-    return dao.characterLocation.put(db, data);
-  });
+async function fillLocationCache(db: Tnex) {
+  const rows =
+      await dao.characterLocation.getMostRecentMemberCharacterLocations(db);
+
+  for (let row of rows) {
+    CHARLOC_CACHE.set(row.charloc_character, row);
+  }
+}
+
+async function maybeUpdateLocation(characterId: number, accessToken: string) {
+  let rowToCommit: CharacterLocation | null = null;
+
+  const cachedRow = CHARLOC_CACHE.get(characterId) || null;
+  if (shouldUpdateLocation(cachedRow)) {
+    const newRow = await fetchUpdatedLocationRow(characterId, accessToken);
+
+    if (cachedRow == null || !locationsEqual(cachedRow, newRow)) {
+      CHARLOC_CACHE.set(characterId, newRow);
+      rowToCommit = newRow;
+    }
+  }
+
+  return rowToCommit;
+}
+
+function shouldUpdateLocation(cachedRow: CharacterLocation | null) {
+  if (cachedRow == null) {
+    return true;
+  } else {
+    let staleness = Date.now() - cachedRow.charloc_timestamp;
+    if (staleness <= RAPID_UPDATE_THRESHOLD) {
+      // Normal - always update.
+      return true;
+    } else if (staleness <= SLOW_UPDATE_THRESHOLD) {
+      // 10x slower average polling - do nothing 90% of the time.
+      return Math.random() <= 0.1;
+    } else {
+      // 100x slower average polling - do nothing 99% of the time.
+      return Math.random() <= 0.01;
+    }
+  }
+}
+
+function locationsEqual(a: CharacterLocation, b: CharacterLocation) {
+  return a.charloc_character == b.charloc_character
+      && a.charloc_shipTypeId == b.charloc_shipTypeId
+      && a.charloc_shipItemId == b.charloc_shipItemId
+      && a.charloc_shipName == b.charloc_shipName
+      && a.charloc_solarSystemId == b.charloc_solarSystemId;
+}
+
+async function fetchUpdatedLocationRow(
+    characterId: number, accessToken: string,
+): Promise<CharacterLocation> {
+  const [locationResults, shipResults] = await Promise.all([
+    swagger.characters(characterId, accessToken).location(),
+    swagger.characters(characterId, accessToken).ship(),
+  ]);
+
+  return {
+    charloc_character: characterId,
+    charloc_timestamp: Date.now(),
+    charloc_shipName: shipResults.ship_name,
+    charloc_shipTypeId: shipResults.ship_type_id,
+    charloc_shipItemId: shipResults.ship_item_id,
+    charloc_solarSystemId: locationResults.solar_system_id,
+  };
 }

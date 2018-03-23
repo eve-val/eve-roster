@@ -9,7 +9,7 @@ import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';
-import { getAccessTokenForCharacter } from '../../../../data-source/accessToken';
+import { getAccessToken } from '../../../../data-source/accessToken';
 
 
 export class Input {
@@ -44,7 +44,7 @@ async function handleEndpoint(
         `Account ${account.id} doesn't own character ${input.character}.`);
   }
   // TODO: Catch errors below and throw a uservisible error
-  const accessToken = await getAccessTokenForCharacter(db, input.character);
+  const accessToken = await getAccessToken(db, input.character);
   await swagger.characters(input.character, accessToken)
       .window.info(input.targetId);
 

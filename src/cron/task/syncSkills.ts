@@ -25,16 +25,21 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
       .then(() => {
         successCount++;
       })
-      .catch(AccessTokenError, e => {
-        // No access token for this character (or token has expired). This can
-        // occur naturally due to unclaimed characters or revoked tokens (or
-        // CPP bugs). We can't do anything without one, so skip this character.
-        accessTokenFailureCount++;
-      })
-      .catch(isAnyEsiError, e => {
-        esiFailureCount++;
-        logger.warn(`ESI error while fetching skills for char ${characterId}.`);
-        logger.warn(e);
+      .catch(e => {
+        if (e instanceof AccessTokenError) {
+          // No access token for this character (or token has expired). This
+          // can occur naturally due to unclaimed characters or revoked tokens
+          // (or CPP bugs). We can't do anything without one, so skip this
+          // character.
+          accessTokenFailureCount++;
+        } else if (isAnyEsiError(e)) {
+          esiFailureCount++;
+          logger.warn(
+              `ESI error while fetching skills for char ${characterId}.`);
+          logger.warn(e);
+        } else {
+          throw e;
+        }
       })
       .then(() => {
         job.setProgress(i / len, undefined);

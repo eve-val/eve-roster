@@ -2,7 +2,7 @@ import Promise = require('bluebird');
 
 import { Dao } from '../dao';
 import { Tnex, toNum, val } from '../tnex';
-import { characterLocation, CharacterLocation } from './tables';
+import { characterLocation, CharacterLocation, memberCorporation, character, accessToken } from './tables';
 
 export default class LocationDao {
   constructor(
@@ -10,27 +10,44 @@ export default class LocationDao {
       ) {
   }
 
-  put(db: Tnex, locationData: CharacterLocation) {
+  getMostRecentMemberCharacterLocations(db: Tnex) {
     return db
-      .select(characterLocation)
-      .where('charloc_character', '=', val(locationData.charloc_character))
-      .orderBy('charloc_timestamp', 'desc')
-      .limit(1)
-      .columns(
-          'charloc_shipName',
-          'charloc_shipTypeId',
-          'charloc_shipItemId',
-          'charloc_solarSystemId',
-          'charloc_character',
-          'charloc_timestamp',
-          )
-      .fetchFirst()
-      .then((row: CharacterLocation | null) => {
-        // Need to compare the actual fields we care about, timestamp changes
-        if (!row || locationsDiffer(row, locationData)) {
-          return db.insert(characterLocation, locationData);
-        }
-      });
+        .select(memberCorporation)
+        .join(character,
+            'character_corporationId', '=', 'memberCorporation_corporationId')
+        .join(characterLocation, 'charloc_character', '=', 'character_id')
+        .distinctOn('charloc_character')
+        .orderBy('charloc_character', 'desc')
+        .orderBy('charloc_timestamp', 'desc')
+        .columns(
+            'charloc_shipTypeId',
+            'charloc_shipItemId',
+            'charloc_shipName',
+            'charloc_solarSystemId',
+            'charloc_timestamp',
+            )
+        .run();
+  }
+
+  getMemberCharactersWithValidAccessTokens(db: Tnex) {
+    return db
+        .select(memberCorporation)
+        .join(character,
+            'character_corporationId', '=', 'memberCorporation_corporationId')
+        .join(accessToken, 'accessToken_character', '=', 'character_id')
+        .where('accessToken_needsUpdate', '=', val(false))
+        .columns(
+            'accessToken_character',
+            'accessToken_accessToken',
+            'accessToken_accessTokenExpires',
+            'accessToken_refreshToken',
+            )
+        .run();
+  }
+
+  storeAll(db: Tnex, rows: CharacterLocation[]) {
+    return db
+        .insertAll(characterLocation, rows);
   }
 
   deleteOldLocations(db: Tnex, cutoff: number) {
@@ -39,27 +56,4 @@ export default class LocationDao {
         .where('charloc_timestamp', '<', val(cutoff))
         .run();
   }
-
-  getLatestTimestamp(db: Tnex, characterId: number) {
-    return db
-      .select(characterLocation)
-      .where('charloc_character', '=', val(characterId))
-      .orderBy('charloc_timestamp', 'desc')
-      .limit(1)
-      .columns('charloc_timestamp')
-      .fetchFirst()
-      .then(row => {
-        if (row) {
-          return row.charloc_timestamp;
-        }
-      });
-  }
-}
-
-function locationsDiffer(a: CharacterLocation, b: CharacterLocation) {
-  if (a.charloc_shipName != b.charloc_shipName) { return true; }
-  if (a.charloc_shipTypeId != b.charloc_shipTypeId) { return true; }
-  if (a.charloc_shipItemId != b.charloc_shipItemId) { return true; }
-  if (a.charloc_solarSystemId != b.charloc_solarSystemId) { return true; }
-  return false;
 }

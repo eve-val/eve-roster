@@ -15,6 +15,7 @@ export default class AccessTokenDao {
         .select(accessToken)
         .where('accessToken_character', '=', val(characterId))
         .columns(
+            'accessToken_character',
             'accessToken_refreshToken',
             'accessToken_accessToken',
             'accessToken_accessTokenExpires',
@@ -23,16 +24,40 @@ export default class AccessTokenDao {
         .fetchFirst();
   }
 
+  getAll(db: Tnex, characterIds: number[]) {
+    return db
+        .select(accessToken)
+        .whereIn('accessToken_character', characterIds)
+        .columns(
+            'accessToken_character',
+            'accessToken_refreshToken',
+            'accessToken_accessToken',
+            'accessToken_accessTokenExpires',
+            'accessToken_needsUpdate',
+            )
+        .run();
+  }
+
+  updateAll(
+      db: Tnex,
+      rows: Pick<
+          AccessToken,
+          | 'accessToken_character'
+          | 'accessToken_accessToken'
+          | 'accessToken_accessTokenExpires'
+          | 'accessToken_needsUpdate'
+      >[],
+  ) {
+    return db
+        .updateAll(accessToken, 'accessToken_character', rows);
+  }
+
   updateForCharacter(
       db: Tnex,
       characterId: number,
-      row: TokenUpdate) {
+      row: Partial<AccessToken>) {
     return db
-        .update(accessToken, {
-          accessToken_accessToken: row.accessToken_accessToken,
-          accessToken_accessTokenExpires: row.accessToken_accessTokenExpires,
-          accessToken_needsUpdate: false,
-        })
+        .update(accessToken, row)
         .where('accessToken_character', '=', val(characterId))
         .run();
   }
@@ -68,8 +93,3 @@ export default class AccessTokenDao {
     }, 'accessToken_character');
   }
 }
-
-export type TokenUpdate =
-    Pick<
-        AccessToken,
-        'accessToken_accessToken' | 'accessToken_accessTokenExpires'>;

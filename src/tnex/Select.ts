@@ -28,6 +28,7 @@ interface ColumnSelect {
  */
 export class Select<J extends object /* joined */, S /* selected */>
     extends Query<J, S[]> {
+  private _knex: Knex;
   private _subqueryTableName: string | undefined;
 
   private _selectedColumns = [] as ColumnSelect[];
@@ -42,6 +43,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     super(
         scoper.mirror(),
         knex(scoper.getTableName(table)));
+    this._knex = knex;
     this._subqueryTableName = subqueryTableName;
   }
 
@@ -275,6 +277,28 @@ export class Select<J extends object /* joined */, S /* selected */>
     return this;
   }
 
+  /**
+   * Groups by the specified column and, for each group, selects the first row
+   * that would be returned.
+   *
+   * In order to avoid undefined behavior you must specify an ordering
+   * (with orderBy()). The first column in the ordering must be the one passed
+   * here.
+   *
+   * This is a Postgres-only extension.
+   */
+  public distinctOn<K extends keyof J>(column: K): Select<J, S & Pick<J, K>> {
+    const scopedCol = this._scoper.scopeColumn(column);
+    this._query = this._query.distinct(
+        this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column]));
+
+    return this as any;
+  }
+
+  /**
+   * Orders the results by the specified column and direction. Subsequent calls
+   * append order clauses (instead of replacing the previous ones).
+   */
   public orderBy(column: keyof J, direction: 'asc' | 'desc'): this {
     this._query = this._query.orderBy(
         this._scoper.scopeColumn(column), direction);

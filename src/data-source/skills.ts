@@ -3,7 +3,7 @@ import { esi } from 'eve-swagger';
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 
-import { getAccessTokenForCharacter } from './accessToken';
+import { getAccessToken } from './accessToken';
 import swagger from '../swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
@@ -16,11 +16,11 @@ import { character } from '../dao/tables';
 const logger = require('../util/logger')(__filename);
 
 
-/** Throws MissingTokenError and ESI failure errors. */
+/** Throws AccessTokenError and ESI failure errors. */
 export function updateSkills(db: Tnex, characterId: number) {
   let skillQueue: NamedSkillQueueRow[];
 
-  return getAccessTokenForCharacter(db, characterId)
+  return getAccessToken(db, characterId)
   .then(accessToken => {
     return Promise.all([
       getSkillQueue(db, characterId, accessToken),
@@ -55,7 +55,7 @@ function getSkillQueue(db: Tnex, characterId: number, accessToken: string) {
   return updateSkillQueue(db, characterId, accessToken)
   .then(() => {
     return dao.skillQueue.getCachedSkillQueue(db, characterId);
-  })  
+  })
 }
 
 function getEsiSkills(characterId: number, accessToken: string) {
@@ -67,7 +67,7 @@ function esiSkillToRow(
     characterId: number,
     esiSkill: esi.character.Skill,
     completedEntry: NamedSkillQueueRow|undefined) {
-  
+
   let skillLevel = esiSkill.current_skill_level || 0;
   let skillSp = esiSkill.skillpoints_in_skill || 0;
 
