@@ -79,10 +79,6 @@ async function doTask(db: Tnex, job: JobTracker) {
             .map(([character, error]) => `${character} (${error})`)
             .join(', '));
   }
-
-  job.info(
-      `Checked ${tasks.length}/${initialRows.length} character locations; `
-          + `stored ${updatedRows.length} new locations`);
 }
 
 async function fillLocationCache(db: Tnex) {

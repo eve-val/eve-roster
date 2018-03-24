@@ -32,11 +32,11 @@ export class Scheduler {
   /**
    * Runs a task and logs the result. Returns a `Job` object that can be used
    * to track the progress of the task's execution.
-   * 
+   *
    * Only one instance of a task can run at a time. If this function is called
    * while a task of the same name is currently running, the Job for that task
    * will be returned (and no new task will be started).
-   * 
+   *
    * @param taskName Name of the task to run. Can by anything.
    * @param executor Function that performs the task's work.
    * @param timeout Number of milliseconds before task is considered to have
@@ -45,7 +45,7 @@ export class Scheduler {
    * Channels can only run one job at a time. If this channel is already busy,
    * the job will be queued until its turn comes up. If a job would be dequeued
    * but a task of the same name is currently running (i.e. in a different
-   * channel) then it waits until it can be run.  
+   * channel) then it waits until it can be run.
    */
   public runTask(
       taskName: string,
@@ -133,12 +133,12 @@ export class Scheduler {
       const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}", `
           + `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
 
-      if (jobResult == 'success') {
-        if (!job.silent) {
+      if (!job.silent) {
+        if (jobResult == 'success') {
           logger.info(logMessage);
+        } else {
+          logger.error(logMessage);
         }
-      } else {
-        logger.error(logMessage);
       }
 
       if (!job.timedOut) {
