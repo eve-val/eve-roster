@@ -32,7 +32,7 @@ export class TokenRefresher {
       })
       this._activeRequests.set(row.accessToken_character, request);
     } else {
-      return request.then(row => {
+      request = request.then(row => {
         const copy = Object.assign({}, row);
         copy.isOriginalRequest = false;
         return copy;

@@ -1,5 +1,6 @@
 import Bluebird = require('bluebird');
 import moment = require('moment');
+import { ESIError } from 'eve-swagger';
 
 import { getAccessToken, getAccessTokens, getAccessTokensFromRows } from '../../data-source/accessToken';
 import { dao } from '../../dao';
@@ -9,7 +10,7 @@ import { JobTracker } from '../Job';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
 import { CharacterLocation } from '../../dao/tables';
-import { cached } from 'sqlite3';
+
 
 const logger = require('../../util/logger')(__filename);
 
@@ -32,6 +33,7 @@ async function doTask(db: Tnex, job: JobTracker) {
   const initialRows =
       await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
   const tokenMap = await getAccessTokensFromRows(db, initialRows);
+  const esiErrors: Array<[number, string]> = [];
 
   const tasks: Promise<CharacterLocation | null>[] = [];
   for (let row of initialRows) {
@@ -42,15 +44,21 @@ async function doTask(db: Tnex, job: JobTracker) {
               + `${row.accessToken_character}.`);
       continue;
     }
-    tasks.push(
-        maybeUpdateLocation(row.accessToken_character, tokenResult.token)
-        .catch(e => {
-          job.error(
-              `Error while updating location for `
-                  + `${row.accessToken_character}:`);
-          job.error(e);
-          return null;
-        }));
+    if (shouldCheckLocation(row.accessToken_character)) {
+      tasks.push(
+          checkLocation(row.accessToken_character, tokenResult.token)
+          .catch(e => {
+            if (e instanceof ESIError) {
+              esiErrors.push([row.accessToken_character, e.kind]);
+            } else {
+              job.error(
+                  `Error while updating location for `
+                      + `${row.accessToken_character}:`);
+              job.error(e);
+            }
+            return null;
+          }));
+    }
   }
 
   const results = await Promise.all(tasks);
@@ -65,9 +73,16 @@ async function doTask(db: Tnex, job: JobTracker) {
     await dao.characterLocation.storeAll(db, updatedRows);
   }
 
+  if (esiErrors.length > 0) {
+    job.warn(`The following characters got ESI errors: `
+        + esiErrors
+            .map(([character, error]) => `${character} (${error})`)
+            .join(', '));
+  }
+
   job.info(
-      `Checked ${results.length} character locations; stored `
-          + `${updatedRows.length} new locations`);
+      `Checked ${tasks.length}/${initialRows.length} character locations; `
+          + `stored ${updatedRows.length} new locations`);
 }
 
 async function fillLocationCache(db: Tnex) {
@@ -79,24 +94,23 @@ async function fillLocationCache(db: Tnex) {
   }
 }
 
-async function maybeUpdateLocation(characterId: number, accessToken: string) {
+async function checkLocation(characterId: number, accessToken: string) {
   let rowToCommit: CharacterLocation | null = null;
 
-  const cachedRow = CHARLOC_CACHE.get(characterId) || null;
-  if (shouldUpdateLocation(cachedRow)) {
-    const newRow = await fetchUpdatedLocationRow(characterId, accessToken);
+  const cachedRow = CHARLOC_CACHE.get(characterId);
+  const newRow = await fetchUpdatedLocationRow(characterId, accessToken);
 
-    if (cachedRow == null || !locationsEqual(cachedRow, newRow)) {
-      CHARLOC_CACHE.set(characterId, newRow);
-      rowToCommit = newRow;
-    }
+  if (cachedRow == undefined || !locationsEqual(cachedRow, newRow)) {
+    CHARLOC_CACHE.set(characterId, newRow);
+    rowToCommit = newRow;
   }
 
   return rowToCommit;
 }
 
-function shouldUpdateLocation(cachedRow: CharacterLocation | null) {
-  if (cachedRow == null) {
+function shouldCheckLocation(characterId: number) {
+  const cachedRow = CHARLOC_CACHE.get(characterId);
+  if (cachedRow == undefined) {
     return true;
   } else {
     let staleness = Date.now() - cachedRow.charloc_timestamp;

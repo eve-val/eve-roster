@@ -66,7 +66,6 @@ export async function getAccessTokensFromRows(
         token: row.accessToken_accessToken,
       });
     } else {
-      console.log(`Refreshing access token for`, row.accessToken_character);
       refreshRequests.push(tokenRefresher.refreshAccessToken(row));
     }
   }
