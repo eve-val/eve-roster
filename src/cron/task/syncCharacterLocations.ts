@@ -48,6 +48,7 @@ async function doTask(db: Tnex, job: JobTracker) {
           job.error(
               `Error while updating location for `
                   + `${row.accessToken_character}:`);
+          job.error(e);
           return null;
         }));
   }
