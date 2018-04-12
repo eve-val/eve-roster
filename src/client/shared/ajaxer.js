@@ -94,6 +94,10 @@ export default {
     return axios.get('/api/dashboard/queueSummary');
   },
 
+  getAdminRosterSyncStatus() {
+    return axios.get('/api/admin/roster/syncStatus')
+  },
+
   getAdminAccountLog() {
     return axios.get('/api/admin/accountLog');
   },

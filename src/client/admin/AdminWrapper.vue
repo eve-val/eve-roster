@@ -3,6 +3,9 @@
   <app-header :identity="identity"></app-header>
   <div class="split-container">
     <div class="sidebar">
+      <router-link class="sidebar-link" to="/admin/overview">
+        Overview
+      </router-link>
       <router-link class="sidebar-link" to="/admin/account-logs">
         Account log
       </router-link>

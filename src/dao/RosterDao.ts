@@ -180,4 +180,21 @@ export default class RosterDao {
         )
         .run();
   }
+
+  getMemberCorpDirectors(db: Tnex) {
+    return db
+        .select(t.memberCorporation)
+        .join(t.character,
+              'character_corporationId', '=', 'memberCorporation_corporationId')
+        .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
+        .whereContains('character_roles', '@>', ['Director'])
+        .columns(
+            'character_id',
+            'character_name',
+            'character_corporationId',
+            'accessToken_scopes',
+            'accessToken_needsUpdate',
+            )
+        .run();
+  }
 }

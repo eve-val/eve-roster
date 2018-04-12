@@ -5,6 +5,7 @@ import Dashboard from './dashboard/Dashboard.vue';
 import Character from './character/Character.vue';
 import Roster from './roster/Roster.vue';
 
+import AdminOverview from './admin/AdminOverview.vue';
 import AccountLog from './admin/AccountLog.vue';
 import AdminSetup from './admin/Setup.vue';
 import Tasks from './admin/Tasks.vue';
@@ -26,6 +27,7 @@ const routes = [
   { path: '/roster', component: Roster, meta: { keepAlive: true } },
   { path: '/character/:id', component: Character, meta: { keepAlive: false } },
   { path: '/admin', redirect: '/admin/account-logs', },
+  { path: '/admin/overview', component: AdminOverview, },
   { path: '/admin/setup', component: AdminSetup, },
   { path: '/admin/account-logs', component: AccountLog, },
   { path: '/admin/tasks', component: Tasks, },
