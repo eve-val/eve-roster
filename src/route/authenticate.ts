@@ -1,282 +1,276 @@
 import querystring = require('querystring');
-import util = require('util');
 
-import Bluebird = require('bluebird');
 import axios from 'axios';
 import express = require('express');
 
 import { dao } from '../dao';
-import { Tnex } from '../tnex';
+import { Tnex, UpdatePolicy } from '../tnex';
 import { isAnyEsiError } from '../util/error';
 
 import swagger from '../swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
+import { enumQuery, stringQuery } from '../route-helper/paramVerifier';
+import { BadRequestError } from '../error/BadRequestError';
+import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
+import { UNKNOWN_CORPORATION_ID } from '../util/constants';
 
 const logger = require('../util/logger')(__filename);
 
 
-const SSO_AUTH_CODE =
-      Buffer.from(process.env.SSO_CLIENT_ID + ':' + process.env.SSO_SECRET_KEY)
-          .toString('base64');
+/**
+ * Authenticates a character, creating an account if necessary.
+ *
+ * This endpoint expects to be fetched as the final part of the EVE SSO flow.
+ *
+ * The "code" param must be an EVE SSO token.
+ *
+ * The "state" param must be an AuthType, which specifies whether to create
+ * a new account, add this character to an existing account, or log in to an
+ * existing account.
+ */
 
-interface AccessToken {
-  access_token: string,
-  refresh_token: string,
-  expires_in: number,
-}
+export default async function(req: express.Request, res: express.Response) {
+  try {
+    const authType = enumQuery<AuthType>(req, 'state', AuthType);
+    const authCode = stringQuery(req, 'code');
 
-interface CharacterInfo {
-  id: number,
-  name: string,
-  scopes: string,
-  corporationId: number | null,
-}
+    if (authType == undefined || authCode == undefined) {
+      throw new BadRequestError(`Missing either 'state' or 'code' queries.`);
+    }
 
-export default function(req: express.Request, res: express.Response) {
-  logger.info('~~~ Auth request ~~~');
+    const accountId =
+        await handleEndpoint(req.db, req.session.accountId, authType, authCode);
 
-  let accountId: number | undefined = req.session.accountId;
-  let charTokens: AccessToken;
-  let charData;
-
-  return Bluebird.resolve()
-  .then(() => {
-    logger.info(`  Getting access token from request code ${req.query.code}`);
-    return getAccessToken(req.query.code)
-  })
-  .then(_charTokens => {
-    logger.info(
-        `  Getting char data via access token ${_charTokens.access_token}`);
-    charTokens = _charTokens;
-    return getCharInfo(charTokens);
-  })
-  .then(characterData => {
-    logger.info(`  Character: ${characterData.name}`);
-
-    charData = characterData;
-    return handleCharLogin(req.db, accountId, charData, charTokens);
-  })
-  .then(accountId => {
-    logger.info('  accountId =', accountId);
-    logger.info('~~ Auth complete ~~');
     req.session.accountId = accountId;
     res.redirect('/');
-  })
-  .catch(e => {
+
+  } catch (e) {
+    // TODO: Display this to the user in a prettier manner
     let message = (e instanceof UserVisibleError) ? e.message : 'Server error';
     logger.error('Auth failure');
     logger.error(e);
     res.status(500);
     res.send(message);
-  });
+  }
 };
 
-function getAccessToken(queryCode: string): Bluebird<AccessToken> {
-  return Bluebird.resolve()
-  .then(() => {
-    return axios.post(
-      'https://login.eveonline.com/oauth/token',
-      querystring.stringify({
-        grant_type: 'authorization_code',
-        code: queryCode,
-      }), {
-        headers: {
-          'Authorization': 'Basic ' + SSO_AUTH_CODE,
-        },
-      });
-  })
-  .then(response => {
-    return response.data;
-  });
+export enum AuthType {
+  LOG_IN = 'logIn',
+  CREATE_ACCOUNT = 'createAccount',
+  ADD_CHARACTER = 'addCharacter',
 }
 
-function getCharInfo(charTokens: AccessToken): Bluebird<CharacterInfo> {
-  let charData: CharacterInfo;
-
-  logger.debug(`    Getting basic char+auth info...`);
-  return Bluebird.resolve()
-  .then(() => {
-    return axios.get('https://login.eveonline.com/oauth/verify', {
-      headers: {
-        'Authorization': 'Bearer ' + charTokens.access_token,
-      },
-    })
-  })
-  .then(response => {
-    charData = {
-      id: response.data.CharacterID,
-      name: response.data.CharacterName,
-      scopes: response.data.Scopes,
-      corporationId: null,
-    }
-
-    logger.debug(`    Getting character's corporation (ESI)...`);
-    return swagger.characters(charData.id).info()
-    .then(esiCharData => {
-      charData.corporationId = esiCharData.corporation_id;
-    })
-    .catch(e => {
-      if (isAnyEsiError(e)) {
-        logger.warn('ESI is unavailable, moving on with our lives...');
-        logger.warn(e);
-      } else {
-        throw e;
-      }
-    })
-    .then(() => {
-      return charData;
-    });
-  })
-}
-
-function handleCharLogin(
+async function handleEndpoint(
     db: Tnex,
     accountId: number | undefined,
-    charData: CharacterInfo,
-    charTokens: AccessToken,
-    ) {
-
-  return dao.character.getCoreData(db, charData.id)
-  .then(row => {
-    if (row == null || row.account_id == null) {
-      logger.info(`  Character is unowned.`);
-      return handleUnownedChar(db, accountId, charData, charTokens);
-
-    } else {
-      logger.info(`  Character already owned.`);
-      return handleOwnedChar(
-          db, accountId, charData, charTokens, row.account_id);
-    }
-  });
+    authType: AuthType,
+    authCode: string,
+) {
+  const charInfo = await fetchCharInfo(authCode);
+  await storeCharInfo(db, charInfo);
+  return await authenticateChar(db, accountId, authType, charInfo);
 }
 
-function handleOwnedChar(
-    db: Tnex,
-    accountId: number | undefined,
-    charData: CharacterInfo,
-    charTokens: AccessToken,
-    owningAccount: number,
-    ) {
+async function fetchCharInfo(authCode: string) {
+  const tokens = await fetchAccessTokens(authCode);
+  const authInfo = await fetchAuthInfo(tokens.access_token);
 
-  return Bluebird.resolve()
-  .then(() => {
-    if (accountId != null && accountId != owningAccount) {
-      logger.info(`  Adding pending ownership request for character`
-          + `${charData.id} to account ${accountId}`);
-      return dao.ownership.createPendingOwnership(db, charData.id, accountId)
+  const charInfo: CharacterInfo = {
+    id: authInfo.CharacterID,
+    ownerHash: authInfo.CharacterOwnerHash,
+    name: authInfo.CharacterName,
+    scopes: authInfo.Scopes,
+
+    accessToken: tokens.access_token,
+    refreshToken: tokens.refresh_token,
+    accessTokenExpiresIn: tokens.expires_in,
+
+    corporationId: null,
+    roles: null,
+  };
+
+  try {
+    const [esiCharInfo, esiCharRoles] = await Promise.all([
+      swagger.characters(charInfo.id).info(),
+      fetchEndpoint(
+          ESI_CHARACTERS_$characterId_ROLES,
+          { characterId: charInfo.id },
+          tokens.access_token),
+    ]);
+    charInfo.corporationId = esiCharInfo.corporation_id;
+    charInfo.roles = esiCharRoles.roles;
+  } catch (e) {
+    if (isAnyEsiError(e)) {
+      logger.warn('ESI is unavailable, attempting to auth anyway...');
+      logger.warn(e);
     } else {
-      return -1;
+      throw e;
     }
-  })
-  .then(() => {
-    return dao.accessToken.upsert(
-        db,
-        charData.id,
-        charTokens.refresh_token,
-        charTokens.access_token,
-        charTokens.expires_in);
-  })
-  .then(() => {
-    if (accountId == null) {
-      logger.info(`  Now logged in as account ${owningAccount}`);
-      return owningAccount;
-    } else {
-      return accountId;
-    }
-  });
+  }
+
+  return charInfo;
 }
 
-function handleUnownedChar(
-    db: Tnex,
-    accountId: number | undefined,
-    charData: CharacterInfo,
-    charTokens: AccessToken) {
-  logger.debug(
-      `  handleUnownedChar for charId=${charData.id}, accountId=${accountId}`);
+async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
+  await dao.character.upsertCharacter(db, {
+    character_id: charInfo.id,
+    character_name: charInfo.name,
+    character_corporationId: charInfo.corporationId || UNKNOWN_CORPORATION_ID,
+    character_roles: charInfo.roles,
+    character_deleted: false,
+    character_titles: null,
+    character_startDate: null,
+    character_logonDate: null,
+    character_logoffDate: null,
+    character_siggyScore: null,
+  }, {
+    character_titles: UpdatePolicy.PRESERVE_EXISTING,
+    character_startDate: UpdatePolicy.PRESERVE_EXISTING,
+    character_logonDate: UpdatePolicy.PRESERVE_EXISTING,
+    character_logoffDate: UpdatePolicy.PRESERVE_EXISTING,
+    character_siggyScore: UpdatePolicy.PRESERVE_EXISTING,
+  });
 
-  if (charData.corporationId == null) {
+  await dao.accessToken.upsert(
+      db,
+      charInfo.id,
+      charInfo.refreshToken,
+      charInfo.scopes.trim().split(' '),
+      charInfo.accessToken,
+      charInfo.accessTokenExpiresIn);
+}
+
+async function authenticateChar(
+    db: Tnex,
+    existingAuthedAccount: number | undefined,
+    authType: AuthType,
+    charInfo: CharacterInfo,
+) {
+  const ownershipData = await dao.character.getOwnershipData(db, charInfo.id);
+  const owningAccount = ownershipData && ownershipData.account_id;
+  const ownerHash = ownershipData && ownershipData.ownership_ownerHash;
+
+  let authedAccount: number;
+
+  if (authType != AuthType.LOG_IN
+      && (charInfo.corporationId == null || charInfo.roles == null)) {
     throw new UserVisibleError(
-        `Corporation lookup failed for new character. ESI is probably `
-        + `experiencing flakiness. Please try again.`);
+        `CCP's servers are misbehaving; please try again.`);
   }
 
-  return db.transaction(db => {
-    return Bluebird.resolve()
-    .then(() => {
-      return createOrUpdateCharacter(db, charData, charTokens);
-    })
-    .then(() => {
-      if (accountId == undefined) {
-        return dao.account.create(db, charData.id)
-        .then(newAccountId => {
-          logger.info('  Created new account with ID:', newAccountId);
-          return newAccountId;
-        })
+  switch (authType) {
+    case AuthType.LOG_IN:
+      if (owningAccount == null) {
+        throw new UserVisibleError(
+            `You must create an account before you log in.`);
+      } else if (ownerHash != null && charInfo.ownerHash != ownerHash) {
+        // Character has changed hands. Refuse auth until they create a new
+        // account / transfer character to existing account.
+        throw new UserVisibleError(
+            `You must create an account before you log in.`);
       } else {
-        return accountId;
+        authedAccount = owningAccount;
       }
-    })
-    .then(finalAccountId => {
-      return dao.ownership.ownCharacter(
-          db,
-          charData.id,
-          finalAccountId,
-          accountId == null /* isMain */)
-      .then(() => finalAccountId);
+      break;
+
+    case AuthType.CREATE_ACCOUNT:
+      if (owningAccount != null) {
+        // TODO: We should support this eventually
+        throw new UserVisibleError(
+            `Cannot create account: this character is already owned by another `
+                + `account`);
+      }
+      authedAccount = await db.asyncTransaction(async db => {
+        // TODO: mainCharacter should really be null when we create an
+        // account...
+        let createdAccountId = await dao.account.create(db, charInfo.id);
+        await dao.ownership.ownCharacter(
+            db, charInfo.id, createdAccountId, charInfo.ownerHash, true);
+        return createdAccountId;
+      });
+      break;
+
+    case AuthType.ADD_CHARACTER:
+      if (existingAuthedAccount == undefined) {
+        throw new UserVisibleError(
+            `You must log in before you can add a character.`);
+      }
+      if (owningAccount == null) {
+        await dao.ownership.ownCharacter(
+            db, charInfo.id, existingAuthedAccount, charInfo.ownerHash, false);
+      } else if (owningAccount != existingAuthedAccount) {
+        await dao.ownership.createPendingOwnership(
+            db, charInfo.id, existingAuthedAccount, charInfo.ownerHash);
+      } else {
+        // Already logged in and account already owns character: do nothing
+      }
+      authedAccount = existingAuthedAccount;
+      break;
+
+    default:
+      throw new Error(`Unknown authType "${authType}".`);
+  }
+
+  return authedAccount;
+}
+
+async function fetchAccessTokens(authCode: string) {
+  const response = await axios.post<AccessTokenResponse>(
+    'https://login.eveonline.com/oauth/token',
+    querystring.stringify({
+      grant_type: 'authorization_code',
+      code: authCode,
+    }), {
+      headers: {
+        'Authorization': 'Basic ' + SSO_AUTH_CODE,
+      },
     });
-  })
-  .then(finalAccountId => {
-    return finalAccountId;
+
+  return response.data;
+}
+
+async function fetchAuthInfo(accessToken: string) {
+  const response = await axios.get<AuthInfoResponse>(
+      'https://login.eveonline.com/oauth/verify', {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken,
+      },
   });
+  return response.data;
 }
 
-function createOrUpdateCharacter(
-    db: Tnex,
-    charData: CharacterInfo,
-    charTokens: AccessToken,
-    ) {
+const SSO_AUTH_CODE =
+      Buffer.from(process.env.SSO_CLIENT_ID + ':' + process.env.SSO_SECRET_KEY)
+          .toString('base64');
 
-  return Bluebird.resolve()
-  .then(() => {
-    return dao.character.getCoreData(db, charData.id)
-    .then(row => {
-      if (row) {
-        return dao.character.updateCharacter(db, charData.id, {
-          character_id: charData.id,
-          character_name: charData.name,
-          character_corporationId: assertHasValue(charData.corporationId),
-        })
-        .then(_ => {});
-      } else {
-        return dao.character.upsertCharacter(db, {
-          character_id: charData.id,
-          character_name: charData.name,
-          character_corporationId: assertHasValue(charData.corporationId),
-          // TODO: Consider moving these to another table
-          character_titles: null,
-          character_startDate: null,
-          character_logonDate: null,
-          character_logoffDate: null,
-          character_siggyScore: null,
-          character_deleted: false,
-        })
-        .then(_ => {});
-      }
-    })
-  })
-  .then(() => {
-    return dao.accessToken.upsert(
-        db,
-        charData.id,
-        charTokens.refresh_token,
-        charTokens.access_token,
-        charTokens.expires_in);
-  })
+interface AccessTokenResponse {
+  access_token: string,
+  token_type: string,
+  refresh_token: string,
+  expires_in: number,
 }
 
-function assertHasValue<T>(value: T | null | undefined) {
-  if (value == null) {
-    throw new Error('Value cannot be null.');
-  }
-  return value;
+interface AuthInfoResponse {
+  CharacterID: number,
+  CharacterName: string,
+  ExpiresOn: string,
+  Scopes: string,
+  TokenType: string,
+  CharacterOwnerHash: string,
+  IntellectualProperty: string,
+}
+
+interface CharacterInfo {
+  id: number,
+  ownerHash: string,
+  name: string,
+  scopes: string,
+
+  accessToken: string,
+  refreshToken: string,
+  accessTokenExpiresIn: number,
+
+  corporationId: number | null,
+  roles: string[] | null,
 }

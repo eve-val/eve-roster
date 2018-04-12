@@ -80,6 +80,7 @@ export default class AccessTokenDao {
       db: Tnex,
       characterId: number,
       refreshToken: string,
+      scopes: string[],
       accessTokenVal: string,
       expiresIn: number,
       ) {
@@ -90,6 +91,7 @@ export default class AccessTokenDao {
       accessToken_accessToken: accessTokenVal,
       accessToken_accessTokenExpires: Date.now() + expiresIn * 1000,
       accessToken_needsUpdate: false,
+      accessToken_scopes: scopes,
     }, 'accessToken_character');
   }
 }
