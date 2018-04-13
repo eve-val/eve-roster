@@ -78,10 +78,6 @@ export class Tnex {
     return new RenamedJoin(table, alias, this._registry);
   }
 
-  public val<T extends ColumnType>(value: T) {
-    return new ValueWrapper(value);
-  }
-
   public insert<T extends object, R extends T = T>(
       table: T, row: R): Bluebird<void>;
   public insert<T extends object, K extends keyof T, R extends T = T>(

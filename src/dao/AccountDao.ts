@@ -73,7 +73,7 @@ export default class AccountDao {
             'account_created',
             'account_mainCharacter',
             )
-        .where('account_id', '=', db.val(accountId))
+        .where('account_id', '=', val(accountId))
         .fetchFirst();
   }
 
@@ -82,7 +82,7 @@ export default class AccountDao {
         .select(account)
         .join(ownership, 'ownership_account', '=', 'account_id')
         .join(character, 'character_id', '=', 'ownership_character')
-        .where('account_id', '=', db.val(accountId))
+        .where('account_id', '=', val(accountId))
         .andWhere('ownership_character', '!=', 'account_mainCharacter')
         .columns(
             'character_id',
@@ -95,7 +95,7 @@ export default class AccountDao {
     return db
         .select(account)
         .join(character, 'character_id', '=', 'account_mainCharacter')
-        .where('account_id', '=', db.val(accountId))
+        .where('account_id', '=', val(accountId))
         .columns('character_id', 'character_name')
         .fetchFirst()
   }
@@ -123,7 +123,7 @@ export default class AccountDao {
   setActiveTimezone(db: Tnex, accountId: number, timezone: string) {
     return db
         .update(account, { account_activeTimezone: timezone })
-        .where('account_id', '=', db.val(accountId))
+        .where('account_id', '=', val(accountId))
         .run();
   }
 
