@@ -1,4 +1,4 @@
-import { val, number, string } from './';
+import { val, integer, varchar } from './';
 import { Tnex } from './Tnex';
 
 // Step 1: Define our table schemas
@@ -7,21 +7,21 @@ import { Tnex } from './Tnex';
 // singletons, so only create one per class!
 
 class CatTable {
-  cat_id = number();
-  cat_name = string();
+  cat_id = integer();
+  cat_name = varchar();
 }
 let catTable = new CatTable();
 
 class DogTable {
-  dog_id = number();
-  dog_name = string();
-  dog_bark_count = number();
+  dog_id = integer();
+  dog_name = varchar();
+  dog_bark_count = integer();
 }
 let dogTable = new DogTable();
 
 class BirdTable {
-  bird_id = number();
-  bird_song = string();
+  bird_id = integer();
+  bird_song = varchar();
 }
 let birdTable = new BirdTable();
 
