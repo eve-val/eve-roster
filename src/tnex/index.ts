@@ -1,8 +1,20 @@
 export { TnexBuilder } from './TnexBuilder';
 
 export { val, ResultOrder } from './core';
-export { Tnex } from './Tnex';
-export { nullable, number, string, boolean, boolinum, enu, json } from './definers';
+export { Tnex, UpdatePolicy, UpdateStrategy } from './Tnex';
+export {
+  nullable,
+  boolean,
+  varchar,
+  text,
+  integer,
+  bigInt,
+  float4,
+  float8,
+  decimal,
+  jsonb,
+  strEnum,
+} from './definers';
 
 export {
   DEFAULT_NUM,
