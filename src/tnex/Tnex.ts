@@ -3,12 +3,13 @@ import { inspect } from 'util';
 import Bluebird = require('bluebird');
 import Knex = require('knex');
 
-import { ValueWrapper, ColumnType, SimpleObj, val } from './core';
+import { SimpleObj, val } from './core';
 import { Scoper } from './Scoper';
 import { Select } from './Select';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
 import { Update } from './Update';
+import { getColumnDescriptor, ColumnDescriptor, DataType } from './definers';
 
 const USE_DEFAULT = {};
 
@@ -184,7 +185,12 @@ export class Tnex {
 
     query.push(`FROM (VALUES`);
 
-    const rowValueClause = `(${ new Array(cols.length).fill('?').join(',') })`;
+    const rowValues: string[] = [];
+    for (let col of cols) {
+      rowValues.push(`?::${getColumnDescriptor(table[col]).cast}`);
+    }
+    const rowValueClause = `(${ rowValues.join(',') })`;
+
     query.push(new Array(rows.length).fill(rowValueClause).join(', '));
     for (let row of rows) {
       for (let col of cols) {
@@ -206,15 +212,7 @@ export class Tnex {
     query.push(`WHERE ??.?? = ??.??`);
     bindings.push(tableName, strippedId, synthTable, strippedId);
 
-    // TODO: node-pg wraps all bound values in quotes (''), which causes
-    // Postgres to reject this query as it thinks we're trying to assign strings
-    // to numerical columns. However, Knex properly binds numerical values,
-    // so rendering to a string and then back to a raw query fixes things.
-    // The "fix" here is to include ::type casts to the VALUES rows.
-    // This requires us to know the exact column type for each column, however.
-    // See https://github.com/tgriesser/knex/issues/1001
-    const rawQuery = this._knex.raw(query.join(' '), bindings);
-    return this._knex.raw(rawQuery.toString());
+    return this._knex.raw(query.join(' '), bindings);
   }
 
   public del<T extends object>(table: T): Query<T, number> {
@@ -395,10 +393,19 @@ export class Tnex {
         throw new Error(
             `Column "${key}" is not defined in table "${tableName}".`)
       }
-      if (row[key] === USE_DEFAULT as any) {
+      let val: T[keyof T] | string = row[key];
+      if (val === USE_DEFAULT as any) {
         continue;
       }
-      out[this._registry.stripPrefix(key)] = row[key];
+
+      // node-pg interprets arrays as Postgres arrays rather than JSON arrays.
+      // In order to get around this, pre-encode into a JSON string.
+      if (val instanceof Array
+          && getColumnDescriptor(table[key]).type == DataType.JSON) {
+        val = JSON.stringify(val);
+      }
+
+      out[this._registry.stripPrefix(key)] = val;
     }
     return out;
   }
