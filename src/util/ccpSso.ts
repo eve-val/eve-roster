@@ -10,7 +10,8 @@ const port = process.env.DOKKU_PROXY_SSL_PORT ||
              process.env.PORT ||
              8081;
 const hostname = process.env.HOSTNAME || 'localhost';
-const protocol = process.env.DOKKU_NGINX_SSL_PORT ? 'https' : 'http';
+const protocol = (process.env.DOKKU_PROXY_SSL_PORT ||
+                  process.env.DOKKU_NGINX_SSL_PORT ) ? 'https' : 'http';
 
 export const LOGIN_PARAMS = querystring.stringify({
   'response_type': 'code',
