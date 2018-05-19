@@ -142,7 +142,7 @@ export default class AccountDao {
           .where('ownership_account', '=', val(accountId))
           .fetchFirst()
       .then(row => {
-        if (row != null && row.ownedCount == 0) {
+        if (row != null && row.ownedCount > 0) {
             return 0; // Not empty, don't delete
         }
 
