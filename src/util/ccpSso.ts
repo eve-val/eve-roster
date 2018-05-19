@@ -1,9 +1,11 @@
 import querystring = require('querystring');
 
-// Use DOKKU_NGINX_PORT because we need the external port for the EVE SSO
-// redirect URL, not the port in the Docker container that the Node server
-// is listening on.
-const port = process.env.DOKKU_NGINX_SSL_PORT ||
+// Use DOKKU_PROXY_SSL_PORT (or similar values) because we need the external
+// port for the EVE SSO redirect URL, not the port in the Docker container
+// that the Node server is listening on.
+const port = process.env.DOKKU_PROXY_SSL_PORT ||
+             process.env.DOKKU_NGINX_SSL_PORT ||
+             process.env.DOKKU_PROXY_PORT ||
              process.env.DOKKU_NGINX_PORT ||
              process.env.PORT ||
              8081;
