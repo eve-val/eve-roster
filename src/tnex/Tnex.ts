@@ -227,62 +227,76 @@ export class Tnex {
   /**
    * Inserts a row if not present, otherwise updates it to new values.
    *
+   * @param updateStrategy For each column, specifies what to do in the case of
+   *   an update.
+   *
    * @returns The number of rows that were created. Computing this number
    *   requires abusing an implementation detail of Postgres; it should only be
    *   used for non-critical code paths such as logging or debugging.
    */
   public upsert<T extends object, R extends T>(
-      table: T, row: R, primaryColumn: keyof T): Bluebird<number> {
-    return this.upsertAll(table, [row], primaryColumn);
+      table: T,
+      row: R,
+      primaryColumn: keyof T,
+      updateStrategy?: UpdateStrategy<Partial<T>>,
+  ): Bluebird<number> {
+    return this.upsertAll(table, [row], primaryColumn, updateStrategy);
   }
 
   /**
    * Upserts all supplied rows.
+   *
+   * @param updateStrategy For each column, specifies what to do in the case of
+   *   an update.
    *
    * @returns The number of rows that were created. Computing this number
    *   requires abusing an implementation detail of Postgres; it should only be
    *   used for non-critical code paths such as logging or debugging.
    */
   public upsertAll<T extends object, R extends T>(
-      table: T, rows: R[], primaryColumn: keyof T): Bluebird<number> {
+      table: T,
+      rows: R[],
+      primaryColumn: keyof T,
+      updateStrategy?: UpdateStrategy<Partial<T>>,
+  ): Bluebird<number> {
     if (rows.length == 0) {
       return Bluebird.resolve(0);
     }
 
     const clientType = (this._rootKnex as any).CLIENT as string;
     const tableName = this._registry.getTableName(table);
-    const strippedPrimary = this._registry.stripPrefix(primaryColumn);
-    const strippedRows = rows.map(row => this._prepForInsert(row, table));
+    const colNames = Object.keys(table) as (keyof T)[];
 
     if (clientType == 'pg') {
-      const strippedCols = Object.keys(strippedRows[0]);
-      const queryArgs = [tableName];
+      const queryArgs: any[] = [tableName];
 
       // Enumerate column names
       const colQs = [];
-      for (let colName of strippedCols) {
+      for (let colName of colNames) {
         colQs.push('??');
-        queryArgs.push(colName);
+        queryArgs.push(this._registry.stripPrefix(colName));
       }
 
       // Enumerate rows to insert
       const rowPattern = '(' + Array(colQs.length).fill('?').join(',') + ')';
       const allRowsPattern = Array(rows.length).fill(rowPattern).join(',');
-      for (let strippedRow of strippedRows) {
-        // Iterate over strippedCols to ensure consistent column order for each
-        // row
-        for (let colName of strippedCols) {
-          queryArgs.push(strippedRow[colName]);
+      for (let row of rows) {
+        // Iterate over colNames to ensure consistent column order for each row
+        for (let colName of colNames) {
+          queryArgs.push(row[colName]);
         }
       }
 
-      queryArgs.push(strippedPrimary);
+      queryArgs.push(this._registry.stripPrefix(primaryColumn));
 
       let updates = [];
-      for (let colName of strippedCols) {
-        if (colName != strippedPrimary) {
+      for (let col of colNames) {
+        if (col != primaryColumn
+            && (updateStrategy == undefined
+                || updateStrategy[col] != UpdatePolicy.PRESERVE_EXISTING)) {
+          const strippedCol = this._registry.stripPrefix(col);
           updates.push(`??=EXCLUDED.??`);
-          queryArgs.push(colName, colName);
+          queryArgs.push(strippedCol, strippedCol);
         }
       }
 
@@ -303,7 +317,6 @@ export class Tnex {
             (accum: number, value: any) => accum + value.count, 0);
       });
     } else {
-      console.log(this._knex);
       throw new Error(`Client not supported: ${clientType}.`);
     }
   }
@@ -413,4 +426,15 @@ export class Tnex {
       return returning.map(col => this._registry.stripPrefix(col));
     }
   }
+}
+
+export enum UpdatePolicy {
+  /** Overwrite any existing value in the column. */
+  OVERWRITE,
+  /** If the row already exists, keep the existing value. */
+  PRESERVE_EXISTING,
+};
+
+export type UpdateStrategy<T extends object> = {
+  [P in keyof T]: UpdatePolicy;
 }
