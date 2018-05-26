@@ -44,9 +44,8 @@ export default class ConfigDao {
   set(db: Tnex, values: Nullable<Partial<ConfigEntries>>) {
     return serialize(Object.keys(values), key => {
       const value = (values as any)[key];
-      let transformedValue = JSON.stringify(value);
       return db
-          .update(config, { config_value: transformedValue })
+          .update(config, { config_value: value })
           .where('config_key', '=', val(key))
           .run()
       .then(updated => {

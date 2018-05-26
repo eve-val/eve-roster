@@ -411,10 +411,10 @@ export class Tnex {
         continue;
       }
 
-      // node-pg interprets arrays as Postgres arrays rather than JSON arrays.
-      // In order to get around this, pre-encode into a JSON string.
-      if (val instanceof Array
-          && getColumnDescriptor(table[key]).type == DataType.JSON) {
+      // node-pg will auto-stringify objects passed to it, but arrays and
+      // primitives don't get encoded properly, so we just stringify everything
+      // here.
+      if (getColumnDescriptor(table[key]).type == DataType.JSON) {
         val = JSON.stringify(val);
       }
 
