@@ -203,7 +203,7 @@ class ArraySchema extends Schema {
   constructor(
       private _subSchema: Schema,
       ) {
-    super('string');
+    super('object');
   }
 
   verify(value: any, path: string[]) {
