@@ -68,9 +68,8 @@ function getGroupsDerivedFromCharacters(db: Tnex, accountId: number) {
         (ownsAffiliatedChar, row) => {
           return Promise.resolve()
           .then(() => {
-            let titles: string[] = JSON.parse(row.character_titles || '[]');
             return dao.group.getTitleDerivedGroups(
-                db, row.character_corporationId, titles)
+                db, row.character_corporationId, row.character_titles || []);
           })
           .then(groupsFromTitles => {
             groups.push(...groupsFromTitles);

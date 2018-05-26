@@ -2,7 +2,7 @@
  * Fetches rosters of all member corps and updates roster data as appropriate.
  * Also grants/revokes all title- and membership-derived groups for all
  * accounts.
- * 
+ *
  * This script can be run from the command line:
  * `$ node src/cron/syncRoster.js`
  */
@@ -134,7 +134,7 @@ function parseAndStoreXml(
       character_id: characterId,
       character_name: member.$.name,
       character_corporationId: corpId,
-      character_titles: titles != null ? JSON.stringify(titles) : null,
+      character_titles: titles,
       character_startDate: moment(member.$.startDateTime + '+00').valueOf(),
       character_logonDate: moment(member.$.logonDateTime + '+00').valueOf(),
       character_logoffDate: moment(member.$.logoffDateTime + '+00').valueOf(),

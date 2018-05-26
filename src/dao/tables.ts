@@ -45,7 +45,7 @@ export class Character {
   character_id = integer();
   character_name = varchar();
   character_corporationId = integer();
-  character_titles = nullable(text());
+  character_titles = nullable(jsonb<string[]>());
   character_startDate = nullable(bigInt());
   character_logonDate = nullable(bigInt());
   character_logoffDate = nullable(bigInt());
