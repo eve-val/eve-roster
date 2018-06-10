@@ -212,8 +212,7 @@ function getJsonForCharacter(
 
   if (row.memberCorporation_membership == 'full'
       || row.memberCorporation_membership == 'affiliated') {
-    let titles: string[] = JSON.parse(row.character_titles || '[]');
-    if (titles.length == 0) {
+    if (row.character_titles == null || row.character_titles.length == 0) {
       if (status == 'main') {
         addAlert(obj, alert.LEVEL_ERROR, 'Main does not have roles.');
       } else if (status == 'alt') {

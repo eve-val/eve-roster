@@ -16,7 +16,7 @@ export interface BasicRosterCharacter {
   character_logonDate: number | null,
   character_logoffDate: number | null,
   character_siggyScore: number | null,
-  character_titles: string | null,
+  character_titles: string[] | null,
   cstats_killsInLastMonth: number | null,
   cstats_killValueInLastMonth: number | null,
   cstats_lossesInLastMonth: number | null,
