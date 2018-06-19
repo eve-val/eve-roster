@@ -5,6 +5,7 @@ import util = require('util');
 import { splitColumn } from './core';
 import { Tnex } from './Tnex';
 import { Scoper } from './Scoper';
+import { ColumnDescriptorImpl } from './ColumnDescriptor';
 
 export class TnexBuilder {
   private _separator: string;
@@ -43,8 +44,15 @@ export class TnexBuilder {
     }
 
     let tablePrefix: string | null = null;
-    for (let p in table) {
-      let [prefix] = splitColumn(p, this._separator);
+    for (let [prop, value] of Object.entries(table)) {
+      if (!(value instanceof ColumnDescriptorImpl)) {
+        throw new Error(`Property "${prop}" in table "${tableName}" is not a`
+            + ` ColumnDescriptor.`);
+      }
+
+      let [prefix, name] = splitColumn(prop, this._separator);
+      value.prefixedName = prop;
+      value.unprefixedName = name;
 
       if (tablePrefix == null) {
         tablePrefix = prefix;
@@ -52,7 +60,7 @@ export class TnexBuilder {
         if (prefix != tablePrefix) {
           throw new Error(
               `Inconsistent prefixing in table "${tableName}".`
-                  + ` Column "${p}" doesn't match inferred prefix`
+                  + ` Column "${prop}" doesn't match inferred prefix`
                   + ` "${tablePrefix}".`);
         }
       }
@@ -64,7 +72,7 @@ export class TnexBuilder {
     this._registeredNames.add(tableName);
     this._tableToName.set(table, tableName);
     this._prefixToName.set(tablePrefix, tableName);
-    
+
     return table;
   }
 
