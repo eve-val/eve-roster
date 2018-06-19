@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 import Knex = require('knex');
 
-import { ColumnType, Comparison, ValueWrapper } from './core';
+import { ColumnType, Comparison, ValueWrapper, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
 
 
@@ -26,7 +26,7 @@ export class Query<T extends object, R /* return type */> {
    * knex handles value bindings in its generated queries.
    */
 
-  public where<K1 extends keyof T, K2 extends keyof T>(
+  public where<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
       column: K1,
       cmp: Comparison,
       right: K2 | ValueWrapper<T[K1] & ColumnType>,
@@ -52,7 +52,7 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
-  public andWhere<K1 extends keyof T, K2 extends keyof T>(
+  public andWhere<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
       column: K1,
       cmp: Comparison,
       right: K2 | ValueWrapper<T[K1] & ColumnType>,
@@ -63,7 +63,7 @@ export class Query<T extends object, R /* return type */> {
     return this.where(column, cmp, right);
   }
 
-  public orWhere<K1 extends keyof T, K2 extends keyof T>(
+  public orWhere<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
       column: K1,
       cmp: Comparison,
       right: K2 | ValueWrapper<T[K1] & ColumnType>,
@@ -80,21 +80,21 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
-  public whereNotNull(column: keyof T): this {
+  public whereNotNull(column: StringKeyOf<T>): this {
     this._query = this._query
         .whereNotNull(this._scoper.scopeColumn(column));
 
     return this;
   }
 
-  public whereNull(column: keyof T): this {
+  public whereNull(column: StringKeyOf<T>): this {
     this._query = this._query
         .whereNull(this._scoper.scopeColumn(column));
 
     return this;
   }
 
-  public whereIn<K extends keyof T>(
+  public whereIn<K extends StringKeyOf<T>>(
       column: K, values: T[K][] & ColumnType[]): this {
     this._query = this._query
         .whereIn(this._scoper.scopeColumn(column), values);

@@ -17,6 +17,16 @@ export type Link<T, K extends keyof T, L extends string> = {
   [P in L]: T[K]
 };
 
+/**
+ * All of the string keys of a type. Essentially `keyof <type>` but only
+ * includes the string keys.
+ *
+ * Since TS 2.9, `keyof <type>` has a type of `string | number | Symbol`. Tnex
+ * only works on string properties; this allows those functions to restrict
+ * their parameters to only accept string properties.
+ */
+export type StringKeyOf<T> = Extract<keyof T, string>;
+
 export type SimpleObj = {
   [key: string]: any
 };
