@@ -1,7 +1,7 @@
 import Knex = require('knex');
 import Promise = require('bluebird');
 
-import { Comparison, Link, Nullable } from './core';
+import { Comparison, Link, Nullable, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
@@ -63,7 +63,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     });
   }
 
-  public columns<K extends keyof J>(...columns: K[])
+  public columns<K extends StringKeyOf<J>>(...columns: K[])
       : Select<J, S & Pick<J, K>> {
     if (this._subqueryTableName != null) {
       throw new Error(
@@ -88,8 +88,10 @@ export class Select<J extends object /* joined */, S /* selected */>
    * @param column The column to select.
    * @param alias The desired name of the column in the result set.
    */
-  public columnAs<K extends keyof J, L extends string>(column: K, alias: L)
-      : Select<J, S & Link<J, K, L>> {
+  public columnAs<K extends StringKeyOf<J>, L extends string>(
+      column: K,
+      alias: L,
+  ): Select<J, S & Link<J, K, L>> {
     this._pendingSelectedColumns.push({ column, alias });
 
     return this as any;
@@ -103,23 +105,23 @@ export class Select<J extends object /* joined */, S /* selected */>
   // Subjoin
   public join<T extends object, E>(
       subselect: Select<T, E>,
-      left: keyof E,
+      left: StringKeyOf<E>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
       ): Select<J & E, S>;
   // Renamed join
   public join<T extends object, E>(
       renamedTable: RenamedJoin<T, E>,
-      left: keyof E,
+      left: StringKeyOf<E>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
       ): Select<J & E, S>;
   // Normal join
   public join<T extends object>(
       table: T,
-      left: keyof T,
+      left: StringKeyOf<T>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
   ): Select<J & T, S>;
   // Implementation
   public join(
@@ -155,23 +157,23 @@ export class Select<J extends object /* joined */, S /* selected */>
   // Subselect
   public leftJoin<T extends object, E>(
       sub: Select<T, E>,
-      left: keyof E,
+      left: StringKeyOf<E>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
       ): Select<J & Nullable<E>, S>;
   // Renamed join
   public leftJoin<T extends object, E>(
       join: RenamedJoin<T, E>,
-      left: keyof E,
+      left: StringKeyOf<E>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
       ): Select<J & Nullable<E>, S>;
   // Normal
   public leftJoin<T extends object>(
       table: T,
-      left: keyof T,
+      left: StringKeyOf<T>,
       cmp: Comparison,
-      right: keyof J,
+      right: StringKeyOf<J>,
       ): Select<J & Nullable<T>, S>;
   // Implementation
   public leftJoin(
@@ -233,7 +235,7 @@ export class Select<J extends object /* joined */, S /* selected */>
    * Not comprehensive. Add as necessary.
    */
 
-  public sum<K extends keyof J, L extends string>(
+  public sum<K extends StringKeyOf<J>, L extends string>(
       column: K,
       alias: L,
       ): Select<J, S & Link<J, K, L>> {
@@ -242,7 +244,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     return this as any;
   }
 
-  public count<K extends keyof J, L extends string>(
+  public count<K extends StringKeyOf<J>, L extends string>(
       column: K,
       alias: L,
       ): Select<J, S & Link<J, K, L>> {
@@ -253,7 +255,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     return this as any;
   }
 
-  public max<K extends keyof J, L extends string>(
+  public max<K extends StringKeyOf<J>, L extends string>(
       column: K,
       alias: L,
       ): Select<J, S & Link<J, K, L>> {
@@ -267,12 +269,12 @@ export class Select<J extends object /* joined */, S /* selected */>
    * Misc methods
    */
 
-  public groupBy(column: keyof J): this {
+  public groupBy(column: StringKeyOf<J>): this {
     this._query = this._query.groupBy(this._scoper.scopeColumn(column));
     return this;
   }
 
-  public distinct(column: keyof J): this {
+  public distinct(column: StringKeyOf<J>): this {
     this._query = this._query.distinct(this._scoper.scopeColumn(column));
     return this;
   }
@@ -287,7 +289,9 @@ export class Select<J extends object /* joined */, S /* selected */>
    *
    * This is a Postgres-only extension.
    */
-  public distinctOn<K extends keyof J>(column: K): Select<J, S & Pick<J, K>> {
+  public distinctOn<K extends StringKeyOf<J>>(
+      column: K,
+  ): Select<J, S & Pick<J, K>> {
     const scopedCol = this._scoper.scopeColumn(column);
     this._query = this._query.distinct(
         this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column]));
@@ -299,7 +303,7 @@ export class Select<J extends object /* joined */, S /* selected */>
    * Orders the results by the specified column and direction. Subsequent calls
    * append order clauses (instead of replacing the previous ones).
    */
-  public orderBy(column: keyof J, direction: 'asc' | 'desc'): this {
+  public orderBy(column: StringKeyOf<J>, direction: 'asc' | 'desc'): this {
     this._query = this._query.orderBy(
         this._scoper.scopeColumn(column), direction);
     return this;

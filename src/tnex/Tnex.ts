@@ -3,7 +3,7 @@ import { inspect } from 'util';
 import Bluebird = require('bluebird');
 import Knex = require('knex');
 
-import { SimpleObj, val } from './core';
+import { SimpleObj, val, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
 import { Select } from './Select';
 import { Query } from './Query';
@@ -141,7 +141,7 @@ export class Tnex {
    * Updates multiple rows at once. Rows must have a unique ID column (as
    * specified in the `idColumn` parameter).
    */
-  public updateAll<T extends object, K extends keyof T>(
+  public updateAll<T extends object, K extends StringKeyOf<T>>(
       table: T,
       idColumn: K,
       rows: Array<Partial<T> & Pick<T, K>>,
@@ -161,7 +161,7 @@ export class Tnex {
 
     const query: string[] = [];
     const bindings: string[] = [];
-    const cols: (keyof T)[] = [idColumn];
+    const cols: StringKeyOf<T>[] = [idColumn];
 
     query.push(`UPDATE ?? SET`);
     bindings.push(tableName);
@@ -235,7 +235,7 @@ export class Tnex {
   public upsert<T extends object, R extends T>(
       table: T,
       row: R,
-      primaryColumn: keyof T,
+      primaryColumn: StringKeyOf<T>,
       updateStrategy?: UpdateStrategy<Partial<T>>,
   ): Bluebird<number> {
     return this.upsertAll(table, [row], primaryColumn, updateStrategy);
@@ -254,7 +254,7 @@ export class Tnex {
   public upsertAll<T extends object, R extends T>(
       table: T,
       rows: R[],
-      primaryColumn: keyof T,
+      primaryColumn: StringKeyOf<T>,
       updateStrategy?: UpdateStrategy<Partial<T>>,
   ): Bluebird<number> {
     if (rows.length == 0) {
@@ -263,7 +263,7 @@ export class Tnex {
 
     const clientType = (this._rootKnex as any).CLIENT as string;
     const tableName = this._registry.getTableName(table);
-    const colNames = Object.keys(table) as (keyof T)[];
+    const colNames = Object.keys(table) as StringKeyOf<T>[];
 
     if (clientType == 'pg') {
       const queryArgs: any[] = [tableName];
@@ -333,7 +333,7 @@ export class Tnex {
   // TODO: add "primary" or "principle" column annotations to Tnex so that we
   // don't have to ask what the important column in question is -- and, more
   // importantly, so we can enforce that there's only one per table.
-  public replace<T extends object, K extends keyof T>(
+  public replace<T extends object, K extends StringKeyOf<T>>(
       table: T,
       sharedColumn: K,
       sharedColumnValue: T[K] & number,

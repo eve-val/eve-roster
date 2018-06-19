@@ -9,7 +9,7 @@ export function pluck<T, K extends keyof T>(
     list: T[],
     property: K,
     ): Array<T[K]> {
-  return _.pluck(list, property);
+  return _.pluck(list, property as string);
 }
 
 export function findWhere<T>(list: T[], properties: Partial<T>): T | undefined {
