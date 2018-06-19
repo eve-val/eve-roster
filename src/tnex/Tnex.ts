@@ -9,7 +9,7 @@ import { Select } from './Select';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
 import { Update } from './Update';
-import { getColumnDescriptor, ColumnDescriptor, DataType } from './definers';
+import { getColumnDescriptors, ColumnDescriptor, DataType } from './ColumnDescriptor';
 
 const USE_DEFAULT = {};
 
@@ -98,7 +98,7 @@ export class Tnex {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
-            this._prepForInsert(row, table),
+            this._prepRowForInsert(row, table),
             this._prepReturningKeys(returning))
         .then(rows => {
           return rows[0];
@@ -113,7 +113,7 @@ export class Tnex {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
-            rows.map(row => this._prepForInsert(row, table)),
+            rows.map(row => this._prepRowForInsert(row, table)),
             this._prepReturningKeys(returning));
   }
 
@@ -124,7 +124,7 @@ export class Tnex {
       ): Bluebird<number[]> {
     return this._knex.batchInsert(
         this._registry.getTableName(table),
-        rows.map(row => this._prepForInsert(row, table)),
+        rows.map(row => this._prepRowForInsert(row, table)),
         chunkSize as any, // bug in typings doesn't allow undef
         );
   }
@@ -134,7 +134,7 @@ export class Tnex {
     values: Partial<T>,
   ): Update<T, {}> {
     return new Update(
-        this._knex, this._registry, table, this._prepForInsert(values, table));
+        this._knex, this._registry, table, this._prepRowForInsert(values, table));
   }
 
   /**
@@ -148,65 +148,64 @@ export class Tnex {
   ) {
     // Query structure:
     // UPDATE tableName SET
-    //     tableName.col1 = _synthTable.col1,
-    //     tableName.col2 = _synthTable.col2,
+    //     col1 = _synthTable.col1,
+    //     col2 = _synthTable.col2,
     //     ...
-    // FROM (VALUES (col1_value, col2_value, ...), ...))
+    // FROM (VALUES (col1_value::type, col2_value::type, ...), ...))
     // AS _synthTable(col1, col2, ...)
     // WHERE _synthTable.idCol = tableName.idCol
+
+    if (rows.length == 0) {
+      throw new Error(`rows cannot be empty.`);
+    }
 
     const tableName = this._registry.getTableName(table);
     const strippedId = this._registry.stripPrefix(idColumn);
     const synthTable = `__updatesFor_${tableName}`;
+    const columns = getColumnDescriptors(table)
+        .filter(col => rows[0].hasOwnProperty(col.prefixedName));
 
     const query: string[] = [];
-    const bindings: string[] = [];
-    const cols: StringKeyOf<T>[] = [idColumn];
+    const bindings: any[] = [];
 
     query.push(`UPDATE ?? SET`);
     bindings.push(tableName);
 
     const assignmentClause: string[] = [];
-    for (let v in rows[0]) {
-      if (!table.hasOwnProperty(v)) {
-        throw new Error(`Table ${tableName} doesn't have a column named ${v}.`);
-      }
-      if (v == idColumn) {
+    for (let col of columns) {
+      if (col.prefixedName == idColumn) {
         continue;
       }
-      cols.push(v as any);
-
-      const stripped = this._registry.stripPrefix(v);
-
       assignmentClause.push(`?? = ??.??`);
-      bindings.push(stripped, synthTable, stripped);
+      bindings.push(col.unprefixedName, synthTable, col.unprefixedName);
     }
     query.push(assignmentClause.join(', '));
 
     query.push(`FROM (VALUES`);
 
     const rowValues: string[] = [];
-    for (let col of cols) {
-      rowValues.push(`?::${getColumnDescriptor(table[col]).cast}`);
+    for (let col of columns) {
+      rowValues.push(`?::${col.cast}`);
     }
     const rowValueClause = `(${ rowValues.join(',') })`;
 
-    query.push(new Array(rows.length).fill(rowValueClause).join(', '));
+    query.push(repeat(rowValueClause, ', ', rows.length));
     for (let row of rows) {
-      for (let col of cols) {
-        const val = (row as any)[col];
+      for (let col of columns) {
+        const val = row[col.prefixedName];
         if (val == undefined) {
-          throw new Error(`Column ${col} is undefined in row ${inspect(row)}.`);
+          throw new Error(`Column ${col.prefixedName} is undefined in row`
+              + ` ${inspect(row)}.`);
         }
-        bindings.push(val);
+        bindings.push(prepValueForInsert(val, col));
       }
     }
     query.push(')');
 
     query.push(`AS ??(`);
     bindings.push(synthTable);
-    query.push(new Array(cols.length).fill('??').join(','))
-    bindings.push(...cols.map(col => this._registry.stripPrefix(col)));
+    query.push(repeat('??', ', ', columns.length));
+    bindings.push(...columns.map(col => col.unprefixedName));
     query.push(')');
 
     query.push(`WHERE ??.?? = ??.??`);
@@ -263,38 +262,38 @@ export class Tnex {
 
     const clientType = (this._rootKnex as any).CLIENT as string;
     const tableName = this._registry.getTableName(table);
-    const colNames = Object.keys(table) as StringKeyOf<T>[];
+    const columns = getColumnDescriptors(table);
 
     if (clientType == 'pg') {
-      const queryArgs: any[] = [tableName];
+      const bindings: any[] = [tableName];
 
       // Enumerate column names
       const colQs = [];
-      for (let colName of colNames) {
+      for (let col of columns) {
         colQs.push('??');
-        queryArgs.push(this._registry.stripPrefix(colName));
+        bindings.push(col.unprefixedName);
       }
 
       // Enumerate rows to insert
-      const rowPattern = '(' + Array(colQs.length).fill('?').join(',') + ')';
-      const allRowsPattern = Array(rows.length).fill(rowPattern).join(',');
+      const rowPattern = '(' + repeat('?', ',', colQs.length) + ')';
+      const allRowsPattern = repeat(rowPattern, ',', rows.length);
       for (let row of rows) {
         // Iterate over colNames to ensure consistent column order for each row
-        for (let colName of colNames) {
-          queryArgs.push(row[colName]);
+        for (let col of columns) {
+          bindings.push(prepValueForInsert(row[col.prefixedName], col));
         }
       }
 
-      queryArgs.push(this._registry.stripPrefix(primaryColumn));
+      bindings.push(this._registry.stripPrefix(primaryColumn));
 
       let updates = [];
-      for (let col of colNames) {
-        if (col != primaryColumn
+      for (let col of columns) {
+        if (col.prefixedName != primaryColumn
             && (updateStrategy == undefined
-                || updateStrategy[col] != UpdatePolicy.PRESERVE_EXISTING)) {
-          const strippedCol = this._registry.stripPrefix(col);
+                || updateStrategy[col.prefixedName]
+                    != UpdatePolicy.PRESERVE_EXISTING)) {
           updates.push(`??=EXCLUDED.??`);
-          queryArgs.push(strippedCol, strippedCol);
+          bindings.push(col.unprefixedName, col.unprefixedName);
         }
       }
 
@@ -309,7 +308,7 @@ export class Tnex {
           SET ${updates.join(',')}
           RETURNING CASE WHEN xmax::text::int > 0 THEN 0 ELSE 1 END AS count`;
 
-      return this._knex.raw(query, queryArgs)
+      return this._knex.raw(query, bindings)
       .then(response => {
         return response.rows.reduce(
             (accum: number, value: any) => accum + value.count, 0);
@@ -397,28 +396,14 @@ export class Tnex {
     return this._knex != this._rootKnex;
   }
 
-  private _prepForInsert<T extends object>(row: T, table: T): SimpleObj {
-    let tableName = this._registry.getTableName(table);
-
+  private _prepRowForInsert<T extends object>(row: T, table: T): SimpleObj {
     let out = {} as SimpleObj;
-    for (let key in row) {
-      if (!table.hasOwnProperty(key)) {
-        throw new Error(
-            `Column "${key}" is not defined in table "${tableName}".`)
-      }
-      let val: T[keyof T] | string = row[key];
+    for (let col of getColumnDescriptors(table)) {
+      const val = row[col.prefixedName];
       if (val === USE_DEFAULT as any) {
         continue;
       }
-
-      // node-pg will auto-stringify objects passed to it, but arrays and
-      // primitives don't get encoded properly, so we just stringify everything
-      // here.
-      if (getColumnDescriptor(table[key]).type == DataType.JSON) {
-        val = JSON.stringify(val);
-      }
-
-      out[this._registry.stripPrefix(key)] = val;
+      out[col.unprefixedName] = prepValueForInsert(val, col);
     }
     return out;
   }
@@ -432,6 +417,31 @@ export class Tnex {
     } else {
       return returning.map(col => this._registry.stripPrefix(col));
     }
+  }
+}
+
+function repeat(str: string, separator: string, count: number) {
+  let out = '';
+  for (let i = 0; i < count; i++) {
+    out += str;
+    if (i != count - 1) {
+      out += separator;
+    }
+  }
+  return out;
+}
+
+function prepValueForInsert<T extends object>(
+    value: any,
+    column: ColumnDescriptor<T>,
+) {
+  if (column.type == DataType.JSON) {
+    // node-pg will auto-stringify objects passed to it, but arrays and
+    // primitives don't get encoded properly, so we just stringify everything
+    // here.
+    return JSON.stringify(value);
+  } else {
+    return value;
   }
 }
 
