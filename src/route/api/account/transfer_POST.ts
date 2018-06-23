@@ -43,7 +43,8 @@ export default jsonEndpoint((req, res, db, account, privs) => {
         }
       })
       .then(() => {
-        return dao.ownership.ownCharacter(db, charId, newAccountId, false);
+        return dao.ownership.ownCharacter(
+            db, charId, newAccountId, row.pendingOwnership_ownerHash, false);
       })
       .then(() => {
         return dao.ownership.deletePendingOwnership(db, newAccountId, charId);

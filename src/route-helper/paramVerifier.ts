@@ -18,6 +18,11 @@ export function idParam(req: express.Request, key: string): number {
   return parseInt(strParam);
 }
 
+export function stringQuery(
+    req: express.Request, key: string): string | undefined {
+  return req.query[key];
+}
+
 export function boolQuery(
     req: express.Request, key: string): boolean | undefined {
   if (req.query[key] == undefined) {

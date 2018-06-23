@@ -140,6 +140,7 @@ function parseAndStoreXml(
       character_logoffDate: moment(member.$.logoffDateTime + '+00').valueOf(),
       character_siggyScore: DEFAULT_NUM,
       character_deleted: false,
+      character_roles: [],
     })
     .then(() => {
       return characterId;

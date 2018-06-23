@@ -11,6 +11,7 @@ export class AccessToken {
   accessToken_accessToken = varchar();
   accessToken_accessTokenExpires = bigInt();
   accessToken_needsUpdate = boolean();
+  accessToken_scopes = jsonb<string[]>();
 }
 export const accessToken = tables.register(new AccessToken());
 
@@ -45,6 +46,7 @@ export class Character {
   character_id = integer();
   character_name = varchar();
   character_corporationId = integer();
+  character_roles = nullable(jsonb<string[]>());
   character_titles = nullable(jsonb<string[]>());
   character_startDate = nullable(bigInt());
   character_logonDate = nullable(bigInt());
@@ -179,12 +181,14 @@ export class Ownership {
   ownership_character = integer();
   ownership_account = integer();
   ownership_opsec = boolean();
+  ownership_ownerHash = nullable(text());
 }
 export const ownership = tables.register(new Ownership());
 
 export class PendingOwnership {
   pendingOwnership_character = integer();
   pendingOwnership_account = integer();
+  pendingOwnership_ownerHash = text();
 }
 export const pendingOwnership = tables.register(new PendingOwnership());
 

@@ -11,12 +11,18 @@ export default class OwnershipDao {
       ) {}
 
   ownCharacter(
-      db: Tnex, characterId: number, accountId: number, isMain: boolean) {
+      db: Tnex,
+      characterId: number,
+      accountId: number,
+      ownerHash: string,
+      isMain: boolean,
+  ) {
     return db.transaction(db => {
       return db
           .insert(ownership, {
             ownership_account: accountId,
             ownership_character: characterId,
+            ownership_ownerHash: ownerHash,
             ownership_opsec: false,
           })
       .then(() => {
@@ -69,11 +75,13 @@ export default class OwnershipDao {
     });
   }
 
-  createPendingOwnership(db: Tnex, characterId: number, accountId: number) {
+  createPendingOwnership(
+      db: Tnex, characterId: number, accountId: number, ownerHash: string) {
     return db
         .upsert(pendingOwnership, {
           pendingOwnership_character: characterId,
           pendingOwnership_account: accountId,
+          pendingOwnership_ownerHash: ownerHash,
         }, 'pendingOwnership_character');
   }
 
@@ -84,7 +92,7 @@ export default class OwnershipDao {
             'ownership_character', '=', 'pendingOwnership_character')
         .where('pendingOwnership_account', '=', val(account))
         .andWhere('pendingOwnership_character', '=', val(character))
-        .columns('ownership_account')
+        .columns('ownership_account', 'pendingOwnership_ownerHash')
         .fetchFirst();
   }
 

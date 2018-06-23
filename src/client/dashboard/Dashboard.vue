@@ -32,7 +32,8 @@
           />
       <div class="add-character" v-if="loginParams">
         <a class="add-character-link"
-            :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+            :href="'https://login.eveonline.com/oauth/authorize'
+                + '?state=addCharacter&' + loginParams"
             >＋ Add a character</a>
         </div>
     </div>

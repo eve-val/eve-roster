@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 
 import { Dao } from '../dao';
-import { Tnex, val } from '../tnex';
+import { Tnex, val, UpdateStrategy } from '../tnex';
 import {
     accessToken,
     account,
@@ -77,7 +77,20 @@ export default class CharacterDao {
         .columns(
             'account_id',
             'character_corporationId',
-            'memberCorporation_membership'
+            'memberCorporation_membership',
+            )
+        .fetchFirst();
+  }
+
+  getOwnershipData(db: Tnex, characterId: number) {
+    return db
+        .select(character)
+        .leftJoin(ownership, 'ownership_character', '=', 'character_id')
+        .leftJoin(account, 'account_id', '=', 'ownership_account')
+        .where('character_id', '=', val(characterId))
+        .columns(
+            'account_id',
+            'ownership_ownerHash'
             )
         .fetchFirst();
   }
@@ -112,8 +125,12 @@ export default class CharacterDao {
       .fetchFirst()
   }
 
-  upsertCharacter(db: Tnex, upserted: Character) {
-    return db.upsert(character, upserted, 'character_id');
+  upsertCharacter(
+      db: Tnex,
+      upserted: Character,
+      strategy?: UpdateStrategy<Partial<Character>>,
+  ) {
+    return db.upsert(character, upserted, 'character_id', strategy);
   }
 
   updateCharacter(db: Tnex, id: number, values: Partial<Character>) {
