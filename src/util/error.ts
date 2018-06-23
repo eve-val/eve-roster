@@ -1,6 +1,7 @@
-import { ESIError, ErrorName, isESIError } from 'eve-swagger';
+import { ESIError } from 'eve-swagger';
 import { EsiErrorCompat } from '../eve/esi/EsiErrorCompat';
 import { EsiError, EsiErrorKind } from '../eve/esi/EsiError';
+import { VError } from 'verror';
 
 export function isAnyEsiError(error: any): error is EsiError {
   return error instanceof ESIError || error instanceof EsiErrorCompat;
@@ -15,4 +16,12 @@ export function isMissingCharError(error: any): error is EsiError {
       && (error.kind == EsiErrorKind.NOT_FOUND_ERROR
           || (error.info.response != undefined
               && error.info.response.status == 410));
+}
+
+export function printError(e: any) {
+  if (isAnyEsiError(e)) {
+    return VError.fullStack(e);
+  } else {
+    return e.toString();
+  }
 }

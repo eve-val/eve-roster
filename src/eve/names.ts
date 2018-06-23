@@ -9,18 +9,19 @@ const NAME_CACHE = new Map<number, string>();
  * etc.). These names are cached indefinitely; subsequent queries will be
  * returned from the cache.
  */
-export async function fetchEveNames(ids: Set<number | nil>) {
-  ids.delete(null);
-  ids.delete(undefined);
-
+export async function fetchEveNames(ids: Iterable<number | nil>) {
   const idMap: SimpleNumMap<string> = {};
   let unresolvedIds: number[] = [];
   for (let id of ids) {
-    let name = NAME_CACHE.get(id!);
+    if (id == undefined) {
+      continue;
+    }
+
+    let name = NAME_CACHE.get(id);
     if (name == undefined) {
-      unresolvedIds.push(id!);
+      unresolvedIds.push(id);
     } else {
-      idMap[id!] = name;
+      idMap[id] = name;
     }
   }
 

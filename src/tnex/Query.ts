@@ -1,7 +1,7 @@
 import Promise = require('bluebird');
 import Knex = require('knex');
 
-import { ColumnType, Comparison, ValueWrapper, StringKeyOf } from './core';
+import { ColumnType, Comparison, ValueWrapper, StringKeyOf, DeepPartial, } from './core';
 import { Scoper } from './Scoper';
 
 
@@ -94,10 +94,49 @@ export class Query<T extends object, R /* return type */> {
     return this;
   }
 
+  public orWhereNull(column: StringKeyOf<T>): this {
+    this._query = this._query
+        .orWhereNull(this._scoper.scopeColumn(column));
+
+    return this;
+  }
+
   public whereIn<K extends StringKeyOf<T>>(
       column: K, values: T[K][] & ColumnType[]): this {
     this._query = this._query
         .whereIn(this._scoper.scopeColumn(column), values);
+
+    return this;
+  }
+
+    /**
+   * Variant for matching against jsonb columns.
+   */
+  public whereContains<K1 extends StringKeyOf<T>>(
+      column: K1,
+      operator: '@>',
+      json: DeepPartial<T[K1]> & object,
+  ) {
+    let rawLeft = this._scoper.scopeColumn(column);
+    let rawRight = JSON.stringify(json);
+
+    this._query =
+        this._query.whereRaw(`?? ${operator} ?::jsonb`, [rawLeft, rawRight]);
+
+    return this;
+  }
+
+  public whereNotContains<K1 extends StringKeyOf<T>>(
+    column: K1,
+    operator: '@>',
+    json: DeepPartial<T[K1]> & object,
+  ) {
+    let rawLeft = this._scoper.scopeColumn(column);
+    let rawRight = JSON.stringify(json);
+
+    this._query =
+        this._query.whereRaw(
+            `NOT ?? ${operator} ?::jsonb`, [rawLeft, rawRight]);
 
     return this;
   }
