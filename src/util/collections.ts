@@ -1,0 +1,35 @@
+
+/**
+ * Transforms an array of objects into a map of those objects. Each object's
+ * key is its value of the specified "key property".
+ */
+export function arrayToMap<T, K extends keyof T>(array: T[], key: K) {
+  const map = new Map<T[K], T>();
+  for (let item of array) {
+    map.set(item[key], item);
+  }
+  return map;
+}
+
+/**
+ * Transforms an array into another array, removing any nil values.
+ *
+ * @param array The array to transform.
+ * @param callback The transformation function, which converts items from the
+ *    source array into items of the output array. nil return values are
+ *    ignored.
+ */
+export function refine<Q, R>(
+  array: Q[],
+  callback: (value: Q) => R | undefined | null,
+) {
+  const len = array.length;
+  const out: R[] = [];
+  for (let i = 0; i < len; i++) {
+    const refined = callback(array[i]);
+    if (refined != undefined) {
+      out.push(refined);
+    }
+  }
+  return out;
+}

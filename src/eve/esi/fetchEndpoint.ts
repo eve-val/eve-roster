@@ -172,4 +172,5 @@ function logPathWarning(path: string, tag: string, message: string) {
   }
 }
 
-const BASE_URL = 'https://esi.tech.ccp.is';
+const BASE_URL = 'https://esi.evetech.net';
+

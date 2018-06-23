@@ -1,216 +1,206 @@
-/**
- * Fetches rosters of all member corps and updates roster data as appropriate.
- * Also grants/revokes all title- and membership-derived groups for all
- * accounts.
- *
- * This script can be run from the command line:
- * `$ node src/cron/syncRoster.js`
- */
-import querystring = require('querystring');
-import util = require('util');
-
-import Promise = require('bluebird');
-import axios from 'axios';
+import Bluebird = require('bluebird');
 import moment = require('moment');
-import xml2js = require('xml2js');
 
-import { Tnex, DEFAULT_NUM } from '../../tnex';
+import { Tnex, val, UpdatePolicy } from '../../tnex';
+import { character, accessToken, Character } from '../../dao/tables';
+import { getAccessToken } from '../../data-source/accessToken';
 import { dao } from '../../dao';
-import { MemberCorporation } from '../../dao/tables';
-import { serialize, parallelize } from '../../util/asyncUtil';
-import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
-import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
+import { arrayToMap, refine } from '../../util/collections';
 import { JobTracker } from '../Job';
-
-import swagger from '../../swagger';
-
-const logger = require('../../util/logger')(__filename);
-
-
-type Xml = any;
-
-export function syncRoster(db: Tnex, job: JobTracker): Promise<void> {
-  return updateAllCorporations(db, job)
-  .then(processedIds => updateOrphanedOrUnknownCharacters(db, processedIds))
-  .then(() => updateGroupsOnAllAccounts(db))
-  .then(function() {
-    logger.info('syncRoster() complete');
-  });
-}
-
-function updateAllCorporations(db: Tnex, job: JobTracker) {
-  logger.info('updateAllCorporations');
-  return dao.config.getMemberCorporations(db)
-  .then(rows => {
-    return serialize(rows, row => {
-      return updateCorporation(db, job, row);
-    });
-  })
-  .then(corpResults => {
-    return new Set(([] as number[]).concat(...corpResults));
-  });
-}
-
-function updateCorporation(
-    db: Tnex, job: JobTracker, corpConfig: MemberCorporation) {
-  logger.info('updateCorporation', corpConfig.memberCorporation_corporationId);
-
-  if (corpConfig.memberCorporation_apiVerificationCode == "") {
-    logger.info(`Skipping corp ${corpConfig.memberCorporation_corporationId}`
-        + ` - blank vcode.`);
-    return [];
-  }
-
-  return Promise.all([
-    getCorpXml(corpConfig, 'corp/MemberTracking', { extended: 1 }),
-    getCorpXml(corpConfig, 'corp/MemberSecurity'),
-  ])
-  .then(results => {
-    return parseAndStoreXml(
-        db, corpConfig.memberCorporation_corporationId, results);
-  })
-  .catch(e => {
-    if (e.response) {
-      job.error(`ESI responded with ${e.response.status} when`
-          + ` processing corp ${corpConfig.memberCorporation_corporationId}.`
-          + ` Has the corp key expired?`)
-      return [];
-    } else {
-      throw e;
-    }
-  });
-}
+import { fetchEveNames } from '../../eve/names';
+import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
+import { fetchEndpoint } from '../../eve/esi/fetchEndpoint';
+import { ESI_CORPORATIONS_$corporationId_MEMBERS, ESI_CORPORATIONS_$corporationId_TITLES, ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, ESI_CORPORATIONS_$corporationId_ROLES, ESI_CORPORATIONS_$corporationId_MEMBERTRACKING } from '../../eve/esi/endpoints';
+import { isAnyEsiError, printError } from '../../util/error';
+import { hasRosterScopes } from '../../domain/roster/hasRosterScopes';
+import { AccessTokenError } from '../../error/AccessTokenError';
+import { AsyncReturnType } from '../../util/simpleTypes';
+import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
 
 /**
- * Updates any characters that used to be members of our corporations but which
- * were not present in the most recent roster update.
+ * Updates the member list of each member corporation.
  */
-function updateOrphanedOrUnknownCharacters(
-    db: Tnex, processedCharactersIds: Set<number>) {
-  logger.info('updateOrphanedOrUnknownCharacters');
-  return dao.character.getMemberCharacters(db)
-  .then(function(rows) {
-    return parallelize(rows, row => {
-      if (!processedCharactersIds.has(row.character_id)) {
-        return Promise.resolve()
-        .then(() => {
-          return dao.character.updateCharacter(db, row.character_id, {
-            character_corporationId: UNKNOWN_CORPORATION_ID,
-            character_titles: null,
-          })
-        })
-        .then(() => {
-          return swagger.characters(row.character_id).info()
-        })
-        .then(character => {
-          return dao.character.updateCharacter(db, row.character_id, {
-            character_corporationId: character.corporation_id,
-          });
-        })
-        .then(function() {
-          logger.info(
-              'Updated orphaned character %s', row.character_id);
-        })
-        .catch(function(e) {
-          logger.error(
-              'FAILED to update orphaned character %s', row.character_id);
-          logger.error(e);
-        });
-      }
-    });
-  });
+export function syncRoster(db: Tnex, job: JobTracker): Bluebird<void> {
+  return Bluebird.resolve(_syncRoster(db, job));
 }
 
-function parseAndStoreXml(
-    db: Tnex, corpId: number, [memberXml, securityXml]: Xml[]) {
-  let titlesMap = scrapeTitles(securityXml);
+async function _syncRoster(db: Tnex, job: JobTracker) {
+  const memberRows = await dao.config.getMemberCorporations(db);
 
-  let members = memberXml.eveapi.result[0].rowset[0].row as any[];
-  return serialize(members, (member, i) => {
-    let characterId = parseInt(member.$.characterID);
-    let titles = titlesMap[characterId];
-
-    return dao.character.upsertCharacter(db, {
-      character_id: characterId,
-      character_name: member.$.name,
-      character_corporationId: corpId,
-      character_titles: titles,
-      character_startDate: moment(member.$.startDateTime + '+00').valueOf(),
-      character_logonDate: moment(member.$.logonDateTime + '+00').valueOf(),
-      character_logoffDate: moment(member.$.logoffDateTime + '+00').valueOf(),
-      character_siggyScore: DEFAULT_NUM,
-      character_deleted: false,
-      character_roles: [],
-    })
-    .then(() => {
-      return characterId;
-    });
-  })
-  .then(charIds => {
-    logger.info('Processed %s members for corp %s', charIds.length, corpId);
-    return charIds;
-  });
+  for (let row of memberRows) {
+    await syncCorporation(db, job, row.memberCorporation_corporationId);
+  }
+  await updateGroupsOnAllAccounts(db);
 }
 
-function scrapeTitles(securityXml: Xml) {
-  let titlesMap = {} as { [key: number]: string[] };
+async function syncCorporation(
+    db: Tnex, job: JobTracker, corporation: number) {
+  job.info(`syncCorporation ${corporation}`);
 
-  let members = securityXml.eveapi.result[0].rowset[0].row;
-  for (let member of members) {
-    for (let row of member.rowset) {
-      if (row.$.name == 'titles') {
-        let characterId = parseInt(member.$.characterID);
-        let titles = [];
-        if (row.row) {
-          for (let title of row.row) {
-            titles.push(title.$.titleName);
-          }
-        }
-        titlesMap[characterId] = titles;
+  const directorRows = await dao.roster.getCorpDirectors(db, corporation);
+
+  let updateSuccessful = false;
+
+  for (let row of directorRows) {
+    if (row.accessToken_needsUpdate) {
+      job.info(`Skipping director ${row.character_id}/${row.character_name}`
+          + ` (access token has expired).`);
+      continue;
+    }
+    if (!hasRosterScopes(row.accessToken_scopes)) {
+      job.info(`Skipping director ${row.character_id}/${row.character_name}`
+          + ` (insufficient token scopes).`);
+      continue;
+    }
+    try {
+      await updateMemberList(db, job, corporation, row.character_id);
+      updateSuccessful = true;
+      break;
+    } catch (e) {
+      if (isAnyEsiError(e) || e instanceof AccessTokenError) {
+        job.warn(`ESI error while syncing via director ${row.character_name}:`);
+        job.warn(printError(e));
+      } else {
+        job.error(
+          `Unexpected failure while trying to sync corp ${corporation} using `
+              + `char ${row.character_name}'s token.`);
+        job.error(e.toString());
+
+        // These kinds of errors are unexpected: bail on the rest of the roster
+        // sync.
+        break;
       }
     }
   }
 
-  return titlesMap;
+  if (directorRows.length == 0) {
+    job.error(`No known directors for corporation ${corporation}.`)
+  }
+
+  if (!updateSuccessful) {
+    job.error(`Roster sync failed for corporation ${corporation}.`);
+  }
 }
 
-function getCorpXml(
-    corpConfig: MemberCorporation,
-    path: string,
-    query?: { [key: string]: any },
-    ) {
-  let fullpath = util.format(
-      'https://api.eveonline.com/%s.xml.aspx?%s',
-      path,
-      querystring.stringify(
-          Object.assign(
-              query || {},
-              {
-                keyID: corpConfig.memberCorporation_apiKeyId,
-                vCode: corpConfig.memberCorporation_apiVerificationCode,
-              }
-          )
-      )
-  );
+async function updateMemberList(
+    db: Tnex, job: JobTracker, corporationId: number, director: number) {
 
-  return axios.get(fullpath, {
-    headers: {
-      'User-Agent': process.env.USER_AGENT || 'Sound Roster App'
+  const token = await getAccessToken(db, director);
+  const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] = await Promise.all([
+    fetchEndpoint(
+        ESI_CORPORATIONS_$corporationId_MEMBERS, { corporationId }, token),
+    fetchEndpoint(
+        ESI_CORPORATIONS_$corporationId_TITLES, { corporationId }, token),
+    fetchEndpoint(
+        ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES,
+        { corporationId },
+        token),
+    fetchEndpoint(
+        ESI_CORPORATIONS_$corporationId_ROLES, { corporationId }, token),
+    fetchEndpoint(
+        ESI_CORPORATIONS_$corporationId_MEMBERTRACKING,
+        { corporationId },
+        token),
+  ]);
+  const names = await fetchEveNames(memberIds);
+
+  const rows = buildMemberRows(
+      job,
+      corporationId,
+      memberIds,
+      titleDefs,
+      memberTitles,
+      memberRoles,
+      memberTracking,
+      names);
+
+  await db.asyncTransaction(async db => {
+    // First, set all of our existing corp characters to having an UNKNOWN corp
+    await db
+        .update(character, {
+          character_corporationId: UNKNOWN_CORPORATION_ID,
+          character_roles: [],
+          character_titles: null,
+        })
+        .where('character_corporationId', '=', val(corporationId))
+        .run();
+
+    // Then, change all members still on the roles back to being correct
+    await db
+        .upsertAll(character, rows, 'character_id', {
+          character_siggyScore: UpdatePolicy.PRESERVE_EXISTING,
+        });
+  });
+
+  job.info(`Synced ${rows.length} characters.`);
+}
+
+function buildMemberRows(
+  job: JobTracker,
+  corporationId: number,
+  memberIds: typeof ESI_CORPORATIONS_$corporationId_MEMBERS['response'],
+  titleDefs: typeof ESI_CORPORATIONS_$corporationId_TITLES['response'],
+  memberTitles:
+      typeof ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES['response'],
+  memberRoles: typeof ESI_CORPORATIONS_$corporationId_ROLES['response'],
+  memberTracking:
+      typeof ESI_CORPORATIONS_$corporationId_MEMBERTRACKING['response'],
+  names: AsyncReturnType<typeof fetchEveNames>,
+) {
+  const titleDefMap = arrayToMap(titleDefs, 'title_id');
+
+  const outRows = new Map<number, Character>();
+
+  for (let memberId of memberIds) {
+    const name = names[memberId];
+    if (name == undefined) {
+      job.error(`No name for member ${memberId}, skipping...`)
+      continue;
     }
-  })
-  .then(response => {
-    return parseXml(response.data);
-  });
+
+    outRows.set(memberId, {
+      character_id: memberId,
+      character_name: name,
+      character_corporationId: corporationId,
+      character_roles: [],
+      character_titles: [],
+      character_deleted: false,
+      character_startDate: null,
+      character_logoffDate: null,
+      character_logonDate: null,
+      character_siggyScore: null,
+    });
+  }
+
+  for (let roleList of memberRoles) {
+    const row = outRows.get(roleList.character_id);
+    if (row && roleList.roles) {
+      row.character_roles = roleList.roles;
+    }
+  }
+
+  for (let titleList of memberTitles) {
+    const row = outRows.get(titleList.character_id);
+    if (row) {
+      row.character_titles = refine(titleList.titles, title => {
+        const entry = titleDefMap.get(title);
+        return entry && entry.name;
+      });
+    }
+  }
+
+  for (let trackingInfo of memberTracking) {
+    const row = outRows.get(trackingInfo.character_id);
+    if (row != undefined) {
+      row.character_startDate =
+          moment.utc(trackingInfo.start_date).valueOf();
+      row.character_logonDate =
+          moment.utc(trackingInfo.logon_date).valueOf();
+      row.character_logoffDate =
+          moment.utc(trackingInfo.logoff_date).valueOf();
+    }
+  }
+
+  return Array.from(outRows.values());
 }
 
-function parseXml(xmlStr: string): Promise<Xml> {
-  return new Promise((resolve, reject) => {
-    xml2js.parseString(xmlStr, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}

@@ -27,8 +27,8 @@ interface TaskSchedule {
 const CRON_SCHEDULES: TaskSchedule[] = [
   {
     name: 'syncRoster',
-    schedule: '*/20 * * * *', // Every 20 minutes
-    interval: moment.duration(20, 'minutes').asMilliseconds(),
+    schedule: '*/61 * * * *', // Every 61 minutes
+    interval: moment.duration(61, 'minutes').asMilliseconds(),
   },
   {
     name: 'syncCombatStats',

@@ -166,4 +166,18 @@ export default class RosterDao {
       return _.pluck(rows, 'character_corporationId');
     });
   }
+
+  getCorpDirectors(db: Tnex, corporation: number) {
+    return db.select(t.character)
+        .join(t.accessToken, 'accessToken_character', '=', 'character_id')
+        .where('character_corporationId', '=', val(corporation))
+        .whereContains('character_roles', '@>', ['Director'])
+        .columns(
+          'character_id',
+          'character_name',
+          'accessToken_scopes',
+          'accessToken_needsUpdate',
+        )
+        .run();
+  }
 }
