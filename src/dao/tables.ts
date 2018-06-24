@@ -171,9 +171,6 @@ export const killmail = tables.register(new Killmail());
 export class MemberCorporation {
   memberCorporation_corporationId = integer();
   memberCorporation_membership = varchar();
-  // TODO_TS: apiKeyId should really just be a string...
-  memberCorporation_apiKeyId = integer();
-  memberCorporation_apiVerificationCode = varchar();
 }
 export const memberCorporation = tables.register(new MemberCorporation());
 

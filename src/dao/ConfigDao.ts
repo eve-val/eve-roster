@@ -81,8 +81,6 @@ export default class ConfigDao {
         .columns(
             'memberCorporation_corporationId',
             'memberCorporation_membership',
-            'memberCorporation_apiKeyId',
-            'memberCorporation_apiVerificationCode',
             )
         .run();
   }
