@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import { findWhere } from '../../../util/underscore';
@@ -9,12 +7,12 @@ import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
 const logger = require('../../../util/logger')(__filename);
 
 
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<{}> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
   let characterId = parseInt(req.params.id);
   logger.debug('deleteCharacter', account.id, characterId);
 
 
-  return Bluebird.resolve()
+  return Promise.resolve()
   .then(() => {
     return dao.character.getCharactersOwnedByAccount(db, account.id);
   })

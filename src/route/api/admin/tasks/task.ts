@@ -1,7 +1,4 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { dao } from '../../../../dao';
 import { Task, getTasks } from '../../../../cron/tasks';
 
 

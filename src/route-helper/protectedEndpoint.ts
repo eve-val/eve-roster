@@ -7,7 +7,6 @@
  * up the JSON response.
  */
 import express = require('express');
-import Promise = require('bluebird');
 
 import { BadRequestError } from '../error/BadRequestError';
 import { NotFoundError } from '../error/NotFoundError';
@@ -29,25 +28,25 @@ export type EndpointType = 'json' | 'html';
 type ExpressHandler =
     (req: express.Request, res: express.Response) => void;
 
-export type JsonEndpointHandler = (
+export type JsonEndpointHandler<T extends object> = (
   req: express.Request,
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  ) => Object;
+  ) => Promise<T>;
 
-export type HtmlEndpointHandler = (
+export type HtmlEndpointHandler<T extends Object> = (
   req: express.Request,
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  ) => HtmlPayload;
+  ) => Promise<HtmlPayload<T>>;
 
-export interface HtmlPayload {
+export interface HtmlPayload<T extends object> {
   template: string,
-  data: Object,
+  data: T,
 }
 
 export function endSession(req: express.Request) {
@@ -56,43 +55,39 @@ export function endSession(req: express.Request) {
   (req as any).session = null;
 }
 
-export function htmlEndpoint(handler: HtmlEndpointHandler): ExpressHandler {
-  return function (req, res) {
-    return Promise.resolve()
-    .then(() => {
-      return getAccountPrivs(req.db, req.session.accountId)
-    })
-    .then(accountPrivs => {
-      return handler(
-          req, res, req.db, accountPrivs.account, accountPrivs.privs);
-    })
-    .then(payload => {
+export function htmlEndpoint<T extends object>(
+    handler: HtmlEndpointHandler<T>,
+): ExpressHandler {
+  return async function (req, res) {
+    try {
+      const accountPrivs = await getAccountPrivs(req.db, req.session.accountId);
+      const payload =
+          await handler(
+              req, res, req.db, accountPrivs.account, accountPrivs.privs);
       res.render(payload.template, payload.data);
-    })
-    .catch(e => {
+    } catch (e) {
       handleError('html', e, req, res);
-    });
+    }
   }
 }
 
-export function jsonEndpoint(handler: JsonEndpointHandler): ExpressHandler {
-  return function(req, res) {
-    return Promise.resolve()
-    .then(() => {
-      return getAccountPrivs(req.db, req.session.accountId)
-    })
-    .then(accountPrivs => {
-      return handler(
-          req, res, req.db, accountPrivs.account, accountPrivs.privs);
-    })
-    .then(payload => {
-      let space = req.query.pretty != undefined ? 2 : undefined;
+export function jsonEndpoint<T extends object>(
+    handler: JsonEndpointHandler<T>,
+): ExpressHandler {
+  return async function(req, res) {
+    try {
+      const accountPrivs = await getAccountPrivs(req.db, req.session.accountId);
+      const payload =
+          await handler(
+              req, res, req.db, accountPrivs.account, accountPrivs.privs);
+
+      const space = req.query.pretty != undefined ? 2 : undefined;
       res.type('json');
       res.send(JSON.stringify(payload, null, space));
-    })
-    .catch(e => {
+
+    } catch (e) {
       handleError('json', e, req, res);
-    });
+    }
   }
 }
 

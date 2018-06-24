@@ -1,8 +1,6 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
-import { verify, string, SchemaVerificationError, } from '../../../route-helper/schemaVerifier';
+import { verify, string, } from '../../../route-helper/schemaVerifier';
 
 import { BadRequestError } from '../../../error/BadRequestError';
 
@@ -25,5 +23,6 @@ export default jsonEndpoint((req, res, db, account, privs) => {
     if (updateCount == 0) {
       throw new BadRequestError(`No such citadel w/ id "${citadelId}`);
     }
+    return {};
   });
 });

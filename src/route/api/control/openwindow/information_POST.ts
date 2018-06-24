@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import swagger from '../../../../swagger';
 import { number, verify } from '../../../../route-helper/schemaVerifier';
@@ -27,9 +25,8 @@ export interface Output {}
  * character.
  */
 export default jsonEndpoint(
-    (req, res, db, account, privs): Bluebird<Output> => {
-  return Bluebird.resolve(
-      handleEndpoint(db, account, privs, verify(req.body, inputSchema)))
+    (req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
 });
 
 async function handleEndpoint(

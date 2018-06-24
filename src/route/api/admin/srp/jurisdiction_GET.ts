@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { Tnex } from '../../../../tnex';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
@@ -16,8 +14,8 @@ export interface Output {
  * Returns the timestamp where SRP tracking starts, or null if SRP tracking is
  * not enabled.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
-  return Bluebird.resolve(handleEndpoint(db, account, privs));
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs);
 });
 
 async function handleEndpoint(

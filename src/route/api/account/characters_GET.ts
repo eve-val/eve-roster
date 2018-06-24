@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird');
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { Tnex } from '../../../tnex/index';
 import { AccountSummary } from '../../../route-helper/getAccountPrivs';
@@ -24,11 +23,10 @@ export interface CharacterDescription {
  * Returns a list of all characters owned by a particular account. Currently,
  * accounts can only ask about their own characters.
  */
-export default jsonEndpoint(
-    (req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   const targetAccountId = idParam(req, 'id');
 
-  return Bluebird.resolve(handleEndpoint(db, account, privs, targetAccountId));
+  return handleEndpoint(db, account, privs, targetAccountId);
 });
 
 async function handleEndpoint(

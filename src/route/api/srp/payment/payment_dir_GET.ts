@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
@@ -6,8 +5,7 @@ import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { Tnex, ResultOrder } from '../../../../tnex';
 import { dao } from '../../../../dao';
-import { BadRequestError } from '../../../../error/BadRequestError';
-import { idParam, boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
+import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { nil, SimpleNumMap } from '../../../../util/simpleTypes';
 import { fetchEveNames } from '../../../../eve/names';
 import { SrpReimbursementFilter } from '../../../../dao/SrpDao';
@@ -38,21 +36,20 @@ export enum OrderBy {
 /**
  * Returns a list of recent payments. Query can be filtered in a number of ways.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
-  return Bluebird.resolve(
-      handleEndpoint(
-          db,
-          account,
-          privs,
-          {
-            paid: boolQuery(req, 'paid'),
-            account: intQuery(req, 'account'),
-            limit: intQuery(req, 'limit'),
-            order: enumQuery<ResultOrder>(req, 'order', ResultOrder)
-                || ResultOrder.DESC,
-            orderBy: enumQuery<OrderBy>(req, 'orderBy', OrderBy) || OrderBy.ID,
-            startingAfter: intQuery(req, 'startingAfter'),
-          }));
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(
+      db,
+      account,
+      privs,
+      {
+        paid: boolQuery(req, 'paid'),
+        account: intQuery(req, 'account'),
+        limit: intQuery(req, 'limit'),
+        order: enumQuery<ResultOrder>(req, 'order', ResultOrder)
+            || ResultOrder.DESC,
+        orderBy: enumQuery<OrderBy>(req, 'orderBy', OrderBy) || OrderBy.ID,
+        startingAfter: intQuery(req, 'startingAfter'),
+      });
 });
 
 const DEFAULT_ROWS_PER_QUERY = 30;

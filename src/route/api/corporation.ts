@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
 import swagger from '../../swagger';
 

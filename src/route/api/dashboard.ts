@@ -1,7 +1,4 @@
-import Promise = require('bluebird');
-
 import { dao } from '../../dao';
-import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
 import { NotFoundError } from '../../error/NotFoundError';
 import * as policy from '../../route-helper/policy';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
@@ -40,7 +37,10 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     isMember: privs.isMember(),
   };
 
-  return dao.account.getDetails(db, account.id)
+  return Promise.resolve()
+  .then(() => {
+    return dao.account.getDetails(db, account.id);
+  })
   .then(row => {
     if (row == null) {
       throw new NotFoundError();

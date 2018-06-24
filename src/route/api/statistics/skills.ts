@@ -1,9 +1,6 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import * as sde from '../../../eve/sde';
-import { stringParam } from '../../../route-helper/paramVerifier';
 import { BadRequestError } from '../../../error/BadRequestError';
 
 import { SkillRequirement } from '../../../dao/StatisticsDao';

@@ -1,5 +1,4 @@
 import moment = require('moment');
-import Bluebird = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
@@ -45,10 +44,10 @@ interface CharacterJson extends Alertable {
   siggyScore: number | null,
 }
 
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   privs.requireRead('roster');
 
-  return Bluebird.all([
+  return Promise.all([
     dao.roster.getCharactersOwnedByAssociatedAccounts(db),
     dao.roster.getUnownedCorpCharacters(db),
     getCorpNames(db),
@@ -72,7 +71,10 @@ export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => 
 });
 
 function getCorpNames(db: Tnex) {
-  return dao.roster.getRosterCharacterCorps(db)
+  return Promise.resolve()
+  .then(() => {
+    return dao.roster.getRosterCharacterCorps(db);
+  })
   .then(corpIds => {
     return fetchEveNames(corpIds);
   })

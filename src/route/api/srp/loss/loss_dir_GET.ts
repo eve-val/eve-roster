@@ -1,6 +1,3 @@
-import Bluebird = require('bluebird');
-import moment = require('moment');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { Tnex } from '../../../../tnex/Tnex';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
@@ -8,7 +5,6 @@ import { dao } from '../../../../dao';
 import { SrpVerdictStatus } from '../../../../dao/enums';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
-import { findWhere } from '../../../../util/underscore';
 import { fetchEveNames } from '../../../../eve/names';
 import { srpLossToJson } from '../../../../srp/srpLossToJson';
 import { SrpLossFilter, SrpLossRow } from '../../../../dao/SrpDao';
@@ -28,24 +24,21 @@ export interface Output {
  * Returns a list of losses and their associated SRP verdict and payment status.
  * Supports a wide variety of filters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 
-  return Bluebird.resolve(
-      handleEndpoint(
-          db,
-          privs,
-          {
-            status: boolQuery(req, 'pending')
-                ? SrpVerdictStatus.PENDING : undefined,
-            limit: intQuery(req, 'limit'),
-            order: enumQuery<ResultOrder>(req, 'order', ResultOrder),
-            fromKillmail: intQuery(req, 'fromKillmail'),
-            account: intQuery(req, 'account'),
-            character: intQuery(req, 'character'),
-          },
-          boolQuery(req, 'includeTriage') || false,
-      )
-  );
+  return handleEndpoint(
+      db,
+      privs,
+      {
+        status: boolQuery(req, 'pending')
+            ? SrpVerdictStatus.PENDING : undefined,
+        limit: intQuery(req, 'limit'),
+        order: enumQuery<ResultOrder>(req, 'order', ResultOrder),
+        fromKillmail: intQuery(req, 'fromKillmail'),
+        account: intQuery(req, 'account'),
+        character: intQuery(req, 'character'),
+      },
+      boolQuery(req, 'includeTriage') || false);
 });
 
 const DEFAULT_ROWS_PER_QUERY = 30;

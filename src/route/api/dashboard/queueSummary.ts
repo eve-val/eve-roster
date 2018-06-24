@@ -1,8 +1,5 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
-import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
 
 import { parallelize } from '../../../util/asyncUtil';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../../route-helper/skillQueueSummarizer';
@@ -15,7 +12,10 @@ export type Payload = Array<{
 
 export default jsonEndpoint(function(req, res, db, account, privs)
     : Promise<Payload> {
-  return dao.character.getCharacterIdsOwnedByAccount(db, account.id)
+  return Promise.resolve()
+  .then(() => {
+    return dao.character.getCharacterIdsOwnedByAccount(db, account.id);
+  })
   .then(ids => {
     return parallelize(ids, id => {
       return loadSummarizedQueue(db, id, 'fresh')
