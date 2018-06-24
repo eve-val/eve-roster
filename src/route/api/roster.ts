@@ -1,5 +1,5 @@
 import moment = require('moment');
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
@@ -8,7 +8,8 @@ import { AccountPrivileges } from '../../route-helper/privileges';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
 import { isAnyEsiError } from '../../util/error';
 import * as alert from '../../shared/rosterAlertLevels';
-import swagger from '../../swagger';
+import { fetchEveNames } from '../../eve/names';
+import { SimpleMap } from '../../util/simpleTypes';
 
 const logger = require('../../util/logger')(__filename);
 
@@ -44,10 +45,10 @@ interface CharacterJson extends Alertable {
   siggyScore: number | null,
 }
 
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
   privs.requireRead('roster');
 
-  return Promise.all([
+  return Bluebird.all([
     dao.roster.getCharactersOwnedByAssociatedAccounts(db),
     dao.roster.getUnownedCorpCharacters(db),
     getCorpNames(db),
@@ -70,10 +71,10 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 
 });
 
-function getCorpNames(db: Tnex): Promise<Map<number, string> | null> {
+function getCorpNames(db: Tnex) {
   return dao.roster.getRosterCharacterCorps(db)
   .then(corpIds => {
-    return swagger.corporations.names(corpIds);
+    return fetchEveNames(corpIds);
   })
   .catch(e => {
     if (isAnyEsiError(e)) {
@@ -92,7 +93,7 @@ function getCorpNames(db: Tnex): Promise<Map<number, string> | null> {
 function pushAccounts(
     ownedRows: OwnedRosterCharacter[],
     privs: AccountPrivileges,
-    corpNames: Map<number, string> | null,
+    corpNames: SimpleMap<string> | null,
     outList: AccountJson[]) {
 
   interface AccountGroup {
@@ -139,7 +140,7 @@ function getJsonForAccount(
     mainRow: OwnedRosterCharacter,
     altRows: OwnedRosterCharacter[],
     privs: AccountPrivileges,
-    corpNames: Map<number, string> | null,
+    corpNames: SimpleMap<string> | null,
     ): AccountJson {
   let accountJson: AccountJson = {
     main: getJsonForCharacter(mainRow, 'main', privs, corpNames),
@@ -183,7 +184,7 @@ function getJsonForAccount(
 function getJsonForUnownedCharacter(
     character: BasicRosterCharacter,
     privs: AccountPrivileges,
-    corpNames: Map<number, string> | null,
+    corpNames: SimpleMap<string> | null,
     ): AccountJson {
 
   let json: AccountJson = {
@@ -200,14 +201,15 @@ function getJsonForCharacter(
     row: BasicRosterCharacter,
     status: 'main' | 'alt' | 'unowned',
     privs: AccountPrivileges,
-    corpNames: Map<number, string> | null,
+    corpNames: SimpleMap<string> | null,
     ): CharacterJson {
   let obj = {
     id: row.character_id,
     name: row.character_name,
     corporationId: row.character_corporationId,
-    corporationName: corpNames ?
-        corpNames.get(row.character_corporationId) : 'Name unavailable'
+    corporationName:
+        corpNames && corpNames[row.character_corporationId]
+            || 'Name unavailable'
   } as CharacterJson;
 
   if (row.memberCorporation_membership == 'full'
