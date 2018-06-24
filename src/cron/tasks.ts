@@ -1,11 +1,7 @@
-import Promise = require('bluebird');
 import moment = require('moment');
-
-import { Tnex } from '../tnex';
 
 import { Scheduler, TaskOptions } from './Scheduler';
 import { TaskExecutor } from './Job';
-import * as cron from './cron';
 import { findWhere } from '../util/underscore';
 
 import { syncCharacterLocations } from './task/syncCharacterLocations';
@@ -19,8 +15,6 @@ import { truncateCronLog } from './task/truncateCronLog';
 import { truncateCharacterLocations } from './task/truncateCharacterLocations';
 import { updateSde } from './task/updateSde';
 import { triagePendingLosses } from './task/triagePendingLosses';
-
-const logger = require('../util/logger')(__filename);
 
 
 const TASKS: TaskInternal[] = [

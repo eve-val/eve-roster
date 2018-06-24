@@ -1,20 +1,12 @@
-import Bluebird = require('bluebird');
-import axios from 'axios';
 import moment = require('moment');
-import { Moment } from 'moment';
 
 import { Tnex } from "../../tnex";
 import { dao } from '../../dao';
 import { JobTracker } from '../Job';
-import { Promise } from 'bluebird';
-import { setTimeout } from 'timers';
-import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
-import { KillmailType, HullCategory, SrpVerdictStatus } from '../../dao/enums';
-import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../eve/constants/types';
 import { fetchZKillmails } from '../../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
-import { Killmail, SrpVerdict, MemberCorporation } from '../../dao/tables';
+import { MemberCorporation } from '../../dao/tables';
 import { inspect } from 'util';
 import { autoTriageLosses } from '../../srp/triage/autoTriageLosses';
 import { pluck } from '../../util/underscore';
@@ -30,11 +22,7 @@ import { pluck } from '../../util/underscore';
  *
  * Uses Zkillboard as a backend.
  */
-export function syncKillmails(db: Tnex, job: JobTracker): Bluebird<void> {
-  return Bluebird.resolve(_syncKillmails(db, job));
-}
-
-async function _syncKillmails(db: Tnex, job: JobTracker) {
+export async function syncKillmails(db: Tnex, job: JobTracker) {
   const config =
       await dao.config.get(db, 'srpJurisdiction', 'killmailSyncRanges');
   const memberCorps = await dao.config.getMemberCorporations(db);

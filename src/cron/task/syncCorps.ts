@@ -1,6 +1,3 @@
-import Promise = require('bluebird');
-import moment = require('moment');
-
 import { dao } from '../../dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
@@ -13,11 +10,13 @@ import { serialize } from '../../util/asyncUtil';
 
 const logger = require('../../util/logger')(__filename);
 
-export function syncCorps(
-    db: Tnex, job: JobTracker): Promise<void> {
+export function syncCorps(db: Tnex, job: JobTracker) {
   let completedCharacters = 0;
 
-  return dao.character.getAllCharacterIds(db)
+  return Promise.resolve()
+  .then(() => {
+    return dao.character.getAllCharacterIds(db)
+  })
   .then(characterIds => {
     job.setProgress(0, undefined);
 
@@ -25,8 +24,12 @@ export function syncCorps(
 
     return serialize(characterIds, (characterId, i) => {
       return updateCorporation(db, characterId)
-      .catch(isAnyEsiError, e => {
-        esiErrorCharacterIds.push(characterId);
+      .catch(e => {
+        if (isAnyEsiError(e)) {
+          esiErrorCharacterIds.push(characterId);
+        } else {
+          throw e;
+        }
       })
       .then(() => {
         completedCharacters++;
@@ -48,7 +51,7 @@ function updateCorporation(db: Tnex, characterId: number) {
   .then(() => {
     return dao.character.updateCharacter(db, characterId, {
       character_corporationId: UNKNOWN_CORPORATION_ID,
-    })
+    });
   })
   .then(() => {
     return swagger.characters(characterId).info()
@@ -58,9 +61,13 @@ function updateCorporation(db: Tnex, characterId: number) {
       character_corporationId: character.corporation_id,
     });
   })
-  .catch(isMissingCharError, e => {
-    return dao.character.updateCharacter(db, characterId, {
-      character_corporationId: CORP_DOOMHEIM,
-    })
+  .catch(e => {
+    if (isMissingCharError(e)) {
+      return dao.character.updateCharacter(db, characterId, {
+        character_corporationId: CORP_DOOMHEIM,
+      })
+    } else {
+      throw e;
+    }
   });
 }

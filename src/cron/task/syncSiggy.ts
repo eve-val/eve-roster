@@ -1,6 +1,6 @@
 import querystring = require('querystring');
 
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 import { default as axiosModule, AxiosResponse } from 'axios';
 import tough = require('tough-cookie');
@@ -29,7 +29,7 @@ const axios = axiosModule.create({
   baseURL: SIGGY_PATH
 });
 
-export function syncSiggy(db: Tnex, job: JobTracker): Promise<void> {
+export function syncSiggy(db: Tnex, job: JobTracker) {
   return Promise.resolve()
   .then(_ => resetSavedScores(db))
   .then(_ => getSiggyCredentials(db))
@@ -60,7 +60,7 @@ function resetSavedScores(db: Tnex) {
 
 function saveScrapedScores(db: Tnex, recentScores: SiggyScore[]) {
   return db.transaction(db => {
-    return Promise.map(recentScores, (score) => {
+    return Bluebird.map(recentScores, (score) => {
       return dao.character.updateCharacter(db, score.id, {
         // Schema currently stores integers, so convert the floating point
         // scraped score
@@ -166,7 +166,7 @@ function getLeaderboardPage(
     params['page'] = page;
   }
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return axios.get('/stats/leaderboard/', {
       params: params,
@@ -301,13 +301,13 @@ function getLeaderboard(
     year: number, weekInYear: number, cookieJar: tough.CookieJar) {
   logger.info('Scraping scores for', year, '-', weekInYear);
 
-  function _getPageScores(page: number): Promise<SimpleNumMap<number>> {
+  function _getPageScores(page: number): Bluebird<SimpleNumMap<number>> {
     return getLeaderboardPage(year, weekInYear, page, cookieJar)
       .then(dom => {
         let currentScores = extractPoints(dom);
         if (isLastPage(dom, page)) {
           // Just return the scores as is
-          return Promise.resolve(currentScores);
+          return Bluebird.resolve(currentScores);
         } else {
           // Fetch next page for the year/week
           return _getPageScores(page + 1)
@@ -326,7 +326,7 @@ function getLeaderboard(
                   currentScores[char] = lowerScores[char];
                 }
               }
-              return Promise.resolve(currentScores);
+              return Bluebird.resolve(currentScores);
             });
         }
       });
@@ -379,7 +379,7 @@ function getRecentScores(cookieJar: tough.CookieJar) {
   }
   logger.info('Siggy scores based on last', daysFetched, 'days');
 
-  return Promise.all(work).then((weeklyScores) => {
+  return Bluebird.all(work).then((weeklyScores) => {
     // Join all per-week scores into a summed score per character
     let totalScores = {} as { [key: number]: number };
     for (let perWeek of weeklyScores) {

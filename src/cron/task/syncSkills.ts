@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
@@ -10,9 +10,11 @@ import { isAnyEsiError } from '../../util/error';
 const logger = require('../../util/logger')(__filename);
 
 
-export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
-
-  return dao.roster.getCharacterIdsOwnedByMemberAccounts(db)
+export function syncSkills(db: Tnex, job: JobTracker) {
+  return Promise.resolve()
+  .then(() => {
+    return dao.roster.getCharacterIdsOwnedByMemberAccounts(db);
+  })
   .then(characterIds => {
     job.setProgress(0, undefined);
 
@@ -20,7 +22,7 @@ export function syncSkills(db: Tnex, job: JobTracker): Promise<void> {
     let esiFailureCount = 0;
     let accessTokenFailureCount = 0;
 
-    return Promise.each(characterIds, (characterId, i, len) => {
+    return Bluebird.each(characterIds, (characterId, i, len) => {
       return updateSkills(db, characterId)
       .then(() => {
         successCount++;

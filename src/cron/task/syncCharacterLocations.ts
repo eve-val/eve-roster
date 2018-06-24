@@ -1,31 +1,20 @@
-import Bluebird = require('bluebird');
 import moment = require('moment');
 import { ESIError } from 'eve-swagger';
 
-import { getAccessToken, getAccessTokens, getAccessTokensFromRows } from '../../data-source/accessToken';
+import { getAccessTokensFromRows } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import swagger from '../../swagger';
-import { Tnex, DEFAULT_NUM } from '../../tnex';
+import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
-import { AccessTokenError } from '../../error/AccessTokenError';
-import { isAnyEsiError } from '../../util/error';
 import { CharacterLocation } from '../../dao/tables';
 
-
-const logger = require('../../util/logger')(__filename);
 
 const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
 const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 const CHARLOC_CACHE = new Map<number, CharacterLocation>();
 
-export function syncCharacterLocations(
-    db: Tnex, job: JobTracker): Bluebird<void> {
-
-  return Bluebird.resolve(doTask(db, job));
-}
-
-async function doTask(db: Tnex, job: JobTracker) {
+export async function syncCharacterLocations(db: Tnex, job: JobTracker) {
   if (CHARLOC_CACHE.size == 0) {
     await fillLocationCache(db);
   }
