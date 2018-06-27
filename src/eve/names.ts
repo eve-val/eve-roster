@@ -1,6 +1,7 @@
 import swagger from '../swagger';
 import { SimpleNumMap, nil, AsyncReturnType } from "../util/simpleTypes";
 import { isAnyEsiError, printError } from '../util/error';
+import { UNKNOWN_CORPORATION_ID } from '../util/constants';
 
 const logger = require('../util/logger')(__filename);
 
@@ -16,7 +17,7 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   const idMap: SimpleNumMap<string> = {};
   let unresolvedIds: number[] = [];
   for (let id of ids) {
-    if (id == undefined) {
+    if (id == undefined || id == UNKNOWN_CORPORATION_ID) {
       continue;
     }
 
