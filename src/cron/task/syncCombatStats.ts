@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
-import { serialize, doWhile } from '../../util/asyncUtil';
+import { serialize } from '../../util/asyncUtil';
 import { JobTracker } from '../Job';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
 
@@ -107,25 +107,22 @@ function logProgressUpdate(
   return lastLoggedProgress;
 }
 
-function fetchMails(kind: string, characterId: number, since: string) {
+async function fetchMails(kind: string, characterId: number, since: string) {
   let mails = [] as ZkillIncident[];
-  // zKill will paginate results if there are too many, so we need to make sure
-  // to fetch all pages.
-  return doWhile(1, page => {
-    return fetchMailsPage(kind, characterId, since, page)
-    .then(mailsPage => {
-      for (let incident of mailsPage) {
-        mails.push(incident);
-      }
-      // mails = mails.concat(mailsPage);
-      if (mailsPage.length >= ZKILL_MAX_RESULTS_PER_PAGE) {
-        return page + 1;
-      }
-    });
-  })
-  .then(() => {
-    return mails;
-  });
+
+  let pageIndex = 1;
+  while (true) {
+    const page = await fetchMailsPage(kind, characterId, since, pageIndex);
+    for (let incident of page) {
+      mails.push(incident);
+    }
+    if (page.length >= ZKILL_MAX_RESULTS_PER_PAGE) {
+      pageIndex++;
+    } else {
+      break;
+    }
+  }
+  return mails;
 }
 
 function fetchMailsPage(
