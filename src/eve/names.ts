@@ -1,5 +1,8 @@
 import swagger from '../swagger';
-import { SimpleNumMap, nil } from "../util/simpleTypes";
+import { SimpleNumMap, nil, AsyncReturnType } from "../util/simpleTypes";
+import { isAnyEsiError, printError } from '../util/error';
+
+const logger = require('../util/logger')(__filename);
 
 
 const NAME_CACHE = new Map<number, string>();
@@ -28,7 +31,17 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   let i = 0;
   while (i < unresolvedIds.length) {
     let end = Math.min(unresolvedIds.length, i + 1000);
-    const entries = await swagger.names(unresolvedIds.slice(i, end));
+    let entries: AsyncReturnType<typeof swagger.names>;
+    try {
+      entries = await swagger.names(unresolvedIds.slice(i, end));
+    } catch (e) {
+      if (isAnyEsiError(e)) {
+        logger.error('ESI error while fetching names for '
+            + unresolvedIds.slice(i, end));
+        logger.error(printError(e));
+      }
+      throw e;
+    }
     i = end;
 
     for (let entry of entries) {

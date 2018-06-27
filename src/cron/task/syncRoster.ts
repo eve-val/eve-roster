@@ -80,6 +80,8 @@ async function syncCorporation(
   if (!updateSuccessful) {
     job.error(`Roster sync failed for corporation ${corporation}.`);
   }
+
+  job.info(`Sync ${corporation} complete.`);
 }
 
 async function updateMemberList(
