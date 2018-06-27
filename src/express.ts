@@ -1,8 +1,7 @@
 
 import path = require('path');
-import querystring = require('querystring');
 
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import express = require('express');
 import bodyParser = require('body-parser');
 import cookieParser = require('cookie-parser');
@@ -107,7 +106,7 @@ export function init(db: Tnex, onServing: (port: number) => void) {
 
   // Mount the web panel provided by scribe but guard it with a privilege check
   app.use('/logs', (req, res, next) => {
-    Promise.resolve()
+    Bluebird.resolve()
     .then(() => {
       return getAccountPrivs(req.db, req.session.accountId);
     })

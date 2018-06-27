@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import Knex = require('knex');
 
 import { ColumnType, Comparison, ValueWrapper, StringKeyOf, DeepPartial, } from './core';
@@ -14,7 +14,7 @@ export class Query<T extends object, R /* return type */> {
     this._query = query;
   }
 
-  public run(): Promise<R> {
+  public run(): Bluebird<R> {
     return this._query;
   }
 

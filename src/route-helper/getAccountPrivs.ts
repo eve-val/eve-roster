@@ -5,9 +5,9 @@
  * privs: privileges}`.
  *
  * @param accountId
- * @returns {Promise}
+ * @returns {Bluebird}
  */
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
@@ -27,7 +27,7 @@ export function getAccountPrivs(db: Tnex, accountId: number | undefined) {
     throw new NotLoggedInError();
   }
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return dao.account.getDetails(db, accountId);
   })

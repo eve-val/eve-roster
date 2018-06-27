@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
@@ -75,7 +75,7 @@ export default class ConfigDao {
     });
   }
 
-  getMemberCorporations(db: Tnex): Promise<MemberCorporation[]> {
+  getMemberCorporations(db: Tnex): Bluebird<MemberCorporation[]> {
     return db
         .select(memberCorporation)
         .columns(
@@ -91,7 +91,7 @@ export default class ConfigDao {
       titleMappings: GroupTitle[]
       ) {
     return db.transaction(db => {
-      return Promise.resolve()
+      return Bluebird.resolve()
       .then(() => {
         return db
             .del(groupTitle)
@@ -109,7 +109,7 @@ export default class ConfigDao {
         }
       })
       .then(() => {
-        return Promise.map(titleMappings, link => {
+        return Bluebird.map(titleMappings, link => {
           return db
               .insert(groupTitle, link)
           .catch(e => {

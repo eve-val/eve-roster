@@ -1,5 +1,5 @@
 import Knex = require('knex');
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { Comparison, Link, Nullable, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
@@ -47,7 +47,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     this._subqueryTableName = subqueryTableName;
   }
 
-  public run(): Promise<S[]> {
+  public run(): Bluebird<S[]> {
     if (this._subqueryTableName != null) {
       throw new Error(`Subqueries can't be run().`);
     }
@@ -56,7 +56,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     return super.run();
   }
 
-  public fetchFirst(): Promise<S | null> {
+  public fetchFirst(): Bluebird<S | null> {
     return this.run()
     .then(rows => {
       return rows[0];

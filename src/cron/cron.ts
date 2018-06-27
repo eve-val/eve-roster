@@ -2,14 +2,12 @@
  * System for scheduling tasks to be run. Tasks are run serially, i.e. only one
  * task can be run at a time. The rest wait in a queue until it's their turn.
  */
-import Promise = require('bluebird');
 import moment = require('moment');
 import schedule = require('node-schedule');
 
 import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { serialize } from '../util/asyncUtil';
-import { Scheduler } from './Scheduler';
 import { TaskName } from './tasks';
 import * as tasks from './tasks';
 

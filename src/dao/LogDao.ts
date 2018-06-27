@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { Tnex, DEFAULT_NUM } from '../tnex';
 import { Dao } from '../dao';
@@ -27,7 +27,7 @@ export default class LogDao {
       event: LoggableEvent,
       relatedCharacter: number | null = null,
       data?: object
-      ): Promise<void> {
+      ): Bluebird<void> {
     return db
         .insert(accountLog, {
           accountLog_id: DEFAULT_NUM,

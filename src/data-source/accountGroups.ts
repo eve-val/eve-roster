@@ -1,5 +1,5 @@
 import _ = require('underscore');
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { dao } from '../dao';
 import { Tnex, val } from '../tnex';
@@ -22,7 +22,7 @@ export function updateGroupsOnAllAccounts(db: Tnex) {
 }
 
 export function updateGroupsForAccount(db: Tnex, accountId: number) {
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return computeGroups(db, accountId);
   })
@@ -44,7 +44,7 @@ export function updateGroupsForAccount(db: Tnex, accountId: number) {
 }
 
 function computeGroups(db: Tnex, accountId: number) {
-  return Promise.all([
+  return Bluebird.all([
     dao.group.getExplicitGroups(db, accountId),
     getGroupsDerivedFromCharacters(db, accountId),
   ])
@@ -63,10 +63,10 @@ function getGroupsDerivedFromCharacters(db: Tnex, accountId: number) {
   return dao.character.getCharactersOwnedByAccount(db, accountId)
   .then(rows => {
     let groups: string[] = [];
-    return Promise.reduce(
+    return Bluebird.reduce(
         rows,
         (ownsAffiliatedChar, row) => {
-          return Promise.resolve()
+          return Bluebird.resolve()
           .then(() => {
             return dao.group.getTitleDerivedGroups(
                 db, row.character_corporationId, row.character_titles || []);
