@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import { idParam } from '../../../route-helper/paramVerifier';

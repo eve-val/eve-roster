@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import { MemberCorporation, GroupTitle } from '../../../dao/tables';
@@ -29,9 +27,9 @@ const inputSchema = new Input();
 
 export interface Output {}
 
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   const input = verify(req.body, inputSchema);
-  return Bluebird.resolve(handleEndpoint(db, account, privs, input));
+  return handleEndpoint(db, account, privs, input);
 });
 
 async function handleEndpoint(

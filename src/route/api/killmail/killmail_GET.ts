@@ -1,6 +1,3 @@
-import Bluebird = require('bluebird');
-import _ = require('underscore');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { Tnex } from '../../../tnex';
 import { AccountPrivileges } from '../../../route-helper/privileges';
@@ -23,10 +20,10 @@ export interface Output {
  * Returns the data blob for a killmail as well as the names of any associated
  * entities (participants, items, etc.).
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   const killmailId = idParam(req, 'id');
 
-  return Bluebird.resolve(handleEndpoint(db, privs, killmailId));
+  return handleEndpoint(db, privs, killmailId);
 });
 
 async function handleEndpoint(

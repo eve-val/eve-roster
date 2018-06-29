@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { dao } from '../../dao';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
 
@@ -19,13 +17,16 @@ interface CitadelJson {
 export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   privs.requireRead('citadels');
 
-  return dao.citadel.getAll(db, [
-    'citadel_id',
-    'citadel_name',
-    'citadel_type',
-    'citadel_allianceAccess',
-    'citadel_allianceOwned',
-  ])
+  return Promise.resolve()
+  .then(() => {
+    return dao.citadel.getAll(db, [
+      'citadel_id',
+      'citadel_name',
+      'citadel_type',
+      'citadel_allianceAccess',
+      'citadel_allianceOwned',
+    ]);
+  })
   .then(rows => {
     return {
       citadels: rows.map(row => ({

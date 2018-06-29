@@ -1,10 +1,7 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import { Tnex } from '../../../tnex';
 
-import { AccountPrivileges } from '../../../route-helper/privileges';
 import { isAnyEsiError } from '../../../util/error';
 import { updateSkills } from '../../../data-source/skills';
 import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source/skillQueue';
@@ -56,7 +53,10 @@ export default jsonEndpoint(function(req, res, db, account, privs)
   let characterId: number = parseInt(req.params.id);
   let isOwner = false;
 
-  return dao.character.getOwner(db, characterId)
+  return Promise.resolve()
+  .then(() => {
+    return dao.character.getOwner(db, characterId);
+  })
   .then(row => {
     isOwner = account.id == (row && row.account_id);
     privs.requireRead('characterSkills', isOwner);

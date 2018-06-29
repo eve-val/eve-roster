@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { Tnex } from '../../../tnex';
 import { AccountSummary } from '../../../route-helper/getAccountPrivs';
@@ -16,9 +14,9 @@ export interface Output {
  */
 
 export default jsonEndpoint(
-    (req, res, db, account, privs): Bluebird<Output> => {
+    (req, res, db, account, privs): Promise<Output> => {
 
-  return Bluebird.resolve(handleEndpoint(db, account, privs));
+  return handleEndpoint(db, account, privs);
 });
 
 async function handleEndpoint(

@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { DEFAULT_NUM, toNum } from '../../../tnex';
 import { dao } from '../../../dao';

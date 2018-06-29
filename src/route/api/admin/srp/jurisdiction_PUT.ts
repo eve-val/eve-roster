@@ -1,11 +1,6 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { stringParam } from '../../../../route-helper/paramVerifier';
-import { isTaskName, runTask } from '../../../../cron/tasks';
 import { verify, number, nullable, } from '../../../../route-helper/schemaVerifier';
 
-import { BadRequestError } from '../../../../error/BadRequestError';
 import { Tnex } from '../../../../tnex';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
@@ -22,9 +17,8 @@ const inputSchema = new Input();
  * Sets the timestamp where SRP tracking starts. A null value disables SRP
  * syncing.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<{}> => {
-  return Bluebird.resolve(
-      handleEndpoint(db, account, privs, verify(req.body, inputSchema)))
+export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
+  return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
 });
 
 async function handleEndpoint(

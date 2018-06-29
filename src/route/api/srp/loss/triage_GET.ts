@@ -1,11 +1,8 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
-import { BadRequestError } from '../../../../error/BadRequestError';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';
 import { SrpTriageJson } from '../../../../srp/SrpLossJson';
@@ -21,10 +18,9 @@ export interface Output {
 /**
  * Returns the suggested triage verdict(s) for a particular loss.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 
-  return Bluebird.resolve(handleEndpoint(
-      db, account, privs, idParam(req, 'id'), ))
+  return handleEndpoint(db, account, privs, idParam(req, 'id'));
 });
 
 async function handleEndpoint(

@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird');
 import _ = require('underscore');
 
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
@@ -31,8 +30,8 @@ export interface CorpSection {
  * For each member corporation, returns the names of known directors and whether
  * we have memberlist-capable access tokens for those characters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
-  return Bluebird.resolve(handleEndpoint(db, account, privs));
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs);
 });
 
 async function handleEndpoint(

@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 
@@ -22,7 +20,10 @@ export interface AccountLog {
 export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   privs.requireRead('accountLogs', false);
 
-  return dao.log.getAccountLogsRecent(db)
+  return Promise.resolve()
+  .then(() => {
+    return dao.log.getAccountLogsRecent(db);
+  })
   .then(rows => {
     return {
       rows: rows.map(row => ({

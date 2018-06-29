@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
 import { verify, string } from '../../../route-helper/schemaVerifier';
@@ -20,7 +18,10 @@ export default jsonEndpoint((req, res, db, account, privs) => {
 
   privs.requireWrite('memberHousing', isOwner);
 
-  return dao.citadel.getByName(db, citadelName, ['citadel_id'])
+  return Promise.resolve()
+  .then(() => {
+    return dao.citadel.getByName(db, citadelName, ['citadel_id'])
+  })
   .then(row => {
     if (!row) {
       throw new BadRequestError('Unknown citadel: ' + citadelName);

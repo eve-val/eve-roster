@@ -1,13 +1,12 @@
 import Bluebird = require('bluebird');
 
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { number, verify, string, nullable, stringEnum, boolean, optional } from '../../../../route-helper/schemaVerifier';
+import { number, verify, boolean, optional } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
-import { SrpVerdictStatus } from '../../../../dao/enums';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';
 
@@ -23,10 +22,10 @@ export interface Output {}
 /**
  * Marks a reimbursement as paid (or unpaid).
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 
-  return Bluebird.resolve(handleEndpoint(
-      db, account, privs, idParam(req, 'id'), verify(req.body, inputSchema)))
+  return handleEndpoint(
+      db, account, privs, idParam(req, 'id'), verify(req.body, inputSchema));
 });
 
 async function handleEndpoint(

@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { pluck } from '../../util/underscore';
@@ -43,7 +41,10 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   let payload: Output;
 
   // Fetch character and account data
-  return dao.character.getDetailedCharacterStats(db, characterId)
+  return Promise.resolve()
+  .then(() => {
+    return dao.character.getDetailedCharacterStats(db, characterId);
+  })
   .then(row => {
     if (row == null) {
       throw new NotFoundError();

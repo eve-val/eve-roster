@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { dao } from '../../../../dao';
 import { Tnex } from '../../../../tnex';
@@ -14,18 +12,16 @@ export interface LogEntry {
   result: string | null,
 }
 
-export function getTaskLogs(db: Tnex) {
-  return dao.cron.getRecentLogs(db)
-  .then(rows => {
-    return rows.map(row => {
-      return {
-        id: row.cronLog_id,
-        task: row.cronLog_task,
-        start: row.cronLog_start,
-        end: row.cronLog_end,
-        result: row.cronLog_result,
-      };
-    });
+export async function getTaskLogs(db: Tnex) {
+  const rows = await dao.cron.getRecentLogs(db);
+  return rows.map(row => {
+    return {
+      id: row.cronLog_id,
+      task: row.cronLog_task,
+      start: row.cronLog_start,
+      end: row.cronLog_end,
+      result: row.cronLog_result,
+    };
   });
 }
 

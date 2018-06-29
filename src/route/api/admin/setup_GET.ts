@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
 import { dao } from '../../../dao';
@@ -38,7 +38,7 @@ function getCorpConfig(db: Tnex) {
   return Promise.resolve()
   .then(() => dao.config.getMemberCorporations(db))
   .then(configRows => {
-    return Promise.map(
+    return Bluebird.map(
         configRows,
         configRow => convertCorpConfigRowToJson(db, configRow));
   });

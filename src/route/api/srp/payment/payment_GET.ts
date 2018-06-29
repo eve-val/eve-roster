@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
@@ -7,7 +6,6 @@ import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { idParam } from '../../../../route-helper/paramVerifier';
 import { dao } from '../../../../dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
-import swagger from '../../../../swagger';
 import { SimpleNumMap } from '../../../../util/simpleTypes';
 import { srpLossToJson } from '../../../../srp/srpLossToJson';
 import { fetchEveNames } from '../../../../eve/names';
@@ -30,10 +28,10 @@ export interface Output {
  * Return information about a SRP reimbursement as well as all of its associated
  * approved losses.
  */
-export default jsonEndpoint((req, res, db, account, privs): Bluebird<Output> => {
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   const paymentId = idParam(req, 'id');
 
-  return Bluebird.resolve(handleEndpoint(db, privs, paymentId));
+  return Promise.resolve(handleEndpoint(db, privs, paymentId));
 });
 
 async function handleEndpoint(

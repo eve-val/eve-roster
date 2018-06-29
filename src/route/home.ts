@@ -1,6 +1,6 @@
 import { htmlEndpoint } from '../route-helper/protectedEndpoint';
 
-export default htmlEndpoint((req, res, db, account, privs) => {
+export default htmlEndpoint(async (req, res, db, account, privs) => {
   let identity = {
     account: {
       id: account.id,

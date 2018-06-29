@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { number, verify, string, nullable, stringEnum } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
@@ -25,10 +23,10 @@ export interface Output {}
  * Sets the SRP verdict for a particular loss (i.e. approved or ineligible).
  */
 export default jsonEndpoint(
-    (req, res, db, account, privs): Bluebird<Output> => {
+    (req, res, db, account, privs): Promise<Output> => {
 
-  return Bluebird.resolve(handleEndpoint(
-      db, account, privs, idParam(req, 'id'), verify(req.body, inputSchema)))
+  return handleEndpoint(
+      db, account, privs, idParam(req, 'id'), verify(req.body, inputSchema));
 });
 
 async function handleEndpoint(
