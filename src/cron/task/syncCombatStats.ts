@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
-export function syncCombatStats(db: Tnex, job: JobTracker): Promise<void> {
+export function syncCombatStats(db: Tnex, job: JobTracker) {
   return Promise.resolve()
   .then(() => formatZKillTimeArgument(moment().subtract(60, 'days')))
   .then(startTime => fetchAll(db, job, startTime))
@@ -91,7 +91,7 @@ function syncCharacterKillboard(
   })
   .then(() => {
     // Add another delay to avoid spamming zKill too much
-    return Promise.delay(500);
+    return Bluebird.delay(500);
   });
 }
 
@@ -133,10 +133,10 @@ function fetchMailsPage(
     characterId: number,
     since: string,
     page: number,
-    ): Promise<ZkillIncident[]> {
+    ): Bluebird<ZkillIncident[]> {
   let url = `https://zkillboard.com/api/${kind}/characterID/${characterId}`
       + `/startTime/${since}/page/${page}/zkbOnly/`;
-  return Promise.resolve(axios.get(url, {
+  return Bluebird.resolve(axios.get(url, {
     headers: {
       'User-Agent': process.env.USER_AGENT || 'Sound Roster App',
       'Accept-Encoding': 'gzip',

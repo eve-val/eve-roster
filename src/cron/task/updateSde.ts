@@ -1,9 +1,6 @@
 import * as fs from 'fs';
 import * as tmp from 'tmp';
 
-import Bluebird = require('bluebird');
-
-import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { JobTracker } from '../Job';
 import { acquireSde } from './updateSde/acquireSde';
@@ -18,11 +15,7 @@ import { ingestSde } from './updateSde/ingestSde';
  * Instead of downloading the SDE directly from CCP, we use a streamlined
  * version provided by Fuzzworks.
  */
-export function updateSde(db: Tnex, job: JobTracker): Bluebird<void> {
-  return Bluebird.resolve(updateSdeInternal(db, job));
-}
-
-async function updateSdeInternal(db: Tnex, job: JobTracker) {
+export async function updateSde(db: Tnex, job: JobTracker) {
   let zipPath: string|null = null;
   let sqlPath: string|null = null;
 

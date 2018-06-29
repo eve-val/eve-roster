@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import { Tnex, val, UpdatePolicy } from '../../tnex';
@@ -20,11 +19,7 @@ import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
 /**
  * Updates the member list of each member corporation.
  */
-export function syncRoster(db: Tnex, job: JobTracker): Bluebird<void> {
-  return Bluebird.resolve(_syncRoster(db, job));
-}
-
-async function _syncRoster(db: Tnex, job: JobTracker) {
+export async function syncRoster(db: Tnex, job: JobTracker) {
   const memberRows = await dao.config.getMemberCorporations(db);
 
   for (let row of memberRows) {

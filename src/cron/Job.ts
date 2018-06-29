@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import Promise = require('bluebird');
 
 import { Tnex } from '../tnex';
 
