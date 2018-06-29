@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 import { esi } from 'eve-swagger';
 
@@ -21,7 +21,7 @@ export function updateSkillQueue(
     db: Tnex, characterId: number, accessToken?: string) {
   let newQueue: SkillQueueRow[];
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return accessToken || getAccessToken(db, characterId)
   })

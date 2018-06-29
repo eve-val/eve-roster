@@ -1,4 +1,3 @@
-import Promise = require('bluebird');
 import Knex = require('knex');
 
 import util = require('util');

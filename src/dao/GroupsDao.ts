@@ -1,5 +1,4 @@
 import _ = require('underscore');
-import Promise = require('bluebird');
 
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
@@ -73,7 +72,7 @@ export default class GroupsDao {
               db,
               accountId,
               'MODIFY_GROUPS',
-              null, 
+              null,
               {
                 old: oldGroups,
                 new: groups,

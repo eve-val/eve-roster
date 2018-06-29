@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import { Tnex, val, DEFAULT_NUM } from '../tnex';
@@ -57,7 +57,7 @@ export default class CronDao {
         .columns('cronLog_task')
         .run()
     .then(rows => {
-      return Promise.each(rows, row => {
+      return Bluebird.each(rows, row => {
         const task = row.cronLog_task;
         return db
             .select(cronLog)
@@ -99,7 +99,7 @@ export default class CronDao {
 
         // HACK to limit log spam until we get better UI
         // Filter out all syncCharacter location entries unless they ended in
-        // error or were run in the last minute. 
+        // error or were run in the last minute.
         .where('cronLog_task', '!=', val('syncCharacterLocations'))
         .orWhere('cronLog_result', '!=', val('success'))
         .orWhere(

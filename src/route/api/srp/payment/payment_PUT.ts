@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
 import { number, verify, boolean, optional } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';

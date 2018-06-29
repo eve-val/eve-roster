@@ -1,8 +1,5 @@
-import Promise = require('bluebird');
-
-import { Tnex, val } from '../tnex';
+import { Tnex } from '../tnex';
 import { Dao } from '../dao';
-import { account, character, skillsheet, ownership,} from '../dao/tables';
 import { MEMBER_GROUP } from '../route-helper/specialGroups';
 
 export interface SkillRequirement {

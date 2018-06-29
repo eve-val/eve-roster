@@ -53,7 +53,6 @@ export class Update<T extends object, F extends object>
 
       return this._knex.raw(modifiedQuery)
       .then(response => {
-        console.log('Response!', response);
         return 0;
       });
     }

@@ -1,5 +1,3 @@
-import Promise = require('bluebird');
-
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import { citadel, Citadel } from '../dao/tables';

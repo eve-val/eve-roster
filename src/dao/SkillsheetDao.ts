@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
@@ -18,7 +18,7 @@ export default class SkillQueueDao {
       ) {
   }
 
-  get(db: Tnex, characterId: number): Promise<SkillsheetEntry[]> {
+  get(db: Tnex, characterId: number): Bluebird<SkillsheetEntry[]> {
     return db
         .select(skillsheet)
         .leftJoin(sdeType, 'styp_id', '=', 'skillsheet_skill')

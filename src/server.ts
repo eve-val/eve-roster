@@ -3,9 +3,6 @@ require('source-map-support').install();
 
 require('heapdump');
 
-import Promise = require('bluebird');
-
-import { isDevelopment } from './util/config';
 import { tables } from './dao/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
 import { Scheduler } from './cron/Scheduler';
