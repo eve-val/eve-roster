@@ -1,4 +1,4 @@
-import Promise = require('bluebird');
+import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import * as time from '../util/time';
@@ -42,7 +42,7 @@ export function loadSummarizedQueue(
     characterId: number,
     freshness: DataFreshness,
     ) {
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     return loadQueue(db, characterId, freshness);
   })
@@ -63,10 +63,10 @@ function loadQueue(db: Tnex, characterId: number, freshness: DataFreshness) {
   let dataFreshness = freshness;
   let warning = undefined as WarningType|undefined;
 
-  return Promise.resolve()
+  return Bluebird.resolve()
   .then(() => {
     if (freshness != 'cached') {
-      return updateSkillQueue(db, characterId) 
+      return updateSkillQueue(db, characterId)
     }
   })
   .catch(e => {
