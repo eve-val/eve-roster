@@ -7,19 +7,13 @@ import { getAccessToken } from './accessToken';
 import swagger from '../swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
-import { SkillsheetEntry } from '../dao/SkillsheetDao';
 import { SimpleNumMap } from '../util/simpleTypes';
 import { skillLevelToSp } from '../eve/skillLevelToSp';
 import * as sde from '../eve/sde';
-import { character } from '../dao/tables';
-
-const logger = require('../util/logger')(__filename);
 
 
 /** Throws AccessTokenError and ESI failure errors. */
 export function updateSkills(db: Tnex, characterId: number) {
-  let skillQueue: NamedSkillQueueRow[];
-
   return getAccessToken(db, characterId)
   .then(accessToken => {
     return Promise.all([
@@ -28,8 +22,6 @@ export function updateSkills(db: Tnex, characterId: number) {
     ]);
   })
   .then(([queue, esiSkills]) => {
-    skillQueue = queue;
-
     // Put all complete queue items into a map
     // More recent completions of the same skill will overwrite earlier entries
     let completedSkills = {} as SimpleNumMap<NamedSkillQueueRow>;

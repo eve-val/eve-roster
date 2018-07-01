@@ -7,8 +7,9 @@ import { findWhere, pluck } from '../util/underscore';
 
 import { Job, JobResult, TaskExecutor } from './Job';
 import { JobImpl } from './JobImpl';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 let _nextExecutionId = 0;

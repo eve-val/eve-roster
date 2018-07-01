@@ -8,8 +8,9 @@ import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from '../data-source/skillQueue';
 import { isAnyEsiError } from '../util/error';
 import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
@@ -95,8 +96,7 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
     }
     logger.error(
         `ESI error "${e.name}" while fetching skill queue for character`
-            + ` ${characterId}.`);
-    logger.error(e);
+            + ` ${characterId}.`, e);
   } else if (e instanceof AccessTokenError) {
     if (e.type == AccessTokenErrorType.HTTP_FAILURE) {
       warningType = 'fetch_failure';

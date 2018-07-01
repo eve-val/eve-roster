@@ -3,8 +3,9 @@ import axios from 'axios';
 
 import { AccessToken } from '../../dao/tables';
 import { AccessTokenErrorType } from '../../error/AccessTokenError';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 /**

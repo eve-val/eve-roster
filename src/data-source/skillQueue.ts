@@ -8,8 +8,6 @@ import { SkillQueueRow } from '../dao/SkillQueueDao';
 import swagger from '../swagger';
 import { getAccessToken } from '../data-source/accessToken';
 
-const logger = require('../util/logger')(__filename);
-
 
 /**
  * Fetches fresh skill queue data from ESI and stores it in the DB. Returns a

@@ -19,8 +19,9 @@ import { Tnex } from '../tnex';
 import { AccountPrivileges } from './privileges';
 import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
 import { SchemaVerificationError } from './schemaVerifier';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export type EndpointType = 'json' | 'html';
@@ -94,9 +95,8 @@ export function jsonEndpoint<T extends object>(
 function handleError(
     type: EndpointType, e: Error, req: express.Request, res: express.Response) {
   if (isLoggableError(e)) {
-    logger.error('ERROR while handling endpoint %s', req.originalUrl);
-    logger.error('  accountId:', req.session.accountId);
-    logger.error(e);
+    logger.error(`ERROR while handling endpoint ${req.originalUrl}`
+      + ` w/ accountId ${req.session.accountId}`, e);
   }
 
   if (type == 'html' &&

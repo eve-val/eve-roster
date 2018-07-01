@@ -1,8 +1,9 @@
 import { EventEmitter } from 'events';
 
 import { Job, JobStatus, JobResult, TaskExecutor, } from './Job';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export class JobImpl extends EventEmitter implements Job {

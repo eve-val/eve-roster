@@ -6,8 +6,9 @@ import { JobTracker } from '../Job';
 import { updateSkills } from '../../data-source/skills';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export function syncSkills(db: Tnex, job: JobTracker) {
@@ -37,8 +38,7 @@ export function syncSkills(db: Tnex, job: JobTracker) {
         } else if (isAnyEsiError(e)) {
           esiFailureCount++;
           logger.warn(
-              `ESI error while fetching skills for char ${characterId}.`);
-          logger.warn(e);
+              `ESI error while fetching skills for char ${characterId}.`, e);
         } else {
           throw e;
         }

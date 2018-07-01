@@ -4,8 +4,9 @@ import { TRIAGE_RULES } from './rules';
 import { dao } from '../../dao';
 import { TriageVerdict, TriageRule, isFuncRule, LossMeta } from './TriageRule';
 import { SdeType } from '../../dao/tables';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export interface LossRow {

@@ -14,8 +14,9 @@ import { BadRequestError } from '../error/BadRequestError';
 import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
 import { UNKNOWN_CORPORATION_ID } from '../util/constants';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 /**
@@ -102,8 +103,7 @@ async function fetchCharInfo(authCode: string) {
     charInfo.roles = esiCharRoles.roles;
   } catch (e) {
     if (isAnyEsiError(e)) {
-      logger.warn('ESI is unavailable, attempting to auth anyway...');
-      logger.warn(e);
+      logger.warn('ESI is unavailable, attempting to auth anyway...', e);
     } else {
       throw e;
     }

@@ -4,8 +4,9 @@ import moment = require('moment');
 import { Tnex, val, DEFAULT_NUM } from '../tnex';
 import { Dao } from '../dao';
 import { cronLog } from './tables';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export default class CronDao {

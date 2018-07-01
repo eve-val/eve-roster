@@ -9,8 +9,9 @@ import { isAnyEsiError } from '../../util/error';
 import * as alert from '../../shared/rosterAlertLevels';
 import { fetchEveNames } from '../../eve/names';
 import { SimpleMap } from '../../util/simpleTypes';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 interface Output {
   columns: string[],

@@ -6,8 +6,9 @@ import { PrivilegeName } from '../dao/enums';
 import { ADMIN_GROUP, MEMBER_GROUP } from './specialGroups'
 
 import { MissingPrivilegeError } from '../error/MissingPrivilegeError';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 const debugStr = process.env.DEBUG_GROUPS;
 const debugGroups =

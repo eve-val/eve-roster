@@ -4,8 +4,6 @@ import { AccessToken } from '../dao/tables';
 import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
 import { RefreshResult, TokenRefresher, AccessTokenUpdate } from './accessToken/TokenRefresher';
 
-const logger = require('../util/logger')(__filename);
-
 
 const TOKEN_EXPIRATION_FUDGE_MS = 3000;   // 3 seconds
 const tokenRefresher = new TokenRefresher();

@@ -1,3 +1,10 @@
+/**
+ * OBSOLETE CODE -- ScribeJS is an abandoned project and we should move off of
+ * it for our logging solution.
+ *
+ * For now, we wrap this code in a typed interface (ScribeJsWrapper).
+ */
+
 // Wrap scribe-js with some defined loggers and conditional logging
 // USAGE: require('util/logger')('name').fatal/error/warn/info/debug/trace(...)
 

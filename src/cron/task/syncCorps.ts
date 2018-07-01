@@ -7,8 +7,9 @@ import { isMissingCharError } from '../../util/error';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 import { serialize } from '../../util/asyncUtil';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 export function syncCorps(db: Tnex, job: JobTracker) {
   let completedCharacters = 0;
