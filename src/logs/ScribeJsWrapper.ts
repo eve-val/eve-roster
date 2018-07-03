@@ -31,7 +31,7 @@ export class ScribeJsWrapper implements Logger {
   warn(message: string, error?: Error, data?: object): void {
     this._logger.warn(formatMessage(message, data));
     if (error) {
-      this._logger.error(printError(error));
+      this._logger.warn(printError(error));
     }
   }
 
