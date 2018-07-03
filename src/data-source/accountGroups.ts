@@ -6,8 +6,9 @@ import { Tnex, val } from '../tnex';
 import { ADMIN_GROUP, MEMBER_GROUP } from '../route-helper/specialGroups';
 import { serialize } from '../util/asyncUtil';
 import { account } from '../dao/tables';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 export function updateGroupsOnAllAccounts(db: Tnex) {
   return db
@@ -28,7 +29,7 @@ export function updateGroupsForAccount(db: Tnex, accountId: number) {
   })
   .then(({ groups, ownsAffiliatedChar }) => {
     if (!groups.includes(MEMBER_GROUP) && !groups.includes(ADMIN_GROUP)) {
-      logger.trace(  'Main char is not a member, stripping groups...');
+      logger.verbose(  'Main char is not a member, stripping groups...');
       groups = [];
     }
 

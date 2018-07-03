@@ -10,12 +10,13 @@ import { dao } from '../../dao';
 import { character } from '../../dao/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
 import { JobTracker } from '../Job';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');
 const select = require('soupselect').select;
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 const SIGGY_CONFIG_ERROR = 'Siggy credentials have not been set.';
 const SIGGY_PATH = 'https://siggy.borkedlabs.com';
@@ -37,7 +38,7 @@ export function syncSiggy(db: Tnex, job: JobTracker) {
   .then(cookieJar => getRecentScores(cookieJar))
   .then(recentScores => saveScrapedScores(db, recentScores))
   .then((updateCount) => {
-    logger.info('Updated', updateCount, 'characters');
+    logger.info(`Updated ${updateCount} characters`);
   })
   .catch(error => {
     if (error instanceof Error && error.message === SIGGY_CONFIG_ERROR) {
@@ -299,7 +300,7 @@ function isLastPage(dom: PageDom, page: number) {
  */
 function getLeaderboard(
     year: number, weekInYear: number, cookieJar: tough.CookieJar) {
-  logger.info('Scraping scores for', year, '-', weekInYear);
+  logger.info(`Scraping scores for ${year} - ${weekInYear}`);
 
   function _getPageScores(page: number): Bluebird<SimpleNumMap<number>> {
     return getLeaderboardPage(year, weekInYear, page, cookieJar)
@@ -377,7 +378,7 @@ function getRecentScores(cookieJar: tough.CookieJar) {
     work.push(getLeaderboard(year, weekOfYear, cookieJar));
     daysFetched += 7;
   }
-  logger.info('Siggy scores based on last', daysFetched, 'days');
+  logger.info(`Siggy scores based on last ${daysFetched} days`);
 
   return Bluebird.all(work).then((weeklyScores) => {
     // Join all per-week scores into a summed score per character

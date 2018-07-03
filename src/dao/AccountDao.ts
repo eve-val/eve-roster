@@ -11,8 +11,9 @@ import {
 } from './tables';
 import { updateGroupsForAccount } from '../data-source/accountGroups';
 import { ADMIN_GROUP } from '../route-helper/specialGroups';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 export interface AccountDetailsRow {
   id: number,

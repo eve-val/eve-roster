@@ -17,9 +17,11 @@ import { endSession } from './route-helper/protectedEndpoint';
 import { default as route_api } from './route/api/api';
 import { default as route_home } from './route/home';
 import { default as route_authenticate } from './route/authenticate';
+import { buildLoggerFromFilename } from './logs/buildLogger';
 
 
-const logger = require('./util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
+const legacyLogger = require('./util/logger.js')
 const webpackConfig = require('../webpack.config.js');
 
 const FRONTEND_ROUTES = [
@@ -118,7 +120,7 @@ export function init(db: Tnex, onServing: (port: number) => void) {
       logger.error('Error when attempting to view server logs', e);
       res.redirect('/');
     });
-  }, logger.webPanel());
+  }, legacyLogger.webPanel());
 
   // Static files in static/
   app.use(express.static(path.join(__dirname, '../static')));

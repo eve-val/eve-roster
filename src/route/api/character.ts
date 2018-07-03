@@ -6,8 +6,10 @@ import { AccountPrivileges } from '../../route-helper/privileges';
 import { idParam } from '../../route-helper/paramVerifier';
 import * as policy from '../../route-helper/policy';
 import { NotFoundError } from '../../error/NotFoundError';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+
+const logger = buildLoggerFromFilename(__filename);
 
 
 interface Output {

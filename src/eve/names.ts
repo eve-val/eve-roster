@@ -2,8 +2,9 @@ import swagger from '../swagger';
 import { SimpleNumMap, nil, AsyncReturnType } from "../util/simpleTypes";
 import { isAnyEsiError, printError } from '../util/error';
 import { UNKNOWN_CORPORATION_ID } from '../util/constants';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 const NAME_CACHE = new Map<number, string>();

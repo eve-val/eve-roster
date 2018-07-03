@@ -2,8 +2,9 @@ import { Tnex, val } from '../../tnex';
 import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../dao/tables';
 
 import * as c from './constants';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export interface SdeSkill {

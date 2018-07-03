@@ -5,8 +5,9 @@ import { ExpirationCache } from '../../util/ExpirationCache';
 import { fetchMarketStats } from './fetchMarketStats';
 import { SYSTEM_JITA } from '../../eve/constants/mapSolarSystems';
 import { MarketStat } from './MarketStat';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 const CACHE = new ExpirationCache<number, number>();

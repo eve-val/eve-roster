@@ -10,8 +10,9 @@ import { dao } from '../dao';
 import { serialize } from '../util/asyncUtil';
 import { TaskName } from './tasks';
 import * as tasks from './tasks';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
-const logger = require('../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 interface TaskSchedule {
@@ -104,8 +105,7 @@ class Cron {
       schedule.scheduleJob(task.schedule, () => this._runTask(task));
     })
     .catch(e => {
-      logger.error('Error while initializing task "%s".', task.name);
-      logger.error(e);
+      logger.error(`Error while initializing task "${task.name}".`, e);
     });
   }
 

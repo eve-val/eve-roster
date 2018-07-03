@@ -8,12 +8,8 @@ import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source
 import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
 import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
-import esi from '../../../swagger';
 import * as time from '../../../util/time';
-import * as sde from '../../../eve/sde';
 import { defaultSkillName } from '../../../eve/sde/defaultSkillName';
-
-const logger = require('../../../util/logger')(__filename);
 
 
 export interface Payload {

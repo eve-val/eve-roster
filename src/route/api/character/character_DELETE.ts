@@ -3,13 +3,14 @@ import { dao } from '../../../dao';
 import { findWhere } from '../../../util/underscore';
 import { BadRequestError } from '../../../error/BadRequestError';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
+import { buildLoggerFromFilename } from '../../../logs/buildLogger';
 
-const logger = require('../../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
   let characterId = parseInt(req.params.id);
-  logger.debug('deleteCharacter', account.id, characterId);
+  logger.debug(`deleteCharacter ${account.id} ${characterId}`);
 
 
   return Promise.resolve()

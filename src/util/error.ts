@@ -2,6 +2,7 @@ import { ESIError } from 'eve-swagger';
 import { EsiErrorCompat } from '../eve/esi/EsiErrorCompat';
 import { EsiError, EsiErrorKind } from '../eve/esi/EsiError';
 import { VError } from 'verror';
+import { inspect } from 'util';
 
 export function isAnyEsiError(error: any): error is EsiError {
   return error instanceof ESIError || error instanceof EsiErrorCompat;
@@ -22,6 +23,6 @@ export function printError(e: any) {
   if (isAnyEsiError(e)) {
     return VError.fullStack(e);
   } else {
-    return e.toString();
+    return inspect(e);
   }
 }

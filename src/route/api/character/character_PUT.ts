@@ -4,8 +4,9 @@ import { Tnex } from '../../../tnex';
 import { AccountPrivileges } from '../../../route-helper/privileges';
 
 import { BadRequestError } from '../../../error/BadRequestError';
+import { buildLoggerFromFilename } from '../../../logs/buildLogger';
 
-const logger = require('../../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 export default jsonEndpoint((req, res, db, account, privs) => {
@@ -31,7 +32,7 @@ function setIsOpsec(
     characterId: number,
     isOpsec: boolean,
     ) {
-  logger.debug('setIsOpsec', accountId, characterId, isOpsec);
+  logger.debug(`setIsOpsec ${accountId} ${characterId} ${isOpsec}`);
 
   return dao.character.getCoreData(db, characterId)
   .then(row => {

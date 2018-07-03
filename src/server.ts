@@ -11,8 +11,9 @@ import * as express from './express';
 import * as cron from './cron/cron';
 import * as tasks from './cron/tasks';
 import * as sde from './eve/sde';
+import { buildLoggerFromFilename } from './logs/buildLogger';
 
-const logger = require('./util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 
 const REQUIRED_VARS = [

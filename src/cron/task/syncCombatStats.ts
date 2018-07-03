@@ -7,9 +7,10 @@ import { Tnex } from '../../tnex';
 import { serialize } from '../../util/asyncUtil';
 import { JobTracker } from '../Job';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 
-const logger = require('../../util/logger')(__filename);
+const logger = buildLoggerFromFilename(__filename);
 
 const KB_EXPIRATION_DURATION = moment.duration(12, 'hours').asMilliseconds();
 const PROGRESS_INTERVAL_PERC = 0.05;
