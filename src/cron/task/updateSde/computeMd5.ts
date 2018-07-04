@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
-import { JobTracker } from '../../Job';
 
 
 export function computeMd5(path: string): Promise<string> {

@@ -1,12 +1,12 @@
 import { EventEmitter } from 'events';
 
-import { Job, JobStatus, JobResult, TaskExecutor, } from './Job';
+import { Job, JobStatus, JobResult, TaskExecutor, JobLogger, } from './Job';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 
 
-export class JobImpl extends EventEmitter implements Job {
+export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly executionId: number;
   public readonly taskName: string;
   public readonly executor: TaskExecutor;
@@ -97,20 +97,6 @@ export class JobImpl extends EventEmitter implements Job {
     }
   }
 
-  public error(message: string) {
-    this.errors.push(message);
-    logger.error(`[${this.taskName}] ${message}`);
-  }
-
-  public warn(message: string) {
-    this.warnings.push(message);
-    logger.warn(`[${this.taskName}] ${message}`);
-  }
-
-  public info(message: string) {
-    logger.info(`[${this.taskName}] ${message}`);
-  }
-
   public get timedOut() {
     return this._timedOut || false;
   }
@@ -145,5 +131,32 @@ export class JobImpl extends EventEmitter implements Job {
       this._progressLabel = label;
       this.emit('progress', this._progress, this._progressLabel);
     }
+  }
+
+  public crit(message: string, error?: Error, data?: object) {
+    this.errors.push(message);
+    logger.crit(`[${this.taskName}] ${message}`, error, data);
+  }
+
+  public error(message: string, error?: Error, data?: object) {
+    this.errors.push(message);
+    logger.error(`[${this.taskName}] ${message}`, error, data);
+  }
+
+  public warn(message: string, error?: Error, data?: object): void {
+    this.warnings.push(message);
+    logger.warn(`[${this.taskName}] ${message}`, error, data);
+  }
+
+  public info(message: string, data?: object): void {
+    logger.info(`[${this.taskName}] ${message}`, data);
+  }
+
+  public verbose(message: string, data?: object): void {
+    logger.verbose(`[${this.taskName}] ${message}`, data);
+  }
+
+  public debug(message: string, data?: object): void {
+    logger.debug(`[${this.taskName}] ${message}`, data);
   }
 }

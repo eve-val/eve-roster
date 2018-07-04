@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import axios from 'axios';
 import progress = require('progress-stream');
 
-import { JobTracker } from '../../Job';
+import { JobLogger } from '../../Job';
 
 const bz2 = require('unbzip2-stream');
 
@@ -13,12 +13,12 @@ const SQLITE_DUMP_URL = `${FUZZWORKS_DUMP_URL}/sqlite-latest.sqlite.bz2`;
 const SDE_DOWNLOAD_PROGRESS_LABEL = 'Downloading SDE...';
 
 export async function acquireSde(
-    job: JobTracker, zipFile: string, sqlFile: string) {
+    job: JobLogger, zipFile: string, sqlFile: string) {
   await downloadSde(job, zipFile);
   await unbzipFile(job, zipFile, sqlFile);
 }
 
-function downloadSde(job: JobTracker, target: string) {
+function downloadSde(job: JobLogger, target: string) {
   return new Promise<void>((resolve, reject) => {
     job.setProgress(undefined, SDE_DOWNLOAD_PROGRESS_LABEL);
     axios.get(SQLITE_DUMP_URL, {
@@ -44,7 +44,7 @@ function downloadSde(job: JobTracker, target: string) {
   });
 }
 
-function unbzipFile(job: JobTracker, srcPath: string, destPath: string) {
+function unbzipFile(job: JobLogger, srcPath: string, destPath: string) {
   return new Promise((resolve, reject) => {
     job.setProgress(undefined, 'Unzipping SDE...');
     const src = fs.createReadStream(srcPath);

@@ -5,7 +5,7 @@ import { getAccessTokensFromRows } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { CharacterLocation } from '../../dao/tables';
 
 
@@ -14,7 +14,7 @@ const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 const CHARLOC_CACHE = new Map<number, CharacterLocation>();
 
-export async function syncCharacterLocations(db: Tnex, job: JobTracker) {
+export async function syncCharacterLocations(db: Tnex, job: JobLogger) {
   if (CHARLOC_CACHE.size == 0) {
     await fillLocationCache(db);
   }

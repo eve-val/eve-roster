@@ -4,7 +4,7 @@ import sqlite3 = require('sqlite3');
 import { Tnex, val, DEFAULT_NUM } from '../../../tnex';
 import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../../dao/tables';
 
-import { JobTracker } from '../../Job';
+import { JobLogger } from '../../Job';
 import { notNil } from '../../../util/assert';
 import { normalizeSearchStr } from '../../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';
@@ -20,7 +20,7 @@ const IMPORT_LABEL = 'Importing new SDE data...';
  * Imports the SDE data from a Fuzzworks sqlite database.
  */
 export async function ingestSde(
-  job: JobTracker, db: Tnex, zipPath: string, sqlPath: string) {
+  job: JobLogger, db: Tnex, zipPath: string, sqlPath: string) {
   job.setProgress(undefined, IMPORT_LABEL);
 
   const sdeDb = await openSqliteDb(sqlPath);
@@ -34,7 +34,7 @@ export async function ingestSde(
 }
 
 async function ingestInternal(
-    job: JobTracker, db: Tnex, sde: sqlite3.Database, md5: string) {
+    job: JobLogger, db: Tnex, sde: sqlite3.Database, md5: string) {
   const importId = await createNewImport(db, md5);
   job.info(`Import ID for this task is "${importId}".`);
 
@@ -63,7 +63,7 @@ function createNewImport(db: Tnex, md5: string) {
 }
 
 async function importItems(
-    job: JobTracker,
+    job: JobLogger,
     db: Tnex,
     sde: sqlite3.Database,
     importId: number,
@@ -128,7 +128,7 @@ async function importItems(
 }
 
 async function importAttributes(
-    job: JobTracker, db: Tnex, sde: sqlite3.Database, importId: number) {
+    job: JobLogger, db: Tnex, sde: sqlite3.Database, importId: number) {
   job.info(`Importing attributes...`);
 
   let processedCount = 0;
