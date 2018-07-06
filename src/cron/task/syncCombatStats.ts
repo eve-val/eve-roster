@@ -5,7 +5,7 @@ import axios from 'axios';
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { serialize } from '../../util/asyncUtil';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
@@ -17,7 +17,7 @@ const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
-export function syncCombatStats(db: Tnex, job: JobTracker) {
+export function syncCombatStats(db: Tnex, job: JobLogger) {
   return Promise.resolve()
   .then(() => formatZKillTimeArgument(moment().subtract(60, 'days')))
   .then(startTime => fetchAll(db, job, startTime))
@@ -32,7 +32,7 @@ export function syncCombatStats(db: Tnex, job: JobTracker) {
 };
 
 // For each character, fetches their killboard stats and stores them.
-function fetchAll(db: Tnex, job: JobTracker, since: string) {
+function fetchAll(db: Tnex, job: JobLogger, since: string) {
   return dao.combatStats.getAllCharacterCombatStatsTimestamps(db)
   .then(rows => {
     let currentProgress = 0;
@@ -97,7 +97,7 @@ function syncCharacterKillboard(
 }
 
 function logProgressUpdate(
-    job: JobTracker, lastLoggedProgress: number, idx: number, length: number) {
+    job: JobLogger, lastLoggedProgress: number, idx: number, length: number) {
   let progress = Math.floor(idx / length / PROGRESS_INTERVAL_PERC);
   if (progress > lastLoggedProgress || idx == 0) {
     const perc = Math.round(100 * lastLoggedProgress * PROGRESS_INTERVAL_PERC);

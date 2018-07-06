@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { updateSkills } from '../../data-source/skills';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
@@ -11,7 +11,7 @@ import { buildLoggerFromFilename } from '../../logs/buildLogger';
 const logger = buildLoggerFromFilename(__filename);
 
 
-export function syncSkills(db: Tnex, job: JobTracker) {
+export function syncSkills(db: Tnex, job: JobLogger) {
   return Promise.resolve()
   .then(() => {
     return dao.roster.getCharacterIdsOwnedByMemberAccounts(db);

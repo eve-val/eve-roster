@@ -2,7 +2,7 @@ import moment = require('moment');
 
 import { Tnex } from "../../tnex";
 import { dao } from '../../dao';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
 import { fetchZKillmails } from '../../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
@@ -22,7 +22,7 @@ import { pluck } from '../../util/underscore';
  *
  * Uses Zkillboard as a backend.
  */
-export async function syncKillmails(db: Tnex, job: JobTracker) {
+export async function syncKillmails(db: Tnex, job: JobLogger) {
   const config =
       await dao.config.get(db, 'srpJurisdiction', 'killmailSyncRanges');
   const memberCorps = await dao.config.getMemberCorporations(db);
@@ -41,7 +41,7 @@ export async function syncKillmails(db: Tnex, job: JobTracker) {
 
 async function syncKillmailsForAllCorps(
     db: Tnex,
-    job: JobTracker,
+    job: JobLogger,
     jurisdiction: { start: number, end: number | undefined },
     memberCorps: MemberCorporation[],
     syncedRanges: { [key: number]: { start: number, end: number }},
@@ -68,7 +68,7 @@ async function syncKillmailsForAllCorps(
 
 async function syncLossesForCorp(
     db: Tnex,
-    job: JobTracker,
+    job: JobLogger,
     corpId: number,
     syncedRange: { start: number, end: number } | undefined,
     jurisdiction: { start: number, end: number | undefined },
@@ -94,7 +94,7 @@ async function syncLossesForCorp(
 
 async function syncLossesWithinRange(
     db: Tnex,
-    job: JobTracker,
+    job: JobLogger,
     corpId: number,
     start: number,
     end: number | undefined,

@@ -5,7 +5,7 @@ import { character, accessToken, Character } from '../../dao/tables';
 import { getAccessToken } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import { arrayToMap, refine } from '../../util/collections';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { fetchEveNames } from '../../eve/names';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { fetchEndpoint } from '../../eve/esi/fetchEndpoint';
@@ -19,7 +19,7 @@ import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
 /**
  * Updates the member list of each member corporation.
  */
-export async function syncRoster(db: Tnex, job: JobTracker) {
+export async function syncRoster(db: Tnex, job: JobLogger) {
   const memberRows = await dao.config.getMemberCorporations(db);
 
   for (let row of memberRows) {
@@ -29,7 +29,7 @@ export async function syncRoster(db: Tnex, job: JobTracker) {
 }
 
 async function syncCorporation(
-    db: Tnex, job: JobTracker, corporation: number) {
+    db: Tnex, job: JobLogger, corporation: number) {
   job.info(`syncCorporation ${corporation}`);
 
   const directorRows = await dao.roster.getCorpDirectors(db, corporation);
@@ -80,7 +80,7 @@ async function syncCorporation(
 }
 
 async function updateMemberList(
-    db: Tnex, job: JobTracker, corporationId: number, director: number) {
+    db: Tnex, job: JobLogger, corporationId: number, director: number) {
 
   const token = await getAccessToken(db, director);
   const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] = await Promise.all([
@@ -133,7 +133,7 @@ async function updateMemberList(
 }
 
 function buildMemberRows(
-  job: JobTracker,
+  job: JobLogger,
   corporationId: number,
   memberIds: typeof ESI_CORPORATIONS_$corporationId_MEMBERS['response'],
   titleDefs: typeof ESI_CORPORATIONS_$corporationId_TITLES['response'],

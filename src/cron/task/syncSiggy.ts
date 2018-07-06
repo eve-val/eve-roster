@@ -9,7 +9,7 @@ import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { character } from '../../dao/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 // TODO: These packages don't have type declarations yet
@@ -30,7 +30,7 @@ const axios = axiosModule.create({
   baseURL: SIGGY_PATH
 });
 
-export function syncSiggy(db: Tnex, job: JobTracker) {
+export function syncSiggy(db: Tnex, job: JobLogger) {
   return Promise.resolve()
   .then(_ => resetSavedScores(db))
   .then(_ => getSiggyCredentials(db))

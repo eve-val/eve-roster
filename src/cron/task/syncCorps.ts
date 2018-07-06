@@ -1,7 +1,7 @@
 import { dao } from '../../dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
-import { JobTracker } from '../Job';
+import { JobLogger } from '../Job';
 import { isAnyEsiError } from '../../util/error';
 import { isMissingCharError } from '../../util/error';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
@@ -11,7 +11,7 @@ import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 
-export function syncCorps(db: Tnex, job: JobTracker) {
+export function syncCorps(db: Tnex, job: JobLogger) {
   let completedCharacters = 0;
 
   return Promise.resolve()

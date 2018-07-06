@@ -1,18 +1,16 @@
 import { EventEmitter } from 'events';
 
 import { Tnex } from '../tnex';
+import { Logger } from '../logs/Logger';
 
 
 export type TaskExecutor =
-    (db: Tnex, job: JobTracker) => Promise<void>;
+    (db: Tnex, job: JobLogger) => Promise<void>;
 export type JobResult = 'pending' | 'success' | 'partial' | 'failure';
 export type JobStatus = 'queued' | 'running' | 'finished';
 
-export interface JobTracker {
+export interface JobLogger extends Logger {
   setProgress(progress: number | undefined, label: string | undefined): void;
-  info(message: string): void;
-  error(message: string): void;
-  warn(message: string): void;
 }
 
 export interface Job extends EventEmitter {
