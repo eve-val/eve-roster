@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import { Tnex, val, UpdatePolicy } from '../../tnex';
-import { character, accessToken, Character } from '../../dao/tables';
+import { character, accessToken, Character, MemberCorporation } from '../../dao/tables';
 import { getAccessToken } from '../../data-source/accessToken';
 import { dao } from '../../dao';
 import { arrayToMap, refine } from '../../util/collections';
@@ -23,16 +23,17 @@ export async function syncRoster(db: Tnex, job: JobLogger) {
   const memberRows = await dao.config.getMemberCorporations(db);
 
   for (let row of memberRows) {
-    await syncCorporation(db, job, row.memberCorporation_corporationId);
+    await syncCorporation(db, job, row);
   }
   await updateGroupsOnAllAccounts(db);
 }
 
 async function syncCorporation(
-    db: Tnex, job: JobLogger, corporation: number) {
-  job.info(`syncCorporation ${corporation}`);
+    db: Tnex, job: JobLogger, corporation: MemberCorporation) {
+  const corpId = corporation.memberCorporation_corporationId;
+  job.info(`syncCorporation ${corpId}`);
 
-  const directorRows = await dao.roster.getCorpDirectors(db, corporation);
+  const directorRows = await dao.roster.getCorpDirectors(db, corpId);
 
   let updateSuccessful = false;
 
@@ -48,7 +49,7 @@ async function syncCorporation(
       continue;
     }
     try {
-      await updateMemberList(db, job, corporation, row.character_id);
+      await updateMemberList(db, job, corpId, row.character_id);
       updateSuccessful = true;
       break;
     } catch (e) {
@@ -57,7 +58,7 @@ async function syncCorporation(
         job.warn(printError(e));
       } else {
         job.error(
-          `Unexpected failure while trying to sync corp ${corporation} using `
+          `Unexpected failure while trying to sync corp ${corpId} using `
               + `char ${row.character_name}'s token.`);
         job.error(e.toString());
 
@@ -69,14 +70,18 @@ async function syncCorporation(
   }
 
   if (directorRows.length == 0) {
-    job.error(`No known directors for corporation ${corporation}.`)
+    job.error(`No known directors for corporation ${corpId}.`)
   }
 
   if (!updateSuccessful) {
-    job.error(`Roster sync failed for corporation ${corporation}.`);
+    if (corporation.memberCorporation_membership == 'full') {
+      job.error(`Roster sync failed for primary corporation ${corpId}.`);
+    } else {
+      job.warn(`Roster sync failed for affiliate corporation ${corpId}.`);
+    }
   }
 
-  job.info(`Sync ${corporation} complete.`);
+  job.info(`Sync ${corpId} complete.`);
 }
 
 async function updateMemberList(
