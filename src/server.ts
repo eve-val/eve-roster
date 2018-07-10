@@ -29,7 +29,7 @@ process.on('unhandledRejection', (err) => {
 
 for (let envVar of REQUIRED_VARS) {
   if (!(envVar in process.env)) {
-    console.error(`Missing config param ${envVar} (check your .env file).`);
+    logger.error(`Missing config param ${envVar} (check your .env file).`);
     process.exit(2);
   }
 }

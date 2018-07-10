@@ -1,5 +1,5 @@
 import { Logger } from './Logger';
-import { ScribeJsWrapper } from './ScribeJsWrapper';
+import { WitnessLogger } from './WitnessLogger';
 
 /**
  * Creates an object that can be used to log messages to persistent logs.
@@ -13,7 +13,7 @@ import { ScribeJsWrapper } from './ScribeJsWrapper';
  *    name).
  */
 export function buildLogger(tag: string): Logger {
-  return new ScribeJsWrapper(tag);
+  return new WitnessLogger(tag);
 }
 
 /**
@@ -21,7 +21,7 @@ export function buildLogger(tag: string): Logger {
  * filename. Example usage: <code>buildLoggerFromFilename(__filename);</code>.
  */
 export function buildLoggerFromFilename(filename: string): Logger {
-  return new ScribeJsWrapper(extractTagFromFilename(filename));
+  return new WitnessLogger(extractTagFromFilename(filename));
 }
 
 const FILENAME_PATTERN = /([^/]+)(\.[^/]+)$/;
