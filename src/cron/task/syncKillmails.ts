@@ -10,6 +10,7 @@ import { MemberCorporation } from '../../dao/tables';
 import { inspect } from 'util';
 import { autoTriageLosses } from '../../srp/triage/autoTriageLosses';
 import { pluck } from '../../util/underscore';
+import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 
 
 /**
@@ -114,6 +115,7 @@ async function syncLossesWithinRange(
   let newRowCount = 0;
 
   if (mails.length > 0) {
+    mails.sort(sortKillmailsByTimestamp);
     const rows =
         killmailsToRows(mails, corpId, CAPSULE_SHIP_ASSOCIATION_WINDOW);
     newRowCount = await dao.killmail.upsertKillmails(db, rows);
@@ -138,4 +140,10 @@ async function createSrpEntriesForNewLosses(db: Tnex) {
 function getZkillboardQueryUrl(sourceCorporation: number, startTime: number) {
   const sinceArg = formatZKillTimeArgument(moment(startTime));
   return `corporationID/${sourceCorporation}/losses/startTime/${sinceArg}`;
+}
+
+function sortKillmailsByTimestamp(a: ZKillmail, b: ZKillmail) {
+  const ta = moment.utc(a.killmail_time).valueOf();
+  const tb = moment.utc(b.killmail_time).valueOf();
+  return ta - tb;
 }
