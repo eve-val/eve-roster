@@ -174,7 +174,7 @@ class Logger {
     return LOGGER_PRIORITY[logLevel] <= LOGGER_PRIORITY[level];
   }
 
-  _log(level = 'info', ...message) {
+  log(level = 'info', ...message) {
     if (hasFatalError || !this._isLevelLogged(level)) {
       return;
     }
@@ -208,27 +208,27 @@ class Logger {
   }
 
   fatal(...message) {
-    this._log('fatal', ...message);
+    this.log('fatal', ...message);
   }
 
   error(...message) {
-    this._log('error', ...message);
+    this.log('error', ...message);
   }
 
   warn(...message) {
-    this._log('warn', ...message);
+    this.log('warn', ...message);
   }
 
   info(...message) {
-    this._log('info', ...message);
+    this.log('info', ...message);
   }
 
   debug(...message) {
-    this._log('debug', ...message);
+    this.log('debug', ...message);
   }
 
   trace(...message) {
-    this._log('trace', ...message);
+    this.log('trace', ...message);
   }
 }
 
