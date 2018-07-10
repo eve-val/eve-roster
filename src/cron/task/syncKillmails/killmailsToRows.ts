@@ -5,7 +5,6 @@ import { Killmail } from '../../../dao/tables';
 import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../../eve/constants/types';
 import { HullCategory, KillmailType } from '../../../dao/enums';
 import { Moment } from 'moment';
-import { inspect } from 'util';
 
 
 /**
@@ -52,7 +51,7 @@ export function killmailsToRows(
     const row = {
       km_id: mail.killmail_id,
       km_character: victimCharacter || null,
-      km_timestamp: moment(mail.killmail_time).valueOf(),
+      km_timestamp: timestamp.valueOf(),
       km_type: KillmailType.LOSS,
       km_hullCategory: getHullCategory(mail),
       km_relatedLoss: associatedId,
