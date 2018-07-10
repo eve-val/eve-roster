@@ -21,7 +21,7 @@ import { buildLoggerFromFilename } from './logs/buildLogger';
 
 
 const logger = buildLoggerFromFilename(__filename);
-const legacyLogger = require('./util/logger.js')
+const legacyLogger = require('./util/logger.js')();
 const webpackConfig = require('../webpack.config.js');
 
 const FRONTEND_ROUTES = [
