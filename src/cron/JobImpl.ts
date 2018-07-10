@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 
 import { Job, JobStatus, JobResult, TaskExecutor, JobLogger, } from './Job';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { LogLevel } from '../logs/Logger';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -134,29 +135,35 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
   }
 
   public crit(message: string, error?: Error, data?: object) {
-    this.errors.push(message);
-    logger.crit(`[${this.taskName}] ${message}`, error, data);
+    this.log(LogLevel.CRIT, message, error, data);
   }
 
   public error(message: string, error?: Error, data?: object) {
-    this.errors.push(message);
-    logger.error(`[${this.taskName}] ${message}`, error, data);
+    this.log(LogLevel.ERROR, message, error, data);
   }
 
   public warn(message: string, error?: Error, data?: object): void {
-    this.warnings.push(message);
-    logger.warn(`[${this.taskName}] ${message}`, error, data);
+    this.log(LogLevel.WARN, message, error, data);
   }
 
   public info(message: string, data?: object): void {
-    logger.info(`[${this.taskName}] ${message}`, data);
+    this.log(LogLevel.INFO, message, undefined, data);
   }
 
   public verbose(message: string, data?: object): void {
-    logger.verbose(`[${this.taskName}] ${message}`, data);
+    this.log(LogLevel.VERBOSE, message, undefined, data);
   }
 
   public debug(message: string, data?: object): void {
-    logger.debug(`[${this.taskName}] ${message}`, data);
+    this.log(LogLevel.DEBUG, message, undefined, data);
+  }
+
+  public log(level: LogLevel, message: string, error?: Error, data?: object) {
+    if (level == LogLevel.CRIT || level == LogLevel.ERROR) {
+      this.errors.push(message);
+    } else if (level == LogLevel.WARN) {
+      this.warnings.push(message);
+    }
+    logger.log(level, `[${this.taskName}] ${message}`, error, data);
   }
 }
