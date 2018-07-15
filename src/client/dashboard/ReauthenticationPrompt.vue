@@ -7,7 +7,8 @@
   </div>
   <div class="cnt-right">
     <a class="reauth-btn roster-btn"
-        :href="'https://login.eveonline.com/oauth/authorize?' + loginParams"
+        :href="'https://login.eveonline.com/oauth/authorize'
+            + '?state=addCharacter&' + loginParams"
         >Reauthorize</a>
   </div>
 </div>
