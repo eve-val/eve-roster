@@ -3,7 +3,7 @@ import Bluebird = require('bluebird');
 import * as _ from '../util/underscore';
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
-import * as t from '../dao/tables';
+import * as t from './tables';
 import { pluck } from '../util/underscore';
 import { MEMBER_GROUP } from '../route-helper/specialGroups';
 

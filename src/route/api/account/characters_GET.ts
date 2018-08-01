@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { Tnex } from '../../../tnex/index';
+import { Tnex } from '../../../tnex';
 import { AccountSummary } from '../../../route-helper/getAccountPrivs';
 import { AccountPrivileges } from '../../../route-helper/privileges';
 import { idParam } from '../../../route-helper/paramVerifier';
