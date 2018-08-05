@@ -12,12 +12,12 @@ import { Tnex } from './tnex';
 import { isDevelopment } from './util/config';
 import { LOGIN_PARAMS } from './util/ccpSso';
 import { getAccountPrivs } from './route-helper/getAccountPrivs';
-import { endSession } from './route-helper/protectedEndpoint';
 
 import { default as route_api } from './route/api/api';
 import { default as route_home } from './route/home';
 import { default as route_authenticate } from './route/authenticate';
 import { buildLoggerFromFilename } from './logs/buildLogger';
+import { endSession, getSession } from './route-helper/session';
 
 
 const logger = buildLoggerFromFilename(__filename);
@@ -110,7 +110,7 @@ export function init(db: Tnex, onServing: (port: number) => void) {
   app.use('/logs', (req, res, next) => {
     Bluebird.resolve()
     .then(() => {
-      return getAccountPrivs(req.db, req.session.accountId);
+      return getAccountPrivs(req.db, getSession(req).accountId);
     })
     .then(accountPrivs => {
       accountPrivs.privs.requireRead('serverLogs', false);

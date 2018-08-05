@@ -15,7 +15,7 @@ export class Query<T extends object, R /* return type */> {
   }
 
   public run(): Bluebird<R> {
-    return this._query;
+    return this._query as Bluebird<any>;
   }
 
 

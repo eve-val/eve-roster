@@ -109,24 +109,12 @@ export class Tnex {
   public insertAll<T extends object, K extends keyof T>(
       table: T, rows: T[], returning: K): Bluebird<T[K][]>;
   public insertAll<T extends object>(
-      table: T, rows: T[], returning?: string|string[]) {
+      table: T, rows: T[], returning?: string): Bluebird<any[] | void> {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
             rows.map(row => this._prepRowForInsert(row, table)),
             this._prepReturningKeys(returning));
-  }
-
-  public batchInsert<T extends Object, R extends T>(
-      table: T,
-      rows: T[],
-      chunkSize?: number,
-      ): Bluebird<number[]> {
-    return this._knex.batchInsert(
-        this._registry.getTableName(table),
-        rows.map(row => this._prepRowForInsert(row, table)),
-        chunkSize as any, // bug in typings doesn't allow undef
-        );
   }
 
   public update<T extends object>(

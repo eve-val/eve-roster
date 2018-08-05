@@ -15,6 +15,7 @@ import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
 import { UNKNOWN_CORPORATION_ID } from '../util/constants';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { getSession } from '../route-helper/session';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -40,10 +41,11 @@ export default async function(req: express.Request, res: express.Response) {
       throw new BadRequestError(`Missing either 'state' or 'code' queries.`);
     }
 
+    const session = getSession(req);
     const accountId =
-        await handleEndpoint(req.db, req.session.accountId, authType, authCode);
+        await handleEndpoint(req.db, session.accountId, authType, authCode);
 
-    req.session.accountId = accountId;
+    session.accountId = accountId;
     res.redirect('/');
 
   } catch (e) {

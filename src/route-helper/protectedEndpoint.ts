@@ -20,6 +20,7 @@ import { AccountPrivileges } from './privileges';
 import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
 import { SchemaVerificationError } from './schemaVerifier';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { getSession, endSession } from './session';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -50,18 +51,13 @@ export interface HtmlPayload<T extends object> {
   data: T,
 }
 
-export function endSession(req: express.Request) {
-  // The express session type isn't marked as nullable even though this is the
-  // recommended way to end a session, so we override the type system here.
-  (req as any).session = null;
-}
-
 export function htmlEndpoint<T extends object>(
     handler: HtmlEndpointHandler<T>,
 ): ExpressHandler {
   return async function (req, res) {
     try {
-      const accountPrivs = await getAccountPrivs(req.db, req.session.accountId);
+      const session = getSession(req);
+      const accountPrivs = await getAccountPrivs(req.db, session.accountId);
       const payload =
           await handler(
               req, res, req.db, accountPrivs.account, accountPrivs.privs);
@@ -77,7 +73,8 @@ export function jsonEndpoint<T extends object>(
 ): ExpressHandler {
   return async function(req, res) {
     try {
-      const accountPrivs = await getAccountPrivs(req.db, req.session.accountId);
+      const session = getSession(req);
+      const accountPrivs = await getAccountPrivs(req.db, session.accountId);
       const payload =
           await handler(
               req, res, req.db, accountPrivs.account, accountPrivs.privs);
@@ -95,8 +92,9 @@ export function jsonEndpoint<T extends object>(
 function handleError(
     type: EndpointType, e: Error, req: express.Request, res: express.Response) {
   if (isLoggableError(e)) {
+    const accountId = req.session && req.session.accountId;
     logger.error(`ERROR while handling endpoint ${req.originalUrl}`
-      + ` w/ accountId ${req.session.accountId}`, e);
+      + ` w/ accountId ${accountId}`, e);
   }
 
   if (type == 'html' &&
