@@ -1,5 +1,4 @@
 import { SrpVerdictStatus, SrpVerdictReason } from "../dao/enums";
-import { Nullable } from "../util/simpleTypes";
 
 
 /**
@@ -10,8 +9,8 @@ export interface SrpLossJson {
   killmail: number,
   timestamp: string,
   shipType: number,
-  victim: number | undefined,
-  victimCorp: number,
+  victim?: number,
+  victimCorp?: number,
   executioner: AttackerJson,
   relatedKillmail: {
     id: number | null,
@@ -37,25 +36,12 @@ export interface VerdictOptionJson {
   verdict: SrpVerdictStatus,
 }
 
-export type AttackerJson =
-    PlayerAttackerJson | StructureAttackerJson | NpcAttackerJson;
-
-export interface PlayerAttackerJson {
-  type: 'player',
-  character: number,
-  corporation: number,
-  alliance: number | undefined,
-}
-
-export interface StructureAttackerJson {
-  type: 'structure',
-  ship: number | undefined,
-  corporation: number,
-}
-
-export interface NpcAttackerJson {
-  type: 'npc',
-  ship: number | undefined,
+export interface AttackerJson {
+  ship?: number,
+  character?: number,
+  corporation?: number,
+  alliance?: number,
+  faction?: number,
 }
 
 export type UnifiedSrpLossStatus = SrpVerdictStatus | 'paid';
