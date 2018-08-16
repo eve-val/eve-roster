@@ -4,8 +4,7 @@ import { AccountPrivileges } from '../../../route-helper/privileges';
 import { idParam } from '../../../route-helper/paramVerifier';
 import { dao } from '../../../dao';
 import { NotFoundError } from '../../../error/NotFoundError';
-import swagger from '../../../swagger';
-import { ZKillmail, isPlayerAttacker, isStructureAttacker } from '../../../data-source/zkillboard/ZKillmail';
+import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { SimpleNumMap, nil } from '../../../util/simpleTypes';
 import { fetchEveNames } from '../../../eve/names';
 
@@ -50,20 +49,18 @@ async function buildNameMap(mail: ZKillmail) {
   unnamedIds.add(mail.victim.alliance_id!);
   unnamedIds.add(mail.victim.ship_type_id);
 
-  for (let item of mail.victim.items) {
-    unnamedIds.add(item.item_type_id);
+  if (mail.victim.items) {
+    for (let item of mail.victim.items) {
+      unnamedIds.add(item.item_type_id);
+    }
   }
   for (let attacker of mail.attackers) {
     unnamedIds.add(attacker.ship_type_id!);
-
-    if (isPlayerAttacker(attacker)) {
-      unnamedIds.add(attacker.character_id);
-      unnamedIds.add(attacker.corporation_id);
-      unnamedIds.add(attacker.alliance_id!);
-      unnamedIds.add(attacker.weapon_type_id);
-    } else if (isStructureAttacker(attacker)) {
-      unnamedIds.add(attacker.corporation_id);
-    }
+    unnamedIds.add(attacker.weapon_type_id);
+    unnamedIds.add(attacker.character_id);
+    unnamedIds.add(attacker.corporation_id);
+    unnamedIds.add(attacker.alliance_id);
+    unnamedIds.add(attacker.faction_id);
   }
   return await fetchEveNames(unnamedIds);
 }

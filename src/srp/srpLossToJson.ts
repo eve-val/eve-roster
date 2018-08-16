@@ -2,10 +2,9 @@ const moment = require('moment');
 
 import { SrpLossRow } from "../dao/SrpDao";
 import { nil } from "../util/simpleTypes";
-import { ZKillmail, isPlayerAttacker, isStructureAttacker } from "../data-source/zkillboard/ZKillmail";
+import { ZKillmail } from "../data-source/zkillboard/ZKillmail";
 import { findWhere } from "../util/underscore";
-import { SrpVerdictStatus } from "../dao/enums";
-import { SrpLossJson, UnifiedSrpLossStatus, PlayerAttackerJson, NpcAttackerJson, AttackerJson } from "./SrpLossJson";
+import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
 
 
 /**
@@ -16,7 +15,9 @@ import { SrpLossJson, UnifiedSrpLossStatus, PlayerAttackerJson, NpcAttackerJson,
  * @param ids Will add any IDs that need names into this set.
  */
 export function srpLossToJson(
-    row: SrpLossRow, ids: Set<number | nil>): SrpLossJson {
+    row: SrpLossRow,
+    ids: Set<number | nil>,
+): SrpLossJson {
   const json: SrpLossJson = {
     killmail: row.km_id,
     timestamp: moment.utc(row.km_timestamp).format('YYYY-MM-DD HH:mm'),
@@ -46,37 +47,21 @@ export function srpLossToJson(
 }
 
 function getExecutioner(
-    mail: ZKillmail, ids: Set<number | nil>,
+    mail: ZKillmail,
+    ids: Set<number | nil>,
 ): AttackerJson {
   const executioner = findWhere(mail.attackers, { final_blow: true })!;
-  if (isPlayerAttacker(executioner)) {
-    ids.add(executioner.character_id);
-    ids.add(executioner.corporation_id);
-    if (executioner.alliance_id != null) {
-      ids.add(executioner.alliance_id);
-    }
 
-    return {
-      type: 'player',
-      character: executioner.character_id,
-      corporation: executioner.corporation_id,
-      alliance: executioner.alliance_id,
-    };
-  } else if (isStructureAttacker(executioner)) {
-    ids.add(executioner.ship_type_id)
-    ids.add(executioner.corporation_id);
+  ids.add(executioner.ship_type_id);
+  ids.add(executioner.character_id);
+  ids.add(executioner.corporation_id);
+  ids.add(executioner.alliance_id);
 
-    return {
-      type: 'structure',
-      corporation: executioner.corporation_id,
-      ship: executioner.ship_type_id,
-    }
-  } else {
-    ids.add(executioner.ship_type_id);
-
-    return {
-      type: 'npc',
-      ship: executioner.ship_type_id,
-    };
-  }
+  return {
+    ship: executioner.ship_type_id,
+    character: executioner.character_id,
+    corporation: executioner.corporation_id,
+    alliance: executioner.alliance_id,
+    faction: executioner.faction_id,
+  };
 }

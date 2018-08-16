@@ -540,6 +540,12 @@ function million(value: number) {
 }
 
 function invMatchAll(killmail: ZKillmail, items: number[]) {
+  if (items.length == 0) {
+    return true;
+  }
+  if (killmail.victim.items == undefined) {
+    return false;
+  }
   for (let i = 0; i < items.length; i++) {
     let id = items[i];
     if (findWhere(killmail.victim.items, { item_type_id: id }) == undefined) {
@@ -550,6 +556,9 @@ function invMatchAll(killmail: ZKillmail, items: number[]) {
 }
 
 function invMatchAny(killmail: ZKillmail, items: number[]) {
+  if (killmail.victim.items == undefined) {
+    return undefined;
+  }
   for (let i = 0; i < items.length; i++) {
     let id = items[i];
     if (findWhere(killmail.victim.items, { item_type_id: id }) != undefined) {
