@@ -24,3 +24,11 @@ export type SimpleNumMap<T> = {
 export type MixedObject = {
   [key: string]: BasicType
 }
+
+/** Given a type T, extracts all keys K where T[K] extends PropType. */
+export type KeysOfType<T, PropType> = {
+  [K in keyof T]: T[K] extends PropType ? K : never
+}[keyof T];
+
+/** Given a type T, filters out all properties whose type is not PropType. */
+export type FilterProps<T, PropType> = Pick<T, KeysOfType<T, PropType>>;
