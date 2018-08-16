@@ -139,7 +139,7 @@ async function createSrpEntriesForNewLosses(db: Tnex) {
 
 function getZkillboardQueryUrl(sourceCorporation: number, startTime: number) {
   const sinceArg = formatZKillTimeArgument(moment(startTime));
-  return `corporationID/${sourceCorporation}/losses/startTime/${sinceArg}`;
+  return `corporationID/${sourceCorporation}/startTime/${sinceArg}`;
 }
 
 function sortKillmailsByTimestamp(a: ZKillmail, b: ZKillmail) {

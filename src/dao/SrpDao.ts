@@ -1,7 +1,7 @@
 import { Dao } from '../dao';
 import { Tnex, DEFAULT_NUM } from '../tnex';
 import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account } from './tables';
-import { SrpVerdictStatus, SrpVerdictReason } from './enums';
+import { SrpVerdictStatus, SrpVerdictReason, KillmailType } from './enums';
 import { val, Comparison } from '../tnex/core';
 import { Nullable } from '../util/simpleTypes';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
@@ -59,6 +59,7 @@ export default class SrpDao {
         .leftJoin(ownership, 'ownership_character', '=', 'km_character')
         .leftJoin(account, 'account_id', '=', 'ownership_account')
         .whereNull('srpv_killmail')
+        .where('km_type', '=', val(KillmailType.LOSS))
         .orderBy('km_id', 'asc')
         .columns(
             'km_id',
