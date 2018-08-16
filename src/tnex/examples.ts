@@ -1,4 +1,4 @@
-import { val, integer, varchar } from './';
+import { val, integer, varchar } from '.';
 import { Tnex } from './Tnex';
 
 // Step 1: Define our table schemas

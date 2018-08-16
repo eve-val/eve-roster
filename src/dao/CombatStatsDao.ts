@@ -1,6 +1,6 @@
 import { Tnex } from '../tnex';
 import { Dao } from '../dao';
-import { character, combatStats } from '../dao/tables';
+import { character, combatStats } from './tables';
 
 export default class CombatStatsDao {
   constructor(

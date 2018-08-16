@@ -8,7 +8,7 @@ import {
     GroupTitle,
     memberCorporation,
     MemberCorporation,
-} from '../dao/tables';
+} from './tables';
 import { serialize } from '../util/asyncUtil';
 import { UserVisibleError } from '../error/UserVisibleError';
 import { Nullable } from '../util/simpleTypes';

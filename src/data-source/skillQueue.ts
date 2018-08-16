@@ -6,7 +6,7 @@ import { Tnex } from '../tnex';
 import { dao } from '../dao';
 import { SkillQueueRow } from '../dao/SkillQueueDao';
 import swagger from '../swagger';
-import { getAccessToken } from '../data-source/accessToken';
+import { getAccessToken } from './accessToken';
 
 
 /**

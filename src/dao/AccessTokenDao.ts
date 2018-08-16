@@ -1,6 +1,6 @@
 import { Tnex, val, toNum } from '../tnex';
 import { Dao } from '../dao';
-import { accessToken, AccessToken } from '../dao/tables';
+import { accessToken, AccessToken } from './tables';
 
 export default class AccessTokenDao {
   constructor(

@@ -1,6 +1,6 @@
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
-import { citadel, Citadel } from '../dao/tables';
+import { citadel, Citadel } from './tables';
 
 export default class CitadelDao {
   constructor(
