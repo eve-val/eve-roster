@@ -48,11 +48,15 @@ export function killmailsToRows(
       }
     }
 
+    const kmType = mail.victim.corporation_id == sourceCorporation
+        ? KillmailType.LOSS
+        : KillmailType.KILL;
+
     const row = {
       km_id: mail.killmail_id,
       km_character: victimCharacter || null,
       km_timestamp: timestamp.valueOf(),
-      km_type: KillmailType.LOSS,
+      km_type: kmType,
       km_hullCategory: getHullCategory(mail),
       km_relatedLoss: associatedId,
       km_sourceCorporation: sourceCorporation,

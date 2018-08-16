@@ -109,7 +109,7 @@ test('Row is generated properly', () => {
   const mail = killmail({
     killmail_id: 23,
     killmail_time: '2018-01-14T05:51:14Z',
-    victim: { character_id: 47, },
+    victim: { character_id: 47, corporation_id: SOURCE_CORP, },
   });
   const row = killmailsToRows([mail], SOURCE_CORP, TEN_MINUTES)[0];
 
@@ -122,6 +122,17 @@ test('Row is generated properly', () => {
     km_relatedLoss: null,
     km_sourceCorporation: SOURCE_CORP,
     km_data: mail,
+  });
+});
+
+test('Kill type is properly detected', () => {
+  const mail = killmail({
+    victim: { corporation_id: 0, },
+  });
+  const row = killmailsToRows([mail], SOURCE_CORP, TEN_MINUTES)[0];
+
+  expect(row).toMatchObject({
+    km_type: KillmailType.KILL,
   });
 });
 
@@ -163,7 +174,7 @@ function killmail(source: PartialZkillmail): ZKillmail {
       damage_taken: 0,
       ship_type_id: source.victim && source.victim.ship_type_id || 0,
       character_id: source.victim && source.victim.character_id || 0,
-      corporation_id: 0,
+      corporation_id: source.victim && source.victim.corporation_id || 0,
       alliance_id: undefined,
       items: [],
       position: {
@@ -201,6 +212,7 @@ interface PartialZkillmail {
   killmail_time?: string,
   victim?: {
     character_id?: number,
+    corporation_id?: number,
     ship_type_id?: number,
   }
 }
