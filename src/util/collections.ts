@@ -33,3 +33,10 @@ export function refine<Q, R>(
   }
   return out;
 }
+
+/** Adds all of the entries in `entries` to a Set. */
+export function addAll<T>(set: Set<T>, entries: Iterable<T>) {
+  for (let e of entries) {
+    set.add(e);
+  }
+}

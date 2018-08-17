@@ -175,6 +175,11 @@ class ObjectSchema<T extends object> extends Schema {
   verify(value: any, path: string[]) {
     super.verify(value, path);
 
+    if (value == undefined) {
+      // Whether this is allowed has already been checked by the super call.
+      return;
+    }
+
     path.push('');
     for (let k in this._subSchema) {
       const prop = extractPropSchema(this._subSchema, k, path);
