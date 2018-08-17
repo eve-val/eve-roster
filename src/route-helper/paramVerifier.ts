@@ -55,6 +55,32 @@ export function enumQuery<EType extends string, Eobj extends object = object>(
   throw new BadRequestError(`Non-enum value "${value}" for key "${key}".`);
 }
 
+
+/**
+ * Attempts to parse the specified GET query param as a JSON object.
+ * Throws a BadRequestError if the parse fails. Otherwise returns the parsed
+ * object or undefined if the param was not specified.
+ */
+export function jsonQuery(
+    req: express.Request,
+    queryParam: string,
+): object | undefined {
+  const value = req.query[queryParam];
+  if (value == undefined) {
+    return value;
+  } else {
+    try {
+      return JSON.parse(value);
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        throw new BadRequestError(`Query "${queryParam}" is not valid JSON.`);
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 function getParam(req: express.Request, key: string): string {
   let param = req.params[key];
 
