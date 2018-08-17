@@ -1,6 +1,7 @@
 import { TnexBuilder, nullable, integer, varchar, bigInt, boolean, text, jsonb, strEnum, float4, decimal } from '../tnex';
 import { PrivilegeName, KillmailType, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './enums';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
+import { BattleData } from '../domain/battle/BattleData';
 
 
 export const tables = new TnexBuilder();
@@ -41,6 +42,14 @@ export class AccountLog {
   accountLog_data = nullable(text());
 }
 export const accountLog = tables.register(new AccountLog());
+
+export class Battle {
+  battle_id = integer();
+  battle_start = bigInt();
+  battle_end = bigInt();
+  battle_data = jsonb<BattleData>();
+}
+export const battle = tables.register(new Battle());
 
 export class Character {
   character_id = integer();
@@ -149,24 +158,28 @@ export class Killmail {
   km_id = integer();
   km_timestamp = bigInt();
   km_character = nullable(integer());
-  /** Currently always LOSS. */
   km_type = strEnum<KillmailType>();
   km_hullCategory = strEnum<HullCategory>();
+
   /**
-   * If a ship, the related capsule loss for that character (if any), and
-   * vice-versa.
+   * If a ship, the related capsule loss for that character (if any). If a
+   * capsule, the related ship loss (if any).
    */
   km_relatedLoss = nullable(integer());
-  /**
-   * The corporation whose killboard this loss was fetched from.
-   */
+
+  /** The corporation whose killboard this loss was fetched from. */
   km_sourceCorporation = integer();
-  /**
-   * The full JSON blob received from ZKillboard.
-   */
+
+  /** The full JSON blob received from ZKillboard. */
   km_data = jsonb<ZKillmail>();
 }
 export const killmail = tables.register(new Killmail());
+
+export class KillmailBattle {
+  kmb_killmail = integer();
+  kmb_battle = integer();
+}
+export const killmailBattle = tables.register(new KillmailBattle());
 
 export class MemberCorporation {
   memberCorporation_corporationId = integer();

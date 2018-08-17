@@ -11,6 +11,7 @@ import { inspect } from 'util';
 import { autoTriageLosses } from '../../srp/triage/autoTriageLosses';
 import { pluck } from '../../util/underscore';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
+import { createPendingBattles } from '../../domain/battle/createPendingBattles';
 
 
 /**
@@ -38,6 +39,7 @@ export async function syncKillmails(db: Tnex, job: JobLogger) {
 
   await dao.config.set(db, { 'killmailSyncRanges':  syncedRanges });
   await createSrpEntriesForNewLosses(db);
+  await createPendingBattles(db, job);
 }
 
 async function syncKillmailsForAllCorps(
