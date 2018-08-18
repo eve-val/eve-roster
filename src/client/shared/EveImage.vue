@@ -4,6 +4,8 @@
 
 <script>
 
+const unknownIcon = require('../assets/EveImage-Unknown.svg');
+
 let SUPPORTED_TYPES = {
   Alliance: true,
   Corporation: true,
@@ -18,7 +20,7 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true,
+      required: false,
     },
     type: {
       type: String,
@@ -46,8 +48,13 @@ export default {
     },
 
     portraitSrc: function() {
-      return '//image.eveonline.com/' + this.type + '/' + this.id + 
-          '_' + this.requestSize + (this.type == 'Character' ? '.jpg' : '.png');
+      if (this.id == null) {
+        return unknownIcon;
+      } else {
+        return '//image.eveonline.com/' + this.type + '/' + this.id
+            + '_' + this.requestSize
+            + (this.type == 'Character' ? '.jpg' : '.png');
+      }
     }
   }
 }
