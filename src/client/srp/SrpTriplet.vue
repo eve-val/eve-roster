@@ -37,7 +37,7 @@ lines of text on the right. The text may be optionally wrapped in links.
         :path="effectiveBotHref"
         :link-class="'link-row'"
         >
-      {{ bottomLine }}
+      {{ bottomLine || ''}}
     </adaptive-link>
   </div>
 </div>
@@ -64,7 +64,7 @@ export default Vue.extend({
     /** One of the types listed in EveImage (Character, Corporation, etc). */
     iconType: { type: String, required: false, },
     topLine: { type: String, required: true, },
-    bottomLine: { type: String, required: true, },
+    bottomLine: { type: String, required: false, },
     iconHref: { type: String, required: false, },
     topHref: { type: String, required: false, },
     botHref: { type: String, required: false, },
@@ -100,6 +100,7 @@ export default Vue.extend({
 <style scoped>
 ._srp-triplet {
   display: flex;
+  min-width: 70px;
 }
 
 .icon-cnt {
