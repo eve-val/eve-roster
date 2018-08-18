@@ -55,7 +55,7 @@
 <script>
 import eveConstants from '../shared/eveConstants';
 import filter from './filter';
-import numberFormat from '../shared/numberFormat';
+import { formatNumber } from '../shared/numberFormat';
 import rosterColumns from './rosterColumns';
 
 import EveImage from '../shared/EveImage.vue';
@@ -233,7 +233,7 @@ export default {
 }
 
 function iskLabel(isk) {
-  return numberFormat(isk) + ' ISK';
+  return formatNumber(isk) + ' ISK';
 }
 
 function altsLabel(altsCount) {
