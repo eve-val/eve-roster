@@ -109,6 +109,8 @@ export interface Attacker {
   damage_done: number,
   security_status: 0,
   ship_type_id?: number,
+  // Sometimes, this is actually a ship type ID. Usually when the ship type ID
+  // itself is undefined. ¯\_(ツ)_/¯
   weapon_type_id?: number,
   character_id?: number,
   corporation_id?: number,
