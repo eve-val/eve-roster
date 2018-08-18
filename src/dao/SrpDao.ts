@@ -1,6 +1,6 @@
 import { Dao } from '../dao';
 import { Tnex, DEFAULT_NUM } from '../tnex';
-import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account } from './tables';
+import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account, killmailBattle, KillmailBattle } from './tables';
 import { SrpVerdictStatus, SrpVerdictReason, KillmailType } from './enums';
 import { val, Comparison } from '../tnex/core';
 import { Nullable } from '../util/simpleTypes';
@@ -16,6 +16,7 @@ export interface SrpLossFilter {
   character?: number,
   killmail?: number,
   reimbursement?: number,
+  battles?: number[],
 }
 
 export interface SrpReimbursementFilter {
@@ -85,6 +86,7 @@ export default class SrpDao {
                 .using('km_id', 'related_id')
                 .using('km_data', 'related_data'),
             'related_id', '=', 'km_relatedLoss')
+        .leftJoin(killmailBattle, 'kmb_killmail', '=', 'km_id')
         .orderBy('km_id', order)
         .columns(
             'km_id',
@@ -99,6 +101,7 @@ export default class SrpDao {
             'srpr_payingCharacter',
             'related_data',
             'account_mainCharacter',
+            'kmb_battle',
             );
     if (filter.limit != undefined) {
       query = query.limit(filter.limit);
@@ -120,6 +123,9 @@ export default class SrpDao {
     }
     if (filter.reimbursement != undefined) {
       query = query.where('srpv_reimbursement', '=', val(filter.reimbursement));
+    }
+    if (filter.battles != undefined) {
+      query = query.whereIn('kmb_battle', filter.battles);
     }
 
     return query.run();
@@ -378,7 +384,11 @@ export default class SrpDao {
 
 export type SrpLossRow =
     Pick<
-        Killmail & SrpVerdict & Nullable<SrpReimbursement> & Nullable<Account>,
+        Killmail
+            & SrpVerdict
+            & Nullable<SrpReimbursement>
+            & Nullable<Account>
+            & Nullable<KillmailBattle>,
         | 'km_id'
         | 'km_timestamp'
         | 'km_relatedLoss'
@@ -390,5 +400,6 @@ export type SrpLossRow =
         | 'srpr_paid'
         | 'srpr_payingCharacter'
         | 'account_mainCharacter'
+        | 'kmb_battle'
         >
     & { related_data: ZKillmail | null };

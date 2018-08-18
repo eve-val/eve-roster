@@ -105,4 +105,66 @@ export default class BattleDao {
             )
         .run();
   }
+
+  listBattles(db: Tnex, filter: BattleFilter) {
+    console.log('FILTER', filter);
+    let query = db
+        .select(battle)
+        .columns(
+            'battle_id',
+            'battle_start',
+            'battle_end',
+            'battle_data',
+            );
+
+    if (filter.untriaged) {
+      query = query
+          .join(killmailBattle, 'kmb_battle', '=', 'battle_id')
+          .join(srpVerdict, 'srpv_killmail', '=', 'kmb_killmail')
+          .distinct('battle_id')
+          .where('srpv_status', '=', val(SrpVerdictStatus.PENDING));
+    }
+    if (filter.limit != undefined) {
+      query = query.limit(filter.limit);
+    }
+    if (filter.offset != undefined) {
+      query = query.offset(filter.offset);
+    }
+    if (filter.orderBy != undefined) {
+      for (let {key, order} of filter.orderBy) {
+        query = query.orderBy(key, order);
+      }
+    }
+    if (filter.bound != undefined) {
+      query = query
+          .where(filter.bound.col, filter.bound.cmp, val(filter.bound.value))
+    }
+
+    return query.run();
+  }
+}
+
+export interface BattleFilter {
+  orderBy?: { key: BattleColumn, order: ResultOrder }[],
+  limit?: number,
+  offset?: number,
+  untriaged?: boolean,
+  bound?: {
+    col: BattleColumn,
+    cmp: '<' | '>' | '<=' | '>=',
+    value: number,
+  },
+}
+
+export enum BattleColumn {
+  ID = 'battle_id',
+  START = 'battle_start',
+  END = 'battle_end',
+}
+
+export enum BoundCmp {
+  LT = '<',
+  GT = '>',
+  LTE = '<=',
+  GTE = '>=',
 }

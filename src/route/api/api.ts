@@ -34,6 +34,7 @@ import dashboard_queueSummary from './dashboard/queueSummary';
 import killmail_GET from './killmail/killmail_GET';
 
 import srp_approvedLiability_GET from './srp/approvedLiability_GET';
+import srp_battle_dir_GET from './srp/battle/battle_dir_GET';
 import srp_loss_dir_GET from './srp/loss/loss_dir_GET';
 import srp_loss_PUT from './srp/loss/loss_PUT';
 import srp_loss_triage_GET from './srp/loss/triage_GET';
@@ -85,6 +86,7 @@ router.get('/dashboard/queueSummary', dashboard_queueSummary);
 router.get('/killmail/:id', killmail_GET);
 
 router.get('/srp/approvedLiability', srp_approvedLiability_GET);
+router.get('/srp/battle', srp_battle_dir_GET);
 router.get('/srp/loss', srp_loss_dir_GET);
 router.put('/srp/loss/:id', srp_loss_PUT);
 router.get('/srp/loss/:id/triage', srp_loss_triage_GET);
