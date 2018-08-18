@@ -16,10 +16,10 @@ Root container for the SRP UI.
       Dashboard
     </router-link>
     <router-link
-        to="/srp/losses"
+        to="/srp/history"
         class="nav-link"
         >
-      Losses
+      Activity
     </router-link>
     <router-link
         to="/srp/payments"

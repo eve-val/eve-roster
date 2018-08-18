@@ -14,7 +14,7 @@ import Dev from './dev/Dev.vue';
 
 import Srp from './srp/Srp.vue';
 import SrpDashboard from './srp/SrpDashboard.vue';
-import LossHistory from './srp/LossHistory.vue';
+import CombatHistory from './srp/CombatHistory.vue';
 import PaymentHistory from './srp/PaymentHistory.vue';
 import PaymentTriage from './srp/PaymentTriage.vue';
 import PaymentDetail from './srp/PaymentDetail.vue';
@@ -46,8 +46,9 @@ const routes = [
         component: SrpDashboard,
       },
       {
-        path: 'losses',
-        component: LossHistory,
+        path: 'history',
+        component: CombatHistory,
+        props: { triageMode: false },
       },
       {
         path: 'payments',
@@ -55,7 +56,7 @@ const routes = [
       },
       {
         path: 'triage',
-        component: LossHistory,
+        component: CombatHistory,
         props: { triageMode: true },
       },
       {
