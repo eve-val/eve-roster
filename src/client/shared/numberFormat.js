@@ -1,27 +1,44 @@
 
 const VALUE_STOPS = [
-  { symbol: 't', min: 1e12 },
-  { symbol: 'b', min: 1e9 },
-  { symbol: 'm', min: 1e6 },
-  { symbol: 'k', min: 1e3 },
-  { symbol: '', min: 0 }
+  { symbol: '', divisor: 1 },
+  { symbol: 'k', divisor: 1e3 },
+  { symbol: 'm', divisor: 1e6 },
+  { symbol: 'b', divisor: 1e9 },
+  { symbol: 't', divisor: 1e12 },
 ];
 
-function formatNumber(
+export function formatNumber(
     value,
-    {
-      decimalPlaces = 1,
-      formatter = (valueStr, unitStr) => valueStr + unitStr
-    } = {}) {
+    /**
+     * {
+     *    decimalPlaces: number,
+     *    formatter: (value: string, unit: string) => string,
+     * }
+     */
+    options = {},
+) {
+  const formatter = options.formatter
+      || ((valueStr, unitStr) => `${valueStr}${unitStr}`);
 
-  for (let stop of VALUE_STOPS) {
-    // VALUE_STOPS is in descending order so stop after first minimum is reached
-    if (value > stop.min) {
-      return formatter((value / stop.min).toFixed(decimalPlaces), stop.symbol);
+  for (let i = 0; i < VALUE_STOPS.length; i++) {
+    stop = VALUE_STOPS[i];
+    if (value / stop.divisor < 1000) {
+      break;
     }
   }
 
-  return formatter(value.toFixed(decimalPlaces), '');
-}
+  const displayValue = value / stop.divisor;
+  let decimalPlaces;
+  if (displayValue == 0) {
+    decimalPlaces = 0;
+  } else if (options.decimalPlaces == undefined
+      || options.decimalPlaces == 'auto') {
+    // Always show three significant digits
+    const primaryDigits = Math.floor(Math.log10(displayValue) + 1);
+    decimalPlaces = Math.max(0, 3 - primaryDigits);
+  } else {
+    decimalPlaces = options.decimalPlaces;
+  }
 
-export default formatNumber;
+  return formatter(displayValue.toFixed(decimalPlaces), stop.symbol);
+}

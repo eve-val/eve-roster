@@ -96,9 +96,9 @@
 <script>
 import ajaxer from '../shared/ajaxer';
 import AppHeader from '../shared/AppHeader.vue';
-import EveImage from '../shared/EveImage.vue'; 
+import EveImage from '../shared/EveImage.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import numberFormat from '../shared/numberFormat';
+import { formatNumber } from '../shared/numberFormat';
 
 import FactoidSelector from './FactoidSelector.vue';
 import SkillSheet from './SkillSheet.vue';
@@ -148,7 +148,7 @@ export default {
         let hint = TIMEZONE_HINTS[timezone];
         return {
           value: timezone,
-          label: hint != null ? `${timezone} (${hint})` : timezone, 
+          label: hint != null ? `${timezone} (${hint})` : timezone,
         };
       });
     },
@@ -204,7 +204,7 @@ export default {
 
     formatSp() {
       if (this.character.totalSp) {
-        return numberFormat(this.character.totalSp, { decimalPlaces: 2 });
+        return formatNumber(this.character.totalSp);
       } else {
         return '-';
       }
