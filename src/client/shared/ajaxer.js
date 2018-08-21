@@ -142,6 +142,15 @@ export default {
     return axios.get('/api/srp/approvedLiability');
   },
 
+  getBattles(filter, includeSrp) {
+    return axios.get('/api/srp/battle', {
+      params: {
+        filter: filter != undefined ? JSON.stringify(filter) : undefined,
+        includeSrp: includeSrp,
+      },
+    });
+  },
+
   getRecentSrpLosses(filter) {
     return axios.get('/api/srp/loss', {
       params: filter
