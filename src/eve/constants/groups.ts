@@ -40,3 +40,5 @@ export const GROUP_MOBILE_TRACTOR_UNIT = 1250;
 export const GROUP_SUPPORT_FIGHTER = 1537;
 export const GROUP_LIGHT_FIGHTER = 1652;
 export const GROUP_HEAVY_FIGHTER = 1653;
+
+export const GROUP_SHUTTLE = 31;
