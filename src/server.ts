@@ -22,6 +22,12 @@ const REQUIRED_VARS = [
   'SSO_SECRET_KEY'
 ];
 
+// Crash the process in the face of an unhandled promise rejection
+process.on('unhandledRejection', (err) => {
+  logger.error(`Unhandled promise rejection`, err);
+  throw err;
+});
+
 for (let envVar of REQUIRED_VARS) {
   if (!(envVar in process.env)) {
     console.error(`Missing config param ${envVar} (check your .env file).`);
