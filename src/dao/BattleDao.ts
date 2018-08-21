@@ -107,7 +107,6 @@ export default class BattleDao {
   }
 
   listBattles(db: Tnex, filter: BattleFilter) {
-    console.log('FILTER', filter);
     let query = db
         .select(battle)
         .columns(
