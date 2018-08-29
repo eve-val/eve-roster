@@ -1,5 +1,5 @@
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
-import { SrpVerdictStatus, SrpVerdictReason } from "../../dao/enums";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { SrpVerdictStatus, SrpVerdictReason } from "../../../dao/enums";
 
 /**
  * Defines a rule for triaging losses. A rule has two fundamental parts: the

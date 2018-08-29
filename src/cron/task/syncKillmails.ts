@@ -8,7 +8,7 @@ import { fetchZKillmails } from '../../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
 import { MemberCorporation } from '../../dao/tables';
 import { inspect } from 'util';
-import { autoTriageLosses } from '../../srp/triage/autoTriageLosses';
+import { autoTriageLosses } from '../../domain/srp/triage/autoTriageLosses';
 import { pluck } from '../../util/underscore';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 import { createPendingBattles } from '../../domain/battle/createPendingBattles';

@@ -7,9 +7,9 @@ import { idParam } from '../../../../route-helper/paramVerifier';
 import { dao } from '../../../../dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { SimpleNumMap } from '../../../../util/simpleTypes';
-import { srpLossToJson } from '../../../../srp/srpLossToJson';
+import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
 import { fetchEveNames } from '../../../../eve/names';
-import { SrpLossJson } from '../../../../srp/SrpLossJson';
+import { SrpLossJson } from '../../../../domain/srp/SrpLossJson';
 
 export interface Output {
   payment: {

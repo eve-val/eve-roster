@@ -1,9 +1,9 @@
 const moment = require('moment');
 
-import { SrpLossRow } from "../dao/SrpDao";
-import { nil } from "../util/simpleTypes";
-import { ZKillmail } from "../data-source/zkillboard/ZKillmail";
-import { findWhere } from "../util/underscore";
+import { SrpLossRow } from "../../dao/SrpDao";
+import { nil } from "../../util/simpleTypes";
+import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
+import { findWhere } from "../../util/underscore";
 import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
 
 

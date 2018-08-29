@@ -5,9 +5,9 @@ import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';
-import { SrpTriageJson } from '../../../../srp/SrpLossJson';
-import { triagedLossesToSuggestionJson } from '../../../../srp/triage/triagedLossesToSuggestionJson';
-import { triageLosses } from '../../../../srp/triage/triageLosses';
+import { SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
+import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
+import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
 
 
 export interface Output {

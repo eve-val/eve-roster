@@ -1,6 +1,6 @@
 import { fetchHullMarketValues, resolvePayout } from './payout';
 import { SrpTriageJson, VerdictOptionJson } from '../SrpLossJson';
-import { SrpVerdictStatus } from '../../dao/enums';
+import { SrpVerdictStatus } from '../../../dao/enums';
 import { TriagedLoss } from './triageLosses';
 
 

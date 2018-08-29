@@ -1,4 +1,4 @@
-import { SrpVerdictStatus, SrpVerdictReason } from "../dao/enums";
+import { SrpVerdictStatus, SrpVerdictReason } from "../../dao/enums";
 
 
 /**

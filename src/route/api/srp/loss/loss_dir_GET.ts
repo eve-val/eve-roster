@@ -6,12 +6,12 @@ import { SrpVerdictStatus } from '../../../../dao/enums';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { fetchEveNames } from '../../../../eve/names';
-import { srpLossToJson } from '../../../../srp/srpLossToJson';
+import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
 import { SrpLossFilter, SrpLossRow } from '../../../../dao/SrpDao';
 import { ResultOrder } from '../../../../tnex';
-import { SrpLossJson, SrpTriageJson } from '../../../../srp/SrpLossJson';
-import { triageLosses } from '../../../../srp/triage/triageLosses';
-import { triagedLossesToSuggestionJson } from '../../../../srp/triage/triagedLossesToSuggestionJson';
+import { SrpLossJson, SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
+import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
+import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
 
 
 export interface Output {
