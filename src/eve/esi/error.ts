@@ -1,6 +1,6 @@
 import { ESIError } from 'eve-swagger';
-import { EsiErrorCompat } from '../eve/esi/EsiErrorCompat';
-import { EsiError, EsiErrorKind } from '../eve/esi/EsiError';
+import { EsiErrorCompat } from './EsiErrorCompat';
+import { EsiError, EsiErrorKind } from './EsiError';
 import { VError } from 'verror';
 import { inspect } from 'util';
 

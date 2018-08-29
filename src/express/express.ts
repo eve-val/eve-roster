@@ -10,7 +10,7 @@ import webpack = require('webpack');
 
 import { Tnex } from '../tnex';
 import { isDevelopment } from '../util/config';
-import { LOGIN_PARAMS } from '../util/ccpSso';
+import { LOGIN_PARAMS } from '../domain/sso/loginParams';
 import { getAccountPrivs } from './getAccountPrivs';
 
 import { default as route_api } from '../route/api/api';
@@ -21,8 +21,8 @@ import { endSession, getSession } from './session';
 
 
 const logger = buildLoggerFromFilename(__filename);
-const legacyLogger = require('./util/logger.js')();
-const webpackConfig = require('../webpack.config.js');
+const legacyLogger = require('../logs/legacyLogger')();
+const webpackConfig = require('../../webpack.config.js');
 
 const FRONTEND_ROUTES = [
   '/',

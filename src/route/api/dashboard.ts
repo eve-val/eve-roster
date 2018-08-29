@@ -3,7 +3,7 @@ import { NotFoundError } from '../../error/NotFoundError';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../domain/skills/skillQueueSummarizer';
 import { parallelize } from '../../util/asyncUtil';
-import * as ccpSso from '../../util/ccpSso';
+import * as ccpSso from '../../domain/sso/loginParams';
 import { canDesignateMain } from '../../domain/account/canDesignateMain';
 
 interface Output {

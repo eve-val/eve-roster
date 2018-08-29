@@ -6,7 +6,7 @@ import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from './skillQueue';
-import { isAnyEsiError } from '../../util/error';
+import { isAnyEsiError } from '../../eve/esi/error';
 import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 

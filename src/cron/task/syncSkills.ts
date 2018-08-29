@@ -5,7 +5,7 @@ import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
 import { updateSkills } from '../../domain/skills/skills';
 import { AccessTokenError } from '../../error/AccessTokenError';
-import { isAnyEsiError } from '../../util/error';
+import { isAnyEsiError } from '../../eve/esi/error';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);

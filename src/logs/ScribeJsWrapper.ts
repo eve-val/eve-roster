@@ -1,7 +1,7 @@
 import { Logger, LogLevel } from "./Logger";
 
-import buildLegacyLogger = require('../util/logger');
-import { printError } from "../util/error";
+import buildLegacyLogger = require('./legacyLogger');
+import { printError } from "../eve/esi/error";
 
 
 /**

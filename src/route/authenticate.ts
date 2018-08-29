@@ -5,7 +5,7 @@ import express = require('express');
 
 import { dao } from '../dao';
 import { Tnex, UpdatePolicy } from '../tnex';
-import { isAnyEsiError } from '../util/error';
+import { isAnyEsiError } from '../eve/esi/error';
 
 import swagger from '../swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
@@ -13,7 +13,7 @@ import { enumQuery, stringQuery } from '../route-helper/paramVerifier';
 import { BadRequestError } from '../error/BadRequestError';
 import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
-import { UNKNOWN_CORPORATION_ID } from '../util/constants';
+import { UNKNOWN_CORPORATION_ID } from '../db/constants';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
 import { getSession } from '../express/session';
 

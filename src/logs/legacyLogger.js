@@ -9,7 +9,7 @@
 // USAGE: require('util/logger')('name').fatal/error/warn/info/debug/trace(...)
 
 const path = require('path');
-const config = require('./config');
+const config = require('../util/config');
 
 // Import the scribe-js module with the given root log directory
 // (and don't have it create process.console since that's not how we'll use it)

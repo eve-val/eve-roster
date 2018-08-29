@@ -5,7 +5,7 @@ import { Tnex } from '../../tnex';
 import { BasicRosterCharacter, OwnedRosterCharacter } from '../../dao/RosterDao';
 import { AccountPrivileges } from '../../express/privileges';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
-import { isAnyEsiError } from '../../util/error';
+import { isAnyEsiError } from '../../eve/esi/error';
 import * as alert from '../../shared/rosterAlertLevels';
 import { fetchEveNames } from '../../eve/esi/names';
 import { SimpleMap } from '../../util/simpleTypes';
