@@ -7,7 +7,7 @@ import { Tnex, ResultOrder } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { nil, SimpleNumMap } from '../../../../util/simpleTypes';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../eve/esi/names';
 import { SrpReimbursementFilter } from '../../../../dao/SrpDao';
 
 export interface Output {

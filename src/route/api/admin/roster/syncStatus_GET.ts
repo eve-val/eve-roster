@@ -6,7 +6,7 @@ import { dao } from '../../../../dao';
 import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
 import { AccountPrivileges } from '../../../../route-helper/privileges';
 import { SimpleNumMap, AsyncReturnType } from '../../../../util/simpleTypes';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../eve/esi/names';
 import { hasRosterScopes } from '../../../../domain/roster/hasRosterScopes';
 
 

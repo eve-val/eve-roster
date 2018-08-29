@@ -1,6 +1,6 @@
 import { Tnex } from '../tnex';
 import { loadSdeSkillDefinitions, SdeSkill } from './sde/loadSdeSkillDefinitions';
-import { defaultSkillName } from './sde/defaultSkillName';
+import { defaultSkillName } from '../domain/skills/defaultSkillName';
 
 let skillDefinitions = new Map<number, SdeSkill>();
 

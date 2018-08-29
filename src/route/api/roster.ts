@@ -7,7 +7,7 @@ import { AccountPrivileges } from '../../route-helper/privileges';
 import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
 import { isAnyEsiError } from '../../util/error';
 import * as alert from '../../shared/rosterAlertLevels';
-import { fetchEveNames } from '../../eve/names';
+import { fetchEveNames } from '../../eve/esi/names';
 import { SimpleMap } from '../../util/simpleTypes';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 

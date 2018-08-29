@@ -6,7 +6,7 @@ import { getAccessToken } from '../../data-source/accessToken/accessToken';
 import { dao } from '../../dao';
 import { arrayToMap, refine } from '../../util/collections';
 import { JobLogger } from '../Job';
-import { fetchEveNames } from '../../eve/names';
+import { fetchEveNames } from '../../eve/esi/names';
 import { UNKNOWN_CORPORATION_ID } from '../../util/constants';
 import { fetchEndpoint } from '../../eve/esi/fetchEndpoint';
 import { ESI_CORPORATIONS_$corporationId_MEMBERS, ESI_CORPORATIONS_$corporationId_TITLES, ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, ESI_CORPORATIONS_$corporationId_ROLES, ESI_CORPORATIONS_$corporationId_MEMBERTRACKING } from '../../eve/esi/endpoints';

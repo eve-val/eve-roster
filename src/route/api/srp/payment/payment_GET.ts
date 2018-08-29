@@ -8,7 +8,7 @@ import { dao } from '../../../../dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { SimpleNumMap } from '../../../../util/simpleTypes';
 import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../eve/esi/names';
 import { SrpLossJson } from '../../../../domain/srp/SrpLossJson';
 
 export interface Output {

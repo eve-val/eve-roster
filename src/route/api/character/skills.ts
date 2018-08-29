@@ -9,7 +9,7 @@ import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
 import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
 import * as time from '../../../util/time';
-import { defaultSkillName } from '../../../eve/sde/defaultSkillName';
+import { defaultSkillName } from '../../../domain/skills/defaultSkillName';
 
 
 export interface Payload {

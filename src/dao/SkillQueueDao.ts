@@ -3,7 +3,7 @@ import Bluebird = require('bluebird');
 import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import { characterSkillQueue, sdeType } from './tables';
-import { defaultSkillName } from '../eve/sde/defaultSkillName';
+import { defaultSkillName } from '../domain/skills/defaultSkillName';
 
 
 class SkillQueueDao {

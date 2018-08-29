@@ -9,7 +9,7 @@ import { SrpLossJson } from '../../../../domain/srp/SrpLossJson';
 import { Battle, MemberCorporation } from '../../../../dao/tables';
 import { Participant } from '../../../../domain/battle/BattleData';
 import { addAll, arrayToMap } from '../../../../util/collections';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../eve/esi/names';
 import { sortBy, cmpNumberProp } from '../../../../util/sortBy';
 import { isCapsule } from '../../../../eve/util/isCapsule';
 import { pluck } from '../../../../util/underscore';

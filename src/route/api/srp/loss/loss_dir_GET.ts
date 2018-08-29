@@ -5,7 +5,7 @@ import { dao } from '../../../../dao';
 import { SrpVerdictStatus } from '../../../../dao/enums';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../eve/esi/names';
 import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
 import { SrpLossFilter, SrpLossRow } from '../../../../dao/SrpDao';
 import { ResultOrder } from '../../../../tnex';
