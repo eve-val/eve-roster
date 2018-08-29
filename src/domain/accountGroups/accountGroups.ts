@@ -3,7 +3,7 @@ import Bluebird = require('bluebird');
 
 import { dao } from '../../dao';
 import { Tnex, val } from '../../tnex';
-import { ADMIN_GROUP, MEMBER_GROUP } from '../../route-helper/specialGroups';
+import { ADMIN_GROUP, MEMBER_GROUP } from './specialGroups';
 import { serialize } from '../../util/asyncUtil';
 import { account } from '../../dao/tables';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';

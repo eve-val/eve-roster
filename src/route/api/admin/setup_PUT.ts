@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { dao } from '../../../dao';
 import { MemberCorporation, GroupTitle } from '../../../dao/tables';
 import { Tnex, DEFAULT_NUM } from '../../../tnex';
@@ -7,8 +7,8 @@ import { UserVisibleError } from '../../../error/UserVisibleError';
 import { isCensored } from './_censor';
 
 import { verify, optional, nullable, string, number, array, object, simpleMap, } from '../../../route-helper/schemaVerifier';
-import { AccountSummary } from '../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../route-helper/privileges';
+import { AccountSummary } from '../../../express/getAccountPrivs';
+import { AccountPrivileges } from '../../../express/privileges';
 
 
 export class Input {

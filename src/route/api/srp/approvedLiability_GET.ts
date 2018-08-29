@@ -1,7 +1,7 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { Tnex } from '../../../tnex';
-import { AccountSummary } from '../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../route-helper/privileges';
+import { AccountSummary } from '../../../express/getAccountPrivs';
+import { AccountPrivileges } from '../../../express/privileges';
 import { dao } from '../../../dao';
 
 export interface Output {

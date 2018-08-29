@@ -1,4 +1,4 @@
-import { htmlEndpoint } from '../route-helper/protectedEndpoint';
+import { htmlEndpoint } from '../express/protectedEndpoint';
 
 export default htmlEndpoint(async (req, res, db, account, privs) => {
   let identity = {

@@ -8,16 +8,16 @@ import cookieParser = require('cookie-parser');
 import cookieSession = require('cookie-session');
 import webpack = require('webpack');
 
-import { Tnex } from './tnex';
-import { isDevelopment } from './util/config';
-import { LOGIN_PARAMS } from './util/ccpSso';
-import { getAccountPrivs } from './route-helper/getAccountPrivs';
+import { Tnex } from '../tnex';
+import { isDevelopment } from '../util/config';
+import { LOGIN_PARAMS } from '../util/ccpSso';
+import { getAccountPrivs } from './getAccountPrivs';
 
-import { default as route_api } from './route/api/api';
-import { default as route_home } from './route/home';
-import { default as route_authenticate } from './route/authenticate';
-import { buildLoggerFromFilename } from './logs/buildLogger';
-import { endSession, getSession } from './route-helper/session';
+import { default as route_api } from '../route/api/api';
+import { default as route_home } from '../route/home';
+import { default as route_authenticate } from '../route/authenticate';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { endSession, getSession } from './session';
 
 
 const logger = buildLoggerFromFilename(__filename);

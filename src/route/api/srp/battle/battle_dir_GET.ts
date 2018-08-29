@@ -1,6 +1,6 @@
 import moment = require('moment');
 
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { Tnex, ResultOrder } from '../../../../tnex';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { BattleFilter, BattleColumn, BoundCmp } from '../../../../dao/BattleDao';

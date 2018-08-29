@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { isTaskName, runTask } from '../../../../cron/tasks';
 import { verify, string, } from '../../../../route-helper/schemaVerifier';
 import { JobJson } from './job';

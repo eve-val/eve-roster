@@ -1,8 +1,8 @@
 import { dao } from '../../dao';
 import { NotFoundError } from '../../error/NotFoundError';
 import * as policy from '../../route-helper/policy';
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import { loadSummarizedQueue, SkillQueueSummary } from '../../route-helper/skillQueueSummarizer';
+import { jsonEndpoint } from '../../express/protectedEndpoint';
+import { loadSummarizedQueue, SkillQueueSummary } from '../../domain/skills/skillQueueSummarizer';
 import { parallelize } from '../../util/asyncUtil';
 import * as ccpSso from '../../util/ccpSso';
 

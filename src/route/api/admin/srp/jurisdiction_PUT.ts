@@ -1,9 +1,9 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { verify, number, nullable, } from '../../../../route-helper/schemaVerifier';
 
 import { Tnex } from '../../../../tnex';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
+import { AccountPrivileges } from '../../../../express/privileges';
+import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { dao } from '../../../../dao';
 
 

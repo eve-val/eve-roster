@@ -10,7 +10,7 @@ import {
     ownership
 } from './tables';
 import { updateGroupsForAccount } from '../domain/accountGroups/accountGroups';
-import { ADMIN_GROUP } from '../route-helper/specialGroups';
+import { ADMIN_GROUP } from '../domain/accountGroups/specialGroups';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);

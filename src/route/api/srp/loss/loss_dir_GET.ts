@@ -1,6 +1,6 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { Tnex } from '../../../../tnex/Tnex';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
+import { AccountPrivileges } from '../../../../express/privileges';
 import { dao } from '../../../../dao';
 import { SrpVerdictStatus } from '../../../../dao/enums';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';

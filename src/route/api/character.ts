@@ -1,8 +1,8 @@
 import { Tnex } from '../../tnex';
 import { dao } from '../../dao';
 import { pluck } from '../../util/underscore';
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import { AccountPrivileges } from '../../route-helper/privileges';
+import { jsonEndpoint } from '../../express/protectedEndpoint';
+import { AccountPrivileges } from '../../express/privileges';
 import { idParam } from '../../route-helper/paramVerifier';
 import * as policy from '../../route-helper/policy';
 import { NotFoundError } from '../../error/NotFoundError';

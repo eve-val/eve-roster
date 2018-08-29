@@ -1,8 +1,8 @@
 import moment = require('moment');
 
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
+import { AccountSummary } from '../../../../express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex, ResultOrder } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';

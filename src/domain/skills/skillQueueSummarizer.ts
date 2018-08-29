@@ -1,14 +1,14 @@
 import Bluebird = require('bluebird');
 import moment = require('moment');
 
-import * as time from '../util/time';
-import { Tnex } from '../tnex';
-import { dao } from '../dao';
-import { NamedSkillQueueRow } from '../dao/SkillQueueDao';
-import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from '../domain/skills/skillQueue';
-import { isAnyEsiError } from '../util/error';
-import { AccessTokenError, AccessTokenErrorType } from '../error/AccessTokenError';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import * as time from '../../util/time';
+import { Tnex } from '../../tnex';
+import { dao } from '../../dao';
+import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
+import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from './skillQueue';
+import { isAnyEsiError } from '../../util/error';
+import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

@@ -1,6 +1,6 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
+import { jsonEndpoint } from '../../../../express/protectedEndpoint';
+import { AccountSummary } from '../../../../express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { NotFoundError } from '../../../../error/NotFoundError';

@@ -1,7 +1,7 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { dao } from '../../../dao';
 import { Tnex } from '../../../tnex';
-import { AccountPrivileges } from '../../../route-helper/privileges';
+import { AccountPrivileges } from '../../../express/privileges';
 
 import { BadRequestError } from '../../../error/BadRequestError';
 import { buildLoggerFromFilename } from '../../../logs/buildLogger';

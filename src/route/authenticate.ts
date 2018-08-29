@@ -15,7 +15,7 @@ import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
 import { UNKNOWN_CORPORATION_ID } from '../util/constants';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
-import { getSession } from '../route-helper/session';
+import { getSession } from '../express/session';
 
 const logger = buildLoggerFromFilename(__filename);
 

@@ -1,5 +1,5 @@
 import { dao } from '../../dao';
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
+import { jsonEndpoint } from '../../express/protectedEndpoint';
 
 
 interface Output {

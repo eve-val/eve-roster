@@ -7,7 +7,7 @@ import { tables } from './dao/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
 import { Scheduler } from './cron/Scheduler';
 
-import * as express from './express';
+import * as express from './express/express';
 import * as cron from './cron/cron';
 import * as tasks from './cron/tasks';
 import * as sde from './eve/sde';
