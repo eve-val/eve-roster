@@ -7,7 +7,7 @@ import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';
-import { getAccessToken } from '../../../../data-source/accessToken';
+import { getAccessToken } from '../../../../data-source/accessToken/accessToken';
 
 
 export class Input {

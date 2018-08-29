@@ -1,7 +1,7 @@
 import moment = require('moment');
 import { ESIError } from 'eve-swagger';
 
-import { getAccessTokensFromRows } from '../../data-source/accessToken';
+import { getAccessTokensFromRows } from '../../data-source/accessToken/accessToken';
 import { dao } from '../../dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';

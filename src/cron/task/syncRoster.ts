@@ -2,7 +2,7 @@ import moment = require('moment');
 
 import { Tnex, val, UpdatePolicy } from '../../tnex';
 import { character, accessToken, Character, MemberCorporation } from '../../dao/tables';
-import { getAccessToken } from '../../data-source/accessToken';
+import { getAccessToken } from '../../data-source/accessToken/accessToken';
 import { dao } from '../../dao';
 import { arrayToMap, refine } from '../../util/collections';
 import { JobLogger } from '../Job';
@@ -14,7 +14,7 @@ import { isAnyEsiError, printError } from '../../util/error';
 import { hasRosterScopes } from '../../domain/roster/hasRosterScopes';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { AsyncReturnType } from '../../util/simpleTypes';
-import { updateGroupsOnAllAccounts } from '../../data-source/accountGroups';
+import { updateGroupsOnAllAccounts } from '../../domain/accountGroups/accountGroups';
 import { LogLevel } from '../../logs/Logger';
 
 /**

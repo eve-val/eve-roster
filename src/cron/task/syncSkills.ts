@@ -3,7 +3,7 @@ import Bluebird = require('bluebird');
 import { dao } from '../../dao';
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
-import { updateSkills } from '../../data-source/skills';
+import { updateSkills } from '../../domain/skills/skills';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { isAnyEsiError } from '../../util/error';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';

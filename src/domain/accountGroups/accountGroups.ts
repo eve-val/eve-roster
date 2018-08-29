@@ -1,12 +1,12 @@
 import _ = require('underscore');
 import Bluebird = require('bluebird');
 
-import { dao } from '../dao';
-import { Tnex, val } from '../tnex';
-import { ADMIN_GROUP, MEMBER_GROUP } from '../route-helper/specialGroups';
-import { serialize } from '../util/asyncUtil';
-import { account } from '../dao/tables';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { dao } from '../../dao';
+import { Tnex, val } from '../../tnex';
+import { ADMIN_GROUP, MEMBER_GROUP } from '../../route-helper/specialGroups';
+import { serialize } from '../../util/asyncUtil';
+import { account } from '../../dao/tables';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

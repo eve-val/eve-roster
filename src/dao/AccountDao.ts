@@ -9,7 +9,7 @@ import {
     pendingOwnership,
     ownership
 } from './tables';
-import { updateGroupsForAccount } from '../data-source/accountGroups';
+import { updateGroupsForAccount } from '../domain/accountGroups/accountGroups';
 import { ADMIN_GROUP } from '../route-helper/specialGroups';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
 
