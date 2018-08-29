@@ -5,7 +5,7 @@ import { Tnex, val } from '../tnex';
 import { Dao } from '../dao';
 import * as t from './tables';
 import { pluck } from '../util/underscore';
-import { MEMBER_GROUP } from '../domain/accountGroups/specialGroups';
+import { MEMBER_GROUP } from '../domain/account/specialGroups';
 
 
 export interface BasicRosterCharacter {

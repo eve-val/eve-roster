@@ -9,8 +9,8 @@ import {
     pendingOwnership,
     ownership
 } from './tables';
-import { updateGroupsForAccount } from '../domain/accountGroups/accountGroups';
-import { ADMIN_GROUP } from '../domain/accountGroups/specialGroups';
+import { updateGroupsForAccount } from '../domain/account/accountGroups';
+import { ADMIN_GROUP } from '../domain/account/specialGroups';
 import { buildLoggerFromFilename } from '../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);

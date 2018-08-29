@@ -1,10 +1,10 @@
 import { dao } from '../../dao';
 import { NotFoundError } from '../../error/NotFoundError';
-import * as policy from '../../route-helper/policy';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../domain/skills/skillQueueSummarizer';
 import { parallelize } from '../../util/asyncUtil';
 import * as ccpSso from '../../util/ccpSso';
+import { canDesignateMain } from '../../domain/account/canDesignateMain';
 
 interface Output {
   accountId: number,
@@ -47,8 +47,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     }
 
     mainCharacter = row.account_mainCharacter;
-    access.designateMain =
-        policy.canDesignateMain(row.account_created) ? 2 : 0;
+    access.designateMain = canDesignateMain(row.account_created) ? 2 : 0;
 
     return dao.character.getCharactersOwnedByAccount(db, account.id)
   })

@@ -14,7 +14,7 @@ import { isAnyEsiError, printError } from '../../util/error';
 import { hasRosterScopes } from '../../domain/roster/hasRosterScopes';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { AsyncReturnType } from '../../util/simpleTypes';
-import { updateGroupsOnAllAccounts } from '../../domain/accountGroups/accountGroups';
+import { updateGroupsOnAllAccounts } from '../../domain/account/accountGroups';
 import { LogLevel } from '../../logs/Logger';
 
 /**

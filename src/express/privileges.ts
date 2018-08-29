@@ -3,7 +3,7 @@ import Bluebird = require('bluebird');
 import { dao } from '../dao';
 import { Tnex } from '../tnex';
 import { PrivilegeName } from '../dao/enums';
-import { ADMIN_GROUP, MEMBER_GROUP } from '../domain/accountGroups/specialGroups'
+import { ADMIN_GROUP, MEMBER_GROUP } from '../domain/account/specialGroups'
 
 import { MissingPrivilegeError } from '../error/MissingPrivilegeError';
 import { buildLoggerFromFilename } from '../logs/buildLogger';

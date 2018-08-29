@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { dao } from '../../../dao';
 import { idParam } from '../../../route-helper/paramVerifier';
 import { verify, number } from '../../../route-helper/schemaVerifier';
-import { canDesignateMain } from '../../../route-helper/policy';
+import { canDesignateMain } from '../../../domain/account/canDesignateMain';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
 
 import { BadRequestError } from '../../../error/BadRequestError';

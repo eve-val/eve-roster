@@ -4,9 +4,9 @@ import { pluck } from '../../util/underscore';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { AccountPrivileges } from '../../express/privileges';
 import { idParam } from '../../route-helper/paramVerifier';
-import * as policy from '../../route-helper/policy';
 import { NotFoundError } from '../../error/NotFoundError';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { TIMEZONE_LABELS } from '../../domain/roster/timezoneLabels';
 
 
 const logger = buildLoggerFromFilename(__filename);
@@ -95,7 +95,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   })
   .then(() => {
     if (privs.canWrite('memberTimezone', isOwned)) {
-      payload.timezones = policy.TIMEZONE_LABELS;
+      payload.timezones = TIMEZONE_LABELS;
     }
     if (privs.canWrite('memberHousing', isOwned)) {
       return dao.citadel.getAll(db, ['citadel_name'])
