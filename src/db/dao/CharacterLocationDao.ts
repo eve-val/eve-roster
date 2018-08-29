@@ -1,6 +1,6 @@
 import { Dao } from '../dao';
-import { Tnex, val } from '../tnex';
-import { characterLocation, CharacterLocation, memberCorporation, character, accessToken } from './tables';
+import { Tnex, val } from '../../tnex';
+import { characterLocation, CharacterLocation, memberCorporation, character, accessToken } from '../tables';
 
 export default class LocationDao {
   constructor(

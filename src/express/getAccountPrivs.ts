@@ -10,7 +10,7 @@
 import Bluebird = require('bluebird');
 
 import { Tnex } from '../tnex';
-import { dao } from '../dao';
+import { dao } from '../db/dao';
 import { getPrivileges } from './privileges';
 
 import { NoSuchAccountError } from '../error/NoSuchAccountError';

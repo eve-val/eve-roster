@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { JobLogger } from '../Job';
 
 

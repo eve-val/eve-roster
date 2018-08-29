@@ -1,7 +1,7 @@
 import * as querystring from 'querystring';
 import axios from 'axios';
 
-import { AccessToken } from '../../dao/tables';
+import { AccessToken } from '../../db/tables';
 import { AccessTokenErrorType } from '../../error/AccessTokenError';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 

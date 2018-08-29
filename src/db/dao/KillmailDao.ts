@@ -1,6 +1,6 @@
 import { Dao } from "../dao";
-import { Tnex, val } from "../tnex";
-import { killmail, Killmail } from "./tables";
+import { Tnex, val } from "../../tnex";
+import { killmail, Killmail } from "../tables";
 
 export default class KillmailDao {
   constructor(

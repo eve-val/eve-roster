@@ -1,5 +1,5 @@
 import { Dao } from '../dao';
-import { Tnex, val, UpdateStrategy } from '../tnex';
+import { Tnex, val, UpdateStrategy } from '../../tnex';
 import {
     accessToken,
     account,
@@ -9,8 +9,8 @@ import {
     memberCorporation,
     ownership,
     skillsheet,
-} from './tables';
-import { pluck } from '../util/underscore';
+} from '../tables';
+import { pluck } from '../../util/underscore';
 
 export default class CharacterDao {
   constructor(

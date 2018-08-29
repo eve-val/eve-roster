@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';
 import { SrpTriageJson } from '../../../../domain/srp/SrpLossJson';

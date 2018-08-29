@@ -2,7 +2,7 @@ import _ = require('underscore');
 
 import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { SimpleNumMap, AsyncReturnType } from '../../../../util/simpleTypes';

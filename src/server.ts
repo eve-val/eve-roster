@@ -3,7 +3,7 @@ require('source-map-support').install();
 
 require('heapdump');
 
-import { tables } from './dao/tables';
+import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
 import { Scheduler } from './cron/Scheduler';
 

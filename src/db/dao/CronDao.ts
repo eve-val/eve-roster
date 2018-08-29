@@ -1,10 +1,10 @@
 import Bluebird = require('bluebird');
 import moment = require('moment');
 
-import { Tnex, val, DEFAULT_NUM } from '../tnex';
+import { Tnex, val, DEFAULT_NUM } from '../../tnex';
 import { Dao } from '../dao';
-import { cronLog } from './tables';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { cronLog } from '../tables';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

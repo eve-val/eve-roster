@@ -1,6 +1,6 @@
 import { Dao } from '../dao';
-import { Tnex, val, ResultOrder } from '../tnex';
-import { killmail, killmailBattle, battle, Battle, srpVerdict } from './tables';
+import { Tnex, val, ResultOrder } from '../../tnex';
+import { killmail, killmailBattle, battle, Battle, srpVerdict } from '../tables';
 import { SrpVerdictStatus } from './enums';
 
 export default class BattleDao {

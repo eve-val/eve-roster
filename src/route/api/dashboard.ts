@@ -1,4 +1,4 @@
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { NotFoundError } from '../../error/NotFoundError';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../domain/skills/skillQueueSummarizer';

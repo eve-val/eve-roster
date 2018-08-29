@@ -1,8 +1,8 @@
 import Bluebird = require('bluebird');
 
-import { Tnex, val } from '../tnex';
+import { Tnex, val } from '../../tnex';
 import { Dao } from '../dao';
-import { skillsheet, Skillsheet, sdeType } from './tables';
+import { skillsheet, Skillsheet, sdeType } from '../tables';
 
 export interface SkillsheetEntry {
   skillsheet_skill: number;

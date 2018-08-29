@@ -1,11 +1,11 @@
 import Bluebird = require('bluebird');
 
-import * as _ from '../util/underscore';
-import { Tnex, val } from '../tnex';
+import * as _ from '../../util/underscore';
+import { Tnex, val } from '../../tnex';
 import { Dao } from '../dao';
-import * as t from './tables';
-import { pluck } from '../util/underscore';
-import { MEMBER_GROUP } from '../domain/account/specialGroups';
+import * as t from '../tables';
+import { pluck } from '../../util/underscore';
+import { MEMBER_GROUP } from '../../domain/account/specialGroups';
 
 
 export interface BasicRosterCharacter {

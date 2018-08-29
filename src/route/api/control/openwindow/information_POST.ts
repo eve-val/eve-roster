@@ -4,7 +4,7 @@ import { number, verify } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';
 import { getAccessToken } from '../../../../data-source/accessToken/accessToken';

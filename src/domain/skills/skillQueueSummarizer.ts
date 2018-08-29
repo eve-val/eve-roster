@@ -3,8 +3,8 @@ import moment = require('moment');
 
 import * as time from '../../util/time';
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
-import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
+import { dao } from '../../db/dao';
+import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from './skillQueue';
 import { isAnyEsiError } from '../../eve/esi/error';
 import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';

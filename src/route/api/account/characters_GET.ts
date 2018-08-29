@@ -4,7 +4,7 @@ import { AccountSummary } from '../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../express/privileges';
 import { idParam } from '../../../route-helper/paramVerifier';
 import { UnauthorizedClientError } from '../../../error/UnauthorizedClientError';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 
 
 export type Output = CharacterDescription[];

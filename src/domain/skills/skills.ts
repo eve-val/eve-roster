@@ -1,12 +1,12 @@
 import { esi } from 'eve-swagger';
 
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
 import swagger from '../../swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
-import { NamedSkillQueueRow } from '../../dao/SkillQueueDao';
+import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { SimpleNumMap } from '../../util/simpleTypes';
 import { skillLevelToSp } from '../../eve/skillLevelToSp';
 import * as sde from '../../eve/sde';

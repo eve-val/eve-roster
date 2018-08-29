@@ -1,8 +1,8 @@
 import Bluebird = require('bluebird');
 
-import { dao } from '../dao';
+import { dao } from '../db/dao';
 import { Tnex } from '../tnex';
-import { PrivilegeName } from '../dao/enums';
+import { PrivilegeName } from '../db/dao/enums';
 import { ADMIN_GROUP, MEMBER_GROUP } from '../domain/account/specialGroups'
 
 import { MissingPrivilegeError } from '../error/MissingPrivilegeError';

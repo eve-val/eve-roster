@@ -1,6 +1,6 @@
 import Bluebird = require('bluebird');
 
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
 import { updateSkills } from '../../domain/skills/skills';

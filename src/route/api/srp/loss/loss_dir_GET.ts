@@ -1,13 +1,13 @@
 import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { Tnex } from '../../../../tnex/Tnex';
 import { AccountPrivileges } from '../../../../express/privileges';
-import { dao } from '../../../../dao';
-import { SrpVerdictStatus } from '../../../../dao/enums';
+import { dao } from '../../../../db/dao';
+import { SrpVerdictStatus } from '../../../../db/dao/enums';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { fetchEveNames } from '../../../../eve/esi/names';
 import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
-import { SrpLossFilter, SrpLossRow } from '../../../../dao/SrpDao';
+import { SrpLossFilter, SrpLossRow } from '../../../../db/dao/SrpDao';
 import { ResultOrder } from '../../../../tnex';
 import { SrpLossJson, SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
 import { triageLosses } from '../../../../domain/srp/triage/triageLosses';

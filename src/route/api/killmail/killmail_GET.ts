@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { Tnex } from '../../../tnex';
 import { AccountPrivileges } from '../../../express/privileges';
 import { idParam } from '../../../route-helper/paramVerifier';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { NotFoundError } from '../../../error/NotFoundError';
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { SimpleNumMap, nil } from '../../../util/simpleTypes';

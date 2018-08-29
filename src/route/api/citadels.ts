@@ -1,4 +1,4 @@
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 
 

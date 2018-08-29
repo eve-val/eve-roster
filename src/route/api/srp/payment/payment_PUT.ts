@@ -3,7 +3,7 @@ import { number, verify, boolean, optional } from '../../../../route-helper/sche
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';

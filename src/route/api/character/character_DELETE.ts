@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { findWhere } from '../../../util/underscore';
 import { BadRequestError } from '../../../error/BadRequestError';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';

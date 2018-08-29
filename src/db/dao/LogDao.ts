@@ -1,8 +1,8 @@
 import Bluebird = require('bluebird');
 
-import { Tnex, DEFAULT_NUM } from '../tnex';
+import { Tnex, DEFAULT_NUM } from '../../tnex';
 import { Dao } from '../dao';
-import { account, accountLog, character } from './tables';
+import { account, accountLog, character } from '../tables';
 
 export type LoggableEvent =
   'CREATE_ACCOUNT'

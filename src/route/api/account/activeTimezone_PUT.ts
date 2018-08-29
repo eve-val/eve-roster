@@ -1,6 +1,6 @@
 
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { TIMEZONE_LABELS } from '../../../domain/roster/timezoneLabels';
 import { verify, string } from '../../../route-helper/schemaVerifier';
 import { idParam } from '../../../route-helper/paramVerifier';

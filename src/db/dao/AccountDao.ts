@@ -1,5 +1,5 @@
 import { Dao } from '../dao';
-import { Tnex, val, DEFAULT_NUM } from '../tnex';
+import { Tnex, val, DEFAULT_NUM } from '../../tnex';
 import {
     account,
     accountGroup,
@@ -8,10 +8,10 @@ import {
     groupExplicit,
     pendingOwnership,
     ownership
-} from './tables';
-import { updateGroupsForAccount } from '../domain/account/accountGroups';
-import { ADMIN_GROUP } from '../domain/account/specialGroups';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+} from '../tables';
+import { updateGroupsForAccount } from '../../domain/account/accountGroups';
+import { ADMIN_GROUP } from '../../domain/account/specialGroups';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

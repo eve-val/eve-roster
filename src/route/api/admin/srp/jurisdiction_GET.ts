@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { Tnex } from '../../../../tnex';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 
 
 export interface Output {

@@ -1,7 +1,7 @@
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { TriageVerdict, ApprovedVerdict, MarketPayout } from './TriageRule';
 import { fetchJitaSellPrices } from '../../../data-source/evemarketer/fetchJitaSellPrices';
-import { SrpVerdictStatus } from '../../../dao/enums';
+import { SrpVerdictStatus } from '../../../db/dao/enums';
 import { TriagedLoss } from './triageLosses';
 
 

@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 
 import { parallelize } from '../../../util/asyncUtil';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../../domain/skills/skillQueueSummarizer';

@@ -3,7 +3,7 @@ import querystring = require('querystring');
 import axios from 'axios';
 import express = require('express');
 
-import { dao } from '../dao';
+import { dao } from '../db/dao';
 import { Tnex, UpdatePolicy } from '../tnex';
 import { isAnyEsiError } from '../eve/esi/error';
 

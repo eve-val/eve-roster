@@ -1,9 +1,9 @@
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { Tnex } from '../../../tnex';
 import { TRIAGE_RULES } from './rules';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { TriageVerdict, TriageRule, isFuncRule, LossMeta } from './TriageRule';
-import { SdeType } from '../../../dao/tables';
+import { SdeType } from '../../../db/tables';
 import { buildLoggerFromFilename } from '../../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);

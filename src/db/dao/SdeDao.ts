@@ -1,6 +1,6 @@
 import { Dao } from "../dao";
-import { Tnex } from "../tnex/Tnex";
-import { SdeType, sdeType } from "./tables";
+import { Tnex } from "../../tnex/Tnex";
+import { SdeType, sdeType } from "../tables";
 
 export default class SdeDao {
   constructor(

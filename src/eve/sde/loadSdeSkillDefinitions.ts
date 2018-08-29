@@ -1,5 +1,5 @@
 import { Tnex, val } from '../../tnex';
-import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../dao/tables';
+import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../db/tables';
 
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 import { TYPE_CATEGORY_SKILL } from '../constants/categories';

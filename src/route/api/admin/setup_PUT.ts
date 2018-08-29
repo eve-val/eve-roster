@@ -1,6 +1,6 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
-import { MemberCorporation, GroupTitle } from '../../../dao/tables';
+import { dao } from '../../../db/dao';
+import { MemberCorporation, GroupTitle } from '../../../db/tables';
 import { Tnex, DEFAULT_NUM } from '../../../tnex';
 
 import { UserVisibleError } from '../../../error/UserVisibleError';

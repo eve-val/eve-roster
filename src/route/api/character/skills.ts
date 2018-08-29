@@ -1,12 +1,12 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { Tnex } from '../../../tnex';
 
 import { isAnyEsiError } from '../../../eve/esi/error';
 import { updateSkills } from '../../../domain/skills/skills';
 import { getTrainingProgress, isQueueEntryCompleted } from '../../../domain/skills/skillQueue';
-import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
-import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
+import { SkillsheetEntry } from '../../../db/dao/SkillsheetDao';
+import { NamedSkillQueueRow } from '../../../db/dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
 import * as time from '../../../util/time';
 import { defaultSkillName } from '../../../domain/skills/defaultSkillName';

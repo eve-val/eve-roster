@@ -1,9 +1,9 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import * as sde from '../../../eve/sde';
 import { BadRequestError } from '../../../error/BadRequestError';
 
-import { SkillRequirement } from '../../../dao/StatisticsDao';
+import { SkillRequirement } from '../../../db/dao/StatisticsDao';
 
 
 export interface Output {

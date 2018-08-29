@@ -1,9 +1,9 @@
 import moment = require('moment');
 
 import { Tnex, val, UpdatePolicy } from '../../tnex';
-import { character, accessToken, Character, MemberCorporation } from '../../dao/tables';
+import { character, accessToken, Character, MemberCorporation } from '../../db/tables';
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { arrayToMap, refine } from '../../util/collections';
 import { JobLogger } from '../Job';
 import { fetchEveNames } from '../../eve/esi/names';

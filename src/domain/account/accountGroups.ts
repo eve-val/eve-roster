@@ -1,11 +1,11 @@
 import _ = require('underscore');
 import Bluebird = require('bluebird');
 
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { Tnex, val } from '../../tnex';
 import { ADMIN_GROUP, MEMBER_GROUP } from './specialGroups';
 import { serialize } from '../../util/asyncUtil';
-import { account } from '../../dao/tables';
+import { account } from '../../db/tables';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);

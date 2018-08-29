@@ -1,5 +1,5 @@
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { pluck } from '../../util/underscore';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { AccountPrivileges } from '../../express/privileges';

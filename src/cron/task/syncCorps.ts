@@ -1,4 +1,4 @@
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import swagger from '../../swagger';
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';

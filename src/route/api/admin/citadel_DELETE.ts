@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { BadRequestError } from '../../../error/BadRequestError';
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {

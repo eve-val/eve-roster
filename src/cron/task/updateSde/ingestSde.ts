@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 import sqlite3 = require('sqlite3');
 
 import { Tnex, val, DEFAULT_NUM } from '../../../tnex';
-import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../../dao/tables';
+import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../../db/tables';
 
 import { JobLogger } from '../../Job';
 import { notNil } from '../../../util/assert';

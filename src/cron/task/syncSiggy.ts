@@ -6,8 +6,8 @@ import { default as axiosModule, AxiosResponse } from 'axios';
 import tough = require('tough-cookie');
 
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
-import { character } from '../../dao/tables';
+import { dao } from '../../db/dao';
+import { character } from '../../db/tables';
 import { MixedObject, SimpleNumMap } from '../../util/simpleTypes';
 import { JobLogger } from '../Job';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';

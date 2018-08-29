@@ -4,7 +4,7 @@ import { verify, number, nullable, } from '../../../../route-helper/schemaVerifi
 import { Tnex } from '../../../../tnex';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 
 
 export class Input {

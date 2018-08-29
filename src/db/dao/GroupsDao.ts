@@ -1,10 +1,10 @@
 import _ = require('underscore');
 
-import { Tnex, val } from '../tnex';
+import { Tnex, val } from '../../tnex';
 import { Dao } from '../dao';
-import { accountGroup, groupExplicit, groupPriv, groupTitle, privilege } from './tables';
-import { pluck } from '../util/underscore';
-import { MEMBER_GROUP } from '../domain/account/specialGroups';
+import { accountGroup, groupExplicit, groupPriv, groupTitle, privilege } from '../tables';
+import { pluck } from '../../util/underscore';
+import { MEMBER_GROUP } from '../../domain/account/specialGroups';
 
 export default class GroupsDao {
   constructor(

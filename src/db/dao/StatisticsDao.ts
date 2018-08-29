@@ -1,6 +1,6 @@
-import { Tnex } from '../tnex';
+import { Tnex } from '../../tnex';
 import { Dao } from '../dao';
-import { MEMBER_GROUP } from '../domain/account/specialGroups';
+import { MEMBER_GROUP } from '../../domain/account/specialGroups';
 
 export interface SkillRequirement {
   skill: number,

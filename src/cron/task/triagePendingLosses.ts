@@ -1,7 +1,7 @@
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
-import { dao } from '../../dao';
-import { SrpVerdictStatus } from '../../dao/enums';
+import { dao } from '../../db/dao';
+import { SrpVerdictStatus } from '../../db/dao/enums';
 import { autoTriageLosses } from '../../domain/srp/triage/autoTriageLosses';
 
 

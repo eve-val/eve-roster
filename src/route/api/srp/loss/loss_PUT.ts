@@ -3,9 +3,9 @@ import { number, verify, string, nullable, stringEnum } from '../../../../route-
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
-import { SrpVerdictStatus, SrpVerdictReason } from '../../../../dao/enums';
+import { SrpVerdictStatus, SrpVerdictReason } from '../../../../db/dao/enums';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../route-helper/paramVerifier';
 

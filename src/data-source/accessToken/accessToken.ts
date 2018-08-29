@@ -1,6 +1,6 @@
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { Tnex } from '../../tnex';
-import { AccessToken } from '../../dao/tables';
+import { AccessToken } from '../../db/tables';
 import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
 import { RefreshResult, TokenRefresher, AccessTokenUpdate } from './TokenRefresher';
 

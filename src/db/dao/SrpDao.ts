@@ -1,10 +1,10 @@
 import { Dao } from '../dao';
-import { Tnex, DEFAULT_NUM } from '../tnex';
-import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account, killmailBattle, KillmailBattle } from './tables';
+import { Tnex, DEFAULT_NUM } from '../../tnex';
+import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account, killmailBattle, KillmailBattle } from '../tables';
 import { SrpVerdictStatus, SrpVerdictReason, KillmailType } from './enums';
-import { val, Comparison } from '../tnex/core';
-import { Nullable } from '../util/simpleTypes';
-import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
+import { val, Comparison } from '../../tnex/core';
+import { Nullable } from '../../util/simpleTypes';
+import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 
 
 export interface SrpLossFilter {

@@ -1,8 +1,8 @@
 
-import { Tnex, val } from '../tnex';
+import { Tnex, val } from '../../tnex';
 import { Dao } from '../dao';
-import { account, character, ownership, pendingOwnership } from './tables';
-import { updateGroupsForAccount } from '../domain/account/accountGroups';
+import { account, character, ownership, pendingOwnership } from '../tables';
+import { updateGroupsForAccount } from '../../domain/account/accountGroups';
 
 export default class OwnershipDao {
   constructor(

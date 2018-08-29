@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-import { SrpLossRow } from "../../dao/SrpDao";
+import { SrpLossRow } from "../../db/dao/SrpDao";
 import { nil } from "../../util/simpleTypes";
 import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
 import { findWhere } from "../../util/underscore";

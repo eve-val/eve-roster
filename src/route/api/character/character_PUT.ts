@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../express/protectedEndpoint';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 import { Tnex } from '../../../tnex';
 import { AccountPrivileges } from '../../../express/privileges';
 

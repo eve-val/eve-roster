@@ -4,11 +4,11 @@ import { jsonEndpoint } from '../../../../express/protectedEndpoint';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
 import { Tnex, ResultOrder } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { dao } from '../../../../db/dao';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { nil, SimpleNumMap } from '../../../../util/simpleTypes';
 import { fetchEveNames } from '../../../../eve/esi/names';
-import { SrpReimbursementFilter } from '../../../../dao/SrpDao';
+import { SrpReimbursementFilter } from '../../../../db/dao/SrpDao';
 
 export interface Output {
   payments: PaymentJson[],

@@ -3,8 +3,8 @@ import moment = require('moment');
 import { esi } from 'eve-swagger';
 
 import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
-import { SkillQueueRow } from '../../dao/SkillQueueDao';
+import { dao } from '../../db/dao';
+import { SkillQueueRow } from '../../db/dao/SkillQueueDao';
 import swagger from '../../swagger';
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
 

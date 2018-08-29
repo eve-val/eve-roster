@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 import moment = require('moment');
 import axios from 'axios';
 
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { Tnex } from '../../tnex';
 import { serialize } from '../../util/asyncUtil';
 import { JobLogger } from '../Job';

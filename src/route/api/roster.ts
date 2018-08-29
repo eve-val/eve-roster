@@ -1,8 +1,8 @@
 import moment = require('moment');
 
-import { dao } from '../../dao';
+import { dao } from '../../db/dao';
 import { Tnex } from '../../tnex';
-import { BasicRosterCharacter, OwnedRosterCharacter } from '../../dao/RosterDao';
+import { BasicRosterCharacter, OwnedRosterCharacter } from '../../db/dao/RosterDao';
 import { AccountPrivileges } from '../../express/privileges';
 import { jsonEndpoint } from '../../express/protectedEndpoint';
 import { isAnyEsiError } from '../../eve/esi/error';
