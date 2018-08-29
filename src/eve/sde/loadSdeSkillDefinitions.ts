@@ -1,8 +1,9 @@
 import { Tnex, val } from '../../tnex';
 import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../dao/tables';
 
-import * as c from './constants';
 import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { TYPE_CATEGORY_SKILL } from '../constants/categories';
+import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_2, DGM_ATTR_REQUIRED_SKILL_3, DGM_ATTR_REQUIRED_SKILL_1_LEVEL, DGM_ATTR_REQUIRED_SKILL_2_LEVEL, DGM_ATTR_REQUIRED_SKILL_3_LEVEL, DGM_ATTR_SKILL_TIME_CONSTANT } from '../constants/dogma';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -37,7 +38,7 @@ async function loadSkills(db: Tnex, skills: Map<number, PartialSkill>) {
           'styp_name',
           'styp_group',
           )
-      .where('styp_category', '=', val(c.TYPE_CATEGORY_SKILL))
+      .where('styp_category', '=', val(TYPE_CATEGORY_SKILL))
       .run();
 
   for (let row of rows) {
@@ -62,15 +63,15 @@ async function loadSkillAttributes(db: Tnex, skills: Map<number, PartialSkill>) 
           'sta_valueInt',
           'sta_valueFloat',
           )
-      .where('styp_category', '=', val(c.TYPE_CATEGORY_SKILL))
+      .where('styp_category', '=', val(TYPE_CATEGORY_SKILL))
       .whereIn('sattr_id', [
-        c.DGM_ATTR_REQUIRED_SKILL_1,
-        c.DGM_ATTR_REQUIRED_SKILL_2,
-        c.DGM_ATTR_REQUIRED_SKILL_3,
-        c.DGM_ATTR_REQUIRED_SKILL_1_LEVEL,
-        c.DGM_ATTR_REQUIRED_SKILL_2_LEVEL,
-        c.DGM_ATTR_REQUIRED_SKILL_3_LEVEL,
-        c.DGM_ATTR_SKILL_TIME_CONSTANT,
+        DGM_ATTR_REQUIRED_SKILL_1,
+        DGM_ATTR_REQUIRED_SKILL_2,
+        DGM_ATTR_REQUIRED_SKILL_3,
+        DGM_ATTR_REQUIRED_SKILL_1_LEVEL,
+        DGM_ATTR_REQUIRED_SKILL_2_LEVEL,
+        DGM_ATTR_REQUIRED_SKILL_3_LEVEL,
+        DGM_ATTR_SKILL_TIME_CONSTANT,
       ])
       .run();
 
@@ -86,25 +87,25 @@ async function loadSkillAttributes(db: Tnex, skills: Map<number, PartialSkill>) 
         ? row.sta_valueInt : row.sta_valueFloat!;
 
     switch (row.sattr_id) {
-      case c.DGM_ATTR_REQUIRED_SKILL_1:
+      case DGM_ATTR_REQUIRED_SKILL_1:
         setRequiredSkill(skill, 0, value!);
         break;
-      case c.DGM_ATTR_REQUIRED_SKILL_1_LEVEL:
+      case DGM_ATTR_REQUIRED_SKILL_1_LEVEL:
         setRequiredSkillLevel(skill, 0, value!);
         break;
-      case c.DGM_ATTR_REQUIRED_SKILL_2:
+      case DGM_ATTR_REQUIRED_SKILL_2:
         setRequiredSkill(skill, 1, value!);
         break;
-      case c.DGM_ATTR_REQUIRED_SKILL_2_LEVEL:
+      case DGM_ATTR_REQUIRED_SKILL_2_LEVEL:
         setRequiredSkillLevel(skill, 1, value!);
         break;
-      case c.DGM_ATTR_REQUIRED_SKILL_3:
+      case DGM_ATTR_REQUIRED_SKILL_3:
         setRequiredSkill(skill, 2, value!);
         break;
-      case c.DGM_ATTR_REQUIRED_SKILL_3_LEVEL:
+      case DGM_ATTR_REQUIRED_SKILL_3_LEVEL:
         setRequiredSkillLevel(skill, 2, value!);
         break;
-      case c.DGM_ATTR_SKILL_TIME_CONSTANT:
+      case DGM_ATTR_SKILL_TIME_CONSTANT:
         skill.rank = value;
         break;
       default:

@@ -1,6 +1,3 @@
-// TODO: Write a script that checks that all of these constants haven't changed
-
-export const TYPE_CATEGORY_SKILL = 16;
 
 export const DGM_CATEGORY_REQUIRED_SKILL = 8;
 
