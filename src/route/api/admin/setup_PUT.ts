@@ -1,7 +1,7 @@
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { MemberCorporation, GroupTitle } from '../../../db/tables';
-import { Tnex, DEFAULT_NUM } from '../../../tnex';
+import { Tnex, DEFAULT_NUM } from '../../../db/tnex';
 
 import { UserVisibleError } from '../../../error/UserVisibleError';
 import { isCensored } from './_censor';

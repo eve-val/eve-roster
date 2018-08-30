@@ -1,4 +1,4 @@
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { dao } from '../db/dao';
 import { JobLogger } from '../infra/taskrunner/Job';
 

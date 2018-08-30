@@ -5,7 +5,7 @@ import { Comparison, Link, Nullable, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
-import { assertHasValue } from '../util/assert';
+import { assertHasValue } from '../../util/assert';
 
 interface ColumnSelect {
   column: string,

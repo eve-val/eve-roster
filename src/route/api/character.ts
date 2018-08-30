@@ -1,4 +1,4 @@
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { pluck } from '../../util/underscore';
 import { jsonEndpoint } from '../../infra/express/protectedEndpoint';

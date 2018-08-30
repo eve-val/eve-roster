@@ -1,7 +1,7 @@
 import Bluebird = require('bluebird');
 
 import * as _ from '../../util/underscore';
-import { Tnex, val } from '../../tnex';
+import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import * as t from '../tables';
 import { pluck } from '../../util/underscore';

@@ -1,7 +1,7 @@
 import Bluebird = require('bluebird');
 
 import { dao } from '../db/dao';
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { updateSkills } from '../domain/skills/skills';
 import { AccessTokenError } from '../error/AccessTokenError';

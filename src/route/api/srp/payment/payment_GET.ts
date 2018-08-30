@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { Tnex } from '../../../../tnex';
+import { Tnex } from '../../../../db/tnex';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { idParam } from '../../../../route-helper/paramVerifier';
 import { dao } from '../../../../db/dao';

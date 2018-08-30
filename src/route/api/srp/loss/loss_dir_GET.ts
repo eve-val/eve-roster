@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { Tnex } from '../../../../tnex/Tnex';
+import { Tnex } from '../../../../db/tnex/Tnex';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { dao } from '../../../../db/dao';
 import { SrpVerdictStatus } from '../../../../db/dao/enums';
@@ -8,7 +8,7 @@ import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVe
 import { fetchEveNames } from '../../../../data-source/esi/names';
 import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
 import { SrpLossFilter, SrpLossRow } from '../../../../db/dao/SrpDao';
-import { ResultOrder } from '../../../../tnex';
+import { ResultOrder } from '../../../../db/tnex';
 import { SrpLossJson, SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
 import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
 import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';

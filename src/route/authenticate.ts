@@ -4,7 +4,7 @@ import axios from 'axios';
 import express = require('express');
 
 import { dao } from '../db/dao';
-import { Tnex, UpdatePolicy } from '../tnex';
+import { Tnex, UpdatePolicy } from '../db/tnex';
 import { isAnyEsiError } from '../data-source/esi/error';
 
 import swagger from '../data-source/esi/swagger';

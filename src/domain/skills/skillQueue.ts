@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 import moment = require('moment');
 import { esi } from 'eve-swagger';
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { SkillQueueRow } from '../../db/dao/SkillQueueDao';
 import swagger from '../../data-source/esi/swagger';

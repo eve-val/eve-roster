@@ -1,4 +1,4 @@
-import { Tnex } from '../../../tnex';
+import { Tnex } from '../../../db/tnex';
 import { LossRow, triageLosses, TriagedLoss } from './triageLosses';
 import { fetchHullMarketValues, resolvePayout } from './payout';
 import { SrpVerdictReason, SrpVerdictStatus } from '../../../db/dao/enums';

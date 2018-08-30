@@ -1,4 +1,4 @@
-import { Tnex, val } from '../../tnex';
+import { Tnex, val } from '../../db/tnex';
 import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
 import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_1_LEVEL } from '../../eve/constants/dogma';
 

@@ -1,6 +1,6 @@
 import Bluebird = require('bluebird');
 
-import { Tnex, val } from '../../tnex';
+import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import { skillsheet, Skillsheet, sdeType } from '../tables';
 

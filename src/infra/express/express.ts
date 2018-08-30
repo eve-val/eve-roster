@@ -8,7 +8,7 @@ import cookieParser = require('cookie-parser');
 import cookieSession = require('cookie-session');
 import webpack = require('webpack');
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { isDevelopment } from '../../util/config';
 import { LOGIN_PARAMS } from '../../domain/sso/loginParams';
 import { getAccountPrivs } from './getAccountPrivs';

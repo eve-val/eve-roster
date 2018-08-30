@@ -1,4 +1,4 @@
-import { Tnex, val } from '../../tnex';
+import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import { citadel, Citadel } from '../tables';
 

@@ -1,7 +1,7 @@
 import Bluebird = require('bluebird');
 import moment = require('moment');
 
-import { Tnex, val, DEFAULT_NUM } from '../../tnex';
+import { Tnex, val, DEFAULT_NUM } from '../../db/tnex';
 import { Dao } from '../dao';
 import { cronLog } from '../tables';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';

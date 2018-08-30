@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import { dao } from '../../db/dao';
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { BasicRosterCharacter, OwnedRosterCharacter } from '../../db/dao/RosterDao';
 import { AccountPrivileges } from '../../infra/express/privileges';
 import { jsonEndpoint } from '../../infra/express/protectedEndpoint';

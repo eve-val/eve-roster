@@ -3,7 +3,7 @@ import swagger from '../../../../data-source/esi/swagger';
 import { number, verify } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
-import { Tnex } from '../../../../tnex';
+import { Tnex } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';

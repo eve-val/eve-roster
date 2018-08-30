@@ -5,7 +5,7 @@
 import moment = require('moment');
 import schedule = require('node-schedule');
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { serialize } from '../../util/asyncUtil';
 import { TaskName } from './tasks';

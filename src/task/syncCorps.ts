@@ -1,6 +1,6 @@
 import { dao } from '../db/dao';
 import swagger from '../data-source/esi/swagger';
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { isAnyEsiError } from '../data-source/esi/error';
 import { isMissingCharError } from '../data-source/esi/error';

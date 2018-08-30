@@ -1,4 +1,4 @@
-import { ColumnDescriptorImpl, DataType } from "./ColumnDescriptor";
+import { ColumnDescriptorImpl, DataType } from './ColumnDescriptor';
 
 export function nullable<K>(value: K): K | null {
   if (!(value instanceof ColumnDescriptorImpl)) {

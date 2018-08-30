@@ -1,5 +1,5 @@
 import { Readable } from 'stream';
-import { Select } from '../../tnex/Select';
+import { Select } from '../../db/tnex/Select';
 
 /**
  * Given an asynchronous "iterator" that returns an array of objects,

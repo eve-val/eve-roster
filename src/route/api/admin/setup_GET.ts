@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
-import { Tnex } from '../../../tnex';
+import { Tnex } from '../../../db/tnex';
 import { MemberCorporation, GroupTitle } from '../../../db/tables';
 import { SimpleMap } from '../../../util/simpleTypes';
 import { censor } from './_censor';

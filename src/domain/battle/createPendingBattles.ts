@@ -1,6 +1,6 @@
 import moment = require('moment');
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { BatchedObjectReader } from './BatchedObjectReader';
 import { BattleCreator } from './BattleCreator';

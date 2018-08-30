@@ -1,7 +1,7 @@
 import moment = require('moment');
 
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { Tnex, ResultOrder } from '../../../../tnex';
+import { Tnex, ResultOrder } from '../../../../db/tnex';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
 import { BattleFilter, BattleColumn, BoundCmp } from '../../../../db/dao/BattleDao';
 import { dao } from '../../../../db/dao';

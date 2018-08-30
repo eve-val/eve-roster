@@ -5,7 +5,7 @@ import moment = require('moment');
 import { default as axiosModule, AxiosResponse } from 'axios';
 import tough = require('tough-cookie');
 
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { dao } from '../db/dao';
 import { character } from '../db/tables';
 import { MixedObject, SimpleNumMap } from '../util/simpleTypes';

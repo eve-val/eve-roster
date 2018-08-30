@@ -1,7 +1,7 @@
 import Bluebird = require('bluebird');
 import sqlite3 = require('sqlite3');
 
-import { Tnex, val, DEFAULT_NUM } from '../../tnex';
+import { Tnex, val, DEFAULT_NUM } from '../../db/tnex';
 import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
 
 import { JobLogger } from '../../infra/taskrunner/Job';

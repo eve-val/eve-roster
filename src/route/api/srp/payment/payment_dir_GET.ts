@@ -3,7 +3,7 @@ import moment = require('moment');
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
-import { Tnex, ResultOrder } from '../../../../tnex';
+import { Tnex, ResultOrder } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
 import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
 import { nil, SimpleNumMap } from '../../../../util/simpleTypes';

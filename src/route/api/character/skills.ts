@@ -1,6 +1,6 @@
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
-import { Tnex } from '../../../tnex';
+import { Tnex } from '../../../db/tnex';
 
 import { isAnyEsiError } from '../../../data-source/esi/error';
 import { updateSkills } from '../../../domain/skills/skills';

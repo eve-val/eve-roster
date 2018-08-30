@@ -1,6 +1,6 @@
 import moment = require('moment');
 
-import { Tnex, val, UpdatePolicy } from '../tnex';
+import { Tnex, val, UpdatePolicy } from '../db/tnex';
 import { character, Character, MemberCorporation } from '../db/tables';
 import { getAccessToken } from '../data-source/accessToken/accessToken';
 import { dao } from '../db/dao';

@@ -1,5 +1,5 @@
 import { dao } from '../../db/dao';
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { AccessToken } from '../../db/tables';
 import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
 import { RefreshResult, TokenRefresher, AccessTokenUpdate } from './TokenRefresher';

@@ -1,6 +1,6 @@
 import { inspect } from 'util';
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { notNil } from '../../util/assert';
 import { findWhere, pluck } from '../../util/underscore';

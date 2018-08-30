@@ -1,7 +1,7 @@
 import Bluebird = require('bluebird');
 
 import { dao } from '../../db/dao';
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { PrivilegeName } from '../../db/dao/enums';
 import { ADMIN_GROUP, MEMBER_GROUP } from '../../domain/account/specialGroups'
 

@@ -1,7 +1,7 @@
 import _ = require('underscore');
 
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { Tnex } from '../../../../tnex';
+import { Tnex } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';

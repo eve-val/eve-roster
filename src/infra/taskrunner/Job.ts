@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { Logger } from '../logging/Logger';
 
 

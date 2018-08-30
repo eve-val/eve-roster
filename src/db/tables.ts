@@ -1,4 +1,4 @@
-import { TnexBuilder, nullable, integer, varchar, bigInt, boolean, text, jsonb, strEnum, float4, decimal } from '../tnex';
+import { TnexBuilder, nullable, integer, varchar, bigInt, boolean, text, jsonb, strEnum, float4, decimal } from '../db/tnex';
 import { PrivilegeName, KillmailType, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './dao/enums';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 import { BattleData } from '../domain/battle/BattleData';

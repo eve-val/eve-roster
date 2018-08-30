@@ -1,6 +1,6 @@
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
-import { Tnex } from '../../../tnex';
+import { Tnex } from '../../../db/tnex';
 import { AccountPrivileges } from '../../../infra/express/privileges';
 
 import { BadRequestError } from '../../../error/BadRequestError';

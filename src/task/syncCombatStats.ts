@@ -3,7 +3,7 @@ import moment = require('moment');
 import axios from 'axios';
 
 import { dao } from '../db/dao';
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { serialize } from '../util/asyncUtil';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { formatZKillTimeArgument } from '../data-source/zkillboard/formatZKillTimeArgument';

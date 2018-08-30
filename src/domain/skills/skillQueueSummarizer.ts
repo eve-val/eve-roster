@@ -2,7 +2,7 @@ import Bluebird = require('bluebird');
 import moment = require('moment');
 
 import * as time from '../../util/time';
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from './skillQueue';

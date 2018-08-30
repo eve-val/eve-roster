@@ -1,4 +1,4 @@
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 
 declare global {
   namespace Express {

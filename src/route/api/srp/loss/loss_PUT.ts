@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import { number, verify, string, nullable, stringEnum } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
-import { Tnex } from '../../../../tnex';
+import { Tnex } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { SrpVerdictStatus, SrpVerdictReason } from '../../../../db/dao/enums';

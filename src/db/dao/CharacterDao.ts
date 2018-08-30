@@ -1,5 +1,5 @@
 import { Dao } from '../dao';
-import { Tnex, val, UpdateStrategy } from '../../tnex';
+import { Tnex, val, UpdateStrategy } from '../../db/tnex';
 import {
     accessToken,
     account,

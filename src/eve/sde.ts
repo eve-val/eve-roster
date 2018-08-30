@@ -1,4 +1,4 @@
-import { Tnex } from '../tnex';
+import { Tnex } from '../db/tnex';
 import { loadSdeSkillDefinitions, SdeSkill } from './sde/loadSdeSkillDefinitions';
 import { defaultSkillName } from '../domain/skills/defaultSkillName';
 

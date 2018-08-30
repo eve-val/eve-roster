@@ -1,7 +1,7 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import { verify, number, nullable, } from '../../../../route-helper/schemaVerifier';
 
-import { Tnex } from '../../../../tnex';
+import { Tnex } from '../../../../db/tnex';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { dao } from '../../../../db/dao';

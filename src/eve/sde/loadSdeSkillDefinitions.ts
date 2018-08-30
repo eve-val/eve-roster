@@ -1,4 +1,4 @@
-import { Tnex, val } from '../../tnex';
+import { Tnex, val } from '../../db/tnex';
 import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../db/tables';
 
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';

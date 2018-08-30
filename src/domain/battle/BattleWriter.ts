@@ -1,6 +1,6 @@
 import { Writable } from 'stream';
 import { BattleResult } from './BattleCreator';
-import { Tnex, DEFAULT_NUM } from '../../tnex';
+import { Tnex, DEFAULT_NUM } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { BattleData } from './BattleData';
 

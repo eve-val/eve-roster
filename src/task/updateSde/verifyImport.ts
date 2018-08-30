@@ -1,4 +1,4 @@
-import { Tnex } from '../../tnex';
+import { Tnex } from '../../db/tnex';
 import * as sde from '../../eve/sde';
 
 export async function verifyImport(db: Tnex) {

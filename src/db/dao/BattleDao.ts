@@ -1,5 +1,5 @@
 import { Dao } from '../dao';
-import { Tnex, val, ResultOrder } from '../../tnex';
+import { Tnex, val, ResultOrder } from '../../db/tnex';
 import { killmail, killmailBattle, battle, Battle, srpVerdict } from '../tables';
 import { SrpVerdictStatus } from './enums';
 
