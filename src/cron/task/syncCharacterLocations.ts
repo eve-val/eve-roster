@@ -3,7 +3,7 @@ import { ESIError } from 'eve-swagger';
 
 import { getAccessTokensFromRows } from '../../data-source/accessToken/accessToken';
 import { dao } from '../../db/dao';
-import swagger from '../../swagger';
+import swagger from '../../data-source/esi/swagger';
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
 import { CharacterLocation } from '../../db/tables';

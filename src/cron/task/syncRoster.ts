@@ -1,16 +1,16 @@
 import moment = require('moment');
 
 import { Tnex, val, UpdatePolicy } from '../../tnex';
-import { character, accessToken, Character, MemberCorporation } from '../../db/tables';
+import { character, Character, MemberCorporation } from '../../db/tables';
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
 import { dao } from '../../db/dao';
 import { arrayToMap, refine } from '../../util/collections';
 import { JobLogger } from '../Job';
-import { fetchEveNames } from '../../eve/esi/names';
+import { fetchEveNames } from '../../data-source/esi/names';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
-import { fetchEndpoint } from '../../eve/esi/fetchEndpoint';
-import { ESI_CORPORATIONS_$corporationId_MEMBERS, ESI_CORPORATIONS_$corporationId_TITLES, ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, ESI_CORPORATIONS_$corporationId_ROLES, ESI_CORPORATIONS_$corporationId_MEMBERTRACKING } from '../../eve/esi/endpoints';
-import { isAnyEsiError, printError } from '../../eve/esi/error';
+import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
+import { ESI_CORPORATIONS_$corporationId_MEMBERS, ESI_CORPORATIONS_$corporationId_TITLES, ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, ESI_CORPORATIONS_$corporationId_ROLES, ESI_CORPORATIONS_$corporationId_MEMBERTRACKING } from '../../data-source/esi/endpoints';
+import { isAnyEsiError, printError } from '../../data-source/esi/error';
 import { hasRosterScopes } from '../../domain/roster/hasRosterScopes';
 import { AccessTokenError } from '../../error/AccessTokenError';
 import { AsyncReturnType } from '../../util/simpleTypes';

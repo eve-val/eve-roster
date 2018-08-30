@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { Tnex } from '../../../tnex';
 
-import { isAnyEsiError } from '../../../eve/esi/error';
+import { isAnyEsiError } from '../../../data-source/esi/error';
 import { updateSkills } from '../../../domain/skills/skills';
 import { getTrainingProgress, isQueueEntryCompleted } from '../../../domain/skills/skillQueue';
 import { SkillsheetEntry } from '../../../db/dao/SkillsheetDao';

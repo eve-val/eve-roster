@@ -4,7 +4,7 @@ import { Tnex } from '../../tnex';
 import { dao } from '../../db/dao';
 
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
-import swagger from '../../swagger';
+import swagger from '../../data-source/esi/swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { SimpleNumMap } from '../../util/simpleTypes';

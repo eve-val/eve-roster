@@ -1,4 +1,4 @@
-import swagger from '../../swagger';
+import swagger from './swagger';
 import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';

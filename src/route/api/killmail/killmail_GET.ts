@@ -6,7 +6,7 @@ import { dao } from '../../../db/dao';
 import { NotFoundError } from '../../../error/NotFoundError';
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { SimpleNumMap, nil } from '../../../util/simpleTypes';
-import { fetchEveNames } from '../../../eve/esi/names';
+import { fetchEveNames } from '../../../data-source/esi/names';
 
 
 export interface Output {

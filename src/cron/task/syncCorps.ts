@@ -1,9 +1,9 @@
 import { dao } from '../../db/dao';
-import swagger from '../../swagger';
+import swagger from '../../data-source/esi/swagger';
 import { Tnex } from '../../tnex';
 import { JobLogger } from '../Job';
-import { isAnyEsiError } from '../../eve/esi/error';
-import { isMissingCharError } from '../../eve/esi/error';
+import { isAnyEsiError } from '../../data-source/esi/error';
+import { isMissingCharError } from '../../data-source/esi/error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
 import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 import { serialize } from '../../util/asyncUtil';

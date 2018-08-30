@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../../express/protectedEndpoint';
-import swagger from '../../../../swagger';
+import swagger from '../../../../data-source/esi/swagger';
 import { number, verify } from '../../../../route-helper/schemaVerifier';
 import { AccountSummary } from '../../../../express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../express/privileges';
