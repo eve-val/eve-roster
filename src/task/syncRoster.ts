@@ -16,11 +16,21 @@ import { AccessTokenError } from '../error/AccessTokenError';
 import { AsyncReturnType } from '../util/simpleTypes';
 import { updateGroupsOnAllAccounts } from '../domain/account/accountGroups';
 import { LogLevel } from '../infra/logging/Logger';
+import { Task } from '../infra/taskrunner/Task';
+
 
 /**
  * Updates the member list of each member corporation.
  */
-export async function syncRoster(db: Tnex, job: JobLogger) {
+export const syncRoster: Task = {
+  name: 'syncRoster',
+  displayName: 'Sync roster',
+  description: 'Updates the list of corporation members.',
+  timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  executor,
+};
+
+async function executor(db: Tnex, job: JobLogger) {
   const memberRows = await dao.config.getMemberCorporations(db);
 
   for (let row of memberRows) {

@@ -1,4 +1,5 @@
 import Bluebird = require('bluebird');
+import moment = require('moment');
 
 import { dao } from '../db/dao';
 import { Tnex } from '../db/tnex';
@@ -7,11 +8,20 @@ import { updateSkills } from '../domain/skills/skills';
 import { AccessTokenError } from '../error/AccessTokenError';
 import { isAnyEsiError } from '../data-source/esi/error';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
+import { Task } from '../infra/taskrunner/Task';
 
 const logger = buildLoggerFromFilename(__filename);
 
 
-export function syncSkills(db: Tnex, job: JobLogger) {
+export const syncSkills: Task = {
+  name: 'syncSkills',
+  displayName: 'Sync skills',
+  description: 'Updates all members\' skillsheets.',
+  timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  executor,
+};
+
+function executor(db: Tnex, job: JobLogger) {
   return Promise.resolve()
   .then(() => {
     return dao.roster.getCharacterIdsOwnedByMemberAccounts(db);

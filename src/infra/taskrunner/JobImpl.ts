@@ -1,17 +1,16 @@
 import { EventEmitter } from 'events';
 
-import { Job, JobStatus, JobResult, TaskExecutor, JobLogger, } from './Job';
+import { Job, JobStatus, JobResult, JobLogger, } from './Job';
 import { buildLoggerFromFilename } from '../logging/buildLogger';
 import { LogLevel } from '../logging/Logger';
+import { Task } from './Task';
 
 const logger = buildLoggerFromFilename(__filename);
 
 
 export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly executionId: number;
-  public readonly taskName: string;
-  public readonly executor: TaskExecutor;
-  public readonly timeout: number;
+  public readonly task: Task;
   public readonly channel: string | undefined;
   public readonly silent: boolean;
 
@@ -31,17 +30,14 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
 
   constructor(
       executionId: number,
-      taskName: string,
-      executor: TaskExecutor,
-      timeout: number,
+      task: Task,
       channel: string | undefined,
-      silent: boolean) {
+      silent: boolean,
+  ) {
     super();
 
     this.executionId = executionId;
-    this.taskName = taskName;
-    this.executor = executor;
-    this.timeout = timeout;
+    this.task = task;
     this.channel = channel;
     this.silent = silent;
   }
@@ -125,7 +121,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
       progress = Math.min(1, Math.max(0, progress));
     }
     if (label != this._progressLabel) {
-      logger.info(`[${this.taskName}] ${label}`);
+      logger.info(`[${this.task.name}] ${label}`);
     }
     if (progress != this._progress || label != this._progressLabel) {
       this._progress = progress;
@@ -164,6 +160,6 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     } else if (level == LogLevel.WARN) {
       this.warnings.push(message);
     }
-    logger.log(level, `[${this.taskName}] ${message}`, error, data);
+    logger.log(level, `[${this.task.name}] ${message}`, error, data);
   }
 }

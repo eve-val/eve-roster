@@ -5,9 +5,10 @@ import { dao } from '../../db/dao';
 import { notNil } from '../../util/assert';
 import { findWhere, pluck } from '../../util/underscore';
 
-import { Job, JobResult, TaskExecutor } from './Job';
+import { Job, JobResult } from './Job';
 import { JobImpl } from './JobImpl';
 import { buildLoggerFromFilename } from '../logging/buildLogger';
+import { Task } from './Task';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -47,14 +48,12 @@ export class Scheduler {
    * channel) then it waits until it can be run.
    */
   public runTask(
-      taskName: string,
-      executor: TaskExecutor,
-      timeout: number,
+      task: Task,
       options = {} as TaskOptions,
       ): Job {
-    return this._findRunningJob(taskName)
-        || this._findQueuedTaskInChannel(taskName, options.channel)
-        || this._createAndRunJob(taskName, executor, timeout, options);
+    return this._findRunningJob(task)
+        || this._findQueuedTaskInChannel(task, options.channel)
+        || this._createAndRunJob(task, options);
   }
 
   public getRunningJobs(): ReadonlyArray<Job> {
@@ -62,16 +61,12 @@ export class Scheduler {
   }
 
   private _createAndRunJob(
-      taskName: string,
-      executor: TaskExecutor,
-      timeout: number,
+      task: Task,
       options: TaskOptions,
       ) {
     let job = new JobImpl(
         _nextExecutionId,
-        taskName,
-        executor,
-        timeout,
+        task,
         options.channel,
         options.silent || false);
     _nextExecutionId++;
@@ -89,15 +84,15 @@ export class Scheduler {
     if (job.status != `queued`) {
       throw new Error(`Job already executed: ${inspect(job)}.`);
     }
-    if (this._isRunning(job.taskName)) {
-      throw new Error(`Task ${job.taskName} already running.`);
+    if (this._isRunning(job.task)) {
+      throw new Error(`Task ${job.task.name} already running.`);
     }
     this._runningJobs.push(job);
 
     let jobResult: JobResult;
     let executorError: any = null;
 
-    dao.cron.startJob(this._db, job.taskName)
+    dao.cron.startJob(this._db, job.task.name)
     .then(jobId => {
       job.logId = jobId;
       job.startTime = Date.now();
@@ -106,8 +101,8 @@ export class Scheduler {
         logger.info(`START ${jobSummary(job)}.`);
       }
 
-      const work = job.executor(this._db, job);
-      job.timeoutId = setTimeout(() => this._timeoutJob(job), job.timeout);
+      const work = job.task.executor(this._db, job);
+      job.timeoutId = setTimeout(() => this._timeoutJob(job), job.task.timeout);
       job.setStatus('running', 'pending');
       return work;
     })
@@ -185,28 +180,28 @@ export class Scheduler {
     return channel;
   }
 
-  private _findRunningJob(taskName: string) {
-    return findWhere(this._runningJobs, { taskName: taskName });
+  private _findRunningJob(task: Task) {
+    return findWhere(this._runningJobs, { task: task });
   }
 
-  private _isRunning(taskName: string) {
-    return this._findRunningJob(taskName) != undefined;
+  private _isRunning(task: Task) {
+    return this._findRunningJob(task) != undefined;
   }
 
   private _findQueuedTaskInChannel(
-      taskName: string, channelName: string | undefined) {
+      task: Task, channelName: string | undefined) {
     if (channelName == undefined) {
       return undefined;
     }
     return findWhere(
-        this._getChannel(channelName).queue, { taskName: taskName });
+        this._getChannel(channelName).queue, { task });
   }
 
   private _queueJobToChannel(job: JobImpl, channel: JobChannel) {
     channel.queue.push(job);
     this._tryRunNextJobInChannel(channel);
     if (channel.runningJob != job) {
-      logger.info(`Task ${job.taskName} queued in channel ${channel.name}.`)
+      logger.info(`Task ${job.task.name} queued in channel ${channel.name}.`)
     }
   }
 
@@ -218,7 +213,7 @@ export class Scheduler {
 
     for (let i = 0; i < channel.queue.length; i++) {
       let job = channel.queue[i];
-      if (!this._isRunning(job.taskName)) {
+      if (!this._isRunning(job.task)) {
         channel.queue.splice(i, 1);
         channel.runningJob = job;
         this._executeJob(job);
@@ -228,7 +223,7 @@ export class Scheduler {
 
     if (channel.runningJob == undefined && channel.queue.length > 0) {
       logger.warn(`Job channel "${channel.name}" has stalled. Queue is`
-          + ` [${inspect(pluck(channel.queue, 'taskName'))}].`);
+          + ` [${inspect(pluck(pluck(channel.queue, 'task'), 'name'))}].`);
     }
   }
 
@@ -268,6 +263,6 @@ class JobChannel {
 }
 
 function jobSummary(job: JobImpl) {
-  return `job "${job.taskName}" (id ${job.executionId}, logId ${job.logId},`
+  return `job "${job.task.name}" (id ${job.executionId}, logId ${job.logId},`
       + ` channel=${job.channel || 'none'})`
 }

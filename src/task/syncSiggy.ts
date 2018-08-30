@@ -11,12 +11,22 @@ import { character } from '../db/tables';
 import { MixedObject, SimpleNumMap } from '../util/simpleTypes';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
+import { Task } from '../infra/taskrunner/Task';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');
 const select = require('soupselect').select;
 
 const logger = buildLoggerFromFilename(__filename);
+
+
+export const syncSiggy: Task = {
+  name: 'syncSiggy',
+  displayName: 'Sync Siggy',
+  description: 'Updates members\' Siggy stats.',
+  timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  executor,
+};
 
 const SIGGY_CONFIG_ERROR = 'Siggy credentials have not been set.';
 const SIGGY_PATH = 'https://siggy.borkedlabs.com';
@@ -30,7 +40,7 @@ const axios = axiosModule.create({
   baseURL: SIGGY_PATH
 });
 
-export function syncSiggy(db: Tnex, job: JobLogger) {
+function executor(db: Tnex, job: JobLogger) {
   return Promise.resolve()
   .then(_ => resetSavedScores(db))
   .then(_ => getSiggyCredentials(db))

@@ -1,3 +1,5 @@
+import moment = require('moment');
+
 import { dao } from '../db/dao';
 import swagger from '../data-source/esi/swagger';
 import { Tnex } from '../db/tnex';
@@ -8,10 +10,20 @@ import { UNKNOWN_CORPORATION_ID } from '../db/constants';
 import { CORP_DOOMHEIM } from '../shared/eveConstants';
 import { serialize } from '../util/asyncUtil';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
+import { Task } from '../infra/taskrunner/Task';
 
 const logger = buildLoggerFromFilename(__filename);
 
-export function syncCorps(db: Tnex, job: JobLogger) {
+
+export const syncCorps: Task = {
+  name: 'syncCorps',
+  displayName: 'Sync corporations',
+  description: 'Updates all characters\' corporations.',
+  timeout: moment.duration(20, 'minutes').asMilliseconds(),
+  executor,
+};
+
+function executor(db: Tnex, job: JobLogger) {
   let completedCharacters = 0;
 
   return Promise.resolve()
