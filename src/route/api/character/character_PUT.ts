@@ -1,10 +1,10 @@
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { Tnex } from '../../../tnex';
-import { AccountPrivileges } from '../../../express/privileges';
+import { AccountPrivileges } from '../../../infra/express/privileges';
 
 import { BadRequestError } from '../../../error/BadRequestError';
-import { buildLoggerFromFilename } from '../../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

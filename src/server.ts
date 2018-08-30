@@ -5,13 +5,13 @@ require('heapdump');
 
 import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
-import { Scheduler } from './infra/tasks/Scheduler';
+import { Scheduler } from './infra/taskrunner/Scheduler';
 
-import * as express from './express/express';
-import * as cron from './infra/tasks/registration/cron';
-import * as tasks from './infra/tasks/registration/tasks';
+import * as express from './infra/express/express';
+import * as cron from './infra/taskrunner/cron';
+import * as tasks from './infra/taskrunner/tasks';
 import * as sde from './eve/sde';
-import { buildLoggerFromFilename } from './logs/buildLogger';
+import { buildLoggerFromFilename } from './infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

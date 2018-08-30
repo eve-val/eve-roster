@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../../../express/protectedEndpoint';
-import { Task, getTasks } from '../../../../infra/tasks/registration/tasks';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { Task, getTasks } from '../../../../infra/taskrunner/tasks';
 
 
 export type Output = Task[];

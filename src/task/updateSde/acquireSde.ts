@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import axios from 'axios';
 import progress = require('progress-stream');
 
-import { JobLogger } from '../../infra/tasks/Job';
+import { JobLogger } from '../../infra/taskrunner/Job';
 
 const bz2 = require('unbzip2-stream');
 

@@ -1,6 +1,6 @@
 import { dao } from '../../db/dao';
 import { NotFoundError } from '../../error/NotFoundError';
-import { jsonEndpoint } from '../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
 import { loadSummarizedQueue, SkillQueueSummary } from '../../domain/skills/skillQueueSummarizer';
 import { parallelize } from '../../util/asyncUtil';
 import * as ccpSso from '../../domain/sso/loginParams';

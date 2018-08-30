@@ -4,7 +4,7 @@ import moment = require('moment');
 import { Tnex, val, DEFAULT_NUM } from '../../tnex';
 import { Dao } from '../dao';
 import { cronLog } from '../tables';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

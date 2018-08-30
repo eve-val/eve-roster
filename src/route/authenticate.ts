@@ -14,8 +14,8 @@ import { BadRequestError } from '../error/BadRequestError';
 import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../data-source/esi/endpoints';
 import { UNKNOWN_CORPORATION_ID } from '../db/constants';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
-import { getSession } from '../express/session';
+import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
+import { getSession } from '../infra/express/session';
 
 const logger = buildLoggerFromFilename(__filename);
 

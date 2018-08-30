@@ -1,5 +1,5 @@
 import { Tnex } from '../tnex';
-import { JobLogger } from '../infra/tasks/Job';
+import { JobLogger } from '../infra/taskrunner/Job';
 import { dao } from '../db/dao';
 import { SrpVerdictStatus } from '../db/dao/enums';
 import { autoTriageLosses } from '../domain/srp/triage/autoTriageLosses';

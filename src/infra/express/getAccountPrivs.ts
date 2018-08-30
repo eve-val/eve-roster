@@ -9,12 +9,12 @@
  */
 import Bluebird = require('bluebird');
 
-import { Tnex } from '../tnex';
-import { dao } from '../db/dao';
+import { Tnex } from '../../tnex';
+import { dao } from '../../db/dao';
 import { getPrivileges } from './privileges';
 
-import { NoSuchAccountError } from '../error/NoSuchAccountError';
-import { NotLoggedInError } from '../error/NotLoggedInError';
+import { NoSuchAccountError } from '../../error/NoSuchAccountError';
+import { NotLoggedInError } from '../../error/NotLoggedInError';
 
 export interface AccountSummary {
   id: number,

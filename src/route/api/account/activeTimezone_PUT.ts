@@ -1,5 +1,5 @@
 
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { TIMEZONE_LABELS } from '../../../domain/roster/timezoneLabels';
 import { verify, string } from '../../../route-helper/schemaVerifier';

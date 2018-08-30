@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { AccessToken } from '../../db/tables';
 import { AccessTokenErrorType } from '../../error/AccessTokenError';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

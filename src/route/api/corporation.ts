@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
 import swagger from '../../data-source/esi/swagger';
 
 

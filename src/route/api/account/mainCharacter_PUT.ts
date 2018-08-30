@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { idParam } from '../../../route-helper/paramVerifier';
 import { verify, number } from '../../../route-helper/schemaVerifier';

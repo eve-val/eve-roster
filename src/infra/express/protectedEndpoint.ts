@@ -8,18 +8,18 @@
  */
 import express = require('express');
 
-import { BadRequestError } from '../error/BadRequestError';
-import { NotFoundError } from '../error/NotFoundError';
-import { NoSuchAccountError } from '../error/NoSuchAccountError';
-import { NotLoggedInError } from '../error/NotLoggedInError';
-import { UnauthorizedClientError } from '../error/UnauthorizedClientError';
-import { UserVisibleError } from '../error/UserVisibleError';
+import { BadRequestError } from '../../error/BadRequestError';
+import { NotFoundError } from '../../error/NotFoundError';
+import { NoSuchAccountError } from '../../error/NoSuchAccountError';
+import { NotLoggedInError } from '../../error/NotLoggedInError';
+import { UnauthorizedClientError } from '../../error/UnauthorizedClientError';
+import { UserVisibleError } from '../../error/UserVisibleError';
 
-import { Tnex } from '../tnex';
+import { Tnex } from '../../tnex';
 import { AccountPrivileges } from './privileges';
 import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
-import { SchemaVerificationError } from '../route-helper/schemaVerifier';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { SchemaVerificationError } from '../../route-helper/schemaVerifier';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 import { getSession, endSession } from './session';
 
 const logger = buildLoggerFromFilename(__filename);

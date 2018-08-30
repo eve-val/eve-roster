@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { DEFAULT_NUM, toNum } from '../../../tnex';
 import { dao } from '../../../db/dao';
 import { verify, string, boolean, SchemaVerificationError, } from '../../../route-helper/schemaVerifier';

@@ -11,7 +11,7 @@ import {
 } from '../tables';
 import { updateGroupsForAccount } from '../../domain/account/accountGroups';
 import { ADMIN_GROUP } from '../../domain/account/specialGroups';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

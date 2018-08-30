@@ -2,7 +2,7 @@ import moment = require('moment');
 
 import { Tnex } from "../tnex";
 import { dao } from '../db/dao';
-import { JobLogger } from '../infra/tasks/Job';
+import { JobLogger } from '../infra/taskrunner/Job';
 import { formatZKillTimeArgument } from '../data-source/zkillboard/formatZKillTimeArgument';
 import { fetchZKillmails } from '../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';

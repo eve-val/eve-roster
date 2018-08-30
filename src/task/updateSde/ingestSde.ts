@@ -4,7 +4,7 @@ import sqlite3 = require('sqlite3');
 import { Tnex, val, DEFAULT_NUM } from '../../tnex';
 import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
 
-import { JobLogger } from '../../infra/tasks/Job';
+import { JobLogger } from '../../infra/taskrunner/Job';
 import { notNil } from '../../util/assert';
 import { normalizeSearchStr } from '../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';

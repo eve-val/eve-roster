@@ -5,7 +5,7 @@ import { getAccessTokensFromRows } from '../data-source/accessToken/accessToken'
 import { dao } from '../db/dao';
 import swagger from '../data-source/esi/swagger';
 import { Tnex } from '../tnex';
-import { JobLogger } from '../infra/tasks/Job';
+import { JobLogger } from '../infra/taskrunner/Job';
 import { CharacterLocation } from '../db/tables';
 
 

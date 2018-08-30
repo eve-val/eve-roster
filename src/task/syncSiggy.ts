@@ -9,8 +9,8 @@ import { Tnex } from '../tnex';
 import { dao } from '../db/dao';
 import { character } from '../db/tables';
 import { MixedObject, SimpleNumMap } from '../util/simpleTypes';
-import { JobLogger } from '../infra/tasks/Job';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { JobLogger } from '../infra/taskrunner/Job';
+import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 
 // TODO: These packages don't have type declarations yet
 const htmlparser = require('htmlparser');

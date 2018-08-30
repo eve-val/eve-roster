@@ -2,7 +2,7 @@ import swagger from './swagger';
 import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

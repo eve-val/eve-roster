@@ -1,6 +1,6 @@
 import Bluebird = require('bluebird');
 
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { Tnex } from '../../../tnex';
 import { MemberCorporation, GroupTitle } from '../../../db/tables';

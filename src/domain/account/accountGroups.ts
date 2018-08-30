@@ -6,7 +6,7 @@ import { Tnex, val } from '../../tnex';
 import { ADMIN_GROUP, MEMBER_GROUP } from './specialGroups';
 import { serialize } from '../../util/asyncUtil';
 import { account } from '../../db/tables';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

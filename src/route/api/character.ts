@@ -1,11 +1,11 @@
 import { Tnex } from '../../tnex';
 import { dao } from '../../db/dao';
 import { pluck } from '../../util/underscore';
-import { jsonEndpoint } from '../../express/protectedEndpoint';
-import { AccountPrivileges } from '../../express/privileges';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
+import { AccountPrivileges } from '../../infra/express/privileges';
 import { idParam } from '../../route-helper/paramVerifier';
 import { NotFoundError } from '../../error/NotFoundError';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 import { TIMEZONE_LABELS } from '../../domain/roster/timezoneLabels';
 
 

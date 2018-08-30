@@ -5,9 +5,9 @@ import axios from 'axios';
 import { dao } from '../db/dao';
 import { Tnex } from '../tnex';
 import { serialize } from '../util/asyncUtil';
-import { JobLogger } from '../infra/tasks/Job';
+import { JobLogger } from '../infra/taskrunner/Job';
 import { formatZKillTimeArgument } from '../data-source/zkillboard/formatZKillTimeArgument';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 
 
 const logger = buildLoggerFromFilename(__filename);

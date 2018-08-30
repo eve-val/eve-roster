@@ -1,10 +1,10 @@
 import _ = require('underscore');
 
-import { jsonEndpoint } from '../../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../db/dao';
-import { AccountSummary } from '../../../../express/getAccountPrivs';
-import { AccountPrivileges } from '../../../../express/privileges';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { SimpleNumMap, AsyncReturnType } from '../../../../util/simpleTypes';
 import { fetchEveNames } from '../../../../data-source/esi/names';
 import { hasRosterScopes } from '../../../../domain/roster/hasRosterScopes';

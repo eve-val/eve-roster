@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 
 import { Tnex } from '../../tnex';
-import { Logger } from '../../logs/Logger';
+import { Logger } from '../logging/Logger';
 
 
 export type TaskExecutor =

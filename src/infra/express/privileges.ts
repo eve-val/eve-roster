@@ -1,12 +1,12 @@
 import Bluebird = require('bluebird');
 
-import { dao } from '../db/dao';
-import { Tnex } from '../tnex';
-import { PrivilegeName } from '../db/dao/enums';
-import { ADMIN_GROUP, MEMBER_GROUP } from '../domain/account/specialGroups'
+import { dao } from '../../db/dao';
+import { Tnex } from '../../tnex';
+import { PrivilegeName } from '../../db/dao/enums';
+import { ADMIN_GROUP, MEMBER_GROUP } from '../../domain/account/specialGroups'
 
-import { MissingPrivilegeError } from '../error/MissingPrivilegeError';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { MissingPrivilegeError } from '../../error/MissingPrivilegeError';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

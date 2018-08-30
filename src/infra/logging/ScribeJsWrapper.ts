@@ -1,7 +1,7 @@
 import { Logger, LogLevel } from "./Logger";
 
 import buildLegacyLogger = require('./legacyLogger');
-import { printError } from "../data-source/esi/error";
+import { printError } from "../../data-source/esi/error";
 
 
 /**

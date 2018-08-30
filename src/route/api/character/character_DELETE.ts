@@ -1,9 +1,9 @@
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { findWhere } from '../../../util/underscore';
 import { BadRequestError } from '../../../error/BadRequestError';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
-import { buildLoggerFromFilename } from '../../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

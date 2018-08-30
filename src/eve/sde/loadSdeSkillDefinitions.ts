@@ -1,7 +1,7 @@
 import { Tnex, val } from '../../tnex';
 import { sdeType, sdeTypeAttribute, sdeAttribute } from '../../db/tables';
 
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 import { TYPE_CATEGORY_SKILL } from '../constants/categories';
 import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_2, DGM_ATTR_REQUIRED_SKILL_3, DGM_ATTR_REQUIRED_SKILL_1_LEVEL, DGM_ATTR_REQUIRED_SKILL_2_LEVEL, DGM_ATTR_REQUIRED_SKILL_3_LEVEL, DGM_ATTR_SKILL_TIME_CONSTANT } from '../constants/dogma';
 

@@ -1,4 +1,4 @@
-import { jsonEndpoint } from '../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import * as sde from '../../../eve/sde';
 import { BadRequestError } from '../../../error/BadRequestError';

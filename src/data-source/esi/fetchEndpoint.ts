@@ -6,7 +6,7 @@ import { EsiErrorCompat } from './EsiErrorCompat';
 import { EsiErrorKind } from './EsiError';
 import { MixedObject, SimpleMap } from '../../util/simpleTypes';
 import { BaseEsiEndpoint, FetchMethod, PublicEsiEndpoint, PrivateEsiEndpoint, PublicEsiEndpointWithParams, PrivateEsiEndpointWithParams } from './EsiEndpoint';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

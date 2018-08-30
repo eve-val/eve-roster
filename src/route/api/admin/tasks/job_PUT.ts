@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../../../express/protectedEndpoint';
-import { isTaskName, runTask } from '../../../../infra/tasks/registration/tasks';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { isTaskName, runTask } from '../../../../infra/taskrunner/tasks';
 import { verify, string, } from '../../../../route-helper/schemaVerifier';
 import { JobJson } from './job';
 

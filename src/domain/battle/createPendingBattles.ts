@@ -8,7 +8,7 @@ import { BattleWriter } from './BattleWriter';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 import { battle } from '../../db/tables';
-import { Logger } from '../../logs/Logger';
+import { Logger } from '../../infra/logging/Logger';
 
 
 /**

@@ -7,7 +7,7 @@ import { findWhere, pluck } from '../../util/underscore';
 
 import { Job, JobResult, TaskExecutor } from './Job';
 import { JobImpl } from './JobImpl';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

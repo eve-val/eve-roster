@@ -4,7 +4,7 @@ import { TRIAGE_RULES } from './rules';
 import { dao } from '../../../db/dao';
 import { TriageVerdict, TriageRule, isFuncRule, LossMeta } from './TriageRule';
 import { SdeType } from '../../../db/tables';
-import { buildLoggerFromFilename } from '../../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

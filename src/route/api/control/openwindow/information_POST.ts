@@ -1,8 +1,8 @@
-import { jsonEndpoint } from '../../../../express/protectedEndpoint';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import swagger from '../../../../data-source/esi/swagger';
 import { number, verify } from '../../../../route-helper/schemaVerifier';
-import { AccountSummary } from '../../../../express/getAccountPrivs';
-import { AccountPrivileges } from '../../../../express/privileges';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { Tnex } from '../../../../tnex';
 import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';

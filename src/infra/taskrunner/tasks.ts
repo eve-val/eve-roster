@@ -1,20 +1,20 @@
 import moment = require('moment');
 
-import { Scheduler, TaskOptions } from '../Scheduler';
-import { TaskExecutor } from '../Job';
-import { findWhere } from '../../../util/underscore';
+import { Scheduler, TaskOptions } from './Scheduler';
+import { TaskExecutor } from './Job';
+import { findWhere } from '../../util/underscore';
 
-import { syncCharacterLocations } from '../../../task/syncCharacterLocations';
-import { syncCombatStats } from '../../../task/syncCombatStats';
-import { syncKillmails } from '../../../task/syncKillmails';
-import { syncRoster } from '../../../task/syncRoster';
-import { syncSiggy } from '../../../task/syncSiggy';
-import { syncSkills } from '../../../task/syncSkills';
-import { syncCorps } from '../../../task/syncCorps';
-import { truncateCronLog } from '../../../task/truncateCronLog';
-import { truncateCharacterLocations } from '../../../task/truncateCharacterLocations';
-import { updateSde } from '../../../task/updateSde';
-import { triagePendingLosses } from '../../../task/triagePendingLosses';
+import { syncCharacterLocations } from '../../task/syncCharacterLocations';
+import { syncCombatStats } from '../../task/syncCombatStats';
+import { syncKillmails } from '../../task/syncKillmails';
+import { syncRoster } from '../../task/syncRoster';
+import { syncSiggy } from '../../task/syncSiggy';
+import { syncSkills } from '../../task/syncSkills';
+import { syncCorps } from '../../task/syncCorps';
+import { truncateCronLog } from '../../task/truncateCronLog';
+import { truncateCharacterLocations } from '../../task/truncateCharacterLocations';
+import { updateSde } from '../../task/updateSde';
+import { triagePendingLosses } from '../../task/triagePendingLosses';
 
 
 const TASKS: TaskInternal[] = [
