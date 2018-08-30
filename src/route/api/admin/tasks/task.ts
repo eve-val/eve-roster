@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../../express/protectedEndpoint';
-import { Task, getTasks } from '../../../../cron/tasks';
+import { Task, getTasks } from '../../../../infra/tasks/registration/tasks';
 
 
 export type Output = Task[];

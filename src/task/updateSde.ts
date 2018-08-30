@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as tmp from 'tmp';
 
-import { Tnex } from '../../tnex';
-import { JobLogger } from '../Job';
+import { Tnex } from '../tnex';
+import { JobLogger } from '../infra/tasks/Job';
 import { acquireSde } from './updateSde/acquireSde';
 import { ingestSde } from './updateSde/ingestSde';
 

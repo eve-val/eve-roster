@@ -5,11 +5,11 @@ require('heapdump');
 
 import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
-import { Scheduler } from './cron/Scheduler';
+import { Scheduler } from './infra/tasks/Scheduler';
 
 import * as express from './express/express';
-import * as cron from './cron/cron';
-import * as tasks from './cron/tasks';
+import * as cron from './infra/tasks/registration/cron';
+import * as tasks from './infra/tasks/registration/tasks';
 import * as sde from './eve/sde';
 import { buildLoggerFromFilename } from './logs/buildLogger';
 

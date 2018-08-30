@@ -5,12 +5,12 @@
 import moment = require('moment');
 import schedule = require('node-schedule');
 
-import { Tnex } from '../tnex';
-import { dao } from '../db/dao';
-import { serialize } from '../util/asyncUtil';
+import { Tnex } from '../../../tnex';
+import { dao } from '../../../db/dao';
+import { serialize } from '../../../util/asyncUtil';
 import { TaskName } from './tasks';
 import * as tasks from './tasks';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

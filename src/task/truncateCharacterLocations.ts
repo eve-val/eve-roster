@@ -1,8 +1,8 @@
 import moment = require('moment');
 
-import { Tnex } from '../../tnex';
-import { dao } from '../../db/dao';
-import { JobLogger } from '../Job';
+import { Tnex } from '../tnex';
+import { dao } from '../db/dao';
+import { JobLogger } from '../infra/tasks/Job';
 
 
 export async function truncateCharacterLocations(db: Tnex, job: JobLogger) {

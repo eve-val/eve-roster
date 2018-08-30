@@ -1,12 +1,12 @@
 import Bluebird = require('bluebird');
 
-import { dao } from '../../db/dao';
-import { Tnex } from '../../tnex';
-import { JobLogger } from '../Job';
-import { updateSkills } from '../../domain/skills/skills';
-import { AccessTokenError } from '../../error/AccessTokenError';
-import { isAnyEsiError } from '../../data-source/esi/error';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { dao } from '../db/dao';
+import { Tnex } from '../tnex';
+import { JobLogger } from '../infra/tasks/Job';
+import { updateSkills } from '../domain/skills/skills';
+import { AccessTokenError } from '../error/AccessTokenError';
+import { isAnyEsiError } from '../data-source/esi/error';
+import { buildLoggerFromFilename } from '../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

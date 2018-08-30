@@ -1,13 +1,13 @@
 import { inspect } from 'util';
 
-import { Tnex } from '../tnex';
-import { dao } from '../db/dao';
-import { notNil } from '../util/assert';
-import { findWhere, pluck } from '../util/underscore';
+import { Tnex } from '../../tnex';
+import { dao } from '../../db/dao';
+import { notNil } from '../../util/assert';
+import { findWhere, pluck } from '../../util/underscore';
 
 import { Job, JobResult, TaskExecutor } from './Job';
 import { JobImpl } from './JobImpl';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

@@ -1,16 +1,16 @@
 import Bluebird = require('bluebird');
 import sqlite3 = require('sqlite3');
 
-import { Tnex, val, DEFAULT_NUM } from '../../../tnex';
-import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../../db/tables';
+import { Tnex, val, DEFAULT_NUM } from '../../tnex';
+import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
 
-import { JobLogger } from '../../Job';
-import { notNil } from '../../../util/assert';
-import { normalizeSearchStr } from '../../../eve/sde/normalizeSearchStr';
+import { JobLogger } from '../../infra/tasks/Job';
+import { notNil } from '../../util/assert';
+import { normalizeSearchStr } from '../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';
 import { fixupImport } from './fixupImport';
 import { verifyImport } from './verifyImport';
-import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../../eve/constants/types';
+import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../eve/constants/types';
 
 
 const IMPORTER_VERSION = 0;

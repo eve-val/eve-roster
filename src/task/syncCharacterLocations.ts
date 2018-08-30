@@ -1,12 +1,12 @@
 import moment = require('moment');
 import { ESIError } from 'eve-swagger';
 
-import { getAccessTokensFromRows } from '../../data-source/accessToken/accessToken';
-import { dao } from '../../db/dao';
-import swagger from '../../data-source/esi/swagger';
-import { Tnex } from '../../tnex';
-import { JobLogger } from '../Job';
-import { CharacterLocation } from '../../db/tables';
+import { getAccessTokensFromRows } from '../data-source/accessToken/accessToken';
+import { dao } from '../db/dao';
+import swagger from '../data-source/esi/swagger';
+import { Tnex } from '../tnex';
+import { JobLogger } from '../infra/tasks/Job';
+import { CharacterLocation } from '../db/tables';
 
 
 const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();

@@ -1,9 +1,9 @@
 import moment = require('moment');
 
-import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-import { Killmail } from '../../../db/tables';
-import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../../eve/constants/types';
-import { HullCategory, KillmailType } from '../../../db/dao/enums';
+import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
+import { Killmail } from '../../db/tables';
+import { TYPE_CAPSULE, TYPE_CAPSULE_GENOLUTION } from '../../eve/constants/types';
+import { HullCategory, KillmailType } from '../../db/dao/enums';
 import { Moment } from 'moment';
 
 

@@ -1,6 +1,6 @@
-import { Tnex, val } from '../../../tnex';
-import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../../db/tables';
-import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_1_LEVEL } from '../../../eve/constants/dogma';
+import { Tnex, val } from '../../tnex';
+import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
+import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_1_LEVEL } from '../../eve/constants/dogma';
 
 /**
  * Repair or remove and inconsistencies in the imported SDE data, such as

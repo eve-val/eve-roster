@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
 
 import { Job, JobStatus, JobResult, TaskExecutor, JobLogger, } from './Job';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
-import { LogLevel } from '../logs/Logger';
+import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { LogLevel } from '../../logs/Logger';
 
 const logger = buildLoggerFromFilename(__filename);
 

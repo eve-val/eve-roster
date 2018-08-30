@@ -1,17 +1,17 @@
 import moment = require('moment');
 
-import { Tnex } from "../../tnex";
-import { dao } from '../../db/dao';
-import { JobLogger } from '../Job';
-import { formatZKillTimeArgument } from '../../data-source/zkillboard/formatZKillTimeArgument';
-import { fetchZKillmails } from '../../data-source/zkillboard/fetchZKillmails';
+import { Tnex } from "../tnex";
+import { dao } from '../db/dao';
+import { JobLogger } from '../infra/tasks/Job';
+import { formatZKillTimeArgument } from '../data-source/zkillboard/formatZKillTimeArgument';
+import { fetchZKillmails } from '../data-source/zkillboard/fetchZKillmails';
 import { killmailsToRows } from './syncKillmails/killmailsToRows';
-import { MemberCorporation } from '../../db/tables';
+import { MemberCorporation } from '../db/tables';
 import { inspect } from 'util';
-import { autoTriageLosses } from '../../domain/srp/triage/autoTriageLosses';
-import { pluck } from '../../util/underscore';
-import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
-import { createPendingBattles } from '../../domain/battle/createPendingBattles';
+import { autoTriageLosses } from '../domain/srp/triage/autoTriageLosses';
+import { pluck } from '../util/underscore';
+import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
+import { createPendingBattles } from '../domain/battle/createPendingBattles';
 
 
 /**
