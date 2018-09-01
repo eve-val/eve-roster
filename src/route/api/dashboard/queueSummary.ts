@@ -1,8 +1,8 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
 
 import { parallelize } from '../../../util/asyncUtil';
-import { loadSummarizedQueue, SkillQueueSummary } from '../../../route-helper/skillQueueSummarizer';
+import { loadSummarizedQueue, SkillQueueSummary } from '../../../domain/skills/skillQueueSummarizer';
 
 
 export type Payload = Array<{

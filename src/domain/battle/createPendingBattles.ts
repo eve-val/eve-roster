@@ -1,14 +1,14 @@
 import moment = require('moment');
 
-import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
+import { Tnex } from '../../db/tnex';
+import { dao } from '../../db/dao';
 import { BatchedObjectReader } from './BatchedObjectReader';
 import { BattleCreator } from './BattleCreator';
 import { BattleWriter } from './BattleWriter';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
-import { battle } from '../../dao/tables';
-import { Logger } from '../../logs/Logger';
+import { battle } from '../../db/tables';
+import { Logger } from '../../infra/logging/Logger';
 
 
 /**

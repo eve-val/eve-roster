@@ -1,12 +1,12 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { Tnex } from '../../../tnex';
-import { AccountPrivileges } from '../../../route-helper/privileges';
-import { idParam } from '../../../route-helper/paramVerifier';
-import { dao } from '../../../dao';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { Tnex } from '../../../db/tnex';
+import { AccountPrivileges } from '../../../infra/express/privileges';
+import { idParam } from '../../../util/express/paramVerifier';
+import { dao } from '../../../db/dao';
 import { NotFoundError } from '../../../error/NotFoundError';
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
 import { SimpleNumMap, nil } from '../../../util/simpleTypes';
-import { fetchEveNames } from '../../../eve/names';
+import { fetchEveNames } from '../../../data-source/esi/names';
 
 
 export interface Output {

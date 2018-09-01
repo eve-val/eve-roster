@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { Task, getTasks } from '../../../../cron/tasks';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { Task, getTasks } from '../../../../infra/taskrunner/tasks';
 
 
 export type Output = Task[];

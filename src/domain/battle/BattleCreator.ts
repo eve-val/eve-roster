@@ -2,7 +2,7 @@ import moment = require('moment');
 
 import { Transform, TransformCallback } from 'stream';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
-import { Battle, Killmail } from '../../dao/tables';
+import { Battle, Killmail } from '../../db/tables';
 import { Participant } from './BattleData';
 
 

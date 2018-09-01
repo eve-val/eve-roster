@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
 import { BadRequestError } from '../../../error/BadRequestError';
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {

@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import swagger from '../../swagger';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
+import swagger from '../../data-source/esi/swagger';
 
 
 export default jsonEndpoint(function(req, res) {

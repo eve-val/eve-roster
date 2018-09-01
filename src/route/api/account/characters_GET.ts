@@ -1,10 +1,10 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { Tnex } from '../../../tnex';
-import { AccountSummary } from '../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../route-helper/privileges';
-import { idParam } from '../../../route-helper/paramVerifier';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { Tnex } from '../../../db/tnex';
+import { AccountSummary } from '../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../infra/express/privileges';
+import { idParam } from '../../../util/express/paramVerifier';
 import { UnauthorizedClientError } from '../../../error/UnauthorizedClientError';
-import { dao } from '../../../dao';
+import { dao } from '../../../db/dao';
 
 
 export type Output = CharacterDescription[];

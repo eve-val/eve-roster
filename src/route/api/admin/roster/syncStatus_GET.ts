@@ -1,12 +1,12 @@
 import _ = require('underscore');
 
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { Tnex } from '../../../../db/tnex';
+import { dao } from '../../../../db/dao';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { SimpleNumMap, AsyncReturnType } from '../../../../util/simpleTypes';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../data-source/esi/names';
 import { hasRosterScopes } from '../../../../domain/roster/hasRosterScopes';
 
 

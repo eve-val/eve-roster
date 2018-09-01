@@ -1,23 +1,23 @@
 import moment = require('moment');
 
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { Tnex, ResultOrder } from '../../../../tnex';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { Tnex, ResultOrder } from '../../../../db/tnex';
 import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
-import { BattleFilter, BattleColumn, BoundCmp } from '../../../../dao/BattleDao';
-import { dao } from '../../../../dao';
-import { SrpLossJson } from '../../../../srp/SrpLossJson';
-import { Battle, MemberCorporation } from '../../../../dao/tables';
+import { BattleFilter, BattleColumn, BoundCmp } from '../../../../db/dao/BattleDao';
+import { dao } from '../../../../db/dao';
+import { SrpLossJson } from '../../../../domain/srp/SrpLossJson';
+import { Battle, MemberCorporation } from '../../../../db/tables';
 import { Participant } from '../../../../domain/battle/BattleData';
 import { addAll, arrayToMap } from '../../../../util/collections';
-import { fetchEveNames } from '../../../../eve/names';
+import { fetchEveNames } from '../../../../data-source/esi/names';
 import { sortBy, cmpNumberProp } from '../../../../util/sortBy';
 import { isCapsule } from '../../../../eve/util/isCapsule';
 import { pluck } from '../../../../util/underscore';
-import { triageLosses } from '../../../../srp/triage/triageLosses';
-import { triagedLossesToSuggestionJson } from '../../../../srp/triage/triagedLossesToSuggestionJson';
-import { srpLossToJson } from '../../../../srp/srpLossToJson';
-import { optional, array, stringEnum, number, boolean, object, verify } from '../../../../route-helper/schemaVerifier';
-import { jsonQuery, boolQuery } from '../../../../route-helper/paramVerifier';
+import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
+import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
+import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
+import { optional, array, stringEnum, number, boolean, object, verify } from '../../../../util/express/schemaVerifier';
+import { jsonQuery, boolQuery } from '../../../../util/express/paramVerifier';
 
 export interface Output {
   battles: BattleJson[],

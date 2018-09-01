@@ -3,19 +3,19 @@ import querystring = require('querystring');
 import axios from 'axios';
 import express = require('express');
 
-import { dao } from '../dao';
-import { Tnex, UpdatePolicy } from '../tnex';
-import { isAnyEsiError } from '../util/error';
+import { dao } from '../db/dao';
+import { Tnex, UpdatePolicy } from '../db/tnex';
+import { isAnyEsiError } from '../data-source/esi/error';
 
-import swagger from '../swagger';
+import swagger from '../data-source/esi/swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
-import { enumQuery, stringQuery } from '../route-helper/paramVerifier';
+import { enumQuery, stringQuery } from '../util/express/paramVerifier';
 import { BadRequestError } from '../error/BadRequestError';
-import { fetchEndpoint } from '../eve/esi/fetchEndpoint';
-import { ESI_CHARACTERS_$characterId_ROLES } from '../eve/esi/endpoints';
-import { UNKNOWN_CORPORATION_ID } from '../util/constants';
-import { buildLoggerFromFilename } from '../logs/buildLogger';
-import { getSession } from '../route-helper/session';
+import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId_ROLES } from '../data-source/esi/endpoints';
+import { UNKNOWN_CORPORATION_ID } from '../db/constants';
+import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
+import { getSession } from '../infra/express/session';
 
 const logger = buildLoggerFromFilename(__filename);
 

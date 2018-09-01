@@ -1,15 +1,15 @@
 import moment = require('moment');
 
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { Tnex } from '../../../../tnex';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { idParam } from '../../../../route-helper/paramVerifier';
-import { dao } from '../../../../dao';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { Tnex } from '../../../../db/tnex';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
+import { idParam } from '../../../../util/express/paramVerifier';
+import { dao } from '../../../../db/dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { SimpleNumMap } from '../../../../util/simpleTypes';
-import { srpLossToJson } from '../../../../srp/srpLossToJson';
-import { fetchEveNames } from '../../../../eve/names';
-import { SrpLossJson } from '../../../../srp/SrpLossJson';
+import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
+import { fetchEveNames } from '../../../../data-source/esi/names';
+import { SrpLossJson } from '../../../../domain/srp/SrpLossJson';
 
 export interface Output {
   payment: {

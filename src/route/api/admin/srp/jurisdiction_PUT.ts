@@ -1,10 +1,10 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { verify, number, nullable, } from '../../../../route-helper/schemaVerifier';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { verify, number, nullable, } from '../../../../util/express/schemaVerifier';
 
-import { Tnex } from '../../../../tnex';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { dao } from '../../../../dao';
+import { Tnex } from '../../../../db/tnex';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { dao } from '../../../../db/dao';
 
 
 export class Input {

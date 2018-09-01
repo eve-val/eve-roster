@@ -1,6 +1,6 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { isTaskName, runTask } from '../../../../cron/tasks';
-import { verify, string, } from '../../../../route-helper/schemaVerifier';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { isTaskName, runTask } from '../../../../infra/taskrunner/tasks';
+import { verify, string, } from '../../../../util/express/schemaVerifier';
 import { JobJson } from './job';
 
 import { BadRequestError } from '../../../../error/BadRequestError';

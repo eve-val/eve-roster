@@ -4,7 +4,7 @@ import axios from 'axios';
 import { delay } from '../../util/asyncUtil';
 import { makePlanetaryInteraction } from 'eve-swagger/dist/src/api/universe/planetary-interaction';
 import { ZKillmail } from './ZKillmail';
-import { JobLogger } from '../../cron/Job';
+import { JobLogger } from '../../infra/taskrunner/Job';
 
 
 const BASE_ZKILL_API_URL = 'https://zkillboard.com/api/';

@@ -1,12 +1,12 @@
-import { Tnex } from '../../tnex';
-import { dao } from '../../dao';
+import { Tnex } from '../../db/tnex';
+import { dao } from '../../db/dao';
 import { pluck } from '../../util/underscore';
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import { AccountPrivileges } from '../../route-helper/privileges';
-import { idParam } from '../../route-helper/paramVerifier';
-import * as policy from '../../route-helper/policy';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
+import { AccountPrivileges } from '../../infra/express/privileges';
+import { idParam } from '../../util/express/paramVerifier';
 import { NotFoundError } from '../../error/NotFoundError';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
+import { TIMEZONE_LABELS } from '../../domain/roster/timezoneLabels';
 
 
 const logger = buildLoggerFromFilename(__filename);
@@ -95,7 +95,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
   })
   .then(() => {
     if (privs.canWrite('memberTimezone', isOwned)) {
-      payload.timezones = policy.TIMEZONE_LABELS;
+      payload.timezones = TIMEZONE_LABELS;
     }
     if (privs.canWrite('memberHousing', isOwned)) {
       return dao.citadel.getAll(db, ['citadel_name'])

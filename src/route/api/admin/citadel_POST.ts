@@ -1,7 +1,7 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { DEFAULT_NUM, toNum } from '../../../tnex';
-import { dao } from '../../../dao';
-import { verify, string, boolean, SchemaVerificationError, } from '../../../route-helper/schemaVerifier';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { DEFAULT_NUM, toNum } from '../../../db/tnex';
+import { dao } from '../../../db/dao';
+import { verify, string, boolean, SchemaVerificationError, } from '../../../util/express/schemaVerifier';
 
 
 export class Input {

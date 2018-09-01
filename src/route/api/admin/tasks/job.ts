@@ -1,5 +1,5 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { getRunningTasks } from '../../../../cron/tasks';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { getRunningTasks } from '../../../../infra/taskrunner/tasks';
 
 export type Output = JobJson[];
 

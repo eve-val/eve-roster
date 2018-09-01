@@ -1,8 +1,8 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
-import { idParam } from '../../../route-helper/paramVerifier';
-import { verify, number } from '../../../route-helper/schemaVerifier';
-import { canDesignateMain } from '../../../route-helper/policy';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
+import { idParam } from '../../../util/express/paramVerifier';
+import { verify, number } from '../../../util/express/schemaVerifier';
+import { canDesignateMain } from '../../../domain/account/canDesignateMain';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
 
 import { BadRequestError } from '../../../error/BadRequestError';

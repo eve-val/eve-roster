@@ -1,7 +1,7 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
-import { idParam } from '../../../route-helper/paramVerifier';
-import { verify, number } from '../../../route-helper/schemaVerifier';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
+import { idParam } from '../../../util/express/paramVerifier';
+import { verify, number } from '../../../util/express/schemaVerifier';
 
 import { BadRequestError } from '../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../error/UnauthorizedClientError';

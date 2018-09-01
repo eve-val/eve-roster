@@ -1,0 +1,139 @@
+import moment = require('moment');
+import { ESIError } from 'eve-swagger';
+
+import { getAccessTokensFromRows } from '../data-source/accessToken/accessToken';
+import { dao } from '../db/dao';
+import swagger from '../data-source/esi/swagger';
+import { Tnex } from '../db/tnex';
+import { JobLogger } from '../infra/taskrunner/Job';
+import { CharacterLocation } from '../db/tables';
+
+
+const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
+const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
+
+const CHARLOC_CACHE = new Map<number, CharacterLocation>();
+
+export async function syncCharacterLocations(db: Tnex, job: JobLogger) {
+  if (CHARLOC_CACHE.size == 0) {
+    await fillLocationCache(db);
+  }
+
+  const initialRows =
+      await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
+  const tokenMap = await getAccessTokensFromRows(db, initialRows);
+  const esiErrors: Array<[number, string]> = [];
+
+  const tasks: Promise<CharacterLocation | null>[] = [];
+  for (let row of initialRows) {
+    const tokenResult = tokenMap.get(row.accessToken_character)!;
+    if (tokenResult.kind == 'error') {
+      job.warn(
+          `Error (${tokenResult.error}) while refreshing token for `
+              + `${row.accessToken_character}.`);
+      continue;
+    }
+    if (shouldCheckLocation(row.accessToken_character)) {
+      tasks.push(
+          checkLocation(row.accessToken_character, tokenResult.token)
+          .catch(e => {
+            if (e instanceof ESIError) {
+              esiErrors.push([row.accessToken_character, e.kind]);
+            } else {
+              job.error(
+                  `Error while updating location for `
+                      + `${row.accessToken_character}:`);
+              job.error(e);
+            }
+            return null;
+          }));
+    }
+  }
+
+  const results = await Promise.all(tasks);
+
+  const updatedRows: CharacterLocation[] = [];
+  for (let result of results) {
+    if (result != null) {
+      updatedRows.push(result);
+    }
+  }
+  if (updatedRows.length > 0) {
+    await dao.characterLocation.storeAll(db, updatedRows);
+  }
+
+  if (esiErrors.length > 0) {
+    job.warn(`The following characters got ESI errors: `
+        + esiErrors
+            .map(([character, error]) => `${character} (${error})`)
+            .join(', '));
+  }
+}
+
+async function fillLocationCache(db: Tnex) {
+  const rows =
+      await dao.characterLocation.getMostRecentMemberCharacterLocations(db);
+
+  for (let row of rows) {
+    CHARLOC_CACHE.set(row.charloc_character, row);
+  }
+}
+
+async function checkLocation(characterId: number, accessToken: string) {
+  let rowToCommit: CharacterLocation | null = null;
+
+  const cachedRow = CHARLOC_CACHE.get(characterId);
+  const newRow = await fetchUpdatedLocationRow(characterId, accessToken);
+
+  if (cachedRow == undefined || !locationsEqual(cachedRow, newRow)) {
+    CHARLOC_CACHE.set(characterId, newRow);
+    rowToCommit = newRow;
+  }
+
+  return rowToCommit;
+}
+
+function shouldCheckLocation(characterId: number) {
+  const cachedRow = CHARLOC_CACHE.get(characterId);
+  if (cachedRow == undefined) {
+    return true;
+  } else {
+    let staleness = Date.now() - cachedRow.charloc_timestamp;
+    if (staleness <= RAPID_UPDATE_THRESHOLD) {
+      // Normal - always update.
+      return true;
+    } else if (staleness <= SLOW_UPDATE_THRESHOLD) {
+      // 10x slower average polling - do nothing 90% of the time.
+      return Math.random() <= 0.1;
+    } else {
+      // 100x slower average polling - do nothing 99% of the time.
+      return Math.random() <= 0.01;
+    }
+  }
+}
+
+function locationsEqual(a: CharacterLocation, b: CharacterLocation) {
+  return a.charloc_character == b.charloc_character
+      && a.charloc_shipTypeId == b.charloc_shipTypeId
+      && a.charloc_shipItemId == b.charloc_shipItemId
+      && a.charloc_shipName == b.charloc_shipName
+      && a.charloc_solarSystemId == b.charloc_solarSystemId;
+}
+
+async function fetchUpdatedLocationRow(
+    characterId: number, accessToken: string,
+): Promise<CharacterLocation> {
+  const [locationResults, shipResults] = await Promise.all([
+    swagger.characters(characterId, accessToken).location(),
+    swagger.characters(characterId, accessToken).ship(),
+  ]);
+
+  return {
+    charloc_character: characterId,
+    charloc_timestamp: Date.now(),
+    charloc_shipName: shipResults.ship_name,
+    charloc_shipTypeId: shipResults.ship_type_id,
+    charloc_shipItemId: shipResults.ship_item_id,
+    charloc_solarSystemId: locationResults.solar_system_id,
+  };
+}

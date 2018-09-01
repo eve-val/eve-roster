@@ -1,6 +1,6 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
-import { verify, string, } from '../../../route-helper/schemaVerifier';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
+import { verify, string, } from '../../../util/express/schemaVerifier';
 
 import { BadRequestError } from '../../../error/BadRequestError';
 

@@ -1,13 +1,13 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
+import { Tnex } from '../../../../db/tnex';
+import { dao } from '../../../../db/dao';
 import { NotFoundError } from '../../../../error/NotFoundError';
-import { idParam } from '../../../../route-helper/paramVerifier';
-import { SrpTriageJson } from '../../../../srp/SrpLossJson';
-import { triagedLossesToSuggestionJson } from '../../../../srp/triage/triagedLossesToSuggestionJson';
-import { triageLosses } from '../../../../srp/triage/triageLosses';
+import { idParam } from '../../../../util/express/paramVerifier';
+import { SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
+import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
+import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
 
 
 export interface Output {

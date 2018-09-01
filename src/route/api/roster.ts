@@ -1,15 +1,15 @@
 import moment = require('moment');
 
-import { dao } from '../../dao';
-import { Tnex } from '../../tnex';
-import { BasicRosterCharacter, OwnedRosterCharacter } from '../../dao/RosterDao';
-import { AccountPrivileges } from '../../route-helper/privileges';
-import { jsonEndpoint } from '../../route-helper/protectedEndpoint';
-import { isAnyEsiError } from '../../util/error';
+import { dao } from '../../db/dao';
+import { Tnex } from '../../db/tnex';
+import { BasicRosterCharacter, OwnedRosterCharacter } from '../../db/dao/RosterDao';
+import { AccountPrivileges } from '../../infra/express/privileges';
+import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
+import { isAnyEsiError } from '../../data-source/esi/error';
 import * as alert from '../../shared/rosterAlertLevels';
-import { fetchEveNames } from '../../eve/names';
+import { fetchEveNames } from '../../data-source/esi/names';
 import { SimpleMap } from '../../util/simpleTypes';
-import { buildLoggerFromFilename } from '../../logs/buildLogger';
+import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 

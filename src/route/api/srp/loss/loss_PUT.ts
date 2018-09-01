@@ -1,13 +1,13 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import { number, verify, string, nullable, stringEnum } from '../../../../route-helper/schemaVerifier';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import { number, verify, string, nullable, stringEnum } from '../../../../util/express/schemaVerifier';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
+import { Tnex } from '../../../../db/tnex';
+import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
-import { SrpVerdictStatus, SrpVerdictReason } from '../../../../dao/enums';
+import { SrpVerdictStatus, SrpVerdictReason } from '../../../../db/dao/enums';
 import { NotFoundError } from '../../../../error/NotFoundError';
-import { idParam } from '../../../../route-helper/paramVerifier';
+import { idParam } from '../../../../util/express/paramVerifier';
 
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);

@@ -1,15 +1,15 @@
-import { jsonEndpoint } from '../../../route-helper/protectedEndpoint';
-import { dao } from '../../../dao';
-import { Tnex } from '../../../tnex';
+import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
+import { dao } from '../../../db/dao';
+import { Tnex } from '../../../db/tnex';
 
-import { isAnyEsiError } from '../../../util/error';
-import { updateSkills } from '../../../data-source/skills';
-import { getTrainingProgress, isQueueEntryCompleted } from '../../../data-source/skillQueue';
-import { SkillsheetEntry } from '../../../dao/SkillsheetDao';
-import { NamedSkillQueueRow } from '../../../dao/SkillQueueDao';
+import { isAnyEsiError } from '../../../data-source/esi/error';
+import { updateSkills } from '../../../domain/skills/skills';
+import { getTrainingProgress, isQueueEntryCompleted } from '../../../domain/skills/skillQueue';
+import { SkillsheetEntry } from '../../../db/dao/SkillsheetDao';
+import { NamedSkillQueueRow } from '../../../db/dao/SkillQueueDao';
 import { AccessTokenError, AccessTokenErrorType } from '../../../error/AccessTokenError';
 import * as time from '../../../util/time';
-import { defaultSkillName } from '../../../eve/sde/defaultSkillName';
+import { defaultSkillName } from '../../../domain/skills/defaultSkillName';
 
 
 export interface Payload {

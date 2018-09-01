@@ -1,13 +1,13 @@
-import { jsonEndpoint } from '../../../../route-helper/protectedEndpoint';
-import swagger from '../../../../swagger';
-import { number, verify } from '../../../../route-helper/schemaVerifier';
-import { AccountSummary } from '../../../../route-helper/getAccountPrivs';
-import { AccountPrivileges } from '../../../../route-helper/privileges';
-import { Tnex } from '../../../../tnex';
-import { dao } from '../../../../dao';
+import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
+import swagger from '../../../../data-source/esi/swagger';
+import { number, verify } from '../../../../util/express/schemaVerifier';
+import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
+import { AccountPrivileges } from '../../../../infra/express/privileges';
+import { Tnex } from '../../../../db/tnex';
+import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';
-import { getAccessToken } from '../../../../data-source/accessToken';
+import { getAccessToken } from '../../../../data-source/accessToken/accessToken';
 
 
 export class Input {

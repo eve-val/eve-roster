@@ -3,15 +3,15 @@ require('source-map-support').install();
 
 require('heapdump');
 
-import { tables } from './dao/tables';
+import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
-import { Scheduler } from './cron/Scheduler';
+import { Scheduler } from './infra/taskrunner/Scheduler';
 
-import * as express from './express';
-import * as cron from './cron/cron';
-import * as tasks from './cron/tasks';
+import * as express from './infra/express/express';
+import * as cron from './infra/taskrunner/cron';
+import * as tasks from './infra/taskrunner/tasks';
 import * as sde from './eve/sde';
-import { buildLoggerFromFilename } from './logs/buildLogger';
+import { buildLoggerFromFilename } from './infra/logging/buildLogger';
 
 const logger = buildLoggerFromFilename(__filename);
 
