@@ -1,6 +1,6 @@
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
-import { idParam } from '../../../route-helper/paramVerifier';
+import { idParam } from '../../../util/express/paramVerifier';
 
 import { UnauthorizedClientError } from '../../../error/UnauthorizedClientError';
 

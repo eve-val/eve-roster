@@ -6,7 +6,7 @@ import { Tnex, DEFAULT_NUM } from '../../../db/tnex';
 import { UserVisibleError } from '../../../error/UserVisibleError';
 import { isCensored } from './_censor';
 
-import { verify, optional, nullable, string, number, array, object, simpleMap, } from '../../../route-helper/schemaVerifier';
+import { verify, optional, nullable, string, number, array, object, simpleMap, } from '../../../util/express/schemaVerifier';
 import { AccountSummary } from '../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../infra/express/privileges';
 

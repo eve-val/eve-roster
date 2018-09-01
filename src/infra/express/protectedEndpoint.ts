@@ -18,7 +18,7 @@ import { UserVisibleError } from '../../error/UserVisibleError';
 import { Tnex } from '../../db/tnex';
 import { AccountPrivileges } from './privileges';
 import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
-import { SchemaVerificationError } from '../../route-helper/schemaVerifier';
+import { SchemaVerificationError } from '../../util/express/schemaVerifier';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 import { getSession, endSession } from './session';
 

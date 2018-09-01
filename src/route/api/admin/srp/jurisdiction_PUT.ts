@@ -1,5 +1,5 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { verify, number, nullable, } from '../../../../route-helper/schemaVerifier';
+import { verify, number, nullable, } from '../../../../util/express/schemaVerifier';
 
 import { Tnex } from '../../../../db/tnex';
 import { AccountPrivileges } from '../../../../infra/express/privileges';

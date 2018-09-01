@@ -16,8 +16,8 @@ import { pluck } from '../../../../util/underscore';
 import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
 import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
 import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
-import { optional, array, stringEnum, number, boolean, object, verify } from '../../../../route-helper/schemaVerifier';
-import { jsonQuery, boolQuery } from '../../../../route-helper/paramVerifier';
+import { optional, array, stringEnum, number, boolean, object, verify } from '../../../../util/express/schemaVerifier';
+import { jsonQuery, boolQuery } from '../../../../util/express/paramVerifier';
 
 export interface Output {
   battles: BattleJson[],

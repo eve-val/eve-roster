@@ -9,7 +9,7 @@ import { isAnyEsiError } from '../data-source/esi/error';
 
 import swagger from '../data-source/esi/swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
-import { enumQuery, stringQuery } from '../route-helper/paramVerifier';
+import { enumQuery, stringQuery } from '../util/express/paramVerifier';
 import { BadRequestError } from '../error/BadRequestError';
 import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_ROLES } from '../data-source/esi/endpoints';

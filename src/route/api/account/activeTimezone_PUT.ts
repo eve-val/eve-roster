@@ -2,8 +2,8 @@
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
 import { TIMEZONE_LABELS } from '../../../domain/roster/timezoneLabels';
-import { verify, string } from '../../../route-helper/schemaVerifier';
-import { idParam } from '../../../route-helper/paramVerifier';
+import { verify, string } from '../../../util/express/schemaVerifier';
+import { idParam } from '../../../util/express/paramVerifier';
 
 import { BadRequestError } from '../../../error/BadRequestError';
 

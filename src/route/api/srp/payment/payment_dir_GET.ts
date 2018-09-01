@@ -5,7 +5,7 @@ import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { Tnex, ResultOrder } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
-import { boolQuery, intQuery, enumQuery } from '../../../../route-helper/paramVerifier';
+import { boolQuery, intQuery, enumQuery } from '../../../../util/express/paramVerifier';
 import { nil, SimpleNumMap } from '../../../../util/simpleTypes';
 import { fetchEveNames } from '../../../../data-source/esi/names';
 import { SrpReimbursementFilter } from '../../../../db/dao/SrpDao';

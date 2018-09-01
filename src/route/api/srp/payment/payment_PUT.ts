@@ -1,12 +1,12 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { number, verify, boolean, optional } from '../../../../route-helper/schemaVerifier';
+import { number, verify, boolean, optional } from '../../../../util/express/schemaVerifier';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { Tnex } from '../../../../db/tnex';
 import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { NotFoundError } from '../../../../error/NotFoundError';
-import { idParam } from '../../../../route-helper/paramVerifier';
+import { idParam } from '../../../../util/express/paramVerifier';
 
 export class Input {
   paid = boolean();

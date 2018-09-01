@@ -3,7 +3,7 @@ import { dao } from '../../db/dao';
 import { pluck } from '../../util/underscore';
 import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
 import { AccountPrivileges } from '../../infra/express/privileges';
-import { idParam } from '../../route-helper/paramVerifier';
+import { idParam } from '../../util/express/paramVerifier';
 import { NotFoundError } from '../../error/NotFoundError';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
 import { TIMEZONE_LABELS } from '../../domain/roster/timezoneLabels';

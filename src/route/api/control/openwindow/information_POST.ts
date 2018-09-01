@@ -1,6 +1,6 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
 import swagger from '../../../../data-source/esi/swagger';
-import { number, verify } from '../../../../route-helper/schemaVerifier';
+import { number, verify } from '../../../../util/express/schemaVerifier';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
 import { Tnex } from '../../../../db/tnex';

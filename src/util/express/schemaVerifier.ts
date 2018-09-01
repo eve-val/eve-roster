@@ -1,5 +1,5 @@
 
-import { ExtendableError } from '../error/ExtendableError';
+import { ExtendableError } from '../../error/ExtendableError';
 
 /**
  * Example:

@@ -2,7 +2,7 @@ import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { Tnex } from '../../../db/tnex';
 import { AccountSummary } from '../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../infra/express/privileges';
-import { idParam } from '../../../route-helper/paramVerifier';
+import { idParam } from '../../../util/express/paramVerifier';
 import { UnauthorizedClientError } from '../../../error/UnauthorizedClientError';
 import { dao } from '../../../db/dao';
 

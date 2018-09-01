@@ -1,6 +1,6 @@
 import express = require('express');
 
-import { BadRequestError } from '../error/BadRequestError';
+import { BadRequestError } from '../../error/BadRequestError';
 
 
 const POSITIVE_INTEGER_PATTERN = /^\d+$/;
