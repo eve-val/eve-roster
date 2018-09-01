@@ -21,8 +21,8 @@ import { endSession, getSession } from './session';
 
 
 const logger = buildLoggerFromFilename(__filename);
-const legacyLogger = require('../logs/legacyLogger')();
-const webpackConfig = require('../../webpack.config.js');
+const legacyLogger = require('../logging/legacyLogger')();
+const webpackConfig = require('../../../webpack.config.js');
 
 const FRONTEND_ROUTES = [
   '/',

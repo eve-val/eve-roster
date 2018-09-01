@@ -35,13 +35,16 @@ export function srpLossToJson(
     payout: row.srpv_payout,
     reimbursement: row.srpr_id,
     payingCharacter: row.srpr_payingCharacter,
+    renderingCharacter: row.rendering_mainCharacter != null ?
+        row.rendering_mainCharacter : null,
     triage: null,
   }
 
   ids.add(json.shipType);
   ids.add(json.victim);
   ids.add(json.victimCorp);
-  ids.add(row.srpr_payingCharacter);
+  ids.add(json.payingCharacter);
+  ids.add(json.renderingCharacter);
 
   return json;
 }
