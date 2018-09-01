@@ -45,17 +45,16 @@ triage options weren't initially provided, fetches them from the server.
         {{ getStatusLabel(srp) }}
         <div class="rendered-by">
           by
-	  <div v-if="srp.renderingCharacter == null" class="rend-null-cnt">
-            <router-link
-                :to="`/character/${srp.renderingCharacter}`"
-                class="row-link"
-                >
-              {{ name(srp.renderingCharacter) }}
-            </router-link>
-	  </div>
+          <router-link
+	      v-if="srp.renderingCharacter != null"
+              :to="`/character/${srp.renderingCharacter}`"
+              class="row-link"
+              >
+            {{ name(srp.renderingCharacter) }}
+          </router-link>
           <template v-else>
-	    Triage Bot
-	  </template>
+            Triage Bot
+          </template>
         </div>
       </template>
     </div>
