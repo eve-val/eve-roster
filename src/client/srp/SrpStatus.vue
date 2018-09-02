@@ -242,9 +242,12 @@ export default Vue.extend({
         this.saveStatus = 'inactive';
         this.srp.payout = payout;
         this.srp.status = verdict;
-        this.srp.fresh_paid = true;
         this.srp.reason = reason;
         this.editing = false;
+        this.srp.renderingCharacter = response.data.id;
+        var map = new Map();
+        map[int(response.data.id)] = response.data.name;
+        addNames(map);
       })
       .catch(e => {
         this.saveStatus = 'error';

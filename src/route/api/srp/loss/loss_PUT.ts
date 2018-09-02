@@ -8,6 +8,10 @@ import { BadRequestError } from '../../../../error/BadRequestError';
 import { SrpVerdictStatus, SrpVerdictReason } from '../../../../db/dao/enums';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../util/express/paramVerifier';
+import { fetchEveNames } from '../../../../data-source/esi/names';
+import { buildLoggerFromFilename } from '../../../../infra/logging/buildLogger'
+
+const logger = buildLoggerFromFilename(__filename);
 
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);
@@ -60,5 +64,16 @@ async function handleEndpoint(
     throw new NotFoundError();
   }
 
-  return {};
+  return dao.account.getMain(db, account.id)
+  .then(row => {
+    if (row == null) {
+      logger.error(`(in loss_PUT.ts) Account ${account.id} has a null main.`);
+      return {id: null, name: null};
+    }
+
+    return {
+      id: row.character_id,
+      name: row.character_name,
+    };
+  });
 }
