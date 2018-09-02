@@ -35,8 +35,7 @@ export function srpLossToJson(
     payout: row.srpv_payout,
     reimbursement: row.srpr_id,
     payingCharacter: row.srpr_payingCharacter,
-    renderingCharacter: row.rendering_mainCharacter != null ?
-        row.rendering_mainCharacter : null,
+    renderingCharacter: row.rendering_mainCharacter,
     triage: null,
   }
 
