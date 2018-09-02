@@ -43,7 +43,7 @@ triage options weren't initially provided, fetches them from the server.
       </div>
       <template v-else>
         {{ getStatusLabel(srp) }}
-        <div class="rendered-by">
+        <div class="rendered-by" v-if="srp.fresh_paid == null">
           by
           <router-link
 	      v-if="srp.renderingCharacter != null"
@@ -242,6 +242,7 @@ export default Vue.extend({
         this.saveStatus = 'inactive';
         this.srp.payout = payout;
         this.srp.status = verdict;
+        this.srp.fresh_paid = true;
         this.srp.reason = reason;
         this.editing = false;
       })
