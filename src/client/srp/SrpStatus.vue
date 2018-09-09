@@ -245,9 +245,9 @@ export default Vue.extend({
         this.srp.reason = reason;
         this.editing = false;
         this.srp.renderingCharacter = response.data.id;
-        var map = new Map();
-        map[int(response.data.id)] = response.data.name;
-        addNames(map);
+	addNames({
+	  [response.data.id]: response.data.name,
+	});
       })
       .catch(e => {
         this.saveStatus = 'error';

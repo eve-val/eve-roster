@@ -10,6 +10,7 @@ import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../util/express/paramVerifier';
 import { fetchEveNames } from '../../../../data-source/esi/names';
 import { buildLoggerFromFilename } from '../../../../infra/logging/buildLogger'
+import { UserVisibleError } from '../../../../error/UserVisibleError';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -64,16 +65,14 @@ async function handleEndpoint(
     throw new NotFoundError();
   }
 
-  return dao.account.getMain(db, account.id)
-  .then(row => {
-    if (row == null) {
-      logger.error(`(in loss_PUT.ts) Account ${account.id} has a null main.`);
-      return {id: null, name: null};
-    }
+  const mainRow = await dao.account.getMain(db, account.id);
+  if (mainRow == null) {
+    throw new UserVisibleError(
+        `Account does not have a main character configured.`);
+  }
 
-    return {
-      id: row.character_id,
-      name: row.character_name,
-    };
-  });
+  return {
+    id: mainRow.character_id,
+    name: mainRow.character_name,
+  };
 }
