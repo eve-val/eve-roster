@@ -86,6 +86,11 @@ export default class SrpDao {
                 .using('km_id', 'related_id')
                 .using('km_data', 'related_data'),
             'related_id', '=', 'km_relatedLoss')
+        .leftJoin(
+            db.alias(account, 'rendering')
+                .using('account_id', 'rendering_id')
+                .using('account_mainCharacter', 'rendering_mainCharacter'),
+            'rendering_id', '=', 'srpv_renderingAccount')
         .leftJoin(killmailBattle, 'kmb_killmail', '=', 'km_id')
         .orderBy('km_id', order)
         .columns(
@@ -96,6 +101,7 @@ export default class SrpDao {
             'srpv_status',
             'srpv_reason',
             'srpv_payout',
+            'rendering_mainCharacter',
             'srpr_id',
             'srpr_paid',
             'srpr_payingCharacter',
@@ -402,4 +408,5 @@ export type SrpLossRow =
         | 'account_mainCharacter'
         | 'kmb_battle'
         >
-    & { related_data: ZKillmail | null };
+    & { related_data: ZKillmail | null }
+    & { rendering_mainCharacter: number | null };

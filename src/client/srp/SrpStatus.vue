@@ -43,6 +43,19 @@ triage options weren't initially provided, fetches them from the server.
       </div>
       <template v-else>
         {{ getStatusLabel(srp) }}
+        <div class="rendered-by" v-if="srp.fresh_paid == null">
+          by
+          <router-link
+	      v-if="srp.renderingCharacter != null"
+              :to="`/character/${srp.renderingCharacter}`"
+              class="row-link"
+              >
+            {{ name(srp.renderingCharacter) }}
+          </router-link>
+          <template v-else>
+            Triage Bot
+          </template>
+        </div>
       </template>
     </div>
   </div>
@@ -231,6 +244,10 @@ export default Vue.extend({
         this.srp.status = verdict;
         this.srp.reason = reason;
         this.editing = false;
+        this.srp.renderingCharacter = response.data.id;
+	addNames({
+	  [response.data.id]: response.data.name,
+	});
       })
       .catch(e => {
         this.saveStatus = 'error';

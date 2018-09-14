@@ -21,6 +21,7 @@ export interface SrpLossJson {
   payout: number,
   reimbursement: number | null,
   payingCharacter: number | null,
+  renderingCharacter: number | null,
   triage: SrpTriageJson | null,
 }
 

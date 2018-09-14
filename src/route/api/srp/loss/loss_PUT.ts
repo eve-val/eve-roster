@@ -8,6 +8,11 @@ import { BadRequestError } from '../../../../error/BadRequestError';
 import { SrpVerdictStatus, SrpVerdictReason } from '../../../../db/dao/enums';
 import { NotFoundError } from '../../../../error/NotFoundError';
 import { idParam } from '../../../../util/express/paramVerifier';
+import { fetchEveNames } from '../../../../data-source/esi/names';
+import { buildLoggerFromFilename } from '../../../../infra/logging/buildLogger'
+import { UserVisibleError } from '../../../../error/UserVisibleError';
+
+const logger = buildLoggerFromFilename(__filename);
 
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);
@@ -60,5 +65,14 @@ async function handleEndpoint(
     throw new NotFoundError();
   }
 
-  return {};
+  const mainRow = await dao.account.getMain(db, account.id);
+  if (mainRow == null) {
+    throw new UserVisibleError(
+        `Account does not have a main character configured.`);
+  }
+
+  return {
+    id: mainRow.character_id,
+    name: mainRow.character_name,
+  };
 }
