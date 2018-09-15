@@ -6,7 +6,7 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 let config = module.exports = {
   entry: ['./src/client/home.js'],
   output: {
-    path: path.resolve(__dirname, './static/dist'),
+    path: path.resolve(__dirname, './out/client'),
     publicPath: '/dist/',
     filename: 'build.js'
   },

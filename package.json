@@ -1,16 +1,17 @@
 {
   "name": "eve-roster",
-  "version": "1.1.0-rc.1",
+  "version": "1.0.0",
   "description": "EVE Roster",
   "author": "SOUND IT",
   "private": true,
   "scripts": {
-    "start": "node out/server.js",
-    "updatedb": "node out/bin/updatedb.js",
+    "start": "node out/server/server.js",
+    "updatedb": "node out/server/bin/updatedb.js",
     "build": "npm run build-server && webpack --progress --hide-modules",
     "build-server": "tsc",
     "watch-server": "tsc -w",
-    "test": "jest"
+    "test": "jest",
+    "clean": "rm -rf out/ && rm -rf static/dist/"
   },
   "engines": {
     "node": "10.4.1"

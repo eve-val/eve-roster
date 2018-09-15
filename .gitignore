@@ -10,7 +10,7 @@
 /node_modules/
 /npm-debug.log
 
-# Webpack-generated files
+# Webpack-generated files (deprecated -- moved to out/)
 /static/dist/
 
 # Config files
