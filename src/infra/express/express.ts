@@ -123,7 +123,7 @@ export function init(db: Tnex, onServing: (port: number) => void) {
   }, legacyLogger.webPanel());
 
   // Static files in static/
-  app.use(express.static(path.join(__dirname, '../static')));
+  app.use(express.static(path.join(__dirname, '../../../static')));
 
   // Start the server
   const port = parseInt(process.env.PORT || '8081');
