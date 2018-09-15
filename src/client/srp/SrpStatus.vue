@@ -24,39 +24,30 @@ triage options weren't initially provided, fetches them from the server.
       </option>>
     </select>
     <div v-else class="verdict-text">
-      <div v-if="srp.status == 'paid'" class="paid-cnt">
-        <router-link
-            :to="`/srp/payment/${srp.reimbursement}`"
+      <router-link
+            v-if="statusLink"
             class="row-link"
+            :to="statusLink"
             >
-          Paid
-        </router-link>
-        <div class="paid-by">
-          by
-          <router-link
-              :to="`/character/${srp.payingCharacter}`"
-              class="row-link"
-              >
-            {{ name(srp.payingCharacter) }}
-          </router-link>
-        </div>
-      </div>
-      <template v-else>
+          {{ getStatusLabel(srp) }}
+      </router-link>
+      <div v-else>
         {{ getStatusLabel(srp) }}
-        <div class="rendered-by" v-if="srp.fresh_paid == null">
-          by
-          <router-link
-	      v-if="srp.renderingCharacter != null"
-              :to="`/character/${srp.renderingCharacter}`"
-              class="row-link"
-              >
-            {{ name(srp.renderingCharacter) }}
-          </router-link>
-          <template v-else>
-            Triage Bot
-          </template>
-        </div>
-      </template>
+      </div>
+
+      <div class="rendered-by" v-if="renderingName">
+        by
+        <router-link
+            v-if="renderingLink"
+            class="row-link"
+            :to="renderingLink"
+            >
+          {{ renderingName }}
+        </router-link>
+        <template v-else>
+          {{ renderingName }}
+        </template>
+      </div>
     </div>
   </div>
 
@@ -226,6 +217,34 @@ export default Vue.extend({
     editable() {
       return this.hasEditPriv && this.status != 'paid';
     },
+
+    statusLink() {
+      if (this.srp.status == 'paid') {
+        return `/srp/payment/${this.srp.reimbursement}`;
+      } else {
+        return null;
+      }
+    },
+
+    renderingName() {
+      if (this.srp.renderingCharacter != null) {
+        return this.name(this.srp.renderingCharacter);
+      } else if (this.srp.status != 'pending') {
+        return 'TriageBot';
+      } else {
+        return null;
+      }
+    },
+
+    renderingLink() {
+      if (this.srp.status == 'paid') {
+        return `/character/${this.srp.payingCharacter}`;
+      } else if (this.srp.renderingCharacter != null) {
+        return `/character/${this.srp.renderingCharacter}`;
+      } else {
+        return null;
+      }
+    },
   },
 
   methods: Object.assign({
@@ -245,9 +264,9 @@ export default Vue.extend({
         this.srp.reason = reason;
         this.editing = false;
         this.srp.renderingCharacter = response.data.id;
-	addNames({
-	  [response.data.id]: response.data.name,
-	});
+        addNames({
+          [response.data.id]: response.data.name,
+        });
       })
       .catch(e => {
         this.saveStatus = 'error';
@@ -431,17 +450,14 @@ function isValidInputPayout(inputPayout) {
 }
 
 .verdict-text {
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
   color: #CDCDCD;
   padding-left: 8px;
 }
 
-.paid-cnt {
-  display: flex;
-  flex-direction: column;
-}
-
-.paid-by {
+.rendered-by {
   margin-top: 4px;
   color: #A7A29C;
   white-space: nowrap;
