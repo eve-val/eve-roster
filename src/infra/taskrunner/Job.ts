@@ -1,11 +1,8 @@
 import { EventEmitter } from 'events';
-
-import { Tnex } from '../../db/tnex';
 import { Logger } from '../logging/Logger';
+import { Task } from './Task';
 
 
-export type TaskExecutor =
-    (db: Tnex, job: JobLogger) => Promise<void>;
 export type JobResult = 'pending' | 'success' | 'partial' | 'failure';
 export type JobStatus = 'queued' | 'running' | 'finished';
 
@@ -14,8 +11,8 @@ export interface JobLogger extends Logger {
 }
 
 export interface Job extends EventEmitter {
+  readonly task: Task;
   readonly executionId: number;
-  readonly taskName: string;
   readonly channel: string | undefined;
   readonly silent: boolean;
   readonly status: JobStatus;

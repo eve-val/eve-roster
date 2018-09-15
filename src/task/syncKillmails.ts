@@ -12,6 +12,7 @@ import { autoTriageLosses } from '../domain/srp/triage/autoTriageLosses';
 import { pluck } from '../util/underscore';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 import { createPendingBattles } from '../domain/battle/createPendingBattles';
+import { Task } from '../infra/taskrunner/Task';
 
 
 /**
@@ -24,7 +25,15 @@ import { createPendingBattles } from '../domain/battle/createPendingBattles';
  *
  * Uses Zkillboard as a backend.
  */
-export async function syncKillmails(db: Tnex, job: JobLogger) {
+export const syncKillmails: Task = {
+  name: 'syncKillmails',
+  displayName: 'Sync corp killmails',
+  description: 'Used to track SRP',
+  timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  executor,
+};
+
+async function executor(db: Tnex, job: JobLogger) {
   const config =
       await dao.config.get(db, 'srpJurisdiction', 'killmailSyncRanges');
   const memberCorps = await dao.config.getMemberCorporations(db);

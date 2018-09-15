@@ -1,10 +1,12 @@
 import * as fs from 'fs';
 import * as tmp from 'tmp';
+import moment = require('moment');
 
 import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { acquireSde } from './updateSde/acquireSde';
 import { ingestSde } from './updateSde/ingestSde';
+import { Task } from '../infra/taskrunner/Task';
 
 
 /**
@@ -15,7 +17,15 @@ import { ingestSde } from './updateSde/ingestSde';
  * Instead of downloading the SDE directly from CCP, we use a streamlined
  * version provided by Fuzzworks.
  */
-export async function updateSde(db: Tnex, job: JobLogger) {
+export const updateSde: Task = {
+  name: 'updateSde',
+  displayName: 'Update SDE',
+  description: 'Installs latest version of EVE universe data.',
+  timeout: moment.duration(20, 'minutes').asMilliseconds(),
+  executor,
+};
+
+async function executor(db: Tnex, job: JobLogger) {
   let zipPath: string|null = null;
   let sqlPath: string|null = null;
 

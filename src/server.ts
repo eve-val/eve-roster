@@ -5,11 +5,10 @@ require('heapdump');
 
 import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
-import { Scheduler } from './infra/taskrunner/Scheduler';
 
 import * as express from './infra/express/express';
 import * as cron from './infra/taskrunner/cron';
-import * as tasks from './infra/taskrunner/tasks';
+import * as taskRunner from './infra/taskrunner/taskRunner';
 import * as sde from './eve/sde';
 import { buildLoggerFromFilename } from './infra/logging/buildLogger';
 
@@ -47,7 +46,7 @@ async function main() {
 
   await sde.loadStaticData(db, false);
 
-  tasks.init(new Scheduler(db));
+  taskRunner.init(db);
   cron.init(db);
   express.init(db, port => {
     logger.info(`Serving from port ${port}.`);

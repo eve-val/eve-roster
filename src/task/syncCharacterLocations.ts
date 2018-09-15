@@ -7,14 +7,23 @@ import swagger from '../data-source/esi/swagger';
 import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { CharacterLocation } from '../db/tables';
+import { Task } from '../infra/taskrunner/Task';
 
+
+export const syncCharacterLocations: Task = {
+  name: 'syncCharacterLocations',
+  displayName: 'Sync locations',
+  description: 'Updates all members\' locations.',
+  timeout:moment.duration(10, 'minutes').asMilliseconds(),
+  executor,
+};
 
 const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
 const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
 
 const CHARLOC_CACHE = new Map<number, CharacterLocation>();
 
-export async function syncCharacterLocations(db: Tnex, job: JobLogger) {
+async function executor(db: Tnex, job: JobLogger) {
   if (CHARLOC_CACHE.size == 0) {
     await fillLocationCache(db);
   }
