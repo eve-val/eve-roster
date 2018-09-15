@@ -22,7 +22,7 @@ import { endSession, getSession } from './session';
 
 const logger = buildLoggerFromFilename(__filename);
 const legacyLogger = require('../logging/legacyLogger')();
-const webpackConfig = require('../../../webpack.config.js');
+const webpackConfig = require('../../../../webpack.config.js');
 
 const FRONTEND_ROUTES = [
   '/',
@@ -123,7 +123,12 @@ export function init(db: Tnex, onServing: (port: number) => void) {
   }, legacyLogger.webPanel());
 
   // Static files in static/
-  app.use(express.static(path.join(__dirname, '../static')));
+  app.use(express.static(path.join(__dirname, '../../../../static')));
+
+  // Compiled front-end files from webpack
+  app.use(
+      webpackConfig.output.publicPath,
+      express.static(webpackConfig.output.path));
 
   // Start the server
   const port = parseInt(process.env.PORT || '8081');
