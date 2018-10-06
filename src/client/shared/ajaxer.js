@@ -151,6 +151,14 @@ export default {
     });
   },
 
+  getBattle(id, includeSrp) {
+    return axios.get(`/api/srp/battle/${id}`, {
+      params: {
+        includeSrp: includeSrp,
+      },
+    });
+  },
+
   getRecentSrpLosses(filter) {
     return axios.get('/api/srp/loss', {
       params: filter

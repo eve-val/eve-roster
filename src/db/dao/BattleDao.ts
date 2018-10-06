@@ -116,6 +116,9 @@ export default class BattleDao {
             'battle_data',
             );
 
+    if (filter.id != undefined) {
+      query = query.where('battle_id', '=', val(filter.id));
+    }
     if (filter.untriaged) {
       query = query
           .join(killmailBattle, 'kmb_battle', '=', 'battle_id')
@@ -144,6 +147,7 @@ export default class BattleDao {
 }
 
 export interface BattleFilter {
+  id?: number,
   orderBy?: { key: BattleColumn, order: ResultOrder }[],
   limit?: number,
   offset?: number,
