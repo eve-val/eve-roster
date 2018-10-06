@@ -10,7 +10,12 @@ May also contain triage UI if triageMode is enabled.
 <div class="_battle-row">
 
   <div class="header">
-    <div class="start-time">{{ battle.startLabel }}</div>
+    <router-link
+        class="start-time"
+        :to="`/srp/battle/${battle.id}`"
+        >
+      {{ battle.startLabel }}
+    </router-link>
     <div class="locations">{{ battle.locations.map(name).join(', ') }}</div>
     <div class="total-losses">{{ formatIskValue(battleLosses) }}</div>
   </div>
@@ -163,6 +168,11 @@ export default Vue.extend({
 
 .start-time {
   color: #CDCDCD;
+  text-decoration: none;
+}
+
+.start-time:hover {
+  text-decoration: underline;
 }
 
 .locations {

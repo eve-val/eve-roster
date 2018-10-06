@@ -18,6 +18,7 @@ import CombatHistory from './srp/CombatHistory.vue';
 import PaymentHistory from './srp/PaymentHistory.vue';
 import PaymentTriage from './srp/PaymentTriage.vue';
 import PaymentDetail from './srp/PaymentDetail.vue';
+import BattleDetail from './srp/battles/BattleDetail.vue';
 
 
 // Anything added here should also be in server.js:FRONTEND_ROUTES
@@ -69,6 +70,11 @@ const routes = [
     path: '/srp/payment/:id',
     component: PaymentDetail,
     props: (route) => ({ srpId: parseInt(route.params.id) }),
+  },
+  {
+    path: '/srp/battle/:id',
+    component: BattleDetail,
+    props: (route) => ({ battleId: parseInt(route.params.id) }),
   },
 ];
 if (process.env.NODE_ENV == 'development') {
