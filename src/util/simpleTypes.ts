@@ -32,3 +32,12 @@ export type KeysOfType<T, PropType> = {
 
 /** Given a type T, filters out all properties whose type is not PropType. */
 export type FilterProps<T, PropType> = Pick<T, KeysOfType<T, PropType>>;
+
+/**
+ * Type equivalent of Object.assign. Combines S and D into a single type, but
+ * any properties with the same name are wholly replaced by D's definitions.
+ */
+export type Overwrite<S, D> = Pick<S, Exclude<keyof S, keyof D>> & D;
+
+/** Removes all properties of S whose keys are assignable to D. */
+export type Omit<S, D> = Pick<S, Exclude<keyof S, D>>;

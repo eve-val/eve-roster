@@ -1,14 +1,13 @@
-import { Readable } from 'stream';
-import { Select } from '../../db/tnex/Select';
+import { Readable } from './Readable';
 
 /**
- * Given an asynchronous "iterator" that returns an array of objects,
+ * Given an asynchronous 'iterator' that returns an array of objects,
  * repeatedly "reads" from the iterator until the iterator returns an empty
  * array.
  *
  * Primarily useful for iterating over rows in a database.
  */
-export class BatchedObjectReader<S> extends Readable {
+export class BatchedObjectReadable<S> extends Readable<S> {
 
   private readonly _iterator: StreamIterator<S>;
 
