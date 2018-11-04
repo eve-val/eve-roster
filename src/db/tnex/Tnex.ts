@@ -181,7 +181,7 @@ export class Tnex {
     for (let row of rows) {
       for (let col of columns) {
         const val = row[col.prefixedName];
-        if (val == undefined) {
+        if (val === undefined) {
           throw new Error(`Column ${col.prefixedName} is undefined in row`
               + ` ${inspect(row)}.`);
         }
