@@ -32,7 +32,7 @@ export async function serialize<T, U>(
 }
 
 export function delay(ms: number) {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     setTimeout(resolve, ms);
   });
 }

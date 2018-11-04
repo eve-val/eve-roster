@@ -5,7 +5,7 @@ import { Tnex, val, DEFAULT_NUM } from '../../db/tnex';
 import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
 
 import { JobLogger } from '../../infra/taskrunner/Job';
-import { notNil } from '../../util/assert';
+import { checkNotNil } from '../../util/assert';
 import { normalizeSearchStr } from '../../eve/sde/normalizeSearchStr';
 import { computeMd5 } from './computeMd5';
 import { fixupImport } from './fixupImport';
@@ -77,7 +77,7 @@ async function importItems(
 
   const rows = await queryAll(sde, SELECT_INV_TYPES, [categoryId]);
   for (let row of rows) {
-    const typeId = notNil(row.typeID as number);
+    const typeId = checkNotNil(row.typeID as number);
 
     if (!row.published
         // The capsules are not marked as published for...some reason
