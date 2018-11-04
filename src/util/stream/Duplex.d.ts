@@ -2,7 +2,7 @@ import { Writable, WritableOptions } from './Writable';
 import { WriteStream } from './Writable';
 import { ReadStream, Readable, ReadableOptions } from './Readable';
 import { BasicCallback } from './core';
-import { Delete } from '../simpleTypes';
+import { Omit } from '../simpleTypes';
 
 export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
 export class Duplex<In, Out> {
