@@ -45,6 +45,8 @@ export async function createPendingBattles(db: Tnex, logger: Logger) {
     const writer = new BattleWriter(db);
 
     await pipelinePr(reader, creator, writer);
+
+    logger.info(`Created ${writer.getNewBattleCount()} new battles.`);
   });
 }
 

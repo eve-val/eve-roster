@@ -11,12 +11,17 @@ import { BasicCallback } from '../../util/stream/core';
  */
 export class BattleWriter extends Writable<BattleResult> {
   private readonly _db: Tnex;
+  private _newBattleCount = 0;
 
   constructor(db: Tnex) {
     super({
       objectMode: true,
     });
     this._db = db;
+  }
+
+  public getNewBattleCount() {
+    return this._newBattleCount;
   }
 
   _write(chunk: BattleResult, encoding: string, callback: BasicCallback) {
@@ -58,6 +63,7 @@ export class BattleWriter extends Writable<BattleResult> {
       }
       await dao.battle.setAssociatedKillmails(
           this._db, battleId, data.killmails);
+      this._newBattleCount++;
     }
     callback();
   }

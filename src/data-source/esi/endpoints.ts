@@ -1,4 +1,5 @@
-import { FetchMethod, Private } from "./EsiEndpoint";
+import { FetchMethod, Private, Public } from "./EsiEndpoint";
+import { EsiKillmail } from "./EsiKillmail";
 
 
 /**
@@ -103,4 +104,32 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
     location_id: number,
     ship_type_id: number,
   }>,
+};
+
+export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
+  method: FetchMethod.GET,
+  path: '/v1/corporations/${corporationId}/killmails/recent/',
+  pathBindings: {} as {
+    corporationId: number,
+  },
+  params: {} as {
+    page: number,
+  },
+  access: Private.ACCESS,
+  response: [] as Array<{
+    killmail_hash: string,
+    killmail_id: number,
+  }>,
+};
+
+export const ESI_KILLMAILS_$killmailId_$killmailHash = {
+  method: FetchMethod.GET,
+  path: '/v1/killmails/${killmailId}/${killmailHash}/',
+  pathBindings: {} as {
+    killmailId: number,
+    killmailHash: string,
+  },
+  params: null,
+  access: Public.ACCESS,
+  response: {} as EsiKillmail,
 };

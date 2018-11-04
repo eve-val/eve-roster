@@ -19,11 +19,6 @@ export type PrivilegeName =
     | 'srp'
     ;
 
-export enum KillmailType {
-  KILL = 'kill',
-  LOSS = 'loss',
-}
-
 export enum HullCategory {
   CAPSULE = 'capsule',
   SHIP = 'ship',
