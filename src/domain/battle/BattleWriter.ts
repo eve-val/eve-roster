@@ -1,14 +1,15 @@
-import { Writable } from 'stream';
 import { BattleResult } from './BattleCreator';
 import { Tnex, DEFAULT_NUM } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { BattleData } from './BattleData';
+import { Writable } from '../../util/stream/Writable';
+import { BasicCallback } from '../../util/stream/core';
 
 
 /**
  * Writes the output of BattleCreator to the database.
  */
-export class BattleWriter extends Writable {
+export class BattleWriter extends Writable<BattleResult> {
   private readonly _db: Tnex;
 
   constructor(db: Tnex) {
@@ -18,8 +19,8 @@ export class BattleWriter extends Writable {
     this._db = db;
   }
 
-  _write(chunk: any, encoding: string, callback: (err?: Error) => void) {
-    this._writeBattle(chunk as BattleResult, callback)
+  _write(chunk: BattleResult, encoding: string, callback: BasicCallback) {
+    this._writeBattle(chunk, callback)
     .catch(err => {
       this.emit('error', err);
     });

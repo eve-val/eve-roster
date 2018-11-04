@@ -1,9 +1,7 @@
-import moment = require('moment');
-
-import { Transform, TransformCallback } from 'stream';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
 import { Battle, Killmail } from '../../db/tables';
 import { Participant } from './BattleData';
+import { Transform, TransformCallback } from '../../util/stream/Transform';
 
 
 /**
@@ -13,7 +11,7 @@ import { Participant } from './BattleData';
  * Battles are essentially just clusters of related killmails.
  *
  */
-export class BattleCreator extends Transform {
+export class BattleCreator extends Transform<Killmail, BattleResult> {
   private readonly _battles = new Set<InternalBattle>();
   private readonly _assocWindow: number;
 
@@ -28,7 +26,11 @@ export class BattleCreator extends Transform {
     }
   }
 
-  public _transform(chunk: any, encoding: string, callback: TransformCallback) {
+  public _transform(
+      chunk: any,
+      encoding: string,
+      callback: TransformCallback<BattleResult>,
+  ) {
     try {
       this._transformChunk(chunk);
       callback();
@@ -66,7 +68,7 @@ export class BattleCreator extends Transform {
     }
   }
 
-  public _flush(callback: TransformCallback) {
+  public _flush(callback: TransformCallback<BattleResult>) {
     try {
       this._flushRemainingBattles();
       callback();

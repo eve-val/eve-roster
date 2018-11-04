@@ -2,13 +2,12 @@ import moment = require('moment');
 
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
-import { BatchedObjectReader } from './BatchedObjectReader';
+import { BatchedObjectReadable } from '../../util/stream/BatchedObjectReadable';
 import { BattleCreator } from './BattleCreator';
 import { BattleWriter } from './BattleWriter';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
 import { battle } from '../../db/tables';
 import { Logger } from '../../infra/logging/Logger';
+import { pipelinePr } from '../../util/stream/pipeline';
 
 
 /**
@@ -41,13 +40,12 @@ export async function createPendingBattles(db: Tnex, logger: Logger) {
             row.km_timestamp + moment.duration(1, 'hour').asMilliseconds());
 
     const iterator = dao.battle.getKillmailsWithoutBattlesIterator(db, 300);
-    const reader = new BatchedObjectReader(iterator);
+    const reader = new BatchedObjectReadable(iterator);
     const creator = new BattleCreator(initialBattles, WINDOW);
     const writer = new BattleWriter(db);
 
-    await pipelineAsync(reader, creator, writer);
+    await pipelinePr(reader, creator, writer);
   });
 }
 
 const WINDOW = moment.duration(20, 'minutes').asMilliseconds();
-const pipelineAsync = promisify(pipeline);
