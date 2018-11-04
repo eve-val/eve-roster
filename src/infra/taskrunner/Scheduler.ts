@@ -2,7 +2,7 @@ import { inspect } from 'util';
 
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
-import { notNil } from '../../util/assert';
+import { checkNotNil } from '../../util/assert';
 import { findWhere, pluck } from '../../util/underscore';
 
 import { Job, JobResult } from './Job';
@@ -136,9 +136,9 @@ export class Scheduler {
       }
 
       if (!job.timedOut) {
-        clearTimeout(notNil(job.timeoutId));
+        clearTimeout(checkNotNil(job.timeoutId));
       }
-      return dao.cron.finishJob(this._db, notNil(job.logId), jobResult);
+      return dao.cron.finishJob(this._db, checkNotNil(job.logId), jobResult);
     })
     .catch(e => {
       logger.error('DB failure when trying to log cron job failure :(');

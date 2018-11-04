@@ -5,7 +5,7 @@ import { Comparison, Link, Nullable, StringKeyOf } from './core';
 import { Scoper } from './Scoper';
 import { Query } from './Query';
 import { RenamedJoin } from './RenamedJoin';
-import { assertHasValue } from '../../util/assert';
+import { checkNotNil } from '../../util/assert';
 
 interface ColumnSelect {
   column: string,
@@ -135,7 +135,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     let requiredPrefix: string | undefined;
     if (table instanceof Select) {
       joinTarget = this._processSubJoin(table);
-      requiredPrefix = assertHasValue(table._subqueryTableName);
+      requiredPrefix = checkNotNil(table._subqueryTableName);
       this._scoper.registerSyntheticPrefix(requiredPrefix);
     } else if (table instanceof RenamedJoin) {
       joinTarget = this._processRenamedJoin(table);
@@ -188,7 +188,7 @@ export class Select<J extends object /* joined */, S /* selected */>
 
     if (table instanceof Select) {
       joinTarget = this._processSubJoin(table);
-      requiredPrefix = assertHasValue(table._subqueryTableName);
+      requiredPrefix = checkNotNil(table._subqueryTableName);
       this._scoper.registerSyntheticPrefix(requiredPrefix);
     } else if (table instanceof RenamedJoin) {
       joinTarget = this._processRenamedJoin(table);
