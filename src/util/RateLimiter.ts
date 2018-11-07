@@ -13,6 +13,10 @@ export class RateLimiter {
   private _lastCheckout: number = 0;
 
   constructor(minInterval: number) {
+    if (minInterval <= 0) {
+      throw new Error(`Invalid minInternal ${minInterval}, must be > 0`);
+    }
+
     this._minInterval = minInterval;
   }
 

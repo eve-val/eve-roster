@@ -30,9 +30,7 @@ export default class KillmailDao {
         .orderBy('km_timestamp', 'asc')
         .orderBy('km_id', 'asc')
         .limit(1)
-        .columns(
-            'km_timestamp'
-            )
+        .columns('km_timestamp')
         .fetchFirst();
   }
 
@@ -69,9 +67,9 @@ export default class KillmailDao {
   async upsertKillmails(
       db: Tnex,
       rows: Killmail[],
-      updateStragegy?: UpdateStrategy<Partial<Killmail>>,
+      updateStrategy?: UpdateStrategy<Partial<Killmail>>,
   ) {
-    return db.upsertAll(killmail, rows, 'km_id', updateStragegy);
+    return db.upsertAll(killmail, rows, 'km_id', updateStrategy);
   }
 
   async updateKillmails(

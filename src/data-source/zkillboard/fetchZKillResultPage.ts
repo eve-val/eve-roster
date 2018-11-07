@@ -7,8 +7,8 @@ import { RateLimiter } from '../../util/RateLimiter';
 /**
  * Fetches a specific page of a specific ZKill URL.
  *
- * This method enforces a global rate-limit of 500ms. Otherwise ZKill will start
- * rejecting requests.
+ * This method enforces a global rate-limit so that ZKill won't reject requests
+ * (see PAGE_FETCH_DELAY_MS). Requests will be queued until their turn comes.
  */
 export async function fetchZKillResultPage(url: string, page: number) {
   await _rateLimiter.ready();
@@ -45,5 +45,5 @@ type ResultResponse = ZKillDescriptor[] | ErrorResponse;
 interface ErrorResponse { error: string };
 
 const BASE_ZKILL_API_URL = 'https://zkillboard.com/api/';
-const PAGE_FETCH_DELAY = 500;
-const _rateLimiter = new RateLimiter(PAGE_FETCH_DELAY);
+const PAGE_FETCH_DELAY_MS = 500;
+const _rateLimiter = new RateLimiter(PAGE_FETCH_DELAY_MS);

@@ -117,7 +117,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
         }
       }
       if (i == this._queue.end()) {
-        throw new Error(`You done fucked up this algorithm`);
+        throw new Error(`Reordering comparison algorithm has a bug in it.`);
       }
     } else {
       this._outOfOrderCount = 0;

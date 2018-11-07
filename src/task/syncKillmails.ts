@@ -6,8 +6,8 @@ import { JobLogger } from '../infra/taskrunner/Job';
 import { MemberCorporation } from '../db/tables';
 import { createPendingBattles } from '../domain/battle/createPendingBattles';
 import { Task } from '../infra/taskrunner/Task';
-import { syncKillmailsForCorpWithinRange } from './syncKillmails/syncKillmailsForCorpWithinRange';
 import { processNewKillmails } from './syncKillmails/process/processNewKillmails';
+import { fetchKillmails } from './syncKillmails/fetch/fetchKillmails';
 
 
 /**
@@ -85,7 +85,7 @@ async function syncKillmailsForCorp(
   if (syncedRange == undefined
       || syncedRange.start > jurisdiction.start) {
     job.info(`Performing pre-range fill...`);
-    await syncKillmailsForCorpWithinRange(
+    await fetchKillmails(
         db, job, corpId, jurisdiction.start, syncedRange && syncedRange.start);
   }
   if (syncedRange != undefined &&
@@ -93,7 +93,7 @@ async function syncKillmailsForCorp(
     // Fetch a day's worth of previous killmails since it may take some time
     // for all mails to get to zkill (CCP asplode, etc.)
     const start = moment(syncedRange.end).subtract(1, 'day').valueOf();
-    await syncKillmailsForCorpWithinRange(
+    await fetchKillmails(
         db, job, corpId, start, jurisdiction.end);
   }
 

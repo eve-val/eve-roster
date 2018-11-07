@@ -29,14 +29,31 @@ exports.up = async function(trx) {
 };
 
 exports.down = async function(trx) {
-  // throw new Error(`Can't bring the dead back to life.`)
+  await trx.schema.alterTable('killmail', table => {
+    table.string('type').nullable();
+    table.integer('sourceCorporation').nullable();
+  });
+
+  await trx.raw(
+      `UPDATE "killmail" as km
+        SET
+          "type" =
+            (CASE
+              WHEN "mc"."corporationId" IS NOT NULL THEN 'loss'
+              ELSE 'kill'
+              END),
+          "sourceCorporation" = -1
+        FROM "killmail" as "km2"
+          LEFT JOIN "memberCorporation" as "mc"
+            ON "mc"."corporationId" = "km2"."victimCorp"
+        WHERE "km2"."id" = "km"."id"`);
 
   await trx.schema.alterTable('killmail', table => {
-    table.dropIndex('sourceCorporation');
     table.dropColumn('victimCorp');
     table.dropColumn('processed');
 
-    // Can't bring back the deleted columns.
+    table.string('type').alter().notNullable();
+    table.integer('sourceCorporation').alter().notNullable();
   });
 
   await trx.schema.alterTable('srpVerdict', table => {

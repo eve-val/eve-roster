@@ -4,7 +4,6 @@ import { JobLogger } from '../../../infra/taskrunner/Job';
 import { ZKillmailStream } from '../../../data-source/zkillboard/ZKillmailStream';
 import { pipelinePr } from '../../../util/stream/pipeline';
 import { formatZKillTimeArgument } from '../../../data-source/zkillboard/formatZKillTimeArgument';
-import { dao } from '../../../db/dao';
 import { EsiKillmailFetcher } from './EsiKillmailFetcher';
 import { KillmailOrderer } from './KillmailOrderer';
 import { KillmailWriter } from './KillmailWriter';
@@ -16,6 +15,22 @@ import { KillmailWriter } from './KillmailWriter';
  * Existing killmails within the range will not be touched.
  */
 export async function fetchKillmails(
+    db: Tnex,
+    job: JobLogger,
+    corpId: number,
+    start: number,
+    end: number | undefined,
+) {
+  job.setProgress(undefined, `Syncing killmails for corp ${corpId}...`);
+  job.info(`  start=${start} (${moment.utc(start).toString()})`);
+  job.info(`  end=${end} (${end ? moment.utc(end).toString() : ''})`);
+
+  await db.asyncTransaction(async db => {
+    await fetchKillmailsInternal(db, job, corpId, start, end);
+  });
+}
+
+async function fetchKillmailsInternal(
     db: Tnex,
     job: JobLogger,
     corpId: number,
