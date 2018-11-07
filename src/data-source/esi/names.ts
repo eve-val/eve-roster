@@ -33,7 +33,7 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   let i = 0;
   while (i < unresolvedIds.length) {
     let end = Math.min(unresolvedIds.length, i + 1000);
-    let entries: AsyncReturnType<typeof swagger.names>;
+    let entries: AsyncReturnType<typeof swagger.names> | null = null;
     try {
       entries = await swagger.names(unresolvedIds.slice(i, end));
     } catch (e) {
@@ -42,13 +42,14 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
             + unresolvedIds.slice(i, end));
         logger.error(printError(e));
       }
-      throw e;
     }
     i = end;
 
-    for (let entry of entries) {
-      NAME_CACHE.set(entry.id, entry.name);
-      idMap[entry.id] = entry.name;
+    if (entries) {
+      for (let entry of entries) {
+        NAME_CACHE.set(entry.id, entry.name);
+        idMap[entry.id] = entry.name;
+      }
     }
   }
 
