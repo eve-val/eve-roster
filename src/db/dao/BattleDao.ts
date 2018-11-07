@@ -2,6 +2,7 @@ import { Dao } from '../dao';
 import { Tnex, val, ResultOrder } from '../../db/tnex';
 import { killmail, killmailBattle, battle, Battle, srpVerdict } from '../tables';
 import { SrpVerdictStatus } from './enums';
+import { makeKillmailIterator } from '../shared/makeKillmailIterator';
 
 export default class BattleDao {
   constructor(
@@ -24,44 +25,13 @@ export default class BattleDao {
   }
 
   getKillmailsWithoutBattlesIterator(db: Tnex, batchSize: number) {
-    return {
-      _prevTimestamp: null as number | null,
-      _previousMails: new Set<number>(),
-
-      async next() {
-        let query = db
-            .select(killmail)
+    return makeKillmailIterator(
+        db,
+        batchSize,
+        query => query
             .leftJoin(killmailBattle, 'kmb_killmail', '=', 'km_id')
-            .whereNull('kmb_killmail')
-            .orderBy('km_timestamp', 'asc')
-            .orderBy('km_id', 'asc')
-            .columns(
-                'km_timestamp',
-                'km_data',
-                )
-            .limit(batchSize)
-
-        if (this._prevTimestamp != null) {
-          query = query.where('km_timestamp', '>=', val(this._prevTimestamp));
-        }
-        let rows = await query.run();
-        rows = rows.filter(
-            row => !this._previousMails.has(row.km_data.killmail_id));
-
-        if (rows.length > 0) {
-          this._prevTimestamp = rows[rows.length - 1].km_timestamp;
-          this._previousMails.clear();
-          for (let i = rows.length - 1; i >= 0; i--) {
-            let row = rows[i];
-            if (row.km_timestamp != this._prevTimestamp) {
-              break;
-            }
-            this._previousMails.add(row.km_data.killmail_id);
-          }
-        }
-        return rows;
-      }
-    };
+            .whereNull('kmb_killmail'),
+        );
   }
 
   createBattle(db: Tnex, row: Battle) {

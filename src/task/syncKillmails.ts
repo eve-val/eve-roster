@@ -1,18 +1,13 @@
 import moment = require('moment');
 
-import { Tnex } from '../db/tnex';
+import { Tnex, val } from '../db/tnex';
 import { dao } from '../db/dao';
 import { JobLogger } from '../infra/taskrunner/Job';
-import { formatZKillTimeArgument } from '../data-source/zkillboard/formatZKillTimeArgument';
-import { fetchZKillmails } from '../data-source/zkillboard/fetchZKillmails';
-import { killmailsToRows } from './syncKillmails/killmailsToRows';
 import { MemberCorporation } from '../db/tables';
-import { inspect } from 'util';
-import { autoTriageLosses } from '../domain/srp/triage/autoTriageLosses';
-import { pluck } from '../util/underscore';
-import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 import { createPendingBattles } from '../domain/battle/createPendingBattles';
 import { Task } from '../infra/taskrunner/Task';
+import { processNewKillmails } from './syncKillmails/process/processNewKillmails';
+import { fetchKillmails } from './syncKillmails/fetch/fetchKillmails';
 
 
 /**
@@ -47,8 +42,10 @@ async function executor(db: Tnex, job: JobLogger) {
       db, job, config.srpJurisdiction, memberCorps, syncedRanges);
 
   await dao.config.set(db, { 'killmailSyncRanges':  syncedRanges });
-  await createSrpEntriesForNewLosses(db);
-  await createPendingBattles(db, job);
+  await db.asyncTransaction(async db => {
+    await processNewKillmails(db, job);
+    await createPendingBattles(db, job);
+  });
 }
 
 async function syncKillmailsForAllCorps(
@@ -61,7 +58,7 @@ async function syncKillmailsForAllCorps(
   for (let memberCorp of memberCorps) {
     try {
       const corpId = memberCorp.memberCorporation_corporationId;
-      syncedRanges[corpId] = await syncLossesForCorp(
+      syncedRanges[corpId] = await syncKillmailsForCorp(
           db,
           job,
           memberCorp.memberCorporation_corporationId,
@@ -70,15 +67,14 @@ async function syncKillmailsForAllCorps(
           );
     } catch (e) {
       job.error(`Error while syncing kills for corp `
-          + `${memberCorp.memberCorporation_corporationId}`);
-      job.error(inspect(e));
+          + `${memberCorp.memberCorporation_corporationId}`, e);
     }
   }
 
   return syncedRanges;
 }
 
-async function syncLossesForCorp(
+async function syncKillmailsForCorp(
     db: Tnex,
     job: JobLogger,
     corpId: number,
@@ -89,7 +85,7 @@ async function syncLossesForCorp(
   if (syncedRange == undefined
       || syncedRange.start > jurisdiction.start) {
     job.info(`Performing pre-range fill...`);
-    await syncLossesWithinRange(
+    await fetchKillmails(
         db, job, corpId, jurisdiction.start, syncedRange && syncedRange.start);
   }
   if (syncedRange != undefined &&
@@ -97,64 +93,9 @@ async function syncLossesForCorp(
     // Fetch a day's worth of previous killmails since it may take some time
     // for all mails to get to zkill (CCP asplode, etc.)
     const start = moment(syncedRange.end).subtract(1, 'day').valueOf();
-    await syncLossesWithinRange(
+    await fetchKillmails(
         db, job, corpId, start, jurisdiction.end);
   }
 
   return { start: jurisdiction.start, end: Date.now() };
-}
-
-async function syncLossesWithinRange(
-    db: Tnex,
-    job: JobLogger,
-    corpId: number,
-    start: number,
-    end: number | undefined,
-) {
-  const url =
-      getZkillboardQueryUrl(corpId, start - CAPSULE_SHIP_ASSOCIATION_WINDOW);
-
-  job.info(`Sync losses for ${corpId}`);
-  job.info(`  Query: ${url}`);
-
-  const mails = await fetchZKillmails(url, {
-    maxTimestamp:
-        end != undefined ? end + CAPSULE_SHIP_ASSOCIATION_WINDOW : end,
-  });
-  job.info(`  ${mails.length} hits`);
-
-  let newRowCount = 0;
-
-  if (mails.length > 0) {
-    mails.sort(sortKillmailsByTimestamp);
-    const rows =
-        killmailsToRows(mails, corpId, CAPSULE_SHIP_ASSOCIATION_WINDOW);
-    newRowCount = await dao.killmail.upsertKillmails(db, rows);
-  }
-
-  job.info(`  Added ${newRowCount} new killmails`);
-}
-
-/**
- * Max time between ship loss and capsule loss on the same charactr for us to
- * consider them to be "related".
- */
-const CAPSULE_SHIP_ASSOCIATION_WINDOW
-    = moment.duration(20, 'minutes').asMilliseconds();
-
-async function createSrpEntriesForNewLosses(db: Tnex) {
-  const rows = await dao.srp.listKillmailsMissingSrpEntries(db);
-  await dao.srp.createSrpEntries(db, pluck(rows, 'km_id'));
-  await autoTriageLosses(db, rows);
-}
-
-function getZkillboardQueryUrl(sourceCorporation: number, startTime: number) {
-  const sinceArg = formatZKillTimeArgument(moment(startTime));
-  return `corporationID/${sourceCorporation}/startTime/${sinceArg}`;
-}
-
-function sortKillmailsByTimestamp(a: ZKillmail, b: ZKillmail) {
-  const ta = moment.utc(a.killmail_time).valueOf();
-  const tb = moment.utc(b.killmail_time).valueOf();
-  return ta - tb;
 }

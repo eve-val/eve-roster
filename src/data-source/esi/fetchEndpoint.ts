@@ -115,7 +115,7 @@ async function _fetchEndpoint<T extends BaseEsiEndpoint>(
         errKind = EsiErrorKind.NOT_FOUND_ERROR;
       } else if (response.status >= 400 && response.status < 500) {
         errKind = EsiErrorKind.CLIENT_ERROR;
-      } else if (response.status >=500 && response.status < 600) {
+      } else if (response.status >= 500 && response.status < 600) {
         errKind = EsiErrorKind.INTERNAL_SERVER_ERROR;
       }
     } else if (err.request) {

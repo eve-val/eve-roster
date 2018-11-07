@@ -120,7 +120,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     if (progress != undefined) {
       progress = Math.min(1, Math.max(0, progress));
     }
-    if (label != this._progressLabel) {
+    if (label != this._progressLabel && label != undefined) {
       logger.info(`[${this.task.name}] ${label}`);
     }
     if (progress != this._progress || label != this._progressLabel) {

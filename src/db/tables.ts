@@ -1,5 +1,5 @@
 import { TnexBuilder, nullable, integer, varchar, bigInt, boolean, text, jsonb, strEnum, float4, decimal } from '../db/tnex';
-import { PrivilegeName, KillmailType, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './dao/enums';
+import { PrivilegeName, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './dao/enums';
 import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
 import { BattleData } from '../domain/battle/BattleData';
 
@@ -158,7 +158,9 @@ export class Killmail {
   km_id = integer();
   km_timestamp = bigInt();
   km_character = nullable(integer());
-  km_type = strEnum<KillmailType>();
+
+  km_victimCorp = nullable(integer());
+
   km_hullCategory = strEnum<HullCategory>();
 
   /**
@@ -167,11 +169,14 @@ export class Killmail {
    */
   km_relatedLoss = nullable(integer());
 
-  /** The corporation whose killboard this loss was fetched from. */
-  km_sourceCorporation = integer();
-
   /** The full JSON blob received from ZKillboard. */
   km_data = jsonb<ZKillmail>();
+
+  /**
+   * Whether the killmail has been processed: had its related loss computed,
+   * SRP entry created, etc.
+   */
+  km_processed = boolean();
 }
 export const killmail = tables.register(new Killmail());
 

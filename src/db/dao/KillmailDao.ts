@@ -1,6 +1,8 @@
 import { Dao } from "../dao";
-import { Tnex, val } from "../../db/tnex";
-import { killmail, Killmail } from "../tables";
+import { Tnex, val, UpdateStrategy } from "../../db/tnex";
+import { killmail, Killmail, srpVerdict, account, memberCorporation } from "../tables";
+import { makeKillmailIterator } from "../shared/makeKillmailIterator";
+import { StreamIterator } from "../../util/stream/BatchedObjectReadable";
 
 export default class KillmailDao {
   constructor(
@@ -15,15 +17,71 @@ export default class KillmailDao {
         .columns(
             'km_id',
             'km_timestamp',
-            'km_type',
             'km_character',
-            'km_sourceCorporation',
             'km_data',
             )
         .fetchFirst();
   }
 
-  async upsertKillmails(db: Tnex, rows: Killmail[]) {
-    return db.upsertAll(killmail, rows, 'km_id');
+  getEarliestUnprocessedKillmail(db: Tnex) {
+    return db
+        .select(killmail)
+        .where('km_processed', '=', val(false))
+        .orderBy('km_timestamp', 'asc')
+        .orderBy('km_id', 'asc')
+        .limit(1)
+        .columns('km_timestamp')
+        .fetchFirst();
+  }
+
+  getUnprocessedKillmailIterator(
+      db: Tnex,
+      batchSize: number,
+      preWindowStart: number,
+      preWindowEnd: number,
+  ): StreamIterator<UnprocessedKillmailRow> {
+    return makeKillmailIterator(
+        db,
+        batchSize,
+        query => query
+            .leftJoin(srpVerdict, 'srpv_killmail', '=', 'km_id')
+            .leftJoin(account, 'account_mainCharacter', '=', 'km_character')
+            .leftJoin(memberCorporation,
+                'memberCorporation_corporationId', '=', 'km_victimCorp')
+            .and(clause => {
+              clause
+                  .where('km_processed', '=', val(false))
+                  .or(clause => {
+                    clause
+                        .where('km_timestamp', '>=', val(preWindowStart))
+                        .where('km_timestamp', '<=', val(preWindowEnd))
+                  });
+            })
+            .columns(
+                'account_mainCharacter',
+                'memberCorporation_corporationId',
+                ),
+        );
+  }
+
+  async upsertKillmails(
+      db: Tnex,
+      rows: Killmail[],
+      updateStrategy?: UpdateStrategy<Partial<Killmail>>,
+  ) {
+    return db.upsertAll(killmail, rows, 'km_id', updateStrategy);
+  }
+
+  async updateKillmails(
+      db: Tnex,
+      rows: Partial<Killmail> & Pick<Killmail, 'km_id'>[],
+      ) {
+    return db
+        .updateAll(killmail, 'km_id', rows);
   }
 }
+
+export type UnprocessedKillmailRow =
+    Killmail
+    & { account_mainCharacter: number | null }
+    & { memberCorporation_corporationId: number | null };

@@ -1,7 +1,7 @@
 import { Dao } from '../dao';
 import { Tnex, DEFAULT_NUM } from '../../db/tnex';
-import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account, killmailBattle, KillmailBattle } from '../tables';
-import { SrpVerdictStatus, SrpVerdictReason, KillmailType } from './enums';
+import { killmail, Killmail, character, srpReimbursement, srpVerdict, ownership, SrpReimbursement, SrpVerdict, account, Account, killmailBattle, KillmailBattle, memberCorporation } from '../tables';
+import { SrpVerdictStatus, SrpVerdictReason } from './enums';
 import { val, Comparison } from '../tnex/core';
 import { Nullable } from '../../util/simpleTypes';
 import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
@@ -46,30 +46,6 @@ export default class SrpDao {
         srpv_renderingAccount: null,
       };
     }));
-  }
-
-  async listKillmailsMissingSrpEntries(db: Tnex) {
-    return db
-        .select(killmail)
-        .leftJoin(srpVerdict, 'srpv_killmail', '=', 'km_id')
-        .leftJoin(
-            db.alias(killmail, 'related')
-                .using('km_id', 'related_id')
-                .using('km_data', 'related_data'),
-            'related_id', '=', 'km_relatedLoss')
-        .leftJoin(ownership, 'ownership_character', '=', 'km_character')
-        .leftJoin(account, 'account_id', '=', 'ownership_account')
-        .whereNull('srpv_killmail')
-        .where('km_type', '=', val(KillmailType.LOSS))
-        .orderBy('km_id', 'asc')
-        .columns(
-            'km_id',
-            'km_timestamp',
-            'km_data',
-            'related_data',
-            'account_mainCharacter',
-            )
-        .run();
   }
 
   async listSrps(db: Tnex, filter: SrpLossFilter): Promise<SrpLossRow[]> {
