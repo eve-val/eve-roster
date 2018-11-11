@@ -7,12 +7,11 @@ import { dao } from '../db/dao';
 import { Tnex, UpdatePolicy } from '../db/tnex';
 import { isAnyEsiError } from '../data-source/esi/error';
 
-import swagger from '../data-source/esi/swagger';
 import { UserVisibleError } from '../error/UserVisibleError';
 import { enumQuery, stringQuery } from '../util/express/paramVerifier';
 import { BadRequestError } from '../error/BadRequestError';
 import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
-import { ESI_CHARACTERS_$characterId_ROLES } from '../data-source/esi/endpoints';
+import { ESI_CHARACTERS_$characterId_ROLES, ESI_CHARACTERS_$characterId } from '../data-source/esi/endpoints';
 import { UNKNOWN_CORPORATION_ID } from '../db/constants';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 import { getSession } from '../infra/express/session';
@@ -95,11 +94,15 @@ async function fetchCharInfo(authCode: string) {
 
   try {
     const [esiCharInfo, esiCharRoles] = await Promise.all([
-      swagger.characters(charInfo.id).info(),
+      fetchEndpoint(
+          ESI_CHARACTERS_$characterId,
+          { characterId: charInfo.id },
+          ),
       fetchEndpoint(
           ESI_CHARACTERS_$characterId_ROLES,
           { characterId: charInfo.id },
-          tokens.access_token),
+          tokens.access_token,
+          ),
     ]);
     charInfo.corporationId = esiCharInfo.corporation_id;
     charInfo.roles = esiCharRoles.roles;

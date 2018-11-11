@@ -1,8 +1,9 @@
-import swagger from './swagger';
 import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
+import { fetchEndpoinWithArgs } from './fetchEndpoint';
+import { ESI_UNIVERSE_NAMES } from './endpoints';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -33,9 +34,10 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   let i = 0;
   while (i < unresolvedIds.length) {
     let end = Math.min(unresolvedIds.length, i + 1000);
-    let entries: AsyncReturnType<typeof swagger.names> | null = null;
+    let entries: typeof ESI_UNIVERSE_NAMES['response'] | null = null;
     try {
-      entries = await swagger.names(unresolvedIds.slice(i, end));
+      entries = await fetchEndpoinWithArgs(
+          ESI_UNIVERSE_NAMES, {}, unresolvedIds.slice(i, end));
     } catch (e) {
       if (isAnyEsiError(e)) {
         logger.error('ESI error while fetching names for '

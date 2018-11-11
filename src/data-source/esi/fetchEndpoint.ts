@@ -75,10 +75,11 @@ async function _fetchEndpoint<T extends BaseEsiEndpoint>(
     token: string | undefined,
 ): Promise<T['response']> {
 
-  const url = BASE_URL
-      + (pathBindings ? bindPath(endpoint.path, pathBindings) : endpoint.path);
+  const url =
+      pathBindings ? bindPath(endpoint.path, pathBindings) : endpoint.path;
 
   let config: AxiosRequestConfig = {
+    baseURL: BASE_URL,
     url: url,
     method: endpoint.method,
     headers: {
@@ -174,4 +175,3 @@ function logPathWarning(path: string, tag: string, message: string) {
 }
 
 const BASE_URL = 'https://esi.evetech.net';
-

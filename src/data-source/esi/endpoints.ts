@@ -9,6 +9,29 @@ import { EsiKillmail } from "./EsiKillmail";
  */
 
 
+export const ESI_CHARACTERS_$characterId = {
+  method: FetchMethod.GET,
+  path: '/v4/characters/${characterId}/',
+  pathBindings: {} as {
+    characterId: number,
+  },
+  params: null,
+  access: Public.ACCESS,
+  response: {} as {
+    alliance_id?: number,
+    ancestry_id?: number,
+    birthday: string,
+    bloodline_id: number,
+    corporation_id: number,
+    description?: number,
+    faction_id?: number,
+    gender: 'female' | 'male',
+    name: string,
+    race_id: number,
+    security_status?: number,
+  },
+};
+
 export const ESI_CHARACTERS_$characterId_ROLES = {
   method: FetchMethod.GET,
   path: '/v2/characters/${characterId}/roles',
@@ -22,6 +45,102 @@ export const ESI_CHARACTERS_$characterId_ROLES = {
     roles_at_hq?: string[],
     roles_at_base?: string[],
     roles_at_other?: string[],
+  },
+};
+
+export const ESI_CHARACTERS_$characterId_LOCATION = {
+  method: FetchMethod.GET,
+  path: '/v1/characters/${characterId}/location/',
+  pathBindings: {} as {
+    characterId: number,
+  },
+  params: null,
+  access: Private.ACCESS,
+  response: {} as {
+    solar_system_id: number,
+    station_id?: number,
+    structure_id?: number,
+  },
+};
+
+export const ESI_CHARACTERS_$characterId_SHIP = {
+  method: FetchMethod.GET,
+  path: '/v1/characters/${characterId}/ship/',
+  pathBindings: {} as {
+    characterId: number,
+  },
+  params: null,
+  access: Private.ACCESS,
+  response: {} as {
+    ship_item_id: number,
+    ship_name: string,
+    ship_type_id: number,
+  },
+};
+
+export const ESI_CHARACTERS_$characterId_SKILLQUEUE = {
+  method: FetchMethod.GET,
+  path: '/v2/characters/${characterId}/skillqueue/',
+  pathBindings: {} as {
+    characterId: number,
+  },
+  params: null,
+  access: Private.ACCESS,
+  response: {} as {
+    skill_id: number,
+    queue_position: number,
+    finished_level: number,
+    start_date?: string,
+    finish_date?: string,
+    level_start_sp?: number,
+    level_end_sp?: number,
+    training_start_sp?: number,
+  }[],
+}
+
+export const ESI_CHARACTERS_$characterId_SKILLS = {
+  method: FetchMethod.GET,
+  path: '/v4/characters/${characterId}/skills/',
+  pathBindings: {} as {
+    characterId: number,
+  },
+  params: null,
+  access: Private.ACCESS,
+  response: {} as {
+    skills: {
+      skill_id: number,
+      active_skill_level: number,
+      skillpoints_in_skill: number,
+      trained_skill_level: number,
+    }[],
+    total_sp: number,
+    unallocated_sp?: number,
+  },
+}
+
+export const ESI_CORPORATIONS_$corporationId = {
+  method: FetchMethod.GET,
+  path: '/v4/corporations/${corporationId}/',
+  pathBindings: {} as {
+    corporationId: number,
+  },
+  params: null,
+  access: Public.ACCESS,
+  response: {} as {
+    alliance_id?: number,
+    ceo_id: number,
+    creator_id: number,
+    date_founded?: string,
+    description?: string,
+    faction_id?: number,
+    home_station_id?: number,
+    member_count: number,
+    name: string,
+    shares?: number,
+    tax_rate: number,
+    ticker: string,
+    url?: string,
+    war_eligible?: boolean,
   },
 };
 
@@ -132,4 +251,25 @@ export const ESI_KILLMAILS_$killmailId_$killmailHash = {
   params: null,
   access: Public.ACCESS,
   response: {} as EsiKillmail,
+};
+
+export const ESI_UNIVERSE_NAMES = {
+  method: FetchMethod.POST,
+  path: '/v2/universe/names/',
+  pathBindings: {},
+  params: [] as number[],
+  access: Public.ACCESS,
+  response: {} as {
+    category:
+        | 'alliance'
+        | 'character'
+        | 'constellation'
+        | 'corporation'
+        | 'inventory_type'
+        | 'region'
+        | 'solar_system'
+        | 'station',
+    id: number,
+    name: string,
+  }[],
 };
