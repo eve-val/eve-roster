@@ -1,8 +1,8 @@
-import { Dao } from "../dao";
-import { Tnex, val, UpdateStrategy } from "../../db/tnex";
-import { killmail, Killmail, srpVerdict, account, memberCorporation } from "../tables";
-import { makeKillmailIterator } from "../shared/makeKillmailIterator";
-import { StreamIterator } from "../../util/stream/BatchedObjectReadable";
+import { Dao } from '../dao';
+import { Tnex, val, UpdateStrategy } from '../../db/tnex';
+import { killmail, Killmail, srpVerdict, account, memberCorporation, ownership } from '../tables';
+import { makeKillmailIterator } from '../shared/makeKillmailIterator';
+import { StreamIterator } from '../../util/stream/BatchedObjectReadable';
 
 export default class KillmailDao {
   constructor(
@@ -45,7 +45,8 @@ export default class KillmailDao {
         batchSize,
         query => query
             .leftJoin(srpVerdict, 'srpv_killmail', '=', 'km_id')
-            .leftJoin(account, 'account_mainCharacter', '=', 'km_character')
+            .leftJoin(ownership, 'ownership_character', '=', 'km_character')
+            .leftJoin(account, 'account_id', '=', 'ownership_account')
             .leftJoin(memberCorporation,
                 'memberCorporation_corporationId', '=', 'km_victimCorp')
             .and(clause => {
