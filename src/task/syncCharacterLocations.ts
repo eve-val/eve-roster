@@ -73,7 +73,7 @@ async function executor(db: Tnex, job: JobLogger) {
   }
 
   if (esiErrors.length > 0) {
-    job.warn(`The following characters got ESI errors: `
+    job.info(`The following characters got ESI errors: `
         + esiErrors
             .map(([character, error]) => `${character} (${error})`)
             .join(', '));
