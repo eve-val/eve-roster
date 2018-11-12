@@ -8,6 +8,7 @@ import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { CharacterLocation } from '../db/tables';
 import { Task } from '../infra/taskrunner/Task';
+import { isAnyEsiError } from '../data-source/esi/error';
 
 
 export const syncCharacterLocations: Task = {
@@ -46,7 +47,7 @@ async function executor(db: Tnex, job: JobLogger) {
       tasks.push(
           checkLocation(row.accessToken_character, tokenResult.token)
           .catch(e => {
-            if (e instanceof ESIError) {
+            if (isAnyEsiError(e)) {
               esiErrors.push([row.accessToken_character, e.kind]);
             } else {
               job.error(
@@ -72,7 +73,7 @@ async function executor(db: Tnex, job: JobLogger) {
   }
 
   if (esiErrors.length > 0) {
-    job.warn(`The following characters got ESI errors: `
+    job.info(`The following characters got ESI errors: `
         + esiErrors
             .map(([character, error]) => `${character} (${error})`)
             .join(', '));

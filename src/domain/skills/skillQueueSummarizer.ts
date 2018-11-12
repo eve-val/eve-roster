@@ -80,7 +80,7 @@ function loadQueue(db: Tnex, characterId: number, freshness: DataFreshness) {
   .then(queue => {
     return {
       queue: queue,
-      dataFreshness: freshness,
+      dataFreshness: dataFreshness,
       warning: warning,
     }
   });
