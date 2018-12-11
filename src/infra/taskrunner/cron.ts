@@ -25,7 +25,7 @@ export interface TaskSchedule {
 
 export function init(db: Tnex) {
   if (process.env.DEBUG_DISABLE_CRON == 'true') {
-    console.warn(`*** WARNING: Cron has been disabled via env flag. ***`);
+    logger.warn(`*** WARNING: Cron has been disabled via env flag. ***`);
   } else {
     new Cron(db).init();
   }

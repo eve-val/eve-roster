@@ -214,6 +214,11 @@ class ArraySchema extends Schema {
   verify(value: any, path: string[]) {
     super.verify(value, path);
 
+    if (value == undefined) {
+      // Whether this is allowed has already been checked by the super call.
+      return;
+    }
+
     if (!(value instanceof Array)) {
       throw new SchemaVerificationError(
           `Property ${pathToStr(path)} must be an array.`);
