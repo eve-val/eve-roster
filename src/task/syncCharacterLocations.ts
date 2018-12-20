@@ -1,13 +1,13 @@
 import moment = require('moment');
-import { ESIError } from 'eve-swagger';
 
 import { getAccessTokensFromRows } from '../data-source/accessToken/accessToken';
 import { dao } from '../db/dao';
-import swagger from '../data-source/esi/swagger';
 import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { CharacterLocation } from '../db/tables';
 import { Task } from '../infra/taskrunner/Task';
+import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId_LOCATION, ESI_CHARACTERS_$characterId_SHIP } from '../data-source/esi/endpoints';
 import { isAnyEsiError } from '../data-source/esi/error';
 
 
@@ -134,8 +134,10 @@ async function fetchUpdatedLocationRow(
     characterId: number, accessToken: string,
 ): Promise<CharacterLocation> {
   const [locationResults, shipResults] = await Promise.all([
-    swagger.characters(characterId, accessToken).location(),
-    swagger.characters(characterId, accessToken).ship(),
+    fetchEndpoint(
+        ESI_CHARACTERS_$characterId_LOCATION, { characterId }, accessToken),
+    fetchEndpoint(
+        ESI_CHARACTERS_$characterId_SHIP, { characterId }, accessToken),
   ]);
 
   return {

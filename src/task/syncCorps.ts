@@ -1,7 +1,6 @@
 import moment = require('moment');
 
 import { dao } from '../db/dao';
-import swagger from '../data-source/esi/swagger';
 import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { isAnyEsiError } from '../data-source/esi/error';
@@ -11,6 +10,8 @@ import { CORP_DOOMHEIM } from '../shared/eveConstants';
 import { serialize } from '../util/asyncUtil';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 import { Task } from '../infra/taskrunner/Task';
+import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId } from '../data-source/esi/endpoints';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -67,7 +68,8 @@ function updateCorporation(db: Tnex, characterId: number) {
     });
   })
   .then(() => {
-    return swagger.characters(characterId).info()
+    return fetchEndpoint(
+        ESI_CHARACTERS_$characterId, { characterId });
   })
   .then(character => {
     return dao.character.updateCharacter(db, characterId, {

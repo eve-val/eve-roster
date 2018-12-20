@@ -1,12 +1,12 @@
 import Bluebird = require('bluebird');
 import moment = require('moment');
-import { esi } from 'eve-swagger';
 
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { SkillQueueRow } from '../../db/dao/SkillQueueDao';
-import swagger from '../../data-source/esi/swagger';
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
+import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from '../../data-source/esi/endpoints';
 
 
 /**
@@ -24,7 +24,8 @@ export function updateSkillQueue(
     return accessToken || getAccessToken(db, characterId)
   })
   .then(accessToken => {
-    return swagger.characters(characterId, accessToken).skillqueue();
+    return fetchEndpoint(
+        ESI_CHARACTERS_$characterId_SKILLQUEUE, { characterId }, accessToken)
   })
   .then(esiQueue => {
     newQueue = convertEsiQueueToNativeQueue(esiQueue);
@@ -77,7 +78,7 @@ function getProgressFraction(
 }
 
 function convertEsiQueueToNativeQueue(
-    esiQueue: esi.character.Skillqueue[]
+    esiQueue: EsiSkillQueueItem[]
     ): SkillQueueRow[] {
 
   esiQueue.sort(compareEsiQueueItem);
@@ -103,7 +104,7 @@ function convertEsiQueueToNativeQueue(
 }
 
 function compareEsiQueueItem(
-    a: esi.character.Skillqueue, b: esi.character.Skillqueue) {
+    a: EsiSkillQueueItem, b: EsiSkillQueueItem) {
   if (a.queue_position < b.queue_position) {
     return -1;
   } else if (a.queue_position > b.queue_position) {
@@ -112,3 +113,6 @@ function compareEsiQueueItem(
     return 0;
   }
 }
+
+type EsiSkillQueueItem =
+    typeof ESI_CHARACTERS_$characterId_SKILLQUEUE['response'][0];

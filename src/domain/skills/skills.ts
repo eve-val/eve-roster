@@ -1,15 +1,14 @@
-import { esi } from 'eve-swagger';
-
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
-import swagger from '../../data-source/esi/swagger';
 import { updateSkillQueue, isQueueEntryCompleted } from './skillQueue';
 import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { SimpleNumMap } from '../../util/simpleTypes';
 import { skillLevelToSp } from '../../eve/skillLevelToSp';
 import * as sde from '../../eve/sde';
+import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
+import { ESI_CHARACTERS_$characterId_SKILLS } from '../../data-source/esi/endpoints';
 
 
 /** Throws AccessTokenError and ESI failure errors. */
@@ -50,17 +49,19 @@ function getSkillQueue(db: Tnex, characterId: number, accessToken: string) {
   })
 }
 
-function getEsiSkills(characterId: number, accessToken: string) {
-  return swagger.characters(characterId, accessToken).skills()
-  .then(data => data.skills || []);
+async function getEsiSkills(characterId: number, accessToken: string) {
+  const data = await fetchEndpoint(
+      ESI_CHARACTERS_$characterId_SKILLS, { characterId }, accessToken);
+
+  return data.skills;
 }
 
 function esiSkillToRow(
     characterId: number,
-    esiSkill: esi.character.Skill,
+    esiSkill: EsiSkill,
     completedEntry: NamedSkillQueueRow|undefined) {
 
-  let skillLevel = esiSkill.current_skill_level || 0;
+  let skillLevel = esiSkill.trained_skill_level || 0;
   let skillSp = esiSkill.skillpoints_in_skill || 0;
 
   if (completedEntry != undefined) {
@@ -79,3 +80,6 @@ function esiSkillToRow(
 function getSkillRank(skillId: number) {
   return sde.getSkillDefinition(skillId).rank;
 }
+
+type EsiSkill =
+    typeof ESI_CHARACTERS_$characterId_SKILLS['response']['skills'][0];
