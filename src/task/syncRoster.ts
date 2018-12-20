@@ -88,7 +88,7 @@ async function syncCorporation(
 
   if (!updateSuccessful) {
     job.log(
-        errorLevel, `Roster sync failed for primary corporation ${corpId}.`);
+        errorLevel, `Roster sync failed for corporation ${corpId}.`);
   }
 
   job.info(`Sync ${corpId} complete.`);
