@@ -1,11 +1,11 @@
 import { VError } from 'verror';
 import { OrderedParallelTransform } from '../../../util/stream/OrderedParallelTransform';
 import { ZKillmail, ZKillDescriptor } from '../../../data-source/zkillboard/ZKillmail';
-import { fetchEndpoint } from '../../../data-source/esi/fetchEndpoint';
 import { ESI_KILLMAILS_$killmailId_$killmailHash } from '../../../data-source/esi/endpoints';
 import { EsiKillmail } from '../../../data-source/esi/EsiKillmail';
 import { AxiosError } from 'axios';
 import { Logger } from '../../../infra/logging/Logger';
+import { fetchEsi } from '../../../data-source/esi/fetch/fetchEsi';
 
 
 /**
@@ -54,7 +54,7 @@ export class EsiKillmailFetcher
     let failures = 0;
     while (true) {
       try {
-        return await fetchEndpoint(ESI_KILLMAILS_$killmailId_$killmailHash, {
+        return await fetchEsi(ESI_KILLMAILS_$killmailId_$killmailHash, {
           killmailId: id,
           killmailHash: hash,
         });

@@ -5,8 +5,8 @@ import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { SkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { getAccessToken } from '../../data-source/accessToken/accessToken';
-import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from '../../data-source/esi/endpoints';
+import { fetchEsi } from '../../data-source/esi/fetch/fetchEsi';
 
 
 /**
@@ -24,8 +24,10 @@ export function updateSkillQueue(
     return accessToken || getAccessToken(db, characterId)
   })
   .then(accessToken => {
-    return fetchEndpoint(
-        ESI_CHARACTERS_$characterId_SKILLQUEUE, { characterId }, accessToken)
+    return fetchEsi(ESI_CHARACTERS_$characterId_SKILLQUEUE, {
+      characterId,
+      _token: accessToken,
+    });
   })
   .then(esiQueue => {
     newQueue = convertEsiQueueToNativeQueue(esiQueue);

@@ -1,13 +1,13 @@
 import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
-import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
 import { ESI_CORPORATIONS_$corporationId } from '../../data-source/esi/endpoints';
+import { fetchEsi } from '../../data-source/esi/fetch/fetchEsi';
 
 
 export default jsonEndpoint(async (req, res) => {
   let corporationId = req.params.id;
 
   const response =
-      await fetchEndpoint(ESI_CORPORATIONS_$corporationId, { corporationId });
+      await fetchEsi(ESI_CORPORATIONS_$corporationId, { corporationId });
 
   return {
     id: corporationId,

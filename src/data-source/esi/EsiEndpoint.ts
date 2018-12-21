@@ -1,34 +1,13 @@
 
-/**
- * Defines an endpoint in the ESI HTTP API.
- *
- * Pass instances of this to fetchEndpoint() in order to make the request.
- */
-export interface BaseEsiEndpoint {
-  method: FetchMethod,
+
+export interface EsiEndpoint {
   path: string,
-  pathBindings: object,
+  method: FetchMethod,
+  access: Public | Private,
+  pathVars?: object,
+  query?: object,
+  body?: object | string | number | boolean,
   response: object | void,
-}
-
-export interface PublicEsiEndpoint extends BaseEsiEndpoint {
-  access: Public.ACCESS,
-  params: null,
-}
-
-export interface PrivateEsiEndpoint extends BaseEsiEndpoint {
-  access: Private.ACCESS,
-  params: null,
-}
-
-export interface PublicEsiEndpointWithParams extends BaseEsiEndpoint {
-  access: Public.ACCESS,
-  params: object,
-}
-
-export interface PrivateEsiEndpointWithParams extends BaseEsiEndpoint {
-  access: Private.ACCESS,
-  params: object,
 }
 
 export enum FetchMethod {

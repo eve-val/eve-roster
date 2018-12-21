@@ -1,0 +1,57 @@
+import axios, { AxiosResponse } from 'axios';
+import { EsiEndpoint } from '../EsiEndpoint';
+import { EsiErrorKind } from '../EsiError';
+import { EsiErrorCompat } from '../EsiErrorCompat';
+import { buildEsiFetchConfig } from './buildEsiFetchConfig';
+import { EsiEndpointParams } from './EsiEndpointParams';
+import { checkEsiResponseForWarnings } from './checkEsiResponseForWarnings';
+
+
+/**
+ * Loads a particular ESI endpoint.
+ *
+ * If the endpoint is private, `params` must contain a `_token` property.
+ * If the endpoint requires a body (usually because it's a POST), `params` must
+ * contain a `_body` property of the appropriate type.
+ */
+export async function fetchEsi<T extends EsiEndpoint>(
+  endpoint: T,
+  params: EsiEndpointParams<T>,
+): Promise<T['response']> {
+
+  const config = buildEsiFetchConfig(BASE_URL, endpoint, params);
+
+  let response: AxiosResponse;
+  try {
+    response = await axios(config);
+  } catch (err) {
+    let errKind = EsiErrorKind.GENERIC_ERROR;
+    const response: AxiosResponse | undefined = err.response;
+    if (response) {
+      if (response.status == 401 || response.status == 403) {
+        errKind = EsiErrorKind.FORBIDDEN_ERROR;
+      } else if (response.status == 404) {
+        errKind = EsiErrorKind.NOT_FOUND_ERROR;
+      } else if (response.status >= 400 && response.status < 500) {
+        errKind = EsiErrorKind.CLIENT_ERROR;
+      } else if (response.status >= 500 && response.status < 600) {
+        errKind = EsiErrorKind.INTERNAL_SERVER_ERROR;
+      }
+    } else if (err.request) {
+      errKind = EsiErrorKind.IO_ERROR;
+    }
+
+    throw new EsiErrorCompat(
+        errKind,
+        `${errKind} while fetching "${config.url}"`,
+        err);
+  }
+
+  checkEsiResponseForWarnings(endpoint, response);
+
+  // TODO: Verify data matches expected structure
+
+  return response.data;
+}
+
+const BASE_URL = 'https://esi.evetech.net';
