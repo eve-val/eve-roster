@@ -76,7 +76,9 @@ export class RotatingFileLogWriter extends Writable {
   }
 
   private _processMultiline(chunk: string, callback: BasicCallback) {
-    const splits = chunk.split('\n');
+    const strippedChunk = chunk.endsWith('\n') ?
+        chunk.substr(0, chunk.length - 1) : chunk;
+    const splits = strippedChunk.split('\n');
     asyncEach(
         splits,
         (entry, entryCb) => {
