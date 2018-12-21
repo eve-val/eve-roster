@@ -8,7 +8,6 @@ import { arrayToMap, refine } from '../util/collections';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { fetchEveNames } from '../data-source/esi/names';
 import { UNKNOWN_CORPORATION_ID } from '../db/constants';
-import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
 import { ESI_CORPORATIONS_$corporationId_MEMBERS, ESI_CORPORATIONS_$corporationId_TITLES, ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, ESI_CORPORATIONS_$corporationId_ROLES, ESI_CORPORATIONS_$corporationId_MEMBERTRACKING } from '../data-source/esi/endpoints';
 import { isAnyEsiError, printError } from '../data-source/esi/error';
 import { hasRosterScopes } from '../domain/roster/hasRosterScopes';
@@ -17,6 +16,7 @@ import { AsyncReturnType } from '../util/simpleTypes';
 import { updateGroupsOnAllAccounts } from '../domain/account/accountGroups';
 import { LogLevel } from '../infra/logging/Logger';
 import { Task } from '../infra/taskrunner/Task';
+import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 
 
 /**
@@ -99,20 +99,21 @@ async function updateMemberList(
 
   const token = await getAccessToken(db, director);
   const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] = await Promise.all([
-    fetchEndpoint(
-        ESI_CORPORATIONS_$corporationId_MEMBERS, { corporationId }, token),
-    fetchEndpoint(
-        ESI_CORPORATIONS_$corporationId_TITLES, { corporationId }, token),
-    fetchEndpoint(
+    fetchEsi(
+        ESI_CORPORATIONS_$corporationId_MEMBERS,
+        { corporationId, _token: token }),
+    fetchEsi(
+        ESI_CORPORATIONS_$corporationId_TITLES,
+        { corporationId, _token: token }),
+    fetchEsi(
         ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES,
-        { corporationId },
-        token),
-    fetchEndpoint(
-        ESI_CORPORATIONS_$corporationId_ROLES, { corporationId }, token),
-    fetchEndpoint(
+        { corporationId, _token: token }),
+    fetchEsi(
+        ESI_CORPORATIONS_$corporationId_ROLES,
+        { corporationId, _token: token }),
+    fetchEsi(
         ESI_CORPORATIONS_$corporationId_MEMBERTRACKING,
-        { corporationId },
-        token),
+        { corporationId, _token: token }),
   ]);
   const names = await fetchEveNames(memberIds);
 

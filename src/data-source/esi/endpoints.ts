@@ -12,10 +12,9 @@ import { EsiKillmail } from "./EsiKillmail";
 export const ESI_CHARACTERS_$characterId = {
   method: FetchMethod.GET,
   path: '/v4/characters/${characterId}/',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Public.ACCESS,
   response: {} as {
     alliance_id?: number,
@@ -35,10 +34,9 @@ export const ESI_CHARACTERS_$characterId = {
 export const ESI_CHARACTERS_$characterId_ROLES = {
   method: FetchMethod.GET,
   path: '/v2/characters/${characterId}/roles',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: {} as {
     roles: string[],
@@ -51,10 +49,9 @@ export const ESI_CHARACTERS_$characterId_ROLES = {
 export const ESI_CHARACTERS_$characterId_LOCATION = {
   method: FetchMethod.GET,
   path: '/v1/characters/${characterId}/location/',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: {} as {
     solar_system_id: number,
@@ -66,10 +63,9 @@ export const ESI_CHARACTERS_$characterId_LOCATION = {
 export const ESI_CHARACTERS_$characterId_SHIP = {
   method: FetchMethod.GET,
   path: '/v1/characters/${characterId}/ship/',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: {} as {
     ship_item_id: number,
@@ -81,10 +77,9 @@ export const ESI_CHARACTERS_$characterId_SHIP = {
 export const ESI_CHARACTERS_$characterId_SKILLQUEUE = {
   method: FetchMethod.GET,
   path: '/v2/characters/${characterId}/skillqueue/',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: {} as {
     skill_id: number,
@@ -101,10 +96,9 @@ export const ESI_CHARACTERS_$characterId_SKILLQUEUE = {
 export const ESI_CHARACTERS_$characterId_SKILLS = {
   method: FetchMethod.GET,
   path: '/v4/characters/${characterId}/skills/',
-  pathBindings: {} as {
+  pathVars: {} as {
     characterId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: {} as {
     skills: {
@@ -121,10 +115,9 @@ export const ESI_CHARACTERS_$characterId_SKILLS = {
 export const ESI_CORPORATIONS_$corporationId = {
   method: FetchMethod.GET,
   path: '/v4/corporations/${corporationId}/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Public.ACCESS,
   response: {} as {
     alliance_id?: number,
@@ -147,10 +140,9 @@ export const ESI_CORPORATIONS_$corporationId = {
 export const ESI_CORPORATIONS_$corporationId_MEMBERS = {
   method: FetchMethod.GET,
   path: '/v3/corporations/${corporationId}/members',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: [] as number[],
 };
@@ -158,10 +150,9 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERS = {
 export const ESI_CORPORATIONS_$corporationId_TITLES = {
   method: FetchMethod.GET,
   path: '/v1/corporations/${corporationId}/titles/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: [] as Array<{
     title_id: number,
@@ -180,10 +171,9 @@ export const ESI_CORPORATIONS_$corporationId_TITLES = {
 export const ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES = {
   method: FetchMethod.GET,
   path: '/v1/corporations/${corporationId}/members/titles/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: [] as Array<{
     character_id: number,
@@ -194,10 +184,9 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES = {
 export const ESI_CORPORATIONS_$corporationId_ROLES = {
   method: FetchMethod.GET,
   path: '/v1/corporations/${corporationId}/roles/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: [] as Array<{
     character_id: number,
@@ -209,10 +198,9 @@ export const ESI_CORPORATIONS_$corporationId_ROLES = {
 export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
   method: FetchMethod.GET,
   path: '/v1/corporations/${corporationId}/membertracking/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: null,
   access: Private.ACCESS,
   response: [] as Array<{
     character_id: number,
@@ -228,10 +216,10 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
 export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
   method: FetchMethod.GET,
   path: '/v1/corporations/${corporationId}/killmails/recent/',
-  pathBindings: {} as {
+  pathVars: {} as {
     corporationId: number,
   },
-  params: {} as {
+  query: {} as {
     page: number,
   },
   access: Private.ACCESS,
@@ -244,11 +232,10 @@ export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
 export const ESI_KILLMAILS_$killmailId_$killmailHash = {
   method: FetchMethod.GET,
   path: '/v1/killmails/${killmailId}/${killmailHash}/',
-  pathBindings: {} as {
+  pathVars: {} as {
     killmailId: number,
     killmailHash: string,
   },
-  params: null,
   access: Public.ACCESS,
   response: {} as EsiKillmail,
 };
@@ -256,8 +243,8 @@ export const ESI_KILLMAILS_$killmailId_$killmailHash = {
 export const ESI_UNIVERSE_NAMES = {
   method: FetchMethod.POST,
   path: '/v2/universe/names/',
-  pathBindings: {},
-  params: [] as number[],
+  pathVars: {},
+  body: [] as number[],
   access: Public.ACCESS,
   response: {} as {
     category:

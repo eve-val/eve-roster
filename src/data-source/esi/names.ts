@@ -2,8 +2,8 @@ import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
-import { fetchEndpoinWithArgs } from './fetchEndpoint';
 import { ESI_UNIVERSE_NAMES } from './endpoints';
+import { fetchEsi } from "./fetch/fetchEsi";
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -36,8 +36,9 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
     let end = Math.min(unresolvedIds.length, i + 1000);
     let entries: typeof ESI_UNIVERSE_NAMES['response'] | null = null;
     try {
-      entries = await fetchEndpoinWithArgs(
-          ESI_UNIVERSE_NAMES, {}, unresolvedIds.slice(i, end));
+      entries = await fetchEsi(ESI_UNIVERSE_NAMES, {
+        _body: unresolvedIds.slice(i, end),
+      });
     } catch (e) {
       if (isAnyEsiError(e)) {
         logger.error('ESI error while fetching names for '

@@ -6,9 +6,9 @@ import { Tnex } from '../db/tnex';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { CharacterLocation } from '../db/tables';
 import { Task } from '../infra/taskrunner/Task';
-import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_LOCATION, ESI_CHARACTERS_$characterId_SHIP } from '../data-source/esi/endpoints';
 import { isAnyEsiError } from '../data-source/esi/error';
+import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 
 
 export const syncCharacterLocations: Task = {
@@ -134,10 +134,14 @@ async function fetchUpdatedLocationRow(
     characterId: number, accessToken: string,
 ): Promise<CharacterLocation> {
   const [locationResults, shipResults] = await Promise.all([
-    fetchEndpoint(
-        ESI_CHARACTERS_$characterId_LOCATION, { characterId }, accessToken),
-    fetchEndpoint(
-        ESI_CHARACTERS_$characterId_SHIP, { characterId }, accessToken),
+    fetchEsi(ESI_CHARACTERS_$characterId_LOCATION, {
+      characterId,
+      _token: accessToken,
+    }),
+    fetchEsi(ESI_CHARACTERS_$characterId_SHIP, {
+      characterId,
+      _token: accessToken,
+    }),
   ]);
 
   return {

@@ -10,8 +10,8 @@ import { CORP_DOOMHEIM } from '../shared/eveConstants';
 import { serialize } from '../util/asyncUtil';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 import { Task } from '../infra/taskrunner/Task';
-import { fetchEndpoint } from '../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId } from '../data-source/esi/endpoints';
+import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -68,7 +68,7 @@ function updateCorporation(db: Tnex, characterId: number) {
     });
   })
   .then(() => {
-    return fetchEndpoint(
+    return fetchEsi(
         ESI_CHARACTERS_$characterId, { characterId });
   })
   .then(character => {

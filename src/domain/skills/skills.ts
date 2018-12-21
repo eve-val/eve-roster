@@ -7,8 +7,8 @@ import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
 import { SimpleNumMap } from '../../util/simpleTypes';
 import { skillLevelToSp } from '../../eve/skillLevelToSp';
 import * as sde from '../../eve/sde';
-import { fetchEndpoint } from '../../data-source/esi/fetchEndpoint';
 import { ESI_CHARACTERS_$characterId_SKILLS } from '../../data-source/esi/endpoints';
+import { fetchEsi } from '../../data-source/esi/fetch/fetchEsi';
 
 
 /** Throws AccessTokenError and ESI failure errors. */
@@ -50,8 +50,10 @@ function getSkillQueue(db: Tnex, characterId: number, accessToken: string) {
 }
 
 async function getEsiSkills(characterId: number, accessToken: string) {
-  const data = await fetchEndpoint(
-      ESI_CHARACTERS_$characterId_SKILLS, { characterId }, accessToken);
+  const data = await fetchEsi(ESI_CHARACTERS_$characterId_SKILLS, {
+    characterId,
+    _token: accessToken,
+  });
 
   return data.skills;
 }
