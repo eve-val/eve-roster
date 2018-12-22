@@ -1,5 +1,4 @@
 import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import swagger from '../../../../data-source/esi/swagger';
 import { number, verify } from '../../../../util/express/schemaVerifier';
 import { AccountSummary } from '../../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../../infra/express/privileges';
@@ -8,6 +7,8 @@ import { dao } from '../../../../db/dao';
 import { BadRequestError } from '../../../../error/BadRequestError';
 import { UnauthorizedClientError } from '../../../../error/UnauthorizedClientError';
 import { getAccessToken } from '../../../../data-source/accessToken/accessToken';
+import { fetchEsi } from '../../../../data-source/esi/fetch/fetchEsi';
+import { ESI_UI_OPENWINDOW_INFORMATION } from '../../../../data-source/esi/endpoints';
 
 
 export class Input {
@@ -42,8 +43,10 @@ async function handleEndpoint(
   }
   // TODO: Catch errors below and throw a uservisible error
   const accessToken = await getAccessToken(db, input.character);
-  await swagger.characters(input.character, accessToken)
-      .window.info(input.targetId);
+  await fetchEsi(ESI_UI_OPENWINDOW_INFORMATION, {
+    target_id: input.targetId,
+    _token: accessToken
+  });
 
   return {};
 }

@@ -240,6 +240,16 @@ export const ESI_KILLMAILS_$killmailId_$killmailHash = {
   response: {} as EsiKillmail,
 };
 
+export const ESI_UI_OPENWINDOW_INFORMATION = {
+  method: FetchMethod.POST,
+  path: '/v1/ui/openwindow/information/',
+  query: {
+    target_id: 47 as number,
+  },
+  access: Private.ACCESS,
+  response: undefined as void,
+}
+
 export const ESI_UNIVERSE_NAMES = {
   method: FetchMethod.POST,
   path: '/v2/universe/names/',
