@@ -21,7 +21,6 @@ import { endSession, getSession } from './session';
 
 
 const logger = buildLoggerFromFilename(__filename);
-const legacyLogger = require('../logging/legacyLogger')();
 const webpackConfig = require('../../../../webpack.config.js');
 
 const FRONTEND_ROUTES = [
@@ -105,22 +104,6 @@ export function init(db: Tnex, onServing: (port: number) => void) {
 
   // Manually include the API routes defined in api/
   app.use('/api', route_api);
-
-  // Mount the web panel provided by scribe but guard it with a privilege check
-  app.use('/logs', (req, res, next) => {
-    Bluebird.resolve()
-    .then(() => {
-      return getAccountPrivs(req.db, getSession(req).accountId);
-    })
-    .then(accountPrivs => {
-      accountPrivs.privs.requireRead('serverLogs', false);
-      next();
-    })
-    .catch(e => {
-      logger.error('Error when attempting to view server logs', e);
-      res.redirect('/');
-    });
-  }, legacyLogger.webPanel());
 
   // Static files in static/
   app.use(express.static(path.join(__dirname, '../../../../static')));
