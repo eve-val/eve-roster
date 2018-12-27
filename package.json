@@ -56,7 +56,6 @@
     "progress-stream": "^2.0.0",
     "pug": "^2.0.0-beta11",
     "relaxed-json": "^1.0.0",
-    "scribe-js": "^2.0.4",
     "soupselect": "^0.2.0",
     "source-map-support": "^0.5.2",
     "sqlite3": "^4.0.0",

@@ -12,9 +12,6 @@
       <router-link class="sidebar-link" to="/admin/tasks">
         Tasks
       </router-link>
-      <a href="/logs" class="sidebar-link">
-        Server log
-      </a>
       <router-link class="sidebar-link" to="/admin/citadels">
         Citadels
       </router-link>
