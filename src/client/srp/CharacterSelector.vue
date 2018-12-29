@@ -34,7 +34,7 @@ character is paying.
           >
       </eve-image>
       <div class="char-name">{{ selectedCharacter.name }}</div>
-      <img class="select-triangle" src="../assets/Generic-select-dropdown.png">
+      <img class="select-triangle" src="../shared-res/select-dropdown.png">
     </template>
   </div>
 </div>

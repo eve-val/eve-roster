@@ -128,7 +128,7 @@ export default {
 }
 
 .chevron-background {
-  background-image: url('../assets/Tasks-progress-chevron.svg');
+  background-image: url('./res/progress-chevron.svg');
   background-size: auto 100%;
 
   animation: chevron-slide;

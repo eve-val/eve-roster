@@ -77,10 +77,10 @@ import DropMenu from '../shared/DropMenu.vue';
 import LoadingSpinner from '../shared/LoadingSpinner.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
-import mainIcon from '../assets/Dashboard-main-star.svg';
-import opsecIcon from '../assets/Dashboard-hidden-icon.svg';
-import biomassedIcon from '../assets/Dashboard-biomassed.svg';
-import warningIcon from '../assets/Generic-triangle-warning.svg';
+import mainIcon from './res/main-star.svg';
+import opsecIcon from './res/hidden-icon.svg';
+import biomassedIcon from './res/biomassed.svg';
+import warningIcon from '../shared-res/triangle-warning.svg';
 
 import { CORP_DOOMHEIM } from '../../shared/eveConstants';
 
@@ -385,7 +385,7 @@ function getQueueWarningLabel(warning) {
 .menu-arrow {
   width: 25px;
   height: 22px;
-  background-image: url('../assets/Dashboard-character-menu-arrow.png');
+  background-image: url('./res/character-menu-arrow.png');
   background-size: cover;
 }
 

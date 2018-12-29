@@ -4,7 +4,7 @@
       @input="onSearchBoxInput"
       @keyup.esc="onSearchBoxEsc"
       >
-  <img class="icon" src="../assets/Roster-search-roster.png">
+  <img class="icon" src="./res/search-roster.png">
 </div>
 </template>
 

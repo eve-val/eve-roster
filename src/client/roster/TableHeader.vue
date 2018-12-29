@@ -1,6 +1,7 @@
 <template>
 <div class="table-header">
   <div v-for="column in columns"
+      :key="column.key"
       class="column-header"
       @mousedown="$emit('selectSortKey', column.key)"
       :style="{
@@ -13,7 +14,7 @@
     <img v-if="column.key == sortKey"
         class="sort-arrow"
         :class="arrowClasses"
-        src="../assets/Roster-sort-order-arrow.png"
+        src="./res/sort-order-arrow.png"
         >{{ column.label }}
   </div>
 </div>

@@ -35,6 +35,7 @@
         >{{ displayVals[2] }}</div>
 
     <div class="col" v-for="(displayVal, i) in displayVals"
+        :key="i"
         v-if="i >= 3"
         :style="cellStyle(i)"
         >
@@ -61,9 +62,9 @@ import rosterColumns from './rosterColumns';
 import EveImage from '../shared/EveImage.vue';
 import Tooltip from '../shared/Tooltip.vue';
 
-const infoIcon = require('../assets/Generic-circle-info.svg');
-const warningIcon = require('../assets/Generic-triangle-warning.svg');
-const errorIcon = require('../assets/Generic-triangle-error.svg');
+const infoIcon = require('../shared-res/circle-info.svg');
+const warningIcon = require('../shared-res/triangle-warning.svg');
+const errorIcon = require('../shared-res/triangle-error.svg');
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [ null, infoIcon, warningIcon, errorIcon ];
