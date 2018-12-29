@@ -4,7 +4,7 @@
 
 <script>
 
-const unknownIcon = require('../assets/EveImage-Unknown.svg');
+const unknownIcon = require('./res/EveImage-Unknown.svg');
 
 let SUPPORTED_TYPES = {
   Alliance: true,

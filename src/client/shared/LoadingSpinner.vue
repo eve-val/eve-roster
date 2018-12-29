@@ -3,7 +3,7 @@
   <template v-if="derivedState != 'hidden'">
     <img class="spinner"
           v-if="derivedState == 'spinning'"
-          src="../assets/LoadingSpinner-spinner.svg"
+          src="./res/LoadingSpinner-spinner.svg"
           :style="{ width: size, height: size, }"
           >
     <tooltip
@@ -30,15 +30,15 @@
 
 /**
  * Generic loading spinner
- * 
+ *
  * The spinner can be in either manual or automatic modes. In manual mode,
  * simply set the `state` and `adversityMessage` properties to
  * appropriate values.
- * 
+ *
  * In automatic mode, you must tell the spinner to observe a Promise. The
  * spinner will automatically hide itself when the Promise resolves, or display
  * an error message if the Promise rejects.
- * 
+ *
  * <pre>
  * {@code
  *   mount() {
@@ -50,22 +50,22 @@
  *   }
  * }
  * </pre>
- * 
+ *
  * Notice that we are accessing the spinner via a ref (`this.$refs.spinner`).
  * You will need to specify a ref name in your markup:
- * 
+ *
  * <pre>
  * {@code
  *   <loading-spinner ref="spinner" />
  * }
  * </pre>
- * 
+ *
  * Note: Refs are only available during `mount()` and later -- don't try to
  * access them in anything earlier, such as `create()`!
- * 
+ *
  * If you would like to modify the appearance of a successful Promise (say, by
  * turning it into a warning or error), add an onSuccess handler:
- * 
+ *
  * <pre>
  * {@code
  *   mount() {
@@ -83,7 +83,7 @@
  *   }
  * }
  * </pre>
- * 
+ *
  * Notice that `data` is passed to both the onSuccess handler and the chained
  * Promise handler. You can move all of your mode into `onSuccess` if you want;
  * up to you.
@@ -92,10 +92,10 @@
 import _ from 'underscore';
 import Tooltip from './Tooltip.vue';
 
-const inlineErrorIcon = require('../assets/Generic-circle-error.svg');
-const inlineWarningIcon = require('../assets/Generic-circle-warning.svg');
-const blockErrorIcon = require('../assets/Generic-triangle-error.svg');
-const blockWarningIcon = require('../assets/Generic-triangle-warning.svg');
+const inlineErrorIcon = require('../shared-res/circle-error.svg');
+const inlineWarningIcon = require('../shared-res/circle-warning.svg');
+const blockErrorIcon = require('../shared-res/triangle-error.svg');
+const blockWarningIcon = require('../shared-res/triangle-warning.svg');
 
 const DISPLAY_VALUES = ['inline', 'block'];
 const STATE_VALUES = ['hidden', 'spinning', 'error', 'warning'];
@@ -232,7 +232,7 @@ export default {
      * error's message.
      * This behavior overrides the `defaultState` property but can be
      * overridden by the `state` property.
-     * 
+     *
      * @param onSuccess A method that can be used to adjust the "result" of
      *        the promise. Passed the payload from the promise. Should return
      *        An object of the form `{ state: String, message?: String }`.
@@ -248,7 +248,7 @@ export default {
       return promise
       .then(payload => {
         let newState = 'hidden';
-        
+
         this.stateFromPromise = 'hidden';
 
         let result = onSuccess && onSuccess(payload);

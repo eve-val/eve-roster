@@ -44,7 +44,7 @@ Right now just shows the sync status of each member corporation.
     </template>
 
     <div v-if="loaded && primaryCorps.length == 0" class="setup-bother">
-      <img class="bother-icon" src="../assets/Generic-triangle-warning.svg">
+      <img class="bother-icon" src="../shared-res/triangle-warning.svg">
       <div>
         No corporations added yet. Configure them in
         <router-link to="/admin/setup">Setup</router-link>.
