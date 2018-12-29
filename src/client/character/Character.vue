@@ -41,8 +41,11 @@
 
         <template v-if="account.alts">
           <div class="factoid-title">Alts</div>
-          <div v-for="alt in account.alts"
-              class="factoid">
+          <div
+              class="factoid"
+              v-for="alt in account.alts"
+              :key="alt.id"
+              >
             <router-link
                 class="character-link"
                 :to="'/character/' + alt.id"
@@ -73,13 +76,25 @@
 
           <template v-if="account.groups != null">
             <div class="factoid-title">Groups</div>
-            <div class="factoid" v-for="group in account.groups">{{ group }}</div>
+            <div
+                class="factoid"
+                v-for="group in account.groups"
+                :key="group"
+                >
+              {{ group }}
+            </div>
             <div class="factoid" v-if="account.groups.length == 0">-</div>
           </template>
         </template>
 
         <div class="factoid-title">Titles</div>
-        <div class="factoid" v-for="group in character.titles">{{ group }}</div>
+        <div
+            class="factoid"
+            v-for="title in character.titles"
+            :key="title"
+            >
+          {{ title }}
+        </div>
         <div class="factoid" v-if="character.titles.length == 0">-</div>
       </div>
       <div class="content">
