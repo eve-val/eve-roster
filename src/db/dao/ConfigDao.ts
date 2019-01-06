@@ -79,8 +79,10 @@ export default class ConfigDao {
     return db
         .select(memberCorporation)
         .columns(
-            'memberCorporation_corporationId',
-            'memberCorporation_membership',
+            'mcorp_corporationId',
+            'mcorp_membership',
+            'mcorp_name',
+            'mcorp_ticker',
             )
         .run();
   }

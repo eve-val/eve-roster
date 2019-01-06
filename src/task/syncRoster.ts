@@ -41,8 +41,8 @@ async function executor(db: Tnex, job: JobLogger) {
 
 async function syncCorporation(
     db: Tnex, job: JobLogger, corporation: MemberCorporation) {
-  const corpId = corporation.memberCorporation_corporationId;
-  const errorLevel = corporation.memberCorporation_membership == 'full'
+  const corpId = corporation.mcorp_corporationId;
+  const errorLevel = corporation.mcorp_membership == 'full'
       ? LogLevel.ERROR : LogLevel.WARN;
   job.info(`syncCorporation ${corpId}`);
 

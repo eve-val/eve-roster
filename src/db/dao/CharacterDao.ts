@@ -48,7 +48,7 @@ export default class CharacterDao {
         .join(character, 'character_id', '=', 'ownership_character')
         .leftJoin(accessToken, 'accessToken_character', '=', 'character_id')
         .leftJoin(memberCorporation,
-            'memberCorporation_corporationId', '=', 'character_corporationId')
+            'mcorp_corporationId', '=', 'character_corporationId')
         .where('account_id', '=', val(accountId))
         .andWhere('character_deleted', '=', val(false))
         .columns(
@@ -57,7 +57,7 @@ export default class CharacterDao {
             'character_corporationId',
             'character_titles',
             'ownership_opsec',
-            'memberCorporation_membership',
+            'mcorp_membership',
             'account_mainCharacter',
             'accessToken_needsUpdate',
             )
@@ -70,12 +70,12 @@ export default class CharacterDao {
         .leftJoin(ownership, 'ownership_character', '=', 'character_id')
         .leftJoin(account, 'account_id', '=', 'ownership_account')
         .leftJoin(memberCorporation,
-            'memberCorporation_corporationId', '=', 'character_corporationId')
+            'mcorp_corporationId', '=', 'character_corporationId')
         .where('character_id', '=', val(characterId))
         .columns(
             'account_id',
             'character_corporationId',
-            'memberCorporation_membership',
+            'mcorp_membership',
             )
         .fetchFirst();
   }
@@ -161,7 +161,7 @@ export default class CharacterDao {
         .join(character,
             'character_corporationId',
             '=',
-            'memberCorporation_corporationId')
+            'mcorp_corporationId')
         .columns('character_id', 'character_corporationId')
         .run();
   }

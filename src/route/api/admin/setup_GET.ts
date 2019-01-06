@@ -52,12 +52,12 @@ function convertCorpConfigRowToJson(
   .then(() => {
     return dao.config.getCorpTitleToGroupMapping(
         db,
-        row.memberCorporation_corporationId);
+        row.mcorp_corporationId);
   })
   .then(mappingRows => {
     return {
-      id: row.memberCorporation_corporationId,
-      membership: row.memberCorporation_membership,
+      id: row.mcorp_corporationId,
+      membership: row.mcorp_membership,
       titles: createTitleMap(mappingRows),
     };
   });

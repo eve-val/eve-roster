@@ -47,7 +47,7 @@ export class KillmailProcessor
         });
       }
 
-      const isLoss = qkm.row.memberCorporation_corporationId != null;
+      const isLoss = qkm.row.mcorp_corporationId != null;
 
       if (isLoss && !qkm.row.km_processed) {
         kmIds.push(qkm.row.km_id);

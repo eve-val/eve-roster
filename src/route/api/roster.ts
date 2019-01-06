@@ -150,8 +150,8 @@ function getJsonForAccount(
     alts: [],
   };
 
-  if (mainRow.memberCorporation_membership != 'full') {
-    if (mainRow.memberCorporation_membership == 'affiliated') {
+  if (mainRow.mcorp_membership != 'full') {
+    if (mainRow.mcorp_membership == 'affiliated') {
       addAlert(
         accountJson,
         alert.LEVEL_WARNING,
@@ -215,13 +215,13 @@ function getJsonForCharacter(
             || 'Name unavailable'
   } as CharacterJson;
 
-  if (row.memberCorporation_membership == 'full'
-      || row.memberCorporation_membership == 'affiliated') {
+  if (row.mcorp_membership == 'full'
+      || row.mcorp_membership == 'affiliated') {
     if (row.character_titles == null || row.character_titles.length == 0) {
       if (status == 'main') {
         addAlert(obj, alert.LEVEL_ERROR, 'Main does not have roles.');
       } else if (status == 'alt') {
-        if (row.memberCorporation_membership == 'full') {
+        if (row.mcorp_membership == 'full') {
           addAlert(obj, alert.LEVEL_WARNING, 'Alt does not have roles.');
         }
       } else if (status == 'unowned') {

@@ -59,7 +59,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
           id: row.character_id,
           name: row.character_name,
           opsec: row.ownership_opsec && privs.isMember(),
-          corpStatus: getCorpStatus(row.memberCorporation_membership),
+          corpStatus: getCorpStatus(row.mcorp_membership),
           skillQueue: queue,
           corpId: row.character_corporationId,
           needsReauth: row.accessToken_needsUpdate !== false,

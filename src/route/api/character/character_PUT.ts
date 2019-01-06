@@ -42,7 +42,7 @@ function setIsOpsec(
 
     privs.requireWrite('characterIsOpsec', accountId == row.account_id);
 
-    if (isOpsec && isMemberCorp(row.memberCorporation_membership)) {
+    if (isOpsec && isMemberCorp(row.mcorp_membership)) {
       throw new BadRequestError(
           `Cannot set character ${characterId} to opsec: character is in an ` +
           `affiliated corp (${row.character_corporationId})`);

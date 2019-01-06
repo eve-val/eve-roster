@@ -76,11 +76,11 @@ function getGroupsDerivedFromCharacters(db: Tnex, accountId: number) {
             groups.push(...groupsFromTitles);
 
             if (row.character_id == row.account_mainCharacter
-                && row.memberCorporation_membership == 'full') {
+                && row.mcorp_membership == 'full') {
               groups.push(MEMBER_GROUP);
             }
-            if (row.memberCorporation_membership == 'full'
-                || row.memberCorporation_membership == 'affiliated') {
+            if (row.mcorp_membership == 'full'
+                || row.mcorp_membership == 'affiliated') {
               ownsAffiliatedChar = true;
             }
 

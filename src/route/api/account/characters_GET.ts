@@ -51,7 +51,7 @@ async function handleEndpoint(
       id: row.character_id,
       name: row.character_name,
       corporation: row.character_corporationId,
-      membership: row.memberCorporation_membership,
+      membership: row.mcorp_membership,
       accessTokenValid: !row.accessToken_needsUpdate,
       isMain: row.character_id == row.account_mainCharacter,
     };

@@ -9,6 +9,8 @@ import { isCensored } from './_censor';
 import { verify, optional, nullable, string, number, array, object, simpleMap, } from '../../../util/express/schemaVerifier';
 import { AccountSummary } from '../../../infra/express/getAccountPrivs';
 import { AccountPrivileges } from '../../../infra/express/privileges';
+import { fetchEsi } from '../../../data-source/esi/fetch/fetchEsi';
+import { ESI_CORPORATIONS_$corporationId } from '../../../data-source/esi/endpoints';
 
 
 export class Input {
@@ -56,13 +58,24 @@ async function handleEndpoint(
   return {};
 }
 
-function storeCorpConfigs(db: Tnex, corpConfigs: Input['corporations']) {
-  let corpRows: MemberCorporation[] = corpConfigs.map(corp => {
-    return {
-      memberCorporation_corporationId: corp.id,
-      memberCorporation_membership: corp.membership,
-    }
-  });
+async function storeCorpConfigs(db: Tnex, corpConfigs: Input['corporations']) {
+  const work = [] as Promise<MemberCorporation>[];
+  for (let corp of corpConfigs) {
+    work.push(
+      fetchEsi(ESI_CORPORATIONS_$corporationId, { corporationId: corp.id })
+      .then(corpInfo => {
+        return {
+          mcorp_corporationId: corp.id,
+          mcorp_membership: corp.membership,
+          mcorp_name: corpInfo.name,
+          mcorp_ticker: corpInfo.ticker,
+        };
+      })
+    );
+  }
+
+  const corpRows = await Promise.all(work);
+
   let titleRows = extractTitleMappings(corpConfigs);
   return dao.config.setMemberCorpConfigs(db, corpRows, titleRows);
 }

@@ -187,8 +187,10 @@ export class KillmailBattle {
 export const killmailBattle = tables.register(new KillmailBattle());
 
 export class MemberCorporation {
-  memberCorporation_corporationId = integer();
-  memberCorporation_membership = varchar();
+  mcorp_corporationId = integer();
+  mcorp_membership = varchar();
+  mcorp_name = varchar();
+  mcorp_ticker = varchar();
 }
 export const memberCorporation = tables.register(new MemberCorporation());
 
