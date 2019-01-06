@@ -57,17 +57,17 @@ async function syncKillmailsForAllCorps(
 ) {
   for (let memberCorp of memberCorps) {
     try {
-      const corpId = memberCorp.memberCorporation_corporationId;
+      const corpId = memberCorp.mcorp_corporationId;
       syncedRanges[corpId] = await syncKillmailsForCorp(
           db,
           job,
-          memberCorp.memberCorporation_corporationId,
+          memberCorp.mcorp_corporationId,
           syncedRanges[corpId],
           jurisdiction,
           );
     } catch (e) {
       job.error(`Error while syncing kills for corp `
-          + `${memberCorp.memberCorporation_corporationId}`, e);
+          + `${memberCorp.mcorp_corporationId}`, e);
     }
   }
 

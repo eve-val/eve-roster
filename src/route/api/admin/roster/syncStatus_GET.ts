@@ -51,12 +51,12 @@ async function handleEndpoint(
 
   for (let memberRow of memberRows) {
     const corpSection: CorpSection = {
-      id: memberRow.memberCorporation_corporationId,
-      type: memberRow.memberCorporation_membership,
+      id: memberRow.mcorp_corporationId,
+      type: memberRow.mcorp_membership,
       directors: [],
     };
 
-    const directors = directorGroups[memberRow.memberCorporation_corporationId];
+    const directors = directorGroups[memberRow.mcorp_corporationId];
     if (directors != undefined) {
       corpSection.directors = directors.map(row => {
         const label = row.accessToken_scopes == null ? 'No token'
@@ -74,7 +74,7 @@ async function handleEndpoint(
     }
 
     corps.push(corpSection);
-    unresolvedNames.push(memberRow.memberCorporation_corporationId);
+    unresolvedNames.push(memberRow.mcorp_corporationId);
   }
 
   const names = await fetchEveNames(unresolvedNames);

@@ -48,7 +48,7 @@ export default class KillmailDao {
             .leftJoin(ownership, 'ownership_character', '=', 'km_character')
             .leftJoin(account, 'account_id', '=', 'ownership_account')
             .leftJoin(memberCorporation,
-                'memberCorporation_corporationId', '=', 'km_victimCorp')
+                'mcorp_corporationId', '=', 'km_victimCorp')
             .and(clause => {
               clause
                   .where('km_processed', '=', val(false))
@@ -60,7 +60,7 @@ export default class KillmailDao {
             })
             .columns(
                 'account_mainCharacter',
-                'memberCorporation_corporationId',
+                'mcorp_corporationId',
                 ),
         );
   }
@@ -85,4 +85,4 @@ export default class KillmailDao {
 export type UnprocessedKillmailRow =
     Killmail
     & { account_mainCharacter: number | null }
-    & { memberCorporation_corporationId: number | null };
+    & { mcorp_corporationId: number | null };

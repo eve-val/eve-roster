@@ -12,7 +12,7 @@ export default class LocationDao {
     return db
         .select(memberCorporation)
         .join(character,
-            'character_corporationId', '=', 'memberCorporation_corporationId')
+            'character_corporationId', '=', 'mcorp_corporationId')
         .join(characterLocation, 'charloc_character', '=', 'character_id')
         .distinctOn('charloc_character')
         .orderBy('charloc_character', 'desc')
@@ -31,7 +31,7 @@ export default class LocationDao {
     return db
         .select(memberCorporation)
         .join(character,
-            'character_corporationId', '=', 'memberCorporation_corporationId')
+            'character_corporationId', '=', 'mcorp_corporationId')
         .join(accessToken, 'accessToken_character', '=', 'character_id')
         .where('accessToken_needsUpdate', '=', val(false))
         .columns(

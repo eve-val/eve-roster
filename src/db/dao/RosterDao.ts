@@ -21,7 +21,7 @@ export interface BasicRosterCharacter {
   cstats_killValueInLastMonth: number | null,
   cstats_lossesInLastMonth: number | null,
   cstats_lossValueInLastMonth: number | null,
-  memberCorporation_membership: string | null,
+  mcorp_membership: string | null,
   accessToken_needsUpdate: boolean | null,
 }
 
@@ -78,7 +78,7 @@ export default class RosterDao {
                 .join(t.character,
                     'character_corporationId',
                     '=',
-                    'memberCorporation_corporationId')
+                    'mcorp_corporationId')
                 .join(t.ownership,'ownership_character', '=', 'character_id')
                 .join(t.account, 'account_id', '=', 'ownership_account')
                 .distinct('account_id')
@@ -90,7 +90,7 @@ export default class RosterDao {
         .leftJoin(t.combatStats, 'cstats_character', '=', 'character_id')
         .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .leftJoin(t.memberCorporation,
-            'memberCorporation_corporationId', '=', 'character_corporationId')
+            'mcorp_corporationId', '=', 'character_corporationId')
         .leftJoin(
             db.subselect(t.accountGroup, 'trialCheck')
                 .join(t.account, 'account_id', '=', 'accountGroup_account')
@@ -111,7 +111,7 @@ export default class RosterDao {
             'cstats_killValueInLastMonth',
             'cstats_lossesInLastMonth',
             'cstats_lossValueInLastMonth',
-            'memberCorporation_membership',
+            'mcorp_membership',
             'account_id',
             'account_mainCharacter',
             'account_activeTimezone',
@@ -127,7 +127,7 @@ export default class RosterDao {
     return db
         .select(t.memberCorporation)
         .join(t.character,
-            'character_corporationId', '=', 'memberCorporation_corporationId')
+            'character_corporationId', '=', 'mcorp_corporationId')
         .leftJoin(t.ownership, 'ownership_character', '=', 'character_id')
         .leftJoin(t.combatStats,
             'cstats_character', '=', 'character_id')
@@ -147,7 +147,7 @@ export default class RosterDao {
             'cstats_killValueInLastMonth',
             'cstats_lossesInLastMonth',
             'cstats_lossValueInLastMonth',
-            'memberCorporation_membership',
+            'mcorp_membership',
             'accessToken_needsUpdate',
             )
         .run()
@@ -185,7 +185,7 @@ export default class RosterDao {
     return db
         .select(t.memberCorporation)
         .join(t.character,
-              'character_corporationId', '=', 'memberCorporation_corporationId')
+              'character_corporationId', '=', 'mcorp_corporationId')
         .leftJoin(t.accessToken, 'accessToken_character', '=', 'character_id')
         .whereContains('character_roles', '@>', ['Director'])
         .columns(

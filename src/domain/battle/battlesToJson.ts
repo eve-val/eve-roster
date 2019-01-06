@@ -27,7 +27,7 @@ export async function battlesToJson(
 ): Promise<BattleOutput> {
   const memberCorps = arrayToMap(
       await dao.config.getMemberCorporations(db),
-      'memberCorporation_corporationId',
+      'mcorp_corporationId',
   );
 
   const ids = new Set<number | nil>();
@@ -134,7 +134,7 @@ function rankTeam(team: Team, memberCorps: Map<number, MemberCorporation>) {
   if (row == undefined) {
     return 0;
   }
-  if (row.memberCorporation_membership == 'full') {
+  if (row.mcorp_membership == 'full') {
     return 2;
   } else {
     return 1;
