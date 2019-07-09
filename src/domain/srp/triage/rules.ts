@@ -3,12 +3,10 @@ import _ = require('underscore');
 import { TemplateRule, FuncRule } from './TriageRule';
 import { SrpVerdictStatus, SrpVerdictReason } from '../../../db/dao/enums';
 import { GROUP_T1_INDUSTRIAL, GROUP_T1_FRIGATE, GROUP_T1_DESTROYER, GROUP_T1_COMBAT_BATTLECRUISER, GROUP_T1_ATTACK_BATTLECRUISER, GROUP_T1_BATTLESHIP, GROUP_LOGISTICS_FRIGATE, GROUP_ASSAULT_FRIGATE, GROUP_INTERCEPTOR, GROUP_COVERT_OPS, GROUP_STEALTH_BOMBER, GROUP_ELECTRONIC_ATTACK_SHIP, GROUP_INTERDICTOR, GROUP_COMMAND_DESTROYER, GROUP_LOGISTICS_CRUISER, GROUP_SHIP_HAC, GROUP_SHIP_HIC, GROUP_COMBAT_RECON, GROUP_FORCE_RECON, GROUP_COMMAND_SHIP, GROUP_BLACK_OPS, GROUP_MARAUDER, GROUP_BLOCKADE_RUNNER, GROUP_DST, GROUP_TACTICAL_DESTROYER, GROUP_STRATEGIC_CRUISER, GROUP_CAPSULE, GROUP_MOBILE_DEPOT, GROUP_MOBILE_TRACTOR_UNIT, GROUP_T1_CRUISER, GROUP_SUPPORT_FIGHTER, GROUP_LIGHT_FIGHTER, GROUP_HEAVY_FIGHTER, GROUP_SHUTTLE } from '../../../eve/constants/groups';
-import { TYPE_GNOSIS, TYPE_HIGH_GRADE_TALONS, TYPE_LOW_GRADE_TALONS, TYPE_LOW_GRADE_GRAILS, TYPE_HIGH_GRADE_GRAILS, TYPE_LOW_GRADE_TALISMANS, TYPE_MID_GRADE_TALISMANS, TYPE_HIGH_GRADE_TALISMANS, TYPE_ARMORED_COMMAND_MINDLINK, TYPE_SHIELD_COMMAND_MINDLINK, TYPE_INFORMATION_COMMAND_MINDLINK, TYPE_SKIRMISH_COMMAND_MINDLINK, TYPE_IMPERIAL_NAVY_MINDLINK, TYPE_REPUBLIC_FLEET_MINDLINK, TYPE_FEDERATION_NAVY_MINDLINK, TYPE_CALDARI_NAVY_MINDLINK, TYPE_GUARDIAN, TYPE_TENGU, TYPE_SCORPION, TYPE_LEGION, TYPE_BHAALGORN, TYPE_DAMNATION, TYPE_LOKI, TYPE_VULTURE } from '../../../eve/constants/types';
-import { killmail } from '../../../db/tables';
+import { TYPE_GNOSIS, TYPE_HIGH_GRADE_TALONS, TYPE_LOW_GRADE_TALONS, TYPE_LOW_GRADE_GRAILS, TYPE_HIGH_GRADE_GRAILS, TYPE_LOW_GRADE_TALISMANS, TYPE_MID_GRADE_TALISMANS, TYPE_HIGH_GRADE_TALISMANS, TYPE_ARMORED_COMMAND_MINDLINK, TYPE_SHIELD_COMMAND_MINDLINK, TYPE_INFORMATION_COMMAND_MINDLINK, TYPE_SKIRMISH_COMMAND_MINDLINK, TYPE_IMPERIAL_NAVY_MINDLINK, TYPE_REPUBLIC_FLEET_MINDLINK, TYPE_FEDERATION_NAVY_MINDLINK, TYPE_CALDARI_NAVY_MINDLINK, TYPE_GUARDIAN, TYPE_TENGU, TYPE_SCORPION, TYPE_LEGION, TYPE_BHAALGORN, TYPE_DAMNATION, TYPE_LOKI, TYPE_VULTURE, TYPE_LESHACK, TYPE_DEVOTER, TYPE_LOW_GRADE_SLAVES, TYPE_MID_GRADE_SLAVES, TYPE_HIGH_GRADE_SLAVES } from '../../../eve/constants/types';
 import { findWhere } from '../../../util/underscore';
 import { MKT_GROUP_PIRATE_CRUISERS, MKT_GROUP_NAVY_FRIGATES, MKT_GROUP_NAVY_BATTLECRUISERS, MKT_GROUP_PIRATE_FRIGATES, MKT_GROUP_NAVY_CRUISERS, MKT_GROUP_PIRATE_BATTLESHIPS, MKT_GROUPS_T1_FRIGATES, MKT_GROUPS_T1_CRUISERS, MKT_GROUPS_T1_DESTROYERS, MKT_GROUP_TRIGLAVIAN_FRIGATES, MKT_GROUP_TRIGLAVIAN_CRUISERS, MKT_GROUP_TRIGLAVIAN_BATTLESHIPS } from '../../../eve/constants/marketGroups';
 import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-
 
 
 /**
@@ -122,7 +120,7 @@ const NAVY_FRIGATES: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Navy frigate',
-    payout: { kind: 'Static', value: million(10) },
+    payout: { kind: 'Market', fallback: million(10) },
   }],
 };
 
@@ -131,7 +129,7 @@ const NAVY_CRUISERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Navy cruiser',
-    payout: { kind: 'Static', value: million(60) },
+    payout: { kind: 'Market', fallback: million(60) },
   }],
 };
 
@@ -149,7 +147,7 @@ const NAVY_BATTLESHIPS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Navy battleship',
-    payout: { kind: 'Static', value: million(80) },
+    payout: { kind: 'Market', fallback: million(300) },
   }],
 };
 
@@ -163,7 +161,7 @@ const PIRATE_FRIGATES: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Pirate frigate',
-    payout: { kind: 'Static', value: million(10) },
+    payout: { kind: 'Market', fallback: million(50) },
   }],
 };
 
@@ -174,13 +172,8 @@ const PIRATE_CRUISERS: TemplateRule = {
   verdicts: [
     {
       status: SrpVerdictStatus.APPROVED,
-      label: 'Non-doctrine pirate cruiser',
-      payout: { kind: 'Static', value: million(125) },
-    },
-    {
-      status: SrpVerdictStatus.APPROVED,
-      label: 'Doctrine pirate cruiser',
-      payout: { kind: 'Static', value: million(200) },
+      label: 'Pirate cruiser',
+      payout: { kind: 'Market', fallback: million(210) },
     },
   ],
 };
@@ -195,19 +188,16 @@ const PIRATE_BATTLESHIPS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Pirate battleship',
-    payout: { kind: 'Static', value: million(350) },
+    payout: { kind: 'Market', fallback: million(350) },
   }],
 };
-
-
-
 
 const T1_FRIGATES: TemplateRule = {
   filter: { groupId: [GROUP_T1_FRIGATE] },
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 frigate',
-    payout: { kind: 'Static', value: million(3) },
+    payout: { kind: 'Market', fallback: million(1) },
   }],
 };
 
@@ -216,7 +206,7 @@ const T1_DESTROYERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 destroyer',
-    payout: { kind: 'Static', value: million(5) },
+    payout: { kind: 'Market', fallback: million(2) },
   }],
 };
 
@@ -225,7 +215,7 @@ const T1_CRUISERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 cruiser',
-    payout: { kind: 'Static', value: million(20) },
+    payout: { kind: 'Market', fallback: million(11) },
   }],
 };
 
@@ -234,7 +224,7 @@ const GNOSIS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 combat BC',
-    payout: { kind: 'Static', value: million(40) },
+    payout: { kind: 'Market', fallback: million(40) },
   }],
 };
 
@@ -243,7 +233,7 @@ const T1_COMBAT_BCS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 combat BC',
-    payout: { kind: 'Static', value: million(40) },
+    payout: { kind: 'Market', fallback: million(40) },
   }],
 };
 
@@ -252,7 +242,7 @@ const T1_ATTACK_BCS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 combat BC',
-    payout: { kind: 'Static', value: million(60) },
+    payout: { kind: 'Market', fallback: million(60) },
   }],
 };
 
@@ -261,7 +251,7 @@ const T1_BATTLESHIPS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 battleship',
-    payout: { kind: 'Static', value: million(80) },
+    payout: { kind: 'Market', fallback: million(150) },
   }],
 };
 
@@ -272,12 +262,9 @@ const T1_INDUSTRIALS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T1 industrial',
-    payout: { kind: 'LossValue', max: million(100) },
+    payout: { kind: 'Market', fallback: million(5) },
   }],
 };
-
-
-
 
 const LOGISTICS_FRIGATES: TemplateRule = {
   filter: {
@@ -286,7 +273,7 @@ const LOGISTICS_FRIGATES: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Logistics frigate',
-    payout: { kind: 'Market', fallback: million(30) }
+    payout: { kind: 'Market', additional: million(50), fallback: million(70) }
   }],
 };
 
@@ -303,7 +290,7 @@ const OTHER_T2_FRIGATES: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T2 frigate',
-    payout: { kind: 'Static', value: million(20) },
+    payout: { kind: 'Market', fallback: million(20) },
   }],
 };
 
@@ -312,9 +299,9 @@ const INTERDICTORS: TemplateRule = {
     groupId: [GROUP_INTERDICTOR],
   },
   verdicts: [{
-    status: SrpVerdictStatus.APPROVED,
-    label: 'Interdictor',
-    payout: { kind: 'Static', value: million(60) },
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.CORP_PROVIDED,
+    autoCommit: 'leader',
   }],
 };
 
@@ -325,7 +312,7 @@ const COMMAND_DESTROYERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Command destroyer',
-    payout: { kind: 'Static', value: million(40) },
+    payout: { kind: 'Market', fallback: million(60) },
   }],
 };
 
@@ -363,7 +350,7 @@ const COMMAND_SHIPS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Command ship',
-    payout: { kind: 'Static', value: million(300) },
+    payout: { kind: 'Market', fallback: million(390) },
   }],
 };
 
@@ -374,7 +361,7 @@ const T2_INDUSTRIALS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'T2 industrial',
-    payout: { kind: 'LossValue', max: million(500) },
+    payout: { kind: 'Market', fallback: million(200) },
   }],
 };
 
@@ -385,7 +372,7 @@ const TACTICAL_DESTROYERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Tactical destroyer',
-    payout: { kind: 'Static', value: million(40) },
+    payout: { kind: 'Market', fallback: million(40) },
   }],
 };
 
@@ -396,11 +383,9 @@ const STRATEGIC_CRUISERS: TemplateRule = {
   verdicts: [{
     status: SrpVerdictStatus.APPROVED,
     label: 'Strategic cruiser',
-    payout: { kind: 'Static', value: million(350) },
+    payout: { kind: 'Market', additional: million(145), fallback: million(250) },
   }],
 };
-
-
 
 const GRAIL_IMPLANTS: FuncRule = {
   filter: {
@@ -542,7 +527,28 @@ const NAVY_MINDLINK_IMPLANTS: FuncRule = {
   },
 }
 
-
+const SLAVE_IMPLANTS: FuncRule = {
+  filter: {
+    groupId: [GROUP_CAPSULE],
+    relatedLoss: {
+      shipId: [TYPE_DAMNATION, TYPE_BHAALGORN, TYPE_LESHACK, TYPE_DEVOTER],
+    }
+  },
+  discriminant: (killmail, extra) => {
+    if (invMatchAll(killmail, TYPE_LOW_GRADE_SLAVES)
+        || invMatchAll(killmail, TYPE_MID_GRADE_SLAVES)
+        || invMatchAll(killmail, TYPE_HIGH_GRADE_SLAVES)) {
+      return [{
+        status: SrpVerdictStatus.APPROVED,
+        label: 'Slave implants',
+        payout: {
+          kind: 'Static',
+          value: million(200),
+        },
+      }];
+    }
+  },
+}
 
 const INELIGIBLE_IMPLANTS: TemplateRule = {
   filter: {
@@ -631,6 +637,7 @@ export const TRIAGE_RULES = [
 
   GRAIL_IMPLANTS,
   TALON_IMPLANTS,
+  SLAVE_IMPLANTS,
   TALISMAN_IMPLANTS,
   BASIC_MINDLINK_IMPLANTS,
   NAVY_MINDLINK_IMPLANTS,
