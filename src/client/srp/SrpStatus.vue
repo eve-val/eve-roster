@@ -384,6 +384,11 @@ const INELIGIBLE_STATUSES = [
       reason: 'misc',
       label: 'Ineligible (misc)',
     },
+    {
+      status: 'ineligible',
+      reason: 'corp_provided',
+      label: 'Ineligible (corp provided ship)'
+    },
 ];
 
 const UNSETTABLE_STATUSES = [
