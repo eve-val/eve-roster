@@ -49,6 +49,8 @@ export enum SrpVerdictReason {
   OBSOLETE = 'obsolete',
   /** Uncategorized reason for ignoring a loss. */
   MISC = 'misc',
+  /** Loss is of a ship the corp provides for free. Player should take a replacement. */
+  CORP_PROVIDED = 'corp_provided',
   /**
    * Loss occurred before this system had jurisdiction over SRP. Can only be
    * set by the system.
