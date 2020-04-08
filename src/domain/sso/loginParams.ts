@@ -51,7 +51,6 @@ export const LOGIN_PARAMS = querystring.stringify({
     'esi-fittings.write_fittings.v1',
     'esi-markets.structure_markets.v1',
     'esi-corporations.read_structures.v1',
-    'esi-corporations.write_structures.v1',
     'esi-characters.read_loyalty.v1',
     'esi-characters.read_opportunities.v1',
     'esi-characters.read_chat_channels.v1',
@@ -91,7 +90,6 @@ export const LOGIN_PARAMS = querystring.stringify({
     'esi-alliances.read_contacts.v1',
     'esi-characters.read_fw_stats.v1',
     'esi-corporations.read_fw_stats.v1',
-    'esi-corporations.read_outposts.v1',
     'esi-characterstats.read.v1',
   ].join(' '),
 });
