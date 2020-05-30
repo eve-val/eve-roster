@@ -20,6 +20,10 @@ shown. If not, results are ordered newest to oldest.
     </select>
   </div>
 
+  <div class="account-header" v-if="forAccount">
+    Showing results for a single account:
+  </div>
+
   <battle-history
       v-if="mode=='battles'"
       :identity="identity"
@@ -85,5 +89,11 @@ export default Vue.extend({
 .mode-select:focus {
   outline: none;
   border-color: #444;
+}
+
+.account-header {
+  color: #A7A29C;
+  font-size: 14px;
+  margin-bottom: 30px;
 }
 </style>

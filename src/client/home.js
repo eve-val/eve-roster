@@ -52,6 +52,14 @@ const routes = [
         props: { triageMode: false },
       },
       {
+        path: 'history/:id',
+        component: CombatHistory,
+        props: (route) => ({
+          forAccount: parseInt(route.params.id),
+          triageMode: false,
+        }),
+      },
+      {
         path: 'payments',
         component: PaymentHistory,
       },

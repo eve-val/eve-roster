@@ -59,8 +59,14 @@
             <div class="factoid">
               <router-link
                 class="srp-link"
-                :to="'/srp/triage/' + account.id"
+                :to="'/srp/history/' + account.id"
                 >View Losses</router-link>
+            </div>
+            <div class="factoid">
+              <router-link
+                class="srp-link"
+                :to="'/srp/triage/' + account.id"
+                >Triage Losses</router-link>
             </div>
           </template>
 
