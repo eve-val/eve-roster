@@ -3,3 +3,5 @@
 A corporation management tool for intergalactic spreadsheets.
 
 See our [development setup instructions](https://github.com/7sempra/eve-roster/wiki/Development-Setup) to get started.
+
+.

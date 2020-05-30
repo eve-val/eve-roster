@@ -61,6 +61,14 @@ const routes = [
         props: { triageMode: true },
       },
       {
+        path: 'triage/:id',
+        component: CombatHistory,
+        props: (route) => ({
+          forAccount: parseInt(route.params.id),
+          triageMode: true,
+        }),
+      },
+      {
         path: 'pay',
         component: PaymentTriage,
       },

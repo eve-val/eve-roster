@@ -16,7 +16,7 @@ shown. If not, results are ordered newest to oldest.
     Show
     <select class="mode-select" v-model="mode">
       <option value="battles">Battle reports</option>
-      <option value="losses">Losses</option>>
+      <option value="losses">Losses</option>
     </select>
   </div>
 
@@ -30,6 +30,7 @@ shown. If not, results are ordered newest to oldest.
   <loss-history
       v-if="mode=='losses'"
       :identity="identity"
+      :for-account="forAccount"
       :triage-mode="triageMode"
       >
   </loss-history>
@@ -49,6 +50,7 @@ export default Vue.extend({
   },
 
   props: {
+    forAccount: { type: Number, required: false, },
     identity: { type: Object, required: true, },
     triageMode: { type: Boolean, required: true, },
   },
