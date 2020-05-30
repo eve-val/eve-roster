@@ -54,6 +54,16 @@
         </template>
 
         <template v-if="account.id != null">
+          <template v-if="canWriteSrp">
+            <div class="factoid-title">SRP</div>
+            <div class="factoid">
+              <router-link
+                class="srp-link"
+                :to="'/srp/triage/' + account.id"
+                >View Losses</router-link>
+            </div>
+          </template>
+
           <div class="factoid-title">Timezone</div>
           <factoid-selector v-if="canWriteTimezone"
               :options="timezoneOptions"
@@ -148,6 +158,10 @@ export default {
   computed: {
     characterId: function() {
       return parseInt(this.$route.params.id);
+    },
+
+    canWriteSrp: function() {
+      return this.identity.access['srp'] == 2;
     },
 
     canWriteTimezone: function() {
@@ -311,6 +325,15 @@ const TIMEZONE_HINTS = {
 }
 
 .character-link:hover {
+  text-decoration: underline;
+}
+
+.srp-link {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+
+.srp-link:hover {
   text-decoration: underline;
 }
 
