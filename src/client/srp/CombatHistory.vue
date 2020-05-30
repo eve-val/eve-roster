@@ -12,7 +12,7 @@ shown. If not, results are ordered newest to oldest.
 
 <template>
 <div class="_approve">
-  <div class="mode-cnt">
+  <div class="mode-cnt" v-if="forAccount">
     Show
     <select class="mode-select" v-model="mode">
       <option value="battles">Battle reports</option>
@@ -57,7 +57,7 @@ export default Vue.extend({
 
   data() {
     return {
-      mode: 'battles',
+      mode: this.forAccount ? 'losses' : 'battles',
     };
   }
 });
