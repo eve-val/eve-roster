@@ -12,7 +12,7 @@ shown. If not, results are ordered newest to oldest.
 
 <template>
 <div class="_approve">
-  <div class="mode-cnt" v-if="forAccount">
+  <div class="mode-cnt" v-if="!forAccount">
     Show
     <select class="mode-select" v-model="mode">
       <option value="battles">Battle reports</option>
