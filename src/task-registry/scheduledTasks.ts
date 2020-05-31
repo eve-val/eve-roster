@@ -19,27 +19,27 @@ import { TaskSchedule } from '../infra/taskrunner/cron';
 export const SCHEDULED_TASKS: TaskSchedule[] = [
   {
     task: syncRoster,
-    schedule: '*/61 * * * *', // Every 61 minutes
-    interval: moment.duration(61, 'minutes').asMilliseconds(),
+    schedule: '*/15 * * * *', // Every 15 minutes...
+    interval: moment.duration(61, 'minutes').asMilliseconds(), // or at least every 61.
   },
   {
     task: syncCombatStats,
-    schedule: '? 2 * * *',  // Once a day at ~2AM
+    schedule: '7 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: syncKillmails,
-    schedule: '? */2 * * *',  // Every 2 hours
+    schedule: '22 */2 * * *',  // Every 2 hours
     interval: moment.duration(2, 'hours').asMilliseconds(),
   },
   {
     task: syncSkills,
-    schedule: '? 2 * * *',  // Once a day at ~2AM
+    schedule: '37 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: syncCorps,
-    schedule: '? 2 * * *',  // Once a day at ~2AM
+    schedule: '52 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
@@ -56,12 +56,12 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
   },
   {
     task: truncateCronLog,
-    schedule: '? 2 * * *',  // Once a day at ~2AM
+    schedule: '0 3 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: triagePendingLosses,
-    schedule: '? 5 * * *',  // Once a day at ~5AM
+    schedule: '0 5 * * *',  // Once a day at ~5AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
 ];
