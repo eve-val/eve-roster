@@ -24,27 +24,27 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
   },
   {
     task: syncCombatStats,
-    schedule: '0 2 * * *',  // Once a day at 2AM
+    schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: syncKillmails,
-    schedule: '0 */2 * * *',  // Every 2 hours
+    schedule: '? */2 * * *',  // Every 2 hours
     interval: moment.duration(2, 'hours').asMilliseconds(),
   },
   {
     task: syncSiggy,
-    schedule: '0 2 * * *',  // Once a day at 2AM
+    schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: syncSkills,
-    schedule: '0 2 * * *',  // Once a day at 2AM
+    schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: syncCorps,
-    schedule: '0 2 * * *',  // Once a day at 2AM
+    schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
@@ -61,12 +61,12 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
   },
   {
     task: truncateCronLog,
-    schedule: '0 2 * * *',  // Once a day at 2AM
+    schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
   {
     task: triagePendingLosses,
-    schedule: '0 5 * * *',  // Once a day at 5AM
+    schedule: '? 5 * * *',  // Once a day at ~5AM
     interval: moment.duration(1, 'day').asMilliseconds(),
   },
 ];
