@@ -252,7 +252,7 @@ export const ESI_UI_OPENWINDOW_INFORMATION = {
 
 export const ESI_UNIVERSE_NAMES = {
   method: FetchMethod.POST,
-  path: '/v2/universe/names/',
+  path: '/v3/universe/names/',
   pathVars: {},
   body: [] as number[],
   access: Public.ACCESS,
