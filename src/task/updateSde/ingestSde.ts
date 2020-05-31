@@ -79,6 +79,12 @@ async function importItems(
   for (let row of rows) {
     const typeId = checkNotNil(row.typeID as number);
 
+    if (!row.description) {
+      // Avoid occasional Fuzzwork SDE quirks due to changed items etc
+      skippedCount++;
+      continue;
+    }
+
     if (!row.published
         // The capsules are not marked as published for...some reason
         && typeId != TYPE_CAPSULE
@@ -132,9 +138,15 @@ async function importAttributes(
   job.info(`Importing attributes...`);
 
   let processedCount = 0;
+  let skippedCount = 0;
 
   const rows = await queryAll(sde, SELECT_ATTRIBUTES, []);
   for (let row of rows) {
+    if(!row.attributeName || !row.description) {
+      // Avoid Fuzzwork SDE quirks due to changes etc
+      skippedCount++;
+      continue;
+    }
     processedCount++;
     await db
         .upsert(sdeAttribute, {
@@ -151,7 +163,7 @@ async function importAttributes(
         }, 'sattr_id');
   }
 
-  job.info(`  Inserted ${processedCount} records.`);
+  job.info(`  Inserted ${processedCount} records (skipped ${skippedCount}).`);
 }
 
 function queryAll(

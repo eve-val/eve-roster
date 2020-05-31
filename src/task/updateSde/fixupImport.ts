@@ -8,7 +8,8 @@ import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_1_LEVEL } from '../.
  * surprising number of these, but most can be ignored.
  */
 export async function fixupImport(db: Tnex) {
-  await deleteIncompleteSocialSkillRequirement(db);
+  // Disabled: this seems to no longer be required
+  //await deleteIncompleteSocialSkillRequirement(db);
 }
 
 /**
