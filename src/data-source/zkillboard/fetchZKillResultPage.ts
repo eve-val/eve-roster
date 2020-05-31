@@ -45,5 +45,5 @@ type ResultResponse = ZKillDescriptor[] | ErrorResponse;
 interface ErrorResponse { error: string };
 
 const BASE_ZKILL_API_URL = 'https://zkillboard.com/api/';
-const PAGE_FETCH_DELAY_MS = 500;
+const PAGE_FETCH_DELAY_MS = 1200;
 const _rateLimiter = new RateLimiter(PAGE_FETCH_DELAY_MS);

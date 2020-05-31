@@ -101,7 +101,7 @@ function syncCharacterKillboard(
   })
   .then(() => {
     // Add another delay to avoid spamming zKill too much
-    return Bluebird.delay(500);
+    return Bluebird.delay(1200);
   });
 }
 
@@ -150,7 +150,7 @@ function fetchMailsPage(
     }
   }))
   // Add a delay here in order to prevent going over zKill's API limit.
-  .delay(500)
+  .delay(1200)
   .then(response => {
     if (!response.data || response.data.error) {
       let errorMessage = response.data && response.data.error;
