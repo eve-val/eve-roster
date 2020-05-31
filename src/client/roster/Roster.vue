@@ -218,7 +218,7 @@ function getActivity(character) {
 }
 
 .centering-container {
-  width: 1200px;
+  width: 950px;
   margin: 0 auto;
 }
 

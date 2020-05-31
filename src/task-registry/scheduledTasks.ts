@@ -33,11 +33,6 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
     interval: moment.duration(2, 'hours').asMilliseconds(),
   },
   {
-    task: syncSiggy,
-    schedule: '? 2 * * *',  // Once a day at ~2AM
-    interval: moment.duration(1, 'day').asMilliseconds(),
-  },
-  {
     task: syncSkills,
     schedule: '? 2 * * *',  // Once a day at ~2AM
     interval: moment.duration(1, 'day').asMilliseconds(),
