@@ -52,8 +52,8 @@ function main() {
   // both and hope that they are ordered correctly. Our code in the child always
   // writes to stdout, which limits our exposure here -- only 3rd party logs
   // could possibly be written out of order.
-  child.stderr.pipe(logWriter);
-  child.stdout.pipe(logWriter);
+  child.stderr?.pipe(logWriter);
+  child.stdout?.pipe(logWriter);
 }
 
 main();

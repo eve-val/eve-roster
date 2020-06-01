@@ -75,7 +75,7 @@ export default class ConfigDao {
     });
   }
 
-  getMemberCorporations(db: Tnex): Bluebird<MemberCorporation[]> {
+  getMemberCorporations(db: Tnex): Promise<MemberCorporation[]> {
     return db
         .select(memberCorporation)
         .columns(
@@ -109,6 +109,7 @@ export default class ConfigDao {
           return db
               .insertAll(memberCorporation, corpConfigs);
         }
+        return null;
       })
       .then(() => {
         return Bluebird.map(titleMappings, link => {

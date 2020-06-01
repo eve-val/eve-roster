@@ -39,6 +39,7 @@ export default jsonEndpoint((req, res, db, account, privs) => {
           return dao.ownership.deleteOwnership(
               db, charId, oldAccountId, newAccountId);
         }
+        return null;
       })
       .then(() => {
         return dao.ownership.ownCharacter(

@@ -47,7 +47,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     this._subqueryTableName = subqueryTableName;
   }
 
-  public run(): Bluebird<S[]> {
+  public run(): Promise<S[]> {
     if (this._subqueryTableName != null) {
       throw new Error(`Subqueries can't be run().`);
     }
@@ -56,7 +56,7 @@ export class Select<J extends object /* joined */, S /* selected */>
     return super.run();
   }
 
-  public fetchFirst(): Bluebird<S | null> {
+  public fetchFirst(): Promise<S | null> {
     return this.run()
     .then(rows => {
       return rows[0];

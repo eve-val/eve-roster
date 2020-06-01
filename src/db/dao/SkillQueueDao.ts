@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import { characterSkillQueue, sdeType } from '../tables';
@@ -13,7 +11,7 @@ class SkillQueueDao {
   }
 
   getCachedSkillQueue(
-      db: Tnex, characterId: number): Bluebird<NamedSkillQueueRow[]> {
+      db: Tnex, characterId: number): Promise<NamedSkillQueueRow[]> {
     return db
         .select(characterSkillQueue)
         .leftJoin(sdeType, 'styp_id', '=', 'characterSkillQueue_skill')

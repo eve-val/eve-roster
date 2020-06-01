@@ -1,5 +1,3 @@
-import Bluebird = require('bluebird');
-
 import * as _ from '../../util/underscore';
 import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
@@ -66,7 +64,7 @@ export default class RosterDao {
   }
 
   getCharactersOwnedByAssociatedAccounts(
-      db: Tnex): Bluebird<OwnedRosterCharacter[]> {
+      db: Tnex): Promise<OwnedRosterCharacter[]> {
     return db.select(t.account)
         .join(
             // This complex subquery is required because we want to select the
@@ -123,7 +121,7 @@ export default class RosterDao {
         .run();
   }
 
-  getUnownedCorpCharacters(db: Tnex): Bluebird<BasicRosterCharacter[]> {
+  getUnownedCorpCharacters(db: Tnex): Promise<BasicRosterCharacter[]> {
     return db
         .select(t.memberCorporation)
         .join(t.character,

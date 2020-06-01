@@ -59,6 +59,7 @@ export default class OwnershipDao {
             }
           }
         }
+        return null;
       })
       .then(() => {
         return db

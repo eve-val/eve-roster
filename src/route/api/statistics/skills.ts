@@ -4,6 +4,7 @@ import * as sde from '../../../eve/sde';
 import { BadRequestError } from '../../../error/BadRequestError';
 
 import { SkillRequirement } from '../../../db/dao/StatisticsDao';
+import { stringQuery } from '../../../util/express/paramVerifier';
 
 
 export interface Output {
@@ -21,7 +22,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 
   // Format: <skillId>:<minLevel>,...
   // eg. "3333:5,3335:5,3337:5"
-  let skillRequirements = parseQuery(req.query.q);
+  let skillRequirements = parseQuery(stringQuery(req, 'q'));
 
   let numAccounts: number;
 

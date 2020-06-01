@@ -27,7 +27,7 @@ const ACCOUNT_IS_OPT_OUT: FuncRule = {
   filter: {},
   discriminant: (killmail, extra) => {
     if (killmail.victim.character_id == undefined) {
-      return;
+      return undefined;
     }
     if (OPT_OUT_CHARS.indexOf(killmail.victim.character_id) != -1
         || OPT_OUT_CHARS.indexOf(extra.mainCharacter!) != -1) {
@@ -37,6 +37,7 @@ const ACCOUNT_IS_OPT_OUT: FuncRule = {
         autoCommit: 'leader',
       }];
     }
+    return undefined;
   },
 }
 
@@ -109,6 +110,7 @@ const SOLO_DEATH: FuncRule = {
         // Don't autocommit here -- zkill's solo detection is not 100% reliable
       }];
     }
+    return undefined;
   },
 }
 
@@ -407,6 +409,7 @@ const GRAIL_IMPLANTS: FuncRule = {
         },
       }];
     }
+    return undefined;
   },
 }
 
@@ -426,6 +429,7 @@ const TALON_IMPLANTS: FuncRule = {
         payout: { kind: 'Static', value: million(40) },
       }];
     }
+    return undefined;
   },
 }
 
@@ -446,6 +450,7 @@ const TALISMAN_IMPLANTS: FuncRule = {
         payout: { kind: 'Static', value: million(100) },
       }];
     }
+    return undefined;
   },
 }
 
@@ -475,6 +480,7 @@ const BASIC_MINDLINK_IMPLANTS: FuncRule = {
         payout: { kind: 'Market', items: [implant], fallback: million(40) }
       }];
     }
+    return undefined;
   },
 }
 
@@ -524,6 +530,7 @@ const NAVY_MINDLINK_IMPLANTS: FuncRule = {
         },
       }];
     }
+    return undefined;
   },
 }
 
@@ -547,6 +554,7 @@ const SLAVE_IMPLANTS: FuncRule = {
         },
       }];
     }
+    return undefined;
   },
 }
 
