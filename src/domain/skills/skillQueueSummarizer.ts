@@ -69,6 +69,7 @@ function loadQueue(db: Tnex, characterId: number, freshness: DataFreshness) {
     if (freshness != 'cached') {
       return updateSkillQueue(db, characterId)
     }
+    return undefined;
   })
   .catch(e => {
     warning = consumeOrThrowError(e, characterId);

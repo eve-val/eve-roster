@@ -1,6 +1,8 @@
 import express = require('express');
 
 import { BadRequestError } from '../../error/BadRequestError';
+import e = require('express');
+import { MixedObject } from '../simpleTypes';
 
 
 const POSITIVE_INTEGER_PATTERN = /^\d+$/;
@@ -20,7 +22,7 @@ export function idParam(req: express.Request, key: string): number {
 
 export function stringQuery(
     req: express.Request, key: string): string | undefined {
-  return req.query[key];
+  return getStringQuery(req, key);
 }
 
 export function boolQuery(
@@ -33,23 +35,34 @@ export function boolQuery(
 }
 
 export function intQuery(
-    req: express.Request, key: string): number | undefined {
-  if (isNaN(req.query[key])) {
+    req: express.Request,
+    key: string,
+): number | undefined {
+  const val = getStringQuery(req, key);
+  if (val == undefined) {
+    return undefined;
+  }
+  const parsedVal = parseInt(val);
+  if (isNaN(parsedVal)) {
     return undefined;
   } else {
-    return parseInt(req.query[key]);
+    return parsedVal;
   }
 }
 
-export function enumQuery<EType extends string, Eobj extends object = object>(
-    req: express.Request, key: string, enu: Eobj): EType | undefined {
-  let value = req.query[key];
+export function enumQuery<EType extends string>(
+    req: express.Request,
+    key: string,
+    enu: MixedObject,
+): EType | undefined {
+  let value = getStringQuery(req, key);
   if (value === undefined) {
     return value;
   }
   for (let v in enu) {
-    if (enu[v] == value) {
-      return value;
+    // TODO: Figure out a way for these types to work
+    if (enu[v] as any == value) {
+      return value as any;
     }
   }
   throw new BadRequestError(`Non-enum value "${value}" for key "${key}".`);
@@ -63,17 +76,17 @@ export function enumQuery<EType extends string, Eobj extends object = object>(
  */
 export function jsonQuery(
     req: express.Request,
-    queryParam: string,
+    key: string,
 ): object | undefined {
-  const value = req.query[queryParam];
-  if (value == undefined) {
-    return value;
+  const val = getStringQuery(req, key);
+  if (val == undefined) {
+    return val;
   } else {
     try {
-      return JSON.parse(value);
+      return JSON.parse(val);
     } catch (err) {
       if (err instanceof SyntaxError) {
-        throw new BadRequestError(`Query "${queryParam}" is not valid JSON.`);
+        throw new BadRequestError(`Query "${key}" is not valid JSON.`);
       } else {
         throw err;
       }
@@ -96,4 +109,12 @@ function getParam(req: express.Request, key: string): string {
     throw new BadRequestError(`Param ${key} is empty.`)
   }
   return param;
+}
+
+function getStringQuery(req: express.Request, key: string): string | undefined {
+  const val = req.query[key];
+  if (typeof val != 'string' && typeof val != 'undefined') {
+    throw new Error(`Invalid query type for '${key}': ${val} (${typeof val})`);
+  }
+  return val;
 }

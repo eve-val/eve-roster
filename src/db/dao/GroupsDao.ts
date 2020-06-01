@@ -78,6 +78,7 @@ export default class GroupsDao {
                 new: groups,
               });
         }
+        return null;
       })
       .then(() => {
         if (!oldGroups.includes(MEMBER_GROUP) &&
@@ -86,6 +87,8 @@ export default class GroupsDao {
         } else if (oldGroups.includes(MEMBER_GROUP) &&
             !groups.includes(MEMBER_GROUP)) {
           return this._parent.log.logEvent(db, accountId, 'LOSE_MEMBERSHIP');
+        } else {
+          return null;
         }
       });
     });

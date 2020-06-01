@@ -92,6 +92,8 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
         return injectMain(db, row.account_id, payload);
       }
     }
+
+    return null;
   })
   .then(() => {
     if (privs.canWrite('memberTimezone', isOwned)) {
@@ -103,6 +105,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
         payload.citadels = pluck(rows, 'citadel_name');
       });
     }
+    return null;
   })
   .then(() => {
     if (accountId != null && privs.canRead('memberGroups')) {
@@ -111,6 +114,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
         payload.account.groups = groups;
       });
     }
+    return null;
   })
   .then(() => {
     return payload;

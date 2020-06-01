@@ -37,7 +37,7 @@ export class Update<T extends object, F extends object>
     return this;
   }
 
-  public run(): Bluebird<number> {
+  public run(): Promise<number> {
     if (this._fromTables.length == 0) {
       return super.run();
     } else {

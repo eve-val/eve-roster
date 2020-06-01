@@ -1,27 +1,21 @@
 
 import path = require('path');
 
-import Bluebird = require('bluebird');
-import express = require('express');
-import bodyParser = require('body-parser');
-import cookieParser = require('cookie-parser');
-import cookieSession = require('cookie-session');
-import webpack = require('webpack');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
 
 import { Tnex } from '../../db/tnex';
 import { isDevelopment } from '../../util/config';
 import { LOGIN_PARAMS } from '../../domain/sso/loginParams';
-import { getAccountPrivs } from './getAccountPrivs';
 
 import { default as route_api } from '../../route/api/api';
 import { default as route_home } from '../../route/home';
 import { default as route_authenticate } from '../../route/authenticate';
-import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
-import { endSession, getSession } from './session';
+import { endSession } from './session';
+import { checkNotNil } from '../../util/assert';
 
-
-const logger = buildLoggerFromFilename(__filename);
-const webpackConfig = require('../../../../webpack.config.js');
 
 const FRONTEND_ROUTES = [
   '/',
@@ -36,7 +30,7 @@ const FRONTEND_ROUTES = [
   '/srp/*',
 ];
 
-export function init(db: Tnex, onServing: (port: number) => void) {
+export async function init(db: Tnex, onServing: (port: number) => void) {
   let app = express();
 
   app.use(bodyParser.json());
@@ -50,30 +44,6 @@ export function init(db: Tnex, onServing: (port: number) => void) {
 
   app.set('view engine', 'pug');
   app.set('views', './views');
-
-  // Development serving
-  if (isDevelopment()) {
-    const webpackMiddleware = require('webpack-dev-middleware');
-    const webpackHotMiddleware = require('webpack-hot-middleware');
-    const compiler = webpack(webpackConfig);
-    const middleware = webpackMiddleware(compiler, {
-      noInfo: true,
-      publicPath: webpackConfig.output.publicPath,
-      stats: {
-        assets: false,
-        colors: true,
-        hash: false,
-        timings: false,
-        chunks: true,
-        chunkModules: false,
-        modules: false,
-        version: false,
-      }
-    });
-
-    app.use(middleware);
-    app.use(webpackHotMiddleware(compiler));
-  }
 
   app.all('*', (req, res, next) => {
     req.db = db;
@@ -105,17 +75,46 @@ export function init(db: Tnex, onServing: (port: number) => void) {
   // Manually include the API routes defined in api/
   app.use('/api', route_api);
 
+  // Set up client serving and dev mode (if in dev mode)
+  await setupClientServing(app);
+
   // Static files in static/
   app.use(express.static(path.join(__dirname, '../../../../static')));
-
-  // Compiled front-end files from webpack
-  app.use(
-      webpackConfig.output.publicPath,
-      express.static(webpackConfig.output.path));
 
   // Start the server
   const port = parseInt(process.env.PORT || '8081');
   let server = app.listen(port, () => {
     onServing(port);
   });
+}
+
+async function setupClientServing(app: express.Application) {
+  const clientConfig = isDevelopment()
+      ? (await import('../build-client/webpack.dev')).default
+      : (await import('../build-client/webpack.prod')).default;
+
+  const outputPath = checkNotNil(clientConfig.output?.path);
+  const publicPath = checkNotNil(clientConfig.output?.publicPath);
+
+  if (isDevelopment()) {
+    const webpack = (await import('webpack')).default;
+    const webpackDevMiddleware =
+        (await import('webpack-dev-middleware')).default;
+    const webpackHotMiddleware =
+        (await import('webpack-hot-middleware')).default;
+
+    const compiler = webpack(clientConfig);
+
+    app.use(webpackDevMiddleware(compiler, {
+      publicPath: publicPath,
+      stats: "minimal",
+    }));
+
+    app.use(webpackHotMiddleware(compiler));
+  }
+
+  // Compiled front-end files from webpack
+  app.use(
+    publicPath,
+    express.static(outputPath));
 }

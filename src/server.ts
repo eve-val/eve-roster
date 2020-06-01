@@ -23,7 +23,11 @@ const REQUIRED_VARS = [
 
 // Crash the process in the face of an unhandled promise rejection
 process.on('unhandledRejection', (err) => {
-  logger.error(`Unhandled promise rejection`, err);
+  if (err instanceof Error) {
+    logger.error(`Unhandled promise rejection`, err);
+  } else {
+    logger.error(`Unhandled promise rejection: ${err}`);
+  }
   throw err;
 });
 

@@ -1,6 +1,5 @@
 import { inspect } from 'util';
 
-import Bluebird = require('bluebird');
 import Knex = require('knex');
 
 import { SimpleObj, val, StringKeyOf } from './core';
@@ -39,7 +38,7 @@ export class Tnex {
     return this._knex.raw(query, bindings);
   }
 
-  transaction<T>(callback: (db: Tnex) => Bluebird<T>): Bluebird<T> {
+  transaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
     if (this._isTransaction()) {
       return callback(this);
     } else {
@@ -80,41 +79,41 @@ export class Tnex {
   }
 
   public insert<T extends object, R extends T = T>(
-      table: T, row: R): Bluebird<void>;
+      table: T, row: R): Promise<void>;
   public insert<T extends object, K extends keyof T, R extends T = T>(
-      table: T, row: R, returning: K): Bluebird<T[K]>;
+      table: T, row: R, returning: K): Promise<T[K]>;
   public insert
       <T extends object, K extends keyof T, L extends keyof T, R extends T = T>
-      (table: T, row: R, returning: [K, L]): Bluebird<[T[K], T[L]]>;
+      (table: T, row: R, returning: [K, L]): Promise<[T[K], T[L]]>;
   public insert<
       T extends object,
       K extends keyof T,
       L extends keyof T,
       M extends keyof T,
       R extends T = T>
-      (table: T, row: R, returning: [K, L, M]): Bluebird<[T[K], T[L], T[M]]>;
+      (table: T, row: R, returning: [K, L, M]): Promise<[T[K], T[L], T[M]]>;
   public insert<T extends object, R extends T = T>(
       table: T, row: R, returning?: string|string[]) {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
             this._prepRowForInsert(row, table),
-            this._prepReturningKeys(returning))
+            this._prepReturningKeys(returning) as any)
         .then(rows => {
           return rows[0];
         });
   }
 
-  public insertAll<T extends object>(table: T, rows: T[]): Bluebird<void>;
+  public insertAll<T extends object>(table: T, rows: T[]): Promise<void>;
   public insertAll<T extends object, K extends keyof T>(
-      table: T, rows: T[], returning: K): Bluebird<T[K][]>;
+      table: T, rows: T[], returning: K): Promise<T[K][]>;
   public insertAll<T extends object>(
-      table: T, rows: T[], returning?: string): Bluebird<any[] | void> {
+      table: T, rows: T[], returning?: string): Promise<any[] | void> {
     let tableName = this._registry.getTableName(table);
     return this._knex(tableName)
         .insert(
             rows.map(row => this._prepRowForInsert(row, table)),
-            this._prepReturningKeys(returning));
+            this._prepReturningKeys(returning) as any);
   }
 
   public update<T extends object>(
@@ -224,7 +223,7 @@ export class Tnex {
       row: R,
       primaryColumn: StringKeyOf<T>,
       updateStrategy?: UpdateStrategy<Partial<T>>,
-  ): Bluebird<number> {
+  ): Promise<number> {
     return this.upsertAll(table, [row], primaryColumn, updateStrategy);
   }
 
@@ -243,9 +242,9 @@ export class Tnex {
       rows: R[],
       primaryColumn: StringKeyOf<T>,
       updateStrategy?: UpdateStrategy<Partial<T>>,
-  ): Bluebird<number> {
+  ): Promise<number> {
     if (rows.length == 0) {
-      return Bluebird.resolve(0);
+      return Promise.resolve(0);
     }
 
     const clientType = (this._rootKnex as any).CLIENT as string;
@@ -346,6 +345,7 @@ export class Tnex {
           return db
               .insertAll(table, rows);
         }
+        return;
       })
     });
   }

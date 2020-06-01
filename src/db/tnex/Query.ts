@@ -13,7 +13,7 @@ export class Query<T extends object, R /* return type */>
     super(scoper, query);
   }
 
-  public run(): Bluebird<R> {
-    return this._query as Bluebird<any>;
+  public run(): Promise<R> {
+    return this._query as Promise<any>;
   }
 }
