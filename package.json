@@ -14,7 +14,7 @@
     "clean": "rm -rf out/ && rm -rf static/dist/"
   },
   "engines": {
-    "node": "14.3.0"
+    "node": "13.14.0"
   },
   "dependencies": {
     "@types/bluebird": "^3.5.32",
