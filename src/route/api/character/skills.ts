@@ -36,6 +36,8 @@ export interface QueueEntryJson {
   proportionalStart: number,
   proportionalEnd: number,
   durationLabel: string,
+  eta: string,
+  endTime: number,
   progress: number,
 }
 
@@ -157,6 +159,8 @@ function transformQueue(queue: NamedSkillQueueRow[]) {
         proportionalStart: (skillStart - now) / totalDuration,
         proportionalEnd: (queueItem.endTime - now) / totalDuration,
         durationLabel: time.shortDurationString(skillStart, queueItem.endTime),
+        eta: 'ETA: ' + time.shortDurationString(now, queueItem.endTime),
+        endTime: queueItem.endTime,
         progress:
             queuedEntries.length == 0 ? getTrainingProgress(queueItem) : 0,
       })
@@ -168,6 +172,8 @@ function transformQueue(queue: NamedSkillQueueRow[]) {
         proportionalStart: 0,
         proportionalEnd: 0,
         durationLabel: '-',
+        eta: '',
+        endTime: 0,
         progress: 0,
       })
     }

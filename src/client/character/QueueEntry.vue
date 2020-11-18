@@ -15,7 +15,7 @@
       <span class="numeral-level"
           >{{ entry.targetLevel | numeralize }}</span>
     </div>
-    <div class="duration">
+    <div class="duration" :title="entry.eta">
       {{ entry.durationLabel || 'Paused' }}
     </div>
   </div>
