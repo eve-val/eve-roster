@@ -1,11 +1,9 @@
-import { ESIError } from 'eve-swagger';
-import { EsiErrorCompat } from './EsiErrorCompat';
 import { EsiError, EsiErrorKind } from './EsiError';
 import { VError } from 'verror';
 import { inspect } from 'util';
 
 export function isAnyEsiError(error: any): error is EsiError {
-  return error instanceof ESIError || error instanceof EsiErrorCompat;
+  return error instanceof EsiError;
 }
 
 export function isEsiNotFoundError(error: any): error is EsiError {
