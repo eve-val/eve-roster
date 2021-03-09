@@ -142,18 +142,20 @@ async function importAttributes(
 
   const rows = await queryAll(sde, SELECT_ATTRIBUTES, []);
   for (let row of rows) {
-    if(!row.attributeName || !row.description) {
+    if(!row.attributeName && !row.description) {
       // Avoid Fuzzwork SDE quirks due to changes etc
       skippedCount++;
       continue;
     }
+    const name = row.attributeName || `attr_${row.attributeID}`;
+    const description = row.description || '(none)';
     processedCount++;
     await db
         .upsert(sdeAttribute, {
           sattr_import: importId,
           sattr_id: row.attributeID,
-          sattr_name: row.attributeName,
-          sattr_description: row.description,
+          sattr_name: name,
+          sattr_description: description,
           sattr_defaultValue: row.defaultValue,
           sattr_icon: row.iconID,
           sattr_displayName: row.displayName,

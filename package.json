@@ -41,7 +41,6 @@
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "css-loader": "^3.5.3",
-    "eve-swagger": "git://github.com/lhkbob/eve-swagger-js.git",
     "express": "^4.17.1",
     "file-loader": "^6.0.0",
     "heapdump": "^0.3.15",

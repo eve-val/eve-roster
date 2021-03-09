@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { EsiEndpoint } from '../EsiEndpoint';
-import { EsiErrorKind } from '../EsiError';
-import { EsiErrorCompat } from '../EsiErrorCompat';
+import { EsiError, EsiErrorKind } from '../EsiError';
 import { buildEsiFetchConfig } from './buildEsiFetchConfig';
 import { EsiEndpointParams } from './EsiEndpointParams';
 import { checkEsiResponseForWarnings } from './checkEsiResponseForWarnings';
@@ -41,10 +40,8 @@ export async function fetchEsi<T extends EsiEndpoint>(
       errKind = EsiErrorKind.IO_ERROR;
     }
 
-    throw new EsiErrorCompat(
-        errKind,
-        `${errKind} while fetching "${config.url}"`,
-        err);
+    throw new EsiError(
+        errKind, `${errKind} while fetching "${config.url}"`, err);
   }
 
   checkEsiResponseForWarnings(endpoint, response);
