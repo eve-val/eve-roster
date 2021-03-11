@@ -31,6 +31,46 @@ export const ESI_CHARACTERS_$characterId = {
   },
 };
 
+export const ESI_CHARACTERS_$characterId_ASSETS = {
+  method: FetchMethod.GET,
+  path: '/v5/characters/${characterId}/assets',
+  pathVars: {} as {
+    characterId: number,
+  },
+  query: {
+    page: 1 as number,
+  },
+  access: Private.ACCESS,
+  response: {} as {
+    is_blueprint_copy?: boolean,
+    is_singleton: boolean,
+    item_id: number,
+    location_flag: string,
+    location_id: number,
+    location_type:
+      | 'station'
+      | 'solar_system'
+      | 'item'
+      | 'other',
+    quantity: number,
+    type_id: number,
+  }[],
+};
+
+export const ESI_CHARACTERS_$characterId_ASSETS_NAMES = {
+  method: FetchMethod.POST,
+  path: '/v1/characters/${characterId}/assets/names',
+  pathVars: {} as {
+    characterId: number,
+  },
+  body: [] as number[],
+  access: Private.ACCESS,
+  response: {} as {
+    item_id: number,
+    name: string,
+  }[],
+};
+
 export const ESI_CHARACTERS_$characterId_ROLES = {
   method: FetchMethod.GET,
   path: '/v2/characters/${characterId}/roles',
@@ -219,8 +259,8 @@ export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
   pathVars: {} as {
     corporationId: number,
   },
-  query: {} as {
-    page: number,
+  query: {
+    page: 1 as number,
   },
   access: Private.ACCESS,
   response: [] as Array<{
