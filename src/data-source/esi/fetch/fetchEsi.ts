@@ -1,10 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
-import { EsiEndpoint } from '../EsiEndpoint';
-import { EsiError, EsiErrorKind } from '../EsiError';
-import { buildEsiFetchConfig } from './buildEsiFetchConfig';
-import { EsiEndpointParams } from './EsiEndpointParams';
-import { checkEsiResponseForWarnings } from './checkEsiResponseForWarnings';
-
+import axios, { AxiosResponse } from "axios";
+import { EsiEndpoint } from "../EsiEndpoint";
+import { EsiError, EsiErrorKind } from "../EsiError";
+import { buildEsiFetchConfig } from "./buildEsiFetchConfig";
+import { EsiEndpointParams } from "./EsiEndpointParams";
+import { checkEsiResponseForWarnings } from "./checkEsiResponseForWarnings";
 
 /**
  * Loads a particular ESI endpoint.
@@ -15,9 +14,38 @@ import { checkEsiResponseForWarnings } from './checkEsiResponseForWarnings';
  */
 export async function fetchEsi<T extends EsiEndpoint>(
   endpoint: T,
-  params: EsiEndpointParams<T>,
-): Promise<T['response']> {
+  params: EsiEndpointParams<T>
+): Promise<T["response"]> {
+  const response = await fetchEsiImpl(endpoint, params);
+  return response.data;
+}
 
+
+// See fetchEsiEx.
+export interface EsiResults<T extends EsiEndpoint> {
+  data: T["response"];
+  page_count: number;
+}
+
+/**
+ * Loads data from a particular endpoint, and returns the results along with
+ * additional information extracted from the response headers.
+ */
+export async function fetchEsiEx<T extends EsiEndpoint>(
+  endpoint: T,
+  params: EsiEndpointParams<T>
+): Promise<EsiResults<T>> {
+  const response = await fetchEsiImpl(endpoint, params);
+  return {
+    data: response.data,
+    page_count: response.headers["x-pages"] || 1,
+  };
+}
+
+async function fetchEsiImpl<T extends EsiEndpoint>(
+  endpoint: T,
+  params: EsiEndpointParams<T>
+): Promise<AxiosResponse> {
   const config = buildEsiFetchConfig(BASE_URL, endpoint, params);
 
   let response: AxiosResponse;
@@ -41,14 +69,16 @@ export async function fetchEsi<T extends EsiEndpoint>(
     }
 
     throw new EsiError(
-        errKind, `${errKind} while fetching "${config.url}"`, err);
+      errKind,
+      `${errKind} while fetching "${config.url}"`,
+      err
+    );
   }
 
   checkEsiResponseForWarnings(endpoint, response);
 
   // TODO: Verify data matches expected structure
-
-  return response.data;
+  return response;
 }
 
-const BASE_URL = 'https://esi.evetech.net';
+const BASE_URL = "https://esi.evetech.net";

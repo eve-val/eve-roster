@@ -1,3 +1,5 @@
+import { number } from "../../util/express/schemaVerifier";
+import { EsiAsset } from "./EsiAsset";
 import { FetchMethod, Private, Public } from "./EsiEndpoint";
 import { EsiKillmail } from "./EsiKillmail";
 
@@ -5,7 +7,7 @@ import { EsiKillmail } from "./EsiKillmail";
 /**
  * Supported endpoints in the ESI API
  *
- * Pass these to fetchEndpoint() in order to retrieve an endpoint.
+ * Pass these to fetchEsi() in order to retrieve an endpoint.
  */
 
 
@@ -41,20 +43,7 @@ export const ESI_CHARACTERS_$characterId_ASSETS = {
     page: 1 as number,
   },
   access: Private.ACCESS,
-  response: {} as {
-    is_blueprint_copy?: boolean,
-    is_singleton: boolean,
-    item_id: number,
-    location_flag: string,
-    location_id: number,
-    location_type:
-      | 'station'
-      | 'solar_system'
-      | 'item'
-      | 'other',
-    quantity: number,
-    type_id: number,
-  }[],
+  response: {} as EsiAsset[],
 };
 
 export const ESI_CHARACTERS_$characterId_ASSETS_NAMES = {
@@ -309,4 +298,19 @@ export const ESI_UNIVERSE_NAMES = {
     id: number,
     name: string,
   }[],
+};
+
+export const ESI_UNIVERSE_STRUCTURES_$structureId = {
+  method: FetchMethod.GET,
+  path: '/v2/universe/structures/${structureId}/',
+  pathVars: {} as {
+    structureId: number,
+  },
+  access: Private.ACCESS,
+  response: {} as {
+    name: string,
+    owner_id: number,
+    solar_system_id: number,
+    type_id?:number,
+  },
 };
