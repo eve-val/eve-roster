@@ -1,19 +1,17 @@
 import moment from "moment";
 import { getAccessToken } from "../data-source/accessToken/accessToken";
 import {
-  ESI_CHARACTERS_$characterId_ASSETS,
-  ESI_CHARACTERS_$characterId_ASSETS_NAMES,
-  ESI_UNIVERSE_STRUCTURES_$structureId,
+  ESI_UNIVERSE_STRUCTURES_$structureId
 } from "../data-source/esi/endpoints";
-import { EsiAsset } from "../data-source/esi/EsiAsset";
-import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 import { fetchEveNames } from "../data-source/esi/names";
 import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";
-import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories";
+import { Asset, fetchAssets } from "../eve/assets";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { Task } from "../infra/taskrunner/Task";
+import { arrayToMap } from "../util/collections";
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -25,62 +23,11 @@ export const syncShips: Task = {
   executor,
 };
 
-async function fetchAssets(characterId: number, token: string) {
-  let assets: EsiAsset[] = [];
-  for (let page = 1; true; page++) {
-    const { data, page_count } = await fetchEsiEx(
-      ESI_CHARACTERS_$characterId_ASSETS,
-      {
-        characterId,
-        page,
-        _token: token,
-      }
-    );
-    data.forEach((asset) => assets.push(asset));
-    if (page >= page_count) {
-      break;
-    }
-  }
-  return assets;
-}
-
-interface Asset extends EsiAsset {
-  type_category: number;
-  type_name: string;
-}
-
-async function fetchAssetTypeData(
-  db: Tnex,
-  assets: EsiAsset[]
-): Promise<Asset[]> {
-  const item_ids = new Set<number>(assets.map((asset) => asset.type_id));
-  const rows = await dao.sde.getTypes(db, Array.from(item_ids), [
-    "styp_id",
-    "styp_category",
-    "styp_name",
-  ]);
-  const type_data = new Map(rows.map((row) => [row.styp_id, row]));
-  return assets.map((asset) => {
-    const td = type_data.get(asset.type_id);
-    if (!td) {
-      return Object.assign(asset, {
-        type_category: 0,
-        type_name: "",
-      });
-    }
-    return Object.assign(asset, {
-      type_category: td.styp_category || 0,
-      type_name: td.styp_name || "",
-    });
-  });
-}
-
 class Ship {
   constructor(
     readonly asset: Asset,
     readonly name: string,
-    readonly location_name: string,
-    readonly contents: Asset[]
+    readonly locationName: string
   ) {}
 }
 
@@ -89,25 +36,15 @@ async function findShips(
   token: string,
   assets: Asset[]
 ): Promise<Ship[]> {
-  const ship_assets = new Map(
-    assets
-      .filter(
-        (asset) =>
-          asset.type_category == TYPE_CATEGORY_SHIP && asset.is_singleton
-      )
-      .map((asset) => [asset.item_id, asset])
+  const ship_assets = arrayToMap(
+    assets.filter((asset) => !!asset.name),
+    "itemId"
   );
-  const names = await fetchEsi(ESI_CHARACTERS_$characterId_ASSETS_NAMES, {
-    characterId,
-    _token: token,
-    _body: Array.from(ship_assets.keys()),
-  });
-  const ship_names = new Map(names.map((r) => [r.item_id, r.name]));
 
   const station_ids = new Set(
     Array.from(ship_assets.values())
-      .filter((asset) => asset.location_type === "station")
-      .map((asset) => asset.location_id)
+      .filter((asset) => asset.locationType === "station")
+      .map((asset) => asset.locationId)
   );
   const station_names = await fetchEveNames(station_ids);
 
@@ -115,11 +52,11 @@ async function findShips(
     Array.from(ship_assets.values())
       .filter(
         (asset) =>
-          asset.location_type === "item" &&
-          asset.location_flag === "Hangar" &&
-          !ship_names.has(asset.location_id)
+          asset.locationType === "item" &&
+          asset.locationFlag === "Hangar" && // TODO: corp hangars?
+          !ship_assets.has(asset.locationId)
       )
-      .map((asset) => asset.location_id)
+      .map((asset) => asset.locationId)
   );
   let structure_names = new Map<number, string>();
   for (let sid of structure_ids) {
@@ -137,23 +74,25 @@ async function findShips(
   }
 
   function splitAndLower(s: string) {
-    return s.replace(/([A-Z])/g, " $1").trim().toLowerCase();
+    return s
+      .replace(/([A-Z0-9])/g, " $1")
+      .trim()
+      .toLowerCase();
   }
 
-  function findName(id: number, location_flag: string): string {
-    let maybe_name = structure_names.get(id);
+  function makeLocationName(locationId: number, locationFlag: string): string {
+    let maybe_name = structure_names.get(locationId);
     if (maybe_name !== undefined) return maybe_name;
-    let maybe_ship = ship_assets.get(id);
+    let maybe_ship = ship_assets.get(locationId);
     if (maybe_ship === undefined) return "unknown location";
 
-    const ship_location = findName(
-      maybe_ship.location_id,
-      maybe_ship.location_flag
+    const ship_location = makeLocationName(
+      maybe_ship.locationId,
+      maybe_ship.locationFlag
     );
-    const ship_name = ship_names.get(id) || "unnamed";
     return (
-      `${ship_location}, ${ship_name} ` +
-      `(${maybe_ship.type_name}), ${splitAndLower(location_flag)}`
+      `${ship_location}, ${maybe_ship.name} ` +
+      `(${maybe_ship.typeName}), ${splitAndLower(locationFlag)}`
     );
   }
 
@@ -161,9 +100,8 @@ async function findShips(
     (asset) =>
       new Ship(
         asset,
-        ship_names.get(asset.item_id) || "",
-        findName(asset.location_id, asset.location_flag),
-        []
+        asset.name!,
+        makeLocationName(asset.locationId, asset.locationFlag)
       )
   );
 }
@@ -175,22 +113,8 @@ async function executor(db: Tnex, job: JobLogger) {
   );
   for (let characterId of characterIds) {
     const token = await getAccessToken(db, characterId);
-    const assets = await fetchAssets(characterId, token);
-    const assets_with_type = await fetchAssetTypeData(db, assets);
-    const ships = await findShips(characterId, token, assets_with_type);
-    // const ships = assets_with_type.filter(
-    //   (asset) => asset.type_category == TYPE_CATEGORY_SHIP
-    // );
-    // const ship_item_ids = ships.map((ship) => ship.item_id);
-    // const names = await fetchEsi(ESI_CHARACTERS_$characterId_ASSETS_NAMES, {
-    //   characterId,
-    //   _token: token,
-    //   _body: ship_item_ids,
-    // });
-    // const item_names = new Map(names.map((r) => [r.item_id, r.name]));
-    // const ships_with_names = ships.map((s) =>
-    //   Object.assign(s, { name: item_names.get(s.item_id) })
-    // );
+    const assets = await fetchAssets(characterId, token, db);
+    const ships = await findShips(characterId, token, assets);
     logger.info(JSON.stringify(ships, null, 2));
   }
 }

@@ -20,11 +20,10 @@ export async function fetchEsi<T extends EsiEndpoint>(
   return response.data;
 }
 
-
-// See fetchEsiEx.
+/** See fetchEsiEx. */
 export interface EsiResults<T extends EsiEndpoint> {
   data: T["response"];
-  page_count: number;
+  pageCount: number;
 }
 
 /**
@@ -38,7 +37,7 @@ export async function fetchEsiEx<T extends EsiEndpoint>(
   const response = await fetchEsiImpl(endpoint, params);
   return {
     data: response.data,
-    page_count: response.headers["x-pages"] || 1,
+    pageCount: response.headers["x-pages"] || 1,
   };
 }
 
