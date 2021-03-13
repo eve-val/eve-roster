@@ -60,7 +60,7 @@ export async function fetchAssets(
 
   const typeData = await fetchTypeData(assets, db);
   const shipNames = await fetchShipNames(assets, typeData, characterId, token);
-  
+
   return assets.map((asset) => convertAsset(asset, typeData, shipNames));
 }
 
@@ -99,17 +99,7 @@ async function fetchTypeData(
     "styp_name",
   ]);
 
-  let data: TypeDataMap = arrayToMap(rows, "styp_id");
-
-  // Set the default for types we couldn't find. This seems better than to
-  // error out if our SDE dump is too old, and complicates downstream code
-  // less than making type-related properties optional.
-  for (let i of item_ids) {
-    if (data.has(i)) continue;
-    data.set(i, { styp_category: 0, styp_name: "" });
-  }
-
-  return data;
+  return arrayToMap(rows, "styp_id");
 }
 
 function isShip(a: EsiAsset, typeData: TypeDataMap): boolean {
@@ -124,7 +114,13 @@ function convertAsset(
   typeData: TypeDataMap,
   shipNames: Map<number, string>
 ): Asset {
-  const td = typeData.get(a.type_id)!;
+  const td = typeData.get(a.type_id);
+  if (td === undefined) {
+    throw new Error(
+      `Cannot find SDE type information for type_id=${a.type_id}. ` +
+        "Try running SDE update."
+    );
+  }
   return {
     itemId: a.item_id,
     name: shipNames.get(a.item_id),
