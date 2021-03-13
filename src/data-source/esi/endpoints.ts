@@ -311,6 +311,6 @@ export const ESI_UNIVERSE_STRUCTURES_$structureId = {
     name: string,
     owner_id: number,
     solar_system_id: number,
-    type_id?:number,
+    type_id?: number,
   },
 };

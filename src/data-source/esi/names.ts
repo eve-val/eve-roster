@@ -2,7 +2,7 @@ import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
-import { ESI_UNIVERSE_NAMES } from './endpoints';
+import { ESI_UNIVERSE_NAMES, ESI_UNIVERSE_STRUCTURES_$structureId } from './endpoints';
 import { fetchEsi } from "./fetch/fetchEsi";
 
 const logger = buildLoggerFromFilename(__filename);
@@ -57,4 +57,22 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   }
 
   return idMap;
+}
+
+/**
+ * Fetches the name of a player-owned structure given its ID, or gets it from
+ * the cache if possible. These names may actually change, but we assume that
+ * happens infrequently, and the old name is still useful for our purposes.
+ *
+ * Requires a token of an account on the ACL of this structure.
+ */
+export async function fetchPlayerStructureName(sid: number, token: string) {
+  const name = NAME_CACHE.get(sid);
+  if (name !== undefined) return name;
+  const structureData = await fetchEsi(ESI_UNIVERSE_STRUCTURES_$structureId, {
+    structureId: sid,
+    _token: token,
+  });
+  NAME_CACHE.set(sid, structureData.name);
+  return structureData.name;
 }

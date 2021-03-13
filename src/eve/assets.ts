@@ -1,16 +1,16 @@
 import {
   ESI_CHARACTERS_$characterId_ASSETS,
   ESI_CHARACTERS_$characterId_ASSETS_NAMES,
-} from "../data-source/esi/endpoints";
-import { EsiAsset } from "../data-source/esi/EsiAsset";
-import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi";
-import { dao } from "../db/dao";
-import { SdeType } from "../db/tables";
-import { Tnex } from "../db/tnex";
-import { arrayToMap } from "../util/collections";
-import { TYPE_CATEGORY_SHIP } from "./constants/categories";
+} from '../data-source/esi/endpoints';
+import { EsiAsset } from '../data-source/esi/EsiAsset';
+import { fetchEsi, fetchEsiEx } from '../data-source/esi/fetch/fetchEsi';
+import { dao } from '../db/dao';
+import { SdeType } from '../db/tables';
+import { Tnex } from '../db/tnex';
+import { arrayToMap } from '../util/collections';
+import { TYPE_CATEGORY_SHIP } from './constants/categories';
 
-export type AssetLocationType = "station" | "solar_system" | "item" | "other";
+export type AssetLocationType = 'station' | 'solar_system' | 'item' | 'other';
 
 export interface Asset {
   // Unique ID of this item.
@@ -40,7 +40,7 @@ export interface Asset {
 export async function fetchAssets(
   characterId: number,
   token: string,
-  db: Tnex
+  db: Tnex,
 ): Promise<Asset[]> {
   let assets: EsiAsset[] = [];
   for (let page = 1; true; page++) {
@@ -50,7 +50,7 @@ export async function fetchAssets(
         characterId,
         page,
         _token: token,
-      }
+      },
     );
     data.forEach((asset) => assets.push(asset));
     if (page >= pageCount) {
@@ -68,7 +68,7 @@ async function fetchShipNames(
   assets: EsiAsset[],
   typeData: TypeDataMap,
   characterId: number,
-  token: string
+  token: string,
 ): Promise<Map<number, string>> {
   const itemIds = assets
     .filter((asset) => isShip(asset, typeData))
@@ -85,21 +85,21 @@ async function fetchShipNames(
   return names;
 }
 
-type TypeData = Pick<SdeType, "styp_category" | "styp_name">;
+type TypeData = Pick<SdeType, 'styp_category' | 'styp_name'>;
 type TypeDataMap = Map<number, TypeData>;
 
 async function fetchTypeData(
   assets: EsiAsset[],
-  db: Tnex
+  db: Tnex,
 ): Promise<TypeDataMap> {
   const item_ids = new Set<number>(assets.map((asset) => asset.type_id));
   const rows = await dao.sde.getTypes(db, Array.from(item_ids), [
-    "styp_id",
-    "styp_category",
-    "styp_name",
+    'styp_id',
+    'styp_category',
+    'styp_name',
   ]);
 
-  return arrayToMap(rows, "styp_id");
+  return arrayToMap(rows, 'styp_id');
 }
 
 function isShip(a: EsiAsset, typeData: TypeDataMap): boolean {
@@ -112,13 +112,13 @@ function isShip(a: EsiAsset, typeData: TypeDataMap): boolean {
 function convertAsset(
   a: EsiAsset,
   typeData: TypeDataMap,
-  shipNames: Map<number, string>
+  shipNames: Map<number, string>,
 ): Asset {
   const td = typeData.get(a.type_id);
   if (td === undefined) {
     throw new Error(
       `Cannot find SDE type information for type_id=${a.type_id}. ` +
-        "Try running SDE update."
+        'Try running SDE update.',
     );
   }
   return {
@@ -138,12 +138,12 @@ function convertAsset(
 
 function checkLocationType(t: string): AssetLocationType {
   switch (t) {
-    case "solar_system":
-    case "item":
-    case "station":
+    case 'solar_system':
+    case 'item':
+    case 'station':
       return t;
     default:
-      return "other";
+      return 'other';
   }
 }
 
