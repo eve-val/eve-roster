@@ -37,6 +37,18 @@ export interface Asset {
   isBlueprintCopy?: boolean;
 }
 
+/**
+ * Reformats asset location flag to a human-readable form. E.g. "FleetHangar"
+ * becomes "fleet hangar".
+ */
+export function formatLocationFlag(locationFlag: string): string {
+  return locationFlag
+    .replace(/([A-Z0-9])/g, ' $1')
+    .trim()
+    .toLowerCase();
+}
+
+/** Retrieves assets for a given character from ESI. */
 export async function fetchAssets(
   characterId: number,
   token: string,
