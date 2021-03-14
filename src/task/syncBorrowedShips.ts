@@ -15,9 +15,9 @@ import { arrayToMap } from '../util/collections';
 
 const logger = buildLoggerFromFilename(__filename);
 
-export const syncShips: Task = {
-  name: 'syncShips',
-  displayName: "Sync ship reminders",
+export const syncBorrowedShips: Task = {
+  name: 'syncBorrowedShips',
+  displayName: "Sync borrowed corp ships",
   description: "Searches for corp-owned ships in members' assets.",
   timeout: moment.duration(60, 'minutes').asMilliseconds(),
   executor,

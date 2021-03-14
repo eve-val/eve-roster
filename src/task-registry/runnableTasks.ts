@@ -4,7 +4,7 @@ import { syncCharacterLocations } from '../task/syncCharacterLocations';
 import { syncCombatStats } from '../task/syncCombatStats';
 import { syncKillmails } from '../task/syncKillmails';
 import { syncRoster } from '../task/syncRoster';
-import { syncShips } from '../task/syncShips';
+import { syncBorrowedShips } from '../task/syncBorrowedShips';
 import { syncSkills } from '../task/syncSkills';
 import { syncCorps } from '../task/syncCorps';
 import { truncateCronLog } from '../task/truncateCronLog';
@@ -21,7 +21,7 @@ const TASKS: Task[] = [
   syncCombatStats,
   syncCharacterLocations,
   syncKillmails,
-  syncShips,
+  syncBorrowedShips,
   syncSkills,
   syncCorps,
   triagePendingLosses,
