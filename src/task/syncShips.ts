@@ -103,7 +103,7 @@ async function executor(db: Tnex, job: JobLogger) {
     const token = await getAccessToken(db, characterId);
     const assets = await fetchAssets(characterId, token, db);
     const ships = await findShips(characterId, token, assets);
-    dao.characterShip.setCharacterShips(db, characterId, ships);
+    await dao.characterShip.setCharacterShips(db, characterId, ships);
     ++progress;
     job.setProgress(progress / len, undefined);
   }

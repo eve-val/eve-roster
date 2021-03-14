@@ -33,6 +33,8 @@ import dashboard_queueSummary from './dashboard/queueSummary';
 
 import killmail_GET from './killmail/killmail_GET';
 
+import ships_borrowedByMe from './ships/borrowedByMe';
+
 import srp_approvedLiability_GET from './srp/approvedLiability_GET';
 import srp_battle_dir_GET from './srp/battle/battle_dir_GET';
 import srp_battle_GET from './srp/battle/battle_GET';
@@ -85,6 +87,8 @@ router.get('/dashboard', dashboard);
 router.get('/dashboard/queueSummary', dashboard_queueSummary);
 
 router.get('/killmail/:id', killmail_GET);
+
+router.get('/ships/borrowedByMe', ships_borrowedByMe);
 
 router.get('/srp/approvedLiability', srp_approvedLiability_GET);
 router.get('/srp/battle', srp_battle_dir_GET);

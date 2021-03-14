@@ -4,6 +4,7 @@ export type PrivilegeName =
     | 'adminConsole'
     | 'characterActivityStats'
     | 'characterIsOpsec'
+    | 'characterShips'
     | 'characterSkills'
     | 'characterSkillQueue'
     | 'citadels'
