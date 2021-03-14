@@ -7,6 +7,7 @@ import {
   fetchPlayerStructureName,
 } from '../data-source/esi/names';
 import { dao } from '../db/dao';
+import { CharacterShipRow } from '../db/dao/CharacterShipDao';
 import { Tnex } from '../db/tnex';
 import { Asset, fetchAssets, formatLocationFlag } from '../eve/assets';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
@@ -18,26 +19,19 @@ const logger = buildLoggerFromFilename(__filename);
 
 export const syncShips: Task = {
   name: 'syncShips',
-  displayName: 'Sync ships',
-  description: "Updates all members' ships (TODO).",
-  timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  displayName: "Sync ship reminders",
+  description: "Searches for corp-owned ships in members' assets.",
+  timeout: moment.duration(60, 'minutes').asMilliseconds(),
   executor,
 };
 
-class Ship {
-  constructor(
-    readonly asset: Asset,
-    readonly name: string,
-    readonly locationName: string,
-  ) {}
-}
-
 async function findShips(
+  characterId: number,
   token: string,
   assets: Asset[],
-): Promise<Ship[]> {
+): Promise<CharacterShipRow[]> {
   const shipAssets = arrayToMap(
-    assets.filter((asset) => !!asset.name),
+    assets.filter((asset) => !!asset.name), // TODO filter by name.
     'itemId',
   );
 
@@ -52,6 +46,9 @@ async function findShips(
     structure_names.set(x, station_names[x]);
   }
 
+  // TODO probably should traverse as high up as possible, and
+  // use all assets for that, not just ships. Check after hangars
+  // are dealt with.
   const structure_ids = new Set(
     Array.from(shipAssets.values())
       .filter(
@@ -84,11 +81,16 @@ async function findShips(
 
   return Array.from(shipAssets.values()).map(
     (asset) =>
-      new Ship(
-        asset,
-        asset.name!,
-        makeLocationName(asset.locationId, asset.locationFlag),
-      ),
+      <CharacterShipRow>{
+        characterId: characterId,
+        itemId: asset.itemId,
+        typeId: asset.typeId,
+        name: asset.name!,
+        locationDescription: makeLocationName(
+          asset.locationId,
+          asset.locationFlag,
+        ),
+      },
   );
 }
 
@@ -97,10 +99,14 @@ async function executor(db: Tnex, job: JobLogger) {
   const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
     db,
   );
+  const len = characterIds.length;
+  let progress = 0;
   for (let characterId of characterIds) {
     const token = await getAccessToken(db, characterId);
     const assets = await fetchAssets(characterId, token, db);
-    const ships = await findShips(token, assets);
-    logger.info(JSON.stringify(ships, null, 2));
+    const ships = await findShips(characterId, token, assets);
+    dao.characterShip.setCharacterShips(db, characterId, ships);
+    ++progress;
+    job.setProgress(progress / len, undefined);
   }
 }

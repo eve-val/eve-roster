@@ -6,7 +6,6 @@ exports.up = async function(trx) {
     table.increments('id');
     table
       .integer('character')
-      .references('character.id')
       .notNullable()
       .index();
     table.bigInteger('itemId').notNullable();

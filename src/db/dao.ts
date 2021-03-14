@@ -3,6 +3,7 @@ import AccountDao from './dao/AccountDao';
 import BattleDao from './dao/BattleDao';
 import CharacterDao from './dao/CharacterDao';
 import CharacterLocationDao from './dao/CharacterLocationDao';
+import CharacterShipDao from './dao/CharacterShipDao';
 import CitadelDao from './dao/CitadelDao';
 import CombatStatsDao from './dao/CombatStatsDao';
 import ConfigDao from './dao/ConfigDao';
@@ -12,10 +13,10 @@ import KillmailDao from './dao/KillmailDao';
 import LogDao from './dao/LogDao';
 import OwnershipDao from './dao/OwnershipDao';
 import RosterDao from './dao/RosterDao';
-import SrpDao from './dao/SrpDao';
 import SdeDao from './dao/SdeDao';
-import SkillsheetDao from './dao/SkillsheetDao';
 import SkillQueueDao from './dao/SkillQueueDao';
+import SkillsheetDao from './dao/SkillsheetDao';
+import SrpDao from './dao/SrpDao';
 import StatisticsDao from './dao/StatisticsDao';
 
 
@@ -29,6 +30,7 @@ export class Dao {
   public readonly battle = new BattleDao(this);
   public readonly character = new CharacterDao(this);
   public readonly characterLocation = new CharacterLocationDao(this);
+  public readonly characterShip = new CharacterShipDao(this);
   public readonly citadel = new CitadelDao(this);
   public readonly combatStats = new CombatStatsDao(this);
   public readonly config = new ConfigDao(this);
