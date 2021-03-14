@@ -1,10 +1,8 @@
 import moment from 'moment';
 import { getAccessToken } from '../data-source/accessToken/accessToken';
-import { ESI_UNIVERSE_STRUCTURES_$structureId } from '../data-source/esi/endpoints';
-import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 import {
   fetchEveNames,
-  fetchPlayerStructureName,
+  fetchPlayerStructureName
 } from '../data-source/esi/names';
 import { dao } from '../db/dao';
 import { CharacterShipRow } from '../db/dao/CharacterShipDao';

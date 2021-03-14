@@ -104,14 +104,24 @@ async function fetchTypeData(
   assets: EsiAsset[],
   db: Tnex,
 ): Promise<TypeDataMap> {
-  const item_ids = new Set<number>(assets.map((asset) => asset.type_id));
-  const rows = await dao.sde.getTypes(db, Array.from(item_ids), [
+  const typeIds = new Set<number>(assets.map((asset) => asset.type_id));
+  const rows = await dao.sde.getTypes(db, Array.from(typeIds), [
     'styp_id',
     'styp_category',
     'styp_name',
   ]);
 
-  return arrayToMap(rows, 'styp_id');
+  let typeData: TypeDataMap = arrayToMap(rows, 'styp_id');
+
+  for (let tid of typeIds) {
+    if (typeData.has(tid)) continue;
+    // We don't import SDE data for many categories (e.g. SKINs). Assume we
+    // don't care about these assets, and give them a dummy category and type
+    // name.
+    typeData.set(tid, { styp_category: 0, styp_name: 'unknown' });
+  }
+
+  return typeData;
 }
 
 function isShip(a: EsiAsset, typeData: TypeDataMap): boolean {
@@ -126,13 +136,7 @@ function convertAsset(
   typeData: TypeDataMap,
   shipNames: Map<number, string>,
 ): Asset {
-  const td = typeData.get(a.type_id);
-  if (td === undefined) {
-    throw new Error(
-      `Cannot find SDE type information for type_id=${a.type_id}. ` +
-        'Try running SDE update.',
-    );
-  }
+  const td = typeData.get(a.type_id)!;
   return {
     itemId: a.item_id,
     name: shipNames.get(a.item_id),
