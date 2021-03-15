@@ -17,7 +17,7 @@ const logger = buildLoggerFromFilename(__filename);
 
 export const syncBorrowedShips: Task = {
   name: 'syncBorrowedShips',
-  displayName: 'Sync borrowed corp ships',
+  displayName: 'Sync borrowed ships',
   description: "Searches for corp-owned ships in members' assets.",
   timeout: moment.duration(60, 'minutes').asMilliseconds(),
   executor,
@@ -119,11 +119,20 @@ class NestedAsset {
     if (last !== undefined) {
       tokens.push(last);
     }
+    if (!tokens.length) {
+      return formatLocationFlag(this.asset.locationFlag);
+    }
     tokens.reverse();
     return tokens.join(' > ');
   }
 }
 
+/**
+ * Given the list of assets of a single character, finds the ships that look
+ * like they might belong to the corp. To provide a useful description of the
+ * locations of those ships, may need to retrieve station/structure names from
+ * ESI. Uses location cache for that.
+ */
 async function findShips(
   characterId: number,
   token: string,
@@ -134,6 +143,8 @@ async function findShips(
   const ships = assets
     .filter((asset) => isCorpShip(asset))
     .map((asset) => new NestedAsset(asset, assetMap))
+    // No need to be noisy about a corp ship that's inside another
+    // corp ship that we'll report anyway.
     .filter((asset) => !asset.insideCorpShip);
 
   const stationIds = new Set<number>();
