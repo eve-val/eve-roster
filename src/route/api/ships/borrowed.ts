@@ -4,10 +4,9 @@ import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 
 export default jsonEndpoint(
   (req, res, db, account, privs): Promise<BorrowedShipOutputRow[]> => {
-    const notTheOwner = false;
-    privs.requireRead('characterShips', notTheOwner);
+    privs.requireRead('characterShips');
     return dao.characterShip.getBorrowedShips(db, {
-      includeOpsecChars: privs.canRead('memberOpsecAlts', notTheOwner),
+      includeOpsecChars: privs.canRead('memberOpsecAlts'),
     });
   },
 );
