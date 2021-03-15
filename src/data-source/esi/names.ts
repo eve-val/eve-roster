@@ -2,7 +2,7 @@ import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { isAnyEsiError, printError } from './error';
 import { UNKNOWN_CORPORATION_ID } from '../../db/constants';
 import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
-import { ESI_UNIVERSE_NAMES, ESI_UNIVERSE_STRUCTURES_$structureId } from './endpoints';
+import { ESI_UNIVERSE_NAMES } from './endpoints';
 import { fetchEsi } from "./fetch/fetchEsi";
 
 const logger = buildLoggerFromFilename(__filename);
