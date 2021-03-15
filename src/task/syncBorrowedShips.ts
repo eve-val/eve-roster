@@ -68,7 +68,7 @@ function isCorpShip(asset: Asset) {
  * Asset itself, and the chain of the items that it's contained in, starting from the asset.
  */
 class NestedAsset {
-  readonly nesting: Asset[];
+  private readonly nesting: Asset[];
 
   constructor(asset: Asset, assetMap: Map<number, Asset>) {
     this.nesting = [asset];
