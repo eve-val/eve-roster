@@ -33,6 +33,9 @@ import dashboard_queueSummary from './dashboard/queueSummary';
 
 import killmail_GET from './killmail/killmail_GET';
 
+import ships_borrowedByMe from './ships/borrowedByMe';
+import ships_borrowed from './ships/borrowed';
+
 import srp_approvedLiability_GET from './srp/approvedLiability_GET';
 import srp_battle_dir_GET from './srp/battle/battle_dir_GET';
 import srp_battle_GET from './srp/battle/battle_GET';
@@ -78,13 +81,17 @@ router.delete('/character/:id', character_character_DELETE);
 router.get('/character/:id/skills', character_skills);
 
 router.post(
-    '/control/openwindow/information',
-    control_openwindow_information_POST);
+  '/control/openwindow/information',
+  control_openwindow_information_POST,
+);
 
 router.get('/dashboard', dashboard);
 router.get('/dashboard/queueSummary', dashboard_queueSummary);
 
 router.get('/killmail/:id', killmail_GET);
+
+router.get('/ships/borrowedByMe', ships_borrowedByMe);
+router.get('/ships/borrowed', ships_borrowed);
 
 router.get('/srp/approvedLiability', srp_approvedLiability_GET);
 router.get('/srp/battle', srp_battle_dir_GET);
