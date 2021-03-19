@@ -85,6 +85,7 @@ export default class CharacterShipDao {
         'mainChar_name',
         'character_name',
         'styp_name',
+        'characterShip_id',
         'characterShip_name',
         'characterShip_locationDescription',
         'characterShipUpdate_timestamp'
@@ -99,6 +100,7 @@ export default class CharacterShipDao {
     return rows.map(
       (r) =>
         <BorrowedShipOutputRow>{
+          id: r.characterShip_id,
           mainCharacterName: r.mainChar_name,
           characterName: r.character_name,
           type: r.styp_name,
@@ -119,6 +121,7 @@ export interface CharacterShipRow {
 }
 
 export interface BorrowedShipOutputRow {
+  id: number;
   mainCharacterName: string;
   characterName: string;
   type: string;

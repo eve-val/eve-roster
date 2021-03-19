@@ -194,6 +194,14 @@ export default {
     });
   },
 
+  getAllBorrowedShips() {
+    return axios.get('/api/ships/borrowed');
+  },
+
+  getShipsBorrowedByMe() {
+    return axios.get('/api/ships/borrowedByMe');
+  },
+
   postOpenInformationWindow(character, targetId) {
     return axios.post(`/api/control/openwindow/information`, {
       character: character,

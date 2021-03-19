@@ -28,6 +28,8 @@ const FRONTEND_ROUTES = [
   '/dev/:section',
   '/srp',
   '/srp/*',
+  '/ships',
+  '/ships/*',
 ];
 
 export async function init(db: Tnex, onServing: (port: number) => void) {

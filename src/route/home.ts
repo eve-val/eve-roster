@@ -9,6 +9,7 @@ export default htmlEndpoint(async (req, res, db, account, privs) => {
         [
           'roster',
           'adminConsole',
+          'characterShips',
           'srp',
         ],
         false
