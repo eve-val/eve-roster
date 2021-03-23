@@ -88,6 +88,22 @@ export class CharacterSkillQueue {
 }
 export const characterSkillQueue = tables.register(new CharacterSkillQueue());
 
+export class CharacterShip {
+  characterShip_id = integer();
+  characterShip_character = integer();
+  characterShip_itemId = bigInt();
+  characterShip_typeId = integer();
+  characterShip_name = varchar();
+  characterShip_locationDescription = varchar();
+}
+export const characterShip = tables.register(new CharacterShip());
+
+export class CharacterShipUpdate {
+  characterShipUpdate_character = integer();
+  characterShipUpdate_timestamp = bigInt();
+}
+export const characterShipUpdate = tables.register(new CharacterShipUpdate());
+
 export class Citadel {
   citadel_id = integer();
   citadel_name = varchar();

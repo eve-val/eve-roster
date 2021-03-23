@@ -1,6 +1,7 @@
 # OS and editor files
 .DS_Store
 .idea/
+.vscode/
 .*.swp
 
 # Compiled server code

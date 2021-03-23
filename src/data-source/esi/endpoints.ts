@@ -1,3 +1,5 @@
+import { number } from "../../util/express/schemaVerifier";
+import { EsiAsset } from "./EsiAsset";
 import { FetchMethod, Private, Public } from "./EsiEndpoint";
 import { EsiKillmail } from "./EsiKillmail";
 
@@ -5,7 +7,7 @@ import { EsiKillmail } from "./EsiKillmail";
 /**
  * Supported endpoints in the ESI API
  *
- * Pass these to fetchEndpoint() in order to retrieve an endpoint.
+ * Pass these to fetchEsi() in order to retrieve an endpoint.
  */
 
 
@@ -29,6 +31,33 @@ export const ESI_CHARACTERS_$characterId = {
     race_id: number,
     security_status?: number,
   },
+};
+
+export const ESI_CHARACTERS_$characterId_ASSETS = {
+  method: FetchMethod.GET,
+  path: '/v5/characters/${characterId}/assets',
+  pathVars: {} as {
+    characterId: number,
+  },
+  query: {
+    page: 1 as number,
+  },
+  access: Private.ACCESS,
+  response: {} as EsiAsset[],
+};
+
+export const ESI_CHARACTERS_$characterId_ASSETS_NAMES = {
+  method: FetchMethod.POST,
+  path: '/v1/characters/${characterId}/assets/names',
+  pathVars: {} as {
+    characterId: number,
+  },
+  body: [] as number[],
+  access: Private.ACCESS,
+  response: {} as {
+    item_id: number,
+    name: string,
+  }[],
 };
 
 export const ESI_CHARACTERS_$characterId_ROLES = {
@@ -219,8 +248,8 @@ export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
   pathVars: {} as {
     corporationId: number,
   },
-  query: {} as {
-    page: number,
+  query: {
+    page: 1 as number,
   },
   access: Private.ACCESS,
   response: [] as Array<{
@@ -269,4 +298,19 @@ export const ESI_UNIVERSE_NAMES = {
     id: number,
     name: string,
   }[],
+};
+
+export const ESI_UNIVERSE_STRUCTURES_$structureId = {
+  method: FetchMethod.GET,
+  path: '/v2/universe/structures/${structureId}/',
+  pathVars: {} as {
+    structureId: number,
+  },
+  access: Private.ACCESS,
+  response: {} as {
+    name: string,
+    owner_id: number,
+    solar_system_id: number,
+    type_id?: number,
+  },
 };
