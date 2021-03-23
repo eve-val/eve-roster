@@ -15,13 +15,18 @@ exports.up = async function(trx) {
     table.string('locationDescription').notNullable();
   });
 
+  await trx.schema.createTable('characterShipUpdate', (table) => {
+    table.integer('character').primary();
+    table.bigInteger('timestamp').notNullable();
+  });
+
   await trx('privilege').insert([
     {
       name: 'characterShips',
       category: 'character',
       ownerLevel: 1,
       requiresMembership: false,
-      description: 'Corp-owned ships in a character\'s assets.',
+      description: "Corp-owned ships in a character's assets.",
     },
   ]);
 

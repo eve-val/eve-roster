@@ -10,6 +10,8 @@ import { Tnex } from '../db/tnex';
 import { arrayToMap } from '../util/collections';
 import { TYPE_CATEGORY_SHIP } from './constants/categories';
 
+const MAX_ASSET_PAGES_TO_FETCH = 50
+
 export type AssetLocationType = 'station' | 'solar_system' | 'item' | 'other';
 
 export interface Asset {
@@ -65,7 +67,7 @@ export async function fetchAssets(
       },
     );
     data.forEach((asset) => assets.push(asset));
-    if (page >= pageCount) {
+    if (page >= pageCount || page >= MAX_ASSET_PAGES_TO_FETCH) {
       break;
     }
   }
@@ -83,7 +85,7 @@ async function fetchShipNames(
   token: string,
 ): Promise<Map<number, string>> {
   const itemIds = assets
-    .filter((asset) => isShip(asset, typeData))
+    .filter((asset) => isAssembledShip(asset, typeData))
     .map((asset) => asset.item_id);
   let names = new Map<number, string>();
   for (let chunk of chunked(itemIds, 999)) {
@@ -124,7 +126,7 @@ async function fetchTypeData(
   return typeData;
 }
 
-function isShip(a: EsiAsset, typeData: TypeDataMap): boolean {
+function isAssembledShip(a: EsiAsset, typeData: TypeDataMap): boolean {
   return (
     a.is_singleton &&
     typeData.get(a.type_id)!.styp_category === TYPE_CATEGORY_SHIP

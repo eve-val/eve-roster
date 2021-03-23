@@ -13,13 +13,19 @@ import { JobLogger } from '../infra/taskrunner/Job';
 import { Task } from '../infra/taskrunner/Task';
 import { arrayToMap } from '../util/collections';
 
+// If a character was updated less than 10 minutes, we consider it unnecessary
+// to update that character this time.
+const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
+
+const CORP_OWNED_SHIP_NAME_PREFIX = 'SA ';
+
 const logger = buildLoggerFromFilename(__filename);
 
 export const syncBorrowedShips: Task = {
   name: 'syncBorrowedShips',
   displayName: 'Sync borrowed ships',
   description: "Searches for corp-owned ships in members' assets.",
-  timeout: moment.duration(60, 'minutes').asMilliseconds(),
+  timeout: moment.duration(30, 'minutes').asMilliseconds(),
   executor,
 };
 
@@ -53,8 +59,6 @@ class LocationCache {
     return this.cache.get(x);
   }
 }
-
-const CORP_OWNED_SHIP_NAME_PREFIX = 'SA ';
 
 function isCorpShip(asset: Asset) {
   return (
@@ -108,7 +112,7 @@ class NestedAsset {
     for (let i = 1; i < this.nesting.length; ++i) {
       const n = this.nesting[i];
       if (!n.name) continue;
-      // Currently, if something has a name, then it's a ship, and its useful
+      // Currently, if something has a name, then it's a ship, and it's useful
       // to include its type and the "position" (e.g. fleet hangar) where the
       // asset is located. May be less useful for other named containers, if
       // we start fetching names for other assets.
@@ -171,6 +175,25 @@ async function findShips(
   );
 }
 
+async function updateCharacter(
+  db: Tnex,
+  locCache: LocationCache,
+  characterId: number,
+) {
+  const lastUpdated = await dao.characterShip.getLastUpdateTimestamp(
+    db,
+    characterId,
+  );
+  const updateNeededCutoff = new Date().getTime() - MIN_UPDATE_FREQUENCY_MILLIS;
+  if (lastUpdated > updateNeededCutoff) {
+    return;
+  }
+  const token = await getAccessToken(db, characterId);
+  const assets = await fetchAssets(characterId, token, db);
+  const ships = await findShips(characterId, token, assets, locCache);
+  await dao.characterShip.setCharacterShips(db, characterId, ships);
+}
+
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
   const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
@@ -180,10 +203,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const len = characterIds.length;
   let progress = 0;
   for (let characterId of characterIds) {
-    const token = await getAccessToken(db, characterId);
-    const assets = await fetchAssets(characterId, token, db);
-    const ships = await findShips(characterId, token, assets, locCache);
-    await dao.characterShip.setCharacterShips(db, characterId, ships);
+    await updateCharacter(db, locCache, characterId);
     ++progress;
     job.setProgress(progress / len, undefined);
   }
