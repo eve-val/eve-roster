@@ -13,8 +13,8 @@ import { JobLogger } from '../infra/taskrunner/Job';
 import { Task } from '../infra/taskrunner/Task';
 import { arrayToMap } from '../util/collections';
 
-// If a character was updated less than 10 minutes, we consider it unnecessary
-// to update that character this time.
+// If a character was updated less than 10 minutes ago, we consider it
+// unnecessary to update that character this time.
 const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
 
 const CORP_OWNED_SHIP_NAME_PREFIX = 'SA ';

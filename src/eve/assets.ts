@@ -57,7 +57,7 @@ export async function fetchAssets(
   db: Tnex,
 ): Promise<Asset[]> {
   let assets: EsiAsset[] = [];
-  for (let page = 1; true; page++) {
+  for (let page = 1; page <= MAX_ASSET_PAGES_TO_FETCH; page++) {
     const { data, pageCount } = await fetchEsiEx(
       ESI_CHARACTERS_$characterId_ASSETS,
       {
@@ -67,7 +67,7 @@ export async function fetchAssets(
       },
     );
     data.forEach((asset) => assets.push(asset));
-    if (page >= pageCount || page >= MAX_ASSET_PAGES_TO_FETCH) {
+    if (page >= pageCount) {
       break;
     }
   }
