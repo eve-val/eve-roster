@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { getAccessToken } from '../data-source/accessToken/accessToken';
 import { ESI_UNIVERSE_STRUCTURES_$structureId } from '../data-source/esi/endpoints';
+import { isAnyEsiError } from '../data-source/esi/error';
+import { EsiErrorKind } from '../data-source/esi/EsiError';
 import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 import { fetchEveNames } from '../data-source/esi/names';
 import { dao } from '../db/dao';
@@ -38,14 +40,29 @@ export const syncBorrowedShips: Task = {
 class LocationCache {
   private cache = new Map<number, string>();
 
-  async cachePlayerStructure(sid: number, token: string) {
-    const name = this.cache.get(sid);
-    if (name !== undefined) return;
-    const structureData = await fetchEsi(ESI_UNIVERSE_STRUCTURES_$structureId, {
-      structureId: sid,
-      _token: token,
-    });
-    this.cache.set(sid, structureData.name);
+  constructor(private job: JobLogger) {}
+
+  async cachePlayerStructures(token: string, ids: number[]) {
+    for (let sid of ids) {
+      const name = this.cache.get(sid);
+      if (name !== undefined) continue;
+      try {
+        const structureData = await fetchEsi(ESI_UNIVERSE_STRUCTURES_$structureId, {
+          structureId: sid,
+          _token: token,
+        });
+        this.cache.set(sid, structureData.name);
+      } catch (e) {
+        // If the character cannot access the structure, stop fetching names to
+        // avoid running into ESI error limits.
+        if (isAnyEsiError(e) && e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
+          this.job.warn(`unable to fetch location ${sid}: ${e.message}`);
+          return;
+        }
+        // All other errors are unexpected, bubble them up.
+        throw e;
+      }
+    }
   }
 
   async cacheStations(ids: number[]) {
@@ -56,7 +73,7 @@ class LocationCache {
   }
 
   get(x: number) {
-    return this.cache.get(x);
+    return this.cache.get(x) || `Unknown citadel ${x}`;
   }
 }
 
@@ -152,16 +169,16 @@ async function findShips(
     .filter((asset) => !asset.insideCorpShip);
 
   const stationIds = new Set<number>();
+  const structureIds = new Set<number>();
   for (let s of ships) {
     if (s.inStation) {
       stationIds.add(s.outermost.locationId);
-      continue;
-    }
-    if (s.inPlayerStructure) {
-      await locCache.cachePlayerStructure(s.outermost.locationId, token);
+    } else if (s.inPlayerStructure) {
+      structureIds.add(s.outermost.locationId);
     }
   }
   await locCache.cacheStations(Array.from(stationIds));
+  await locCache.cachePlayerStructures(token, Array.from(structureIds));
 
   return ships.map(
     (it) =>
@@ -199,7 +216,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
     db,
   );
-  const locCache = new LocationCache();
+  const locCache = new LocationCache(job);
   const len = characterIds.length;
   let progress = 0;
   for (let characterId of characterIds) {
