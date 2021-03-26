@@ -1,11 +1,14 @@
 import moment from 'moment';
 import { getAccessToken } from '../data-source/accessToken/accessToken';
 import { ESI_UNIVERSE_STRUCTURES_$structureId } from '../data-source/esi/endpoints';
+import { isAnyEsiError } from '../data-source/esi/error';
+import { EsiErrorKind } from '../data-source/esi/EsiError';
 import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
 import { fetchEveNames } from '../data-source/esi/names';
 import { dao } from '../db/dao';
 import { CharacterShipRow } from '../db/dao/CharacterShipDao';
 import { Tnex } from '../db/tnex';
+import { AccessTokenError } from '../error/AccessTokenError';
 import { Asset, fetchAssets, formatLocationFlag } from '../eve/assets';
 import { TYPE_CATEGORY_SHIP } from '../eve/constants/categories';
 import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
@@ -18,6 +21,8 @@ import { arrayToMap } from '../util/collections';
 const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
 
 const CORP_OWNED_SHIP_NAME_PREFIX = 'SA ';
+
+const ASSET_SAFETY_LOCATION_ID = 2004;
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -38,14 +43,34 @@ export const syncBorrowedShips: Task = {
 class LocationCache {
   private cache = new Map<number, string>();
 
-  async cachePlayerStructure(sid: number, token: string) {
-    const name = this.cache.get(sid);
-    if (name !== undefined) return;
-    const structureData = await fetchEsi(ESI_UNIVERSE_STRUCTURES_$structureId, {
-      structureId: sid,
-      _token: token,
-    });
-    this.cache.set(sid, structureData.name);
+  constructor(private job: JobLogger) {
+    this.cache.set(ASSET_SAFETY_LOCATION_ID, 'Asset safety');
+  }
+
+  async cachePlayerStructures(token: string, ids: number[]) {
+    for (let sid of ids) {
+      const name = this.cache.get(sid);
+      if (name !== undefined) continue;
+      try {
+        const structureData = await fetchEsi(
+          ESI_UNIVERSE_STRUCTURES_$structureId,
+          {
+            structureId: sid,
+            _token: token,
+          }
+        );
+        this.cache.set(sid, structureData.name);
+      } catch (e) {
+        // If the character cannot access the structure, stop fetching names to
+        // avoid running into ESI error limits.
+        if (isAnyEsiError(e) && e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
+          logger.warn(`unable to fetch location ${sid}: ${e.message}`);
+          return;
+        }
+        // All other errors are unexpected, bubble them up.
+        throw e;
+      }
+    }
   }
 
   async cacheStations(ids: number[]) {
@@ -56,7 +81,7 @@ class LocationCache {
   }
 
   get(x: number) {
-    return this.cache.get(x);
+    return this.cache.get(x) || `Unknown citadel ${x}`;
   }
 }
 
@@ -141,7 +166,7 @@ async function findShips(
   characterId: number,
   token: string,
   assets: Asset[],
-  locCache: LocationCache,
+  locCache: LocationCache
 ): Promise<CharacterShipRow[]> {
   const assetMap = arrayToMap(assets, 'itemId');
   const ships = assets
@@ -152,16 +177,16 @@ async function findShips(
     .filter((asset) => !asset.insideCorpShip);
 
   const stationIds = new Set<number>();
+  const structureIds = new Set<number>();
   for (let s of ships) {
     if (s.inStation) {
       stationIds.add(s.outermost.locationId);
-      continue;
-    }
-    if (s.inPlayerStructure) {
-      await locCache.cachePlayerStructure(s.outermost.locationId, token);
+    } else if (s.inPlayerStructure) {
+      structureIds.add(s.outermost.locationId);
     }
   }
   await locCache.cacheStations(Array.from(stationIds));
+  await locCache.cachePlayerStructures(token, Array.from(structureIds));
 
   return ships.map(
     (it) =>
@@ -171,18 +196,18 @@ async function findShips(
         typeId: it.asset.typeId,
         name: it.asset.name!,
         locationDescription: it.describeLocation(locCache),
-      },
+      }
   );
 }
 
 async function updateCharacter(
   db: Tnex,
   locCache: LocationCache,
-  characterId: number,
+  characterId: number
 ) {
   const lastUpdated = await dao.characterShip.getLastUpdateTimestamp(
     db,
-    characterId,
+    characterId
   );
   const updateNeededCutoff = new Date().getTime() - MIN_UPDATE_FREQUENCY_MILLIS;
   if (lastUpdated > updateNeededCutoff) {
@@ -197,14 +222,30 @@ async function updateCharacter(
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
   const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
-    db,
+    db
   );
-  const locCache = new LocationCache();
+  const locCache = new LocationCache(job);
   const len = characterIds.length;
   let progress = 0;
+  let errors = 0;
   for (let characterId of characterIds) {
-    await updateCharacter(db, locCache, characterId);
+    try {
+      await updateCharacter(db, locCache, characterId);
+    } catch (e) {
+      ++errors;
+      if (e instanceof AccessTokenError || isAnyEsiError(e)) {
+        logger.warn(
+          `ESI error while fetching ships for char ${characterId}.`,
+          e
+        );
+      } else {
+        throw e;
+      }
+    }
     ++progress;
     job.setProgress(progress / len, undefined);
+  }
+  if (errors) {
+    job.warn(`Failed to fetch ships for ${errors}/${len} chars.`);
   }
 }
