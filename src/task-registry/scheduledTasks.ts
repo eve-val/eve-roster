@@ -10,6 +10,7 @@ import { truncateCronLog } from '../task/truncateCronLog';
 import { truncateCharacterLocations } from '../task/truncateCharacterLocations';
 import { triagePendingLosses } from '../task/triagePendingLosses';
 import { TaskSchedule } from '../infra/taskrunner/cron';
+import { syncBorrowedShips } from '../task/syncBorrowedShips';
 
 
 /**
@@ -62,5 +63,10 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
     task: triagePendingLosses,
     schedule: '0 5 * * *',  // Once a day at ~5AM
     interval: moment.duration(1, 'day').asMilliseconds(),
+  },
+  {
+    task: syncBorrowedShips,
+    schedule: '7 */4 * * *',  // Every 4 hours
+    interval: moment.duration(4, 'hours').asMilliseconds(),
   },
 ];
