@@ -2,7 +2,7 @@
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
     <router-link to="/" class="nav-link" exact>Dashboard</router-link>
-    <router-link 
+    <router-link
         to="/roster"
         v-if="canReadRoster"
         class="nav-link"
@@ -12,6 +12,11 @@
         v-if="identity.isMember"
         class="nav-link"
         >SRP</router-link>
+    <router-link
+        to="/ships"
+        v-if="identity.isMember"
+        class="nav-link"
+        >Ships</router-link>
     <router-link
         to="/admin"
         v-if="canAccessAdminConsole"

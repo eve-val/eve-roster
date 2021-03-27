@@ -20,6 +20,9 @@ import PaymentTriage from './srp/PaymentTriage.vue';
 import PaymentDetail from './srp/PaymentDetail.vue';
 import BattleDetail from './srp/battles/BattleDetail.vue';
 
+import ShipsBorrowedByMe from './ships/ShipsBorrowedByMe.vue';
+import AllBorrowedShips from './ships/AllBorrowedShips.vue';
+
 
 // Anything added here should also be in server.js:FRONTEND_ROUTES
 // TODO(aiiane): make server.js just read it directly from here
@@ -92,6 +95,9 @@ const routes = [
     component: BattleDetail,
     props: (route) => ({ battleId: parseInt(route.params.id) }),
   },
+  { path: '/ships', redirect: '/ships/borrowed-by-me', },
+  { path: '/ships/borrowed-by-me', component: ShipsBorrowedByMe, },
+  { path: '/ships/borrowed-all', component: AllBorrowedShips, },
 ];
 if (process.env.NODE_ENV == 'development') {
   routes.push(
