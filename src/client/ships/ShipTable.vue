@@ -2,15 +2,25 @@
   <table class="table" v-if="ships.length">
     <thead>
       <tr>
-        <th class="char-name" v-if="showMainCharacter">Main</th>
-        <th class="char-name">Character</th>
-        <th class="ship-type">Type</th>
-        <th class="ship-name">Name</th>
-        <th class="ship-loc">Location</th>
+        <th
+          class="char-name"
+          v-on:click="setSort('mainCharacterName')"
+          v-if="showMainCharacter"
+        >
+          Main
+        </th>
+        <th class="char-name" v-on:click="setSort('characterName')">
+          Character
+        </th>
+        <th class="ship-type" v-on:click="setSort('type')">Type</th>
+        <th class="ship-name" v-on:click="setSort('name')">Name</th>
+        <th class="ship-loc" v-on:click="setSort('locationDescription')">
+          Location
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr class="ship-row" v-for="ship in sorted(ships)" :key="ship.id">
+      <tr v-for="ship in sorted" :key="ship.id">
         <td v-if="showMainCharacter">{{ ship.mainCharacterName }}</td>
         <td>{{ ship.characterName }}</td>
         <td>{{ ship.type }}</td>
@@ -31,22 +41,40 @@ export default {
     ships: { type: Array, required: true },
   },
 
-  methods: {
-    sorted: function(inp) {
-      let ships = inp.slice();
-      ships.sort((a, b) => {
-        if (a.mainCharacterName !== b.mainCharacterName) {
-          return a.mainCharacterName.localeCompare(b.mainCharacterName);
+  data: function() {
+    return {
+      sortOrder: [
+        'mainCharacterName',
+        'characterName',
+        'locationDescription',
+        'type',
+        'name',
+      ],
+    };
+  },
+
+  computed: {
+    sorted: function() {
+      this.ships.sort((a, b) => {
+        for (let prop of this.sortOrder) {
+          let ap = a[prop];
+          let bp = b[prop];
+          if (ap != bp) {
+            return ap.localeCompare(bp);
+          }
         }
-        if (a.characterName !== b.characterName) {
-          return a.characterName.localeCompare(b.characterName);
-        }
-        if (a.locationDescription !== b.locationDescription) {
-          return a.locationDescription.localeCompare(b.locationDescription);
-        }
-        return a.type.localeCompare(b.type);
+        return 0;
       });
-      return ships;
+      return this.ships;
+    },
+  },
+
+  methods: {
+    setSort: function(column) {
+      const idx = this.sortOrder.indexOf(column);
+      if (idx < 0) return;
+      this.sortOrder.splice(idx, 1);
+      this.sortOrder.unshift(column);
     },
   },
 };
@@ -59,6 +87,10 @@ table {
   font-size: 14px;
   width: 95%;
   border-collapse: collapse;
+}
+
+th {
+  cursor: pointer;
 }
 
 thead th.char-name {
