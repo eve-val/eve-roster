@@ -48,7 +48,7 @@
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-schedule": "^2.0.0",
     "path-to-regexp": "^6.1.0",
-    "pg": "^8.2.1",
+    "pg": "^8.6.0",
     "progress-stream": "^2.0.0",
     "pug": "^3.0.1",
     "relaxed-json": "^1.0.3",
