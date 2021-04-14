@@ -1,3 +1,5 @@
+import _ = require('underscore')
+
 import { Task } from '../infra/taskrunner/Task';
 
 import { syncCharacterLocations } from '../task/syncCharacterLocations';
@@ -11,7 +13,6 @@ import { truncateCronLog } from '../task/truncateCronLog';
 import { truncateCharacterLocations } from '../task/truncateCharacterLocations';
 import { updateSde } from '../task/updateSde';
 import { triagePendingLosses } from '../task/triagePendingLosses';
-import { findWhere } from '../util/underscore';
 
 /**
  * List of tasks that can be manually invoked from the admin UI.
@@ -36,7 +37,7 @@ export function getRunnableTasks() {
 }
 
 export function findRunnableTaskWithName(name: string) {
-  return findWhere(TASKS, { name });
+  return _.findWhere(TASKS, { name });
 }
 
 function verifyTaskNamesAreUnique(tasks: Task[]) {

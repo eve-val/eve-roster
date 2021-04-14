@@ -3,7 +3,6 @@ import _ = require('underscore');
 import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import { accountGroup, groupExplicit, groupPriv, groupTitle, privilege } from '../tables';
-import { pluck } from '../../util/underscore';
 import { MEMBER_GROUP } from '../../domain/account/specialGroups';
 
 export default class GroupsDao {
@@ -18,7 +17,7 @@ export default class GroupsDao {
         .where('groupExplicit_account', '=', val(accountId))
         .run()
     .then(rows => {
-      return pluck(rows, 'groupExplicit_group');
+      return _.pluck(rows, 'groupExplicit_group');
     });
   }
 
@@ -31,7 +30,7 @@ export default class GroupsDao {
         .andWhere('groupTitle_corporation', '=', val(corporationId))
         .run()
     .then(rows => {
-      return pluck(rows, 'groupTitle_group');
+      return _.pluck(rows, 'groupTitle_group');
     });
   }
 
@@ -42,7 +41,7 @@ export default class GroupsDao {
         .where('accountGroup_account', '=', val(accountId))
         .run()
     .then(rows =>  {
-      return pluck(rows, 'accountGroup_group');
+      return _.pluck(rows, 'accountGroup_group');
     });
   }
 

@@ -1,9 +1,9 @@
 const moment = require('moment');
+import _ = require('underscore');
 
 import { SrpLossRow } from "../../db/dao/SrpDao";
 import { nil } from "../../util/simpleTypes";
 import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
-import { findWhere } from "../../util/underscore";
 import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
 
 
@@ -52,7 +52,7 @@ function getExecutioner(
     mail: ZKillmail,
     ids: Set<number | nil>,
 ): AttackerJson {
-  const executioner = findWhere(mail.attackers, { final_blow: true })!;
+  const executioner = _.findWhere(mail.attackers, { final_blow: true })!;
 
   ids.add(executioner.ship_type_id);
   ids.add(executioner.character_id);

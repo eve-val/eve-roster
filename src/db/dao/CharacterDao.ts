@@ -1,3 +1,5 @@
+import _ = require('underscore');
+
 import { Dao } from '../dao';
 import { Tnex, val, UpdateStrategy } from '../../db/tnex';
 import {
@@ -10,7 +12,6 @@ import {
     ownership,
     skillsheet,
 } from '../tables';
-import { pluck } from '../../util/underscore';
 
 export default class CharacterDao {
   constructor(
@@ -28,7 +29,7 @@ export default class CharacterDao {
         .columns('character_id')
         .run()
     .then(rows => {
-      return pluck(rows, 'character_id');
+      return _.pluck(rows, 'character_id');
     });
   }
 
@@ -38,7 +39,7 @@ export default class CharacterDao {
         .where('character_deleted', '=', val(false))
         .columns('character_id')
         .run()
-    .then(rows => pluck(rows, 'character_id'));
+    .then(rows => _.pluck(rows, 'character_id'));
   }
 
   getCharactersOwnedByAccount(db: Tnex, accountId: number) {
