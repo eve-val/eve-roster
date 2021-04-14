@@ -1,5 +1,5 @@
 import Bluebird = require('bluebird');
-import Knex = require('knex');
+import { Knex } from 'knex';
 
 import { Query } from './Query';
 import { Scoper } from './Scoper';
