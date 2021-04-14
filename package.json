@@ -17,7 +17,7 @@
     "node": "13.14.0"
   },
   "dependencies": {
-    "@types/bluebird": "^3.5.32",
+    "@types/bluebird": "^3.5.33",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cookie-session": "^2.0.40",
