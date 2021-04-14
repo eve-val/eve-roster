@@ -583,10 +583,10 @@
   dependencies:
     "@types/express" "*"
 
-"@types/cookie-session@^2.0.40":
-  version "2.0.40"
-  resolved "https://registry.yarnpkg.com/@types/cookie-session/-/cookie-session-2.0.40.tgz#74b859066224e9feea772f38d070290873999a7d"
-  integrity sha512-oM0bN729kwy6TEUp0s1m3kME4NUaQTR4xuixRNvUhrgvDDHqsn4+RoTsSEE2m1f2m4nqoxqfAbV5L617wIQthA==
+"@types/cookie-session@^2.0.42":
+  version "2.0.42"
+  resolved "https://registry.yarnpkg.com/@types/cookie-session/-/cookie-session-2.0.42.tgz#a4126415491df806e4cc64f32afacd9918f42a3a"
+  integrity sha512-AuaDuL+MqgB6B28CzFIaRvJBsT4kpfdY0fBgG8WlycaXgEANLCn6wMUA6I6lb8ZOxVR+RXWknUcRPTLBxr+oOw==
   dependencies:
     "@types/express" "*"
     "@types/keygrip" "*"
