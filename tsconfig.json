@@ -9,7 +9,6 @@
     "module": "commonjs",
     // We're running on Node, so use this strategy.
     "moduleResolution": "node",
-    "skipLibCheck": true,
 
     // Various strictness guarantees when compiling
     "strict": true,
