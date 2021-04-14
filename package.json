@@ -55,7 +55,7 @@
     "source-map-support": "^0.5.19",
     "sqlite3": "^4.2.0",
     "tmp": "^0.2.1",
-    "typescript": "^3.9.3",
+    "typescript": "^3.9.9",
     "unbzip2-stream": "^1.4.3",
     "underscore": "^1.11.0",
     "verror": "^1.10.0",
