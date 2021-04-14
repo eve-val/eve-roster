@@ -21,7 +21,7 @@ export class RateLimiter {
   }
 
   ready() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       if (this._queue.size() == 0
           && Date.now() - this._lastCheckout > this._minInterval) {
         this._lastCheckout = Date.now();

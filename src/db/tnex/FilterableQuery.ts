@@ -1,4 +1,4 @@
-import Knex = require('knex');
+import { Knex } from 'knex';
 import { ColumnType, Comparison, ValueWrapper, StringKeyOf, DeepPartial, } from './core';
 import { Scoper } from './Scoper';
 

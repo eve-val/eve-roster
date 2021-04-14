@@ -1,5 +1,5 @@
 import pg = require('pg');
-import knex = require('knex');
+import { knex, Knex } from 'knex';
 
 
 const DEBUG_QUERIES = false;
@@ -66,7 +66,7 @@ const CONFIG = {
   connection: getConnection(process.env),
 };
 
-let pgKnex: knex | null = null;
+let pgKnex: Knex | null = null;
 
 export function getPostgresKnex() {
   if (pgKnex == null) {

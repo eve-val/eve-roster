@@ -1,6 +1,6 @@
 import { inspect } from 'util';
 
-import Knex = require('knex');
+import { Knex } from 'knex';
 
 import { SimpleObj, val, StringKeyOf } from './core';
 import { Scoper } from './Scoper';

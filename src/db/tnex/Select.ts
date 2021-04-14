@@ -1,4 +1,4 @@
-import Knex = require('knex');
+import { Knex } from 'knex';
 import Bluebird = require('bluebird');
 
 import { Comparison, Link, Nullable, StringKeyOf } from './core';

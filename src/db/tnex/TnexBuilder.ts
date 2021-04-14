@@ -1,4 +1,4 @@
-import Knex = require('knex');
+import { Knex } from 'knex';
 
 import util = require('util');
 import { splitColumn } from './core';
