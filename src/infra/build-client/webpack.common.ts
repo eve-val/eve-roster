@@ -100,6 +100,9 @@ export function commonConfig(
       // Files with these extensions can be imported without specifying the
       // extension (e.g. './foo' vs. './foo.ts');
       extensions: [ '.tsx', '.ts', '.js', '.json' ],
+      alias: {
+        'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+      },
     },
   };
 }
