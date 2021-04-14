@@ -4,8 +4,7 @@ import webpack from 'webpack';
 import { ProjectPaths } from './paths';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-const VueLoaderPlugin  = require('vue-loader/lib/plugin');
-
+const { VueLoaderPlugin } = require('vue-loader');
 
 export function commonConfig(
     mode: 'development' | 'production',
@@ -109,7 +108,7 @@ export function commonConfig(
         // Import alias. Causes `import vue from 'vue'` to point to precompiled
         // vue distributable.
         // The $ indicates an exact match is required.
-        'vue$': 'vue/dist/vue.esm.js'
+        'vue$': '@vue/runtime-dom'
       },
     },
   };
