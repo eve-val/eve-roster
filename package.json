@@ -60,7 +60,7 @@
     "path-to-regexp": "^6.2.0",
     "pg": "^8.6.0",
     "progress-stream": "^2.0.0",
-    "pug": "^3.0.1",
+    "pug": "^3.0.2",
     "relaxed-json": "^1.0.3",
     "source-map-support": "^0.5.19",
     "sqlite3": "^5.0.2",
