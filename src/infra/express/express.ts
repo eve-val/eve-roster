@@ -1,5 +1,5 @@
-
 import path = require('path');
+import util = require('util');
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -88,6 +88,8 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   let server = app.listen(port, () => {
     onServing(port);
   });
+
+  process.on('SIGTERM', util.promisify(server.close));
 }
 
 async function setupClientServing(app: express.Application) {

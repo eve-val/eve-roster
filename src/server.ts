@@ -15,10 +15,6 @@ import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
 import { CollectorTraceExporter } from '@opentelemetry/exporter-collector-grpc';
 const grpc = require('grpc');
 
-const opentelemetry = require('@opentelemetry/api');
-const { diag, DiagConsoleLogger, DiagLogLevel } = opentelemetry;
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
-
 const REQUIRED_VARS = [
   'COOKIE_SECRET',
   'SSO_CLIENT_ID',
@@ -48,9 +44,10 @@ const collectorOptions = {
   metadata
 };
 
-const provider: NodeTracerProvider = new NodeTracerProvider({
-});
+const provider: NodeTracerProvider = new NodeTracerProvider();
 const exporter = new CollectorTraceExporter(collectorOptions);
+process.on('SIGTERM', exporter.shutdown().then);
+
 provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 provider.register();
 
