@@ -100,16 +100,6 @@ export function commonConfig(
       // Files with these extensions can be imported without specifying the
       // extension (e.g. './foo' vs. './foo.ts');
       extensions: [ '.tsx', '.ts', '.js', '.json' ],
-
-      // TODO: We shouldn't include this alias. Right now we need it because
-      // we're using uncompiled templates in home.pug. We should switch that
-      // over to a .vue file. Once we do that, we can remove this alias.
-      alias: {
-        // Import alias. Causes `import vue from 'vue'` to point to precompiled
-        // vue distributable.
-        // The $ indicates an exact match is required.
-        'vue$': '@vue/runtime-dom'
-      },
     },
   };
 }
