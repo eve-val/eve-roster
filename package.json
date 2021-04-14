@@ -47,7 +47,7 @@
     "moment": "^2.29.1",
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-schedule": "^2.0.0",
-    "path-to-regexp": "^6.1.0",
+    "path-to-regexp": "^6.2.0",
     "pg": "^8.6.0",
     "progress-stream": "^2.0.0",
     "pug": "^3.0.1",
