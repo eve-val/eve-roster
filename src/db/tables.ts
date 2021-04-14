@@ -104,6 +104,23 @@ export class CharacterShipUpdate {
 }
 export const characterShipUpdate = tables.register(new CharacterShipUpdate());
 
+export class CharacterNotification {
+  characterNotification_character = integer();
+  characterNotification_id = integer();
+  characterNotification_senderId = integer();
+  characterNotification_senderType = varchar();
+  characterNotification_text = varchar();
+  characterNotification_timestamp = bigInt();
+  characterNotification_type = varchar();
+}
+export const characterNotification = tables.register(new CharacterNotification());
+
+export class CharacterNotificationUpdate {
+  characterNotificationUpdate_character = integer();
+  characterNotificationUpdate_timestamp = bigInt();
+}
+export const characterNotificationUpdate = tables.register(new CharacterNotificationUpdate());
+
 export class Citadel {
   citadel_id = integer();
   citadel_name = varchar();

@@ -2,6 +2,7 @@ import { number } from "../../util/express/schemaVerifier";
 import { EsiAsset } from "./EsiAsset";
 import { FetchMethod, Private, Public } from "./EsiEndpoint";
 import { EsiKillmail } from "./EsiKillmail";
+import { EsiNotification } from "./EsiNotification";
 
 
 /**
@@ -87,6 +88,16 @@ export const ESI_CHARACTERS_$characterId_LOCATION = {
     station_id?: number,
     structure_id?: number,
   },
+};
+
+export const ESI_CHARACTERS_$characterId_NOTIFICATIONS = {
+  method: FetchMethod.GET,
+  path: '/v6/characters/${characterId}/notifications/',
+  pathVars: {} as {
+    characterId: number,
+  },
+  access: Private.ACCESS,
+  response: {} as EsiNotification[],
 };
 
 export const ESI_CHARACTERS_$characterId_SHIP = {

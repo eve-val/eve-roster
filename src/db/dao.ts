@@ -3,6 +3,7 @@ import AccountDao from './dao/AccountDao';
 import BattleDao from './dao/BattleDao';
 import CharacterDao from './dao/CharacterDao';
 import CharacterLocationDao from './dao/CharacterLocationDao';
+import CharacterNotificationDao from './dao/CharacterNotificationDao';
 import CharacterShipDao from './dao/CharacterShipDao';
 import CitadelDao from './dao/CitadelDao';
 import CombatStatsDao from './dao/CombatStatsDao';
@@ -30,6 +31,7 @@ export class Dao {
   public readonly battle = new BattleDao(this);
   public readonly character = new CharacterDao(this);
   public readonly characterLocation = new CharacterLocationDao(this);
+  public readonly characterNotification = new CharacterNotificationDao(this);
   public readonly characterShip = new CharacterShipDao(this);
   public readonly citadel = new CitadelDao(this);
   public readonly combatStats = new CombatStatsDao(this);
