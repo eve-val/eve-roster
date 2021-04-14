@@ -1,6 +1,7 @@
+import _ = require('underscore');
+
 import { jsonEndpoint } from '../../../infra/express/protectedEndpoint';
 import { dao } from '../../../db/dao';
-import { findWhere } from '../../../util/underscore';
 import { BadRequestError } from '../../../error/BadRequestError';
 import { CORP_DOOMHEIM } from '../../../shared/eveConstants';
 import { buildLoggerFromFilename } from '../../../infra/logging/buildLogger';
@@ -18,7 +19,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
     return dao.character.getCharactersOwnedByAccount(db, account.id);
   })
   .then(rows => {
-    let row = findWhere(rows, { character_id: characterId });
+    let row = _.findWhere(rows, { character_id: characterId });
     if (!row) {
       throw new BadRequestError(
           `Character not found or owned: ${characterId}.`);

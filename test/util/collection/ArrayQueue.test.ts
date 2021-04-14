@@ -46,7 +46,7 @@ test('Offset insert after break', () => {
 });
 
 // Calls enqueue() on each val in vals
-function enqueue<T>(queue, vals: T[]) {
+function enqueue<T>(queue: ArrayQueue<T>, vals: T[]) {
   for (let val of vals) {
     queue.enqueue(val);
   }

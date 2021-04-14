@@ -5,7 +5,7 @@ import { commonConfig } from './webpack.common';
 
 const paths = getProjectPaths();
 
-const config: webpack.Configuration = merge.smart(
+const config: webpack.Configuration = merge(
 
   commonConfig('production', paths),
 

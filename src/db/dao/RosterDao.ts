@@ -1,8 +1,8 @@
-import * as _ from '../../util/underscore';
+import _ = require('underscore');
+
 import { Tnex, val } from '../../db/tnex';
 import { Dao } from '../dao';
 import * as t from '../tables';
-import { pluck } from '../../util/underscore';
 import { MEMBER_GROUP } from '../../domain/account/specialGroups';
 
 
@@ -46,7 +46,7 @@ export default class RosterDao {
         .columns('account_id')
         .run()
     .then(rows => {
-        return pluck(rows, 'account_id');
+        return _.pluck(rows, 'account_id');
     });
   }
 
@@ -60,7 +60,7 @@ export default class RosterDao {
         .andWhere('character_deleted', '=', val(false))
         .columns('character_id')
         .run()
-    .then(rows => pluck(rows, 'character_id'));
+    .then(rows => _.pluck(rows, 'character_id'));
   }
 
   getCharactersOwnedByAssociatedAccounts(

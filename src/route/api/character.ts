@@ -1,6 +1,7 @@
+import _ = require('underscore');
+
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
-import { pluck } from '../../util/underscore';
 import { jsonEndpoint } from '../../infra/express/protectedEndpoint';
 import { AccountPrivileges } from '../../infra/express/privileges';
 import { idParam } from '../../util/express/paramVerifier';
@@ -102,7 +103,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     if (privs.canWrite('memberHousing', isOwned)) {
       return dao.citadel.getAll(db, ['citadel_name'])
       .then(rows => {
-        payload.citadels = pluck(rows, 'citadel_name');
+        payload.citadels = _.pluck(rows, 'citadel_name');
       });
     }
     return null;

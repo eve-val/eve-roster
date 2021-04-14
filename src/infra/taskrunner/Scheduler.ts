@@ -1,9 +1,10 @@
+import _ = require('underscore');
+
 import { inspect } from 'util';
 
 import { Tnex } from '../../db/tnex';
 import { dao } from '../../db/dao';
 import { checkNotNil } from '../../util/assert';
-import { findWhere, pluck } from '../../util/underscore';
 
 import { Job, JobResult } from './Job';
 import { JobImpl } from './JobImpl';
@@ -181,7 +182,7 @@ export class Scheduler {
   }
 
   private _findRunningJob(task: Task) {
-    return findWhere(this._runningJobs, { task: task });
+    return _.findWhere(this._runningJobs, { task: task });
   }
 
   private _isRunning(task: Task) {
@@ -193,7 +194,7 @@ export class Scheduler {
     if (channelName == undefined) {
       return undefined;
     }
-    return findWhere(
+    return _.findWhere(
         this._getChannel(channelName).queue, { task });
   }
 
@@ -223,7 +224,7 @@ export class Scheduler {
 
     if (channel.runningJob == undefined && channel.queue.length > 0) {
       logger.warn(`Job channel "${channel.name}" has stalled. Queue is`
-          + ` [${inspect(pluck(pluck(channel.queue, 'task'), 'name'))}].`);
+          + ` [${inspect(_.pluck(_.pluck(channel.queue, 'task'), 'name'))}].`);
     }
   }
 
