@@ -1,4 +1,4 @@
-import _ = require('underscore')
+import _ = require('underscore');
 
 import { Task } from '../infra/taskrunner/Task';
 
