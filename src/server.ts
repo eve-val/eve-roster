@@ -6,20 +6,64 @@ require('heapdump');
 import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
 
-import * as express from './infra/express/express';
-import * as cron from './infra/taskrunner/cron';
-import * as taskRunner from './infra/taskrunner/taskRunner';
-import * as sde from './eve/sde';
-import { buildLoggerFromFilename } from './infra/logging/buildLogger';
-
-const logger = buildLoggerFromFilename(__filename);
-
+import { NodeTracerProvider } from '@opentelemetry/node';
+import { SimpleSpanProcessor } from '@opentelemetry/tracing';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
+import { CollectorTraceExporter } from '@opentelemetry/exporter-collector-grpc';
+const grpc = require('grpc');
 
 const REQUIRED_VARS = [
   'COOKIE_SECRET',
   'SSO_CLIENT_ID',
-  'SSO_SECRET_KEY'
+  'SSO_SECRET_KEY',
+  'HONEYCOMB_API_KEY',
+  'HONEYCOMB_DATASET',
 ];
+
+import { buildLoggerFromFilename } from './infra/logging/buildLogger';
+const logger = buildLoggerFromFilename(__filename);
+
+for (let envVar of REQUIRED_VARS) {
+  if (!(envVar in process.env)) {
+    logger.error(`Missing config param ${envVar} (check your .env file).`);
+    process.exit(2);
+  }
+}
+
+const metadata = new grpc.Metadata();
+metadata.set('x-honeycomb-team', process.env['HONEYCOMB_API_KEY'] || '');
+metadata.set('x-honeycomb-dataset', process.env['HONEYCOMB_DATASET'] || '');
+
+const collectorOptions = {
+  serviceName: 'roster',
+  url: 'api.honeycomb.io:443',
+  credentials: grpc.credentials.createSsl(),
+  metadata
+};
+
+const provider: NodeTracerProvider = new NodeTracerProvider();
+const exporter = new CollectorTraceExporter(collectorOptions);
+process.on('SIGTERM', exporter.shutdown().then);
+
+provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+provider.register();
+
+registerInstrumentations({
+  tracerProvider: provider,
+  instrumentations: [
+    new PgInstrumentation(),
+    new HttpInstrumentation(),
+    new ExpressInstrumentation(),
+  ],
+});
+
+import * as express from './infra/express/express';
+import * as cron from './infra/taskrunner/cron';
+import * as taskRunner from './infra/taskrunner/taskRunner';
+import * as sde from './eve/sde';
 
 // Crash the process in the face of an unhandled promise rejection
 process.on('unhandledRejection', (err) => {
@@ -30,13 +74,6 @@ process.on('unhandledRejection', (err) => {
   }
   throw err;
 });
-
-for (let envVar of REQUIRED_VARS) {
-  if (!(envVar in process.env)) {
-    logger.error(`Missing config param ${envVar} (check your .env file).`);
-    process.exit(2);
-  }
-}
 
 main()
 .catch(e => {
