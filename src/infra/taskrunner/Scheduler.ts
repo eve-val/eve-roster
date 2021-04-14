@@ -11,8 +11,11 @@ import { JobImpl } from './JobImpl';
 import { buildLoggerFromFilename } from '../logging/buildLogger';
 import { Task } from './Task';
 
+import { trace, getSpan, setSpan, context } from '@opentelemetry/api';
+
 const logger = buildLoggerFromFilename(__filename);
 
+const tracer = trace.getTracer('scheduler');
 
 let _nextExecutionId = 0;
 
@@ -102,6 +105,9 @@ export class Scheduler {
         logger.info(`START ${jobSummary(job)}.`);
       }
 
+      const span = tracer.startSpan(job.task.name);
+      setSpan(context.active(), span);
+
       const work = job.task.executor(this._db, job);
       job.timeoutId = setTimeout(() => this._timeoutJob(job), job.task.timeout);
       job.setStatus('running', 'pending');
@@ -138,6 +144,10 @@ export class Scheduler {
 
       if (!job.timedOut) {
         clearTimeout(checkNotNil(job.timeoutId));
+      }
+      const span = getSpan(context.active());
+      if (span) {
+        span.end();
       }
       return dao.cron.finishJob(this._db, checkNotNil(job.logId), jobResult);
     })
