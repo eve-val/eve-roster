@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node out/server/bin/witness/witness.js",
     "updatedb": "node out/server/bin/updatedb.js",
-    "build": "{ npm run build-server; } && { webpack --progress --hide-modules --config out/server/infra/build-client/webpack.prod.js; }",
+    "build": "{ yarn run build-server; } && { webpack --progress --hide-modules --config out/server/infra/build-client/webpack.prod.js; }",
     "build-server": "tsc",
     "watch-server": "tsc -w",
     "test": "jest",

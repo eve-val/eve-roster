@@ -8,7 +8,7 @@
   "repository": "https://github.com/eve-val/eve-roster",
   "scripts": {
     "dokku": {
-      "predeploy": "npm run build && npm run updatedb",
+      "predeploy": "yarn run build && yarn run updatedb",
       "postdeploy": ""
     }
   }
