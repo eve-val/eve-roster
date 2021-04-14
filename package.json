@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node out/server/bin/witness/witness.js",
     "updatedb": "node out/server/bin/updatedb.js",
-    "build": "{ yarn run build-server; } && { webpack --progress --hide-modules --config out/server/infra/build-client/webpack.prod.js; }",
+    "build": "{ yarn run build-server; } && { webpack --progress --config out/server/infra/build-client/webpack.prod.js; }",
     "build-server": "tsc",
     "watch-server": "tsc -w",
     "test": "jest",
@@ -65,7 +65,7 @@
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^4.6.0",
     "webpack-merge": "^5.3.0"
   },
   "devDependencies": {
