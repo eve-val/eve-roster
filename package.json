@@ -43,7 +43,7 @@
     "file-loader": "^6.0.0",
     "heapdump": "^0.3.15",
     "json-loader": "^0.5.7",
-    "knex": "^0.21.1",
+    "knex": "^0.95.4",
     "moment": "^2.29.1",
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-schedule": "^2.0.0",
