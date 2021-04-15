@@ -1,6 +1,5 @@
 /**
- * Adds a table to store corp-provided ships found in character assets,
- * and a privilege to access that table.
+ * Adds a table to store notifications from characters.
  */
 exports.up = async function(trx) {
   await trx.schema.createTable('characterNotification', (table) => {
