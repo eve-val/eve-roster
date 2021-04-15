@@ -41,7 +41,7 @@ export default class CharacterNotificationDao {
         characterNotification_id: n.notification_id,
         characterNotification_senderId: n.sender_id,
         characterNotification_senderType: n.sender_type,
-        characterNotification_text: n.text || "",
+        characterNotification_text: n.text?.substr(0, 2400) || "",
         characterNotification_timestamp: +moment(n.timestamp),
         characterNotification_type: n.type,
       };
