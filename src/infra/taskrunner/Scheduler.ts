@@ -158,9 +158,11 @@ export class Scheduler {
           this._tryToUnstallChannels();
         }
         job.setStatus('finished', jobResult);
+      })
+      .finally(() => {
+        span.end();
       });
     });
-    span.end();
   }
 
   private _timeoutJob(job: JobImpl) {
