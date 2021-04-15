@@ -11,6 +11,7 @@ import { truncateCharacterLocations } from '../task/truncateCharacterLocations';
 import { triagePendingLosses } from '../task/triagePendingLosses';
 import { TaskSchedule } from '../infra/taskrunner/cron';
 import { syncBorrowedShips } from '../task/syncBorrowedShips';
+import { syncNotifications } from '../task/syncNotifications';
 
 
 /**
@@ -68,5 +69,11 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
     task: syncBorrowedShips,
     schedule: '7 */4 * * *',  // Every 4 hours
     interval: moment.duration(4, 'hours').asMilliseconds(),
+  },
+  {
+    task: syncNotifications,
+    schedule: '27 * * * * *', // 27th second of every minute
+    interval: moment.duration(1, 'minutes').asMilliseconds(),
+    silent: true,
   },
 ];
