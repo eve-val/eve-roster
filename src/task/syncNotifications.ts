@@ -12,9 +12,23 @@ import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
 import { JobLogger } from '../infra/taskrunner/Job';
 import { Task } from '../infra/taskrunner/Task';
 
+import { getSpan, context } from '@opentelemetry/api';
+
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
-const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
+const MAX_UPDATE_FREQUENCY = moment.duration(10, 'minutes');
+const IMPORTANT_NOTIFICATION_TYPES = [
+  'StructureUnderAttack',
+  'StructureLostShields',
+  'StructureLostArmor',
+  'StructureFuelAlert',
+  'EntosisCaptureStarted',
+  'SovStructureReinforced',
+  'OrbitalAttacked',
+  'OrbitalReinforced',
+  'TowerAlertMsg',
+  'TowerResourceAlertMsg'
+];
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -46,8 +60,8 @@ async function updateCharacter(
     db,
     characterId
   );
-  const updateNeededCutoff = new Date().getTime() - MIN_UPDATE_FREQUENCY_MILLIS;
-  if (lastUpdated > updateNeededCutoff) {
+  const updateNeededCutoff = moment().subtract(MAX_UPDATE_FREQUENCY)
+  if (lastUpdated.isAfter(updateNeededCutoff)) {
     return;
   }
   const token = await getAccessToken(db, characterId);
@@ -61,11 +75,11 @@ async function executor(db: Tnex, job: JobLogger) {
     db
   );
 
-  const start = new Date();
+  const start = moment();
   characterIds = characterIds.filter((characterId) =>
     // Only pull 1/12 of characters every minute; cache refresh is 10 min.
     // This maximizes chance we'll find out about structure hits quickly.
-    characterId % 12 == start.getMinutes() % 12
+    characterId % 12 == start.minute() % 12
   );
 
   const len = characterIds.length;
@@ -91,6 +105,14 @@ async function executor(db: Tnex, job: JobLogger) {
 
   // Now, check the notifications table for any new notifications since last
   // run, deduped.
+  const since = start.clone().subtract(MAX_UPDATE_FREQUENCY);
+  let deduped = await dao.characterNotification.getRecentStructurePings(
+    db, since, IMPORTANT_NOTIFICATION_TYPES
+  );
+  const span = getSpan(context.active());
+  for (let msg of deduped) {
+    span?.addEvent('notification', msg);
+  }
 
   if (errors) {
     job.warn(`Failed to fetch notifications for ${errors}/${len} chars.`);

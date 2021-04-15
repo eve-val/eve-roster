@@ -1,19 +1,34 @@
 const moment = require('moment');
+import _ = require('underscore');
 
 import { Dao } from '../dao';
 import { EsiNotification } from '../../data-source/esi/EsiNotification';
 import {
-  account,
-  character,
   characterNotification,
   characterNotificationUpdate,
-  ownership,
-  sdeType,
 } from '../tables';
 import { Tnex, val } from '../tnex';
 
 export default class CharacterNotificationDao {
   constructor(private _parent: Dao) {}
+
+  getRecentStructurePings(db: Tnex, since: moment.Moment, types: string[]) {
+    return db
+        .select(characterNotification)
+        .where('characterNotification_timestamp', '>=', val(+since))
+        .whereIn('characterNotification_type', types)
+        .columns('characterNotification_text')
+        .columns('characterNotification_type')
+        .groupBy('characterNotification_text')
+        .groupBy('characterNotification_type')
+        .run()
+      .then(rows => _.map(rows, function(row) {
+        return {
+          type: row.characterNotification_type,
+          text: row.characterNotification_text
+        };
+      }));
+  }
 
   async setCharacterNotifications(
     db: Tnex,
@@ -27,7 +42,7 @@ export default class CharacterNotificationDao {
         characterNotification_senderId: n.sender_id,
         characterNotification_senderType: n.sender_type,
         characterNotification_text: n.text || "",
-        characterNotification_timestamp: moment(n.timestamp).valueOf(),
+        characterNotification_timestamp: +moment(n.timestamp),
         characterNotification_type: n.type,
       };
     });
@@ -37,7 +52,7 @@ export default class CharacterNotificationDao {
         characterNotificationUpdate,
         {
           characterNotificationUpdate_character: characterId,
-          characterNotificationUpdate_timestamp: Date.now(),
+          characterNotificationUpdate_timestamp: +moment(),
         },
         'characterNotificationUpdate_character'
       );
@@ -45,12 +60,12 @@ export default class CharacterNotificationDao {
     });
   }
 
-  async getLastUpdateTimestamp(db: Tnex, characterId: number): Promise<number> {
+  async getLastUpdateTimestamp(db: Tnex, characterId: number): Promise<moment.Moment> {
     const timestamp = await db
       .select(characterNotificationUpdate)
       .where('characterNotificationUpdate_character', '=', val(characterId))
       .columns('characterNotificationUpdate_timestamp')
       .fetchFirst();
-    return timestamp?.characterNotificationUpdate_timestamp || 0;
+    return moment(timestamp?.characterNotificationUpdate_timestamp || 0);
   }
 }
