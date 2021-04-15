@@ -11,7 +11,7 @@ import { JobImpl } from './JobImpl';
 import { buildLoggerFromFilename } from '../logging/buildLogger';
 import { Task } from './Task';
 
-import { trace, getSpan, setSpan, context } from '@opentelemetry/api';
+import { trace, setSpan, context } from '@opentelemetry/api';
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -96,71 +96,69 @@ export class Scheduler {
     let jobResult: JobResult;
     let executorError: any = null;
 
-    dao.cron.startJob(this._db, job.task.name)
-    .then(jobId => {
-      job.logId = jobId;
-      job.startTime = Date.now();
+    const span = tracer.startSpan(job.task.name);
+    context.with(setSpan(context.active(), span), async () => {
+      dao.cron.startJob(this._db, job.task.name)
+      .then(jobId => {
+        job.logId = jobId;
+        span.setAttribute('job_id', jobId);
+        job.startTime = Date.now();
 
-      if (!job.silent) {
-        logger.info(`START ${jobSummary(job)}.`);
-      }
-
-      const span = tracer.startSpan(job.task.name);
-      setSpan(context.active(), span);
-
-      const work = job.task.executor(this._db, job);
-      job.timeoutId = setTimeout(() => this._timeoutJob(job), job.task.timeout);
-      job.setStatus('running', 'pending');
-      return work;
-    })
-    .catch(e => {
-      executorError = e;
-    })
-    .then(() => {
-      if (executorError) {
-        logger.error(`Error while executing ${jobSummary(job)}.`);
-        logger.error(executorError);
-        job.error(executorError.message || executorError.toString());
-      }
-
-      if (job.errors.length > 0) {
-        jobResult = 'failure';
-      } else if (job.warnings.length > 0) {
-        jobResult = 'partial';
-      } else {
-        jobResult = 'success';
-      }
-
-      const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}", `
-          + `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
-
-      if (!job.silent) {
-        if (jobResult == 'success') {
-          logger.info(logMessage);
-        } else {
-          logger.error(logMessage);
+        if (!job.silent) {
+          logger.info(`START ${jobSummary(job)}.`);
         }
-      }
 
-      if (!job.timedOut) {
-        clearTimeout(checkNotNil(job.timeoutId));
-      }
-      const span = getSpan(context.active());
-      if (span) {
-        span.end();
-      }
-      return dao.cron.finishJob(this._db, checkNotNil(job.logId), jobResult);
-    })
-    .catch(e => {
-      logger.error('DB failure when trying to log cron job failure :(');
-      logger.error(e);
-    })
-    .then(() => {
-      if (!job.timedOut) {
-        this._unregisterJob(job);
-        this._tryToUnstallChannels();
-      }
-      job.setStatus('finished', jobResult);
+        const work = job.task.executor(this._db, job);
+        job.timeoutId = setTimeout(() => this._timeoutJob(job), job.task.timeout);
+        job.setStatus('running', 'pending');
+        return work;
+      })
+      .catch(e => {
+        executorError = e;
+      })
+      .then(() => {
+        if (executorError) {
+          logger.error(`Error while executing ${jobSummary(job)}.`);
+          logger.error(executorError);
+          job.error(executorError.message || executorError.toString());
+        }
+
+        if (job.errors.length > 0) {
+          jobResult = 'failure';
+        } else if (job.warnings.length > 0) {
+          jobResult = 'partial';
+        } else {
+          jobResult = 'success';
+        }
+        span.setAttribute('job_result', jobResult);
+
+        const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}", `
+            + `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
+
+        if (!job.silent) {
+          if (jobResult == 'success') {
+            logger.info(logMessage);
+          } else {
+            logger.error(logMessage);
+          }
+        }
+
+        if (!job.timedOut) {
+          clearTimeout(checkNotNil(job.timeoutId));
+        }
+        return dao.cron.finishJob(this._db, checkNotNil(job.logId), jobResult);
+      })
+      .catch(e => {
+        logger.error('DB failure when trying to log cron job failure :(');
+        logger.error(e);
+      })
+      .then(() => {
+        if (!job.timedOut) {
+          this._unregisterJob(job);
+          this._tryToUnstallChannels();
+        }
+        job.setStatus('finished', jobResult);
+      });
     });
   }
 
