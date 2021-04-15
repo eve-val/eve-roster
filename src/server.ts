@@ -3,6 +3,9 @@ require('source-map-support').install();
 
 require('heapdump');
 
+import Graceful from 'node-graceful';
+Graceful.captureExceptions = true;
+
 import { tables } from './db/tables';
 import { getPostgresKnex } from './db/getPostgresKnex';
 
@@ -46,10 +49,12 @@ const collectorOptions = {
 
 const provider: NodeTracerProvider = new NodeTracerProvider();
 const exporter = new CollectorTraceExporter(collectorOptions);
-process.on('SIGTERM', exporter.shutdown().then);
-
 provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 provider.register();
+
+Graceful.on('exit', async () => {
+  await provider.shutdown();
+});
 
 registerInstrumentations({
   tracerProvider: provider,
