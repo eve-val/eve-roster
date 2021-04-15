@@ -1,3 +1,6 @@
+import Graceful from 'node-graceful';
+Graceful.captureExceptions = true;
+
 import path = require('path');
 import util = require('util');
 
@@ -89,7 +92,9 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
     onServing(port);
   });
 
-  process.on('SIGTERM', util.promisify(server.close));
+  Graceful.on('exit', async () => {
+    await server.close();
+  });
 }
 
 async function setupClientServing(app: express.Application) {
