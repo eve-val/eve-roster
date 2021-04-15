@@ -160,6 +160,7 @@ export class Scheduler {
         job.setStatus('finished', jobResult);
       });
     });
+    span.end();
   }
 
   private _timeoutJob(job: JobImpl) {
