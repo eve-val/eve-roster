@@ -1,26 +1,28 @@
-import moment = require('moment');
+import moment = require("moment");
 
-import { getAccessTokensFromRows } from '../data-source/accessToken/accessToken';
-import { dao } from '../db/dao';
-import { Tnex } from '../db/tnex';
-import { JobLogger } from '../infra/taskrunner/Job';
-import { CharacterLocation } from '../db/tables';
-import { Task } from '../infra/taskrunner/Task';
-import { ESI_CHARACTERS_$characterId_LOCATION, ESI_CHARACTERS_$characterId_SHIP } from '../data-source/esi/endpoints';
-import { isAnyEsiError } from '../data-source/esi/error';
-import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
-
+import { getAccessTokensFromRows } from "../data-source/accessToken/accessToken";
+import { dao } from "../db/dao";
+import { Tnex } from "../db/tnex";
+import { JobLogger } from "../infra/taskrunner/Job";
+import { CharacterLocation } from "../db/tables";
+import { Task } from "../infra/taskrunner/Task";
+import {
+  ESI_CHARACTERS_$characterId_LOCATION,
+  ESI_CHARACTERS_$characterId_SHIP,
+} from "../data-source/esi/endpoints";
+import { isAnyEsiError } from "../data-source/esi/error";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 
 export const syncCharacterLocations: Task = {
-  name: 'syncCharacterLocations',
-  displayName: 'Sync locations',
-  description: 'Updates all members\' locations.',
-  timeout:moment.duration(10, 'minutes').asMilliseconds(),
+  name: "syncCharacterLocations",
+  displayName: "Sync locations",
+  description: "Updates all members' locations.",
+  timeout: moment.duration(10, "minutes").asMilliseconds(),
   executor,
 };
 
-const SLOW_UPDATE_THRESHOLD = moment.duration(30, 'days').asMilliseconds();
-const RAPID_UPDATE_THRESHOLD = moment.duration(6, 'hours').asMilliseconds();
+const SLOW_UPDATE_THRESHOLD = moment.duration(30, "days").asMilliseconds();
+const RAPID_UPDATE_THRESHOLD = moment.duration(6, "hours").asMilliseconds();
 
 const CHARLOC_CACHE = new Map<number, CharacterLocation>();
 
@@ -29,41 +31,46 @@ async function executor(db: Tnex, job: JobLogger) {
     await fillLocationCache(db);
   }
 
-  const initialRows =
-      await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
+  const initialRows = await dao.characterLocation.getMemberCharactersWithValidAccessTokens(
+    db
+  );
   const tokenMap = await getAccessTokensFromRows(db, initialRows);
   const esiErrors: Array<[number, string]> = [];
 
   const tasks: Promise<CharacterLocation | null>[] = [];
-  for (let row of initialRows) {
+  for (const row of initialRows) {
     const tokenResult = tokenMap.get(row.accessToken_character)!;
-    if (tokenResult.kind == 'error') {
+    if (tokenResult.kind == "error") {
       job.warn(
-          `Error (${tokenResult.error}) while refreshing token for `
-              + `${row.accessToken_character}.`);
+        `Error (${tokenResult.error}) while refreshing token for ` +
+          `${row.accessToken_character}.`
+      );
       continue;
     }
     if (shouldCheckLocation(row.accessToken_character)) {
       tasks.push(
-          checkLocation(row.accessToken_character, tokenResult.token)
-          .catch(e => {
+        checkLocation(row.accessToken_character, tokenResult.token).catch(
+          (e) => {
             if (isAnyEsiError(e)) {
               esiErrors.push([row.accessToken_character, e.kind]);
             } else {
               job.error(
-                  `Error while updating location for `
-                      + `${row.accessToken_character}:`);
+                `Error while updating location for ` +
+                  `${row.accessToken_character}:`
+              );
               job.error(e);
             }
             return null;
-          }));
+          }
+        )
+      );
     }
   }
 
   const results = await Promise.all(tasks);
 
   const updatedRows: CharacterLocation[] = [];
-  for (let result of results) {
+  for (const result of results) {
     if (result != null) {
       updatedRows.push(result);
     }
@@ -73,18 +80,21 @@ async function executor(db: Tnex, job: JobLogger) {
   }
 
   if (esiErrors.length > 0) {
-    job.info(`The following characters got ESI errors: `
-        + esiErrors
-            .map(([character, error]) => `${character} (${error})`)
-            .join(', '));
+    job.info(
+      `The following characters got ESI errors: ` +
+        esiErrors
+          .map(([character, error]) => `${character} (${error})`)
+          .join(", ")
+    );
   }
 }
 
 async function fillLocationCache(db: Tnex) {
-  const rows =
-      await dao.characterLocation.getMostRecentMemberCharacterLocations(db);
+  const rows = await dao.characterLocation.getMostRecentMemberCharacterLocations(
+    db
+  );
 
-  for (let row of rows) {
+  for (const row of rows) {
     CHARLOC_CACHE.set(row.charloc_character, row);
   }
 }
@@ -108,7 +118,7 @@ function shouldCheckLocation(characterId: number) {
   if (cachedRow == undefined) {
     return true;
   } else {
-    let staleness = Date.now() - cachedRow.charloc_timestamp;
+    const staleness = Date.now() - cachedRow.charloc_timestamp;
     if (staleness <= RAPID_UPDATE_THRESHOLD) {
       // Normal - always update.
       return true;
@@ -123,15 +133,18 @@ function shouldCheckLocation(characterId: number) {
 }
 
 function locationsEqual(a: CharacterLocation, b: CharacterLocation) {
-  return a.charloc_character == b.charloc_character
-      && a.charloc_shipTypeId == b.charloc_shipTypeId
-      && a.charloc_shipItemId == b.charloc_shipItemId
-      && a.charloc_shipName == b.charloc_shipName
-      && a.charloc_solarSystemId == b.charloc_solarSystemId;
+  return (
+    a.charloc_character == b.charloc_character &&
+    a.charloc_shipTypeId == b.charloc_shipTypeId &&
+    a.charloc_shipItemId == b.charloc_shipItemId &&
+    a.charloc_shipName == b.charloc_shipName &&
+    a.charloc_solarSystemId == b.charloc_solarSystemId
+  );
 }
 
 async function fetchUpdatedLocationRow(
-    characterId: number, accessToken: string,
+  characterId: number,
+  accessToken: string
 ): Promise<CharacterLocation> {
   const [locationResults, shipResults] = await Promise.all([
     fetchEsi(ESI_CHARACTERS_$characterId_LOCATION, {

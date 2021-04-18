@@ -1,85 +1,83 @@
 <template>
-<div class="_dev-owned-character-slap">
-
-  <div class="entry-title">Main</div>
-  <owned-character-slab
+  <div class="_dev-owned-character-slap">
+    <div class="entry-title">Main</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterBasic"
       :isMain="true"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
-  <div class="entry-title">Alt</div>
-  <owned-character-slab
+    <div class="entry-title">Alt</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterBasic"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
-  <div class="entry-title">Opsec alt</div>
-  <owned-character-slab
+    <div class="entry-title">Opsec alt</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterOpsecAlt"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
-  
-  <div class="entry-title">ESI failure</div>
-  <owned-character-slab
+    />
+
+    <div class="entry-title">ESI failure</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterEsiFailure"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
-  
-  <div class="entry-title">Biomassed character</div>
-  <owned-character-slab
+    />
+
+    <div class="entry-title">Biomassed character</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterBiomassed"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
-  
-  <!-- Skill queue variations -->
-  <div class="section">Skill queue variations</div>
+    />
 
-  <div class="entry-title">Empty queue</div>
-  <owned-character-slab
+    <!-- Skill queue variations -->
+    <div class="section">Skill queue variations</div>
+
+    <div class="entry-title">Empty queue</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterEmptyQueue"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
-  <div class="entry-title">Paused queue</div>
-  <owned-character-slab
+    <div class="entry-title">Paused queue</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterPausedQueue"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
+    <!-- Action handling -->
+    <div class="section">Action handling</div>
 
-  <!-- Action handling -->
-  <div class="section">Action handling</div>
-
-  <div class="entry-title">Action pending</div>
-  <owned-character-slab
+    <div class="entry-title">Action pending</div>
+    <owned-character-slab
       ref="actionPendingSlab"
       :accountId="0"
       :character="characterBasic"
@@ -87,10 +85,10 @@
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
-  <div class="entry-title">Action failed</div>
-  <owned-character-slab
+    <div class="entry-title">Action failed</div>
+    <owned-character-slab
       ref="actionFailedSlab"
       :accountId="0"
       :character="characterBasic"
@@ -98,36 +96,36 @@
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
-  
-  <div class="entry-title">ESI error</div>
-  <owned-character-slab
+    />
+
+    <div class="entry-title">ESI error</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterUnfresQueue"
       :isMain="true"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
+    />
 
-  <!-- Misc -->
-  <div class="section">Misc</div>
+    <!-- Misc -->
+    <div class="section">Misc</div>
 
-  <div class="entry-title">Needs reauth</div>
-  <owned-character-slab
+    <div class="entry-title">Needs reauth</div>
+    <owned-character-slab
       :accountId="0"
       :character="characterNeedsReauth"
       :isMain="false"
       :highlightMain="true"
       :loginParams="loginParams"
       :access="accessFull"
-      />
-</div>
+    />
+  </div>
 </template>
 
 <script>
-import OwnedCharacterSlab from '../dashboard/OwnedCharacterSlab.vue';
-import { CORP_DOOMHEIM } from '../../shared/eveConstants';
+import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
+import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
 export default {
   components: {
@@ -150,7 +148,7 @@ export default {
         designateMain: 2,
       },
 
-      loginParams: 'foo=bar&baz=pizza'
+      loginParams: "foo=bar&baz=pizza",
     };
   },
 
@@ -158,7 +156,7 @@ export default {
     this.$refs.actionPendingSlab.$refs.spinner.observe(pendingPromise());
     this.$refs.actionFailedSlab.$refs.spinner.observe(errorPromise());
   },
-}
+};
 
 function pendingPromise() {
   return new Promise(() => {});
@@ -167,7 +165,7 @@ function pendingPromise() {
 function errorPromise() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject('A terrible error has occurred.');
+      reject("A terrible error has occurred.");
     }, 1000);
   });
 }
@@ -175,10 +173,10 @@ function errorPromise() {
 function characterBasic(skillQueue) {
   return {
     id: 95773199,
-    name: 'Brienne Lesqagar',
+    name: "Brienne Lesqagar",
     needsReauth: false,
     opsec: false,
-    corpStatus: 'primary',
+    corpStatus: "primary",
     skillQueue: skillQueue || sampleSkillQueue(),
     corp: 123456,
   };
@@ -187,7 +185,7 @@ function characterBasic(skillQueue) {
 function characterOpsec() {
   let character = characterBasic();
   character.opsec = true;
-  character.corpStatus = 'external';
+  character.corpStatus = "external";
   return character;
 }
 
@@ -205,24 +203,24 @@ function characterNeedsReauth(skillQueue) {
 
 function sampleSkillQueue() {
   return {
-    dataStatus: 'fresh',
-    queueStatus: 'active',
+    dataStatus: "fresh",
+    queueStatus: "active",
     skillInTraining: {
-      name: 'Repair Systems V',
+      name: "Repair Systems V",
       progress: 0.3886220453208478,
-      timeRemaining: '2d 1h'
+      timeRemaining: "2d 1h",
     },
     queue: {
       count: 4,
-      timeRemaining: '25d 14h'
-    }
+      timeRemaining: "25d 14h",
+    },
   };
 }
 
 function emptySkillQueue() {
   return {
-    dataStatus: 'fresh',
-    queueStatus: 'empty',
+    dataStatus: "fresh",
+    queueStatus: "empty",
     skillInTraining: null,
     queue: {
       count: 0,
@@ -233,34 +231,33 @@ function emptySkillQueue() {
 
 function pausedSkillQueue() {
   return {
-    dataStatus: 'fresh',
-    queueStatus: 'paused',
+    dataStatus: "fresh",
+    queueStatus: "paused",
     skillInTraining: {
-      name: 'Gallente Frigate V',
+      name: "Gallente Frigate V",
       progress: 0.17560084462264822,
       timeRemaining: null,
     },
     queue: {
       count: 6,
       timeRemaining: null,
-    }
+    },
   };
 }
 
 function unfreshSkillQueue() {
   let queue = sampleSkillQueue();
-  queue.dataStatus = 'bad_credentials';
+  queue.dataStatus = "bad_credentials";
   return queue;
 }
 
 function warningSkillQueue() {
   let queue = sampleSkillQueue();
-  queue.dataStatus = 'cached';
-  queue.warning = 'bad_credentials';
+  queue.dataStatus = "cached";
+  queue.warning = "bad_credentials";
 
   return queue;
 }
-
 </script>
 
 <style scoped>

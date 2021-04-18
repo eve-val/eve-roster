@@ -1,15 +1,15 @@
-import { Knex } from 'knex';
-import Bluebird = require('bluebird');
+import { Knex } from "knex";
+import Bluebird = require("bluebird");
 
-import { Comparison, Link, Nullable, StringKeyOf } from './core';
-import { Scoper } from './Scoper';
-import { Query } from './Query';
-import { RenamedJoin } from './RenamedJoin';
-import { checkNotNil } from '../../util/assert';
+import { Comparison, Link, Nullable, StringKeyOf } from "./core";
+import { Scoper } from "./Scoper";
+import { Query } from "./Query";
+import { RenamedJoin } from "./RenamedJoin";
+import { checkNotNil } from "../../util/assert";
 
 interface ColumnSelect {
-  column: string,
-  alias?: string,
+  column: string;
+  alias?: string;
 }
 
 /**
@@ -26,23 +26,23 @@ interface ColumnSelect {
  * usually occur at the _end_ of a chain of calls, not at the beginning as is
  * traditionally the case in SQL select statements.
  */
-export class Select<J extends object /* joined */, S /* selected */>
-    extends Query<J, S[]> {
+export class Select<
+  J extends object /* joined */,
+  S /* selected */
+> extends Query<J, S[]> {
   private _knex: Knex;
   private _subqueryTableName: string | undefined;
 
   private _selectedColumns = [] as ColumnSelect[];
-  private _pendingSelectedColumns = [] as  ColumnSelect[];
+  private _pendingSelectedColumns = [] as ColumnSelect[];
 
   constructor(
-      knex: Knex,
-      scoper: Scoper,
-      table: J,
-      subqueryTableName?: string,
-      ) {
-    super(
-        scoper.mirror(),
-        knex(scoper.getTableName(table)));
+    knex: Knex,
+    scoper: Scoper,
+    table: J,
+    subqueryTableName?: string
+  ) {
+    super(scoper.mirror(), knex(scoper.getTableName(table)));
     this._knex = knex;
     this._subqueryTableName = subqueryTableName;
   }
@@ -57,21 +57,22 @@ export class Select<J extends object /* joined */, S /* selected */>
   }
 
   public fetchFirst(): Promise<S | null> {
-    return this.run()
-    .then(rows => {
+    return this.run().then((rows) => {
       return rows[0];
     });
   }
 
-  public columns<K extends StringKeyOf<J>>(...columns: K[])
-      : Select<J, S & Pick<J, K>> {
+  public columns<K extends StringKeyOf<J>>(
+    ...columns: K[]
+  ): Select<J, S & Pick<J, K>> {
     if (this._subqueryTableName != null) {
       throw new Error(
-          `Subqueries don't support columns(). Use columnAs() instead.`);
+        `Subqueries don't support columns(). Use columnAs() instead.`
+      );
     }
 
-    for (let column of columns) {
-      this._pendingSelectedColumns.push({ column })
+    for (const column of columns) {
+      this._pendingSelectedColumns.push({ column });
     }
 
     return this as any;
@@ -89,14 +90,13 @@ export class Select<J extends object /* joined */, S /* selected */>
    * @param alias The desired name of the column in the result set.
    */
   public columnAs<K extends StringKeyOf<J>, L extends string>(
-      column: K,
-      alias: L,
+    column: K,
+    alias: L
   ): Select<J, S & Link<J, K, L>> {
     this._pendingSelectedColumns.push({ column, alias });
 
     return this as any;
   }
-
 
   /*
    * Join methods
@@ -104,32 +104,27 @@ export class Select<J extends object /* joined */, S /* selected */>
 
   // Subjoin
   public join<T extends object, E>(
-      subselect: Select<T, E>,
-      left: StringKeyOf<E>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
-      ): Select<J & E, S>;
+    subselect: Select<T, E>,
+    left: StringKeyOf<E>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
+  ): Select<J & E, S>;
   // Renamed join
   public join<T extends object, E>(
-      renamedTable: RenamedJoin<T, E>,
-      left: StringKeyOf<E>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
-      ): Select<J & E, S>;
+    renamedTable: RenamedJoin<T, E>,
+    left: StringKeyOf<E>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
+  ): Select<J & E, S>;
   // Normal join
   public join<T extends object>(
-      table: T,
-      left: StringKeyOf<T>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
+    table: T,
+    left: StringKeyOf<T>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
   ): Select<J & T, S>;
   // Implementation
-  public join(
-      table: object,
-      left: string,
-      cmp: Comparison,
-      right: string,
-  ) {
+  public join(table: object, left: string, cmp: Comparison, right: string) {
     let joinTarget: string | Knex.QueryBuilder;
 
     let requiredPrefix: string | undefined;
@@ -145,44 +140,38 @@ export class Select<J extends object /* joined */, S /* selected */>
     }
 
     this._query = this._query.join(
-          joinTarget,
-          this._scoper.scopeColumn(left, requiredPrefix),
-          cmp,
-          this._scoper.scopeColumn(right));
+      joinTarget,
+      this._scoper.scopeColumn(left, requiredPrefix),
+      cmp,
+      this._scoper.scopeColumn(right)
+    );
 
     return this;
   }
 
-
   // Subselect
   public leftJoin<T extends object, E>(
-      sub: Select<T, E>,
-      left: StringKeyOf<E>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
-      ): Select<J & Nullable<E>, S>;
+    sub: Select<T, E>,
+    left: StringKeyOf<E>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
+  ): Select<J & Nullable<E>, S>;
   // Renamed join
   public leftJoin<T extends object, E>(
-      join: RenamedJoin<T, E>,
-      left: StringKeyOf<E>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
-      ): Select<J & Nullable<E>, S>;
+    join: RenamedJoin<T, E>,
+    left: StringKeyOf<E>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
+  ): Select<J & Nullable<E>, S>;
   // Normal
   public leftJoin<T extends object>(
-      table: T,
-      left: StringKeyOf<T>,
-      cmp: Comparison,
-      right: StringKeyOf<J>,
-      ): Select<J & Nullable<T>, S>;
+    table: T,
+    left: StringKeyOf<T>,
+    cmp: Comparison,
+    right: StringKeyOf<J>
+  ): Select<J & Nullable<T>, S>;
   // Implementation
-  public leftJoin(
-      table: object,
-      left: string,
-      cmp: Comparison,
-      right: string,
-      ) {
-
+  public leftJoin(table: object, left: string, cmp: Comparison, right: string) {
     let joinTarget: string | Knex.QueryBuilder;
     let requiredPrefix: string | undefined;
 
@@ -198,10 +187,11 @@ export class Select<J extends object /* joined */, S /* selected */>
     }
 
     this._query = this._query.leftJoin(
-          joinTarget,
-          this._scoper.scopeColumn(left),
-          cmp,
-          this._scoper.scopeColumn(right));
+      joinTarget,
+      this._scoper.scopeColumn(left),
+      cmp,
+      this._scoper.scopeColumn(right)
+    );
 
     return this;
   }
@@ -213,7 +203,8 @@ export class Select<J extends object /* joined */, S /* selected */>
   private _processSubJoin<T extends object, E>(sub: Select<T, E>) {
     if (sub._subqueryTableName == null) {
       throw new Error(
-          `Query is not a subquery. Use subselect() instead of select()`);
+        `Query is not a subquery. Use subselect() instead of select()`
+      );
     }
 
     let subquery = sub._query;
@@ -236,19 +227,17 @@ export class Select<J extends object /* joined */, S /* selected */>
    */
 
   public sum<K extends StringKeyOf<J>, L extends string>(
-      column: K,
-      alias: L,
-      ): Select<J, S & Link<J, K, L>> {
-
+    column: K,
+    alias: L
+  ): Select<J, S & Link<J, K, L>> {
     this._query = this._query.sum(this._prepForSelect(column, alias));
     return this as any;
   }
 
   public count<K extends StringKeyOf<J>, L extends string>(
-      column: K,
-      alias: L,
-      ): Select<J, S & Link<J, K, L>> {
-
+    column: K,
+    alias: L
+  ): Select<J, S & Link<J, K, L>> {
     // TODO: Flag that this might need to be converted from a string to a
     // number.
     this._query = this._query.count(this._prepForSelect(column, alias));
@@ -256,14 +245,12 @@ export class Select<J extends object /* joined */, S /* selected */>
   }
 
   public max<K extends StringKeyOf<J>, L extends string>(
-      column: K,
-      alias: L,
-      ): Select<J, S & Link<J, K, L>> {
-
+    column: K,
+    alias: L
+  ): Select<J, S & Link<J, K, L>> {
     this._query = this._query.max(this._prepForSelect(column, alias));
     return this as any;
   }
-
 
   /*
    * Misc methods
@@ -290,11 +277,12 @@ export class Select<J extends object /* joined */, S /* selected */>
    * This is a Postgres-only extension.
    */
   public distinctOn<K extends StringKeyOf<J>>(
-      column: K,
+    column: K
   ): Select<J, S & Pick<J, K>> {
     const scopedCol = this._scoper.scopeColumn(column);
     this._query = this._query.distinct(
-        this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column]));
+      this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column])
+    );
 
     return this as any;
   }
@@ -303,9 +291,11 @@ export class Select<J extends object /* joined */, S /* selected */>
    * Orders the results by the specified column and direction. Subsequent calls
    * append order clauses (instead of replacing the previous ones).
    */
-  public orderBy(column: StringKeyOf<J>, direction: 'asc' | 'desc'): this {
+  public orderBy(column: StringKeyOf<J>, direction: "asc" | "desc"): this {
     this._query = this._query.orderBy(
-        this._scoper.scopeColumn(column), direction);
+      this._scoper.scopeColumn(column),
+      direction
+    );
     return this;
   }
 
@@ -319,13 +309,12 @@ export class Select<J extends object /* joined */, S /* selected */>
     return this;
   }
 
-
   /*
    * Helper methods
    */
 
   private _getPendingColumnSelectStatements() {
-    return this._pendingSelectedColumns.map(cs => {
+    return this._pendingSelectedColumns.map((cs) => {
       return this._prepForSelect(cs.column, cs.alias);
     });
   }
@@ -334,24 +323,30 @@ export class Select<J extends object /* joined */, S /* selected */>
     if (this._subqueryTableName == undefined) {
       // "character.id as character_id"
       // "character.id as foobar"
-      return `${this._scoper.scopeColumn(prefixedColumn)} as`
-          + ` ${alias || prefixedColumn}`;
+      return (
+        `${this._scoper.scopeColumn(prefixedColumn)} as` +
+        ` ${alias || prefixedColumn}`
+      );
     } else {
       if (alias == undefined) {
         throw new Error(
-            `Unexpectedly undefined alias for "${prefixedColumn}".`);
+          `Unexpectedly undefined alias for "${prefixedColumn}".`
+        );
       }
-      let [prefix] = this._scoper.splitColumn(alias);
+      const [prefix] = this._scoper.splitColumn(alias);
       if (prefix != this._subqueryTableName) {
         throw new Error(
-            `Alias "${alias}" for column "${prefixedColumn}" must be`
-                + ` prefixed with "${this._subqueryTableName}".`);
+          `Alias "${alias}" for column "${prefixedColumn}" must be` +
+            ` prefixed with "${this._subqueryTableName}".`
+        );
       }
 
       // local.unprefixedColumn as unprefixedAlias
       // "character.id as myId"
-      return `${this._scoper.scopeColumn(prefixedColumn)} as `
-          + `${this._scoper.stripPrefix(alias)}`;
+      return (
+        `${this._scoper.scopeColumn(prefixedColumn)} as ` +
+        `${this._scoper.stripPrefix(alias)}`
+      );
     }
   }
 }

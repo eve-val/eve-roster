@@ -5,52 +5,30 @@ Root container for the SRP UI.
 -->
 
 <template>
-<app-page :identity="identity" :content-width="1100">
-  <div class="title">SRP</div>
+  <app-page :identity="identity" :content-width="1100">
+    <div class="title">SRP</div>
 
-  <div class="nav">
-    <router-link
-        to="/srp/dashboard"
-        class="nav-link"
-        >
-      Dashboard
-    </router-link>
-    <router-link
-        to="/srp/history"
-        class="nav-link"
-        >
-      Activity
-    </router-link>
-    <router-link
-        to="/srp/payments"
-        class="nav-link"
-        >
-      Payments
-    </router-link>
-    <router-link
-        v-if="canWriteSrp"
-        to="/srp/triage"
-        class="nav-link"
-        >
-      Approve
-    </router-link>
-    <router-link
-        v-if="canWriteSrp"
-        to="/srp/pay"
-        class="nav-link"
-        >
-      Pay
-    </router-link>
-  </div>
+    <div class="nav">
+      <router-link to="/srp/dashboard" class="nav-link">
+        Dashboard
+      </router-link>
+      <router-link to="/srp/history" class="nav-link"> Activity </router-link>
+      <router-link to="/srp/payments" class="nav-link"> Payments </router-link>
+      <router-link v-if="canWriteSrp" to="/srp/triage" class="nav-link">
+        Approve
+      </router-link>
+      <router-link v-if="canWriteSrp" to="/srp/pay" class="nav-link">
+        Pay
+      </router-link>
+    </div>
 
-  <router-view :identity="identity"></router-view>
-</app-page>
+    <router-view :identity="identity"></router-view>
+  </app-page>
 </template>
 
 <script>
-import Vue from 'vue';
-import AppPage from '../shared/AppPage.vue';
-
+import Vue from "vue";
+import AppPage from "../shared/AppPage.vue";
 
 export default Vue.extend({
   components: {
@@ -58,22 +36,20 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
   data() {
-    return {
-    };
+    return {};
   },
 
   computed: {
     canWriteSrp() {
-      return this.identity.access['srp'] == 2;
-    }
+      return this.identity.access["srp"] == 2;
+    },
   },
 
-  methods: {
-  },
+  methods: {},
 });
 </script>
 
@@ -103,6 +79,6 @@ export default Vue.extend({
 }
 
 .router-link-active {
-  color: #A7A29C;
+  color: #a7a29c;
 }
 </style>

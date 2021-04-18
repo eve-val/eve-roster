@@ -1,6 +1,14 @@
-import { Tnex, val } from '../../db/tnex';
-import { sdeImport, sdeType, sdeAttribute, sdeTypeAttribute } from '../../db/tables';
-import { DGM_ATTR_REQUIRED_SKILL_1, DGM_ATTR_REQUIRED_SKILL_1_LEVEL } from '../../eve/constants/dogma';
+import { Tnex, val } from "../../db/tnex";
+import {
+  sdeImport,
+  sdeType,
+  sdeAttribute,
+  sdeTypeAttribute,
+} from "../../db/tables";
+import {
+  DGM_ATTR_REQUIRED_SKILL_1,
+  DGM_ATTR_REQUIRED_SKILL_1_LEVEL,
+} from "../../eve/constants/dogma";
 
 /**
  * Repair or remove and inconsistencies in the imported SDE data, such as
@@ -20,20 +28,20 @@ async function deleteIncompleteSocialSkillRequirement(db: Tnex) {
   const SOCIAL_SKILLBOOK_TYPE_ID = 3355;
 
   const missingAttribute = await db
-      .select(sdeTypeAttribute)
-      .where('sta_type', '=', val(SOCIAL_SKILLBOOK_TYPE_ID))
-      .where('sta_attribute', '=', val(DGM_ATTR_REQUIRED_SKILL_1))
-      .fetchFirst();
+    .select(sdeTypeAttribute)
+    .where("sta_type", "=", val(SOCIAL_SKILLBOOK_TYPE_ID))
+    .where("sta_attribute", "=", val(DGM_ATTR_REQUIRED_SKILL_1))
+    .fetchFirst();
 
   if (missingAttribute != null) {
     throw new Error(`Obsolete fixup: deleteIncompleteSocialSkillRequirement`);
   }
 
   const count = await db
-      .del(sdeTypeAttribute)
-      .where('sta_type', '=', val(SOCIAL_SKILLBOOK_TYPE_ID))
-      .where('sta_attribute', '=', val(DGM_ATTR_REQUIRED_SKILL_1_LEVEL))
-      .run();
+    .del(sdeTypeAttribute)
+    .where("sta_type", "=", val(SOCIAL_SKILLBOOK_TYPE_ID))
+    .where("sta_attribute", "=", val(DGM_ATTR_REQUIRED_SKILL_1_LEVEL))
+    .run();
 
   if (count != 1) {
     throw new Error(`Obsolete fixup: deleteIncompleteSocialSkillRequirement`);

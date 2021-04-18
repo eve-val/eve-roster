@@ -1,7 +1,7 @@
-import { ExtendableError } from './ExtendableError';
+import { ExtendableError } from "./ExtendableError";
 
 export class NotFoundError extends ExtendableError {
   constructor() {
-    super('Resource not found');
+    super("Resource not found");
   }
 }

@@ -1,4 +1,3 @@
-import { ExtendableError } from './ExtendableError';
+import { ExtendableError } from "./ExtendableError";
 
-export class UnauthorizedClientError extends ExtendableError {
-}
+export class UnauthorizedClientError extends ExtendableError {}

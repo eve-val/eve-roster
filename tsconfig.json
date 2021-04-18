@@ -20,16 +20,13 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
 
-    "lib": ["es2020", "dom"],                             /* Specify library files to be included in the compilation:  */
-    "allowJs": true,                       /* Allow javascript files to be compiled. */
-    "sourceMap": true,                     /* Generates corresponding '.map' file. */
+    "lib": [
+      "es2020",
+      "dom"
+    ] /* Specify library files to be included in the compilation:  */,
+    "allowJs": true /* Allow javascript files to be compiled. */,
+    "sourceMap": true /* Generates corresponding '.map' file. */
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "static",
-    "out/**/*"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "static", "out/**/*"]
 }

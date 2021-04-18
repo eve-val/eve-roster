@@ -8,73 +8,70 @@ triage options weren't initially provided, fetches them from the server.
 -->
 
 <template>
-<div class="_srp-status">
-  <div class="status-cnt">
-    <select
+  <div class="_srp-status">
+    <div class="status-cnt">
+      <select
         v-if="editing"
         class="verdict-select"
         v-model="selectedVerdictKey"
-        >
-      <option
+      >
+        <option
           v-for="option in verdictOptions"
           :key="option.key"
           :value="option.key"
-          >
-        {{ option.label }}
-      </option>>
-    </select>
-    <div v-else class="verdict-text">
-      <router-link
-            v-if="statusLink"
-            class="row-link"
-            :to="statusLink"
-            >
+        >
+          {{ option.label }}
+        </option>
+        >
+      </select>
+      <div v-else class="verdict-text">
+        <router-link v-if="statusLink" class="row-link" :to="statusLink">
           {{ getStatusLabel(srp) }}
-      </router-link>
-      <div v-else>
-        {{ getStatusLabel(srp) }}
-      </div>
+        </router-link>
+        <div v-else>
+          {{ getStatusLabel(srp) }}
+        </div>
 
-      <div class="rendered-by" v-if="renderingName">
-        by
-        <router-link
+        <div class="rendered-by" v-if="renderingName">
+          by
+          <router-link
             v-if="renderingLink"
             class="row-link"
             :to="renderingLink"
-            >
-          {{ renderingName }}
-        </router-link>
-        <template v-else>
-          {{ renderingName }}
-        </template>
+          >
+            {{ renderingName }}
+          </router-link>
+          <template v-else>
+            {{ renderingName }}
+          </template>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="payout-cnt">
-    <div v-if="editing" class="payout-input-cnt">
-      <input
+    <div class="payout-cnt">
+      <div v-if="editing" class="payout-input-cnt">
+        <input
           class="payout-input"
           v-model.number="inputPayout"
           :disabled="!isApprovalSelected"
-          >
-      <input class="payout-denom" value="M" disabled>
-    </div>
-    <div v-else class="payout-disp">
-      <router-link
-            v-if="srp.status == 'approved' || srp.status == 'paid'"
-            class="row-link"
-            :to="`/srp/payment/${srp.reimbursement}`"
-            >
+        />
+        <input class="payout-denom" value="M" disabled />
+      </div>
+      <div v-else class="payout-disp">
+        <router-link
+          v-if="srp.status == 'approved' || srp.status == 'paid'"
+          class="row-link"
+          :to="`/srp/payment/${srp.reimbursement}`"
+        >
           {{ rawPayoutToDisplayPayout(srp.payout) }}
-        <span style="color: #8B8B8B">M</span>
-      </router-link>
-      <template v-else>&mdash;</template>
+          <span style="color: #8b8b8b">M</span>
+        </router-link>
+        <template v-else>&mdash;</template>
+      </div>
     </div>
-  </div>
 
-  <div class="save-cnt">
-    <a
+    <div class="save-cnt">
+      <a
         v-if="editing"
         class="save-btn"
         :class="{ ignore: !isApprovalSelected }"
@@ -83,49 +80,48 @@ triage options weren't initially provided, fetches them from the server.
           opacity: isSaveButtonEnabled ? undefined : '0.5',
         }"
         @click="onSaveClick"
-        >
-      <span v-if="saveStatus == 'inactive'">
-        {{ isApprovalSelected ? 'Approve' : 'Ignore' }}
-      </span>
-      <loading-spinner
+      >
+        <span v-if="saveStatus == 'inactive'">
+          {{ isApprovalSelected ? "Approve" : "Ignore" }}
+        </span>
+        <loading-spinner
           ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-          >
-      </loading-spinner>
-    </a>
-    <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
-      <a
+        >
+        </loading-spinner>
+      </a>
+      <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
+        <a
           v-if="fetchTriageStatus != 'active'"
           class="edit-link"
           @click="onEditClick"
-          >
-        Edit
-      </a>
-      <loading-spinner
+        >
+          Edit
+        </a>
+        <loading-spinner
           ref="editSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-          >
-      </loading-spinner>
+        >
+        </loading-spinner>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import _ from 'underscore';
+import Vue from "vue";
+import _ from "underscore";
 
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -146,15 +142,18 @@ export default Vue.extend({
 
   data() {
     return {
-      editing: this.hasEditPriv && this.startInEditMode
-          && this.srp.status == 'pending',
-      selectedVerdictKey:
-          this.srp.triage ? this.srp.triage.suggestedOption : 'custom',
+      editing:
+        this.hasEditPriv &&
+        this.startInEditMode &&
+        this.srp.status == "pending",
+      selectedVerdictKey: this.srp.triage
+        ? this.srp.triage.suggestedOption
+        : "custom",
       inputPayout: this.rawPayoutToDisplayPayout(this.srp.payout),
-      saveStatus: 'inactive',         // inactive | saving | error
-      fetchTriageStatus: 'inactive',  // inactive | active | error,
+      saveStatus: "inactive", // inactive | saving | error
+      fetchTriageStatus: "inactive", // inactive | active | error,
       originalPayout: null,
-    }
+    };
   },
 
   computed: {
@@ -163,14 +162,15 @@ export default Vue.extend({
     },
 
     isApprovalSelected() {
-      return this.selectedVerdict.verdict == 'approved';
+      return this.selectedVerdict.verdict == "approved";
     },
 
     isSaveButtonEnabled() {
-      return this.saveStatus != 'saving'
-          && isValidInputPayout(this.inputPayout)
-          && (this.inputPayout > 0
-              || this.selectedVerdict.verdict != 'approved');
+      return (
+        this.saveStatus != "saving" &&
+        isValidInputPayout(this.inputPayout) &&
+        (this.inputPayout > 0 || this.selectedVerdict.verdict != "approved")
+      );
     },
 
     verdictOptions() {
@@ -188,18 +188,18 @@ export default Vue.extend({
       }
       if (this.originalPayout != null) {
         options.push({
-          key: 'original_payout',
-          label: 'Approved',
+          key: "original_payout",
+          label: "Approved",
           payout: this.originalPayout,
-          verdict: 'approved',
+          verdict: "approved",
           reason: null,
         });
       }
       options.push({
-        key: 'custom',
-        label: 'Custom payout',
+        key: "custom",
+        label: "Custom payout",
         payout: 0,
-        verdict: 'approved',
+        verdict: "approved",
         reason: null,
       });
       for (let iv of INELIGIBLE_STATUSES) {
@@ -215,11 +215,11 @@ export default Vue.extend({
     },
 
     editable() {
-      return this.hasEditPriv && this.status != 'paid';
+      return this.hasEditPriv && this.status != "paid";
     },
 
     statusLink() {
-      if (this.srp.status == 'paid') {
+      if (this.srp.status == "paid") {
         return `/srp/payment/${this.srp.reimbursement}`;
       } else {
         return null;
@@ -229,15 +229,15 @@ export default Vue.extend({
     renderingName() {
       if (this.srp.renderingCharacter != null) {
         return this.name(this.srp.renderingCharacter);
-      } else if (this.srp.status != 'pending') {
-        return 'TriageBot';
+      } else if (this.srp.status != "pending") {
+        return "TriageBot";
       } else {
         return null;
       }
     },
 
     renderingLink() {
-      if (this.srp.status == 'paid') {
+      if (this.srp.status == "paid") {
         return `/character/${this.srp.payingCharacter}`;
       } else if (this.srp.renderingCharacter != null) {
         return `/character/${this.srp.renderingCharacter}`;
@@ -247,88 +247,95 @@ export default Vue.extend({
     },
   },
 
-  methods: Object.assign({
-    onSaveClick(e) {
-      const payout = this.displayPayoutToRawPayout(this.inputPayout);
-      const verdict = this.selectedVerdict.verdict;
-      const reason = this.selectedVerdict.reason;
+  methods: Object.assign(
+    {
+      onSaveClick(e) {
+        const payout = this.displayPayoutToRawPayout(this.inputPayout);
+        const verdict = this.selectedVerdict.verdict;
+        const reason = this.selectedVerdict.reason;
 
-      this.saveStatus = 'saving';
-      this.$refs.saveSpinner.observe(
-          ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
-      )
-      .then(response => {
-        this.saveStatus = 'inactive';
-        this.srp.payout = payout;
-        this.srp.status = verdict;
-        this.srp.reason = reason;
-        this.editing = false;
-        this.srp.renderingCharacter = response.data.id;
-        addNames({
-          [response.data.id]: response.data.name,
-        });
-      })
-      .catch(e => {
-        this.saveStatus = 'error';
-      })
-    },
+        this.saveStatus = "saving";
+        this.$refs.saveSpinner
+          .observe(
+            ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
+          )
+          .then((response) => {
+            this.saveStatus = "inactive";
+            this.srp.payout = payout;
+            this.srp.status = verdict;
+            this.srp.reason = reason;
+            this.editing = false;
+            this.srp.renderingCharacter = response.data.id;
+            addNames({
+              [response.data.id]: response.data.name,
+            });
+          })
+          .catch((e) => {
+            this.saveStatus = "error";
+          });
+      },
 
-    onEditClick(e) {
-      if (this.srp.triage == null) {
-        if (this.fetchTriageStatus == 'active') {
-          return;
-        }
-        this.fetchTriageStatus = 'active';
-        this.$refs.editSpinner.observe(
-            ajaxer.getSrpLossTriageOptions(this.srp.killmail))
-        .then(response => {
-          this.fetchTriageStatus = 'inactive';
-          this.srp.triage = response.data.triage;
-
-          if (this.srp.status == 'pending') {
-            this.selectedVerdictKey = response.data.triage.suggestedOption;
-          } else if (this.srp.status == 'approved') {
-            this.originalPayout = this.srp.payout;
-            this.selectedVerdictKey = 'original_payout';
-          } else {
-            if (_.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })) {
-              this.selectedVerdictKey = response.data.triage.suggestedOption;
-            } else {
-              // Otherwise it's ineligible; just use that as the key
-              this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
-            }
+      onEditClick(e) {
+        if (this.srp.triage == null) {
+          if (this.fetchTriageStatus == "active") {
+            return;
           }
+          this.fetchTriageStatus = "active";
+          this.$refs.editSpinner
+            .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
+            .then((response) => {
+              this.fetchTriageStatus = "inactive";
+              this.srp.triage = response.data.triage;
 
+              if (this.srp.status == "pending") {
+                this.selectedVerdictKey = response.data.triage.suggestedOption;
+              } else if (this.srp.status == "approved") {
+                this.originalPayout = this.srp.payout;
+                this.selectedVerdictKey = "original_payout";
+              } else {
+                if (
+                  _.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })
+                ) {
+                  this.selectedVerdictKey =
+                    response.data.triage.suggestedOption;
+                } else {
+                  // Otherwise it's ineligible; just use that as the key
+                  this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+                }
+              }
+
+              this.editing = true;
+            })
+            .catch((e) => {
+              this.fetchTriageStatus = "error";
+            });
+        } else {
           this.editing = true;
-        })
-        .catch(e => {
-          this.fetchTriageStatus = 'error';
+        }
+      },
+
+      updateInputPayout(value) {
+        this.inputPayout = this.rawPayoutToDisplayPayout(value);
+      },
+
+      rawPayoutToDisplayPayout(rawPayout) {
+        return Math.round(rawPayout / 1000000);
+      },
+
+      displayPayoutToRawPayout(displayPayout) {
+        return displayPayout * 1000000;
+      },
+
+      getStatusLabel(srp) {
+        let entry = _.findWhere(ALL_STATUSES, {
+          status: srp.status,
+          reason: srp.reason,
         });
-      } else {
-        this.editing = true;
-      }
+        return (entry && entry.label) || "Unknown status";
+      },
     },
-
-    updateInputPayout(value) {
-      this.inputPayout = this.rawPayoutToDisplayPayout(value);
-    },
-
-    rawPayoutToDisplayPayout(rawPayout) {
-      return Math.round(rawPayout / 1000000);
-    },
-
-    displayPayoutToRawPayout(displayPayout) {
-      return displayPayout * 1000000;
-    },
-
-    getStatusLabel(srp) {
-      let entry = _.findWhere(ALL_STATUSES, {
-        status: srp.status,
-        reason: srp.reason,
-      });
-      return entry && entry.label || 'Unknown status';
-    },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 
   watch: {
     selectedVerdict(newVerdict) {
@@ -337,93 +344,92 @@ export default Vue.extend({
   },
 });
 
-
 const INELIGIBLE_STATUSES = [
-    {
-      status: 'ineligible',
-      reason: 'not_covered',
-      label: 'Ineligible (not covered)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'invalid_fit',
-      label: 'Ineligible (invalid fit)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'invalid_engagement',
-      label: 'Ineligible (invalid engagement)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'npc',
-      label: 'Ineligible (NPC)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'solo',
-      label: 'Ineligible (solo)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'opt_out',
-      label: 'Ineligible (opt out)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'no_longer_a_member',
-      label: 'Ineligible (no longer a member)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'obsolete',
-      label: 'Ineligible (obsolete)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'misc',
-      label: 'Ineligible (misc)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'corp_provided',
-      label: 'Ineligible (corp provided ship)'
-    },
+  {
+    status: "ineligible",
+    reason: "not_covered",
+    label: "Ineligible (not covered)",
+  },
+  {
+    status: "ineligible",
+    reason: "invalid_fit",
+    label: "Ineligible (invalid fit)",
+  },
+  {
+    status: "ineligible",
+    reason: "invalid_engagement",
+    label: "Ineligible (invalid engagement)",
+  },
+  {
+    status: "ineligible",
+    reason: "npc",
+    label: "Ineligible (NPC)",
+  },
+  {
+    status: "ineligible",
+    reason: "solo",
+    label: "Ineligible (solo)",
+  },
+  {
+    status: "ineligible",
+    reason: "opt_out",
+    label: "Ineligible (opt out)",
+  },
+  {
+    status: "ineligible",
+    reason: "no_longer_a_member",
+    label: "Ineligible (no longer a member)",
+  },
+  {
+    status: "ineligible",
+    reason: "obsolete",
+    label: "Ineligible (obsolete)",
+  },
+  {
+    status: "ineligible",
+    reason: "misc",
+    label: "Ineligible (misc)",
+  },
+  {
+    status: "ineligible",
+    reason: "corp_provided",
+    label: "Ineligible (corp provided ship)",
+  },
 ];
 
 const UNSETTABLE_STATUSES = [
   {
-      status: 'ineligible',
-      reason: 'outside_jurisdiction',
-      label: 'Ineligible (outside jurisdiction)',
-    },
-    {
-      status: 'ineligible',
-      reason: 'no_recipient',
-      label: 'Ineligible (no recipient)',
-    },
+    status: "ineligible",
+    reason: "outside_jurisdiction",
+    label: "Ineligible (outside jurisdiction)",
+  },
+  {
+    status: "ineligible",
+    reason: "no_recipient",
+    label: "Ineligible (no recipient)",
+  },
 ];
 
 const ALL_STATUSES = [
-    {
-      status: 'approved',
-      reason: null,
-      label: 'Approved',
-    },
-    {
-      status: 'paid',
-      reason: null,
-      label: 'Paid',
-    },
-    {
-      status: 'pending',
-      reason: null,
-      label: 'Pending',
-    },
+  {
+    status: "approved",
+    reason: null,
+    label: "Approved",
+  },
+  {
+    status: "paid",
+    reason: null,
+    label: "Paid",
+  },
+  {
+    status: "pending",
+    reason: null,
+    label: "Pending",
+  },
 ].concat(INELIGIBLE_STATUSES, UNSETTABLE_STATUSES);
 
 function isValidInputPayout(inputPayout) {
-  return typeof inputPayout == 'number' && inputPayout >= 0;
+  return typeof inputPayout == "number" && inputPayout >= 0;
 }
 </script>
 
@@ -441,8 +447,8 @@ function isValidInputPayout(inputPayout) {
   width: 100%;
   height: 35px;
   background: #161616;
-  border: 1px solid #2D2D2D;
-  color: #CDCDCD;
+  border: 1px solid #2d2d2d;
+  color: #cdcdcd;
   font-size: 14px;
   font-family: unset;
   border-radius: 0;
@@ -458,13 +464,13 @@ function isValidInputPayout(inputPayout) {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   padding-left: 8px;
 }
 
 .rendered-by {
   margin-top: 4px;
-  color: #A7A29C;
+  color: #a7a29c;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -487,10 +493,10 @@ function isValidInputPayout(inputPayout) {
   box-sizing: border-box;
   padding-right: 22px;
   background-color: #161616;
-  border: 1px solid #2D2D2D;
+  border: 1px solid #2d2d2d;
   text-align: right;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .payout-input:focus {
@@ -512,7 +518,7 @@ function isValidInputPayout(inputPayout) {
   padding-right: 6px;
   text-align: right;
   font-size: 14px;
-  color: #8B8B8B;
+  color: #8b8b8b;
   pointer-events: none;
   background: none;
   border: 1px solid transparent;
@@ -521,7 +527,7 @@ function isValidInputPayout(inputPayout) {
 .payout-disp {
   text-align: right;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   padding-right: 7px;
 }
 
@@ -541,21 +547,21 @@ function isValidInputPayout(inputPayout) {
   width: 100%;
   height: 39px;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   background-color: #064373;
-  border: 1px solid #1368AA;
+  border: 1px solid #1368aa;
   border-radius: 0;
 }
 
 .save-btn:active {
-  background-color: #08365A;
-  border-color: #13578C;
-  color: #A3A3A3;
+  background-color: #08365a;
+  border-color: #13578c;
+  color: #a3a3a3;
 }
 
 .save-btn.ignore {
-  background-color: #6A4633;
-  border-color: #916A5F;
+  background-color: #6a4633;
+  border-color: #916a5f;
 }
 
 .save-btn.ignore:active {
@@ -566,12 +572,12 @@ function isValidInputPayout(inputPayout) {
 .edit-cnt {
   text-align: center;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .edit-link {
   visibility: hidden;
-  color: #8B8B8B;
+  color: #8b8b8b;
   text-decoration: none;
   cursor: pointer;
 }
@@ -592,5 +598,4 @@ function isValidInputPayout(inputPayout) {
 .row-link:hover {
   text-decoration: underline;
 }
-
 </style>

@@ -1,13 +1,12 @@
-import Bluebird = require('bluebird');
-import moment = require('moment');
+import Bluebird = require("bluebird");
+import moment = require("moment");
 
-import { Tnex } from '../../db/tnex';
-import { dao } from '../../db/dao';
-import { SkillQueueRow } from '../../db/dao/SkillQueueDao';
-import { getAccessToken } from '../../data-source/accessToken/accessToken';
-import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from '../../data-source/esi/endpoints';
-import { fetchEsi } from '../../data-source/esi/fetch/fetchEsi';
-
+import { Tnex } from "../../db/tnex";
+import { dao } from "../../db/dao";
+import { SkillQueueRow } from "../../db/dao/SkillQueueDao";
+import { getAccessToken } from "../../data-source/accessToken/accessToken";
+import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from "../../data-source/esi/endpoints";
+import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi";
 
 /**
  * Fetches fresh skill queue data from ESI and stores it in the DB. Returns a
@@ -16,33 +15,37 @@ import { fetchEsi } from '../../data-source/esi/fetch/fetchEsi';
  *   pass it here to skip querying for it again.
  */
 export function updateSkillQueue(
-    db: Tnex, characterId: number, accessToken?: string) {
+  db: Tnex,
+  characterId: number,
+  accessToken?: string
+) {
   let newQueue: SkillQueueRow[];
 
   return Bluebird.resolve()
-  .then(() => {
-    return accessToken || getAccessToken(db, characterId)
-  })
-  .then(accessToken => {
-    return fetchEsi(ESI_CHARACTERS_$characterId_SKILLQUEUE, {
-      characterId,
-      _token: accessToken,
-    });
-  })
-  .then(esiQueue => {
-    newQueue = convertEsiQueueToNativeQueue(esiQueue);
+    .then(() => {
+      return accessToken || getAccessToken(db, characterId);
+    })
+    .then((accessToken) => {
+      return fetchEsi(ESI_CHARACTERS_$characterId_SKILLQUEUE, {
+        characterId,
+        _token: accessToken,
+      });
+    })
+    .then((esiQueue) => {
+      newQueue = convertEsiQueueToNativeQueue(esiQueue);
 
-    let set = new Set<string>();
-    for (let queueItem of newQueue) {
-      let key = characterId + ',' + queueItem.skill + ',' + queueItem.targetLevel;
-      if (set.has(key)) {
-        throw new Error(`Duplicate key: ${key}.`);
+      const set = new Set<string>();
+      for (const queueItem of newQueue) {
+        const key =
+          characterId + "," + queueItem.skill + "," + queueItem.targetLevel;
+        if (set.has(key)) {
+          throw new Error(`Duplicate key: ${key}.`);
+        }
+        set.add(key);
       }
-      set.add(key);
-    }
 
-    return dao.skillQueue.setCachedSkillQueue(db, characterId, newQueue);
-  })
+      return dao.skillQueue.setCachedSkillQueue(db, characterId, newQueue);
+    });
 }
 
 export function isQueueEntryCompleted(queueEntry: SkillQueueRow): boolean {
@@ -50,28 +53,30 @@ export function isQueueEntryCompleted(queueEntry: SkillQueueRow): boolean {
 }
 
 export function getTrainingProgress(queueEntry: SkillQueueRow) {
-  let pretrainedProgress = getProgressFraction(
+  const pretrainedProgress = getProgressFraction(
     queueEntry.levelStartSp,
     queueEntry.levelEndSp,
-    queueEntry.trainingStartSp);
+    queueEntry.trainingStartSp
+  );
 
   let trainedProgress = getProgressFraction(
     queueEntry.startTime,
     queueEntry.endTime,
-    Date.now());
+    Date.now()
+  );
 
   // Bound the result between 0 and 1, otherwise a skill that finished
   // since the last time a character logged in can show as > 100%
   trainedProgress = Math.min(1, Math.max(0, trainedProgress));
 
-  return pretrainedProgress
-      + trainedProgress * (1 - pretrainedProgress);
+  return pretrainedProgress + trainedProgress * (1 - pretrainedProgress);
 }
 
 function getProgressFraction(
-    start: number | null,
-    end: number | null,
-    current: number) {
+  start: number | null,
+  end: number | null,
+  current: number
+) {
   if (start == null || end == null || end - start == 0) {
     return 0;
   } else {
@@ -80,12 +85,11 @@ function getProgressFraction(
 }
 
 function convertEsiQueueToNativeQueue(
-    esiQueue: EsiSkillQueueItem[]
-    ): SkillQueueRow[] {
-
+  esiQueue: EsiSkillQueueItem[]
+): SkillQueueRow[] {
   esiQueue.sort(compareEsiQueueItem);
 
-  return esiQueue.map(qi => {
+  return esiQueue.map((qi) => {
     const nativeItem: SkillQueueRow = {
       skill: qi.skill_id,
       targetLevel: qi.finished_level,
@@ -105,8 +109,7 @@ function convertEsiQueueToNativeQueue(
   });
 }
 
-function compareEsiQueueItem(
-    a: EsiSkillQueueItem, b: EsiSkillQueueItem) {
+function compareEsiQueueItem(a: EsiSkillQueueItem, b: EsiSkillQueueItem) {
   if (a.queue_position < b.queue_position) {
     return -1;
   } else if (a.queue_position > b.queue_position) {
@@ -116,5 +119,4 @@ function compareEsiQueueItem(
   }
 }
 
-type EsiSkillQueueItem =
-    typeof ESI_CHARACTERS_$characterId_SKILLQUEUE['response'][0];
+type EsiSkillQueueItem = typeof ESI_CHARACTERS_$characterId_SKILLQUEUE["response"][0];

@@ -1,5 +1,5 @@
-import { Tnex } from '../../db/tnex';
-import { JobLogger } from './Job';
+import { Tnex } from "../../db/tnex";
+import { JobLogger } from "./Job";
 
 /**
  * A piece of background work that the server can perform.
@@ -24,18 +24,18 @@ export interface Task {
    * Unique ID for this task. Must not clash with any other task name. Used
    * in logs and to manage runnable tasks.
    */
-  readonly name: string,
+  readonly name: string;
   /** Name displayed to users in the task admin UI. */
-  readonly displayName: string,
+  readonly displayName: string;
   /** Short sentence describing what the task does. */
-  readonly description: string,
+  readonly description: string;
   /** Actual function that does this work. Should return a Promise. */
-  readonly executor: (db: Tnex, job: JobLogger) => Promise<void>,
+  readonly executor: (db: Tnex, job: JobLogger) => Promise<void>;
   /**
    * How long the task should run for before the system assumes that it has
    * stalled. We can't "kill" such tasks, but the task runner will pretend that
    * it doesn't exist for the purposes of scheduling other tasks and performing
    * traffic control.
    */
-  readonly timeout: number,
+  readonly timeout: number;
 }

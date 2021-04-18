@@ -1,49 +1,43 @@
 <template>
-<div class="roster">
-  <app-header :identity="identity" />
-  <div class="centering-container">
-    <div class="table-cnt">
-      <div class="title-row">
-        <div class="title">
-          Roster
-        </div>
-        <loading-spinner
-              class="loading-spinner"
-              ref="spinner"
-              size="33px"
-              />
-        <div class="title-spacer"></div>
-        <search-box class="search-box"
+  <div class="roster">
+    <app-header :identity="identity" />
+    <div class="centering-container">
+      <div class="table-cnt">
+        <div class="title-row">
+          <div class="title">Roster</div>
+          <loading-spinner class="loading-spinner" ref="spinner" size="33px" />
+          <div class="title-spacer"></div>
+          <search-box
+            class="search-box"
             v-if="tableRows != null"
             @change="onSearchStringChange"
-            />
-      </div>
-      <roster-table
+          />
+        </div>
+        <roster-table
           v-if="tableRows != null"
           :columns="displayColumns"
           :rows="tableRows"
           :filter="this.searchString"
           class="table"
-          />
-    </div>
-    <div class="member-count" v-if="tableRows != null">
-      {{ tableRows.length }} members
+        />
+      </div>
+      <div class="member-count" v-if="tableRows != null">
+        {{ tableRows.length }} members
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import _ from 'underscore';
-import ajaxer from '../shared/ajaxer';
+import _ from "underscore";
+import ajaxer from "../shared/ajaxer";
 
-import rosterColumns from './rosterColumns';
+import rosterColumns from "./rosterColumns";
 
-import AppHeader from '../shared/AppHeader.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import RosterTable from './RosterTable.vue'
-import SearchBox from './SearchBox.vue';
-
+import AppHeader from "../shared/AppHeader.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import RosterTable from "./RosterTable.vue";
+import SearchBox from "./SearchBox.vue";
 
 export default {
   components: {
@@ -54,10 +48,10 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true }
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       displayColumns: null,
       tableRows: null,
@@ -65,19 +59,18 @@ export default {
     };
   },
 
-  mounted: function() {
-    this.$refs.spinner.observe(ajaxer.getRoster())
-    .then(response => {
+  mounted: function () {
+    this.$refs.spinner.observe(ajaxer.getRoster()).then((response) => {
       let providedColumns = response.data.columns;
 
-      this.displayColumns = rosterColumns.filter(col => {
+      this.displayColumns = rosterColumns.filter((col) => {
         let sourceColumns = col.derivedFrom || [col.key];
 
         return _.reduce(
-            sourceColumns,
-            (accum, sourceCol) =>
-                accum && providedColumns.includes(sourceCol),
-            true);
+          sourceColumns,
+          (accum, sourceCol) => accum && providedColumns.includes(sourceCol),
+          true
+        );
       });
 
       let rows = injectDerivedData(response.data.rows);
@@ -86,33 +79,28 @@ export default {
   },
 
   methods: {
-    onSearchStringChange: _.debounce(function(str) {
+    onSearchStringChange: _.debounce(function (str) {
       if (str.length == 0) {
         this.searchString = null;
       } else if (str.length >= 3) {
         this.searchString = str;
       }
     }, 100),
-  }
-}
+  },
+};
 
-const APPEND_ATTRS = new Set([
-  'alertMessage',
-]);
+const APPEND_ATTRS = new Set(["alertMessage"]);
 
 const SUM_ATTRS = new Set([
-  'killsInLastMonth',
-  'killValueInLastMonth',
-  'lossesInLastMonth',
-  'lossValueInLastMonth',
-  'siggyScore',
-  'activityScore',
+  "killsInLastMonth",
+  "killValueInLastMonth",
+  "lossesInLastMonth",
+  "lossValueInLastMonth",
+  "siggyScore",
+  "activityScore",
 ]);
 
-const MAX_ATTRS = new Set([
-  'lastSeen',
-  'alertLevel',
-]);
+const MAX_ATTRS = new Set(["lastSeen", "alertLevel"]);
 
 function injectDerivedData(data) {
   for (let account of data) {
@@ -146,11 +134,11 @@ function computeAggregateCharacter(account) {
 }
 
 function aggProp(prop, ...chars) {
-  let text = '';
+  let text = "";
   for (let char of chars) {
     if (char[prop]) {
       if (text.length > 0) {
-        text += ' ';
+        text += " ";
       }
       text += char[prop];
     }
@@ -209,7 +197,6 @@ function getActivity(character) {
     return Math.round(character.siggyScore / 50 + character.killsInLastMonth);
   }
 }
-
 </script>
 
 <style scoped>

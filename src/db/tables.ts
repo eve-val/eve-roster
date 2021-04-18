@@ -1,8 +1,24 @@
-import { TnexBuilder, nullable, integer, varchar, bigInt, boolean, text, jsonb, strEnum, float4, decimal } from '../db/tnex';
-import { PrivilegeName, HullCategory, SrpVerdictStatus, SrpVerdictReason } from './dao/enums';
-import { ZKillmail } from '../data-source/zkillboard/ZKillmail';
-import { BattleData } from '../domain/battle/BattleData';
-
+import {
+  TnexBuilder,
+  nullable,
+  integer,
+  varchar,
+  bigInt,
+  boolean,
+  text,
+  jsonb,
+  strEnum,
+  float4,
+  decimal,
+} from "../db/tnex";
+import {
+  PrivilegeName,
+  HullCategory,
+  SrpVerdictStatus,
+  SrpVerdictReason,
+} from "./dao/enums";
+import { ZKillmail } from "../data-source/zkillboard/ZKillmail";
+import { BattleData } from "../domain/battle/BattleData";
 
 export const tables = new TnexBuilder();
 
@@ -113,13 +129,17 @@ export class CharacterNotification {
   characterNotification_timestamp = bigInt();
   characterNotification_type = varchar();
 }
-export const characterNotification = tables.register(new CharacterNotification());
+export const characterNotification = tables.register(
+  new CharacterNotification()
+);
 
 export class CharacterNotificationUpdate {
   characterNotificationUpdate_character = integer();
   characterNotificationUpdate_timestamp = bigInt();
 }
-export const characterNotificationUpdate = tables.register(new CharacterNotificationUpdate());
+export const characterNotificationUpdate = tables.register(
+  new CharacterNotificationUpdate()
+);
 
 export class Citadel {
   citadel_id = integer();
@@ -181,8 +201,10 @@ export class CombatStats {
   cstats_lossValueInLastMonth = bigInt();
   cstats_updated = bigInt();
 }
-export const combatStats =
-    tables.register(new CombatStats(), 'characterCombatStats');
+export const combatStats = tables.register(
+  new CombatStats(),
+  "characterCombatStats"
+);
 
 /**
  * A killmail from a member corporation.
@@ -249,7 +271,7 @@ export class Privilege {
   priv_requiresMembership = boolean();
   priv_description = text();
 }
-export const privilege = tables.register(new Privilege);
+export const privilege = tables.register(new Privilege());
 
 export class Skillsheet {
   skillsheet_character = integer();

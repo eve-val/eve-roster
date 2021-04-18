@@ -33,8 +33,8 @@ export function sortBy<T>(arr: T[], ...comparitors: Comparitor<T>[]) {
 
 export type Comparitor<T> = (a: T, b: T) => number;
 export type Extractor<T, S> = (obj: T) => S | null;
-export type SortNulls = 'frontNulls' | 'endNulls';
-export type SortDirection = 'forward' | 'reverse';
+export type SortNulls = "frontNulls" | "endNulls";
+export type SortDirection = "forward" | "reverse";
 
 /**
  * Creates a Comparitor that sorts elements by whether a property is null or
@@ -46,8 +46,8 @@ export type SortDirection = 'forward' | 'reverse';
  *    Array.sort().
  */
 export function cmpNullProp<T>(
-    prop: keyof T,
-    sortNulls: SortNulls = 'endNulls',
+  prop: keyof T,
+  sortNulls: SortNulls = "endNulls"
 ): Comparitor<T> {
   return (a: T, b: T) => {
     const aVal = a[prop];
@@ -61,7 +61,7 @@ export function cmpNullProp<T>(
       ret = 0;
     }
 
-    if (sortNulls == 'frontNulls') {
+    if (sortNulls == "frontNulls") {
       ret = -ret;
     }
 
@@ -82,13 +82,13 @@ export function cmpNullProp<T>(
  *    Array.sort().
  */
 export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
-    prop: K | Extractor<T, string>,
-    direction: SortDirection = 'forward',
-    sortNulls: SortNulls = 'endNulls',
+  prop: K | Extractor<T, string>,
+  direction: SortDirection = "forward",
+  sortNulls: SortNulls = "endNulls"
 ): Comparitor<T> {
   return (a: T, b: T) => {
-    const aVal: string = typeof prop == 'function' ? prop(a) : a[prop] as any;
-    const bVal: string = typeof prop == 'function' ? prop(b) : b[prop] as any;
+    const aVal: string = typeof prop == "function" ? prop(a) : (a[prop] as any);
+    const bVal: string = typeof prop == "function" ? prop(b) : (b[prop] as any);
     let ret: number;
 
     if (aVal == null || bVal == null) {
@@ -97,12 +97,12 @@ export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
       ret = aVal.localeCompare(bVal);
     }
 
-    if (direction == 'reverse') {
+    if (direction == "reverse") {
       ret = -ret;
     }
 
     return ret;
-  }
+  };
 }
 
 /**
@@ -118,13 +118,13 @@ export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
  *    Array.sort().
  */
 export function cmpNumberProp<T, K extends KeysOfType<T, number | nil>>(
-    prop: K | Extractor<T, number>,
-    direction: SortDirection = 'forward',
-    sortNulls: SortNulls = 'endNulls',
+  prop: K | Extractor<T, number>,
+  direction: SortDirection = "forward",
+  sortNulls: SortNulls = "endNulls"
 ): Comparitor<T> {
   return (a: T, b: T) => {
-    const aVal: number = typeof prop == 'function' ? prop(a) : a[prop] as any;
-    const bVal: number = typeof prop == 'function' ? prop(b) : b[prop] as any;
+    const aVal: number = typeof prop == "function" ? prop(a) : (a[prop] as any);
+    const bVal: number = typeof prop == "function" ? prop(b) : (b[prop] as any);
     let ret: number;
 
     if (aVal == null || bVal == null) {
@@ -133,19 +133,19 @@ export function cmpNumberProp<T, K extends KeysOfType<T, number | nil>>(
       ret = aVal - bVal;
     }
 
-    if (direction == 'reverse') {
+    if (direction == "reverse") {
       ret = -ret;
     }
 
     return ret;
-  }
+  };
 }
 
 function compareNullable<T>(a: T | null, b: T | null, sortNulls: SortNulls) {
   if (a == null && b != null) {
-    return sortNulls == 'frontNulls' ? -1 : 1;
+    return sortNulls == "frontNulls" ? -1 : 1;
   } else if (b == null && a != null) {
-    return sortNulls == 'frontNulls' ? 1 : -1;
+    return sortNulls == "frontNulls" ? 1 : -1;
   } else {
     return 0;
   }

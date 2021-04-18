@@ -1,39 +1,38 @@
 <template>
-<div class="root">
-  <div v-if="position==0"
+  <div class="root">
+    <div
+      v-if="position == 0"
       class="progress-bar"
-      :style="{ width: entry.progress * 100 + '%', }"
-      >
-  </div>
-  <div class="main-line">
-    <skill-pips class="pips"
+      :style="{ width: entry.progress * 100 + '%' }"
+    ></div>
+    <div class="main-line">
+      <skill-pips
+        class="pips"
         :trainedLevel="entry.skill.level"
         :queuedLevel="entry.targetLevel"
-        />
-    <div class="name">
-      {{ entry.skill.name }}
-      <span class="numeral-level"
-          >{{ entry.targetLevel | numeralize }}</span>
+      />
+      <div class="name">
+        {{ entry.skill.name }}
+        <span class="numeral-level">{{ entry.targetLevel | numeralize }}</span>
+      </div>
+      <div class="duration" :title="entry.eta">
+        {{ entry.durationLabel || "Paused" }}
+      </div>
     </div>
-    <div class="duration" :title="entry.eta">
-      {{ entry.durationLabel || 'Paused' }}
-    </div>
-  </div>
-  <div class="queue-bar"
+    <div
+      class="queue-bar"
       :style="{
         left: entry.proportionalStart * 100 + '%',
-        width: (entry.proportionalEnd - entry.proportionalStart)
-            * 100 + '%',
+        width: (entry.proportionalEnd - entry.proportionalStart) * 100 + '%',
       }"
-      ></div>
-</div>
+    ></div>
+  </div>
 </template>
 
 <script>
-import SkillPips from './SkillPips.vue';
+import SkillPips from "./SkillPips.vue";
 
-
-const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
+const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 
 export default {
   components: {
@@ -46,11 +45,11 @@ export default {
   },
 
   filters: {
-    numeralize: function(value) {
+    numeralize: function (value) {
       return SKILL_LEVEL_LABELS[value];
     },
   },
-}
+};
 </script>
 
 <style scoped>

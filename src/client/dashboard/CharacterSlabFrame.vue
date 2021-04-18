@@ -1,18 +1,17 @@
 <template>
-<div class="slab-root">
-  <div class="slab-main">
-    <eve-image :id="characterId" :size="105" type="Character" />
-    <div class="body">
-      <slot></slot>
+  <div class="slab-root">
+    <div class="slab-main">
+      <eve-image :id="characterId" :size="105" type="Character" />
+      <div class="body">
+        <slot></slot>
+      </div>
     </div>
+    <slot name="sub-slab-hanger"></slot>
   </div>
-  <slot name="sub-slab-hanger"></slot>
-</div>
 </template>
 
 <script>
-import EveImage from '../shared/EveImage.vue';
-
+import EveImage from "../shared/EveImage.vue";
 
 export default {
   components: {
@@ -22,7 +21,7 @@ export default {
   props: {
     characterId: { type: Number, required: true },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -49,5 +48,4 @@ export default {
 .body {
   flex: 1;
 }
-
 </style>

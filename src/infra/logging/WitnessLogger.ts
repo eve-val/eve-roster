@@ -1,14 +1,13 @@
-import { Logger, LogLevel } from './Logger';
-import * as protocol from '../../bin/witness/protocol';
-import { printError } from '../../data-source/esi/error';
-import { nil } from '../../util/simpleTypes';
+import { Logger, LogLevel } from "./Logger";
+import * as protocol from "../../bin/witness/protocol";
+import { printError } from "../../data-source/esi/error";
+import { nil } from "../../util/simpleTypes";
 
 export class WitnessLogger implements Logger {
-
   private _tag: string | nil;
 
   constructor(tag: string | nil) {
-    this._tag  = tag;
+    this._tag = tag;
   }
 
   crit(message: string, error?: Error, data?: object): void {
@@ -44,7 +43,7 @@ export class WitnessLogger implements Logger {
   }
 
   private _formatMessage(message: string, data: object | undefined) {
-    let formatted = this._tag ? `[${this._tag}] ${message}` : message;
+    const formatted = this._tag ? `[${this._tag}] ${message}` : message;
 
     if (data == undefined) {
       return formatted;
@@ -55,12 +54,11 @@ export class WitnessLogger implements Logger {
 }
 
 function logMessage(level: protocol.LevelTag, message: string) {
-  if (message.indexOf('\n') == -1) {
-    process.stdout.write(
-        protocol.formatInputLine(Date.now(), level, message));
+  if (message.indexOf("\n") == -1) {
+    process.stdout.write(protocol.formatInputLine(Date.now(), level, message));
   } else {
-    const lines = message.split('\n');
-    for (let line of lines) {
+    const lines = message.split("\n");
+    for (const line of lines) {
       logMessage(level, line);
     }
   }
@@ -69,16 +67,16 @@ function logMessage(level: protocol.LevelTag, message: string) {
 function logLevelToProtocolTag(level: LogLevel): protocol.LevelTag {
   switch (level) {
     case LogLevel.CRIT:
-      return 'E';
+      return "E";
     case LogLevel.ERROR:
-      return 'E';
+      return "E";
     case LogLevel.WARN:
-      return 'W';
+      return "W";
     case LogLevel.INFO:
-      return 'I';
+      return "I";
     case LogLevel.VERBOSE:
-      return 'V';
+      return "V";
     case LogLevel.DEBUG:
-      return 'D';
+      return "D";
   }
 }

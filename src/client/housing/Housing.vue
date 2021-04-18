@@ -1,35 +1,35 @@
 <template>
-<div
+  <div
     class="root-container"
     @mousemove.prevent="onMouseMove"
-    @mouseup="onMouseUp">
-  <app-header :identity="identity" />
-  <div class="split-container">
-    <div class="housing-container">
-      <h1>Housing</h1>
-      <div class="housing-flex-container">
-        <citadel-row v-for="citadel in citadels"
+    @mouseup="onMouseUp"
+  >
+    <app-header :identity="identity" />
+    <div class="split-container">
+      <div class="housing-container">
+        <h1>Housing</h1>
+        <div class="housing-flex-container">
+          <citadel-row
+            v-for="citadel in citadels"
             :row="citadel"
             :bus="bus"
             :key="citadel.name"
-            />
+          />
+        </div>
+      </div>
+      <div class="unassigned-container">
+        <h3>Unassigned</h3>
+        <citadel-row :row="unassignedPilots2" :bus="bus" />
       </div>
     </div>
-    <div class="unassigned-container">
-      <h3>Unassigned</h3>
-      <citadel-row
-            :row="unassignedPilots2"
-            :bus="bus"
-            />        
-    </div>
-  </div>
-  <member-chip v-if="draggedCharacter != null"
+    <member-chip
+      v-if="draggedCharacter != null"
       ref="dragChip"
       :character="draggedCharacter"
       class="dragged-chip"
-      style="transform: translate3d(0,0,0)"
-      />
-</div>
+      style="transform: translate3d(0, 0, 0)"
+    />
+  </div>
 </template>
 
 <style scoped>
@@ -70,15 +70,15 @@
 </style>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
-import ajaxer from '../shared/ajaxer'
-import AppHeader from '../shared/AppHeader.vue';
+import ajaxer from "../shared/ajaxer";
+import AppHeader from "../shared/AppHeader.vue";
 
-import CitadelRow from './CitadelRow.vue';
-import MemberChip from './MemberChip.vue';
+import CitadelRow from "./CitadelRow.vue";
+import MemberChip from "./MemberChip.vue";
 
-const UNASSIGNED_KEY = '__unassigned__';
+const UNASSIGNED_KEY = "__unassigned__";
 
 export default {
   components: {
@@ -88,14 +88,14 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true }
+    identity: { type: Object, required: true },
   },
 
-  data () {
+  data() {
     var bus = new Vue();
     var self = this;
 
-    bus.$on('chipDrag', function(chip, name, citadel, bounds, mouseX, mouseY) {
+    bus.$on("chipDrag", function (chip, name, citadel, bounds, mouseX, mouseY) {
       self.sourceChip = chip;
       self.draggedName = name;
 
@@ -106,16 +106,16 @@ export default {
 
       self.sourceChip.visible = false;
 
-      self.$nextTick(function() {
+      self.$nextTick(function () {
         this.positionDragChip(this.dragChipX, this.dragChipY);
       });
     });
 
-    bus.$on('hover', function(target) {
+    bus.$on("hover", function (target) {
       self.hoverTarget = target;
     });
 
-    bus.$on('unhover', function(target) {
+    bus.$on("unhover", function (target) {
       if (target == self.hoverTarget) {
         self.hoverTarget = null;
       }
@@ -129,8 +129,8 @@ export default {
   },
 
   computed: {
-    draggedCharacter: function() {
-      console.log('draggedCharacter()!');
+    draggedCharacter: function () {
+      console.log("draggedCharacter()!");
       if (this.draggedName == null) {
         return null;
       } else {
@@ -138,10 +138,10 @@ export default {
       }
     },
 
-    pilotsByHouse: function() {
+    pilotsByHouse: function () {
       // TODO: Initialize this with the list of all known citadels
       let houseMap = {
-        [UNASSIGNED_KEY]: { name: UNASSIGNED_KEY, occupants: [] }
+        [UNASSIGNED_KEY]: { name: UNASSIGNED_KEY, occupants: [] },
       };
       for (let i = 0; i < this.pilots.length; i++) {
         var pilot = this.pilots[i];
@@ -150,7 +150,7 @@ export default {
         if (!house) {
           house = {
             name: citadel,
-            occupants: [pilot]
+            occupants: [pilot],
           };
           houseMap[citadel] = house;
         } else {
@@ -161,7 +161,7 @@ export default {
       return houseMap;
     },
 
-    citadels: function() {
+    citadels: function () {
       let houseList = [];
       for (let v in this.pilotsByHouse) {
         let house = this.pilotsByHouse[v];
@@ -175,28 +175,29 @@ export default {
       return houseList;
     },
 
-    unassignedPilots: function() {
+    unassignedPilots: function () {
       return this.pilotsByHouse[UNASSIGNED_KEY].occupants;
     },
 
-    unassignedPilots2: function() {
+    unassignedPilots2: function () {
       return this.pilotsByHouse[UNASSIGNED_KEY];
     },
   },
 
-  created: function() {
+  created: function () {
     let self = this;
-    ajaxer.fetchRoster()
+    ajaxer
+      .fetchRoster()
       .then(function (response) {
         self.pilots = self.transformPilots(response.data);
       })
       .catch(function (err) {
-        console.log('DATA FETCH ERROR:', err);
+        console.log("DATA FETCH ERROR:", err);
       });
   },
 
   methods: {
-    transformPilots: function(pilots) {
+    transformPilots: function (pilots) {
       for (let i = 0; i < pilots.length; i++) {
         let pilot = pilots[i];
         pilot.transactionInProgress = false;
@@ -204,7 +205,7 @@ export default {
       return pilots;
     },
 
-    onMouseMove: function(ev) {
+    onMouseMove: function (ev) {
       if (this.draggedCharacter != null) {
         ev.preventDefault();
 
@@ -218,31 +219,34 @@ export default {
       }
     },
 
-    onMouseUp: function(ev) {
+    onMouseUp: function (ev) {
       if (this.draggedCharacter != null) {
         if (this.hoverTarget != null) {
           let character = this.draggedCharacter;
           let sourceCitadel = character.homeCitadel;
           let targetCitadel = this.hoverTarget.row.name;
 
-          console.log('Moving %s from %s to %s',
-              this.draggedCharacter.name,
-              sourceCitadel,
-              targetCitadel);
+          console.log(
+            "Moving %s from %s to %s",
+            this.draggedCharacter.name,
+            sourceCitadel,
+            targetCitadel
+          );
 
           character.homeCitadel = targetCitadel;
           character.transactionInProgress = true;
           this.hoverTarget = null;
 
-          ajaxer.updatePilot({ homeCitadel: targetCitadel })
-              .then(() => {
-                character.transactionInProgress = false;
-              })
-              .catch(err => {
-                // TODO handle this
-                console.log('ERROR UPDATING PILOT');
-                character.transactionInProgress = false;
-              });
+          ajaxer
+            .updatePilot({ homeCitadel: targetCitadel })
+            .then(() => {
+              character.transactionInProgress = false;
+            })
+            .catch((err) => {
+              // TODO handle this
+              console.log("ERROR UPDATING PILOT");
+              character.transactionInProgress = false;
+            });
         }
 
         this.sourceChip.visible = true;
@@ -252,12 +256,12 @@ export default {
       }
     },
 
-    positionDragChip: function(x, y) {
-      this.$refs.dragChip.$el.style.left = x + 'px';
-      this.$refs.dragChip.$el.style.top = y + 'px';
+    positionDragChip: function (x, y) {
+      this.$refs.dragChip.$el.style.left = x + "px";
+      this.$refs.dragChip.$el.style.top = y + "px";
     },
 
-    findCharacter: function(name) {
+    findCharacter: function (name) {
       for (let i = 0; i < this.pilots.length; i++) {
         if (this.pilots[i].name == name) {
           return this.pilots[i];
@@ -265,6 +269,6 @@ export default {
       }
       return null;
     },
-  }
-}
+  },
+};
 </script>

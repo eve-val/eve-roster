@@ -5,32 +5,32 @@ A component that either looks like a "load more" button or a loading spinner.
 -->
 
 <template>
-<div class="_more-button">
-  <loading-spinner
+  <div class="_more-button">
+    <loading-spinner
       class="spinner"
       ref="spinner"
       display="block"
       size="34px"
       default-state="hidden"
-      >
-  </loading-spinner>
-  <button
+    >
+    </loading-spinner>
+    <button
       v-if="status != 'active' && !hideButton"
       class="btn"
       :style="{
         marginTop: status == 'error' ? '15px' : undefined,
       }"
       @click="onButtonClick"
-      >
-    {{ status == 'error' ? 'Retry' : 'More' }}
-  </button>
-</div>
+    >
+      {{ status == "error" ? "Retry" : "More" }}
+    </button>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 export default Vue.extend({
   components: {
@@ -38,13 +38,13 @@ export default Vue.extend({
   },
 
   props: {
-    promise: { type: Promise, required: false, },
-    hideButton: { type: Boolean, required: false, },
+    promise: { type: Promise, required: false },
+    hideButton: { type: Boolean, required: false },
   },
 
   data() {
     return {
-      status: 'inactive',   // inactive | active | error
+      status: "inactive", // inactive | active | error
     };
   },
 
@@ -62,26 +62,26 @@ export default Vue.extend({
     observe(promise) {
       this.$refs.spinner.observe(promise);
       if (promise != null) {
-        this.status = 'active';
+        this.status = "active";
         this.promise
-        .then(() => {
-          if (promise == this.promise) {
-            this.status = 'inactive';
-          }
-        })
-        .catch(e => {
-          if (promise == this.promise) {
-            this.status = 'inactive';
-          }
-        });
+          .then(() => {
+            if (promise == this.promise) {
+              this.status = "inactive";
+            }
+          })
+          .catch((e) => {
+            if (promise == this.promise) {
+              this.status = "inactive";
+            }
+          });
       } else {
-        this.status = 'inactive';
+        this.status = "inactive";
       }
     },
 
     onButtonClick(e) {
-      if (this.status != 'active') {
-        this.$emit('fetch-requested');
+      if (this.status != "active") {
+        this.$emit("fetch-requested");
       }
     },
   },
@@ -105,8 +105,8 @@ export default Vue.extend({
   height: 32px;
   box-sizing: border-box;
 
-  background-color: #3B342C;
-  border: 1px solid #5B5145;
+  background-color: #3b342c;
+  border: 1px solid #5b5145;
   border-radius: 1px;
   color: #cdcdcd;
   outline: none;

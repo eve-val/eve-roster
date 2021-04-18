@@ -1,25 +1,22 @@
 <template>
-<div class="factoid-selector">
-  <select class="selector" v-model="selectedValue">
-    <option :value="null">
-      Not assigned
-    </option>
-    <option v-for="option in options"
-        :value="option.value"
-        >
-      {{ option.label }}
-    </option>
-  </select>
-  <loading-spinner class="loading-spinner"
+  <div class="factoid-selector">
+    <select class="selector" v-model="selectedValue">
+      <option :value="null">Not assigned</option>
+      <option v-for="option in options" :value="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+    <loading-spinner
+      class="loading-spinner"
       ref="spinner"
       defaultState="hidden"
       size="16px"
-      />
-</div>
+    />
+  </div>
 </template>
 
 <script>
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 export default {
   components: {
@@ -32,18 +29,18 @@ export default {
     submitHandler: { type: Function, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       selectedValue: this.initialValue,
     };
   },
 
   watch: {
-    selectedValue: function(value) {
+    selectedValue: function (value) {
       this.$refs.spinner.observe(this.submitHandler(value || null));
     },
   },
-}
+};
 </script>
 
 <style scoped>

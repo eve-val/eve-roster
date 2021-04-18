@@ -8,46 +8,41 @@ character is paying.
 -->
 
 <template>
-<div class="_character-selector">
-  <select
-      class="select"
-      v-model="selectedId"
-      ref="select"
-      >
-    <option
+  <div class="_character-selector">
+    <select class="select" v-model="selectedId" ref="select">
+      <option
         v-for="character in characters"
         v-if="isValidCharacter(character)"
         class="select-option"
         :key="character.id"
         :value="character.id"
-        >
-      {{ character.name }}
-    </option>
-  </select>
-  <div class="cover">
-    <template v-if="selectedCharacter != null">
-      <eve-image
+      >
+        {{ character.name }}
+      </option>
+    </select>
+    <div class="cover">
+      <template v-if="selectedCharacter != null">
+        <eve-image
           class="char-icon"
           :id="selectedCharacter.id"
           :size="39"
           type="Character"
-          >
-      </eve-image>
-      <div class="char-name">{{ selectedCharacter.name }}</div>
-      <img class="select-triangle" src="../shared-res/select-dropdown.png">
-    </template>
+        >
+        </eve-image>
+        <div class="char-name">{{ selectedCharacter.name }}</div>
+        <img class="select-triangle" src="../shared-res/select-dropdown.png" />
+      </template>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import _ from 'underscore';
+import Vue from "vue";
+import _ from "underscore";
 
-import EveImage from '../shared/EveImage.vue';
+import EveImage from "../shared/EveImage.vue";
 
-import ajaxer from '../shared/ajaxer';
-
+import ajaxer from "../shared/ajaxer";
 
 export default Vue.extend({
   components: {
@@ -63,7 +58,7 @@ export default Vue.extend({
     return {
       characters: [],
       selectedId: this.value,
-    }
+    };
   },
 
   computed: {
@@ -73,8 +68,7 @@ export default Vue.extend({
   },
 
   mounted() {
-    ajaxer.getAccountCharacters(this.accountId)
-    .then(response => {
+    ajaxer.getAccountCharacters(this.accountId).then((response) => {
       this.characters = response.data;
 
       for (let character of this.characters) {
@@ -89,14 +83,14 @@ export default Vue.extend({
   watch: {
     selectedId(newValue) {
       if (newValue != this.value) {
-        this.$emit('input', newValue);
+        this.$emit("input", newValue);
       }
     },
   },
 
   methods: {
     isValidCharacter(character) {
-      return character.accessTokenValid && character.membership == 'full';
+      return character.accessTokenValid && character.membership == "full";
     },
   },
 });
@@ -121,7 +115,7 @@ export default Vue.extend({
 
 .select-option {
   background: #161616;
-  color: #CDCDCD;
+  color: #cdcdcd;
   -moz-appearance: none;
   padding: 10px;
   font-size: 14px;
@@ -147,7 +141,7 @@ export default Vue.extend({
 
 .char-name {
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   margin-left: 9px;
   flex: 1;
   white-space: nowrap;
@@ -161,5 +155,4 @@ export default Vue.extend({
   margin-right: 9px;
   margin-left: 5px;
 }
-
 </style>

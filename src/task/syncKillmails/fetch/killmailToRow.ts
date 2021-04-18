@@ -1,18 +1,15 @@
-import moment = require('moment');
-import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-import { Killmail } from '../../../db/tables';
-import { HullCategory } from '../../../db/dao/enums';
-import { isCapsule } from '../../../eve/util/isCapsule';
-
+import moment = require("moment");
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { Killmail } from "../../../db/tables";
+import { HullCategory } from "../../../db/dao/enums";
+import { isCapsule } from "../../../eve/util/isCapsule";
 
 /**
  * Converts a ZKillmail to a row in the killmail table.
  *
  * Always marks km_relatedLoss as null; this needs to be filled in later.
  */
-export function killmailToRow(
-    killmail: ZKillmail,
-): Killmail {
+export function killmailToRow(killmail: ZKillmail): Killmail {
   return {
     km_id: killmail.killmail_id,
     km_character: killmail.victim.character_id || null,

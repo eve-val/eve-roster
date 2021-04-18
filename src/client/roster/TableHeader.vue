@@ -1,6 +1,7 @@
 <template>
-<div class="table-header">
-  <div v-for="column in columns"
+  <div class="table-header">
+    <div
+      v-for="column in columns"
       :key="column.key"
       class="column-header"
       @mousedown="$emit('selectSortKey', column.key)"
@@ -8,25 +9,24 @@
         width: column.width + 'px',
         'text-align': column.numeric ? 'right' : 'left',
         'margin-left':
-            column.margin != undefined ? column.margin + 'px' : undefined,
+          column.margin != undefined ? column.margin + 'px' : undefined,
       }"
-      >
-    <img v-if="column.key == sortKey"
+    >
+      <img
+        v-if="column.key == sortKey"
         class="sort-arrow"
         :class="arrowClasses"
         src="./res/sort-order-arrow.png"
-        >{{ column.label }}
+      />{{ column.label }}
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-
-import _ from 'underscore';
+import _ from "underscore";
 
 export default {
-  components: {
-  },
+  components: {},
 
   props: {
     columns: { type: Array, required: true },
@@ -34,37 +34,36 @@ export default {
     reverseSort: { type: Boolean, required: true },
   },
 
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {};
   },
 
   computed: {
-    arrowClasses: function() {
+    arrowClasses: function () {
       let classes = [];
       if (this.reverseSort) {
-        classes.push('reverse');
+        classes.push("reverse");
       }
-      let col = _.find(this.columns, col => col.key == this.sortKey);
+      let col = _.find(this.columns, (col) => col.key == this.sortKey);
       let numeric = col != null && col.numeric;
       if (numeric) {
-        classes.push('right');
+        classes.push("right");
       } else {
-        classes.push('left');
+        classes.push("left");
       }
       return classes;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
 .table-header {
   display: flex;
-  color: #6E6E6E;
+  color: #6e6e6e;
   padding-bottom: 6px;
   padding-right: 30px;
-  border-bottom: 1px solid #312C24;
+  border-bottom: 1px solid #312c24;
   user-select: none;
   cursor: default;
 }

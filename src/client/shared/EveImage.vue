@@ -1,10 +1,12 @@
 <template>
-  <img :src="portraitSrc" :style="{ width: size + 'px', height: size + 'px' }">
+  <img
+    :src="portraitSrc"
+    :style="{ width: size + 'px', height: size + 'px' }"
+  />
 </template>
 
 <script>
-
-const unknownIcon = require('./res/EveImage-Unknown.svg');
+const unknownIcon = require("./res/EveImage-Unknown.svg");
 
 let SUPPORTED_TYPES = {
   Alliance: true,
@@ -25,18 +27,18 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: function(value) {
+      validator: function (value) {
         return SUPPORTED_TYPES[value] != undefined;
-      }
+      },
     },
     size: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
-    requestSize: function() {
+    requestSize: function () {
       let requestSize;
       for (let i = 0; i < SUPPORTED_SIZES.length; i++) {
         requestSize = SUPPORTED_SIZES[i];
@@ -47,17 +49,23 @@ export default {
       return requestSize;
     },
 
-    portraitSrc: function() {
+    portraitSrc: function () {
       if (this.id == null) {
         return unknownIcon;
       } else {
-        return '//image.eveonline.com/' + this.type + '/' + this.id
-            + '_' + this.requestSize
-            + (this.type == 'Character' ? '.jpg' : '.png');
+        return (
+          "//image.eveonline.com/" +
+          this.type +
+          "/" +
+          this.id +
+          "_" +
+          this.requestSize +
+          (this.type == "Character" ? ".jpg" : ".png")
+        );
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -65,5 +73,4 @@ export default {
   width: 32px;
   height: 32px;
 }
-
 </style>

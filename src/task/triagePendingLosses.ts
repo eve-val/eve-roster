@@ -1,12 +1,11 @@
-import moment = require('moment');
+import moment = require("moment");
 
-import { Tnex } from '../db/tnex';
-import { JobLogger } from '../infra/taskrunner/Job';
-import { dao } from '../db/dao';
-import { SrpVerdictStatus } from '../db/dao/enums';
-import { autoTriageLosses } from '../domain/srp/triage/autoTriageLosses';
-import { Task } from '../infra/taskrunner/Task';
-
+import { Tnex } from "../db/tnex";
+import { JobLogger } from "../infra/taskrunner/Job";
+import { dao } from "../db/dao";
+import { SrpVerdictStatus } from "../db/dao/enums";
+import { autoTriageLosses } from "../domain/srp/triage/autoTriageLosses";
+import { Task } from "../infra/taskrunner/Task";
 
 /**
  * Manually runs the SRP autotriage rules on all losses that are still marked
@@ -16,10 +15,10 @@ import { Task } from '../infra/taskrunner/Task';
  * if (a) the SDE is updated or (b) the triage rules are changed.
  */
 export const triagePendingLosses: Task = {
-  name: 'triagePendingLosses',
-  displayName: 'Triage pending losses',
-  description: 'Reruns SRP autotriage on all pending losses.',
-  timeout: moment.duration(5, 'minutes').asMilliseconds(),
+  name: "triagePendingLosses",
+  displayName: "Triage pending losses",
+  description: "Reruns SRP autotriage on all pending losses.",
+  timeout: moment.duration(5, "minutes").asMilliseconds(),
   executor,
 };
 

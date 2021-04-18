@@ -1,45 +1,52 @@
 <template>
-<admin-wrapper title="Citadel management" :identity="identity">
-  <div class="add-citadel">
-    <input class="citadel-name" v-model="newCitadel.name"
+  <admin-wrapper title="Citadel management" :identity="identity">
+    <div class="add-citadel">
+      <input
+        class="citadel-name"
+        v-model="newCitadel.name"
         @keydown="addLogic"
         placeholder="Type a new citadel name, then press enter to add..."
-    >
-    <label>Type:
-      <select class="citadel-type" v-model="newCitadel.type">
-        <option value="Astrahus">Astrahus</option>
-        <option value="Fortizar">Fortizar</option>
-        <option value="Keepstar">Keepstar</option>
-        <option value="Raitaru">Raitaru</option>
-        <option value="Azbel">Azbel</option>
-      </select>
-    </label>
-    <label>Alliance Access:
-      <select class="alliance-access" v-model="newCitadel.allianceAccess">
-        <option :value="true">YES</option>
-        <option :value="false">NO</option>
-      </select>
-    </label>
-    <label>Alliance Owned:
-      <select class="alliance-owned" v-model="newCitadel.allianceOwned">
-        <option :value="true">YES</option>
-        <option :value="false">NO</option>
-      </select>
-    </label>
-  </div>
-  <div v-for="citadel in sortedCitadels" class="citadel">
-    <input class="name" :value="citadel.name"
+      />
+      <label
+        >Type:
+        <select class="citadel-type" v-model="newCitadel.type">
+          <option value="Astrahus">Astrahus</option>
+          <option value="Fortizar">Fortizar</option>
+          <option value="Keepstar">Keepstar</option>
+          <option value="Raitaru">Raitaru</option>
+          <option value="Azbel">Azbel</option>
+        </select>
+      </label>
+      <label
+        >Alliance Access:
+        <select class="alliance-access" v-model="newCitadel.allianceAccess">
+          <option :value="true">YES</option>
+          <option :value="false">NO</option>
+        </select>
+      </label>
+      <label
+        >Alliance Owned:
+        <select class="alliance-owned" v-model="newCitadel.allianceOwned">
+          <option :value="true">YES</option>
+          <option :value="false">NO</option>
+        </select>
+      </label>
+    </div>
+    <div v-for="citadel in sortedCitadels" class="citadel">
+      <input
+        class="name"
+        :value="citadel.name"
         @blur="validate(citadel.id, citadel.name, $event)"
         @keydown="editLogic(citadel.name, $event)"
-    >
-    <button class="remove" @click="removeCitadel(citadel.id)">Remove</button>
-  </div>
-</admin-wrapper>
+      />
+      <button class="remove" @click="removeCitadel(citadel.id)">Remove</button>
+    </div>
+  </admin-wrapper>
 </template>
 
 <script>
-import ajaxer from '../shared/ajaxer';
-import AdminWrapper from './AdminWrapper.vue';
+import ajaxer from "../shared/ajaxer";
+import AdminWrapper from "./AdminWrapper.vue";
 
 export default {
   components: {
@@ -47,15 +54,15 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       citadels: [],
       newCitadel: {
-        name: '',
-        type: 'Astrahus',
+        name: "",
+        type: "Astrahus",
         allianceAccess: true,
         allianceOwned: true,
       },
@@ -63,57 +70,55 @@ export default {
   },
 
   computed: {
-    sortedCitadels: function() {
+    sortedCitadels: function () {
       let sortedCitadels = this.citadels.slice();
-      sortedCitadels.sort((a,b) => {
+      sortedCitadels.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
       return sortedCitadels;
     },
   },
 
-  created: function() {
+  created: function () {
     this.fetchData();
   },
 
   methods: {
     fetchData() {
-      this.citadelsPromise = ajaxer.getCitadels()
-          .then(response => {
-            this.citadels = response.data.citadels;
-          });
+      this.citadelsPromise = ajaxer.getCitadels().then((response) => {
+        this.citadels = response.data.citadels;
+      });
     },
 
     addCitadel() {
       let c = this.newCitadel;
-      this.addPromise = ajaxer.postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-          .then(response => {
-            this.citadels.push(response.data)
-            this.newCitadel.name = '';
-          });
+      this.addPromise = ajaxer
+        .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
+        .then((response) => {
+          this.citadels.push(response.data);
+          this.newCitadel.name = "";
+        });
     },
 
     removeCitadel(id) {
-      this.deletePromise = ajaxer.deleteCitadel(id)
-          .then(response => {
-            for (let i = 0; i < this.citadels.length; i++) {
-              if (this.citadels[i].id === id) {
-                this.citadels.splice(i, 1);
-                break;
-              }
-            }
-          });
+      this.deletePromise = ajaxer.deleteCitadel(id).then((response) => {
+        for (let i = 0; i < this.citadels.length; i++) {
+          if (this.citadels[i].id === id) {
+            this.citadels.splice(i, 1);
+            break;
+          }
+        }
+      });
     },
 
     renameCitadel(id, name) {
-      this.renamePromise = ajaxer.putCitadelName(id, name)
-          .then(response => {
-            this.citadels.map(citadel => {
-              if (citadel.id === id) {
-                citadel.name = name;
-              }
-            });
-          });
+      this.renamePromise = ajaxer.putCitadelName(id, name).then((response) => {
+        this.citadels.map((citadel) => {
+          if (citadel.id === id) {
+            citadel.name = name;
+          }
+        });
+      });
     },
 
     addLogic(event) {
@@ -121,12 +126,12 @@ export default {
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
         event.target.blur();
-        if(event.target.value) {
+        if (event.target.value) {
           this.addCitadel();
         }
       } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.value = '';
+        event.target.value = "";
         event.target.blur();
       }
     },
@@ -153,7 +158,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>

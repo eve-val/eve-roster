@@ -7,31 +7,30 @@ Displays the user's recent losses and SRP payments.
 -->
 
 <template>
-<div class="_srp-dashboard">
-  <div class="section-title">My payments</div>
-  <payment-history
+  <div class="_srp-dashboard">
+    <div class="section-title">My payments</div>
+    <payment-history
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-      >
-  </payment-history>
+    >
+    </payment-history>
 
-  <div class="section-title">My losses</div>
-  <loss-history
+    <div class="section-title">My losses</div>
+    <loss-history
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-      >
-  </loss-history>
-</div>
+    >
+    </loss-history>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
-import LossHistory from'./LossHistory.vue';
-import PaymentHistory from './PaymentHistory.vue';
-
+import LossHistory from "./LossHistory.vue";
+import PaymentHistory from "./PaymentHistory.vue";
 
 export default Vue.extend({
   components: {
@@ -40,11 +39,10 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
-  methods: {
-  },
+  methods: {},
 });
 </script>
 
@@ -56,7 +54,7 @@ export default Vue.extend({
 
 .section-title {
   font-size: 18px;
-  color: #A7A29C;
+  color: #a7a29c;
   margin-top: 40px;
   margin-bottom: 40px;
 }

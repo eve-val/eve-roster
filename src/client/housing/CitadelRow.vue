@@ -1,20 +1,22 @@
 <template>
-<div class="row"
+  <div
+    class="row"
     @mouseenter="emitEvent('hover')"
-    @mouseleave="emitEvent('unhover')">
-  <div>({{ row.occupants.length }}) {{ row.name }}</div>
-  <div v-for="character in row.occupants">
-    <member-chip
-      :character="character"
-      :bus="bus"
-      :key="character.characterId"
+    @mouseleave="emitEvent('unhover')"
+  >
+    <div>({{ row.occupants.length }}) {{ row.name }}</div>
+    <div v-for="character in row.occupants">
+      <member-chip
+        :character="character"
+        :bus="bus"
+        :key="character.characterId"
       />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import MemberChip from './MemberChip.vue';
+import MemberChip from "./MemberChip.vue";
 
 export default {
   components: {
@@ -27,12 +29,11 @@ export default {
   },
 
   methods: {
-    emitEvent: function(type) {
+    emitEvent: function (type) {
       this.bus.$emit(type, this);
-    }
+    },
   },
-}
-
+};
 </script>
 
 <style scoped>
@@ -40,5 +41,4 @@ export default {
   width: 200px;
   padding: 10px;
 }
-
 </style>

@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   getDashboard() {
-    return axios.get('/api/dashboard');
+    return axios.get("/api/dashboard");
   },
 
   getCorporation(id) {
-    return axios.get('/api/corporation/' + id);
+    return axios.get("/api/corporation/" + id);
   },
 
   putAccountMainCharacter(accountId, characterId) {
@@ -16,13 +16,13 @@ export default {
   },
 
   putAccountHomeCitadel(accountId, citadelName) {
-    return axios.put('/api/account/' + accountId + '/homeCitadel', {
+    return axios.put("/api/account/" + accountId + "/homeCitadel", {
       citadelName: citadelName,
     });
   },
 
   putAccountActiveTimezone(accountId, activeTimezone) {
-    return axios.put('/api/account/' + accountId + '/activeTimezone', {
+    return axios.put("/api/account/" + accountId + "/activeTimezone", {
       activeTimezone: activeTimezone,
     });
   },
@@ -32,12 +32,12 @@ export default {
   },
 
   deleteBiomassedCharacter(characterId) {
-    return axios.delete('/api/character/' + characterId);
+    return axios.delete("/api/character/" + characterId);
   },
 
   putCharacterIsOpsec(characterId, isOpsec) {
     return axios.put(`/api/character/${characterId}`, {
-      opsec: isOpsec
+      opsec: isOpsec,
     });
   },
 
@@ -52,19 +52,19 @@ export default {
   },
 
   getRoster() {
-    return axios.get('/api/roster');
+    return axios.get("/api/roster");
   },
 
   getCharacter(id) {
-    return axios.get('/api/character/' + id);
+    return axios.get("/api/character/" + id);
   },
 
   getCitadels() {
-    return axios.get('/api/citadels');
+    return axios.get("/api/citadels");
   },
 
   postCitadel(name, type, allianceAccess, allianceOwned) {
-    return axios.post('/api/admin/citadel', {
+    return axios.post("/api/admin/citadel", {
       name: name,
       type: type,
       allianceAccess: allianceAccess,
@@ -74,7 +74,7 @@ export default {
 
   putCitadelName(citadelId, name) {
     return axios.put(`/api/admin/citadel/${citadelId}`, {
-      name: name
+      name: name,
     });
   },
 
@@ -83,67 +83,67 @@ export default {
   },
 
   getSkills(id) {
-    return axios.get('/api/character/' + id + '/skills');
+    return axios.get("/api/character/" + id + "/skills");
   },
 
   getSkillQueue(id) {
-    return axios.get('/api/character/' + id + '/skillQueue');
+    return axios.get("/api/character/" + id + "/skillQueue");
   },
 
   getFreshSkillQueueSummaries() {
-    return axios.get('/api/dashboard/queueSummary');
+    return axios.get("/api/dashboard/queueSummary");
   },
 
   getAdminRosterSyncStatus() {
-    return axios.get('/api/admin/roster/syncStatus')
+    return axios.get("/api/admin/roster/syncStatus");
   },
 
   getAdminAccountLog() {
-    return axios.get('/api/admin/accountLog');
+    return axios.get("/api/admin/accountLog");
   },
 
   getAdminTasks() {
-    return axios.get('/api/admin/tasks/task');
+    return axios.get("/api/admin/tasks/task");
   },
 
   getAdminJobs() {
-    return axios.get('/api/admin/tasks/job');
+    return axios.get("/api/admin/tasks/job");
   },
 
   putAdminTask(taskName) {
-    return axios.put('/api/admin/tasks/job', {
+    return axios.put("/api/admin/tasks/job", {
       task: taskName,
     });
   },
 
   getAdminTaskLog() {
-    return axios.get('/api/admin/tasks/logs');
+    return axios.get("/api/admin/tasks/logs");
   },
 
   getAdminSetup() {
-    return axios.get('/api/admin/setup');
+    return axios.get("/api/admin/setup");
   },
 
   putAdminSetup(setupObj) {
-    return axios.put('/api/admin/setup', setupObj);
+    return axios.put("/api/admin/setup", setupObj);
   },
 
   getAdminSrpJurisdiction() {
-    return axios.get('/api/admin/srp/jurisdiction');
+    return axios.get("/api/admin/srp/jurisdiction");
   },
 
   putAdminSrpJurisdiction(start) {
-    return axios.put('/api/admin/srp/jurisdiction', {
+    return axios.put("/api/admin/srp/jurisdiction", {
       start: start,
     });
   },
 
   getSrpApprovedLiability() {
-    return axios.get('/api/srp/approvedLiability');
+    return axios.get("/api/srp/approvedLiability");
   },
 
   getBattles(filter, includeSrp) {
-    return axios.get('/api/srp/battle', {
+    return axios.get("/api/srp/battle", {
       params: {
         filter: filter != undefined ? JSON.stringify(filter) : undefined,
         includeSrp: includeSrp,
@@ -160,8 +160,8 @@ export default {
   },
 
   getRecentSrpLosses(filter) {
-    return axios.get('/api/srp/loss', {
-      params: filter
+    return axios.get("/api/srp/loss", {
+      params: filter,
     });
   },
 
@@ -178,8 +178,8 @@ export default {
   },
 
   getSrpPaymentHistory(filter) {
-    return axios.get('/api/srp/payment', {
-      params: filter
+    return axios.get("/api/srp/payment", {
+      params: filter,
     });
   },
 
@@ -195,11 +195,11 @@ export default {
   },
 
   getAllBorrowedShips() {
-    return axios.get('/api/ships/borrowed');
+    return axios.get("/api/ships/borrowed");
   },
 
   getShipsBorrowedByMe() {
-    return axios.get('/api/ships/borrowedByMe');
+    return axios.get("/api/ships/borrowedByMe");
   },
 
   postOpenInformationWindow(character, targetId) {
@@ -208,4 +208,4 @@ export default {
       targetId: targetId,
     });
   },
-}
+};

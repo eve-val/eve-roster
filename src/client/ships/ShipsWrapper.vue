@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AppHeader from '../shared/AppHeader.vue';
+import AppHeader from "../shared/AppHeader.vue";
 
 export default {
   components: {
@@ -37,7 +37,7 @@ export default {
 
   computed: {
     canSeeAllBorrowedShips() {
-      return this.identity.access['characterShips'] >= 1;
+      return this.identity.access["characterShips"] >= 1;
     },
   },
 };

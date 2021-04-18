@@ -11,41 +11,41 @@ shown. If not, results are ordered newest to oldest.
 -->
 
 <template>
-<div class="_approve">
-  <div class="mode-cnt" v-if="!forAccount">
-    Show
-    <select class="mode-select" v-model="mode">
-      <option value="battles">Battle reports</option>
-      <option value="losses">Losses</option>
-    </select>
-  </div>
+  <div class="_approve">
+    <div class="mode-cnt" v-if="!forAccount">
+      Show
+      <select class="mode-select" v-model="mode">
+        <option value="battles">Battle reports</option>
+        <option value="losses">Losses</option>
+      </select>
+    </div>
 
-  <div class="account-header" v-if="forAccount">
-    Showing results for a single account:
-  </div>
+    <div class="account-header" v-if="forAccount">
+      Showing results for a single account:
+    </div>
 
-  <battle-history
-      v-if="mode=='battles'"
+    <battle-history
+      v-if="mode == 'battles'"
       :identity="identity"
       :triage-mode="triageMode"
-      >
-  </battle-history>
+    >
+    </battle-history>
 
-  <loss-history
-      v-if="mode=='losses'"
+    <loss-history
+      v-if="mode == 'losses'"
       :identity="identity"
       :for-account="forAccount"
       :triage-mode="triageMode"
-      >
-  </loss-history>
-</div>
+    >
+    </loss-history>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
-import LossHistory from './LossHistory.vue';
-import BattleHistory from './battles/BattleHistory.vue';
+import LossHistory from "./LossHistory.vue";
+import BattleHistory from "./battles/BattleHistory.vue";
 
 export default Vue.extend({
   components: {
@@ -54,22 +54,22 @@ export default Vue.extend({
   },
 
   props: {
-    forAccount: { type: Number, required: false, },
-    identity: { type: Object, required: true, },
-    triageMode: { type: Boolean, required: true, },
+    forAccount: { type: Number, required: false },
+    identity: { type: Object, required: true },
+    triageMode: { type: Boolean, required: true },
   },
 
   data() {
     return {
-      mode: this.forAccount ? 'losses' : 'battles',
+      mode: this.forAccount ? "losses" : "battles",
     };
-  }
+  },
 });
 </script>
 
 <style scoped>
 .mode-cnt {
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   margin-bottom: 30px;
 }
@@ -78,8 +78,8 @@ export default Vue.extend({
   width: 150px;
   height: 35px;
   background: #161616;
-  border: 1px solid #2D2D2D;
-  color: #CDCDCD;
+  border: 1px solid #2d2d2d;
+  color: #cdcdcd;
   font-size: 14px;
   font-family: unset;
   border-radius: 0;
@@ -92,7 +92,7 @@ export default Vue.extend({
 }
 
 .account-header {
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   margin-bottom: 30px;
 }

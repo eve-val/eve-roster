@@ -1,25 +1,27 @@
 <template>
-<div class="root">
-  <app-header :identity="identity" />
-  <div class="centering-container">
-    <div class="title">
-      Dashboard
-      <loading-spinner
+  <div class="root">
+    <app-header :identity="identity" />
+    <div class="centering-container">
+      <div class="title">
+        Dashboard
+        <loading-spinner
           class="main-spinner"
           ref="spinner"
           defaultState="hidden"
-          />
-    </div>
-    <div class="characters-container">
-      <pending-transfer-slab v-for="transfer in transfers"
+        />
+      </div>
+      <div class="characters-container">
+        <pending-transfer-slab
+          v-for="transfer in transfers"
           class="slab"
           :key="transfer.character"
           :characterId="transfer.character"
           :accountId="accountId"
           :name="transfer.name"
           @requireRefresh="onRequireRefresh"
-          />
-      <owned-character-slab v-for="character in characters"
+        />
+        <owned-character-slab
+          v-for="character in characters"
           class="slab"
           :key="character.id"
           :accountId="accountId"
@@ -29,29 +31,33 @@
           :highlightMain="characters.length > 1"
           :access="access"
           @requireRefresh="onRequireRefresh"
-          />
-      <div class="add-character" v-if="loginParams">
-        <a class="add-character-link"
-            :href="'https://login.eveonline.com/oauth/authorize'
-                + '?state=addCharacter&' + loginParams"
-            >＋ Add a character</a>
+        />
+        <div class="add-character" v-if="loginParams">
+          <a
+            class="add-character-link"
+            :href="
+              'https://login.eveonline.com/oauth/authorize' +
+              '?state=addCharacter&' +
+              loginParams
+            "
+            >＋ Add a character</a
+          >
         </div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import _ from 'underscore';
+import _ from "underscore";
 
-import ajaxer from '../shared/ajaxer';
+import ajaxer from "../shared/ajaxer";
 
-import AppHeader from '../shared/AppHeader.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import AppHeader from "../shared/AppHeader.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import OwnedCharacterSlab from './OwnedCharacterSlab.vue';
-import PendingTransferSlab from './PendingTransferSlab.vue';
-
+import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
+import PendingTransferSlab from "./PendingTransferSlab.vue";
 
 export default {
   components: {
@@ -62,10 +68,10 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true }
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       accountId: null,
       characters: [],
@@ -76,7 +82,7 @@ export default {
     };
   },
 
-  mounted: function() {
+  mounted: function () {
     this.fetchData();
   },
 
@@ -88,30 +94,35 @@ export default {
       this.mainCharacter = null;
       this.access = null;
 
-      this.$refs.spinner.observe(ajaxer.getDashboard())
-      .then(response => {
-        this.accountId = response.data.accountId;
-        this.characters = response.data.characters;
-        this.transfers = response.data.transfers;
-        this.loginParams = response.data.loginParams;
-        this.mainCharacter = response.data.mainCharacter;
-        this.access = response.data.access;
+      this.$refs.spinner
+        .observe(ajaxer.getDashboard())
+        .then((response) => {
+          this.accountId = response.data.accountId;
+          this.characters = response.data.characters;
+          this.transfers = response.data.transfers;
+          this.loginParams = response.data.loginParams;
+          this.mainCharacter = response.data.mainCharacter;
+          this.access = response.data.access;
 
-        this.sortCharacters();
+          this.sortCharacters();
 
-        return this.$refs.spinner.observe(ajaxer.getFreshSkillQueueSummaries());
-      })
-      .then(response => {
-        let freshSummaries = response.data;
-        for (let character of this.characters) {
-          let updatedEntry = _.findWhere(freshSummaries, { id: character.id });
-          if (updatedEntry) {
-            character.skillQueue = updatedEntry.skillQueue;
+          return this.$refs.spinner.observe(
+            ajaxer.getFreshSkillQueueSummaries()
+          );
+        })
+        .then((response) => {
+          let freshSummaries = response.data;
+          for (let character of this.characters) {
+            let updatedEntry = _.findWhere(freshSummaries, {
+              id: character.id,
+            });
+            if (updatedEntry) {
+              character.skillQueue = updatedEntry.skillQueue;
+            }
           }
-        }
 
-        this.sortCharacters();
-      });
+          this.sortCharacters();
+        });
     },
 
     onRequireRefresh(characterId) {
@@ -129,9 +140,9 @@ export default {
         }
         return result;
       });
-    }
+    },
   },
-}
+};
 
 function compareIsMainCharacter(a, b, mainCharacterId) {
   if (a.id == mainCharacterId) {
@@ -144,8 +155,8 @@ function compareIsMainCharacter(a, b, mainCharacterId) {
 }
 
 function compareHasActiveSkillQueue(a, b) {
-  let aActive = a.skillQueue.queueStatus == 'active';
-  let bActive = b.skillQueue.queueStatus == 'active';
+  let aActive = a.skillQueue.queueStatus == "active";
+  let bActive = b.skillQueue.queueStatus == "active";
 
   if (aActive && !bActive) {
     return -1;
@@ -155,7 +166,6 @@ function compareHasActiveSkillQueue(a, b) {
     return 0;
   }
 }
-
 </script>
 
 <style scoped>
@@ -187,7 +197,8 @@ function compareHasActiveSkillQueue(a, b) {
   flex-wrap: wrap;
 }
 
-.slab, .add-character {
+.slab,
+.add-character {
   margin-left: 32px;
   margin-bottom: 32px;
   flex: 0 0 auto;
@@ -217,6 +228,6 @@ function compareHasActiveSkillQueue(a, b) {
 }
 
 .add-character-link:active {
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 </style>

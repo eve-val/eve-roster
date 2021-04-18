@@ -1,12 +1,11 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
-import { Job, JobStatus, JobResult, JobLogger, } from './Job';
-import { buildLoggerFromFilename } from '../logging/buildLogger';
-import { LogLevel } from '../logging/Logger';
-import { Task } from './Task';
+import { Job, JobStatus, JobResult, JobLogger } from "./Job";
+import { buildLoggerFromFilename } from "../logging/buildLogger";
+import { LogLevel } from "../logging/Logger";
+import { Task } from "./Task";
 
 const logger = buildLoggerFromFilename(__filename);
-
 
 export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly executionId: number;
@@ -18,8 +17,8 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
 
   private _logId: number | undefined = undefined;
   private _startTime: number | undefined = undefined;
-  private _status: JobStatus = 'queued';
-  private _result: JobResult = 'pending';
+  private _status: JobStatus = "queued";
+  private _result: JobResult = "pending";
   private _timedOut: boolean | undefined = undefined;
 
   private _progress: number | undefined = undefined;
@@ -29,10 +28,10 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly errors: string[] = [];
 
   constructor(
-      executionId: number,
-      task: Task,
-      channel: string | undefined,
-      silent: boolean,
+    executionId: number,
+    task: Task,
+    channel: string | undefined,
+    silent: boolean
   ) {
     super();
 
@@ -79,18 +78,19 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
   }
 
   public setStatus(status: JobStatus, result: JobResult) {
-    if (this._status == 'finished') {
-      throw new Error('Cannot set the status of a finished job.');
+    if (this._status == "finished") {
+      throw new Error("Cannot set the status of a finished job.");
     }
-    if (result != 'pending' && status != 'finished') {
+    if (result != "pending" && status != "finished") {
       throw new Error(
-          `Cannot set job result to ${result} when status is not 'finished'.`);
+        `Cannot set job result to ${result} when status is not 'finished'.`
+      );
     }
     this._result = result;
 
     if (status != this._status) {
       this._status = status;
-      this.emit('status', this._status);
+      this.emit("status", this._status);
     }
   }
 
@@ -104,7 +104,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     }
     this._timedOut = timedOut;
     if (this._timedOut) {
-      this.emit('timeout');
+      this.emit("timeout");
     }
   }
 
@@ -126,7 +126,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     if (progress != this._progress || label != this._progressLabel) {
       this._progress = progress;
       this._progressLabel = label;
-      this.emit('progress', this._progress, this._progressLabel);
+      this.emit("progress", this._progress, this._progressLabel);
     }
   }
 

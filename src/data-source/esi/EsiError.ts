@@ -1,4 +1,4 @@
-import { VError, Info } from 'verror';
+import { VError, Info } from "verror";
 
 export enum EsiErrorKind {
   CLIENT_ERROR = "esi:ClientError",
@@ -16,10 +16,13 @@ export class EsiError extends VError {
   public readonly kind: EsiErrorKind;
 
   constructor(kind: EsiErrorKind, message: string, causedBy?: Error) {
-    super({
-      name: 'EsiError',
-      cause: causedBy,
-    }, message);
+    super(
+      {
+        name: "EsiError",
+        cause: causedBy,
+      },
+      message
+    );
     this.kind = kind;
   }
 

@@ -5,35 +5,30 @@ Page for displaying details about a specific battle.
 -->
 
 <template>
-<app-page :identity="identity" :content-width="1100">
-  <div class="title">Battle #{{ battleId }}</div>
+  <app-page :identity="identity" :content-width="1100">
+    <div class="title">Battle #{{ battleId }}</div>
 
-  <loading-spinner
-      ref="spinner"
-      display="block"
-      size="34px"
-      >
-  </loading-spinner>
+    <loading-spinner ref="spinner" display="block" size="34px">
+    </loading-spinner>
 
-  <battle-row
+    <battle-row
       v-if="battle != null"
       :battle="battle"
       :has-edit-priv="identity.access['srp'] == 2"
       :start-in-edit-mode="true"
-      >
-  </battle-row>
-</app-page>
+    >
+    </battle-row>
+  </app-page>
 </template>
 
 <script>
-import Vue from 'vue';
-import AppPage from '../../shared/AppPage.vue';
-import LoadingSpinner from '../../shared/LoadingSpinner.vue';
-import BattleRow from './BattleRow.vue'
+import Vue from "vue";
+import AppPage from "../../shared/AppPage.vue";
+import LoadingSpinner from "../../shared/LoadingSpinner.vue";
+import BattleRow from "./BattleRow.vue";
 
-import ajaxer from '../../shared/ajaxer';
-import { NameCacheMixin } from '../../shared/nameCache';
-
+import ajaxer from "../../shared/ajaxer";
+import { NameCacheMixin } from "../../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -43,8 +38,8 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    battleId: { type: Number, required: true, },
+    identity: { type: Object, required: true },
+    battleId: { type: Number, required: true },
   },
 
   data() {
@@ -57,16 +52,20 @@ export default Vue.extend({
     this.fetchData();
   },
 
-  methods: Object.assign({
-    fetchData() {
-      this.battle = null;
-      this.$refs.spinner.observe(ajaxer.getBattle(this.battleId, true))
-      .then(response => {
-        this.addNames(response.data.names);
-        this.battle = response.data.battles[0];
-      });
+  methods: Object.assign(
+    {
+      fetchData() {
+        this.battle = null;
+        this.$refs.spinner
+          .observe(ajaxer.getBattle(this.battleId, true))
+          .then((response) => {
+            this.addNames(response.data.names);
+            this.battle = response.data.battles[0];
+          });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 

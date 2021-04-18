@@ -7,14 +7,14 @@ the reimbursement as paid.
 -->
 
 <template>
-<div class="_pay-flow-row">
-  <div class="payment-title">
-    <router-link class="title-link" :to="`/srp/payment/${payment.id}`">
-      SRP #{{ payment.id }}
-    </router-link>
-  </div>
+  <div class="_pay-flow-row">
+    <div class="payment-title">
+      <router-link class="title-link" :to="`/srp/payment/${payment.id}`">
+        SRP #{{ payment.id }}
+      </router-link>
+    </div>
 
-  <srp-triplet
+    <srp-triplet
       class="recipient-triplet"
       :icon-id="payment.recipient"
       icon-type="Character"
@@ -22,76 +22,69 @@ the reimbursement as paid.
       :bottom-line="name(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
-      >
-  </srp-triplet>
+    >
+    </srp-triplet>
 
-  <div class="payout-cnt">
-    <span class="copy-label">Amount</span>
-    <input
+    <div class="payout-cnt">
+      <span class="copy-label">Amount</span>
+      <input
         class="payout-input"
         ref="payoutInput"
         readonly
         :value="payment.totalPayout"
-        >
-    <button class="copy-btn" @click="onCopyPayoutClick">Copy &amp; Open</button>
-  </div>
+      />
+      <button class="copy-btn" @click="onCopyPayoutClick">
+        Copy &amp; Open
+      </button>
+    </div>
 
-  <div class="reason-cnt">
-    <span class="copy-label">Reason</span>
-    <input
+    <div class="reason-cnt">
+      <span class="copy-label">Reason</span>
+      <input
         class="reason-input"
         ref="reasonInput"
         readonly
         :value="'SRP #' + payment.id"
-        >
-    <button class="copy-btn" @click="onCopyReasonClick">Copy</button>
-  </div>
+      />
+      <button class="copy-btn" @click="onCopyReasonClick">Copy</button>
+    </div>
 
-  <div class="save-cnt">
-    <a
-        v-if="!paid"
-        class="paid-btn"
-        @click="onSaveClick"
-        >
-      <template v-if="saveStatus == 'inactive'">Paid</template>
-      <loading-spinner
+    <div class="save-cnt">
+      <a v-if="!paid" class="paid-btn" @click="onSaveClick">
+        <template v-if="saveStatus == 'inactive'">Paid</template>
+        <loading-spinner
           ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-          >
-      </loading-spinner>
-    </a>
-    <div v-else class="undo-cnt">
-      <a
-          v-if="undoStatus != 'saving'"
-          class="undo-link"
-          @click="onUndoClick"
-          >
-        Undo
+        >
+        </loading-spinner>
       </a>
-      <loading-spinner
+      <div v-else class="undo-cnt">
+        <a v-if="undoStatus != 'saving'" class="undo-link" @click="onUndoClick">
+          Undo
+        </a>
+        <loading-spinner
           ref="undoSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-          >
-      </loading-spinner>
+        >
+        </loading-spinner>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import SrpTriplet from './SrpTriplet.vue';
+import Vue from "vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import SrpTriplet from "./SrpTriplet.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -100,78 +93,86 @@ export default Vue.extend({
   },
 
   props: {
-    payment: { type: Object, required: true, },
-    payingCharacter: { type: Number, },
+    payment: { type: Object, required: true },
+    payingCharacter: { type: Number },
   },
 
   data() {
     return {
       paid: false,
-      saveStatus: 'inactive',   // inactive | saving | error
-      undoStatus: 'inactive',   // inactive | saving | error
+      saveStatus: "inactive", // inactive | saving | error
+      undoStatus: "inactive", // inactive | saving | error
     };
   },
 
-  mounted() {
-  },
+  mounted() {},
 
-  methods: Object.assign({
-    onCopyReasonClick(e) {
-      this.$refs.reasonInput.select();
-      try {
-        document.execCommand('copy');
-      } catch(err) {
-        console.log('Error while copying', err);
-      }
-    },
+  methods: Object.assign(
+    {
+      onCopyReasonClick(e) {
+        this.$refs.reasonInput.select();
+        try {
+          document.execCommand("copy");
+        } catch (err) {
+          console.log("Error while copying", err);
+        }
+      },
 
-    onCopyPayoutClick(e) {
-      this.$refs.payoutInput.select();
-      try {
-        document.execCommand('copy');
-      } catch(err) {
-        console.log('Error while copying', err);
-      }
-      ajaxer.postOpenInformationWindow(
-          this.payingCharacter, this.payment.recipient);
-    },
+      onCopyPayoutClick(e) {
+        this.$refs.payoutInput.select();
+        try {
+          document.execCommand("copy");
+        } catch (err) {
+          console.log("Error while copying", err);
+        }
+        ajaxer.postOpenInformationWindow(
+          this.payingCharacter,
+          this.payment.recipient
+        );
+      },
 
-    onSaveClick(e) {
-      if (this.saveStatus == 'saving' || this.payingCharacter == null) {
-        return;
-      }
-      this.saveStatus = 'saving';
-      this.$refs.saveSpinner.observe(
-          ajaxer.putSrpPaymentStatus(
-              this.payment.id, true, this.payingCharacter)
-      )
-      .then(() => {
-        this.saveStatus = 'inactive';
-        this.paid = true;
-      })
-      .catch(e => {
-        this.saveStatus = 'error';
-      });
-    },
+      onSaveClick(e) {
+        if (this.saveStatus == "saving" || this.payingCharacter == null) {
+          return;
+        }
+        this.saveStatus = "saving";
+        this.$refs.saveSpinner
+          .observe(
+            ajaxer.putSrpPaymentStatus(
+              this.payment.id,
+              true,
+              this.payingCharacter
+            )
+          )
+          .then(() => {
+            this.saveStatus = "inactive";
+            this.paid = true;
+          })
+          .catch((e) => {
+            this.saveStatus = "error";
+          });
+      },
 
-    onUndoClick(e) {
-      if (this.undoStatus == 'saving') {
-        return;
-      }
-      this.undoStatus = 'saving';
-      this.$refs.undoSpinner.observe(
-          ajaxer.putSrpPaymentStatus(
-              this.payment.id, false, undefined)
-      )
-      .then(() => {
-        this.undoStatus = 'inactive';
-        this.paid = false;
-      })
-      .catch(e => {
-        this.undoStatus = 'error';
-      });
+      onUndoClick(e) {
+        if (this.undoStatus == "saving") {
+          return;
+        }
+        this.undoStatus = "saving";
+        this.$refs.undoSpinner
+          .observe(
+            ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined)
+          )
+          .then(() => {
+            this.undoStatus = "inactive";
+            this.paid = false;
+          })
+          .catch((e) => {
+            this.undoStatus = "error";
+          });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -180,7 +181,7 @@ export default Vue.extend({
   display: flex;
   height: 77px;
   align-items: center;
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 }
 
 .payment-title {
@@ -191,7 +192,7 @@ export default Vue.extend({
 }
 
 .title-link {
-  color: #CDCDCD;
+  color: #cdcdcd;
   text-decoration: none;
 }
 
@@ -204,7 +205,8 @@ export default Vue.extend({
   margin-right: 8px;
 }
 
-.reason-cnt, .payout-cnt {
+.reason-cnt,
+.payout-cnt {
   display: flex;
   align-items: center;
   width: 330px;
@@ -212,17 +214,18 @@ export default Vue.extend({
 
 .copy-label {
   font-size: 14px;
-  color: #A7A29C;
+  color: #a7a29c;
   margin-right: 8px;
 }
 
-.reason-input, .payout-input {
+.reason-input,
+.payout-input {
   background: #161616;
-  border: 1px solid #2D2D2D;
+  border: 1px solid #2d2d2d;
   height: 36px;
   box-sizing: border-box;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   padding: 0 8px;
 }
 
@@ -241,11 +244,11 @@ export default Vue.extend({
   width: 105px;
   height: 36px;
   box-sizing: border-box;
-  background-color: #67410D;
-  border: 1px solid #8D570D;
+  background-color: #67410d;
+  border: 1px solid #8d570d;
   border-radius: 0;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .save-cnt {
@@ -264,9 +267,9 @@ export default Vue.extend({
   -moz-user-select: none;
   user-select: none;
   background-color: #064373;
-  border: 1px solid #1368AA;
+  border: 1px solid #1368aa;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .undo-link {
@@ -284,5 +287,4 @@ export default Vue.extend({
   text-decoration: underline;
   cursor: pointer;
 }
-
 </style>

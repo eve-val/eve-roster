@@ -11,8 +11,10 @@ import { ArrayQueue } from "../collection/ArrayQueue";
  * emitted in the order that they were received, regardless of how long it takes
  * to process them.
  */
-export abstract class OrderedParallelTransform<In, Out>
-    extends Transform<In, Out> {
+export abstract class OrderedParallelTransform<In, Out> extends Transform<
+  In,
+  Out
+> {
   private readonly _maxConcurrency: number;
   private readonly _resultBuffer: ArrayQueue<Out | Value>;
   private _errorState = false;
@@ -52,27 +54,29 @@ export abstract class OrderedParallelTransform<In, Out>
     const position = this._resultBuffer.enqueue(Value.PENDING);
 
     this._processChunk(chunk)
-    .then(result => {
-      if (!this._errorState) {
-        if (result == null) {
-          this._resultBuffer.set(position, Value.IGNORED);
-        } else {
-          this._resultBuffer.set(position, result);
+      .then((result) => {
+        if (!this._errorState) {
+          if (result == null) {
+            this._resultBuffer.set(position, Value.IGNORED);
+          } else {
+            this._resultBuffer.set(position, result);
+          }
+          this._drainBuffer();
+          if (
+            this._resultBuffer.size() < this._maxConcurrency &&
+            this._pendingCallback
+          ) {
+            const cb = this._pendingCallback;
+            this._pendingCallback = null;
+            cb();
+          }
         }
-        this._drainBuffer();
-        if (this._resultBuffer.size() < this._maxConcurrency
-            && this._pendingCallback) {
-          const cb = this._pendingCallback;
-          this._pendingCallback = null;
-          cb();
+      })
+      .catch((err) => {
+        if (!this._errorState) {
+          this._die(err);
         }
-      }
-    })
-    .catch(err => {
-      if (!this._errorState) {
-        this._die(err);
-      }
-    });
+      });
     if (this._resultBuffer.size() < this._maxConcurrency) {
       callback();
     } else {
@@ -101,8 +105,11 @@ export abstract class OrderedParallelTransform<In, Out>
   private _die(err: Error) {
     this._errorState = true;
     this._resultBuffer.clear();
-    this.emit('error', err);
+    this.emit("error", err);
   }
 }
 
-enum Value { PENDING, IGNORED }
+enum Value {
+  PENDING,
+  IGNORED,
+}

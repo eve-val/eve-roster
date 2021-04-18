@@ -1,138 +1,128 @@
 <template>
-<div class="root">
-  <app-header :identity="identity" />
+  <div class="root">
+    <app-header :identity="identity" />
 
-  <div class="centering-container">
-    <div class="name-title">
-      <template v-if="character">
-        {{ character.name }}
-      </template>
-      <loading-spinner
+    <div class="centering-container">
+      <div class="name-title">
+        <template v-if="character">
+          {{ character.name }}
+        </template>
+        <loading-spinner
           ref="spinner"
           display="block"
           defaultState="hidden"
           size="34px"
+        />
+      </div>
+      <div class="root-container" v-if="character">
+        <div class="sidebar">
+          <eve-image
+            :id="characterId"
+            type="Character"
+            :size="274"
+            style="border: 1px solid #463830"
           />
-    </div>
-    <div class="root-container" v-if="character">
-      <div class="sidebar">
-        <eve-image :id="characterId" type="Character" :size="274"
-            style="border: 1px solid #463830;"
-            />
-        <div class="factoid-title">Corporation</div>
-        <div class="factoid">{{ corporationName || '-' }}</div>
+          <div class="factoid-title">Corporation</div>
+          <div class="factoid">{{ corporationName || "-" }}</div>
 
-        <template v-if="character">
-          <div class="factoid-title">Total SP</div>
-          <div class="factoid">
-            {{ formatSp() }}
-          </div>
-        </template>
-
-        <template v-if="account.main">
-          <div class="factoid-title">Main</div>
-          <div class="factoid">
-            <router-link
-                class="character-link"
-                :to="'/character/' + account.main.id"
-                >{{ account.main.name }}</router-link>
-          </div>
-        </template>
-
-        <template v-if="account.alts">
-          <div class="factoid-title">Alts</div>
-          <div
-              class="factoid"
-              v-for="alt in account.alts"
-              :key="alt.id"
-              >
-            <router-link
-                class="character-link"
-                :to="'/character/' + alt.id"
-                >{{ alt.name }}</router-link>
-          </div>
-        </template>
-
-        <template v-if="account.id != null">
-          <template v-if="canWriteSrp">
-            <div class="factoid-title">SRP</div>
+          <template v-if="character">
+            <div class="factoid-title">Total SP</div>
             <div class="factoid">
-              <router-link
-                class="srp-link"
-                :to="'/srp/history/' + account.id"
-                >View Losses</router-link>
-            </div>
-            <div class="factoid">
-              <router-link
-                class="srp-link"
-                :to="'/srp/triage/' + account.id"
-                >Triage Losses</router-link>
+              {{ formatSp() }}
             </div>
           </template>
 
-          <div class="factoid-title">Timezone</div>
-          <factoid-selector v-if="canWriteTimezone"
+          <template v-if="account.main">
+            <div class="factoid-title">Main</div>
+            <div class="factoid">
+              <router-link
+                class="character-link"
+                :to="'/character/' + account.main.id"
+                >{{ account.main.name }}</router-link
+              >
+            </div>
+          </template>
+
+          <template v-if="account.alts">
+            <div class="factoid-title">Alts</div>
+            <div class="factoid" v-for="alt in account.alts" :key="alt.id">
+              <router-link
+                class="character-link"
+                :to="'/character/' + alt.id"
+                >{{ alt.name }}</router-link
+              >
+            </div>
+          </template>
+
+          <template v-if="account.id != null">
+            <template v-if="canWriteSrp">
+              <div class="factoid-title">SRP</div>
+              <div class="factoid">
+                <router-link class="srp-link" :to="'/srp/history/' + account.id"
+                  >View Losses</router-link
+                >
+              </div>
+              <div class="factoid">
+                <router-link class="srp-link" :to="'/srp/triage/' + account.id"
+                  >Triage Losses</router-link
+                >
+              </div>
+            </template>
+
+            <div class="factoid-title">Timezone</div>
+            <factoid-selector
+              v-if="canWriteTimezone"
               :options="timezoneOptions"
               :initialValue="account.activeTimezone"
               :submitHandler="submitTimezone.bind(this)"
-              />
-          <div v-else class="factoid">
-            {{ account.activeTimezone || '-' }}
-          </div>
+            />
+            <div v-else class="factoid">
+              {{ account.activeTimezone || "-" }}
+            </div>
 
-          <template v-if="access.memberHousing > 0">
-            <div class="factoid-title">Citadel</div>
-            <factoid-selector v-if="canWriteCitadel"
+            <template v-if="access.memberHousing > 0">
+              <div class="factoid-title">Citadel</div>
+              <factoid-selector
+                v-if="canWriteCitadel"
                 :options="citadelOptions"
                 :initialValue="account.citadelName"
                 :submitHandler="submitHousing.bind(this)"
-                />
-            <div v-else class="factoid">{{ account.citadelName || '-' }}</div>
+              />
+              <div v-else class="factoid">{{ account.citadelName || "-" }}</div>
+            </template>
+
+            <template v-if="account.groups != null">
+              <div class="factoid-title">Groups</div>
+              <div class="factoid" v-for="group in account.groups" :key="group">
+                {{ group }}
+              </div>
+              <div class="factoid" v-if="account.groups.length == 0">-</div>
+            </template>
           </template>
 
-          <template v-if="account.groups != null">
-            <div class="factoid-title">Groups</div>
-            <div
-                class="factoid"
-                v-for="group in account.groups"
-                :key="group"
-                >
-              {{ group }}
-            </div>
-            <div class="factoid" v-if="account.groups.length == 0">-</div>
-          </template>
-        </template>
-
-        <div class="factoid-title">Titles</div>
-        <div
-            class="factoid"
-            v-for="title in character.titles"
-            :key="title"
-            >
-          {{ title }}
+          <div class="factoid-title">Titles</div>
+          <div class="factoid" v-for="title in character.titles" :key="title">
+            {{ title }}
+          </div>
+          <div class="factoid" v-if="character.titles.length == 0">-</div>
         </div>
-        <div class="factoid" v-if="character.titles.length == 0">-</div>
-      </div>
-      <div class="content">
-        <skill-sheet
-            :characterId="characterId"
-            :access="access"
-            />
+        <div class="content">
+          <skill-sheet :characterId="characterId" :access="access" />
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import ajaxer from '../shared/ajaxer';
-import AppHeader from '../shared/AppHeader.vue';
-import EveImage from '../shared/EveImage.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import { formatNumber } from '../shared/numberFormat';
+import ajaxer from "../shared/ajaxer";
+import AppHeader from "../shared/AppHeader.vue";
+import EveImage from "../shared/EveImage.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import { formatNumber } from "../shared/numberFormat";
 
-import FactoidSelector from './FactoidSelector.vue';
-import SkillSheet from './SkillSheet.vue';
+import FactoidSelector from "./FactoidSelector.vue";
+import SkillSheet from "./SkillSheet.vue";
 
 export default {
   components: {
@@ -145,10 +135,10 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true }
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       character: null,
       account: null,
@@ -162,24 +152,24 @@ export default {
   },
 
   computed: {
-    characterId: function() {
+    characterId: function () {
       return parseInt(this.$route.params.id);
     },
 
-    canWriteSrp: function() {
-      return this.identity.access['srp'] == 2;
+    canWriteSrp: function () {
+      return this.identity.access["srp"] == 2;
     },
 
-    canWriteTimezone: function() {
-      return this.access != null && this.access['memberTimezone'] == 2;
+    canWriteTimezone: function () {
+      return this.access != null && this.access["memberTimezone"] == 2;
     },
 
-    canWriteCitadel: function() {
-      return this.access != null && this.access['memberHousing'] == 2;
+    canWriteCitadel: function () {
+      return this.access != null && this.access["memberHousing"] == 2;
     },
 
-    timezoneOptions: function() {
-      return this.timezones.map(timezone => {
+    timezoneOptions: function () {
+      return this.timezones.map((timezone) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
           value: timezone,
@@ -188,12 +178,15 @@ export default {
       });
     },
 
-    citadelOptions: function() {
-      return this.citadels.map(citadel => ({ label: citadel, value: citadel }));
+    citadelOptions: function () {
+      return this.citadels.map((citadel) => ({
+        label: citadel,
+        value: citadel,
+      }));
     },
   },
 
-  mounted: function() {
+  mounted: function () {
     this.fetchData();
   },
 
@@ -210,38 +203,40 @@ export default {
 
     character(value) {
       if (value && value.corporationId) {
-        ajaxer.getCorporation(value.corporationId)
-            .then((response) =>  {
-              this.corporationName = response.data.name;
-            })
-            .catch((e) => {
-              // TODO
-              console.log(e);
-            });
+        ajaxer
+          .getCorporation(value.corporationId)
+          .then((response) => {
+            this.corporationName = response.data.name;
+          })
+          .catch((e) => {
+            // TODO
+            console.log(e);
+          });
       }
     },
   },
 
   methods: {
     fetchData() {
-      this.$refs.spinner.observe(ajaxer.getCharacter(this.characterId))
-      .then(response => {
-        this.character = response.data.character;
-        this.account = response.data.account;
-        this.access = response.data.access;
-        if (response.data.citadels) {
-          response.data.citadels.sort((a, b) => a.localeCompare(b));
-        }
-        this.citadels = response.data.citadels;
-        this.timezones = response.data.timezones;
-      });
+      this.$refs.spinner
+        .observe(ajaxer.getCharacter(this.characterId))
+        .then((response) => {
+          this.character = response.data.character;
+          this.account = response.data.account;
+          this.access = response.data.access;
+          if (response.data.citadels) {
+            response.data.citadels.sort((a, b) => a.localeCompare(b));
+          }
+          this.citadels = response.data.citadels;
+          this.timezones = response.data.timezones;
+        });
     },
 
     formatSp() {
       if (this.character.totalSp) {
         return formatNumber(this.character.totalSp);
       } else {
-        return '-';
+        return "-";
       }
     },
 
@@ -271,18 +266,17 @@ export default {
     submitHousing(citadelName) {
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
-  }
-}
-
-const TIMEZONE_HINTS = {
-  'US West': 'PT/MT',
-  'US East': 'CT/ET',
-  'EU West': 'WET/CET',
-  'EU East': 'EET/MSK/FET/TRT',
-  'Aus': null,
-  'Other': null,
+  },
 };
 
+const TIMEZONE_HINTS = {
+  "US West": "PT/MT",
+  "US East": "CT/ET",
+  "EU West": "WET/CET",
+  "EU East": "EET/MSK/FET/TRT",
+  Aus: null,
+  Other: null,
+};
 </script>
 
 <style scoped>

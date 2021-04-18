@@ -1,4 +1,4 @@
-import { BasicCallback } from '../../util/stream/core';
+import { BasicCallback } from "../../util/stream/core";
 
 /**
  * Array iteration for callback-based async execution.
@@ -7,9 +7,9 @@ import { BasicCallback } from '../../util/stream/core';
  * are executed one at a time.
  */
 export function asyncEach<T>(
-    arr: T[],
-    handler: (entry: T, callback: BasicCallback) => void,
-    callback: BasicCallback,
+  arr: T[],
+  handler: (entry: T, callback: BasicCallback) => void,
+  callback: BasicCallback
 ) {
   let i = 0;
   const len = arr.length;
@@ -17,14 +17,14 @@ export function asyncEach<T>(
     if (i >= len) {
       callback();
     } else {
-      handler(arr[i], function(err) {
+      handler(arr[i], function (err) {
         if (err) {
           callback(err);
         } else {
           i++;
           next();
         }
-      })
+      });
     }
   }
   next();

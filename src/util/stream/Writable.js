@@ -1,1 +1,1 @@
-export { Writable } from 'stream';
+export { Writable } from "stream";

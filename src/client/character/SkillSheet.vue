@@ -1,64 +1,61 @@
 <template>
-<div class="skills-container">
-  <template v-if="canReadSkills">
-    <loading-spinner
-        ref="spinner"
-        display="block"
-        size="30px"
-        />
+  <div class="skills-container">
+    <template v-if="canReadSkills">
+      <loading-spinner ref="spinner" display="block" size="30px" />
 
-    <template v-if="queue != null">
-      <div class="section-title">Training queue</div>
-      <div class="empty-queue" v-if="queue.entries.length == 0">
-        Skill queue is empty
-      </div>
-      <template v-else>
-        <queue-entry v-for="(queueEntry, i) in queue.entries"
+      <template v-if="queue != null">
+        <div class="section-title">Training queue</div>
+        <div class="empty-queue" v-if="queue.entries.length == 0">
+          Skill queue is empty
+        </div>
+        <template v-else>
+          <queue-entry
+            v-for="(queueEntry, i) in queue.entries"
             :key="i"
             :entry="queueEntry"
             :position="i"
-            />
-        <div class="queue-total-container" v-if="queue.durationLabel != null">
-          <div class="queue-total">
-            <span style="color: #cdcdcd">Total:</span>
-            {{ queue.durationLabel }}
+          />
+          <div class="queue-total-container" v-if="queue.durationLabel != null">
+            <div class="queue-total">
+              <span style="color: #cdcdcd">Total:</span>
+              {{ queue.durationLabel }}
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <template v-if="skillGroups != null">
+        <div class="section-title">Skills</div>
+        <div v-for="skillGroup in skillGroups" :key="skillGroup.id">
+          <div class="skillgroup-title">{{ skillGroup.name }}</div>
+          <div class="skillgroup-container">
+            <div
+              v-for="skill in skillGroup.skills"
+              class="skill"
+              :key="skill.id"
+            >
+              <skill-pips
+                class="skill-pips"
+                :trainedLevel="skill.level"
+                :queuedLevel="skill.queuedLevel || 0"
+              />
+              {{ skill.name }}
+            </div>
           </div>
         </div>
       </template>
     </template>
-
-    <template v-if="skillGroups != null">
-      <div class="section-title">Skills</div>
-      <div v-for="skillGroup in skillGroups" :key="skillGroup.id">
-        <div class="skillgroup-title">{{ skillGroup.name }}</div>
-        <div class="skillgroup-container">
-          <div v-for="skill in skillGroup.skills"
-              class="skill"
-              :key="skill.id"
-              >
-            <skill-pips class="skill-pips"
-                :trainedLevel="skill.level"
-                :queuedLevel="skill.queuedLevel || 0"
-                />
-            {{ skill.name }}
-          </div>
-        </div>
-      </div>
-    </template>
-
-  </template>
-</div>
+  </div>
 </template>
 
 <script>
-import _ from 'underscore';
+import _ from "underscore";
 
-import ajaxer from '../shared/ajaxer';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import ajaxer from "../shared/ajaxer";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import QueueEntry from './QueueEntry.vue';
-import SkillPips from './SkillPips.vue';
-
+import QueueEntry from "./QueueEntry.vue";
+import SkillPips from "./SkillPips.vue";
 
 export default {
   components: {
@@ -73,7 +70,7 @@ export default {
     access: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       queue: null,
       skillGroups: null,
@@ -81,21 +78,21 @@ export default {
   },
 
   computed: {
-    canReadSkillQueue: function() {
-      return this.access != null && this.access['characterSkillQueue'] >= 1;
+    canReadSkillQueue: function () {
+      return this.access != null && this.access["characterSkillQueue"] >= 1;
     },
 
-    canReadSkills: function() {
-      return this.access != null && this.access['characterSkills'] >= 1;
+    canReadSkills: function () {
+      return this.access != null && this.access["characterSkills"] >= 1;
     },
   },
 
-  mounted: function() {
+  mounted: function () {
     this.fetchData();
   },
 
   watch: {
-    character: function(value) {
+    character: function (value) {
       this.queue = null;
       this.skillGroups = null;
 
@@ -107,13 +104,14 @@ export default {
     fetchData() {
       if (this.canReadSkills) {
         this.$refs.spinner.observe(
-            ajaxer.getSkills(this.characterId),
-            response => {
-              this.processData(response.data);
-              if (response.data.warning) {
-                return { state: 'warning', message: response.data.warning };
-              }
-            });
+          ajaxer.getSkills(this.characterId),
+          (response) => {
+            this.processData(response.data);
+            if (response.data.warning) {
+              return { state: "warning", message: response.data.warning };
+            }
+          }
+        );
       }
     },
 
@@ -134,36 +132,36 @@ export default {
         }
       }
     },
-  }
-}
+  },
+};
 
 const GROUP_DISPLAY_ORDER = [
-  { groupId: 257, name: 'Spaceship Command' },
-  { groupId: 275, name: 'Navigation' },
-  { groupId: 1216, name: 'Engineering' },
-  { groupId: 1240, name: 'Subsystems' },
-  { groupId: 1210, name: 'Armor' },
-  { groupId: 1209, name: 'Shields' },
+  { groupId: 257, name: "Spaceship Command" },
+  { groupId: 275, name: "Navigation" },
+  { groupId: 1216, name: "Engineering" },
+  { groupId: 1240, name: "Subsystems" },
+  { groupId: 1210, name: "Armor" },
+  { groupId: 1209, name: "Shields" },
 
-  { groupId: 1213, name: 'Targeting' },
-  { groupId: 255, name: 'Gunnery' },
-  { groupId: 256, name: 'Missiles' },
-  { groupId: 273, name: 'Drones' },
-  { groupId: 272, name: 'Electronic Systems' },
-  { groupId: 1217, name: 'Scanning' },
+  { groupId: 1213, name: "Targeting" },
+  { groupId: 255, name: "Gunnery" },
+  { groupId: 256, name: "Missiles" },
+  { groupId: 273, name: "Drones" },
+  { groupId: 272, name: "Electronic Systems" },
+  { groupId: 1217, name: "Scanning" },
 
-  { groupId: 269, name: 'Rigging' },
-  { groupId: 278, name: 'Social' },
-  { groupId: 258, name: 'Fleet Support' },
-  { groupId: 266, name: 'Corporation Management' },
-  { groupId: 274, name: 'Trade' },
-  { groupId: 1220, name: 'Neural Enhancement' },
+  { groupId: 269, name: "Rigging" },
+  { groupId: 278, name: "Social" },
+  { groupId: 258, name: "Fleet Support" },
+  { groupId: 266, name: "Corporation Management" },
+  { groupId: 274, name: "Trade" },
+  { groupId: 1220, name: "Neural Enhancement" },
 
-  { groupId: 268, name: 'Production' },
-  { groupId: 270, name: 'Science' },
-  { groupId: 1218, name: 'Resource Processing' },
-  { groupId: 1241, name: 'Planet Management' },
-  { groupId: 1545, name: 'Structure Management' },
+  { groupId: 268, name: "Production" },
+  { groupId: 270, name: "Science" },
+  { groupId: 1218, name: "Resource Processing" },
+  { groupId: 1241, name: "Planet Management" },
+  { groupId: 1545, name: "Structure Management" },
 ];
 
 const GROUP_DISPLAY_MAP = {};
@@ -172,7 +170,7 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   GROUP_DISPLAY_MAP[group.groupId] = {
     name: group.name,
     position: i,
-  }
+  };
 }
 
 /**
@@ -181,8 +179,8 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
  * GROUP_DISPLAY_ORDER.
  */
 function groupifySkills(skills) {
-  let skillGroupMap = _.groupBy(skills, 'group');
-  
+  let skillGroupMap = _.groupBy(skills, "group");
+
   let skillGroups = [];
   for (let groupId in skillGroupMap) {
     let skills = skillGroupMap[groupId];
@@ -193,7 +191,7 @@ function groupifySkills(skills) {
     // Attach group name and sort position
     let groupDescriptor = GROUP_DISPLAY_MAP[groupId];
     if (groupDescriptor == undefined) {
-      let fallbackName = groupId == 'null' ? 'unknown' : groupId;
+      let fallbackName = groupId == "null" ? "unknown" : groupId;
       groupDescriptor = {
         name: `Skill group ${fallbackName}`,
         position: GROUP_DISPLAY_ORDER.length,

@@ -1,18 +1,16 @@
-import moment = require('moment');
-import { inspect } from 'util';
+import moment = require("moment");
+import { inspect } from "util";
 
-import { ExpirationCache } from '../../util/ExpirationCache';
-import { fetchMarketStats } from './fetchMarketStats';
-import { SYSTEM_JITA } from '../../eve/constants/mapSolarSystems';
-import { MarketStat } from './MarketStat';
-import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
+import { ExpirationCache } from "../../util/ExpirationCache";
+import { fetchMarketStats } from "./fetchMarketStats";
+import { SYSTEM_JITA } from "../../eve/constants/mapSolarSystems";
+import { MarketStat } from "./MarketStat";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
 const logger = buildLoggerFromFilename(__filename);
 
-
 const CACHE = new ExpirationCache<number, number>();
-const CACHE_DURATION = moment.duration(4, 'hours').asMilliseconds();
-
+const CACHE_DURATION = moment.duration(4, "hours").asMilliseconds();
 
 /**
  * Given a list of type IDs, looks up their current sell price in Jita.
@@ -39,8 +37,8 @@ export async function fetchJitaSellPrices(ids: number[]) {
       logger.warn(err.response.data);
     }
     if (marketStats != undefined) {
-      for (let stat of marketStats) {
-        let id = stat.sell.forQuery.types[0];
+      for (const stat of marketStats) {
+        const id = stat.sell.forQuery.types[0];
         CACHE.set(id, stat.sell.min, CACHE_DURATION);
         out.set(id, stat.sell.min);
       }
@@ -51,8 +49,8 @@ export async function fetchJitaSellPrices(ids: number[]) {
 
 function pruneCachedResults(ids: number[], out: Map<number, number>) {
   const uncached: number[] = [];
-  for (let id of ids) {
-    let cachedValue = CACHE.get(id);
+  for (const id of ids) {
+    const cachedValue = CACHE.get(id);
     if (cachedValue != undefined) {
       out.set(id, cachedValue);
     } else {

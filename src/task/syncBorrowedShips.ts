@@ -1,36 +1,36 @@
-import moment from 'moment';
-import { getAccessToken } from '../data-source/accessToken/accessToken';
-import { ESI_UNIVERSE_STRUCTURES_$structureId } from '../data-source/esi/endpoints';
-import { isAnyEsiError } from '../data-source/esi/error';
-import { EsiErrorKind } from '../data-source/esi/EsiError';
-import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
-import { fetchEveNames } from '../data-source/esi/names';
-import { dao } from '../db/dao';
-import { CharacterShipRow } from '../db/dao/CharacterShipDao';
-import { Tnex } from '../db/tnex';
-import { AccessTokenError } from '../error/AccessTokenError';
-import { Asset, fetchAssets, formatLocationFlag } from '../eve/assets';
-import { TYPE_CATEGORY_SHIP } from '../eve/constants/categories';
-import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
-import { JobLogger } from '../infra/taskrunner/Job';
-import { Task } from '../infra/taskrunner/Task';
-import { arrayToMap } from '../util/collections';
+import moment from "moment";
+import { getAccessToken } from "../data-source/accessToken/accessToken";
+import { ESI_UNIVERSE_STRUCTURES_$structureId } from "../data-source/esi/endpoints";
+import { isAnyEsiError } from "../data-source/esi/error";
+import { EsiErrorKind } from "../data-source/esi/EsiError";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+import { fetchEveNames } from "../data-source/esi/names";
+import { dao } from "../db/dao";
+import { CharacterShipRow } from "../db/dao/CharacterShipDao";
+import { Tnex } from "../db/tnex";
+import { AccessTokenError } from "../error/AccessTokenError";
+import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets";
+import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
+import { JobLogger } from "../infra/taskrunner/Job";
+import { Task } from "../infra/taskrunner/Task";
+import { arrayToMap } from "../util/collections";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
 const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
 
-const CORP_OWNED_SHIP_NAME_PREFIX = 'SA ';
+const CORP_OWNED_SHIP_NAME_PREFIX = "SA ";
 
 const ASSET_SAFETY_LOCATION_ID = 2004;
 
 const logger = buildLoggerFromFilename(__filename);
 
 export const syncBorrowedShips: Task = {
-  name: 'syncBorrowedShips',
-  displayName: 'Sync borrowed ships',
+  name: "syncBorrowedShips",
+  displayName: "Sync borrowed ships",
   description: "Searches for corp-owned ships in members' assets.",
-  timeout: moment.duration(30, 'minutes').asMilliseconds(),
+  timeout: moment.duration(30, "minutes").asMilliseconds(),
   executor,
 };
 
@@ -44,11 +44,11 @@ class LocationCache {
   private cache = new Map<number, string>();
 
   constructor(private job: JobLogger) {
-    this.cache.set(ASSET_SAFETY_LOCATION_ID, 'Asset safety');
+    this.cache.set(ASSET_SAFETY_LOCATION_ID, "Asset safety");
   }
 
   async cachePlayerStructures(token: string, ids: number[]) {
-    for (let sid of ids) {
+    for (const sid of ids) {
       const name = this.cache.get(sid);
       if (name !== undefined) continue;
       try {
@@ -75,7 +75,7 @@ class LocationCache {
 
   async cacheStations(ids: number[]) {
     const station_names = await fetchEveNames(ids);
-    for (let x of ids) {
+    for (const x of ids) {
       this.cache.set(x, station_names[x]);
     }
   }
@@ -101,8 +101,8 @@ class NestedAsset {
 
   constructor(asset: Asset, assetMap: Map<number, Asset>) {
     this.nesting = [asset];
-    for (let it = asset; it.locationType === 'item'; ) {
-      let next = assetMap.get(it.locationId);
+    for (let it = asset; it.locationType === "item"; ) {
+      const next = assetMap.get(it.locationId);
       if (!next) break;
       this.nesting.push(next);
       it = next;
@@ -118,13 +118,13 @@ class NestedAsset {
   }
 
   get inStation() {
-    return this.outermost.locationType === 'station';
+    return this.outermost.locationType === "station";
   }
 
   get inPlayerStructure() {
     return (
-      this.outermost.locationType === 'item' &&
-      this.outermost.locationFlag === 'Hangar'
+      this.outermost.locationType === "item" &&
+      this.outermost.locationFlag === "Hangar"
     );
   }
 
@@ -133,7 +133,7 @@ class NestedAsset {
   }
 
   describeLocation(locCache: LocationCache) {
-    let tokens = [];
+    const tokens = [];
     for (let i = 1; i < this.nesting.length; ++i) {
       const n = this.nesting[i];
       if (!n.name) continue;
@@ -152,7 +152,7 @@ class NestedAsset {
       return formatLocationFlag(this.asset.locationFlag);
     }
     tokens.reverse();
-    return tokens.join(' > ');
+    return tokens.join(" > ");
   }
 }
 
@@ -168,7 +168,7 @@ async function findShips(
   assets: Asset[],
   locCache: LocationCache
 ): Promise<CharacterShipRow[]> {
-  const assetMap = arrayToMap(assets, 'itemId');
+  const assetMap = arrayToMap(assets, "itemId");
   const ships = assets
     .filter((asset) => isCorpShip(asset))
     .map((asset) => new NestedAsset(asset, assetMap))
@@ -178,7 +178,7 @@ async function findShips(
 
   const stationIds = new Set<number>();
   const structureIds = new Set<number>();
-  for (let s of ships) {
+  for (const s of ships) {
     if (s.inStation) {
       stationIds.add(s.outermost.locationId);
     } else if (s.inPlayerStructure) {
@@ -228,7 +228,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const len = characterIds.length;
   let progress = 0;
   let errors = 0;
-  for (let characterId of characterIds) {
+  for (const characterId of characterIds) {
     try {
       await updateCharacter(db, locCache, characterId);
     } catch (e) {

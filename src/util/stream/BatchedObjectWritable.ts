@@ -1,5 +1,5 @@
-import { Writable } from './Writable';
-import { BasicCallback } from './core';
+import { Writable } from "./Writable";
+import { BasicCallback } from "./core";
 
 /**
  * Abstract writable stream that batches writes in order to improve performance.
@@ -9,7 +9,7 @@ import { BasicCallback } from './core';
 export abstract class BatchedObjectWritable<T> extends Writable<T> {
   private readonly _buffer: (T | null)[];
   private readonly _maxSize: number;
-  private _size: number = 0;
+  private _size = 0;
 
   constructor(batchSize: number) {
     super({ objectMode: true });
@@ -34,23 +34,23 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
     this._writeToBuffer(chunk);
     if (this._size >= this._maxSize) {
       await this._flushInternal()
-      .then(() => {
-        callback();
-      })
-      .catch(err => {
-        callback(err);
-      });
+        .then(() => {
+          callback();
+        })
+        .catch((err) => {
+          callback(err);
+        });
     } else {
       callback();
     }
   }
 
   async _writev(
-      chunks: { chunk: T, encoding: string }[],
-      callback: BasicCallback,
-      ) {
+    chunks: { chunk: T; encoding: string }[],
+    callback: BasicCallback
+  ) {
     let errorState = false;
-    for (let chunk of chunks) {
+    for (const chunk of chunks) {
       this._writeToBuffer(chunk.chunk);
       if (this._size >= this._maxSize) {
         try {
@@ -72,16 +72,16 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
       callback();
     } else {
       this._flushInternal()
-      .then(() => callback())
-      .catch(err => callback(err));
+        .then(() => callback())
+        .catch((err) => callback(err));
     }
   }
 
   private async _flushInternal() {
-    let outBuffer =
-        this._size == this._buffer.length
-            ? this._buffer
-            : this._buffer.slice(0, this._size);
+    const outBuffer =
+      this._size == this._buffer.length
+        ? this._buffer
+        : this._buffer.slice(0, this._size);
 
     await this._flush(outBuffer as T[]);
     this._size = 0;
@@ -97,4 +97,6 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
   }
 }
 
-export enum Value { IGNORED }
+export enum Value {
+  IGNORED,
+}

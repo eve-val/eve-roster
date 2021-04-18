@@ -1,69 +1,69 @@
 <template>
-<div class="_task-log">
-  <template v-if="rows">
-    <div class="headers">
-      <div class="cell task">Task</div>
-      <div class="cell start">Start</div>
-      <div class="cell duration">Duration</div>
-      <div class="cell result">Result</div>
-    </div>
-    <div class="rows">
-      <div class="row"
+  <div class="_task-log">
+    <template v-if="rows">
+      <div class="headers">
+        <div class="cell task">Task</div>
+        <div class="cell start">Start</div>
+        <div class="cell duration">Duration</div>
+        <div class="cell result">Result</div>
+      </div>
+      <div class="rows">
+        <div
+          class="row"
           v-for="row in rows"
           :key="row.id"
           :class="[
             row.result == 'failure' ? 'failure' : '',
             row.result != 'failure' && row.result != 'success'
-                ? 'aberrant' : '',
+              ? 'aberrant'
+              : '',
           ]"
-          >
-        <div class="cell task">{{ row.task }}</div>
-        <div class="cell start">{{ row.start | displayDate }}</div>
-        <div class="cell duration">
-          <span v-if="row.end != null">
-            {{ (row.end - row.start) | displayDuration }}
-          </span>
+        >
+          <div class="cell task">{{ row.task }}</div>
+          <div class="cell start">{{ row.start | displayDate }}</div>
+          <div class="cell duration">
+            <span v-if="row.end != null">
+              {{ (row.end - row.start) | displayDuration }}
+            </span>
+          </div>
+          <div class="cell result">{{ row.result }}</div>
         </div>
-        <div class="cell result">{{ row.result }}</div>
       </div>
-    </div>
-    <div class="length-reminder">Showing most recent 400 records</div>
-  </template>
-</div>
+      <div class="length-reminder">Showing most recent 400 records</div>
+    </template>
+  </div>
 </template>
 
 <script>
-import moment from 'moment';
-
+import moment from "moment";
 
 export default {
-
   props: {
-    rows: { type: Array, required: true, },
+    rows: { type: Array, required: true },
   },
 
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {};
   },
 
   filters: {
-    displayDate: function(value) {
+    displayDate: function (value) {
       if (value != null) {
-        return moment(value).format('Y/MM/DD HH:mm:ss Z');
+        return moment(value).format("Y/MM/DD HH:mm:ss Z");
       }
-      return '';
+      return "";
     },
 
-    displayDuration: function(value) {
-      return moment.duration(value).asSeconds().toFixed(1) + 's';
+    displayDuration: function (value) {
+      return moment.duration(value).asSeconds().toFixed(1) + "s";
     },
   },
-}
+};
 </script>
 
 <style scoped>
-.headers, .row {
+.headers,
+.row {
   font-size: 14px;
   padding: 10px 8px;
 }

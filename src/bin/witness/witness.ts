@@ -1,12 +1,12 @@
-import * as path from 'path';
-import moment = require('moment');
-import { ProcessControl } from './ProcessControl';
-import { RotatingFileLogWriter } from './RotatingFileLogWriter';
-import { getRootPath } from './getRootPath';
-import * as logger from './logger';
+import * as path from "path";
+import moment = require("moment");
+import { ProcessControl } from "./ProcessControl";
+import { RotatingFileLogWriter } from "./RotatingFileLogWriter";
+import { getRootPath } from "./getRootPath";
+import * as logger from "./logger";
 
-const CHILD_LOCATION = path.join(__dirname, '../../server.js');
-const MAX_LOG_LIFETIME = moment.duration(30, 'days').asMilliseconds();
+const CHILD_LOCATION = path.join(__dirname, "../../server.js");
+const MAX_LOG_LIFETIME = moment.duration(30, "days").asMilliseconds();
 
 /**
  * Parent process that writes the main server process's logs to disk
@@ -33,18 +33,18 @@ function main() {
   const processControl = new ProcessControl(process);
   const child = processControl.spawnChild(CHILD_LOCATION);
 
-  const logsPath = process.env.LOG_DIR || path.join(getRootPath(), 'logs');
+  const logsPath = process.env.LOG_DIR || path.join(getRootPath(), "logs");
 
   const logWriter = new RotatingFileLogWriter(logsPath, MAX_LOG_LIFETIME);
 
-  logWriter.on('error', error => {
-    logger.error('Error while writing logs:');
+  logWriter.on("error", (error) => {
+    logger.error("Error while writing logs:");
     logger.error(error);
     processControl.dieImmediately();
   });
 
-  logWriter.on('finish', () => {
-    logger.log('Logs flushed');
+  logWriter.on("finish", () => {
+    logger.log("Logs flushed");
     processControl.onLogsFlushed();
   });
 

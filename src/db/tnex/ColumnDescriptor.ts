@@ -1,13 +1,12 @@
-
 /**
  * Internal data structure that tracks information related to table columns.
  */
 export interface ColumnDescriptor<T extends Object> {
-  readonly prefixedName: keyof T,
-  readonly unprefixedName: string,
-  readonly type: DataType,
-  readonly cast: string,
-  readonly nullable: boolean,
+  readonly prefixedName: keyof T;
+  readonly unprefixedName: string;
+  readonly type: DataType;
+  readonly cast: string;
+  readonly nullable: boolean;
 }
 
 export enum DataType {
@@ -26,7 +25,7 @@ export enum DataType {
 }
 
 export class ColumnDescriptorImpl<T extends object>
-    implements ColumnDescriptor<T> {
+  implements ColumnDescriptor<T> {
   public prefixedName!: keyof T;
   public unprefixedName!: string;
   public type: DataType;
@@ -40,7 +39,7 @@ export class ColumnDescriptorImpl<T extends object>
 }
 
 export function getColumnDescriptors<T extends object>(
-    table: T,
+  table: T
 ): ColumnDescriptor<T>[] {
   return Object.values(table);
 }

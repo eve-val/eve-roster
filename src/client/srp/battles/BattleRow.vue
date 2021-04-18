@@ -7,24 +7,21 @@ May also contain triage UI if triageMode is enabled.
 -->
 
 <template>
-<div class="_battle-row">
+  <div class="_battle-row">
+    <div class="header">
+      <router-link class="start-time" :to="`/srp/battle/${battle.id}`">
+        {{ battle.startLabel }}
+      </router-link>
+      <div class="locations">{{ battle.locations.map(name).join(", ") }}</div>
+      <div class="total-losses">{{ formatIskValue(battleLosses) }}</div>
+    </div>
 
-  <div class="header">
-    <router-link
-        class="start-time"
-        :to="`/srp/battle/${battle.id}`"
-        >
-      {{ battle.startLabel }}
-    </router-link>
-    <div class="locations">{{ battle.locations.map(name).join(', ') }}</div>
-    <div class="total-losses">{{ formatIskValue(battleLosses) }}</div>
-  </div>
-
-  <div class="team-row"
+    <div
+      class="team-row"
       v-for="team in battle.teams"
       :key="team.corporationId"
-      >
-    <srp-triplet
+    >
+      <srp-triplet
         v-if="team.corporationId != 0"
         class="team-triplet"
         :icon-id="team.corporationId"
@@ -33,79 +30,78 @@ May also contain triage UI if triageMode is enabled.
         :bottom-line="team.allianceId && name(team.allianceId)"
         :default-href="zkillHref(team.corporationId, 'corporation')"
         :bot-href="team.allianceId && zkillHref(team.allianceId, 'alliance')"
-        >
-    </srp-triplet>
-    <div v-else class="empty-team">Unaffiliated</div>
-    <div class="participant-cnt">
-      <div class="participant"
+      >
+      </srp-triplet>
+      <div v-else class="empty-team">Unaffiliated</div>
+      <div class="participant-cnt">
+        <div
+          class="participant"
           v-for="member in team.members"
           :key="member.id"
-          >
-        <tooltip gravity="center top">
-          <a
+        >
+          <tooltip gravity="center top">
+            <a
               class="killmail-link"
-              :href="member.loss ?
-                  zkillHref(member.loss.killmailId, 'kill') : undefined"
+              :href="
+                member.loss
+                  ? zkillHref(member.loss.killmailId, 'kill')
+                  : undefined
+              "
               target="_blank"
-              >
-            <eve-image
+            >
+              <eve-image
                 class="ship-image"
                 :id="member.shipId"
                 :size="36"
                 type="Type"
-                >
-            </eve-image>
-          </a>
-          <srp-triplet
+              >
+              </eve-image>
+            </a>
+            <srp-triplet
               class="hover-triplet"
               slot="message"
               :icon-id="member.characterId || member.shipId"
               :icon-type="member.characterId ? 'Character' : 'Type'"
               :top-line="name(member.characterId || member.shipId)"
               :bottom-line="name(member.shipId)"
-              >
-          </srp-triplet>
-        </tooltip>
-        <div class="death-scrim" v-if="member.loss"></div>
+            >
+            </srp-triplet>
+          </tooltip>
+          <div class="death-scrim" v-if="member.loss"></div>
+        </div>
       </div>
+      <div class="loss-count">{{ formatIskValue(team.totalLosses) }}</div>
     </div>
-    <div class="loss-count">{{ formatIskValue(team.totalLosses) }}</div>
-  </div>
-  <div class="srp-cnt" v-if="battle.srps.length > 0">
-    <div
-        class="srp"
-        v-for="srp in battle.srps"
-        :key="srp.killmail"
-        >
-      <srp-triplet
+    <div class="srp-cnt" v-if="battle.srps.length > 0">
+      <div class="srp" v-for="srp in battle.srps" :key="srp.killmail">
+        <srp-triplet
           class="srp-triplet"
           :icon-id="srp.shipType"
           :icon-type="'Type'"
           :top-line="name(srp.victim)"
           :bottom-line="name(srp.shipType)"
           :default-href="zkillHref(srp.killmail, 'kill')"
-          >
-      </srp-triplet>
-      <srp-status
+        >
+        </srp-triplet>
+        <srp-status
           :srp="srp"
           :has-edit-priv="hasEditPriv"
           :start-in-edit-mode="startInEditMode"
-          >
-      </srp-status>
+        >
+        </srp-status>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import EveImage from '../../shared/EveImage.vue';
-import SrpTriplet from '../SrpTriplet.vue';
-import SrpStatus from '../SrpStatus.vue';
-import Tooltip from '../../shared/Tooltip.vue';
-import { NameCacheMixin } from '../../shared/nameCache';
-import { formatNumber } from '../../shared/numberFormat';
-
+import Vue from "vue";
+import EveImage from "../../shared/EveImage.vue";
+import SrpTriplet from "../SrpTriplet.vue";
+import SrpStatus from "../SrpStatus.vue";
+import Tooltip from "../../shared/Tooltip.vue";
+import { NameCacheMixin } from "../../shared/nameCache";
+import { formatNumber } from "../../shared/numberFormat";
 
 export default Vue.extend({
   components: {
@@ -116,14 +112,14 @@ export default Vue.extend({
   },
 
   props: {
-    battle: { type: Object, required: true, },
-    hasEditPriv: { type: Boolean, required: true, },
-    startInEditMode: { type: Boolean, required: true, },
+    battle: { type: Object, required: true },
+    hasEditPriv: { type: Boolean, required: true },
+    startInEditMode: { type: Boolean, required: true },
   },
 
   data() {
     return {
-      status: 'inactive',   // inactive | active | error
+      status: "inactive", // inactive | active | error
     };
   },
 
@@ -137,19 +133,22 @@ export default Vue.extend({
     },
   },
 
-  methods: Object.assign({
-    zkillHref(id, type) {
-      if (id == undefined) {
-        return undefined;
-      } else {
-        return `https://zkillboard.com/${type}/${id}/`;
-      }
-    },
+  methods: Object.assign(
+    {
+      zkillHref(id, type) {
+        if (id == undefined) {
+          return undefined;
+        } else {
+          return `https://zkillboard.com/${type}/${id}/`;
+        }
+      },
 
-    formatIskValue(value) {
-      return `${formatNumber(value)} ISK`;
+      formatIskValue(value) {
+        return `${formatNumber(value)} ISK`;
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -162,12 +161,12 @@ export default Vue.extend({
 
 .header {
   display: flex;
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
   padding-bottom: 5px;
 }
 
 .start-time {
-  color: #CDCDCD;
+  color: #cdcdcd;
   text-decoration: none;
 }
 
@@ -178,11 +177,11 @@ export default Vue.extend({
 .locations {
   flex: 1;
   text-align: center;
-  color: #A7A29C;
+  color: #a7a29c;
 }
 
 .total-losses {
-  color: #A7A29C;
+  color: #a7a29c;
 }
 
 .team-row {
@@ -191,7 +190,8 @@ export default Vue.extend({
   margin-top: 13px;
 }
 
-.team-triplet, .empty-team {
+.team-triplet,
+.empty-team {
   width: 230px;
   margin-right: 20px;
 }
@@ -238,9 +238,8 @@ export default Vue.extend({
 .loss-count {
   width: 100px;
   text-align: right;
-  color: #A7A29C;
+  color: #a7a29c;
 }
-
 
 .srp-cnt {
   width: 665px;

@@ -2,31 +2,21 @@
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
     <router-link to="/" class="nav-link" exact>Dashboard</router-link>
-    <router-link
-        to="/roster"
-        v-if="canReadRoster"
-        class="nav-link"
-        >Roster</router-link>
-    <router-link
-        to="/srp"
-        v-if="identity.isMember"
-        class="nav-link"
-        >SRP</router-link>
-    <router-link
-        to="/ships"
-        v-if="identity.isMember"
-        class="nav-link"
-        >Ships</router-link>
-    <router-link
-        to="/admin"
-        v-if="canAccessAdminConsole"
-        class="nav-link"
-        >Admin</router-link>
-    <router-link
-        to="/dev"
-        v-if="canAccessDev"
-        class="nav-link"
-        >Dev</router-link>
+    <router-link to="/roster" v-if="canReadRoster" class="nav-link"
+      >Roster</router-link
+    >
+    <router-link to="/srp" v-if="identity.isMember" class="nav-link"
+      >SRP</router-link
+    >
+    <router-link to="/ships" v-if="identity.isMember" class="nav-link"
+      >Ships</router-link
+    >
+    <router-link to="/admin" v-if="canAccessAdminConsole" class="nav-link"
+      >Admin</router-link
+    >
+    <router-link to="/dev" v-if="canAccessDev" class="nav-link"
+      >Dev</router-link
+    >
     <div class="spacer"></div>
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
@@ -35,7 +25,7 @@
 </template>
 
 <script>
-import EveImage from './EveImage.vue';
+import EveImage from "./EveImage.vue";
 
 export default {
   components: {
@@ -45,24 +35,24 @@ export default {
   props: {
     identity: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
     canReadRoster() {
-      return this.identity.access['roster'] >= 1;
+      return this.identity.access["roster"] >= 1;
     },
 
     canAccessAdminConsole() {
-      return this.identity.access['adminConsole'] >= 1;
+      return this.identity.access["adminConsole"] >= 1;
     },
 
     canAccessDev() {
-      return process.env.NODE_ENV == 'development';
+      return process.env.NODE_ENV == "development";
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -99,7 +89,7 @@ export default {
 }
 
 .nav-link:active {
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .router-link-active {
@@ -109,5 +99,4 @@ export default {
 .spacer {
   flex-grow: 1;
 }
-
 </style>

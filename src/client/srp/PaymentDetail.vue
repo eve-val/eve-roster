@@ -6,80 +6,73 @@ losses, etc.
 -->
 
 <template>
-<app-page :identity="identity" :content-width="1100">
-  <div class="title">SRP #{{ srpId }}</div>
+  <app-page :identity="identity" :content-width="1100">
+    <div class="title">SRP #{{ srpId }}</div>
 
-  <loading-spinner
-      ref="spinner"
-      display="block"
-      size="34px"
-      >
-  </loading-spinner>
+    <loading-spinner ref="spinner" display="block" size="34px">
+    </loading-spinner>
 
-  <template v-if="payment != null">
-    <div class="section-title">Status</div>
-    <div class="status-section">
-      <div v-if="!payment.paid" class="pending-message">
-        Approved, awaiting payment.
-      </div>
-      <div v-else>
-        Paid to
-        <router-link class="stat-link" :to="`/character/${payment.recipient}`">
-          {{ name(payment.recipient) }}
-        </router-link>
-        on
-        <span style="color: #CDCDCD">{{ payment.modifiedLabel }}</span>
-        by
-        <router-link class="stat-link" :to="`/character/${payment.payer}`">
-          {{ name(payment.payer) }}</router-link>.
+    <template v-if="payment != null">
+      <div class="section-title">Status</div>
+      <div class="status-section">
+        <div v-if="!payment.paid" class="pending-message">
+          Approved, awaiting payment.
+        </div>
+        <div v-else>
+          Paid to
+          <router-link
+            class="stat-link"
+            :to="`/character/${payment.recipient}`"
+          >
+            {{ name(payment.recipient) }}
+          </router-link>
+          on
+          <span style="color: #cdcdcd">{{ payment.modifiedLabel }}</span>
+          by
+          <router-link class="stat-link" :to="`/character/${payment.payer}`">
+            {{ name(payment.payer) }}</router-link
+          >.
 
-        <a
-            v-if="canEditSrp"
-            class="undo-link"
-            @click="onUndoClick"
-            >
-          Undo
-        </a>
-        <loading-spinner
+          <a v-if="canEditSrp" class="undo-link" @click="onUndoClick"> Undo </a>
+          <loading-spinner
             ref="undoSpinner"
             display="inline"
             default-state="hidden"
-            >
-        </loading-spinner>
+          >
+          </loading-spinner>
+        </div>
       </div>
-    </div>
 
-    <div class="section-title">Losses</div>
-    <loss-heading></loss-heading>
-    <loss-row
+      <div class="section-title">Losses</div>
+      <loss-heading></loss-heading>
+      <loss-row
         v-for="loss in losses"
         :key="loss.killmail"
         :srp="loss"
         :has-edit-priv="canEditSrp"
         :start-in-edit-mode="false"
-        >
-    </loss-row>
-    <div class="total-row">
-      <div class="total-label">Total</div>
-      <div class="total-value">
-        <span>{{ totalPayout }}</span>
-        <span class="denom">ISK</span>
+      >
+      </loss-row>
+      <div class="total-row">
+        <div class="total-label">Total</div>
+        <div class="total-value">
+          <span>{{ totalPayout }}</span>
+          <span class="denom">ISK</span>
+        </div>
       </div>
-    </div>
-  </template>
-</app-page>
+    </template>
+  </app-page>
 </template>
 
 <script>
-import Vue from 'vue';
-import AppPage from '../shared/AppPage.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import LossHeading from './LossHeading.vue';
-import LossRow from './LossRow.vue';
+import Vue from "vue";
+import AppPage from "../shared/AppPage.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import LossHeading from "./LossHeading.vue";
+import LossRow from "./LossRow.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -90,15 +83,15 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    srpId: { type: Number, required: true, },
+    identity: { type: Object, required: true },
+    srpId: { type: Number, required: true },
   },
 
   data() {
     return {
       payment: null,
       losses: [],
-      undoStatus: 'inactive',   // inactive | saving | error
+      undoStatus: "inactive", // inactive | saving | error
     };
   },
 
@@ -114,7 +107,7 @@ export default Vue.extend({
     },
 
     canEditSrp() {
-      return this.identity.access['srp'] == 2;
+      return this.identity.access["srp"] == 2;
     },
   },
 
@@ -122,35 +115,39 @@ export default Vue.extend({
     this.fetchData();
   },
 
-  methods: Object.assign({
-    fetchData() {
-      this.payment = null;
-      this.losses = null;
-      this.$refs.spinner.observe(ajaxer.getSrpPayment(this.srpId))
-      .then(response => {
-        this.addNames(response.data.names);
-        this.payment = response.data.payment;
-        this.losses = response.data.losses;
-      });
-    },
+  methods: Object.assign(
+    {
+      fetchData() {
+        this.payment = null;
+        this.losses = null;
+        this.$refs.spinner
+          .observe(ajaxer.getSrpPayment(this.srpId))
+          .then((response) => {
+            this.addNames(response.data.names);
+            this.payment = response.data.payment;
+            this.losses = response.data.losses;
+          });
+      },
 
-    onUndoClick(e) {
-      if (this.undoStatus == 'saving') {
-        return;
-      }
-      this.undoStatus = 'saving';
-      this.$refs.undoSpinner.observe(
-          ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-      .then(response => {
-        this.undoStatus = 'inactive';
-        this.payment.paid = false;
-        this.fetchData();
-      })
-      .catch(e => {
-        this.undoStatus = 'error';
-      });
+      onUndoClick(e) {
+        if (this.undoStatus == "saving") {
+          return;
+        }
+        this.undoStatus = "saving";
+        this.$refs.undoSpinner
+          .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
+          .then((response) => {
+            this.undoStatus = "inactive";
+            this.payment.paid = false;
+            this.fetchData();
+          })
+          .catch((e) => {
+            this.undoStatus = "error";
+          });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -164,18 +161,18 @@ export default Vue.extend({
 
 .section-title {
   font-size: 18px;
-  color: #A7A29C;
+  color: #a7a29c;
   margin-top: 40px;
   margin-bottom: 15px;
 }
 
 .status-section {
   font-size: 14px;
-  color: #A7A29C;
+  color: #a7a29c;
 }
 
 .stat-link {
-  color: #CDCDCD;
+  color: #cdcdcd;
   text-decoration: none;
 }
 
@@ -184,7 +181,7 @@ export default Vue.extend({
 }
 
 .undo-link {
-  color: #8B8B8B;
+  color: #8b8b8b;
   text-decoration: none;
   margin-left: 15px;
   cursor: pointer;
@@ -199,7 +196,7 @@ export default Vue.extend({
   margin-top: 31px;
   justify-content: flex-end;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .total-value {
@@ -209,6 +206,6 @@ export default Vue.extend({
 }
 
 .denom {
-  color: #8B8B8B;
+  color: #8b8b8b;
 }
 </style>
