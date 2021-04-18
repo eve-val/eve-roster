@@ -90,24 +90,24 @@ async function executor(db: Tnex, job: JobLogger) {
   const promises = characterIds.map(async (characterId) => {
     const span = tracer.startSpan("updateCharacterNotifications");
     span.setAttribute("characterId", characterId);
-    try {
-      context.with(setSpan(context.active(), span), async () => {
-        await updateCharacter(db, characterId);
-      });
-    } catch (e) {
-      ++errors;
-      if (e instanceof AccessTokenError || isAnyEsiError(e)) {
-        logger.warn(
-          `ESI error while fetching notifications for char ${characterId}.`,
-          e
-        );
-      } else {
-        throw e;
+    context.with(setSpan(context.active(), span), () => {
+      try {
+        updateCharacter(db, characterId);
+      } catch (e) {
+        ++errors;
+        if (e instanceof AccessTokenError || isAnyEsiError(e)) {
+          logger.warn(
+            `ESI error while fetching notifications for char ${characterId}.`,
+            e
+          );
+        } else {
+          throw e;
+        }
       }
-    }
-    ++progress;
-    job.setProgress(progress / len, undefined);
-    span.end();
+      ++progress;
+      job.setProgress(progress / len, undefined);
+      span.end();
+    });
   });
   await Promise.all(promises);
 
