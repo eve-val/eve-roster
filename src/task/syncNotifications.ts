@@ -1,3 +1,4 @@
+import _ = require('underscore');
 import moment from 'moment';
 import { getAccessToken } from '../data-source/accessToken/accessToken';
 import { isAnyEsiError } from '../data-source/esi/error';
@@ -71,12 +72,15 @@ async function updateCharacter(
 
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
-  let characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
+  const tokens = await dao.characterLocation.getMemberCharactersWithValidAccessTokens(
     db
   );
 
   const start = moment();
-  characterIds = characterIds.filter((characterId) =>
+  const characterIds = _.pluck(
+    tokens,
+    'accessToken_character')
+  .filter((characterId) =>
     // Only pull 1/12 of characters every minute; cache refresh is 10 min.
     // This maximizes chance we'll find out about structure hits quickly.
     characterId % 12 == start.minute() % 12
