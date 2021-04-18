@@ -90,9 +90,9 @@ async function executor(db: Tnex, job: JobLogger) {
   const promises = characterIds.map(async (characterId) => {
     const span = tracer.startSpan("updateCharacterNotifications");
     span.setAttribute("characterId", characterId);
-    context.with(setSpan(context.active(), span), () => {
+    context.with(setSpan(context.active(), span), async () => {
       try {
-        updateCharacter(db, characterId);
+        await updateCharacter(db, characterId);
       } catch (e) {
         ++errors;
         if (e instanceof AccessTokenError || isAnyEsiError(e)) {
@@ -103,10 +103,11 @@ async function executor(db: Tnex, job: JobLogger) {
         } else {
           throw e;
         }
+      } finally {
+        ++progress;
+        job.setProgress(progress / len, undefined);
+        span.end();
       }
-      ++progress;
-      job.setProgress(progress / len, undefined);
-      span.end();
     });
   });
   await Promise.all(promises);
