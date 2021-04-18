@@ -10,7 +10,7 @@
     "build": "{ yarn run build-server; } && { webpack --progress --config out/server/infra/build-client/webpack.prod.js; }",
     "build-server": "tsc",
     "watch-server": "tsc -w",
-    "test": "jest",
+    "test": "{ yarn run jest; } && { yarn run prettier --check .; }",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "clean": "rm -rf out/ && rm -rf static/dist/"
   },
