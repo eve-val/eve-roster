@@ -13,7 +13,7 @@ import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { Task } from "../infra/taskrunner/Task";
 
-import { getSpan, context } from "@opentelemetry/api";
+import { trace, getSpan, setSpan, context } from "@opentelemetry/api";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
@@ -32,6 +32,7 @@ const IMPORTANT_NOTIFICATION_TYPES = [
 ];
 
 const logger = buildLoggerFromFilename(__filename);
+const tracer = trace.getTracer(__filename);
 
 export const syncNotifications: Task = {
   name: "syncNotifications",
@@ -86,9 +87,13 @@ async function executor(db: Tnex, job: JobLogger) {
   const len = characterIds.length;
   let progress = 0;
   let errors = 0;
-  for (const characterId of characterIds) {
+  const promises = characterIds.map(async (characterId) => {
+    const span = tracer.startSpan("updateCharacterNotifications");
+    span.setAttribute("characterId", characterId);
     try {
-      await updateCharacter(db, characterId);
+      await context.with(setSpan(context.active(), span), async () => {
+        updateCharacter(db, characterId);
+      });
     } catch (e) {
       ++errors;
       if (e instanceof AccessTokenError || isAnyEsiError(e)) {
@@ -102,7 +107,9 @@ async function executor(db: Tnex, job: JobLogger) {
     }
     ++progress;
     job.setProgress(progress / len, undefined);
-  }
+    span.end();
+  });
+  await Promise.all(promises);
 
   // Now, check the notifications table for any new notifications since last
   // run, deduped.
@@ -114,7 +121,7 @@ async function executor(db: Tnex, job: JobLogger) {
   );
   const span = getSpan(context.active());
   for (const msg of deduped) {
-    span?.addEvent("notification", msg);
+    span?.addEvent("notification", await msg);
   }
 
   if (errors) {
