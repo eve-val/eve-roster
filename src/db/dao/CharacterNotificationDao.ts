@@ -22,14 +22,14 @@ export default class CharacterNotificationDao {
       .run()
       .then((rows) =>
         _.map(rows, async function (row) {
-          const sols = [
-            ...row.characterNotification_text.matchAll(/solarSystemID: (\d+)/),
-          ];
+          const sol = row.characterNotification_text.match(
+            /solarSystemID: (?<sol>\d+)/
+          );
           return {
             type: row.characterNotification_type,
             text: row.characterNotification_text,
-            system: sols[0]
-              ? (await fetchEveNames([+sols[0][1]]))[+sols[0][1]]
+            system: sol?.groups
+              ? (await fetchEveNames([+sol.groups.sol]))[+sol.groups.sol]
               : "n/a",
           };
         })
