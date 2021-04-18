@@ -4,7 +4,7 @@ import { ReadStream, Readable, ReadableOptions } from "./Readable";
 import { BasicCallback } from "./core";
 import { Omit } from "../simpleTypes";
 
-export type Duplex<In, Out> = ReadWriteStream<In, Out>;
+export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
 export class Duplex<In, Out> {
   constructor(opts?: DuplexOptions<Duplex<In, Out>, In, Out>);
 

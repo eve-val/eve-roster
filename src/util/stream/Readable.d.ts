@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { BasicCallback } from "./core";
 import { WriteStream } from "./Writable";
 
-export type Readable<T> = ReadStream<T>;
+export interface Readable<T> extends ReadStream<T> {}
 export class Readable<T> {
   constructor(opts?: ReadableOptions<Readable<T>>);
 
