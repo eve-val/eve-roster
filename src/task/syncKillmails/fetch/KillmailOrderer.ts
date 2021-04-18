@@ -1,12 +1,11 @@
-import moment = require('moment');
-import { Transform, TransformCallback } from '../../../util/stream/Transform';
-import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-import { Killmail } from '../../../db/tables';
-import { ArrayQueue } from '../../../util/collection/ArrayQueue';
-import { killmailToRow } from './killmailToRow';
-import { BasicCallback } from '../../../util/stream/core';
-import { JobLogger } from '../../../infra/taskrunner/Job';
-
+import moment = require("moment");
+import { Transform, TransformCallback } from "../../../util/stream/Transform";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { Killmail } from "../../../db/tables";
+import { ArrayQueue } from "../../../util/collection/ArrayQueue";
+import { killmailToRow } from "./killmailToRow";
+import { BasicCallback } from "../../../util/stream/core";
+import { JobLogger } from "../../../infra/taskrunner/Job";
 
 /**
  * Given a stream of killmails whose timestamps are *mostly* in descending
@@ -56,11 +55,11 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
    * -- on the order of 10 minutes.
    */
   constructor(
-      logger: JobLogger,
-      sourceCorporation: number,
-      start: number,
-      end: number | undefined,
-      timeWindow: number,
+    logger: JobLogger,
+    sourceCorporation: number,
+    start: number,
+    end: number | undefined,
+    timeWindow: number
   ) {
     super({ objectMode: true });
 
@@ -72,46 +71,48 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
   }
 
   _transform(
-      chunk: ZKillmail,
-      encoding: string,
-      callback: TransformCallback<Killmail>,
+    chunk: ZKillmail,
+    encoding: string,
+    callback: TransformCallback<Killmail>
   ) {
     let wasError = false;
     try {
       this._peformTransform(chunk);
     } catch (e) {
       wasError = true;
-      this.emit('error', e);
+      this.emit("error", e);
     }
     if (!wasError) {
       callback();
     }
   }
 
-  private _peformTransform(
-      chunk: ZKillmail,
-  ) {
+  private _peformTransform(chunk: ZKillmail) {
     if (this._queuedIds.has(chunk.killmail_id)) {
-      this._logger.info(`Ignoring duplicate killmail ${chunk.killmail_id}.`)
+      this._logger.info(`Ignoring duplicate killmail ${chunk.killmail_id}.`);
       return;
     }
     this._queuedIds.add(chunk.killmail_id);
 
     const row = killmailToRow(chunk);
 
-    if (this._queue.size() > 0
-        && this._queue.peekEnd().km_timestamp < row.km_timestamp) {
+    if (
+      this._queue.size() > 0 &&
+      this._queue.peekEnd().km_timestamp < row.km_timestamp
+    ) {
       this._outOfOrderCount++;
       if (this._outOfOrderCount > MAX_OUT_OF_ORDER_TOLERANCE) {
         throw new Error(
-            `ZKillboard returned ${this._outOfOrderCount} consecutive results`
-            + ` in the wrong temporal order. Their API might have changed.`);
+          `ZKillboard returned ${this._outOfOrderCount} consecutive results` +
+            ` in the wrong temporal order. Their API might have changed.`
+        );
       }
 
       for (var i = this._queue.start(); i < this._queue.end(); i++) {
         if (this._queue.get(i).km_timestamp < row.km_timestamp) {
           this._logger.info(
-            `Found an out of order killmail, inserting at position ${i}.`);
+            `Found an out of order killmail, inserting at position ${i}.`
+          );
           this._queue.insert(i, row);
           break;
         }
@@ -124,9 +125,11 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
       this._queue.enqueue(row);
     }
 
-    while (this._queue.size() > 0
-        && Math.abs(this._queue.peek().km_timestamp - row.km_timestamp)
-            >= this._maxTimeWindow) {
+    while (
+      this._queue.size() > 0 &&
+      Math.abs(this._queue.peek().km_timestamp - row.km_timestamp) >=
+        this._maxTimeWindow
+    ) {
       this._writeRow(this._queue.dequeue());
     }
   }
@@ -143,18 +146,20 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
 
     if (this._closed) {
       // Ignore row
-    } else if (this._endBound != undefined
-        && row.km_timestamp > this._endBound) {
+    } else if (
+      this._endBound != undefined &&
+      row.km_timestamp > this._endBound
+    ) {
       // Ignore row
     } else if (row.km_timestamp < this._startBound) {
       this._closed = true;
-      this.emit('exceedBounds');
+      this.emit("exceedBounds");
     } else {
       const end = this._endBound || Date.now();
       this._logger.setProgress(
-          (end - row.km_timestamp) / (end - this._startBound),
-          `Syncing killmails for corp ${this._sourceCorporation}...`,
-          );
+        (end - row.km_timestamp) / (end - this._startBound),
+        `Syncing killmails for corp ${this._sourceCorporation}...`
+      );
       this.push(row);
     }
   }

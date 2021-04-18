@@ -1,18 +1,18 @@
 import {
   ESI_CHARACTERS_$characterId_ASSETS,
   ESI_CHARACTERS_$characterId_ASSETS_NAMES,
-} from '../data-source/esi/endpoints';
-import { EsiAsset } from '../data-source/esi/EsiAsset';
-import { fetchEsi, fetchEsiEx } from '../data-source/esi/fetch/fetchEsi';
-import { dao } from '../db/dao';
-import { SdeType } from '../db/tables';
-import { Tnex } from '../db/tnex';
-import { arrayToMap } from '../util/collections';
-import { TYPE_CATEGORY_SHIP } from './constants/categories';
+} from "../data-source/esi/endpoints";
+import { EsiAsset } from "../data-source/esi/EsiAsset";
+import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi";
+import { dao } from "../db/dao";
+import { SdeType } from "../db/tables";
+import { Tnex } from "../db/tnex";
+import { arrayToMap } from "../util/collections";
+import { TYPE_CATEGORY_SHIP } from "./constants/categories";
 
-const MAX_ASSET_PAGES_TO_FETCH = 50
+const MAX_ASSET_PAGES_TO_FETCH = 50;
 
-export type AssetLocationType = 'station' | 'solar_system' | 'item' | 'other';
+export type AssetLocationType = "station" | "solar_system" | "item" | "other";
 
 export interface Asset {
   // Unique ID of this item.
@@ -45,7 +45,7 @@ export interface Asset {
  */
 export function formatLocationFlag(locationFlag: string): string {
   return locationFlag
-    .replace(/([A-Z0-9])/g, ' $1')
+    .replace(/([A-Z0-9])/g, " $1")
     .trim()
     .toLowerCase();
 }
@@ -54,9 +54,9 @@ export function formatLocationFlag(locationFlag: string): string {
 export async function fetchAssets(
   characterId: number,
   token: string,
-  db: Tnex,
+  db: Tnex
 ): Promise<Asset[]> {
-  let assets: EsiAsset[] = [];
+  const assets: EsiAsset[] = [];
   for (let page = 1; page <= MAX_ASSET_PAGES_TO_FETCH; page++) {
     const { data, pageCount } = await fetchEsiEx(
       ESI_CHARACTERS_$characterId_ASSETS,
@@ -64,7 +64,7 @@ export async function fetchAssets(
         characterId,
         page,
         _token: token,
-      },
+      }
     );
     data.forEach((asset) => assets.push(asset));
     if (page >= pageCount) {
@@ -82,13 +82,13 @@ async function fetchShipNames(
   assets: EsiAsset[],
   typeData: TypeDataMap,
   characterId: number,
-  token: string,
+  token: string
 ): Promise<Map<number, string>> {
   const itemIds = assets
     .filter((asset) => isAssembledShip(asset, typeData))
     .map((asset) => asset.item_id);
-  let names = new Map<number, string>();
-  for (let chunk of chunked(itemIds, 999)) {
+  const names = new Map<number, string>();
+  for (const chunk of chunked(itemIds, 999)) {
     const batch = await fetchEsi(ESI_CHARACTERS_$characterId_ASSETS_NAMES, {
       characterId,
       _token: token,
@@ -99,28 +99,28 @@ async function fetchShipNames(
   return names;
 }
 
-type TypeData = Pick<SdeType, 'styp_category' | 'styp_name'>;
+type TypeData = Pick<SdeType, "styp_category" | "styp_name">;
 type TypeDataMap = Map<number, TypeData>;
 
 async function fetchTypeData(
   assets: EsiAsset[],
-  db: Tnex,
+  db: Tnex
 ): Promise<TypeDataMap> {
   const typeIds = new Set<number>(assets.map((asset) => asset.type_id));
   const rows = await dao.sde.getTypes(db, Array.from(typeIds), [
-    'styp_id',
-    'styp_category',
-    'styp_name',
+    "styp_id",
+    "styp_category",
+    "styp_name",
   ]);
 
-  let typeData: TypeDataMap = arrayToMap(rows, 'styp_id');
+  const typeData: TypeDataMap = arrayToMap(rows, "styp_id");
 
-  for (let tid of typeIds) {
+  for (const tid of typeIds) {
     if (typeData.has(tid)) continue;
     // We don't import SDE data for many categories (e.g. SKINs). Assume we
     // don't care about these assets, and give them a dummy category and type
     // name.
-    typeData.set(tid, { styp_category: 0, styp_name: 'unknown' });
+    typeData.set(tid, { styp_category: 0, styp_name: "unknown" });
   }
 
   return typeData;
@@ -136,7 +136,7 @@ function isAssembledShip(a: EsiAsset, typeData: TypeDataMap): boolean {
 function convertAsset(
   a: EsiAsset,
   typeData: TypeDataMap,
-  shipNames: Map<number, string>,
+  shipNames: Map<number, string>
 ): Asset {
   const td = typeData.get(a.type_id)!;
   return {
@@ -156,12 +156,12 @@ function convertAsset(
 
 function checkLocationType(t: string): AssetLocationType {
   switch (t) {
-    case 'solar_system':
-    case 'item':
-    case 'station':
+    case "solar_system":
+    case "item":
+    case "station":
       return t;
     default:
-      return 'other';
+      return "other";
   }
 }
 

@@ -1,27 +1,27 @@
-import _ = require('underscore');
+import _ = require("underscore");
 
-import { inspect } from 'util';
+import { inspect } from "util";
 
-import { Tnex } from '../../db/tnex';
-import { dao } from '../../db/dao';
-import { checkNotNil } from '../../util/assert';
+import { Tnex } from "../../db/tnex";
+import { dao } from "../../db/dao";
+import { checkNotNil } from "../../util/assert";
 
-import { Job, JobResult } from './Job';
-import { JobImpl } from './JobImpl';
-import { buildLoggerFromFilename } from '../logging/buildLogger';
-import { Task } from './Task';
+import { Job, JobResult } from "./Job";
+import { JobImpl } from "./JobImpl";
+import { buildLoggerFromFilename } from "../logging/buildLogger";
+import { Task } from "./Task";
 
-import { trace, setSpan, context } from '@opentelemetry/api';
+import { trace, setSpan, context } from "@opentelemetry/api";
 
 const logger = buildLoggerFromFilename(__filename);
 
-const tracer = trace.getTracer('scheduler');
+const tracer = trace.getTracer("scheduler");
 
 let _nextExecutionId = 0;
 
 export interface TaskOptions {
-  channel?: string,
-  silent?: boolean,
+  channel?: string;
+  silent?: boolean;
 }
 
 export class Scheduler {
@@ -51,28 +51,25 @@ export class Scheduler {
    * but a task of the same name is currently running (i.e. in a different
    * channel) then it waits until it can be run.
    */
-  public runTask(
-      task: Task,
-      options = {} as TaskOptions,
-      ): Job {
-    return this._findRunningJob(task)
-        || this._findQueuedTaskInChannel(task, options.channel)
-        || this._createAndRunJob(task, options);
+  public runTask(task: Task, options = {} as TaskOptions): Job {
+    return (
+      this._findRunningJob(task) ||
+      this._findQueuedTaskInChannel(task, options.channel) ||
+      this._createAndRunJob(task, options)
+    );
   }
 
   public getRunningJobs(): ReadonlyArray<Job> {
     return this._runningJobs;
   }
 
-  private _createAndRunJob(
-      task: Task,
-      options: TaskOptions,
-      ) {
-    let job = new JobImpl(
-        _nextExecutionId,
-        task,
-        options.channel,
-        options.silent || false);
+  private _createAndRunJob(task: Task, options: TaskOptions) {
+    const job = new JobImpl(
+      _nextExecutionId,
+      task,
+      options.channel,
+      options.silent || false
+    );
     _nextExecutionId++;
 
     if (options.channel == undefined) {
@@ -98,70 +95,79 @@ export class Scheduler {
 
     const span = tracer.startSpan(job.task.name);
     context.with(setSpan(context.active(), span), async () => {
-      dao.cron.startJob(this._db, job.task.name)
-      .then(jobId => {
-        job.logId = jobId;
-        span.setAttribute('job_id', jobId);
-        job.startTime = Date.now();
+      dao.cron
+        .startJob(this._db, job.task.name)
+        .then((jobId) => {
+          job.logId = jobId;
+          span.setAttribute("job_id", jobId);
+          job.startTime = Date.now();
 
-        if (!job.silent) {
-          logger.info(`START ${jobSummary(job)}.`);
-        }
-
-        const work = job.task.executor(this._db, job);
-        job.timeoutId = setTimeout(() => this._timeoutJob(job), job.task.timeout);
-        job.setStatus('running', 'pending');
-        return work;
-      })
-      .catch(e => {
-        executorError = e;
-      })
-      .then(() => {
-        if (executorError) {
-          logger.error(`Error while executing ${jobSummary(job)}.`);
-          logger.error(executorError);
-          job.error(executorError.message || executorError.toString());
-        }
-
-        if (job.errors.length > 0) {
-          jobResult = 'failure';
-        } else if (job.warnings.length > 0) {
-          jobResult = 'partial';
-        } else {
-          jobResult = 'success';
-        }
-        span.setAttribute('job_result', jobResult);
-
-        const logMessage = `FINISH ${jobSummary(job)} result="${jobResult}", `
-            + `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
-
-        if (!job.silent) {
-          if (jobResult == 'success') {
-            logger.info(logMessage);
-          } else {
-            logger.error(logMessage);
+          if (!job.silent) {
+            logger.info(`START ${jobSummary(job)}.`);
           }
-        }
 
-        if (!job.timedOut) {
-          clearTimeout(checkNotNil(job.timeoutId));
-        }
-        return dao.cron.finishJob(this._db, checkNotNil(job.logId), jobResult);
-      })
-      .catch(e => {
-        logger.error('DB failure when trying to log cron job failure :(');
-        logger.error(e);
-      })
-      .then(() => {
-        if (!job.timedOut) {
-          this._unregisterJob(job);
-          this._tryToUnstallChannels();
-        }
-        job.setStatus('finished', jobResult);
-      })
-      .finally(() => {
-        span.end();
-      });
+          const work = job.task.executor(this._db, job);
+          job.timeoutId = setTimeout(
+            () => this._timeoutJob(job),
+            job.task.timeout
+          );
+          job.setStatus("running", "pending");
+          return work;
+        })
+        .catch((e) => {
+          executorError = e;
+        })
+        .then(() => {
+          if (executorError) {
+            logger.error(`Error while executing ${jobSummary(job)}.`);
+            logger.error(executorError);
+            job.error(executorError.message || executorError.toString());
+          }
+
+          if (job.errors.length > 0) {
+            jobResult = "failure";
+          } else if (job.warnings.length > 0) {
+            jobResult = "partial";
+          } else {
+            jobResult = "success";
+          }
+          span.setAttribute("job_result", jobResult);
+
+          const logMessage =
+            `FINISH ${jobSummary(job)} result="${jobResult}", ` +
+            `${job.warnings.length} warning(s), ${job.errors.length} error(s).`;
+
+          if (!job.silent) {
+            if (jobResult == "success") {
+              logger.info(logMessage);
+            } else {
+              logger.error(logMessage);
+            }
+          }
+
+          if (!job.timedOut) {
+            clearTimeout(checkNotNil(job.timeoutId));
+          }
+          return dao.cron.finishJob(
+            this._db,
+            checkNotNil(job.logId),
+            jobResult
+          );
+        })
+        .catch((e) => {
+          logger.error("DB failure when trying to log cron job failure :(");
+          logger.error(e);
+        })
+        .then(() => {
+          if (!job.timedOut) {
+            this._unregisterJob(job);
+            this._tryToUnstallChannels();
+          }
+          job.setStatus("finished", jobResult);
+        })
+        .finally(() => {
+          span.end();
+        });
     });
   }
 
@@ -171,7 +177,7 @@ export class Scheduler {
   }
 
   private _unregisterJob(job: JobImpl) {
-    let jobIndex = this._runningJobs.indexOf(job);
+    const jobIndex = this._runningJobs.indexOf(job);
 
     if (jobIndex < 0) {
       throw new Error(`Orphaned job detected. ${inspect(job)}.`);
@@ -201,19 +207,20 @@ export class Scheduler {
   }
 
   private _findQueuedTaskInChannel(
-      task: Task, channelName: string | undefined) {
+    task: Task,
+    channelName: string | undefined
+  ) {
     if (channelName == undefined) {
       return undefined;
     }
-    return _.findWhere(
-        this._getChannel(channelName).queue, { task });
+    return _.findWhere(this._getChannel(channelName).queue, { task });
   }
 
   private _queueJobToChannel(job: JobImpl, channel: JobChannel) {
     channel.queue.push(job);
     this._tryRunNextJobInChannel(channel);
     if (channel.runningJob != job) {
-      logger.info(`Task ${job.task.name} queued in channel ${channel.name}.`)
+      logger.info(`Task ${job.task.name} queued in channel ${channel.name}.`);
     }
   }
 
@@ -224,7 +231,7 @@ export class Scheduler {
     }
 
     for (let i = 0; i < channel.queue.length; i++) {
-      let job = channel.queue[i];
+      const job = channel.queue[i];
       if (!this._isRunning(job.task)) {
         channel.queue.splice(i, 1);
         channel.runningJob = job;
@@ -234,8 +241,10 @@ export class Scheduler {
     }
 
     if (channel.runningJob == undefined && channel.queue.length > 0) {
-      logger.warn(`Job channel "${channel.name}" has stalled. Queue is`
-          + ` [${inspect(_.pluck(_.pluck(channel.queue, 'task'), 'name'))}].`);
+      logger.warn(
+        `Job channel "${channel.name}" has stalled. Queue is` +
+          ` [${inspect(_.pluck(_.pluck(channel.queue, "task"), "name"))}].`
+      );
     }
   }
 
@@ -249,15 +258,17 @@ export class Scheduler {
     } else {
       const i = channel.queue.indexOf(job);
       if (i < 0) {
-        throw new Error(`Cannot remove job ${inspect(job)} from channel`
-            + ` ${inspect(channel)}.`);
+        throw new Error(
+          `Cannot remove job ${inspect(job)} from channel` +
+            ` ${inspect(channel)}.`
+        );
       }
       channel.queue.splice(i, 1);
     }
   }
 
   private _tryToUnstallChannels() {
-    for (let channel of this._channels.values()) {
+    for (const channel of this._channels.values()) {
       this._tryRunNextJobInChannel(channel);
     }
   }
@@ -275,6 +286,8 @@ class JobChannel {
 }
 
 function jobSummary(job: JobImpl) {
-  return `job "${job.task.name}" (id ${job.executionId}, logId ${job.logId},`
-      + ` channel=${job.channel || 'none'})`
+  return (
+    `job "${job.task.name}" (id ${job.executionId}, logId ${job.logId},` +
+    ` channel=${job.channel || "none"})`
+  );
 }

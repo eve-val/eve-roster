@@ -1,66 +1,67 @@
 <template>
-<admin-wrapper title="Server tasks" :identity="identity">
-  <div class="root-container">
-    <div class="description">
-      Pieces of work that the server needs to periodically perform. Most of them
-      can be run manually if desired.
-    </div>
+  <admin-wrapper title="Server tasks" :identity="identity">
+    <div class="root-container">
+      <div class="description">
+        Pieces of work that the server needs to periodically perform. Most of
+        them can be run manually if desired.
+      </div>
 
-    <loading-spinner
+      <loading-spinner
         class="root-spinner"
         ref="root_spinner"
         display="block"
         size="34px"
-        >
-    </loading-spinner>
+      >
+      </loading-spinner>
 
-    <template v-if="tasks != null">
-      <div class="header">Tasks</div>
-      <transition-group name="task-block" tag="div">
-        <task-slab
+      <template v-if="tasks != null">
+        <div class="header">Tasks</div>
+        <transition-group name="task-block" tag="div">
+          <task-slab
             v-for="task in tasks"
             v-if="task.job != null"
             class="task-block"
             :task="task"
             :key="task.name"
             @jobStarted="onJobStarted"
-            >
-        </task-slab>
-        <div class="active-task-divider"
+          >
+          </task-slab>
+          <div
+            class="active-task-divider"
             v-if="areAnyActiveJobs"
-            key="__divider"></div>
-        <task-slab
+            key="__divider"
+          ></div>
+          <task-slab
             v-for="task in tasks"
             v-if="task.job == null"
             class="task-block"
             :task="task"
             :key="task.name"
             @jobStarted="onJobStarted"
-            >
-        </task-slab>
-      </transition-group>
+          >
+          </task-slab>
+        </transition-group>
 
-      <div class="header">Task log</div>
-      <task-log :rows="taskLog"></task-log>
-    </template>
-  </div>
-</admin-wrapper>
+        <div class="header">Task log</div>
+        <task-log :rows="taskLog"></task-log>
+      </template>
+    </div>
+  </admin-wrapper>
 </template>
 
 <script>
-import Promise from 'bluebird';
-import moment from 'moment';
-import _ from 'underscore';
+import Promise from "bluebird";
+import moment from "moment";
+import _ from "underscore";
 
-import ajaxer from '../shared/ajaxer';
+import ajaxer from "../shared/ajaxer";
 
-import AdminWrapper from './AdminWrapper.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import Tooltip from '../shared/Tooltip.vue';
+import AdminWrapper from "./AdminWrapper.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import Tooltip from "../shared/Tooltip.vue";
 
-import TaskSlab from './TaskSlab.vue';
-import TaskLog from './TaskLog.vue';
-
+import TaskSlab from "./TaskSlab.vue";
+import TaskLog from "./TaskLog.vue";
 
 const POLL_FREQUENCY = 4000;
 
@@ -74,10 +75,10 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       tasks: null,
       taskLog: [],
@@ -85,17 +86,19 @@ export default {
     };
   },
 
-  mounted: function() {
-    this.$refs.root_spinner.observe(
+  mounted: function () {
+    this.$refs.root_spinner
+      .observe(
         Promise.all([
           ajaxer.getAdminTasks(),
           ajaxer.getAdminJobs(),
           ajaxer.getAdminTaskLog(),
-        ]))
-    .then(([tasks, jobs, logs]) => {
-      this.initializeTasks(tasks.data, jobs.data);
-      this.taskLog = logs.data;
-    });
+        ])
+      )
+      .then(([tasks, jobs, logs]) => {
+        this.initializeTasks(tasks.data, jobs.data);
+        this.taskLog = logs.data;
+      });
   },
 
   computed: {
@@ -126,7 +129,7 @@ export default {
     onJobStarted(taskName) {
       let task = _.findWhere(this.tasks, { name: taskName });
       if (task == null) {
-        console.error('Unknown task:', taskName);
+        console.error("Unknown task:", taskName);
         return;
       }
 
@@ -137,7 +140,7 @@ export default {
           task: taskName,
           startTime: Date.now(),
           progress: null,
-          progressLabel: 'Starting...',
+          progressLabel: "Starting...",
         };
       }
 
@@ -150,8 +153,7 @@ export default {
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs()
-        .then(response => {
+        ajaxer.getAdminJobs().then((response) => {
           this.applyJobs(response.data);
           if (this.areAnyActiveJobs) {
             setTimeout(poll, POLL_FREQUENCY);
@@ -159,7 +161,7 @@ export default {
             this.polling = false;
           }
         });
-      }
+      };
       poll();
     },
 
@@ -191,10 +193,10 @@ export default {
           this.tasks.push({
             name: job.task,
             displayName: job.task,
-            description: '',
+            description: "",
             isSynthetic: true,
             job: job,
-          })
+          });
         }
       }
 
@@ -219,13 +221,12 @@ export default {
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog()
-      .then(response => {
+      ajaxer.getAdminTaskLog().then((response) => {
         this.taskLog = response.data;
       });
     },
-  }
-}
+  },
+};
 
 function compareJobs(a, b) {
   if (a.job != null && b.job == null) {
@@ -249,7 +250,6 @@ function compareStartTimes(a, b) {
   }
   return cmp;
 }
-
 </script>
 
 <style scoped>
@@ -279,11 +279,12 @@ function compareStartTimes(a, b) {
 
 .active-task-divider {
   height: 1px;
-  background: #2A2A2A;
+  background: #2a2a2a;
   margin: 15px 18px;
 }
 
-.task-block, .active-task-divider {
+.task-block,
+.active-task-divider {
   transition-duration: 700ms;
   transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
   transition-property: transform, opacity;
@@ -293,7 +294,8 @@ function compareStartTimes(a, b) {
   position: absolute;
 }
 
-.task-block-enter, .task-block-leave-to {
+.task-block-enter,
+.task-block-leave-to {
   opacity: 0;
 }
 </style>

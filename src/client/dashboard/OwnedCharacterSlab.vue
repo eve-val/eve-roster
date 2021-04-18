@@ -1,88 +1,93 @@
 <template>
-<character-slab-frame :characterId="character.id">
-  <div class="_owned-character-slab"
-      @mouseleave="onMouseOut"
-      >
-    <div class="body" >
-      <div>
-        <router-link
-            class="name"
-            :to="'/character/' + character.id"
-            >{{ character.name }}</router-link><!--
-     --><tooltip class="status-icon"
+  <character-slab-frame :characterId="character.id">
+    <div class="_owned-character-slab" @mouseleave="onMouseOut">
+      <div class="body">
+        <div>
+          <router-link class="name" :to="'/character/' + character.id">{{
+            character.name
+          }}</router-link
+          ><!--
+     --><tooltip
+            class="status-icon"
             v-for="icon in statusIcons"
             :key="icon.key"
             :inline="true"
             gravity="center top"
-            >
-          <img class="status-icon-img" :src="icon.src">
-          <div slot="message">{{ icon.label }}</div>
-        </tooltip>
-      </div>
-      <div class="training-summary">
-        <div class="training-track">
-          <div class="training-progress"
+          >
+            <img class="status-icon-img" :src="icon.src" />
+            <div slot="message">{{ icon.label }}</div>
+          </tooltip>
+        </div>
+        <div class="training-summary">
+          <div class="training-track">
+            <div
+              class="training-progress"
               :style="{ width: progressTrackWidth }"
-              ></div>
-          <span class="training-label">{{ trainingLabel }}</span>
-        </div><span
+            ></div>
+            <span class="training-label">{{ trainingLabel }}</span>
+          </div>
+          <span
             v-if="character.skillQueue.queueStatus == 'active'"
             class="training-remaining"
-            >{{ skillInTraining.timeRemaining }}</span>
+            >{{ skillInTraining.timeRemaining }}</span
+          >
+        </div>
+        <div class="queue-summary">{{ queueLabel }}</div>
       </div>
-      <div class="queue-summary">{{ queueLabel }}</div>
-    </div>
-    <div class="menu" v-if="menuItems.length > 0">
-      <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
-      <drop-menu class="menu-body" ref="menu"
+      <div class="menu" v-if="menuItems.length > 0">
+        <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
+        <drop-menu
+          class="menu-body"
+          ref="menu"
           :rootStyle="{
             position: 'absolute',
             right: '7px',
             top: '18px',
           }"
-          >
-        <div class="menu-item"
+        >
+          <div
+            class="menu-item"
             v-for="item in menuItems"
             :key="item.tag"
             @click="onMenuItemClick(item)"
-            >
-          {{ item.label }}
-        </div>
-      </drop-menu>
-    </div>
-    <loading-spinner
+          >
+            {{ item.label }}
+          </div>
+        </drop-menu>
+      </div>
+      <loading-spinner
         class="working-spinner"
         ref="spinner"
         defaultState="hidden"
         size="13px"
         tooltipGravity="left"
-        />
-  </div>
-  <reauthentication-prompt
+      />
+    </div>
+    <reauthentication-prompt
       v-if="character.needsReauth"
       slot="sub-slab-hanger"
       :loginParams="loginParams"
       :characterName="character.name"
-      >
-  </reauthentication-prompt>
-</character-slab-frame>
+    >
+    </reauthentication-prompt>
+  </character-slab-frame>
 </template>
 
 <script>
-import ajaxer from '../shared/ajaxer';
+import ajaxer from "../shared/ajaxer";
 
-import CharacterSlabFrame from './CharacterSlabFrame.vue';
-import ReauthenticationPrompt from './ReauthenticationPrompt.vue';
-import DropMenu from '../shared/DropMenu.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import Tooltip from '../shared/Tooltip.vue';
+import CharacterSlabFrame from "./CharacterSlabFrame.vue";
+import ReauthenticationPrompt from "./ReauthenticationPrompt.vue";
+import DropMenu from "../shared/DropMenu.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import Tooltip from "../shared/Tooltip.vue";
 
-import mainIcon from './res/main-star.svg';
-import opsecIcon from './res/hidden-icon.svg';
-import biomassedIcon from './res/biomassed.svg';
-import warningIcon from '../shared-res/triangle-warning.svg';
+import mainIcon from "./res/main-star.svg";
+import opsecIcon from "./res/hidden-icon.svg";
+import biomassedIcon from "./res/biomassed.svg";
+import warningIcon from "../shared-res/triangle-warning.svg";
 
-import { CORP_DOOMHEIM } from '../../shared/eveConstants';
+import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
 export default {
   components: {
@@ -94,7 +99,7 @@ export default {
   },
 
   props: {
-    accountId: { type: Number, required: true, },
+    accountId: { type: Number, required: true },
     character: { type: Object, required: true },
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
@@ -102,9 +107,8 @@ export default {
     access: { type: Object, required: true },
   },
 
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {};
   },
 
   computed: {
@@ -121,10 +125,10 @@ export default {
     },
 
     trainingLabel() {
-      if (this.character.skillQueue.queueStatus == 'empty') {
-        return 'Skill queue empty';
-      } else if (this.character.skillQueue.queueStatus == 'paused') {
-        return 'Skill queue paused';
+      if (this.character.skillQueue.queueStatus == "empty") {
+        return "Skill queue empty";
+      } else if (this.character.skillQueue.queueStatus == "paused") {
+        return "Skill queue paused";
       } else {
         return this.skillInTraining.name;
       }
@@ -132,22 +136,24 @@ export default {
 
     queueLabel() {
       switch (this.character.skillQueue.queueStatus) {
-        case 'active':
-          return `${this.queue.timeRemaining} in queue`
-              + ` (${this.queue.count} skills)`;
-        case 'paused':
+        case "active":
+          return (
+            `${this.queue.timeRemaining} in queue` +
+            ` (${this.queue.count} skills)`
+          );
+        case "paused":
           return `${this.queue.count} skills in queue`;
-        case 'empty':
+        case "empty":
         default:
-          return '';
+          return "";
       }
     },
 
     progressTrackWidth() {
-      if (this.character.skillQueue.queueStatus != 'active') {
-        return '0';
+      if (this.character.skillQueue.queueStatus != "active") {
+        return "0";
       } else {
-        return this.skillInTraining.progress * 100 + '%';
+        return this.skillInTraining.progress * 100 + "%";
       }
     },
 
@@ -156,37 +162,39 @@ export default {
 
       if (this.isMain && this.highlightMain) {
         icons.push({
-          key: 'main',
+          key: "main",
           src: mainIcon,
-          label: 'This is your main character.',
+          label: "This is your main character.",
         });
       }
 
       if (this.character.opsec) {
         icons.push({
-          key: 'opsec',
+          key: "opsec",
           src: opsecIcon,
-          label: 'The fact that you own this character is hidden.'
-              + ' Only members with opsec access can see it.',
+          label:
+            "The fact that you own this character is hidden." +
+            " Only members with opsec access can see it.",
         });
       }
 
       if (this.biomassed) {
         icons.push({
-          key: 'biomassed',
+          key: "biomassed",
           src: biomassedIcon,
-          label: 'This character may have been biomassed.'
-              + ' You can delete it from the dropdown menu.',
+          label:
+            "This character may have been biomassed." +
+            " You can delete it from the dropdown menu.",
         });
       }
 
       let queueWarning = this.character.skillQueue.warning;
       if (queueWarning) {
         icons.push({
-          key: 'esi-failure',
+          key: "esi-failure",
           src: warningIcon,
           label: getQueueWarningLabel(queueWarning),
-        })
+        });
       }
 
       return icons;
@@ -194,28 +202,28 @@ export default {
 
     menuItems() {
       let items = [];
-      if (!this.isMain &&
-          this.access.designateMain == 2 &&
-          !this.biomassed) {
+      if (!this.isMain && this.access.designateMain == 2 && !this.biomassed) {
         items.push({
-          tag: 'designate-main',
-          label: 'Designate as main',
+          tag: "designate-main",
+          label: "Designate as main",
         });
       }
-      if (this.access.isMember &&
-          !this.isMain &&
-          this.character.corpStatus == 'external') {
+      if (
+        this.access.isMember &&
+        !this.isMain &&
+        this.character.corpStatus == "external"
+      ) {
         items.push({
-          tag: 'designate-opsec',
+          tag: "designate-opsec",
           label: this.character.opsec
-              ? 'Show in roster'
-              : 'Don\'t show in roster',
+            ? "Show in roster"
+            : "Don't show in roster",
         });
       }
       if (this.biomassed && !this.isMain) {
         items.push({
-          tag: 'delete-char',
-          label: 'Delete biomassed character',
+          tag: "delete-char",
+          label: "Delete biomassed character",
         });
       }
 
@@ -233,51 +241,55 @@ export default {
     onMenuItemClick(menuItem) {
       this.$refs.menu.hide();
       switch (menuItem.tag) {
-        case 'designate-main':
+        case "designate-main":
           this.designateAsMain();
           break;
-        case 'designate-opsec':
+        case "designate-opsec":
           this.setIsOpsec(!this.character.opsec);
           break;
-        case 'delete-char':
+        case "delete-char":
           this.markDeleted();
-	  break;
+          break;
       }
     },
 
     designateAsMain() {
-      this.$refs.spinner.observe(
-          ajaxer.putAccountMainCharacter(this.accountId, this.character.id))
-      .then(() => {
-        this.$emit('requireRefresh', this.character.id);
-      });
+      this.$refs.spinner
+        .observe(
+          ajaxer.putAccountMainCharacter(this.accountId, this.character.id)
+        )
+        .then(() => {
+          this.$emit("requireRefresh", this.character.id);
+        });
     },
 
     setIsOpsec(isOpsec) {
-      this.$refs.spinner.observe(
-          ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec))
-      .then(() => {
-        this.$emit('requireRefresh', this.character.id);
-      });
+      this.$refs.spinner
+        .observe(
+          ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)
+        )
+        .then(() => {
+          this.$emit("requireRefresh", this.character.id);
+        });
     },
 
     markDeleted() {
-      this.$refs.spinner.observe(
-          ajaxer.deleteBiomassedCharacter(this.character.id))
-      .then(() => {
-        this.$emit('requireRefresh', this.character.id);
-      });
+      this.$refs.spinner
+        .observe(ajaxer.deleteBiomassedCharacter(this.character.id))
+        .then(() => {
+          this.$emit("requireRefresh", this.character.id);
+        });
     },
   },
-}
+};
 
 function getQueueWarningLabel(warning) {
-  let generalWarning = 'Skill queue may be out of date.';
+  let generalWarning = "Skill queue may be out of date.";
 
   switch (warning) {
-    case 'bad_credentials':
+    case "bad_credentials":
       return `This character's auth tokens may have expired. ` + generalWarning;
-    case 'fetch_failure':
+    case "fetch_failure":
       return `There was an error when talking to CCP. ` + generalWarning;
     default:
       return generalWarning;
@@ -351,7 +363,7 @@ function getQueueWarningLabel(warning) {
   top: 0;
   width: 0;
   height: 100%;
-  background: linear-gradient(to bottom, #75615c 0%,#534539 50%,#534539 50%);
+  background: linear-gradient(to bottom, #75615c 0%, #534539 50%, #534539 50%);
   transition: width 750ms cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
@@ -364,7 +376,8 @@ function getQueueWarningLabel(warning) {
   margin-left: 6px;
 }
 
-.queue-summary, .training-remaining {
+.queue-summary,
+.training-remaining {
   font-size: 12px;
   color: #a7a29c;
 }
@@ -385,7 +398,7 @@ function getQueueWarningLabel(warning) {
 .menu-arrow {
   width: 25px;
   height: 22px;
-  background-image: url('./res/character-menu-arrow.png');
+  background-image: url("./res/character-menu-arrow.png");
   background-size: cover;
 }
 
@@ -409,5 +422,4 @@ function getQueueWarningLabel(warning) {
   right: 24px;
   top: 4px;
 }
-
 </style>

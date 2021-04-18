@@ -1,33 +1,36 @@
 <template>
-<div class="_loading-spinner" :style="{ display: derivedDisplay }">
-  <template v-if="derivedState != 'hidden'">
-    <img class="spinner"
-          v-if="derivedState == 'spinning'"
-          src="./res/LoadingSpinner-spinner.svg"
-          :style="{ width: size, height: size, }"
-          >
-    <tooltip
+  <div class="_loading-spinner" :style="{ display: derivedDisplay }">
+    <template v-if="derivedState != 'hidden'">
+      <img
+        class="spinner"
+        v-if="derivedState == 'spinning'"
+        src="./res/LoadingSpinner-spinner.svg"
+        :style="{ width: size, height: size }"
+      />
+      <tooltip
         v-if="derivedState != 'spinning' && display == 'inline'"
         :gravity="tooltipGravity || 'center top'"
         style="vertical-align: text-bottom"
-        >
-      <img class="inline-style-icon"
+      >
+        <img
+          class="inline-style-icon"
           :src="errorIconSrc"
-          :style="{ width: size, height: size, }"
-          >
-      <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
-    </tooltip>
+          :style="{ width: size, height: size }"
+        />
+        <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
+      </tooltip>
 
-    <div class="block-style-message"
-          v-if="derivedState != 'spinning' && display == 'block'">
-      <img class="block-style-icon" :src="errorIconSrc">{{ derivedMessage }}
-    </div>
-  </template>
-</div>
+      <div
+        class="block-style-message"
+        v-if="derivedState != 'spinning' && display == 'block'"
+      >
+        <img class="block-style-icon" :src="errorIconSrc" />{{ derivedMessage }}
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
-
 /**
  * Generic loading spinner
  *
@@ -89,25 +92,25 @@
  * up to you.
  */
 
-import _ from 'underscore';
-import Tooltip from './Tooltip.vue';
+import _ from "underscore";
+import Tooltip from "./Tooltip.vue";
 
-const inlineErrorIcon = require('../shared-res/circle-error.svg');
-const inlineWarningIcon = require('../shared-res/circle-warning.svg');
-const blockErrorIcon = require('../shared-res/triangle-error.svg');
-const blockWarningIcon = require('../shared-res/triangle-warning.svg');
+const inlineErrorIcon = require("../shared-res/circle-error.svg");
+const inlineWarningIcon = require("../shared-res/circle-warning.svg");
+const blockErrorIcon = require("../shared-res/triangle-error.svg");
+const blockWarningIcon = require("../shared-res/triangle-warning.svg");
 
-const DISPLAY_VALUES = ['inline', 'block'];
-const STATE_VALUES = ['hidden', 'spinning', 'error', 'warning'];
+const DISPLAY_VALUES = ["inline", "block"];
+const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
 
 export default {
   components: {
-    Tooltip
+    Tooltip,
   },
 
   props: {
     /** Any CSS dimension, e.g. '12px'. */
-    size: { type: String, required: false, default: '1.1em', },
+    size: { type: String, required: false, default: "1.1em" },
 
     /**
      * Any of 'inline' | 'block'. Default: 'inline'.
@@ -120,8 +123,8 @@ export default {
     display: {
       type: String,
       required: false,
-      default: 'inline',
-      validator: value => _.contains(DISPLAY_VALUES, value),
+      default: "inline",
+      validator: (value) => _.contains(DISPLAY_VALUES, value),
     },
 
     /**
@@ -132,7 +135,7 @@ export default {
     state: {
       type: String,
       required: false,
-      validator: value => _.contains(STATE_VALUES, value),
+      validator: (value) => _.contains(STATE_VALUES, value),
     },
 
     /**
@@ -142,8 +145,8 @@ export default {
     defaultState: {
       type: String,
       required: false,
-      default: 'spinning',
-      validator: value => _.contains(STATE_VALUES, value),
+      default: "spinning",
+      validator: (value) => _.contains(STATE_VALUES, value),
     },
 
     /** Displayed if state is 'error' or 'warning'. */
@@ -166,7 +169,7 @@ export default {
      * attempted. Displayed in the form
      * "There was an error while <actionLabel>."
      */
-    actionLabel: { type: String, required: false, },
+    actionLabel: { type: String, required: false },
 
     /**
      * In the case of a rejected promise, rethrow the error that caused the
@@ -176,7 +179,7 @@ export default {
     rethrowError: { type: Boolean, required: false, default: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       stateFromPromise: null,
       messageFromPromise: null,
@@ -185,8 +188,8 @@ export default {
 
   computed: {
     derivedDisplay() {
-      if (this.derivedState == 'hidden') {
-        return 'none';
+      if (this.derivedState == "hidden") {
+        return "none";
       } else {
         return this.display;
       }
@@ -202,19 +205,19 @@ export default {
 
     errorIconSrc() {
       switch (this.display) {
-        case 'inline':
+        case "inline":
           switch (this.derivedState) {
-            case 'warning':
+            case "warning":
               return inlineWarningIcon;
-            case 'error':
+            case "error":
             default:
               return inlineErrorIcon;
           }
-        case 'block':
+        case "block":
           switch (this.derivedState) {
-            case 'warning':
+            case "warning":
               return blockWarningIcon;
-            case 'error':
+            case "error":
             default:
               return blockErrorIcon;
           }
@@ -243,56 +246,59 @@ export default {
         this.stateFromPromise = null;
         return;
       }
-      this.stateFromPromise = 'spinning';
+      this.stateFromPromise = "spinning";
 
       return promise
-      .then(payload => {
-        let newState = 'hidden';
+        .then((payload) => {
+          let newState = "hidden";
 
-        this.stateFromPromise = 'hidden';
+          this.stateFromPromise = "hidden";
 
-        let result = onSuccess && onSuccess(payload);
-        if (result) {
-          if (_.contains(STATE_VALUES, result.state)) {
-            newState = result.state;
-          } else if (result.state != null) {
-            console.warn('WARNING: Bad spinner state:', result.state);
+          let result = onSuccess && onSuccess(payload);
+          if (result) {
+            if (_.contains(STATE_VALUES, result.state)) {
+              newState = result.state;
+            } else if (result.state != null) {
+              console.warn("WARNING: Bad spinner state:", result.state);
+            }
+            if (
+              (newState == "error" || newState == "warning") &&
+              result.message
+            ) {
+              this.messageFromPromise = result.message;
+            }
           }
-          if ((newState == 'error' || newState == 'warning')
-              && result.message) {
-            this.messageFromPromise = result.message;
+
+          this.stateFromPromise = newState;
+
+          // Pass data payload along to actual consumer.
+          return payload;
+        })
+        .catch((e) => {
+          this.stateFromPromise = "error";
+
+          let preface =
+            `There was an error while ` +
+            `${this.actionLabel || "performing this action"}. `;
+          let message;
+          if (typeof e == "string") {
+            message = e;
+          } else if (e.response && e.response.data && e.response.data.message) {
+            message = e.response.data.message;
+          } else if (e.message) {
+            message = e.message;
+          } else {
+            message = "";
           }
-        }
+          this.messageFromPromise = preface + message;
 
-        this.stateFromPromise = newState;
-
-        // Pass data payload along to actual consumer.
-        return payload;
-      })
-      .catch(e =>  {
-        this.stateFromPromise = 'error';
-
-        let preface = `There was an error while `
-            + `${this.actionLabel || 'performing this action'}. `;
-        let message;
-        if (typeof e == 'string') {
-          message = e;
-        } else if (e.response && e.response.data && e.response.data.message) {
-          message = e.response.data.message;
-        } else if (e.message) {
-          message = e.message;
-        } else {
-          message = '';
-        }
-        this.messageFromPromise = preface + message;
-
-        if (this.rethrowError) {
-          throw e;
-        }
-      });
+          if (this.rethrowError) {
+            throw e;
+          }
+        });
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -313,8 +319,7 @@ export default {
   padding: 8px 9px;
   font-size: 14px;
   color: #cdcdcd;
-  background: #3B342C;
+  background: #3b342c;
   border-radius: 2px;
 }
-
 </style>

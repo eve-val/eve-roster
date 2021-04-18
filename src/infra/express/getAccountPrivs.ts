@@ -7,19 +7,19 @@
  * @param accountId
  * @returns {Bluebird}
  */
-import Bluebird = require('bluebird');
+import Bluebird = require("bluebird");
 
-import { Tnex } from '../../db/tnex';
-import { dao } from '../../db/dao';
-import { getPrivileges } from './privileges';
+import { Tnex } from "../../db/tnex";
+import { dao } from "../../db/dao";
+import { getPrivileges } from "./privileges";
 
-import { NoSuchAccountError } from '../../error/NoSuchAccountError';
-import { NotLoggedInError } from '../../error/NotLoggedInError';
+import { NoSuchAccountError } from "../../error/NoSuchAccountError";
+import { NotLoggedInError } from "../../error/NotLoggedInError";
 
 export interface AccountSummary {
-  id: number,
-  mainCharacter: number,
-  created: number,
+  id: number;
+  mainCharacter: number;
+  created: number;
 }
 
 export function getAccountPrivs(db: Tnex, accountId: number | undefined) {
@@ -28,22 +28,21 @@ export function getAccountPrivs(db: Tnex, accountId: number | undefined) {
   }
 
   return Bluebird.resolve()
-  .then(() => {
-    return dao.account.getDetails(db, accountId);
-  })
-  .then(row => {
-    if (row == null) {
-      throw new NoSuchAccountError(accountId);
-    }
-    return getPrivileges(db, row.account_id)
-    .then(privs => {
-      let accountSummary: AccountSummary = {
-        id: row.account_id,
-        mainCharacter: row.account_mainCharacter,
-        created: row.account_created,
-      };
+    .then(() => {
+      return dao.account.getDetails(db, accountId);
+    })
+    .then((row) => {
+      if (row == null) {
+        throw new NoSuchAccountError(accountId);
+      }
+      return getPrivileges(db, row.account_id).then((privs) => {
+        const accountSummary: AccountSummary = {
+          id: row.account_id,
+          mainCharacter: row.account_mainCharacter,
+          created: row.account_created,
+        };
 
-      return { account: accountSummary, privs: privs };
+        return { account: accountSummary, privs: privs };
+      });
     });
-  });
 }

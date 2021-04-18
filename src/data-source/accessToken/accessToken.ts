@@ -1,13 +1,18 @@
-import { dao } from '../../db/dao';
-import { Tnex } from '../../db/tnex';
-import { AccessToken } from '../../db/tables';
-import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
-import { RefreshResult, TokenRefresher, AccessTokenUpdate } from './TokenRefresher';
+import { dao } from "../../db/dao";
+import { Tnex } from "../../db/tnex";
+import { AccessToken } from "../../db/tables";
+import {
+  AccessTokenError,
+  AccessTokenErrorType,
+} from "../../error/AccessTokenError";
+import {
+  RefreshResult,
+  TokenRefresher,
+  AccessTokenUpdate,
+} from "./TokenRefresher";
 
-
-const TOKEN_EXPIRATION_FUDGE_MS = 3000;   // 3 seconds
+const TOKEN_EXPIRATION_FUDGE_MS = 3000; // 3 seconds
 const tokenRefresher = new TokenRefresher();
-
 
 /**
  * Retrieves an access token for a character. Throws an AccessTokenError if
@@ -52,15 +57,16 @@ export async function getAccessTokens(db: Tnex, characterIds: number[]) {
 }
 
 export async function getAccessTokensFromRows(
-    db: Tnex, rows: AccessTokenRowSub[],
+  db: Tnex,
+  rows: AccessTokenRowSub[]
 ) {
   const tokenMap = new Map<number, TokenResult>();
-  const refreshRequests: Promise<RefreshResult>[]  = [];
+  const refreshRequests: Promise<RefreshResult>[] = [];
 
-  for (let row of rows) {
+  for (const row of rows) {
     if (!tokenHasExpired(row)) {
       tokenMap.set(row.accessToken_character, {
-        kind: 'success',
+        kind: "success",
         token: row.accessToken_accessToken,
       });
     } else {
@@ -70,18 +76,18 @@ export async function getAccessTokensFromRows(
 
   const refreshedTokens = await Promise.all(refreshRequests);
   const rowUpdates: AccessTokenUpdate[] = [];
-  for (let refreshResult of refreshedTokens) {
+  for (const refreshResult of refreshedTokens) {
     let result: TokenResult;
     if (refreshResult.row != null) {
       result = {
-        kind: 'success',
+        kind: "success",
         token: refreshResult.row.accessToken_accessToken,
       };
     } else {
       result = {
-        kind: 'error',
+        kind: "error",
         error: refreshResult.errorType!,
-      }
+      };
     }
     tokenMap.set(refreshResult.characterId, result);
 
@@ -93,10 +99,10 @@ export async function getAccessTokensFromRows(
     await dao.accessToken.updateAll(db, rowUpdates);
   }
 
-  for (let row of rows) {
+  for (const row of rows) {
     if (!tokenMap.has(row.accessToken_character)) {
       tokenMap.set(row.accessToken_character, {
-        kind: 'error',
+        kind: "error",
         error: AccessTokenErrorType.TOKEN_MISSING,
       });
     }
@@ -105,30 +111,30 @@ export async function getAccessTokensFromRows(
   return tokenMap;
 }
 
-export type AccessTokenRowSub =
-    Pick<AccessToken,
-        | 'accessToken_character'
-        | 'accessToken_accessToken'
-        | 'accessToken_accessTokenExpires'
-        | 'accessToken_refreshToken'
-        >
+export type AccessTokenRowSub = Pick<
+  AccessToken,
+  | "accessToken_character"
+  | "accessToken_accessToken"
+  | "accessToken_accessTokenExpires"
+  | "accessToken_refreshToken"
+>;
 
 export type TokenResult = SuccessResult | ErrorResult;
 
 export interface SuccessResult {
-  kind: 'success',
-  token: string,
+  kind: "success";
+  token: string;
 }
 
 export interface ErrorResult {
-  kind: 'error',
-  error: AccessTokenErrorType,
+  kind: "error";
+  error: AccessTokenErrorType;
 }
 
-
 function tokenHasExpired(
-    row: Pick<AccessToken, 'accessToken_accessTokenExpires'>,
+  row: Pick<AccessToken, "accessToken_accessTokenExpires">
 ) {
-  return Date.now() >
-      row.accessToken_accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS;
+  return (
+    Date.now() > row.accessToken_accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS
+  );
 }

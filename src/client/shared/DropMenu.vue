@@ -1,13 +1,14 @@
 <template>
-<div class="_drop-menu">
-  <div class="content"
+  <div class="_drop-menu">
+    <div
+      class="content"
       v-if="shown"
       :style="rootStyle"
       @mousedown="onLocalMouseDown"
-      >
-    <slot></slot>
+    >
+      <slot></slot>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -16,19 +17,19 @@ export default {
     rootStyle: { type: Object, required: false },
   },
 
-  data: function() {
+  data: function () {
     return {
       shown: false,
-    }
+    };
   },
 
   destroyed() {
-    document.body.removeEventListener('mousedown', this.globalListener);
+    document.body.removeEventListener("mousedown", this.globalListener);
     this.destroyed = true;
   },
 
   watch: {
-    shown: function(value) {
+    shown: function (value) {
       // Set a slight delay to allow for any currently-dispatching mousedown
       // event to finish dispatching.
       setTimeout(() => {
@@ -41,9 +42,9 @@ export default {
         }
 
         if (this.shown) {
-          document.body.addEventListener('mousedown', this.globalListener);
+          document.body.addEventListener("mousedown", this.globalListener);
         } else {
-          document.body.removeEventListener('mousedown', this.globalListener);
+          document.body.removeEventListener("mousedown", this.globalListener);
         }
       });
     },
@@ -74,7 +75,7 @@ export default {
       this.prevMousedownTimestamp = e.timeStamp;
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -83,6 +84,6 @@ export default {
   max-width: 350px;
   background: #3e3e3e;
   border: 1px solid #2d2d2d;
-  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.32)
+  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.32);
 }
 </style>

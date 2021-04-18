@@ -1,95 +1,107 @@
-import _ = require('underscore');
+import _ = require("underscore");
 
-import { Tnex, val } from '../../db/tnex';
-import { Dao } from '../dao';
-import { accountGroup, groupExplicit, groupPriv, groupTitle, privilege } from '../tables';
-import { MEMBER_GROUP } from '../../domain/account/specialGroups';
+import { Tnex, val } from "../../db/tnex";
+import { Dao } from "../dao";
+import {
+  accountGroup,
+  groupExplicit,
+  groupPriv,
+  groupTitle,
+  privilege,
+} from "../tables";
+import { MEMBER_GROUP } from "../../domain/account/specialGroups";
 
 export default class GroupsDao {
-  constructor(
-      private _parent: Dao,
-      ) {}
+  constructor(private _parent: Dao) {}
 
   getExplicitGroups(db: Tnex, accountId: number) {
     return db
-        .select(groupExplicit)
-        .columns('groupExplicit_group')
-        .where('groupExplicit_account', '=', val(accountId))
-        .run()
-    .then(rows => {
-      return _.pluck(rows, 'groupExplicit_group');
-    });
+      .select(groupExplicit)
+      .columns("groupExplicit_group")
+      .where("groupExplicit_account", "=", val(accountId))
+      .run()
+      .then((rows) => {
+        return _.pluck(rows, "groupExplicit_group");
+      });
   }
 
-  getTitleDerivedGroups(
-      db: Tnex, corporationId: number, titles: string[]) {
+  getTitleDerivedGroups(db: Tnex, corporationId: number, titles: string[]) {
     return db
-        .select(groupTitle)
-        .columns('groupTitle_group')
-        .whereIn('groupTitle_title', titles)
-        .andWhere('groupTitle_corporation', '=', val(corporationId))
-        .run()
-    .then(rows => {
-      return _.pluck(rows, 'groupTitle_group');
-    });
+      .select(groupTitle)
+      .columns("groupTitle_group")
+      .whereIn("groupTitle_title", titles)
+      .andWhere("groupTitle_corporation", "=", val(corporationId))
+      .run()
+      .then((rows) => {
+        return _.pluck(rows, "groupTitle_group");
+      });
   }
 
   getAccountGroups(db: Tnex, accountId: number) {
     return db
-        .select(accountGroup)
-        .columns('accountGroup_group')
-        .where('accountGroup_account', '=', val(accountId))
-        .run()
-    .then(rows =>  {
-      return _.pluck(rows, 'accountGroup_group');
-    });
+      .select(accountGroup)
+      .columns("accountGroup_group")
+      .where("accountGroup_account", "=", val(accountId))
+      .run()
+      .then((rows) => {
+        return _.pluck(rows, "accountGroup_group");
+      });
   }
 
   setAccountGroups(db: Tnex, accountId: number, groups: string[]) {
-    return db.transaction(db => {
+    return db.transaction((db) => {
       let oldGroups: string[];
 
       return this.getAccountGroups(db, accountId)
-      .then(_oldGroups => {
-        oldGroups = _oldGroups;
+        .then((_oldGroups) => {
+          oldGroups = _oldGroups;
 
-        let rows = groups.map(group => {
-          return {
-            accountGroup_account: accountId,
-            accountGroup_group: group
-          };
-        });
+          const rows = groups.map((group) => {
+            return {
+              accountGroup_account: accountId,
+              accountGroup_group: group,
+            };
+          });
 
-        return db
-            .replace(accountGroup, 'accountGroup_account', accountId, rows);
-      })
-      .then(() => {
-        groups.sort((a, b) => a.localeCompare(b));
-        oldGroups.sort((a, b) => a.localeCompare(b));
-        if (!_.isEqual(oldGroups, groups)) {
-          return this._parent.log.logEvent(
+          return db.replace(
+            accountGroup,
+            "accountGroup_account",
+            accountId,
+            rows
+          );
+        })
+        .then(() => {
+          groups.sort((a, b) => a.localeCompare(b));
+          oldGroups.sort((a, b) => a.localeCompare(b));
+          if (!_.isEqual(oldGroups, groups)) {
+            return this._parent.log.logEvent(
               db,
               accountId,
-              'MODIFY_GROUPS',
+              "MODIFY_GROUPS",
               null,
               {
                 old: oldGroups,
                 new: groups,
-              });
-        }
-        return null;
-      })
-      .then(() => {
-        if (!oldGroups.includes(MEMBER_GROUP) &&
-            groups.includes(MEMBER_GROUP)) {
-          return this._parent.log.logEvent(db, accountId, 'GAIN_MEMBERSHIP');
-        } else if (oldGroups.includes(MEMBER_GROUP) &&
-            !groups.includes(MEMBER_GROUP)) {
-          return this._parent.log.logEvent(db, accountId, 'LOSE_MEMBERSHIP');
-        } else {
+              }
+            );
+          }
           return null;
-        }
-      });
+        })
+        .then(() => {
+          if (
+            !oldGroups.includes(MEMBER_GROUP) &&
+            groups.includes(MEMBER_GROUP)
+          ) {
+            return this._parent.log.logEvent(db, accountId, "GAIN_MEMBERSHIP");
+          } else if (
+            oldGroups.includes(MEMBER_GROUP) &&
+            !groups.includes(MEMBER_GROUP)
+          ) {
+            return this._parent.log.logEvent(db, accountId, "LOSE_MEMBERSHIP");
+          } else {
+            return null;
+          }
+        });
     });
   }
 
@@ -101,21 +113,25 @@ export default class GroupsDao {
     // know the owner level for every privilege in order to know whether the
     // account has access.
     return db
-        .select(privilege)
-        .leftJoin(
-            // Subquery: all the privileges these groups have been granted
-            db.subselect(groupPriv, 'granted')
-                .max('gp_level', 'granted_level')
-                .columnAs('gp_privilege', 'granted_privilege')
-                .whereIn('gp_group', groups)
-                .groupBy('gp_privilege'),
-            'granted_privilege', '=', 'priv_name')
-        .columns(
-            'priv_name',
-            'granted_level',
-            'priv_ownerLevel',
-            'priv_requiresMembership',
-            )
-        .run();
+      .select(privilege)
+      .leftJoin(
+        // Subquery: all the privileges these groups have been granted
+        db
+          .subselect(groupPriv, "granted")
+          .max("gp_level", "granted_level")
+          .columnAs("gp_privilege", "granted_privilege")
+          .whereIn("gp_group", groups)
+          .groupBy("gp_privilege"),
+        "granted_privilege",
+        "=",
+        "priv_name"
+      )
+      .columns(
+        "priv_name",
+        "granted_level",
+        "priv_ownerLevel",
+        "priv_requiresMembership"
+      )
+      .run();
   }
 }

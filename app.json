@@ -1,10 +1,7 @@
 {
   "name": "eve-roster",
   "description": "EVE Roster app for SOUND alliance",
-  "keywords": [
-    "nodejs",
-    "express"
-  ],
+  "keywords": ["nodejs", "express"],
   "repository": "https://github.com/eve-val/eve-roster",
   "scripts": {
     "dokku": {

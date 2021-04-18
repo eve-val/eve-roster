@@ -1,14 +1,13 @@
-
 /**
  * JSON format for killmails returned from ESI. Internally, most killmails are
  * represented by ZKillmails, a superset of EsiKillmail.
  */
 export interface EsiKillmail {
-  killmail_id: number,
-  killmail_time: string,
-  victim: Victim,
-  attackers: Attacker[],
-  solar_system_id: number,
+  killmail_id: number;
+  killmail_time: string;
+  victim: Victim;
+  attackers: Attacker[];
+  solar_system_id: number;
 }
 
 /*
@@ -68,44 +67,44 @@ export interface EsiKillmail {
  */
 
 export interface Victim {
-  damage_taken: number,
-  ship_type_id: number,
-  character_id?: number,
-  corporation_id?: number,
-  alliance_id?: number,
-  faction_id?: number,
-  items?: (DestroyedItem | DroppedItem)[],
+  damage_taken: number;
+  ship_type_id: number;
+  character_id?: number;
+  corporation_id?: number;
+  alliance_id?: number;
+  faction_id?: number;
+  items?: (DestroyedItem | DroppedItem)[];
   position?: {
-    x: number,
-    y: number,
-    z: number,
-  }
+    x: number;
+    y: number;
+    z: number;
+  };
 }
 
 export interface Attacker {
-  final_blow: boolean,
-  damage_done: number,
-  security_status: 0,
-  ship_type_id?: number,
+  final_blow: boolean;
+  damage_done: number;
+  security_status: 0;
+  ship_type_id?: number;
   // Sometimes, this is actually a ship type ID. Usually when the ship type ID
   // itself is undefined. ¯\_(ツ)_/¯
-  weapon_type_id?: number,
-  character_id?: number,
-  corporation_id?: number,
-  alliance_id?: number,
-  faction_id?: number,
+  weapon_type_id?: number;
+  character_id?: number;
+  corporation_id?: number;
+  alliance_id?: number;
+  faction_id?: number;
 }
 
 export interface DestroyedItem {
-  item_type_id: number,
-  singleton: number,
-  flag: number,
-  quantity_destroyed: number,
+  item_type_id: number;
+  singleton: number;
+  flag: number;
+  quantity_destroyed: number;
 }
 
 export interface DroppedItem {
-  item_type_id: number,
-  singleton: number,
-  flag: number,
-  quantity_dropped: number,
+  item_type_id: number;
+  singleton: number;
+  flag: number;
+  quantity_dropped: number;
 }

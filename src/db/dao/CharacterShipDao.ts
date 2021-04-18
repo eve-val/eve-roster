@@ -1,4 +1,4 @@
-import { Dao } from '../dao';
+import { Dao } from "../dao";
 import {
   account,
   character,
@@ -6,8 +6,8 @@ import {
   characterShipUpdate,
   ownership,
   sdeType,
-} from '../tables';
-import { Tnex, val } from '../tnex';
+} from "../tables";
+import { Tnex, val } from "../tnex";
 
 export default class CharacterShipDao {
   constructor(private _parent: Dao) {}
@@ -34,11 +34,11 @@ export default class CharacterShipDao {
           characterShipUpdate_character: characterId,
           characterShipUpdate_timestamp: Date.now(),
         },
-        'characterShipUpdate_character'
+        "characterShipUpdate_character"
       );
       await db
         .del(characterShip)
-        .where('characterShip_character', '=', val(characterId))
+        .where("characterShip_character", "=", val(characterId))
         .run();
       await db.insertAll(characterShip, items);
     });
@@ -47,8 +47,8 @@ export default class CharacterShipDao {
   async getLastUpdateTimestamp(db: Tnex, characterId: number): Promise<number> {
     const timestamp = await db
       .select(characterShipUpdate)
-      .where('characterShipUpdate_character', '=', val(characterId))
-      .columns('characterShipUpdate_timestamp')
+      .where("characterShipUpdate_character", "=", val(characterId))
+      .columns("characterShipUpdate_timestamp")
       .fetchFirst();
     return timestamp?.characterShipUpdate_timestamp || 0;
   }
@@ -64,39 +64,39 @@ export default class CharacterShipDao {
       .select(characterShip)
       .join(
         characterShipUpdate,
-        'characterShipUpdate_character',
-        '=',
-        'characterShip_character'
+        "characterShipUpdate_character",
+        "=",
+        "characterShip_character"
       )
-      .join(character, 'character_id', '=', 'characterShip_character')
-      .join(ownership, 'ownership_character', '=', 'character_id')
-      .join(account, 'account_id', '=', 'ownership_account')
+      .join(character, "character_id", "=", "characterShip_character")
+      .join(ownership, "ownership_character", "=", "character_id")
+      .join(account, "account_id", "=", "ownership_account")
       .join(
         db
-          .alias(character, 'mainChar')
-          .using('character_id', 'mainChar_id')
-          .using('character_name', 'mainChar_name'),
-        'mainChar_id',
-        '=',
-        'account_mainCharacter'
+          .alias(character, "mainChar")
+          .using("character_id", "mainChar_id")
+          .using("character_name", "mainChar_name"),
+        "mainChar_id",
+        "=",
+        "account_mainCharacter"
       )
-      .join(sdeType, 'styp_id', '=', 'characterShip_typeId')
+      .join(sdeType, "styp_id", "=", "characterShip_typeId")
       .columns(
-        'mainChar_name',
-        'character_name',
-        'styp_name',
-        'characterShip_id',
-        'characterShip_name',
-        'characterShip_locationDescription',
-        'characterShipUpdate_timestamp'
+        "mainChar_name",
+        "character_name",
+        "styp_name",
+        "characterShip_id",
+        "characterShip_name",
+        "characterShip_locationDescription",
+        "characterShipUpdate_timestamp"
       );
     if (predicates.accountId !== undefined) {
-      q = q.where('account_id', '=', val(predicates.accountId));
+      q = q.where("account_id", "=", val(predicates.accountId));
     }
     if (!predicates.includeOpsecChars) {
-      q = q.where('ownership_opsec', '=', val(false));
+      q = q.where("ownership_opsec", "=", val(false));
     }
-    let rows = await q.run();
+    const rows = await q.run();
     return rows.map(
       (r) =>
         <BorrowedShipOutputRow>{

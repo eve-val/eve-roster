@@ -1,34 +1,33 @@
 <template>
-<div class="_search-box">
-  <input class="input"
+  <div class="_search-box">
+    <input
+      class="input"
       @input="onSearchBoxInput"
       @keyup.esc="onSearchBoxEsc"
-      >
-  <img class="icon" src="./res/search-roster.png">
-</div>
+    />
+    <img class="icon" src="./res/search-roster.png" />
+  </div>
 </template>
 
 <script>
 export default {
-  props: {
-  },
+  props: {},
 
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {};
   },
 
   methods: {
-    onSearchBoxInput: function(ev) {
-      this.$emit('change', ev.target.value.trim());
+    onSearchBoxInput: function (ev) {
+      this.$emit("change", ev.target.value.trim());
     },
 
-    onSearchBoxEsc: function(ev) {
-      ev.target.value = '';
-      this.$emit('change', ev.target.value);
+    onSearchBoxEsc: function (ev) {
+      ev.target.value = "";
+      this.$emit("change", ev.target.value);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -44,7 +43,7 @@ export default {
   background: #181818;
   padding: 8px 8px 7px 32px;
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .input:focus {

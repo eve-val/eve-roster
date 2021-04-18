@@ -5,16 +5,16 @@ A table row that represents a single SRP payment (either pending or paid).
 -->
 
 <template>
-<div class="_payment-history-row">
-  <srp-triplet
+  <div class="_payment-history-row">
+    <srp-triplet
       class="payment"
       :top-line="`SRP #${payment.id}`"
       :bottom-line="payment.modifiedStr"
       :top-href="`/srp/payment/${payment.id}`"
-      >
-  </srp-triplet>
+    >
+    </srp-triplet>
 
-  <srp-triplet
+    <srp-triplet
       class="recipient"
       :icon-id="payment.recipient"
       icon-type="Character"
@@ -22,19 +22,19 @@ A table row that represents a single SRP payment (either pending or paid).
       :bottom-line="name(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
-      >
-  </srp-triplet>
+    >
+    </srp-triplet>
 
-  <div class="loss-count">{{ payment.totalLosses }}</div>
+    <div class="loss-count">{{ payment.totalLosses }}</div>
 
-  <div class="payout">
-    {{ displayPayout }}
-    <span class="payout-denom">M</span>
-  </div>
+    <div class="payout">
+      {{ displayPayout }}
+      <span class="payout-denom">M</span>
+    </div>
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
 
-  <srp-triplet
+    <srp-triplet
       v-if="payment.payer != undefined"
       class="payer"
       :icon-id="payment.payer"
@@ -43,17 +43,16 @@ A table row that represents a single SRP payment (either pending or paid).
       :bottom-line="name(payment.payerCorp)"
       :icon-href="`/character/${payment.payer}`"
       :top-href="`/character/${payment.payer}`"
-      >
-  </srp-triplet>
-</div>
+    >
+    </srp-triplet>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import SrpTriplet from './SrpTriplet.vue';
+import Vue from "vue";
+import SrpTriplet from "./SrpTriplet.vue";
 
-import { NameCacheMixin } from '../shared/nameCache';
-
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -61,7 +60,7 @@ export default Vue.extend({
   },
 
   props: {
-    payment: { type: Object, required: true, },
+    payment: { type: Object, required: true },
   },
 
   computed: {
@@ -70,8 +69,7 @@ export default Vue.extend({
     },
   },
 
-  methods: Object.assign({
-  }, NameCacheMixin),
+  methods: Object.assign({}, NameCacheMixin),
 });
 </script>
 
@@ -80,10 +78,10 @@ export default Vue.extend({
   display: flex;
   height: 77px;
   align-items: center;
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 
   font-size: 14px;
-  color: #CDCDCD;
+  color: #cdcdcd;
 }
 
 .payment {
@@ -91,7 +89,8 @@ export default Vue.extend({
   margin-left: 10px;
 }
 
-.recipient, .payer {
+.recipient,
+.payer {
   width: 255px;
 }
 
@@ -106,11 +105,10 @@ export default Vue.extend({
 }
 
 .payout-denom {
-  color: #8B8B8B;
+  color: #8b8b8b;
 }
 
 .spacer {
   flex: 1;
 }
-
 </style>

@@ -1,8 +1,7 @@
-import { ZKillmail } from '../../data-source/zkillboard/ZKillmail';
-import { Battle, Killmail } from '../../db/tables';
-import { Participant } from './BattleData';
-import { Transform, TransformCallback } from '../../util/stream/Transform';
-
+import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
+import { Battle, Killmail } from "../../db/tables";
+import { Participant } from "./BattleData";
+import { Transform, TransformCallback } from "../../util/stream/Transform";
 
 /**
  * Transform stream that accepts a stream of killmails and outputs a stream of
@@ -21,35 +20,37 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
     });
     this._assocWindow = maxAssociationWindow;
 
-    for (let battleRow of initialBattles) {
+    for (const battleRow of initialBattles) {
       this._battles.add(battleRowToInternalBattle(battleRow));
     }
   }
 
   public _transform(
-      chunk: any,
-      encoding: string,
-      callback: TransformCallback<BattleResult>,
+    chunk: any,
+    encoding: string,
+    callback: TransformCallback<BattleResult>
   ) {
     try {
       this._transformChunk(chunk);
       callback();
     } catch (err) {
-      this.emit('error', err);
+      this.emit("error", err);
     }
   }
 
-  private _transformChunk(chunk: Pick<Killmail, 'km_timestamp' | 'km_data'>) {
+  private _transformChunk(chunk: Pick<Killmail, "km_timestamp" | "km_data">) {
     const killmail = chunk.km_data;
 
     this._flushBattlesOutsideOfWindow(chunk.km_timestamp);
 
     const participants = extractParticipants(killmail);
     const involvedBattles: InternalBattle[] = [];
-    for (let battle of this._battles) {
-      for (let participant of participants) {
-        if (isMatchableParticipant(participant)
-            && battle.participants.has(participant.id)) {
+    for (const battle of this._battles) {
+      for (const participant of participants) {
+        if (
+          isMatchableParticipant(participant) &&
+          battle.participants.has(participant.id)
+        ) {
           involvedBattles.push(battle);
           break;
         }
@@ -62,7 +63,7 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
       finalBattle.end = Math.max(finalBattle.end, chunk.km_timestamp);
       finalBattle.killmails.add(killmail.killmail_id);
       finalBattle.locations.add(killmail.solar_system_id);
-      for (let participant of participants) {
+      for (const participant of participants) {
         addParticipant(finalBattle, participant);
       }
     }
@@ -73,24 +74,24 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
       this._flushRemainingBattles();
       callback();
     } catch (err) {
-      this.emit('error', err);
+      this.emit("error", err);
     }
   }
 
   private _flushRemainingBattles() {
-    for (let battle of this._battles) {
+    for (const battle of this._battles) {
       this._flushBattle(battle);
     }
   }
 
   private _flushBattlesOutsideOfWindow(mostRecentKmTimestamp: number) {
     const doneBattles: InternalBattle[] = [];
-    for (let battle of this._battles) {
+    for (const battle of this._battles) {
       if (mostRecentKmTimestamp - battle.start > this._assocWindow) {
         doneBattles.push(battle);
       }
     }
-    for (let doneBattle of doneBattles) {
+    for (const doneBattle of doneBattles) {
       this._flushBattle(doneBattle);
     }
   }
@@ -125,7 +126,7 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
   private _flushBattle(battle: InternalBattle) {
     this._battles.delete(battle);
     this.push({
-      type: 'created',
+      type: "created",
       battle: battle,
     });
   }
@@ -134,7 +135,7 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
     this._battles.delete(battle);
     if (battle.id != null) {
       this.push({
-        type: 'deleted',
+        type: "deleted",
         battleId: battle.id,
       });
     }
@@ -144,19 +145,19 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
 function joinBattles(left: InternalBattle, right: InternalBattle) {
   left.start = Math.min(left.start, right.start);
   left.end = Math.max(left.end, right.end);
-  for (let killmail of right.killmails) {
+  for (const killmail of right.killmails) {
     left.killmails.add(killmail);
   }
-  for (let location of right.locations) {
+  for (const location of right.locations) {
     left.locations.add(location);
   }
-  for (let participant of right.participants.values()) {
+  for (const participant of right.participants.values()) {
     addParticipant(left, participant);
   }
 }
 
 function addParticipant(battle: InternalBattle, participant: Participant) {
-  let existing = battle.participants.get(participant.id);
+  const existing = battle.participants.get(participant.id);
   if (existing == undefined) {
     battle.participants.set(participant.id, participant);
   } else {
@@ -176,7 +177,7 @@ function extractParticipants(killmail: ZKillmail) {
   };
 
   participants.push(victim);
-  for (let attacker of killmail.attackers) {
+  for (const attacker of killmail.attackers) {
     participants.push(buildParticipant(attacker));
   }
 
@@ -184,8 +185,9 @@ function extractParticipants(killmail: ZKillmail) {
 }
 
 function buildParticipant(entity: KillmailEntity): Participant {
-  const id = `${entity.ship_type_id},`
-      + `${entity.character_id || entity.corporation_id || entity.faction_id}`;
+  const id =
+    `${entity.ship_type_id},` +
+    `${entity.character_id || entity.corporation_id || entity.faction_id}`;
   return {
     id: id,
     shipId: entity.ship_type_id,
@@ -194,7 +196,7 @@ function buildParticipant(entity: KillmailEntity): Participant {
     allianceId: entity.alliance_id,
     factionId: entity.faction_id,
     loss: null,
-  }
+  };
 }
 
 function isMatchableParticipant(p: Participant) {
@@ -203,11 +205,11 @@ function isMatchableParticipant(p: Participant) {
 }
 
 interface KillmailEntity {
-  ship_type_id?: number,
-  character_id?: number,
-  corporation_id?: number,
-  alliance_id?: number,
-  faction_id?: number,
+  ship_type_id?: number;
+  character_id?: number;
+  corporation_id?: number;
+  alliance_id?: number;
+  faction_id?: number;
 }
 
 function battleRowToInternalBattle(row: Battle): InternalBattle {
@@ -220,7 +222,7 @@ function battleRowToInternalBattle(row: Battle): InternalBattle {
     participants: new Map<string, Participant>(),
   };
 
-  for (let participant of row.battle_data.participants) {
+  for (const participant of row.battle_data.participants) {
     battle.participants.set(participant.id, participant);
   }
 
@@ -228,22 +230,22 @@ function battleRowToInternalBattle(row: Battle): InternalBattle {
 }
 
 export interface InternalBattle {
-  id: number | null,
-  start: number,
-  end: number,
-  killmails: Set<number>,
-  locations: Set<number>,
-  participants: Map<string, Participant>,
+  id: number | null;
+  start: number;
+  end: number;
+  killmails: Set<number>;
+  locations: Set<number>;
+  participants: Map<string, Participant>;
 }
 
 export type BattleResult = CreatedBattle | DeletedBattle;
 
 export interface CreatedBattle {
-  type: 'created',
-  battle: InternalBattle,
+  type: "created";
+  battle: InternalBattle;
 }
 
 export interface DeletedBattle {
-  type: 'deleted',
-  battleId: number,
+  type: "deleted";
+  battleId: number;
 }

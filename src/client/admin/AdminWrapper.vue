@@ -1,34 +1,34 @@
 <template>
-<div class="_admin-wrapper">
-  <app-header :identity="identity"></app-header>
-  <div class="split-container">
-    <div class="sidebar">
-      <router-link class="sidebar-link" to="/admin/overview">
-        Overview
-      </router-link>
-      <router-link class="sidebar-link" to="/admin/account-logs">
-        Account log
-      </router-link>
-      <router-link class="sidebar-link" to="/admin/tasks">
-        Tasks
-      </router-link>
-      <router-link class="sidebar-link" to="/admin/citadels">
-        Citadels
-      </router-link>
-      <router-link class="sidebar-link" to="/admin/setup">
-        Setup
-      </router-link>
-    </div>
-    <div class="main">
-      <div class="title">{{ title }}</div>
-      <slot></slot>
+  <div class="_admin-wrapper">
+    <app-header :identity="identity"></app-header>
+    <div class="split-container">
+      <div class="sidebar">
+        <router-link class="sidebar-link" to="/admin/overview">
+          Overview
+        </router-link>
+        <router-link class="sidebar-link" to="/admin/account-logs">
+          Account log
+        </router-link>
+        <router-link class="sidebar-link" to="/admin/tasks">
+          Tasks
+        </router-link>
+        <router-link class="sidebar-link" to="/admin/citadels">
+          Citadels
+        </router-link>
+        <router-link class="sidebar-link" to="/admin/setup">
+          Setup
+        </router-link>
+      </div>
+      <div class="main">
+        <div class="title">{{ title }}</div>
+        <slot></slot>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import AppHeader from '../shared/AppHeader.vue';
+import AppHeader from "../shared/AppHeader.vue";
 
 export default {
   components: {
@@ -36,10 +36,10 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    title: { type: String, required: true, },
+    identity: { type: Object, required: true },
+    title: { type: String, required: true },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -70,7 +70,7 @@ export default {
 }
 
 .sidebar-link.router-link-active {
-  color: #D7D7D7;
+  color: #d7d7d7;
   text-shadow: 0 0 6px rgba(166, 116, 54, 58);
   text-decoration: none;
 }

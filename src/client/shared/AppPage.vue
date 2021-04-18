@@ -4,19 +4,20 @@
 -->
 
 <template>
-<div class="_app-page">
-  <app-header :identity="identity" />
-  <div class="centering-container"
-      :style="{ width: contentWidth ? contentWidth + 'px' : '1000px' }">
-    <slot></slot>
+  <div class="_app-page">
+    <app-header :identity="identity" />
+    <div
+      class="centering-container"
+      :style="{ width: contentWidth ? contentWidth + 'px' : '1000px' }"
+    >
+      <slot></slot>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import AppHeader from './AppHeader.vue';
-
+import Vue from "vue";
+import AppHeader from "./AppHeader.vue";
 
 export default Vue.extend({
   components: {
@@ -24,7 +25,7 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
     contentWidth: { type: Number, required: false },
   },
 });

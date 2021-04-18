@@ -34,33 +34,33 @@ export interface CoreRule {
      * If this filter is specified and there is no related loss (for whatever
      * reason) then the match is considered to have failed.
      */
-    relatedLoss?: LossFilter,
-  },
+    relatedLoss?: LossFilter;
+  };
 }
 
 export interface LossFilter {
   /**
    * Matches whether the loss has been labeled by zkillboard as npc or solo.
    */
-  tag?: 'npc' | 'solo',
+  tag?: "npc" | "solo";
 
   /** Destroyed ship must match at least one of the provided IDs. */
-  shipId?: number[],
+  shipId?: number[];
 
   /** Destroyed ship's group ID must match at least one of the IDs. */
-  groupId?: number[],
+  groupId?: number[];
 
   /**
    * Destroyed ship's market group must match at least one of the IDs.
    * Only matches against the ship's exact market group, not against any
    * parent groups.
    */
-  marketGroupId?: number[],
+  marketGroupId?: number[];
 }
 
 /** Simple kind of TriageRule. Specifies a set of hard-coded verdicts. */
 export interface TemplateRule extends CoreRule {
-  verdicts: TriageVerdict[],
+  verdicts: TriageVerdict[];
 }
 
 /**
@@ -68,8 +68,10 @@ export interface TemplateRule extends CoreRule {
  * particular details of a killmail.
  */
 export interface FuncRule extends CoreRule {
-  discriminant:
-        (killmail: ZKillmail, meta: LossMeta) => TriageVerdict[] | undefined;
+  discriminant: (
+    killmail: ZKillmail,
+    meta: LossMeta
+  ) => TriageVerdict[] | undefined;
 }
 
 export type TriageVerdict = ApprovedVerdict | IneligibleVerdict;
@@ -82,39 +84,39 @@ interface BaseVerdict {
    * autocommitted if they are the first of the set of returned verdicts.
    * 'never' verdicts are never autocommitted (the default).
    */
-  autoCommit?: 'always' | 'leader' | 'never',
+  autoCommit?: "always" | "leader" | "never";
 }
 
 /** Loss is approved for SRP. */
 export interface ApprovedVerdict extends BaseVerdict {
-  status: SrpVerdictStatus.APPROVED,
-  label: string,
-  payout: Payout,
+  status: SrpVerdictStatus.APPROVED;
+  label: string;
+  payout: Payout;
 }
 
 /** Loss is ineligible for SRP. */
 export interface IneligibleVerdict extends BaseVerdict {
-  status: SrpVerdictStatus.INELIGIBLE,
-  reason: SrpVerdictReason,
+  status: SrpVerdictStatus.INELIGIBLE;
+  reason: SrpVerdictReason;
 }
 
 export type Payout = StaticPayout | MarketPayout | LossValuePayout;
 
 /** Always pay the same, hard-coded amount for this kind of loss. */
 export interface StaticPayout {
-  kind: 'Static',
-  value: number,
+  kind: "Static";
+  value: number;
 }
 
 /** Adjust the value of the payout based on current market prices. */
 export interface MarketPayout {
-  kind: 'Market'
+  kind: "Market";
   /** Payout to use if market data is unavailable. */
-  fallback: number,
+  fallback: number;
   /** If specified, pay out the value of these items. Otherwise use the hull. */
-  items?: number[],
+  items?: number[];
   /** Any additioinal value to add on top of the current market price. */
-  additional?: number,
+  additional?: number;
 }
 
 /**
@@ -122,15 +124,15 @@ export interface MarketPayout {
  * up to an optional maximum.
  */
 export interface LossValuePayout {
-  kind: 'LossValue',
-  max?: number,
+  kind: "LossValue";
+  max?: number;
 }
 
 export interface LossMeta {
-  shipGroup: number,
-  shipMarketGroup: number,
-  mainCharacter: number | null,
-  relatedKillmail: ZKillmail | null,
+  shipGroup: number;
+  shipMarketGroup: number;
+  mainCharacter: number | null;
+  relatedKillmail: ZKillmail | null;
 }
 
 export function isFuncRule(rule: TriageRule): rule is FuncRule {

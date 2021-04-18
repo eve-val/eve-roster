@@ -3,10 +3,10 @@
  * wrapping all of the values returned by the callback calls.
  */
 export function parallelize<T, U>(
-    list: T[],
-    callback: (value: T, index: number) => U | PromiseLike<U>,
+  list: T[],
+  callback: (value: T, index: number) => U | PromiseLike<U>
 ): Promise<U[]> {
-  let work = [] as (U | PromiseLike<U>)[];
+  const work = [] as (U | PromiseLike<U>)[];
 
   for (let i = 0; i < list.length; i++) {
     work.push(callback(list[i], i));
@@ -20,10 +20,10 @@ export function parallelize<T, U>(
  * `callback` on the next item in the list.
  */
 export async function serialize<T, U>(
-    list: T[],
-    callback: (value: T, index: number) => U | PromiseLike<U>,
+  list: T[],
+  callback: (value: T, index: number) => U | PromiseLike<U>
 ): Promise<U[]> {
-  let results = [] as U[];
+  const results = [] as U[];
 
   for (let i = 0; i < list.length; i++) {
     results.push(await callback(list[i], i));
@@ -32,7 +32,7 @@ export async function serialize<T, U>(
 }
 
 export function delay(ms: number) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
   });
 }

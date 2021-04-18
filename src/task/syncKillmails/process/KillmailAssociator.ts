@@ -1,9 +1,9 @@
-import { Transform, TransformCallback } from '../../../util/stream/Transform';
-import { UnprocessedKillmailRow } from '../../../db/dao/KillmailDao';
-import { ArrayQueue } from '../../../util/collection/ArrayQueue';
-import { HullCategory } from '../../../db/dao/enums';
-import { BasicCallback } from '../../../util/stream/core';
-import { ProcessedKillmail } from './ProcessedKillmail';
+import { Transform, TransformCallback } from "../../../util/stream/Transform";
+import { UnprocessedKillmailRow } from "../../../db/dao/KillmailDao";
+import { ArrayQueue } from "../../../util/collection/ArrayQueue";
+import { HullCategory } from "../../../db/dao/enums";
+import { BasicCallback } from "../../../util/stream/core";
+import { ProcessedKillmail } from "./ProcessedKillmail";
 
 /**
  * Associates capsule losses with the ship they came from (if any).
@@ -11,8 +11,10 @@ import { ProcessedKillmail } from './ProcessedKillmail';
  * Uses a sliding window to detect this association; losses that occur farther
  * apart than the window won't be recognized.
  */
-export class KillmailAssociator
-    extends Transform<UnprocessedKillmailRow, ProcessedKillmail> {
+export class KillmailAssociator extends Transform<
+  UnprocessedKillmailRow,
+  ProcessedKillmail
+> {
   private readonly _maxTimeWindow: number;
   private readonly _queue = new ArrayQueue<ProcessedKillmail>();
   private readonly _map = new Map<number, ProcessedKillmail>();
@@ -24,9 +26,9 @@ export class KillmailAssociator
   }
 
   _transform(
-      chunk: UnprocessedKillmailRow,
-      encoding: string,
-      callback: TransformCallback<ProcessedKillmail>,
+    chunk: UnprocessedKillmailRow,
+    encoding: string,
+    callback: TransformCallback<ProcessedKillmail>
   ) {
     this._flushKillmailsEarlierThan(chunk.km_timestamp - this._maxTimeWindow);
 
@@ -40,9 +42,10 @@ export class KillmailAssociator
     const victim = chunk.km_data.victim.character_id;
     if (victim != undefined) {
       const prevLoss = this._map.get(victim);
-      if (prevLoss
-          && prevLoss.row.km_hullCategory == HullCategory.SHIP
-          && chunk.km_hullCategory == HullCategory.CAPSULE
+      if (
+        prevLoss &&
+        prevLoss.row.km_hullCategory == HullCategory.SHIP &&
+        chunk.km_hullCategory == HullCategory.CAPSULE
       ) {
         setRelatedLoss(prevLoss, qkm);
         setRelatedLoss(qkm, prevLoss);
@@ -63,8 +66,10 @@ export class KillmailAssociator
   }
 
   private _flushKillmailsEarlierThan(timestamp: number) {
-    while (this._queue.size() > 0
-        && this._queue.peek().row.km_timestamp < timestamp) {
+    while (
+      this._queue.size() > 0 &&
+      this._queue.peek().row.km_timestamp < timestamp
+    ) {
       this._flushKillmail(this._queue.dequeue());
     }
   }

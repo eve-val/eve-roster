@@ -1,73 +1,72 @@
-import _ = require('underscore');
-import moment from 'moment';
-import { getAccessToken } from '../data-source/accessToken/accessToken';
-import { isAnyEsiError } from '../data-source/esi/error';
-import { EsiErrorKind } from '../data-source/esi/EsiError';
-import { EsiNotification } from '../data-source/esi/EsiNotification';
-import { fetchEsi } from '../data-source/esi/fetch/fetchEsi';
-import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from '../data-source/esi/endpoints';
-import { dao } from '../db/dao';
-import { Tnex } from '../db/tnex';
-import { AccessTokenError } from '../error/AccessTokenError';
-import { buildLoggerFromFilename } from '../infra/logging/buildLogger';
-import { JobLogger } from '../infra/taskrunner/Job';
-import { Task } from '../infra/taskrunner/Task';
+import _ = require("underscore");
+import moment from "moment";
+import { getAccessToken } from "../data-source/accessToken/accessToken";
+import { isAnyEsiError } from "../data-source/esi/error";
+import { EsiErrorKind } from "../data-source/esi/EsiError";
+import { EsiNotification } from "../data-source/esi/EsiNotification";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints";
+import { dao } from "../db/dao";
+import { Tnex } from "../db/tnex";
+import { AccessTokenError } from "../error/AccessTokenError";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
+import { JobLogger } from "../infra/taskrunner/Job";
+import { Task } from "../infra/taskrunner/Task";
 
-import { getSpan, context } from '@opentelemetry/api';
+import { getSpan, context } from "@opentelemetry/api";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
-const MAX_UPDATE_FREQUENCY = moment.duration(10, 'minutes');
+const MAX_UPDATE_FREQUENCY = moment.duration(10, "minutes");
 const IMPORTANT_NOTIFICATION_TYPES = [
-  'StructureUnderAttack',
-  'StructureLostShields',
-  'StructureLostArmor',
-  'StructureFuelAlert',
-  'EntosisCaptureStarted',
-  'SovStructureReinforced',
-  'OrbitalAttacked',
-  'OrbitalReinforced',
-  'TowerAlertMsg',
-  'TowerResourceAlertMsg'
+  "StructureUnderAttack",
+  "StructureLostShields",
+  "StructureLostArmor",
+  "StructureFuelAlert",
+  "EntosisCaptureStarted",
+  "SovStructureReinforced",
+  "OrbitalAttacked",
+  "OrbitalReinforced",
+  "TowerAlertMsg",
+  "TowerResourceAlertMsg",
 ];
 
 const logger = buildLoggerFromFilename(__filename);
 
 export const syncNotifications: Task = {
-  name: 'syncNotifications',
-  displayName: 'Sync Notifications',
+  name: "syncNotifications",
+  displayName: "Sync Notifications",
   description: "Searches for structure attack notifications in member keys.",
-  timeout: moment.duration(1, 'minutes').asMilliseconds(),
+  timeout: moment.duration(1, "minutes").asMilliseconds(),
   executor,
 };
 
 async function findNotifications(
-    characterId: number, accessToken: string,
+  characterId: number,
+  accessToken: string
 ): Promise<EsiNotification[]> {
-  return await fetchEsi(
-    ESI_CHARACTERS_$characterId_NOTIFICATIONS,
-    {
-      characterId,
-      _token: accessToken,
-    }
-  );
+  return await fetchEsi(ESI_CHARACTERS_$characterId_NOTIFICATIONS, {
+    characterId,
+    _token: accessToken,
+  });
 }
 
-async function updateCharacter(
-  db: Tnex,
-  characterId: number
-) {
+async function updateCharacter(db: Tnex, characterId: number) {
   const lastUpdated = await dao.characterNotification.getLastUpdateTimestamp(
     db,
     characterId
   );
-  const updateNeededCutoff = moment().subtract(MAX_UPDATE_FREQUENCY)
+  const updateNeededCutoff = moment().subtract(MAX_UPDATE_FREQUENCY);
   if (lastUpdated.isAfter(updateNeededCutoff)) {
     return;
   }
   const token = await getAccessToken(db, characterId);
   const messages = await findNotifications(characterId, token);
-  await dao.characterNotification.setCharacterNotifications(db, characterId, messages);
+  await dao.characterNotification.setCharacterNotifications(
+    db,
+    characterId,
+    messages
+  );
 }
 
 async function executor(db: Tnex, job: JobLogger) {
@@ -77,19 +76,17 @@ async function executor(db: Tnex, job: JobLogger) {
   );
 
   const start = moment();
-  const characterIds = _.pluck(
-    tokens,
-    'accessToken_character')
-  .filter((characterId) =>
-    // Only pull 1/12 of characters every minute; cache refresh is 10 min.
-    // This maximizes chance we'll find out about structure hits quickly.
-    characterId % 12 == start.minute() % 12
+  const characterIds = _.pluck(tokens, "accessToken_character").filter(
+    (characterId) =>
+      // Only pull 1/12 of characters every minute; cache refresh is 10 min.
+      // This maximizes chance we'll find out about structure hits quickly.
+      characterId % 12 == start.minute() % 12
   );
 
   const len = characterIds.length;
   let progress = 0;
   let errors = 0;
-  for (let characterId of characterIds) {
+  for (const characterId of characterIds) {
     try {
       await updateCharacter(db, characterId);
     } catch (e) {
@@ -110,12 +107,14 @@ async function executor(db: Tnex, job: JobLogger) {
   // Now, check the notifications table for any new notifications since last
   // run, deduped.
   const since = start.clone().subtract(MAX_UPDATE_FREQUENCY);
-  let deduped = await dao.characterNotification.getRecentStructurePings(
-    db, since, IMPORTANT_NOTIFICATION_TYPES
+  const deduped = await dao.characterNotification.getRecentStructurePings(
+    db,
+    since,
+    IMPORTANT_NOTIFICATION_TYPES
   );
   const span = getSpan(context.active());
-  for (let msg of deduped) {
-    span?.addEvent('notification', msg);
+  for (const msg of deduped) {
+    span?.addEvent("notification", msg);
   }
 
   if (errors) {

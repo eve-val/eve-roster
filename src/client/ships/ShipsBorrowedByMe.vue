@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import ajaxer from '../shared/ajaxer';
+import ajaxer from "../shared/ajaxer";
 
-import ShipsWrapper from './ShipsWrapper.vue';
-import ShipTable from './ShipTable.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import ShipsWrapper from "./ShipsWrapper.vue";
+import ShipTable from "./ShipTable.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 export default {
   components: {
@@ -28,13 +28,13 @@ export default {
     identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       ships: [],
     };
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$refs.spinner
       .observe(ajaxer.getShipsBorrowedByMe())
       .then((response) => {

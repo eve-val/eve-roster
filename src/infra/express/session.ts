@@ -1,4 +1,4 @@
-import express = require('express');
+import express = require("express");
 
 export function getSession(req: express.Request) {
   if (req.session == undefined) {
@@ -15,5 +15,5 @@ export function endSession(req: express.Request) {
 }
 
 export interface Session {
-  accountId?: number,
+  accountId?: number;
 }

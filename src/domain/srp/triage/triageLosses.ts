@@ -1,46 +1,44 @@
-import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-import { Tnex } from '../../../db/tnex';
-import { TRIAGE_RULES } from './rules';
-import { dao } from '../../../db/dao';
-import { TriageVerdict, TriageRule, isFuncRule, LossMeta } from './TriageRule';
-import { SdeType } from '../../../db/tables';
-import { buildLoggerFromFilename } from '../../../infra/logging/buildLogger';
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { Tnex } from "../../../db/tnex";
+import { TRIAGE_RULES } from "./rules";
+import { dao } from "../../../db/dao";
+import { TriageVerdict, TriageRule, isFuncRule, LossMeta } from "./TriageRule";
+import { SdeType } from "../../../db/tables";
+import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
 
 const logger = buildLoggerFromFilename(__filename);
 
-
 export interface LossRow {
-  km_timestamp: number,
-  km_data: ZKillmail,
-  related_data: ZKillmail | null,
-  account_mainCharacter: number | null,
+  km_timestamp: number;
+  km_data: ZKillmail;
+  related_data: ZKillmail | null;
+  account_mainCharacter: number | null;
 }
 
 export interface TriagedLoss {
-  loss: LossRow,
-  suggestedVerdicts: TriageVerdict[],
+  loss: LossRow;
+  suggestedVerdicts: TriageVerdict[];
 }
-
 
 /**
  * Given a list of losses, generates suggested SRP verdicts for each one.
  */
 export async function triageLosses(
-    db: Tnex,
-    rows: LossRow[],
+  db: Tnex,
+  rows: LossRow[]
 ): Promise<TriagedLoss[]> {
   const shipDefs = await loadShipDefs(db, rows);
 
-  return rows.map(row => {
+  return rows.map((row) => {
     return {
       loss: row,
-      suggestedVerdicts:
-          triageLoss(
-              TRIAGE_RULES,
-              row.km_data,
-              row.related_data,
-              row.account_mainCharacter,
-              shipDefs),
+      suggestedVerdicts: triageLoss(
+        TRIAGE_RULES,
+        row.km_data,
+        row.related_data,
+        row.account_mainCharacter,
+        shipDefs
+      ),
     };
   });
 }
@@ -48,11 +46,10 @@ export async function triageLosses(
 /** For each type ID, load its associated group ID and market group ID. */
 async function loadShipDefs(
   db: Tnex,
-  losses: LossRow[],
+  losses: LossRow[]
 ): Promise<Map<number, ShipDef>> {
-
   const ids = new Set<number>();
-  for (let loss of losses) {
+  for (const loss of losses) {
     ids.add(loss.km_data.victim.ship_type_id);
     if (loss.related_data) {
       ids.add(loss.related_data.victim.ship_type_id);
@@ -60,18 +57,18 @@ async function loadShipDefs(
   }
 
   const rows = await dao.sde.getTypes(db, Array.from(ids), [
-    'styp_id',
-    'styp_group',
-    'styp_marketGroup'
+    "styp_id",
+    "styp_group",
+    "styp_marketGroup",
   ]);
 
   const map = new Map<number, ShipDef>();
-  for (let row of rows) {
+  for (const row of rows) {
     map.set(row.styp_id, row);
   }
 
   if (map.size < ids.size) {
-    for (let type of ids) {
+    for (const type of ids) {
       if (!map.has(type)) {
         logger.error(`Unknown ship ID "${type}".`);
       }
@@ -86,15 +83,19 @@ function triageLoss(
   killmail: ZKillmail,
   relatedKillmail: ZKillmail | null,
   mainCharacter: number | null,
-  shipDefs: Map<number, ShipDef>,
+  shipDefs: Map<number, ShipDef>
 ) {
-  let triage = [];
-  for (let rule of rules) {
-    let results =
-        executeRule(
-            rule, killmail, relatedKillmail, mainCharacter, shipDefs);
+  const triage = [];
+  for (const rule of rules) {
+    const results = executeRule(
+      rule,
+      killmail,
+      relatedKillmail,
+      mainCharacter,
+      shipDefs
+    );
     if (results != undefined) {
-      for (let result of results) {
+      for (const result of results) {
         triage.push(result);
       }
     }
@@ -103,11 +104,11 @@ function triageLoss(
 }
 
 function executeRule(
-    rule: TriageRule,
-    killmail: ZKillmail,
-    relatedKillmail: ZKillmail | null,
-    mainCharacter: number | null,
-    shipDefs: Map<number, ShipDef>,
+  rule: TriageRule,
+  killmail: ZKillmail,
+  relatedKillmail: ZKillmail | null,
+  mainCharacter: number | null,
+  shipDefs: Map<number, ShipDef>
 ) {
   const shipDef = shipDefs.get(killmail.victim.ship_type_id);
   if (shipDef == undefined) {
@@ -125,10 +126,7 @@ function executeRule(
     if (shipDef == undefined) {
       return undefined;
     }
-    if (!testFilter(
-        rule.filter.relatedLoss,
-        relatedKillmail,
-        shipDef)) {
+    if (!testFilter(rule.filter.relatedLoss, relatedKillmail, shipDef)) {
       return undefined;
     }
   }
@@ -145,28 +143,36 @@ function executeRule(
 }
 
 function testFilter(
-    match: TriageRule['filter'],
-    killmail: ZKillmail,
-    shipDef: ShipDef,
+  match: TriageRule["filter"],
+  killmail: ZKillmail,
+  shipDef: ShipDef
 ) {
-  if (match.tag != undefined
-        && (match.tag == 'npc' && !killmail.zkb.npc
-            || match.tag == 'solo' && !killmail.zkb.solo)) {
+  if (
+    match.tag != undefined &&
+    ((match.tag == "npc" && !killmail.zkb.npc) ||
+      (match.tag == "solo" && !killmail.zkb.solo))
+  ) {
     return false;
   }
-  if (match.groupId != undefined
-      && match.groupId.indexOf(shipDef.styp_group) == -1) {
+  if (
+    match.groupId != undefined &&
+    match.groupId.indexOf(shipDef.styp_group) == -1
+  ) {
     return false;
   }
-  if (match.marketGroupId != undefined
-      && match.marketGroupId.indexOf(shipDef.styp_marketGroup) == -1) {
+  if (
+    match.marketGroupId != undefined &&
+    match.marketGroupId.indexOf(shipDef.styp_marketGroup) == -1
+  ) {
     return false;
   }
-  if (match.shipId != undefined
-      && match.shipId.indexOf(shipDef.styp_id) == -1) {
+  if (
+    match.shipId != undefined &&
+    match.shipId.indexOf(shipDef.styp_id) == -1
+  ) {
     return false;
   }
   return true;
 }
 
-type ShipDef = Pick<SdeType, 'styp_id' | 'styp_group' | 'styp_marketGroup'>;
+type ShipDef = Pick<SdeType, "styp_id" | "styp_group" | "styp_marketGroup">;

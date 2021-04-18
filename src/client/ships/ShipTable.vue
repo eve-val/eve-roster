@@ -29,9 +29,7 @@
       </tr>
     </tbody>
   </table>
-  <div class="empty-list" v-else>
-    No borrowed corp ships found. Neat!
-  </div>
+  <div class="empty-list" v-else>No borrowed corp ships found. Neat!</div>
 </template>
 
 <script>
@@ -41,20 +39,20 @@ export default {
     ships: { type: Array, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       sortOrder: [
-        'mainCharacterName',
-        'characterName',
-        'locationDescription',
-        'type',
-        'name',
+        "mainCharacterName",
+        "characterName",
+        "locationDescription",
+        "type",
+        "name",
       ],
     };
   },
 
   computed: {
-    sorted: function() {
+    sorted: function () {
       this.ships.sort((a, b) => {
         for (let prop of this.sortOrder) {
           let ap = a[prop];
@@ -70,7 +68,7 @@ export default {
   },
 
   methods: {
-    setSort: function(column) {
+    setSort: function (column) {
       const idx = this.sortOrder.indexOf(column);
       if (idx < 0) return;
       this.sortOrder.splice(idx, 1);

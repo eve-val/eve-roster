@@ -1,5 +1,4 @@
-
-import { ExtendableError } from '../../error/ExtendableError';
+import { ExtendableError } from "../../error/ExtendableError";
 
 /**
  * Example:
@@ -15,14 +14,14 @@ import { ExtendableError } from '../../error/ExtendableError';
  * }))
  */
 
-export type Requirement = 'required' | 'optional';
+export type Requirement = "required" | "optional";
 export type SchemaType = number | string | boolean | object;
 
 export type SimpleMap<T> = {
-  [key: string]: T
+  [key: string]: T;
 };
 
-type PrimitiveType = 'string' | 'number' | 'boolean' | 'object';
+type PrimitiveType = "string" | "number" | "boolean" | "object";
 
 export function verify<T extends object>(data: SchemaType, schema: T): T {
   if (schema instanceof Array) {
@@ -34,8 +33,10 @@ export function verify<T extends object>(data: SchemaType, schema: T): T {
 
 export function optional<T>(schema: T): T | undefined {
   if (!(schema instanceof Schema)) {
-    throw new Error(`Not a valid schema.`
-        + ` You must use the schema-specifying functions like string().`);
+    throw new Error(
+      `Not a valid schema.` +
+        ` You must use the schema-specifying functions like string().`
+    );
   }
   schema.optional = true;
   return schema as any;
@@ -43,23 +44,25 @@ export function optional<T>(schema: T): T | undefined {
 
 export function nullable<T>(schema: T): T | null {
   if (!(schema instanceof Schema)) {
-    throw new Error(`Not a valid schema.`
-        + ` You must use the schema-specifying functions like string().`);
+    throw new Error(
+      `Not a valid schema.` +
+        ` You must use the schema-specifying functions like string().`
+    );
   }
   schema.nullable = true;
   return schema as any;
 }
 
 export function string(): string {
-  return new Schema('string') as any;
+  return new Schema("string") as any;
 }
 
 export function number(): number {
-  return new Schema('number') as any;
+  return new Schema("number") as any;
 }
 
 export function boolean(): boolean {
-  return new Schema('boolean') as any;
+  return new Schema("boolean") as any;
 }
 
 export function stringEnum<E extends string>(enu: object): E {
@@ -72,25 +75,27 @@ export function object<T extends object>(schema: T): T {
 
 export function simpleMap<T>(schema: T): SimpleMap<T> {
   if (!(schema instanceof Schema)) {
-    throw new Error(`Not a valid schema.`
-        + ` You must use the schema-specifying functions like string().`);
+    throw new Error(
+      `Not a valid schema.` +
+        ` You must use the schema-specifying functions like string().`
+    );
   }
   return new SimpleMapSchema(schema) as any;
 }
 
 export function array<T>(schema: T): T[] {
-  let primType = typeof schema;
+  const primType = typeof schema;
   let subSchema;
   switch (primType) {
-    case 'object':
+    case "object":
       if (schema instanceof Array) {
         throw new Error(`Subarray must be wrapped in a call to array().`);
       }
       subSchema = new ObjectSchema(schema as any);
       break;
-    case 'number':
-    case 'string':
-    case 'boolean':
+    case "number":
+    case "string":
+    case "boolean":
       subSchema = new Schema(primType);
       break;
     default:
@@ -116,28 +121,31 @@ class Schema {
 
     if (value === undefined && !this.optional) {
       throw new SchemaVerificationError(
-          `Property ${pathToStr(path)} is required.`);
+        `Property ${pathToStr(path)} is required.`
+      );
     }
     if (value === null && !this.nullable) {
       throw new SchemaVerificationError(
-          `Property ${pathToStr(path)} cannot be null.`);
+        `Property ${pathToStr(path)} cannot be null.`
+      );
     }
 
-    if (typeof value != this.primitiveType
-        && value !== undefined
-        && value !== null) {
+    if (
+      typeof value != this.primitiveType &&
+      value !== undefined &&
+      value !== null
+    ) {
       throw new SchemaVerificationError(
-          `Bad type for ${pathToStr(path)}. Expected "${this.primitiveType}"`
-              + ` but got "${typeof value}".`);
+        `Bad type for ${pathToStr(path)}. Expected "${this.primitiveType}"` +
+          ` but got "${typeof value}".`
+      );
     }
   }
 }
 
 class StringEnumSchema<T extends object> extends Schema {
-  constructor(
-      private enu: T,
-      ) {
-    super('string');
+  constructor(private enu: T) {
+    super("string");
   }
 
   verify(value: any, path: string[]) {
@@ -150,14 +158,15 @@ class StringEnumSchema<T extends object> extends Schema {
 
     if (!this.isValueDefinedInEnum(value)) {
       throw new SchemaVerificationError(
-          `Value "${value}" for ${pathToStr(path)} does not match any enum`
-              + ` values.`);
+        `Value "${value}" for ${pathToStr(path)} does not match any enum` +
+          ` values.`
+      );
     }
   }
 
   private isValueDefinedInEnum(s: string) {
-    for (let v in this.enu) {
-      if (s === this.enu[v] as any) {
+    for (const v in this.enu) {
+      if (s === (this.enu[v] as any)) {
         return true;
       }
     }
@@ -166,10 +175,8 @@ class StringEnumSchema<T extends object> extends Schema {
 }
 
 class ObjectSchema<T extends object> extends Schema {
-  constructor(
-      private _subSchema: T,
-      ) {
-    super('object');
+  constructor(private _subSchema: T) {
+    super("object");
   }
 
   verify(value: any, path: string[]) {
@@ -180,8 +187,8 @@ class ObjectSchema<T extends object> extends Schema {
       return;
     }
 
-    path.push('');
-    for (let k in this._subSchema) {
+    path.push("");
+    for (const k in this._subSchema) {
       const prop = extractPropSchema(this._subSchema, k, path);
       path[path.length - 1] = k;
       prop.verify(value[k], path);
@@ -194,21 +201,20 @@ class ObjectSchema<T extends object> extends Schema {
     }
     path.pop();
 
-    for (let k in value) {
+    for (const k in value) {
       if (!this._subSchema.hasOwnProperty(k)) {
         path.push(k);
         throw new SchemaVerificationError(
-            `Unexpected property: ${pathToStr(path)}`);
+          `Unexpected property: ${pathToStr(path)}`
+        );
       }
     }
   }
 }
 
 class ArraySchema extends Schema {
-  constructor(
-      private _subSchema: Schema,
-      ) {
-    super('object');
+  constructor(private _subSchema: Schema) {
+    super("object");
   }
 
   verify(value: any, path: string[]) {
@@ -221,10 +227,11 @@ class ArraySchema extends Schema {
 
     if (!(value instanceof Array)) {
       throw new SchemaVerificationError(
-          `Property ${pathToStr(path)} must be an array.`);
+        `Property ${pathToStr(path)} must be an array.`
+      );
     }
 
-    path.push('0');
+    path.push("0");
     for (let i = 0; i < value.length; i++) {
       path[path.length - 1] = i.toString();
       this._subSchema.verify(value[i], path);
@@ -234,16 +241,14 @@ class ArraySchema extends Schema {
 }
 
 class SimpleMapSchema extends Schema {
-  constructor(
-      private _subSchema: Schema,
-      ) {
-    super('object');
+  constructor(private _subSchema: Schema) {
+    super("object");
   }
 
   verify(value: any, path: string[]) {
     super.verify(value, path);
-    path.push('');
-    for (let k in value) {
+    path.push("");
+    for (const k in value) {
       path[path.length - 1] = k;
       this._subSchema.verify(value[k], path);
     }
@@ -252,19 +257,23 @@ class SimpleMapSchema extends Schema {
 }
 
 function extractPropSchema(
-    schema: Object, key: string | number, path: string[]): Schema {
-  let prop: Schema = (schema as any)[key];
+  schema: Object,
+  key: string | number,
+  path: string[]
+): Schema {
+  const prop: Schema = (schema as any)[key];
   if (!(prop instanceof Schema)) {
     path.push(key.toString());
-    throw new Error(`Invalid schema specification at ${pathToStr(path)}.`
-        + ` You must use the schema-specifying functions like string().`);
+    throw new Error(
+      `Invalid schema specification at ${pathToStr(path)}.` +
+        ` You must use the schema-specifying functions like string().`
+    );
   }
   return prop;
 }
 
 function pathToStr(path: string[]) {
-  return path.join('.');
+  return path.join(".");
 }
 
-export class SchemaVerificationError extends ExtendableError {
-}
+export class SchemaVerificationError extends ExtendableError {}

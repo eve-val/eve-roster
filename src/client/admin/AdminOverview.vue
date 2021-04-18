@@ -7,77 +7,76 @@ Right now just shows the sync status of each member corporation.
 -->
 
 <template>
-<admin-wrapper title="Overview" :identity="identity">
-  <div class="root-container">
-    <div class="description">
-      In order to sync corp rosters, at least one character with the "Director"
-      role must be authenticated with the proper scopes. To do this, the
-      character's owner must log in to the roster as that character.
-    </div>
+  <admin-wrapper title="Overview" :identity="identity">
+    <div class="root-container">
+      <div class="description">
+        In order to sync corp rosters, at least one character with the
+        "Director" role must be authenticated with the proper scopes. To do
+        this, the character's owner must log in to the roster as that character.
+      </div>
 
-    <loading-spinner
+      <loading-spinner
         class="spinner"
         ref="spinner"
         display="block"
         size="34px"
-        >
-    </loading-spinner>
+      >
+      </loading-spinner>
 
-    <template v-if="loaded && primaryCorps.length > 0">
-      <div class="section-heading">Primary corporations</div>
-      <member-corp-detail
+      <template v-if="loaded && primaryCorps.length > 0">
+        <div class="section-heading">Primary corporations</div>
+        <member-corp-detail
           v-for="corp in primaryCorps"
           :corp="corp"
           :key="corp.id"
-          >
-      </member-corp-detail>
-    </template>
+        >
+        </member-corp-detail>
+      </template>
 
-    <template v-if="loaded && affiliatedCorps.length > 0">
-      <div class="section-heading">Affiliate corporations</div>
-      <member-corp-detail
+      <template v-if="loaded && affiliatedCorps.length > 0">
+        <div class="section-heading">Affiliate corporations</div>
+        <member-corp-detail
           v-for="corp in affiliatedCorps"
           :corp="corp"
           :key="corp.id"
-          >
-      </member-corp-detail>
-    </template>
+        >
+        </member-corp-detail>
+      </template>
 
-    <div v-if="loaded && primaryCorps.length == 0" class="setup-bother">
-      <img class="bother-icon" src="../shared-res/triangle-warning.svg">
-      <div>
-        No corporations added yet. Configure them in
-        <router-link to="/admin/setup">Setup</router-link>.
+      <div v-if="loaded && primaryCorps.length == 0" class="setup-bother">
+        <img class="bother-icon" src="../shared-res/triangle-warning.svg" />
+        <div>
+          No corporations added yet. Configure them in
+          <router-link to="/admin/setup">Setup</router-link>.
+        </div>
       </div>
     </div>
-  </div>
-</admin-wrapper>
+  </admin-wrapper>
 </template>
 
 <script>
-import Vue from 'vue';
-import _ from 'underscore';
+import Vue from "vue";
+import _ from "underscore";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
-import AdminWrapper from './AdminWrapper.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import MemberCorpDetail from './overview/MemberCorpDetail.vue';
-
+import AdminWrapper from "./AdminWrapper.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import MemberCorpDetail from "./overview/MemberCorpDetail.vue";
 
 export default Vue.extend({
   components: {
     AdminWrapper,
     LoadingSpinner,
-    MemberCorpDetail
+    MemberCorpDetail,
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
-  data: function() {
+  data: function () {
     return {
       loaded: false,
       primaryCorps: [],
@@ -85,25 +84,22 @@ export default Vue.extend({
     };
   },
 
-  mounted: function() {
-    this.$refs.spinner.observe(ajaxer.getAdminRosterSyncStatus())
-    .then(response => {
-      this.addNames(response.data.names);
-      const groups = _.groupBy(response.data.corporations, 'type');
-      this.primaryCorps = groups['full'];
-      this.affiliatedCorps = groups['affiliated'];
-      this.loaded = true;
-    });
+  mounted: function () {
+    this.$refs.spinner
+      .observe(ajaxer.getAdminRosterSyncStatus())
+      .then((response) => {
+        this.addNames(response.data.names);
+        const groups = _.groupBy(response.data.corporations, "type");
+        this.primaryCorps = groups["full"];
+        this.affiliatedCorps = groups["affiliated"];
+        this.loaded = true;
+      });
   },
 
-  computed: {
-  },
+  computed: {},
 
-  methods: Object.assign({
-  }, NameCacheMixin),
+  methods: Object.assign({}, NameCacheMixin),
 });
-
-
 </script>
 
 <style scoped>

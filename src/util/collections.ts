@@ -1,11 +1,10 @@
-
 /**
  * Transforms an array of objects into a map of those objects. Each object's
  * key is its value of the specified "key property".
  */
 export function arrayToMap<T, K extends keyof T>(array: T[], key: K) {
   const map = new Map<T[K], T>();
-  for (let item of array) {
+  for (const item of array) {
     map.set(item[key], item);
   }
   return map;
@@ -21,7 +20,7 @@ export function arrayToMap<T, K extends keyof T>(array: T[], key: K) {
  */
 export function refine<Q, R>(
   array: Q[],
-  callback: (value: Q) => R | undefined | null,
+  callback: (value: Q) => R | undefined | null
 ) {
   const len = array.length;
   const out: R[] = [];
@@ -36,7 +35,7 @@ export function refine<Q, R>(
 
 /** Adds all of the entries in `entries` to a Set. */
 export function addAll<T>(set: Set<T>, entries: Iterable<T>) {
-  for (let e of entries) {
+  for (const e of entries) {
     set.add(e);
   }
 }

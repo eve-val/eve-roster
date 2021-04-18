@@ -1,9 +1,8 @@
-import { ZKillmail } from '../../../data-source/zkillboard/ZKillmail';
-import { ApprovedVerdict, MarketPayout } from './TriageRule';
-import { fetchJitaSellPrices } from '../../../data-source/evemarketer/fetchJitaSellPrices';
-import { SrpVerdictStatus } from '../../../db/dao/enums';
-import { TriagedLoss } from './triageLosses';
-
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { ApprovedVerdict, MarketPayout } from "./TriageRule";
+import { fetchJitaSellPrices } from "../../../data-source/evemarketer/fetchJitaSellPrices";
+import { SrpVerdictStatus } from "../../../db/dao/enums";
+import { TriagedLoss } from "./triageLosses";
 
 /**
  * Given a list of triaged losses, looks up any relevant market prices. Used
@@ -15,40 +14,44 @@ export async function fetchHullMarketValues(losses: TriagedLoss[]) {
   return marketValues;
 }
 
-
 /**
  * Given an SRP verdict, returns the final value in ISK that should be paid.
  * This value may fluctuate with market prices.
  */
 export function resolvePayout(
-    approval: ApprovedVerdict,
-    killmail: ZKillmail,
-    marketValues: Map<number, number>,
+  approval: ApprovedVerdict,
+  killmail: ZKillmail,
+  marketValues: Map<number, number>
 ) {
   let value: number;
   switch (approval.payout.kind) {
-    case 'Static':
+    case "Static":
       return approval.payout.value;
-    case 'LossValue':
+    case "LossValue":
       value = killmail.zkb.totalValue;
       if (approval.payout.max != undefined) {
         value = Math.min(approval.payout.max, value);
       }
       return value;
-    case 'Market':
+    case "Market":
       return getMarketValue(
-          approval.payout, killmail.victim.ship_type_id, marketValues);
+        approval.payout,
+        killmail.victim.ship_type_id,
+        marketValues
+      );
   }
 }
 
 function extractMarketLookups(losses: TriagedLoss[]) {
   const lookupIds = new Set<number>();
-  for (let loss of losses) {
-    for (let verdict of loss.suggestedVerdicts) {
-      if (verdict.status == SrpVerdictStatus.APPROVED
-          && verdict.payout.kind == 'Market') {
+  for (const loss of losses) {
+    for (const verdict of loss.suggestedVerdicts) {
+      if (
+        verdict.status == SrpVerdictStatus.APPROVED &&
+        verdict.payout.kind == "Market"
+      ) {
         if (verdict.payout.items != undefined) {
-          for (let item of verdict.payout.items) {
+          for (const item of verdict.payout.items) {
             lookupIds.add(item);
           }
         } else {
@@ -61,14 +64,18 @@ function extractMarketLookups(losses: TriagedLoss[]) {
 }
 
 function getMarketValue(
-    payout: MarketPayout, shipId: number, marketValues: Map<number, number>) {
+  payout: MarketPayout,
+  shipId: number,
+  marketValues: Map<number, number>
+) {
   if (payout.items == undefined) {
-    return (marketValues.get(shipId) || payout.fallback)
-        + (payout.additional || 0);
+    return (
+      (marketValues.get(shipId) || payout.fallback) + (payout.additional || 0)
+    );
   } else {
     let sum = 0;
-    for (let item of payout.items) {
-      let value = marketValues.get(item);
+    for (const item of payout.items) {
+      const value = marketValues.get(item);
       if (value != undefined) {
         sum += value;
       } else {

@@ -1,78 +1,85 @@
 <template>
-<div class="_character-row">
-  <div class="horiz-aligner">
-    <div class="alert col" :style="cellStyle(0)">
-      <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
-        <img class="alert-icon" :src="alertIconSrc" />
-        <span slot="message">{{ alertMessage }}</span>
-      </tooltip>
-    </div>
+  <div class="_character-row">
+    <div class="horiz-aligner">
+      <div class="alert col" :style="cellStyle(0)">
+        <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
+          <img class="alert-icon" :src="alertIconSrc" />
+          <span slot="message">{{ alertMessage }}</span>
+        </tooltip>
+      </div>
 
-    <div class="name col" :style="cellStyle(1)">
-      <router-link
+      <div class="name col" :style="cellStyle(1)">
+        <router-link
           class="char-link col-text"
           :to="'/character/' + character.id"
-          >
-        <template v-if="filterMatch">
-          {{ filterMatch[0] }}<span class="highlight"
-          >{{ filterMatch[1] }}</span>{{ filterMatch[2] }}
-        </template>
-        <template v-else>{{ displayVals[1] }}</template>
-      </router-link>
-      <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
-        <eve-image :id="character.corporationId"
-                   :type="'Corporation'"
-                   :size="26"
-                   class="corp-icon"
-                   />
-        <span slot="message">{{ character.corporationName }}</span>
-      </tooltip>
-    </div>
+        >
+          <template v-if="filterMatch">
+            {{ filterMatch[0]
+            }}<span class="highlight">{{ filterMatch[1] }}</span
+            >{{ filterMatch[2] }}
+          </template>
+          <template v-else>{{ displayVals[1] }}</template>
+        </router-link>
+        <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
+          <eve-image
+            :id="character.corporationId"
+            :type="'Corporation'"
+            :size="26"
+            class="corp-icon"
+          />
+          <span slot="message">{{ character.corporationName }}</span>
+        </tooltip>
+      </div>
 
-    <div class="alts col"
+      <div
+        class="alts col"
         :style="cellStyle(2)"
         @mousedown="$emit('toggleExpanded')"
-        >{{ displayVals[2] }}</div>
+      >
+        {{ displayVals[2] }}
+      </div>
 
-    <div class="col" v-for="(displayVal, i) in displayVals"
+      <div
+        class="col"
+        v-for="(displayVal, i) in displayVals"
         :key="i"
         v-if="i >= 3"
         :style="cellStyle(i)"
-        >
-      <template v-if="!tooltipMessage(i)">
-        <span class="col-text">{{ displayVal | dashDefault }}</span>
-      </template>
-      <tooltip v-else gravity="right" :inline="true">
-        <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
-          {{ displayVal | dashDefault }}
-        </span>
-        <span slot="message">{{ tooltipMessage(i) }}</span>
-      </tooltip>
+      >
+        <template v-if="!tooltipMessage(i)">
+          <span class="col-text">{{ displayVal | dashDefault }}</span>
+        </template>
+        <tooltip v-else gravity="right" :inline="true">
+          <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
+            {{ displayVal | dashDefault }}
+          </span>
+          <span slot="message">{{ tooltipMessage(i) }}</span>
+        </tooltip>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import eveConstants from '../shared/eveConstants';
-import filter from './filter';
-import { formatNumber } from '../shared/numberFormat';
-import rosterColumns from './rosterColumns';
+import eveConstants from "../shared/eveConstants";
+import filter from "./filter";
+import { formatNumber } from "../shared/numberFormat";
+import rosterColumns from "./rosterColumns";
 
-import EveImage from '../shared/EveImage.vue';
-import Tooltip from '../shared/Tooltip.vue';
+import EveImage from "../shared/EveImage.vue";
+import Tooltip from "../shared/Tooltip.vue";
 
-const infoIcon = require('../shared-res/circle-info.svg');
-const warningIcon = require('../shared-res/triangle-warning.svg');
-const errorIcon = require('../shared-res/triangle-error.svg');
+const infoIcon = require("../shared-res/circle-info.svg");
+const warningIcon = require("../shared-res/triangle-warning.svg");
+const errorIcon = require("../shared-res/triangle-error.svg");
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
-const MSG_ICONS = [ null, infoIcon, warningIcon, errorIcon ];
+const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
 
 export default {
   components: {
     EveImage,
-    Tooltip
+    Tooltip,
   },
 
   props: {
@@ -83,14 +90,12 @@ export default {
     filter: { type: String, required: false },
   },
 
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {};
   },
 
   computed: {
-
-    displayVals: function() {
+    displayVals: function () {
       let labels = [];
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
@@ -98,11 +103,13 @@ export default {
       return labels;
     },
 
-    alertIconSrc: function() {
+    alertIconSrc: function () {
       let level = 0;
       if (this.isMain) {
-        level = Math.max(this.account.alertLevel || 0,
-            this.character.alertLevel || 0);
+        level = Math.max(
+          this.account.alertLevel || 0,
+          this.character.alertLevel || 0
+        );
       } else {
         level = this.character.alertLevel || 0;
       }
@@ -110,61 +117,66 @@ export default {
       return MSG_ICONS[level];
     },
 
-    alertMessage: function() {
+    alertMessage: function () {
       let message;
       if (this.isMain) {
         // Must include any account message
-        message = ((this.account.alertMessage || '') + ' '
-            + (this.character.alertMessage || '')).trim();
+        message = (
+          (this.account.alertMessage || "") +
+          " " +
+          (this.character.alertMessage || "")
+        ).trim();
       } else {
         // Just the character message if it exists
-        message = (this.character.alertMessage || '').trim();
+        message = (this.character.alertMessage || "").trim();
       }
       return message.length > 0 ? message : null;
     },
 
-    filterMatch: function() {
+    filterMatch: function () {
       let match = filter.match(this.character.name, this.filter);
       return match;
     },
 
-    inPrimaryCorp: function() {
-      return eveConstants
-          .primaryCorporations.indexOf(this.character.corporationId) != -1;
+    inPrimaryCorp: function () {
+      return (
+        eveConstants.primaryCorporations.indexOf(
+          this.character.corporationId
+        ) != -1
+      );
     },
-
   },
 
   filters: {
-    dashDefault: function(value) {
+    dashDefault: function (value) {
       if (value == null) {
-        return '-';
+        return "-";
       } else {
         return value;
       }
-    }
+    },
   },
 
   methods: {
-    cellStyle: function(idx) {
+    cellStyle: function (idx) {
       let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
-      if (col.key == 'name' && !this.isMain) {
+      if (col.key == "name" && !this.isMain) {
         paddingLeft = 20;
         width -= paddingLeft;
       }
 
       return {
-        width: width + 'px',
-        'margin-left': col.margin != undefined ? col.margin + 'px' : undefined,
-        'text-align': this.cellAlignment(idx),
-        'padding-left': paddingLeft ? paddingLeft + 'px' : undefined,
-        'cursor': col.key != 'name' ? 'default' : undefined,
+        width: width + "px",
+        "margin-left": col.margin != undefined ? col.margin + "px" : undefined,
+        "text-align": this.cellAlignment(idx),
+        "padding-left": paddingLeft ? paddingLeft + "px" : undefined,
+        cursor: col.key != "name" ? "default" : undefined,
       };
     },
 
-    tooltipMessage: function(idx) {
+    tooltipMessage: function (idx) {
       let col = this.columns[idx];
       if (!col.metaKey) {
         // No tooltip to display
@@ -174,7 +186,7 @@ export default {
       let metaValue = null;
       if (col.account) {
         if (!this.isMain) {
-         // In this case the column displays a ditto, so there's not a reason to show a tooltip for that
+          // In this case the column displays a ditto, so there's not a reason to show a tooltip for that
           return null;
         } else {
           metaValue = this.account[col.metaKey];
@@ -184,7 +196,10 @@ export default {
       }
 
       if (metaValue) {
-        if (col.metaKey == 'killValueInLastMonth' || col.metaKey == 'lossValueInLastMonth') {
+        if (
+          col.metaKey == "killValueInLastMonth" ||
+          col.metaKey == "lossValueInLastMonth"
+        ) {
           // Special case to reformat numeric value to a friendly ISK string
           metaValue = iskLabel(metaValue);
         }
@@ -196,21 +211,21 @@ export default {
       }
     },
 
-    displayVal: function(col) {
+    displayVal: function (col) {
       switch (col.key) {
-        case 'alts':
+        case "alts":
           if (!this.isMain) {
-            return '';
+            return "";
           } else {
             return altsLabel(this.account.alts.length);
           }
           break;
-        case 'lastSeen':
-          return this.character.lastSeenLabel || '-';
+        case "lastSeen":
+          return this.character.lastSeenLabel || "-";
         default:
           if (col.account) {
             if (!this.isMain) {
-              return '″'; // ditto symbol
+              return "″"; // ditto symbol
             } else {
               return this.account[col.key];
             }
@@ -222,31 +237,30 @@ export default {
 
     cellAlignment(colIdx) {
       let col = this.columns[colIdx];
-      let align = 'left';
-      if (col.key == 'warning') {
-        align = 'center';
+      let align = "left";
+      if (col.key == "warning") {
+        align = "center";
       } else if (col.numeric) {
-        align = 'right';
+        align = "right";
       }
       return align;
     },
   },
-}
+};
 
 function iskLabel(isk) {
-  return formatNumber(isk) + ' ISK';
+  return formatNumber(isk) + " ISK";
 }
 
 function altsLabel(altsCount) {
   if (altsCount == 0) {
-    return '';
+    return "";
   } else if (altsCount == 1) {
-    return '1 alt';
+    return "1 alt";
   } else {
-    return altsCount + ' alts';
+    return altsCount + " alts";
   }
 }
-
 </script>
 
 <style scoped>
@@ -264,7 +278,7 @@ function altsLabel(altsCount) {
 
 .col {
   flex: 0 0 auto;
-  color: #A7A29C;
+  color: #a7a29c;
   margin-left: 20px;
   white-space: nowrap;
 }
@@ -294,7 +308,7 @@ function altsLabel(altsCount) {
 .char-link {
   position: relative;
   top: -1px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   text-decoration: none;
 }
 
@@ -313,7 +327,7 @@ function altsLabel(altsCount) {
 }
 
 .alts {
-  color: #65594A;
+  color: #65594a;
   user-select: none;
   cursor: default;
 

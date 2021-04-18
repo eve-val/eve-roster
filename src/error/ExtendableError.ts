@@ -4,4 +4,4 @@ export class ExtendableError extends Error {
     this.name = this.constructor.name;
     this.message = message || this.name;
   }
-};
+}

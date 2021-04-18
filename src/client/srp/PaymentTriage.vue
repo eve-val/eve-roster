@@ -5,63 +5,58 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
 -->
 
 <template>
-<div class="_payment-triage">
-
-  <div class="toolbar">
-    <div class="selector-cnt">
-      <div class="selector-label">Paying with</div>
-      <character-selector
+  <div class="_payment-triage">
+    <div class="toolbar">
+      <div class="selector-cnt">
+        <div class="selector-label">Paying with</div>
+        <character-selector
           :accountId="identity.account.id"
           v-model="payingCharacter"
-          >
-      </character-selector>
+        >
+        </character-selector>
+      </div>
+      <div class="liability-summary">
+        <span class="liability-label">Approved liability:</span>
+        <span class="liability-value">{{ approvedLiabilityDisplay }}</span>
+        <span class="liability-denom">ISK</span>
+      </div>
     </div>
-    <div class="liability-summary">
-      <span class="liability-label">Approved liability:</span>
-      <span class="liability-value">{{ approvedLiabilityDisplay }}</span>
-      <span class="liability-denom">ISK</span>
-    </div>
-  </div>
 
-  <template v-if="payments != null">
-    <div class="top-line"></div>
+    <template v-if="payments != null">
+      <div class="top-line"></div>
 
-    <payment-triage-row
+      <payment-triage-row
         v-for="payment in payments"
         :key="payment.id"
         :payment="payment"
         :paying-character="payingCharacter"
-        >
-    </payment-triage-row>
-
-    <div class="no-results" v-if="payments.length == 0">No results</div>
-  </template>
-
-  <div
-      v-if="suspectMoreToFetch"
-      class="more-cnt"
       >
-    <more-button
+      </payment-triage-row>
+
+      <div class="no-results" v-if="payments.length == 0">No results</div>
+    </template>
+
+    <div v-if="suspectMoreToFetch" class="more-cnt">
+      <more-button
         :promise="fetchPromise"
         :hide-button="payments == null"
         @fetch-requested="fetchNextResults"
-        >
-    </more-button>
+      >
+      </more-button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import CharacterSelector from './CharacterSelector.vue';
-import MoreButton from './MoreButton.vue';
-import PaymentTriageRow from './PaymentTriageRow.vue';
+import Vue from "vue";
+import CharacterSelector from "./CharacterSelector.vue";
+import MoreButton from "./MoreButton.vue";
+import PaymentTriageRow from "./PaymentTriageRow.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
-
 
 export default Vue.extend({
   components: {
@@ -71,7 +66,7 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
   computed: {
@@ -85,7 +80,7 @@ export default Vue.extend({
 
     approvedLiabilityDisplay() {
       if (!this.approvedLiability) {
-        return '0';
+        return "0";
       } else {
         return this.approvedLiability.toLocaleString();
       }
@@ -107,36 +102,38 @@ export default Vue.extend({
   mounted() {
     this.fetchNextResults();
 
-    ajaxer.getSrpApprovedLiability()
-    .then(response => {
+    ajaxer.getSrpApprovedLiability().then((response) => {
       this.approvedLiability = response.data.approvedLiability;
     });
   },
 
-  methods: Object.assign({
-    fetchNextResults() {
-      this.fetchPromise = ajaxer.getSrpPaymentHistory({
-        paid: false,
-        order: 'asc',
-        orderBy: 'id',
-        startingAfter: this.finalId,
-        account: this.forAccount,
-        limit: RESULTS_PER_FETCH,
-      });
+  methods: Object.assign(
+    {
+      fetchNextResults() {
+        this.fetchPromise = ajaxer.getSrpPaymentHistory({
+          paid: false,
+          order: "asc",
+          orderBy: "id",
+          startingAfter: this.finalId,
+          account: this.forAccount,
+          limit: RESULTS_PER_FETCH,
+        });
 
-      this.fetchPromise.then(response => {
-        this.addNames(response.data.names);
+        this.fetchPromise.then((response) => {
+          this.addNames(response.data.names);
 
-        this.payments = this.payments || [];
-        for (let payment of response.data.payments) {
-          this.payments.push(payment);
-        }
+          this.payments = this.payments || [];
+          for (let payment of response.data.payments) {
+            this.payments.push(payment);
+          }
 
-        this.suspectMoreToFetch =
+          this.suspectMoreToFetch =
             response.data.payments.length == RESULTS_PER_FETCH;
-      });
+        });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -159,7 +156,7 @@ export default Vue.extend({
 
 .selector-label {
   font-size: 14px;
-  color: #A7A29C;
+  color: #a7a29c;
   margin-right: 10px;
 }
 
@@ -168,15 +165,15 @@ export default Vue.extend({
 }
 
 .liability-label {
-  color: #A7A29C;
+  color: #a7a29c;
 }
 
 .liability-denom {
-  color: #8B8B8B;
+  color: #8b8b8b;
 }
 
 .top-line {
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 }
 
 .no-results {
@@ -185,7 +182,7 @@ export default Vue.extend({
   justify-content: center;
   height: 70px;
 
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   font-style: italic;
 }
@@ -194,5 +191,4 @@ export default Vue.extend({
   margin-top: 20px;
   text-align: center;
 }
-
 </style>

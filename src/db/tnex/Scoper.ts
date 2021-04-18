@@ -1,6 +1,5 @@
-import util = require('util');
-import { splitColumn } from './core';
-
+import util = require("util");
+import { splitColumn } from "./core";
 
 export class Scoper {
   private _separator: string;
@@ -11,10 +10,10 @@ export class Scoper {
   private _prefixToNameLocal = new Map<string, string>();
 
   public constructor(
-      separator: string,
-      tableToName: Map<object, string>,
-      prefixToName: Map<string, string>,
-      ) {
+    separator: string,
+    tableToName: Map<object, string>,
+    prefixToName: Map<string, string>
+  ) {
     this._separator = separator;
     this._tableToNameGlobal = tableToName;
     this._prefixToNameGlobal = prefixToName;
@@ -22,23 +21,25 @@ export class Scoper {
 
   mirror(): Scoper {
     return new Scoper(
-        this._separator,
-        this._tableToNameGlobal,
-        this._prefixToNameGlobal);
+      this._separator,
+      this._tableToNameGlobal,
+      this._prefixToNameGlobal
+    );
   }
 
   scopeColumn(columnName: string, subqueryTableName?: string): string {
-    let [prefix, bareColumn] = this.splitColumn(columnName);
+    const [prefix, bareColumn] = this.splitColumn(columnName);
     let tableName: string;
     if (subqueryTableName != undefined) {
       if (prefix != subqueryTableName) {
         throw new Error(
-            `Column "${columnName}" must be prefixed with`
-                + ` "${subqueryTableName}".`);
+          `Column "${columnName}" must be prefixed with` +
+            ` "${subqueryTableName}".`
+        );
       }
       tableName = subqueryTableName;
     } else {
-      let registeredTableName = this._prefixToTableName(prefix);
+      const registeredTableName = this._prefixToTableName(prefix);
       if (registeredTableName == undefined) {
         throw new Error(`Unknown table prefix "${prefix}".`);
       } else {
@@ -49,11 +50,12 @@ export class Scoper {
   }
 
   getTableName(table: object): string {
-    let tableName = this._tableToNameGlobal.get(table);
+    const tableName = this._tableToNameGlobal.get(table);
     if (tableName == undefined) {
       throw new Error(
-          `Unknown table "${util.inspect(table)}".`
-              + ` Did you forget to register it?`)
+        `Unknown table "${util.inspect(table)}".` +
+          ` Did you forget to register it?`
+      );
     }
     return tableName;
   }

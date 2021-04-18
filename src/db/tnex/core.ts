@@ -1,10 +1,10 @@
 export type ColumnType = number | string | boolean | Date;
 
-export type Comparison = '=' | '!=' | '<' | '>' | '<=' | '>=';
+export type Comparison = "=" | "!=" | "<" | ">" | "<=" | ">=";
 
 export enum ResultOrder {
-  ASC = 'asc',
-  DESC = 'desc',
+  ASC = "asc",
+  DESC = "desc",
 }
 
 /**
@@ -14,7 +14,7 @@ export enum ResultOrder {
  * property named L that has type T[K].
  */
 export type Link<T, K extends keyof T, L extends string> = {
-  [P in L]: T[K]
+  [P in L]: T[K];
 };
 
 /**
@@ -31,31 +31,32 @@ export type StringKeyOf<T> = Extract<keyof T, string>;
  * Given a type, makes all properties AND subproperties optional.
  */
 export type DeepPartial<T> = {
-  [P in keyof T]?:
-      T[P] extends Array<any> ? T[P] :
-      T[P] extends object ? DeepPartial<T[P]> :
-      T[P]
+  [P in keyof T]?: T[P] extends Array<any>
+    ? T[P]
+    : T[P] extends object
+    ? DeepPartial<T[P]>
+    : T[P];
 };
 
 export type SimpleObj = {
-  [key: string]: any
+  [key: string]: any;
 };
 
-export type Nullable<T>  = {
-  [P in keyof T]: T[P] | null
+export type Nullable<T> = {
+  [P in keyof T]: T[P] | null;
 };
 
 export class ValueWrapper<T extends ColumnType> {
-  constructor(
-      public value: T,
-      ) {}
+  constructor(public value: T) {}
 }
 
 export function splitColumn(
-    columnName: string, separator: string): [string, string] {
-  let split = columnName.split(separator);
+  columnName: string,
+  separator: string
+): [string, string] {
+  const split = columnName.split(separator);
   if (split.length != 2 || split[0].length == 0) {
-    throw new Error(`Column ${columnName} is missing a table prefix.`)
+    throw new Error(`Column ${columnName} is missing a table prefix.`);
   }
   return split as [string, string];
 }

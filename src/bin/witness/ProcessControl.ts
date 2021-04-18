@@ -1,6 +1,6 @@
-import * as child_process from 'child_process';
+import * as child_process from "child_process";
 import { ChildProcess } from "child_process";
-import * as logger from './logger';
+import * as logger from "./logger";
 
 /**
  * Manages the lifecycle of the child and parent processes.
@@ -25,16 +25,16 @@ export class ProcessControl {
     logger.log(`Spawning child "${childPath}"...`);
 
     const killHandler = this._onReceiveKillSignal.bind(this);
-    process.on('SIGHUP', killHandler);
-    process.on('SIGINT', killHandler);
-    process.on('SIGQUIT', killHandler);
-    process.on('SIGTERM', killHandler);
+    process.on("SIGHUP", killHandler);
+    process.on("SIGINT", killHandler);
+    process.on("SIGQUIT", killHandler);
+    process.on("SIGTERM", killHandler);
 
     this._child = child_process.fork(childPath, [], {
-      stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
+      stdio: ["ignore", "pipe", "pipe", "ipc"],
     });
-    this._child.on('error', this._onChildError.bind(this));
-    this._child.on('exit', this._onChildExit.bind(this));
+    this._child.on("error", this._onChildError.bind(this));
+    this._child.on("exit", this._onChildExit.bind(this));
 
     return this._child;
   }
@@ -48,7 +48,7 @@ export class ProcessControl {
     logger.error(`Executing emergency shutdown...`);
     if (this._child) {
       this._child.kill();
-      this._child.kill('SIGKILL');
+      this._child.kill("SIGKILL");
     }
     process.exit(2);
   }
@@ -59,13 +59,13 @@ export class ProcessControl {
   }
 
   private _onChildError(err: Error) {
-    logger.error('Error from child process:');
+    logger.error("Error from child process:");
     logger.error(err);
     this._initiateShutdown();
   }
 
   private _onChildExit(code: string, signal: number) {
-    logger.log('Child exited w/ code', code, 'and signal', signal);
+    logger.log("Child exited w/ code", code, "and signal", signal);
 
     this._childExited = true;
     this._checkForShutdownComplete();
@@ -85,8 +85,8 @@ export class ProcessControl {
     if (this._child) {
       this._child.kill();
       setTimeout(() => {
-        logger.error('Child took too long to die, sending SIGKILL...');
-        this._child!.kill('SIGKILL');
+        logger.error("Child took too long to die, sending SIGKILL...");
+        this._child!.kill("SIGKILL");
       }, 7000);
     } else {
       // No child to wait for; exit immediately

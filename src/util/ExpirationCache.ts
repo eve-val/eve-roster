@@ -1,5 +1,3 @@
-
-
 /**
  * A map that where each entry has a lifetime. Attempting to retrieve an entry
  * after its lifetime has expired will return undefined.
@@ -8,8 +6,8 @@ export class ExpirationCache<K, V> {
   private _map = new Map<K, CacheItem<V>>();
 
   public set(key: K, value: V, lifetime: number) {
-    let item = this._map.get(key);
-    let expires = Date.now() + lifetime;
+    const item = this._map.get(key);
+    const expires = Date.now() + lifetime;
     if (!item) {
       this._map.set(key, {
         value: value,
@@ -22,7 +20,7 @@ export class ExpirationCache<K, V> {
   }
 
   public get(key: K): V | undefined {
-    let item = this._map.get(key);
+    const item = this._map.get(key);
     if (item == undefined) {
       return undefined;
     } else if (item.expires < Date.now()) {
@@ -35,6 +33,6 @@ export class ExpirationCache<K, V> {
 }
 
 interface CacheItem<V> {
-  value: V,
-  expires: number,
+  value: V;
+  expires: number;
 }

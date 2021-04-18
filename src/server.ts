@@ -1,35 +1,35 @@
 // Causes stack traces to reference the original .ts files
-require('source-map-support').install();
+require("source-map-support").install();
 
-require('heapdump');
+require("heapdump");
 
-import Graceful from 'node-graceful';
+import Graceful from "node-graceful";
 Graceful.captureExceptions = true;
 
-import { tables } from './db/tables';
-import { getPostgresKnex } from './db/getPostgresKnex';
+import { tables } from "./db/tables";
+import { getPostgresKnex } from "./db/getPostgresKnex";
 
-import { NodeTracerProvider } from '@opentelemetry/node';
-import { SimpleSpanProcessor } from '@opentelemetry/tracing';
-import { registerInstrumentations } from '@opentelemetry/instrumentation';
-import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
-import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
-import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
-import { CollectorTraceExporter } from '@opentelemetry/exporter-collector-grpc';
-const grpc = require('grpc');
+import { NodeTracerProvider } from "@opentelemetry/node";
+import { SimpleSpanProcessor } from "@opentelemetry/tracing";
+import { registerInstrumentations } from "@opentelemetry/instrumentation";
+import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
+import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
+import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
+const grpc = require("grpc");
 
 const REQUIRED_VARS = [
-  'COOKIE_SECRET',
-  'SSO_CLIENT_ID',
-  'SSO_SECRET_KEY',
-  'HONEYCOMB_API_KEY',
-  'HONEYCOMB_DATASET',
+  "COOKIE_SECRET",
+  "SSO_CLIENT_ID",
+  "SSO_SECRET_KEY",
+  "HONEYCOMB_API_KEY",
+  "HONEYCOMB_DATASET",
 ];
 
-import { buildLoggerFromFilename } from './infra/logging/buildLogger';
+import { buildLoggerFromFilename } from "./infra/logging/buildLogger";
 const logger = buildLoggerFromFilename(__filename);
 
-for (let envVar of REQUIRED_VARS) {
+for (const envVar of REQUIRED_VARS) {
   if (!(envVar in process.env)) {
     logger.error(`Missing config param ${envVar} (check your .env file).`);
     process.exit(2);
@@ -37,14 +37,14 @@ for (let envVar of REQUIRED_VARS) {
 }
 
 const metadata = new grpc.Metadata();
-metadata.set('x-honeycomb-team', process.env['HONEYCOMB_API_KEY'] || '');
-metadata.set('x-honeycomb-dataset', process.env['HONEYCOMB_DATASET'] || '');
+metadata.set("x-honeycomb-team", process.env["HONEYCOMB_API_KEY"] || "");
+metadata.set("x-honeycomb-dataset", process.env["HONEYCOMB_DATASET"] || "");
 
 const collectorOptions = {
-  serviceName: 'roster',
-  url: 'api.honeycomb.io:443',
+  serviceName: "roster",
+  url: "api.honeycomb.io:443",
   credentials: grpc.credentials.createSsl(),
-  metadata
+  metadata,
 };
 
 const provider: NodeTracerProvider = new NodeTracerProvider();
@@ -52,7 +52,7 @@ const exporter = new CollectorTraceExporter(collectorOptions);
 provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 provider.register();
 
-Graceful.on('exit', async () => {
+Graceful.on("exit", async () => {
   await provider.shutdown();
 });
 
@@ -65,13 +65,13 @@ registerInstrumentations({
   ],
 });
 
-import * as express from './infra/express/express';
-import * as cron from './infra/taskrunner/cron';
-import * as taskRunner from './infra/taskrunner/taskRunner';
-import * as sde from './eve/sde';
+import * as express from "./infra/express/express";
+import * as cron from "./infra/taskrunner/cron";
+import * as taskRunner from "./infra/taskrunner/taskRunner";
+import * as sde from "./eve/sde";
 
 // Crash the process in the face of an unhandled promise rejection
-process.on('unhandledRejection', (err) => {
+process.on("unhandledRejection", (err) => {
   if (err instanceof Error) {
     logger.error(`Unhandled promise rejection`, err);
   } else {
@@ -80,8 +80,7 @@ process.on('unhandledRejection', (err) => {
   throw err;
 });
 
-main()
-.catch(e => {
+main().catch((e) => {
   logger.error(`Fatal error during startup.`);
   logger.error(e);
   process.exit(2);
@@ -94,7 +93,7 @@ async function main() {
 
   taskRunner.init(db);
   cron.init(db);
-  express.init(db, port => {
+  express.init(db, (port) => {
     logger.info(`Serving from port ${port}.`);
   });
 }

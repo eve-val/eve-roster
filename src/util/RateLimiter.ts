@@ -1,4 +1,4 @@
-import { ArrayQueue } from './collection/ArrayQueue';
+import { ArrayQueue } from "./collection/ArrayQueue";
 
 /**
  * Provides a way to rate-limit access to a resource.
@@ -10,7 +10,7 @@ import { ArrayQueue } from './collection/ArrayQueue';
 export class RateLimiter {
   private readonly _minInterval: number;
   private readonly _queue = new ArrayQueue<() => void>();
-  private _lastCheckout: number = 0;
+  private _lastCheckout = 0;
 
   constructor(minInterval: number) {
     if (minInterval <= 0) {
@@ -21,9 +21,11 @@ export class RateLimiter {
   }
 
   ready() {
-    return new Promise<void>(resolve => {
-      if (this._queue.size() == 0
-          && Date.now() - this._lastCheckout > this._minInterval) {
+    return new Promise<void>((resolve) => {
+      if (
+        this._queue.size() == 0 &&
+        Date.now() - this._lastCheckout > this._minInterval
+      ) {
         this._lastCheckout = Date.now();
         resolve();
       } else {
@@ -36,8 +38,10 @@ export class RateLimiter {
   }
 
   private _scheduleTimeout() {
-    const remaining =
-        Math.max(0, this._minInterval - (Date.now() - this._lastCheckout));
+    const remaining = Math.max(
+      0,
+      this._minInterval - (Date.now() - this._lastCheckout)
+    );
     setTimeout(() => {
       const callback = this._queue.dequeue();
       this._lastCheckout = Date.now();

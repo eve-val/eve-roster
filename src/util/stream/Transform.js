@@ -1,1 +1,1 @@
-export { Transform } from 'stream';
+export { Transform } from "stream";

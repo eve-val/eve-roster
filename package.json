@@ -10,7 +10,8 @@
     "build": "{ yarn run build-server; } && { webpack --progress --config out/server/infra/build-client/webpack.prod.js; }",
     "build-server": "tsc",
     "watch-server": "tsc -w",
-    "test": "jest",
+    "test": "{ yarn run jest; } && { yarn run prettier --check .; }",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "clean": "rm -rf out/ && rm -rf static/dist/"
   },
   "engines": {
@@ -48,6 +49,8 @@
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "css-loader": "^5.2.1",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-jest": "^24.3.5",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "grpc": "^1.24.6",
@@ -60,6 +63,7 @@
     "node-schedule": "^2.0.0",
     "path-to-regexp": "^6.2.0",
     "pg": "^8.6.0",
+    "prettier": "^2.2.1",
     "progress-stream": "^2.0.0",
     "pug": "^3.0.2",
     "relaxed-json": "^1.0.3",
@@ -81,6 +85,9 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
     "jest": "^26.6.3",
     "request": "^2.88.2",
     "ts-jest": "^26.5.4",

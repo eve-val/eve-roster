@@ -1,5 +1,5 @@
 const filter = {
-  matchIndex: function(str, f) {
+  matchIndex: function (str, f) {
     if (str == null || f == null) {
       return -1;
     } else {
@@ -7,7 +7,7 @@ const filter = {
     }
   },
 
-  match: function(str, f) {
+  match: function (str, f) {
     let i = filter.matchIndex(str, f);
     if (i == -1) {
       return null;
@@ -18,7 +18,7 @@ const filter = {
         str.substr(i + f.length),
       ];
     }
-  }
-}
+  },
+};
 
 export default filter;

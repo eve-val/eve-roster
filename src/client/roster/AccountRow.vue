@@ -1,7 +1,6 @@
 <template>
-<div class="accountRow"
-    v-show="filterMatches.any || filterMatches.inactive">
-  <character-row
+  <div class="accountRow" v-show="filterMatches.any || filterMatches.inactive">
+    <character-row
       :character="expanded ? account.main : account.aggregate"
       :columns="columns"
       :isMain="true"
@@ -12,8 +11,9 @@
         background: expanded ? '#353331' : undefined,
       }"
       @toggleExpanded="clickExpanded = !clickExpanded"
-      />
-  <transition name="alts-expand"
+    />
+    <transition
+      name="alts-expand"
       @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter"
@@ -21,29 +21,30 @@
       @leave="leave"
       @after-leave="afterLeave"
       :css="false"
-      >
-    <div class="alt-cnt"
+    >
+      <div
+        class="alt-cnt"
         v-show="expanded"
         :style="{
           'background-color': expanded ? '#2D2B29' : '#202020',
         }"
-        >
-      <character-row v-for="alt in account.alts"
+      >
+        <character-row
+          v-for="alt in account.alts"
           :key="alt.id"
           :character="alt"
           :columns="columns"
           :isMain="false"
           :filter="filter"
-          />
-    </div>
-  </transition>
-</div>
+        />
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
-import filter from './filter';
-import CharacterRow from './CharacterRow.vue';
-
+import filter from "./filter";
+import CharacterRow from "./CharacterRow.vue";
 
 export default {
   components: {
@@ -56,20 +57,20 @@ export default {
     filter: { type: String, required: false },
   },
 
-  data: function() {
+  data: function () {
     return {
       clickExpanded: false,
     };
   },
 
   computed: {
-    expanded: function() {
+    expanded: function () {
       return this.clickExpanded || this.filterMatches.alt;
     },
 
-    filterMatches: function() {
+    filterMatches: function () {
       let matches = {
-        inactive: this.filter == null || this.filter == '',
+        inactive: this.filter == null || this.filter == "",
         any: false,
         main: false,
         alt: false,
@@ -92,17 +93,17 @@ export default {
   methods: {
     beforeEnter: function (el) {
       let oldDisplay = el.style.display;
-      el.style.display = 'block';
-      el.style.height = 'auto';
+      el.style.display = "block";
+      el.style.height = "auto";
       this.absHeight = el.offsetHeight;
       el.style.display = oldDisplay;
-      el.style.height = '0';
+      el.style.height = "0";
     },
 
     enter: function (el, done) {
       // I don't understand why this setTimeout call is necessary
       setTimeout(() => {
-        el.style.height = this.absHeight + 'px';
+        el.style.height = this.absHeight + "px";
         // TODO: actually listen for css transitionend event
         setTimeout(() => {
           done();
@@ -111,16 +112,16 @@ export default {
     },
 
     afterEnter: function (el) {
-      el.style.height = 'auto';
+      el.style.height = "auto";
     },
 
     beforeLeave: function (el) {
-      el.style.height = el.offsetHeight + 'px';
+      el.style.height = el.offsetHeight + "px";
     },
 
     leave: function (el, done) {
       setTimeout(() => {
-        el.style.height = '0';
+        el.style.height = "0";
         // TODO: actually listen for css transitionend event
         setTimeout(() => {
           done();
@@ -129,15 +130,15 @@ export default {
     },
 
     afterLeave: function (el) {
-      el.style.height = 'auto';
+      el.style.height = "auto";
     },
   },
-}
+};
 </script>
 
 <style scoped>
 .accountRow {
-  border-bottom: 1px solid #312C24;
+  border-bottom: 1px solid #312c24;
 }
 
 .main-row {
@@ -150,5 +151,4 @@ export default {
   transition-duration: 250ms;
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-
 </style>

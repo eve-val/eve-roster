@@ -1,12 +1,14 @@
-import { VError } from 'verror';
-import { OrderedParallelTransform } from '../../../util/stream/OrderedParallelTransform';
-import { ZKillmail, ZKillDescriptor } from '../../../data-source/zkillboard/ZKillmail';
-import { ESI_KILLMAILS_$killmailId_$killmailHash } from '../../../data-source/esi/endpoints';
-import { EsiKillmail } from '../../../data-source/esi/EsiKillmail';
-import { AxiosError } from 'axios';
-import { Logger } from '../../../infra/logging/Logger';
-import { fetchEsi } from '../../../data-source/esi/fetch/fetchEsi';
-
+import { VError } from "verror";
+import { OrderedParallelTransform } from "../../../util/stream/OrderedParallelTransform";
+import {
+  ZKillmail,
+  ZKillDescriptor,
+} from "../../../data-source/zkillboard/ZKillmail";
+import { ESI_KILLMAILS_$killmailId_$killmailHash } from "../../../data-source/esi/endpoints";
+import { EsiKillmail } from "../../../data-source/esi/EsiKillmail";
+import { AxiosError } from "axios";
+import { Logger } from "../../../infra/logging/Logger";
+import { fetchEsi } from "../../../data-source/esi/fetch/fetchEsi";
 
 /**
  * Given a stream of ZKillDesciptors, fetches the associated EsiKillmail and
@@ -15,8 +17,10 @@ import { fetchEsi } from '../../../data-source/esi/fetch/fetchEsi';
  * ZKillboard used to return both the descriptor and the killmail in a single
  * query; now we have to fetch them separately and combine them.
  */
-export class EsiKillmailFetcher
-    extends OrderedParallelTransform<ZKillDescriptor, ZKillmail> {
+export class EsiKillmailFetcher extends OrderedParallelTransform<
+  ZKillDescriptor,
+  ZKillmail
+> {
   private readonly _logger: Logger;
   private _closed = false;
   private _fetchCount = 0;
@@ -35,17 +39,16 @@ export class EsiKillmailFetcher
   }
 
   protected async _processChunk(
-      chunk: ZKillDescriptor,
+    chunk: ZKillDescriptor
   ): Promise<ZKillmail | null> {
     if (this._closed) {
       return null;
     }
-    const esiMail =
-        await this._fetchMail(
-            chunk.killmail_id,
-            chunk.zkb.hash,
-            MAX_FAILURES_PER_REQUEST,
-            );
+    const esiMail = await this._fetchMail(
+      chunk.killmail_id,
+      chunk.zkb.hash,
+      MAX_FAILURES_PER_REQUEST
+    );
     this._fetchCount++;
     return combineKillmails(esiMail, chunk);
   }
@@ -61,13 +64,17 @@ export class EsiKillmailFetcher
       } catch (e) {
         failures++;
         const cause = VError.cause(e) as AxiosError | null;
-        if (failures <= maxFailures
-            && cause != null
-            && cause.response != null
-            && cause.response.status >= 500) {
+        if (
+          failures <= maxFailures &&
+          cause != null &&
+          cause.response != null &&
+          cause.response.status >= 500
+        ) {
           // Try again
-          this._logger.info(`FAILURE ${failures} (max ${maxFailures}) for`
-              + ` killmail ${id}, "${cause.response.statusText}", retrying...`);
+          this._logger.info(
+            `FAILURE ${failures} (max ${maxFailures}) for` +
+              ` killmail ${id}, "${cause.response.statusText}", retrying...`
+          );
         } else {
           throw e;
         }
@@ -77,8 +84,8 @@ export class EsiKillmailFetcher
 }
 
 function combineKillmails(
-    km: EsiKillmail,
-    descriptor: ZKillDescriptor,
+  km: EsiKillmail,
+  descriptor: ZKillDescriptor
 ): ZKillmail {
   const zkm = km as ZKillmail;
   zkm.zkb = descriptor.zkb;

@@ -3,10 +3,10 @@ import moment = require("moment");
 
 const LOG_FILENAME_PATTERN = /^roster_logs_(\d{4}-\d{2}-\d{2}).txt$/;
 const INPUT_LOG_LINE_PATTERN = /^(\d+) ([EWIVD]) ?(.*)/;
-const OUTPUT_TIMESTAMP_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS[Z]';
+const OUTPUT_TIMESTAMP_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 const OUTPUT_FORMAT_VERSION = 0;
 
-export type LevelTag = 'E' | 'W' | 'I' | 'V' | 'D';
+export type LevelTag = "E" | "W" | "I" | "V" | "D";
 
 /**
  * This must be the first line of any log file. May appear later in the log
@@ -17,7 +17,7 @@ export function getLogFormatSpecifier() {
 }
 
 export function formatLogFilename(logStart: Moment) {
-  return `roster_logs_${logStart.format('YYYY-MM-DD')}.txt`;
+  return `roster_logs_${logStart.format("YYYY-MM-DD")}.txt`;
 }
 
 export function parseLogFilename(filename: string) {
@@ -30,10 +30,10 @@ export function parseLogFilename(filename: string) {
 }
 
 export function formatOutputLine(
-    timestamp: Moment,
-    levelTag: string,
-    message: string,
-    ) {
+  timestamp: Moment,
+  levelTag: string,
+  message: string
+) {
   const timestampStr = timestamp.format(OUTPUT_TIMESTAMP_FORMAT);
   const pidStr = process.pid.toString().padStart(5);
   return `${timestampStr} ${pidStr} ${levelTag} ${message}`;
@@ -44,9 +44,9 @@ export function parseInputLine(line: string) {
 }
 
 export function formatInputLine(
-    timestamp: number,
-    levelTag: LevelTag,
-    message: string,
+  timestamp: number,
+  levelTag: LevelTag,
+  message: string
 ) {
   return `${timestamp} ${levelTag} ${message}\n`;
 }

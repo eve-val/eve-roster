@@ -12,36 +12,36 @@ in most other places).
 -->
 
 <template>
-<div
+  <div
     class="_loss-row"
     :style="{ backgroundColor: highlightAsRelated ? '#171717' : undefined }"
-    >
-  <srp-triplet
+  >
+    <srp-triplet
       class="shiplet"
       :icon-id="srp.shipType"
       :icon-type="'Type'"
       :top-line="name(srp.shipType)"
       :bottom-line="srp.timestamp"
       :default-href="zkillHref(srp.killmail, 'kill')"
-      >
-    <a
+    >
+      <a
         class="related-link"
         v-if="srp.relatedKillmail != null"
         slot="top-line-extra"
         :href="zkillHref(srp.relatedKillmail.id, 'kill')"
-        >
-      <eve-image
+      >
+        <eve-image
           :id="srp.relatedKillmail.shipId"
           type="Type"
           :size="13"
           @mouseenter.native="onRelatedHover"
           @mouseleave.native="onRelatedUnhover"
-          >
-      </eve-image>
-    </a>
-  </srp-triplet>
+        >
+        </eve-image>
+      </a>
+    </srp-triplet>
 
-  <srp-triplet
+    <srp-triplet
       class="victimlet"
       :icon-id="this.srp.victim || srp.victimCorp"
       :icon-type="victimIconType"
@@ -49,43 +49,43 @@ in most other places).
       :bottom-line="name(srp.victimCorp)"
       :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
-      >
-  </srp-triplet>
+    >
+    </srp-triplet>
 
-  <srp-triplet
+    <srp-triplet
       class="executionerlet"
       :icon-id="executionerAffiliation"
       :icon-type="executionerIconType"
       :top-line="name(srp.executioner.character || srp.executioner.ship)"
       :bottom-line="name(executionerAffiliation)"
       :default-href="
-          zkillHref(executionerAffiliation, executionerAffiliationType)"
+        zkillHref(executionerAffiliation, executionerAffiliationType)
+      "
       :top-href="zkillHref(srp.executioner.character, 'character')"
-      >
-  </srp-triplet>
+    >
+    </srp-triplet>
 
-  <srp-status
+    <srp-status
       class="srp-status"
       :srp="srp"
       :has-edit-priv="hasEditPriv"
       :start-in-edit-mode="startInEditMode"
-      >
-  </srp-status>
-</div>
+    >
+    </srp-status>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import _ from 'underscore';
+import Vue from "vue";
+import _ from "underscore";
 
-import EveImage from '../shared/EveImage.vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import SrpStatus from './SrpStatus.vue';
-import SrpTriplet from './SrpTriplet.vue';
+import EveImage from "../shared/EveImage.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import SrpStatus from "./SrpStatus.vue";
+import SrpTriplet from "./SrpTriplet.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -99,7 +99,7 @@ export default Vue.extend({
     srp: { type: Object, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
-    highlightAsRelated: { type: Boolean, required: false, default: false, },
+    highlightAsRelated: { type: Boolean, required: false, default: false },
   },
 
   mounted() {
@@ -111,9 +111,9 @@ export default Vue.extend({
   computed: {
     victimIconType() {
       if (this.srp.victim != undefined) {
-        return 'Character';
+        return "Character";
       } else {
-        return 'Corporation';
+        return "Corporation";
       }
     },
 
@@ -127,50 +127,54 @@ export default Vue.extend({
 
     executionerIconType() {
       if (this.srp.executioner.alliance) {
-        return 'Alliance';
+        return "Alliance";
       } else if (this.srp.executioner.corporation) {
-        return 'Corporation';
+        return "Corporation";
       } else {
-        return 'Type';
+        return "Type";
       }
     },
 
     executionerAffiliation() {
-      return this.srp.executioner.alliance
-          || this.srp.executioner.corporation
-          || this.srp.executioner.ship;
+      return (
+        this.srp.executioner.alliance ||
+        this.srp.executioner.corporation ||
+        this.srp.executioner.ship
+      );
     },
 
     executionerAffiliationType() {
       if (this.srp.executioner.alliance) {
-        return 'alliance';
+        return "alliance";
       } else if (this.srp.executioner.corporation) {
-        return 'corporation';
+        return "corporation";
       } else {
-        return 'ship';
+        return "ship";
       }
     },
   },
 
-  methods: Object.assign({
-    onRelatedHover(e) {
-      this.$emit('related-hover', this.srp.relatedKillmail.id);
-    },
+  methods: Object.assign(
+    {
+      onRelatedHover(e) {
+        this.$emit("related-hover", this.srp.relatedKillmail.id);
+      },
 
-    onRelatedUnhover(e) {
-      this.$emit('related-unhover', this.srp.relatedKillmail.id);
-    },
+      onRelatedUnhover(e) {
+        this.$emit("related-unhover", this.srp.relatedKillmail.id);
+      },
 
-    zkillHref(id, type) {
-      if (id == undefined) {
-        return undefined;
-      } else {
-        return `https://zkillboard.com/${type}/${id}/`;
-      }
+      zkillHref(id, type) {
+        if (id == undefined) {
+          return undefined;
+        } else {
+          return `https://zkillboard.com/${type}/${id}/`;
+        }
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
-
 </script>
 
 <style scoped>
@@ -178,10 +182,12 @@ export default Vue.extend({
   display: flex;
   height: 77px;
   align-items: center;
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 }
 
-.shiplet, .victimlet, .executionerlet {
+.shiplet,
+.victimlet,
+.executionerlet {
   width: 220px;
   margin-right: 8px;
 }
@@ -193,5 +199,4 @@ export default Vue.extend({
 .related-link {
   margin-left: 4px;
 }
-
 </style>

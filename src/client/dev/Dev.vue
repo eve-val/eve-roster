@@ -1,40 +1,40 @@
 <template>
-<div class="_dev-frame">
-  <app-header :identity="identity"></app-header>
-  <div class="split-container">
-    <div class="sidebar">
-      <router-link class="sidebar-link"
+  <div class="_dev-frame">
+    <app-header :identity="identity"></app-header>
+    <div class="split-container">
+      <div class="sidebar">
+        <router-link
+          class="sidebar-link"
           v-for="section in sections"
           :key="section.path"
           :to="'/dev/' + section.path"
-          >
-        {{ section.label }}
-      </router-link>
-    </div>
-    <div class="main">
-      <template v-if="currentSection">
-        <div class="title">{{ currentSection.label }}</div>
-        <component
-            :is="currentSection.component"></component>
-      </template>
-      <template v-else>
-        <div class="title">Component state development</div>
-        Use these sections to develop the look of your components across all of
-        their possible states.
-      </template>
+        >
+          {{ section.label }}
+        </router-link>
+      </div>
+      <div class="main">
+        <template v-if="currentSection">
+          <div class="title">{{ currentSection.label }}</div>
+          <component :is="currentSection.component"></component>
+        </template>
+        <template v-else>
+          <div class="title">Component state development</div>
+          Use these sections to develop the look of your components across all
+          of their possible states.
+        </template>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import _ from 'underscore';
+import _ from "underscore";
 
-import AppHeader from '../shared/AppHeader.vue';
+import AppHeader from "../shared/AppHeader.vue";
 
-import DevLoadingSpinner from './DevLoadingSpinner.vue';
-import DevOwnedCharacterSlab from './DevOwnedCharacterSlab.vue';
-import DevTaskSlab from './DevTaskSlab.vue';
+import DevLoadingSpinner from "./DevLoadingSpinner.vue";
+import DevOwnedCharacterSlab from "./DevOwnedCharacterSlab.vue";
+import DevTaskSlab from "./DevTaskSlab.vue";
 
 export default {
   components: {
@@ -44,7 +44,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true, },
+    identity: { type: Object, required: true },
   },
 
   data() {
@@ -52,18 +52,18 @@ export default {
       sections: [
         {
           component: DevLoadingSpinner,
-          label: 'LoadingSpinner',
-          path: 'loading-spinner',
+          label: "LoadingSpinner",
+          path: "loading-spinner",
         },
         {
           component: DevOwnedCharacterSlab,
-          label: 'OwnedCharacterSlab',
-          path: 'owned-character-slab',
+          label: "OwnedCharacterSlab",
+          path: "owned-character-slab",
         },
         {
           component: DevTaskSlab,
-          label: 'TaskSlab',
-          path: 'dev-task-slab',
+          label: "TaskSlab",
+          path: "dev-task-slab",
         },
       ],
     };
@@ -72,9 +72,9 @@ export default {
   computed: {
     currentSection() {
       return _.findWhere(this.sections, { path: this.$route.params.section });
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -104,7 +104,7 @@ export default {
 }
 
 .sidebar-link.router-link-active {
-  color: #D7D7D7;
+  color: #d7d7d7;
   text-shadow: 0 0 6px rgba(166, 116, 54, 58);
   text-decoration: none;
 }

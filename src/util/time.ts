@@ -1,10 +1,9 @@
-import moment = require('moment');
-
+import moment = require("moment");
 
 const UNITS = [
-  { tag: 'd', count: 1, },
-  { tag: 'h', count: 24, },
-  { tag: 'm', count: 60, },
+  { tag: "d", count: 1 },
+  { tag: "h", count: 24 },
+  { tag: "m", count: 60 },
 ];
 
 /**
@@ -15,29 +14,29 @@ const UNITS = [
  * @param maxUnits [1,3] How many of [Days, Hours, Minutes] to put in result
  *    string.
  * @returns A string in the format "Xd (Yh (Zm))" or an empty string.
-*/
+ */
 export function shortDurationString(
-    start: moment.MomentInput,
-    end: moment.MomentInput,
-    maxUnits?: number
-    ): string {
+  start: moment.MomentInput,
+  end: moment.MomentInput,
+  maxUnits?: number
+): string {
   maxUnits = maxUnits || UNITS.length;
 
-  let timeRemaining = moment(end).diff(moment(start), 'days', true);
+  let timeRemaining = moment(end).diff(moment(start), "days", true);
   timeRemaining = Math.abs(timeRemaining);
-  let out = [];
+  const out = [];
 
-  for (let unit of UNITS) {
+  for (const unit of UNITS) {
     if (out.length >= maxUnits) {
       break;
     }
     timeRemaining *= unit.count;
-    let unitDuration = Math.floor(timeRemaining);
+    const unitDuration = Math.floor(timeRemaining);
     if (unitDuration > 0 || out.length > 0) {
       out.push(unitDuration + unit.tag);
     }
     timeRemaining = timeRemaining - Math.floor(timeRemaining);
   }
 
-  return out.join(' ');
+  return out.join(" ");
 }

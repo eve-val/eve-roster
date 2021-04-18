@@ -1,154 +1,136 @@
 <template>
-<div class="_dev-loading-spinner">
-
-  <div>
-    <div class="title">Font sizes</div>
-
-    <div class="fake-title">
-      Font 30 text w/ default sized spinner
-      <loading-spinner />
-    </div>
-
-    <div style="font-size: 16px">
-      This is 16px text w/ default sized spinner
-      <loading-spinner />
-    </div>
-
-    <div style="font-size: 14px">
-      This is 14px text w/ default sized spinner
-      <loading-spinner />
-    </div>
-
-    <div style="font-size: 12px">
-      This is 12px text w/ default sized spinner
-      <loading-spinner />
-    </div>
-
-    <div class="fake-title">
-      Font 30 text w/ tiny spinner
-      <loading-spinner size="12px" />
-    </div>
-  </div> <!-- end text size comparison -->
-
-  <div>
-    <div class="title">States</div>
+  <div class="_dev-loading-spinner">
     <div>
-      Inline spinning state
-      <loading-spinner state="spinning" />
+      <div class="title">Font sizes</div>
+
+      <div class="fake-title">
+        Font 30 text w/ default sized spinner
+        <loading-spinner />
+      </div>
+
+      <div style="font-size: 16px">
+        This is 16px text w/ default sized spinner
+        <loading-spinner />
+      </div>
+
+      <div style="font-size: 14px">
+        This is 14px text w/ default sized spinner
+        <loading-spinner />
+      </div>
+
+      <div style="font-size: 12px">
+        This is 12px text w/ default sized spinner
+        <loading-spinner />
+      </div>
+
+      <div class="fake-title">
+        Font 30 text w/ tiny spinner
+        <loading-spinner size="12px" />
+      </div>
     </div>
+    <!-- end text size comparison -->
 
     <div>
-      Block spinning state
-      <loading-spinner display="block" state="spinning" />
-    </div>
+      <div class="title">States</div>
+      <div>
+        Inline spinning state
+        <loading-spinner state="spinning" />
+      </div>
 
-    <div>
-      Inline error state
-      <loading-spinner state="error" />
-    </div>
+      <div>
+        Block spinning state
+        <loading-spinner display="block" state="spinning" />
+      </div>
 
-    <div>
-      Inline error state with hover text
-      <loading-spinner
-          state="error"
-          adversityMessage="There was an error"
-          />
-    </div>
+      <div>
+        Inline error state
+        <loading-spinner state="error" />
+      </div>
 
-    <div>
-      Inline warning state
-      <loading-spinner state="warning" />
-    </div>
+      <div>
+        Inline error state with hover text
+        <loading-spinner state="error" adversityMessage="There was an error" />
+      </div>
 
-    <div>
-      Inline warning state with hover text
-      <loading-spinner
+      <div>
+        Inline warning state
+        <loading-spinner state="warning" />
+      </div>
+
+      <div>
+        Inline warning state with hover text
+        <loading-spinner
           state="warning"
           adversityMessage="Warning: bad things are about to happen."
-          />
-    </div>
+        />
+      </div>
 
-    <div class="block-wrapper">
-      <loading-spinner
-            display="block"
-            state="error"
-            adversityMessage="Something terrible has occurred."
-            />
-    </div>
-    
-    <div class="block-wrapper">
-      <loading-spinner
-            display="block"
-            state="warning"
-            adversityMessage="Warning: Something terrible might have occurred."
-            />
-    </div>
-
-    <div>
-      Inline hidden state
-      <loading-spinner state="hidden" />
-    </div>
-
-    <div>
-      Block hidden state
-      <loading-spinner display="block" state="hidden" />
-    </div>
-  </div> <!-- end states -->
-
-  <div>
-    <div class="title">Promises</div>
-
-    <div>
-      Inline pending
-      <loading-spinner
-          ref="inlinePending"
-          />
-    </div>
-
-    <div>
-      Block pending
-      <loading-spinner
+      <div class="block-wrapper">
+        <loading-spinner
           display="block"
-          ref="blockPending"
-          />
-    </div>
+          state="error"
+          adversityMessage="Something terrible has occurred."
+        />
+      </div>
 
-    <div>
-      Inline error
-      <loading-spinner
-          ref="inlineError"
-          />
-    </div>
-
-    <div>
-      Block error
-      <loading-spinner
+      <div class="block-wrapper">
+        <loading-spinner
           display="block"
-          ref="blockError"
-          />
-    </div>
+          state="warning"
+          adversityMessage="Warning: Something terrible might have occurred."
+        />
+      </div>
 
-        <div>
-      Inline resolved
-      <loading-spinner
-          ref="inlineResolved"
-          />
+      <div>
+        Inline hidden state
+        <loading-spinner state="hidden" />
+      </div>
+
+      <div>
+        Block hidden state
+        <loading-spinner display="block" state="hidden" />
+      </div>
     </div>
+    <!-- end states -->
 
     <div>
-      Block resolved
-      <loading-spinner
-          display="block"
-          ref="blockResolved"
-          />
+      <div class="title">Promises</div>
+
+      <div>
+        Inline pending
+        <loading-spinner ref="inlinePending" />
+      </div>
+
+      <div>
+        Block pending
+        <loading-spinner display="block" ref="blockPending" />
+      </div>
+
+      <div>
+        Inline error
+        <loading-spinner ref="inlineError" />
+      </div>
+
+      <div>
+        Block error
+        <loading-spinner display="block" ref="blockError" />
+      </div>
+
+      <div>
+        Inline resolved
+        <loading-spinner ref="inlineResolved" />
+      </div>
+
+      <div>
+        Block resolved
+        <loading-spinner display="block" ref="blockResolved" />
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 export default {
   components: {
@@ -165,7 +147,7 @@ export default {
     this.$refs.inlineResolved.observe(resolvedPromise());
     this.$refs.blockResolved.observe(resolvedPromise());
   },
-}
+};
 
 function pendingPromise() {
   return new Promise(() => {});
@@ -174,7 +156,7 @@ function pendingPromise() {
 function errorPromise() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject('A terrible error has occurred');
+      reject("A terrible error has occurred");
     }, 1000);
   });
 }
@@ -182,7 +164,6 @@ function errorPromise() {
 function resolvedPromise() {
   return Promise.resolve();
 }
-
 </script>
 
 <style scoped>

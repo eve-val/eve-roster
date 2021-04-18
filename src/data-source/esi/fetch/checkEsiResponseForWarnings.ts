@@ -4,25 +4,27 @@ import { AxiosResponse } from "axios";
 import { SimpleMap } from "../../../util/simpleTypes";
 import { buildLogger } from "../../../infra/logging/buildLogger";
 
-const logger = buildLogger('esi');
+const logger = buildLogger("esi");
 
 export function checkEsiResponseForWarnings(
-    endpoint: EsiEndpoint,
-    response: AxiosResponse,
+  endpoint: EsiEndpoint,
+  response: AxiosResponse
 ) {
-  const warning: string = response.headers['warning'];
+  const warning: string = response.headers["warning"];
 
   if (warning != undefined) {
-    const tag = warning.startsWith(`199`) ? 'newVer'
-      : warning.startsWith(`299`) ? 'deprecated'
-      : 'unknown';
+    const tag = warning.startsWith(`199`)
+      ? "newVer"
+      : warning.startsWith(`299`)
+      ? "deprecated"
+      : "unknown";
 
     logPathWarning(endpoint.path, tag, warning);
   }
 }
 
 const ERR_LOG_TIMESTAMPS = new Map<string, SimpleMap<number>>();
-const MIN_TIME_BETWEEN_LOGS = moment.duration(1, 'hour').asMilliseconds();;
+const MIN_TIME_BETWEEN_LOGS = moment.duration(1, "hour").asMilliseconds();
 
 function logPathWarning(path: string, tag: string, message: string) {
   const entry: SimpleMap<number> = ERR_LOG_TIMESTAMPS.get(path) || {};

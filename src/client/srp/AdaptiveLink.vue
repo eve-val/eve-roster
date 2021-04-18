@@ -13,11 +13,11 @@ Otherwise an anchor tag is used.
     <slot></slot>
   </div>
   <a
-      v-else-if="isExternalUrl(path)"
-      :class="[linkClass]"
-      :href="path"
-      target="_blank"
-      >
+    v-else-if="isExternalUrl(path)"
+    :class="[linkClass]"
+    :href="path"
+    target="_blank"
+  >
     <slot></slot>
   </a>
   <router-link v-else :to="path" :class="[linkClass]">
@@ -26,24 +26,22 @@ Otherwise an anchor tag is used.
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-
 export default Vue.extend({
-  components: {
-  },
+  components: {},
 
   props: {
-    linkClass: { type: String, required: false, },
+    linkClass: { type: String, required: false },
     path: { type: String, required: false },
   },
 
   methods: {
     isExternalUrl(path) {
       return ABS_URL_PATTERN.test(path);
-    }
+    },
   },
 });
 </script>

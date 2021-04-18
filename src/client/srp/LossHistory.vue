@@ -7,11 +7,10 @@ Exposes various options for filtering the contents of the table.
 -->
 
 <template>
-<div class="_loss-history" :class="{ compact: compactMode, }">
-
-  <template v-if="rows != null">
-    <loss-heading></loss-heading>
-    <loss-row
+  <div class="_loss-history" :class="{ compact: compactMode }">
+    <template v-if="rows != null">
+      <loss-heading></loss-heading>
+      <loss-row
         v-for="row in rows"
         :key="row.killmail"
         :srp="row"
@@ -20,35 +19,31 @@ Exposes various options for filtering the contents of the table.
         :highlight-as-related="row.killmail == relatedKillmail"
         @related-hover="onRelatedHover"
         @related-unhover="onRelatedUnhover"
-        >
-    </loss-row>
-    <div v-if="rows.length == 0" class="no-results">No results</div>
-  </template>
-
-  <div
-      v-if="suspectMoreToFetch"
-      class="more-cnt"
       >
-    <more-button
+      </loss-row>
+      <div v-if="rows.length == 0" class="no-results">No results</div>
+    </template>
+
+    <div v-if="suspectMoreToFetch" class="more-cnt">
+      <more-button
         :promise="fetchPromise"
         :hide-button="rows == null"
         @fetch-requested="fetchNextResults"
-        >
-    </more-button>
+      >
+      </more-button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import LossHeading from './LossHeading.vue';
-import LossRow from './LossRow.vue';
-import MoreButton from './MoreButton.vue';
+import Vue from "vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import LossHeading from "./LossHeading.vue";
+import LossRow from "./LossRow.vue";
+import MoreButton from "./MoreButton.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -59,10 +54,10 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    forAccount: { type: Number, required: false, },
-    triageMode: { type: Boolean, required: false, default: false, },
-    compactMode: { type: Boolean, required: false, default: false, },
+    identity: { type: Object, required: true },
+    forAccount: { type: Number, required: false },
+    triageMode: { type: Boolean, required: false, default: false },
+    compactMode: { type: Boolean, required: false, default: false },
   },
 
   data() {
@@ -98,43 +93,46 @@ export default Vue.extend({
     },
   },
 
-  methods: Object.assign({
-    reset() {
-      this.rows = null;
-      this.fetchPromise = null;
-      this.suspectMoreToFetch = true;
-      this.fetchNextResults();
-    },
+  methods: Object.assign(
+    {
+      reset() {
+        this.rows = null;
+        this.fetchPromise = null;
+        this.suspectMoreToFetch = true;
+        this.fetchNextResults();
+      },
 
-    fetchNextResults() {
-      this.fetchPromise = ajaxer.getRecentSrpLosses({
-        pending: this.triageMode,
-        order: this.triageMode ? 'asc' : 'desc',
-        fromKillmail: this.finalKillmail,
-        account: this.forAccount,
-        limit: this.resultsPerFetch,
-        includeTriage: this.triageMode,
-      });
+      fetchNextResults() {
+        this.fetchPromise = ajaxer.getRecentSrpLosses({
+          pending: this.triageMode,
+          order: this.triageMode ? "asc" : "desc",
+          fromKillmail: this.finalKillmail,
+          account: this.forAccount,
+          limit: this.resultsPerFetch,
+          includeTriage: this.triageMode,
+        });
 
-      this.fetchPromise.then(response => {
-        this.addNames(response.data.names);
-        this.rows = this.rows || [];
-        for (let srp of response.data.srps) {
-          this.rows.push(srp);
-        }
-        this.suspectMoreToFetch =
+        this.fetchPromise.then((response) => {
+          this.addNames(response.data.names);
+          this.rows = this.rows || [];
+          for (let srp of response.data.srps) {
+            this.rows.push(srp);
+          }
+          this.suspectMoreToFetch =
             response.data.srps.length == this.resultsPerFetch;
-      });
-    },
+        });
+      },
 
-    onRelatedHover(killmailId) {
-      this.relatedKillmail = killmailId;
-    },
+      onRelatedHover(killmailId) {
+        this.relatedKillmail = killmailId;
+      },
 
-    onRelatedUnhover(killmailId) {
-      this.relatedKillmail = null;
+      onRelatedUnhover(killmailId) {
+        this.relatedKillmail = null;
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -153,7 +151,7 @@ export default Vue.extend({
   justify-content: center;
   height: 70px;
 
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   font-style: italic;
 }

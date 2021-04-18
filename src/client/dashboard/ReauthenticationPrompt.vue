@@ -1,17 +1,21 @@
 <template>
-<div class="_reauthentication-prompt"
-    >
-  <div class="cnt-left">
-    <div class="bother-title">Character needs to be reauthorized.</div>
-    Log in as "{{ characterName }}".
+  <div class="_reauthentication-prompt">
+    <div class="cnt-left">
+      <div class="bother-title">Character needs to be reauthorized.</div>
+      Log in as "{{ characterName }}".
+    </div>
+    <div class="cnt-right">
+      <a
+        class="reauth-btn roster-btn"
+        :href="
+          'https://login.eveonline.com/oauth/authorize' +
+          '?state=addCharacter&' +
+          loginParams
+        "
+        >Reauthorize</a
+      >
+    </div>
   </div>
-  <div class="cnt-right">
-    <a class="reauth-btn roster-btn"
-        :href="'https://login.eveonline.com/oauth/authorize'
-            + '?state=addCharacter&' + loginParams"
-        >Reauthorize</a>
-  </div>
-</div>
 </template>
 
 <script>
@@ -19,8 +23,8 @@ export default {
   props: {
     loginParams: { type: String, required: true },
     characterName: { type: String, required: true },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

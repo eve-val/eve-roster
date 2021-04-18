@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 export function getProjectPaths() {
   return {
     root: getProjectRoot(),
-    src: path.join(getProjectRoot(), 'src'),
+    src: path.join(getProjectRoot(), "src"),
   };
 }
 
@@ -23,12 +23,12 @@ function getProjectRoot() {
 }
 
 function findProjectRoot(currentPath: string): string {
-  if (currentPath == '/') {
+  if (currentPath == "/") {
     throw new Error(`Cannot find project root`);
   }
-  if (fs.existsSync(path.join(currentPath, 'package.json'))) {
+  if (fs.existsSync(path.join(currentPath, "package.json"))) {
     return currentPath;
   } else {
-    return findProjectRoot(path.resolve(currentPath, '../'));
+    return findProjectRoot(path.resolve(currentPath, "../"));
   }
 }

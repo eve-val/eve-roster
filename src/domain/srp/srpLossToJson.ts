@@ -1,11 +1,10 @@
-const moment = require('moment');
-import _ = require('underscore');
+const moment = require("moment");
+import _ = require("underscore");
 
 import { SrpLossRow } from "../../db/dao/SrpDao";
 import { nil } from "../../util/simpleTypes";
 import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
 import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
-
 
 /**
  * Shared logic for dumping the representation of an SRPable loss to JSON.
@@ -15,29 +14,31 @@ import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
  * @param ids Will add any IDs that need names into this set.
  */
 export function srpLossToJson(
-    row: SrpLossRow,
-    ids: Set<number | nil>,
+  row: SrpLossRow,
+  ids: Set<number | nil>
 ): SrpLossJson {
   const json: SrpLossJson = {
     killmail: row.km_id,
-    timestamp: moment.utc(row.km_timestamp).format('YYYY-MM-DD HH:mm'),
+    timestamp: moment.utc(row.km_timestamp).format("YYYY-MM-DD HH:mm"),
     shipType: row.km_data.victim.ship_type_id,
     victim: row.km_data.victim.character_id,
     victimCorp: row.km_data.victim.corporation_id,
-    relatedKillmail: row.related_data ? {
-      id: row.related_data.killmail_id,
-      shipId: row.related_data.victim.ship_type_id,
-    } : null,
+    relatedKillmail: row.related_data
+      ? {
+          id: row.related_data.killmail_id,
+          shipId: row.related_data.victim.ship_type_id,
+        }
+      : null,
     executioner: getExecutioner(row.km_data, ids),
-    status: row.srpr_paid == true ?
-        <UnifiedSrpLossStatus>'paid' : row.srpv_status,
+    status:
+      row.srpr_paid == true ? <UnifiedSrpLossStatus>"paid" : row.srpv_status,
     reason: row.srpv_reason,
     payout: row.srpv_payout,
     reimbursement: row.srpr_id,
     payingCharacter: row.srpr_payingCharacter,
     renderingCharacter: row.rendering_mainCharacter,
     triage: null,
-  }
+  };
 
   ids.add(json.shipType);
   ids.add(json.victim);
@@ -48,10 +49,7 @@ export function srpLossToJson(
   return json;
 }
 
-function getExecutioner(
-    mail: ZKillmail,
-    ids: Set<number | nil>,
-): AttackerJson {
+function getExecutioner(mail: ZKillmail, ids: Set<number | nil>): AttackerJson {
   const executioner = _.findWhere(mail.attackers, { final_blow: true })!;
 
   ids.add(executioner.ship_type_id);

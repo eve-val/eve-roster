@@ -1,10 +1,9 @@
-import { BattleResult } from './BattleCreator';
-import { Tnex, DEFAULT_NUM } from '../../db/tnex';
-import { dao } from '../../db/dao';
-import { BattleData } from './BattleData';
-import { Writable } from '../../util/stream/Writable';
-import { BasicCallback } from '../../util/stream/core';
-
+import { BattleResult } from "./BattleCreator";
+import { Tnex, DEFAULT_NUM } from "../../db/tnex";
+import { dao } from "../../db/dao";
+import { BattleData } from "./BattleData";
+import { Writable } from "../../util/stream/Writable";
+import { BasicCallback } from "../../util/stream/core";
 
 /**
  * Writes the output of BattleCreator to the database.
@@ -25,20 +24,19 @@ export class BattleWriter extends Writable<BattleResult> {
   }
 
   _write(chunk: BattleResult, encoding: string, callback: BasicCallback) {
-    this._writeBattle(chunk, callback)
-    .catch(err => {
-      this.emit('error', err);
+    this._writeBattle(chunk, callback).catch((err) => {
+      this.emit("error", err);
     });
   }
 
   private async _writeBattle(
-      result: BattleResult,
-      callback: (err?: Error) => void,
+    result: BattleResult,
+    callback: (err?: Error) => void
   ) {
-    if (result.type == 'deleted') {
+    if (result.type == "deleted") {
       await dao.battle.deleteBattle(this._db, result.battleId);
     } else {
-      let battle = result.battle;
+      const battle = result.battle;
       let battleId = battle.id;
       const data: BattleData = {
         start: battle.start,
@@ -59,10 +57,13 @@ export class BattleWriter extends Writable<BattleResult> {
           battle_start: battle.start,
           battle_end: battle.end,
           battle_data: data,
-        })
+        });
       }
       await dao.battle.setAssociatedKillmails(
-          this._db, battleId, data.killmails);
+        this._db,
+        battleId,
+        data.killmails
+      );
       this._newBattleCount++;
     }
     callback();

@@ -1,4 +1,3 @@
-
 /**
  * Ring-buffer implementation of a queue.
  *
@@ -13,9 +12,9 @@ export class ArrayQueue<T> {
   private readonly _arr: (T | Empty)[];
   private readonly _allowResize: boolean;
   private _maxSize: number;
-  private _start: number = 0;
-  private _size: number = 0;
-  private _startPosition: number = 0;
+  private _start = 0;
+  private _size = 0;
+  private _startPosition = 0;
 
   constructor(bufferSize = 4, allowResize = true) {
     this._maxSize = bufferSize;
@@ -153,11 +152,15 @@ export class ArrayQueue<T> {
   }
 
   private _isValidPosition(position: number) {
-    return position >= this._startPosition
-        && position < this._startPosition + this._size;
+    return (
+      position >= this._startPosition &&
+      position < this._startPosition + this._size
+    );
   }
 }
 
-enum Empty { VAL }
+enum Empty {
+  VAL,
+}
 
 const MAX_START_POSITION = Math.floor(Number.MAX_SAFE_INTEGER / 2);

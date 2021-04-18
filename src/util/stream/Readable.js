@@ -1,1 +1,1 @@
-export { Readable } from 'stream';
+export { Readable } from "stream";

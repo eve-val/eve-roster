@@ -1,4 +1,4 @@
-import { ExtendableError } from './ExtendableError';
+import { ExtendableError } from "./ExtendableError";
 
 export class NoSuchAccountError extends ExtendableError {
   constructor(accountId: number) {

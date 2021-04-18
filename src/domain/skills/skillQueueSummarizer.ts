@@ -1,37 +1,43 @@
-import Bluebird = require('bluebird');
-import moment = require('moment');
+import Bluebird = require("bluebird");
+import moment = require("moment");
 
-import * as time from '../../util/time';
-import { Tnex } from '../../db/tnex';
-import { dao } from '../../db/dao';
-import { NamedSkillQueueRow } from '../../db/dao/SkillQueueDao';
-import { updateSkillQueue, getTrainingProgress, isQueueEntryCompleted } from './skillQueue';
-import { isAnyEsiError } from '../../data-source/esi/error';
-import { AccessTokenError, AccessTokenErrorType } from '../../error/AccessTokenError';
-import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
+import * as time from "../../util/time";
+import { Tnex } from "../../db/tnex";
+import { dao } from "../../db/dao";
+import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao";
+import {
+  updateSkillQueue,
+  getTrainingProgress,
+  isQueueEntryCompleted,
+} from "./skillQueue";
+import { isAnyEsiError } from "../../data-source/esi/error";
+import {
+  AccessTokenError,
+  AccessTokenErrorType,
+} from "../../error/AccessTokenError";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
 const logger = buildLoggerFromFilename(__filename);
 
+const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 
-const SKILL_LEVEL_LABELS = ['0', 'I', 'II', 'III', 'IV', 'V'];
-
-export type DataFreshness = 'fresh' | 'cached';
-export type QueueStatus = 'empty' | 'paused' | 'active';
-export type WarningType = 'bad_credentials' | 'fetch_failure';
+export type DataFreshness = "fresh" | "cached";
+export type QueueStatus = "empty" | "paused" | "active";
+export type WarningType = "bad_credentials" | "fetch_failure";
 
 export interface SkillQueueSummary {
-  dataFreshness: DataFreshness,
-  queueStatus: QueueStatus,
+  dataFreshness: DataFreshness;
+  queueStatus: QueueStatus;
   skillInTraining: null | {
-    name: string,
-    progress: number,
-    timeRemaining: string | null
-  },
-  queue: {
-    count: number,
+    name: string;
+    progress: number;
     timeRemaining: string | null;
-  },
-  warning?: WarningType,
+  };
+  queue: {
+    count: number;
+    timeRemaining: string | null;
+  };
+  warning?: WarningType;
 }
 
 /**
@@ -39,70 +45,72 @@ export interface SkillQueueSummary {
  * for use in the dashboard.
  */
 export function loadSummarizedQueue(
-    db: Tnex,
-    characterId: number,
-    freshness: DataFreshness,
-    ) {
+  db: Tnex,
+  characterId: number,
+  freshness: DataFreshness
+) {
   return Bluebird.resolve()
-  .then(() => {
-    return loadQueue(db, characterId, freshness);
-  })
-  .then(({ queue, dataFreshness, warning }) => {
-    queue = pruneCompletedSkills(queue);
-    let queueStatus = getQueueStatus(queue);
-    return {
-      queueStatus: queueStatus,
-      dataFreshness: dataFreshness,
-      skillInTraining: getActiveSkillSummary(queue, queueStatus),
-      queue: getQueueSummary(queue, queueStatus),
-      warning: warning,
-    }
-  })
+    .then(() => {
+      return loadQueue(db, characterId, freshness);
+    })
+    .then(({ queue, dataFreshness, warning }) => {
+      queue = pruneCompletedSkills(queue);
+      const queueStatus = getQueueStatus(queue);
+      return {
+        queueStatus: queueStatus,
+        dataFreshness: dataFreshness,
+        skillInTraining: getActiveSkillSummary(queue, queueStatus),
+        queue: getQueueSummary(queue, queueStatus),
+        warning: warning,
+      };
+    });
 }
 
 function loadQueue(db: Tnex, characterId: number, freshness: DataFreshness) {
   let dataFreshness = freshness;
-  let warning = undefined as WarningType|undefined;
+  let warning = undefined as WarningType | undefined;
 
   return Bluebird.resolve()
-  .then(() => {
-    if (freshness != 'cached') {
-      return updateSkillQueue(db, characterId)
-    }
-    return undefined;
-  })
-  .catch(e => {
-    warning = consumeOrThrowError(e, characterId);
-    dataFreshness = 'cached';
-  })
-  .then(() => {
-    return dao.skillQueue.getCachedSkillQueue(db, characterId);
-  })
-  .then(queue => {
-    return {
-      queue: queue,
-      dataFreshness: dataFreshness,
-      warning: warning,
-    }
-  });
+    .then(() => {
+      if (freshness != "cached") {
+        return updateSkillQueue(db, characterId);
+      }
+      return undefined;
+    })
+    .catch((e) => {
+      warning = consumeOrThrowError(e, characterId);
+      dataFreshness = "cached";
+    })
+    .then(() => {
+      return dao.skillQueue.getCachedSkillQueue(db, characterId);
+    })
+    .then((queue) => {
+      return {
+        queue: queue,
+        dataFreshness: dataFreshness,
+        warning: warning,
+      };
+    });
 }
 
 function consumeOrThrowError(e: any, characterId: number): WarningType {
   let warningType: WarningType;
   if (isAnyEsiError(e)) {
-    if (e.name == 'esi:ForbiddenError') {
-      warningType = 'bad_credentials';
+    if (e.name == "esi:ForbiddenError") {
+      warningType = "bad_credentials";
     } else {
-      warningType = 'fetch_failure';
+      warningType = "fetch_failure";
     }
     logger.error(
-        `ESI error "${e.name}" while fetching skill queue for character`
-            + ` ${characterId}.`, e);
+      `ESI error "${e.name}" while fetching skill queue for character` +
+        ` ${characterId}.`,
+      e
+    );
   } else if (e instanceof AccessTokenError) {
     if (e.type == AccessTokenErrorType.HTTP_FAILURE) {
-      warningType = 'fetch_failure';
+      warningType = "fetch_failure";
     } else {
-      warningType = 'bad_credentials';
+      warningType = "bad_credentials";
     }
   } else {
     throw e;
@@ -112,10 +120,10 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
 }
 
 function pruneCompletedSkills(queueData: NamedSkillQueueRow[]) {
-  let now = moment().valueOf();
+  const now = moment().valueOf();
   let i = 0;
   for (; i < queueData.length; i++) {
-    let item = queueData[i];
+    const item = queueData[i];
 
     if (!isQueueEntryCompleted(item)) {
       break;
@@ -126,28 +134,29 @@ function pruneCompletedSkills(queueData: NamedSkillQueueRow[]) {
 
 function getQueueStatus(queue: NamedSkillQueueRow[]): QueueStatus {
   if (queue.length == 0) {
-    return 'empty';
+    return "empty";
   } else if (queue[0].startTime == null) {
-    return 'paused';
+    return "paused";
   } else {
-    return 'active';
+    return "active";
   }
 }
 
 function getActiveSkillSummary(
-    queue: NamedSkillQueueRow[],
-    queueStatus: QueueStatus,
-    ) {
+  queue: NamedSkillQueueRow[],
+  queueStatus: QueueStatus
+) {
   let summary = null;
   if (queue.length > 0) {
-    let firstItem = queue[0];
-    let skillName = firstItem.name;
-    let skillLevelLabel = SKILL_LEVEL_LABELS[firstItem.targetLevel];
+    const firstItem = queue[0];
+    const skillName = firstItem.name;
+    const skillLevelLabel = SKILL_LEVEL_LABELS[firstItem.targetLevel];
 
     summary = {
-      name: skillName + ' ' + skillLevelLabel,
+      name: skillName + " " + skillLevelLabel,
       progress: getTrainingProgress(firstItem),
-      timeRemaining: queueStatus == 'active' && firstItem.endTime != null
+      timeRemaining:
+        queueStatus == "active" && firstItem.endTime != null
           ? time.shortDurationString(Date.now(), firstItem.endTime, 2)
           : null,
     };
@@ -156,17 +165,15 @@ function getActiveSkillSummary(
 }
 
 function getQueueSummary(
-    queue: NamedSkillQueueRow[],
-    queueStatus: QueueStatus,
-    ) {
-  let finalEntry = queue[queue.length - 1];
+  queue: NamedSkillQueueRow[],
+  queueStatus: QueueStatus
+) {
+  const finalEntry = queue[queue.length - 1];
   return {
     count: queue.length,
-    timeRemaining: queueStatus == 'active' && finalEntry.endTime != null
-        ? time.shortDurationString(
-            Date.now(),
-            finalEntry.endTime,
-            2)
+    timeRemaining:
+      queueStatus == "active" && finalEntry.endTime != null
+        ? time.shortDurationString(Date.now(), finalEntry.endTime, 2)
         : null,
   };
 }

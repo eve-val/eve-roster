@@ -1,10 +1,10 @@
-import { Knex } from 'knex';
+import { Knex } from "knex";
 
-import util = require('util');
-import { splitColumn } from './core';
-import { Tnex } from './Tnex';
-import { Scoper } from './Scoper';
-import { ColumnDescriptorImpl } from './ColumnDescriptor';
+import util = require("util");
+import { splitColumn } from "./core";
+import { Tnex } from "./Tnex";
+import { Scoper } from "./Scoper";
+import { ColumnDescriptorImpl } from "./ColumnDescriptor";
 
 export class TnexBuilder {
   private _separator: string;
@@ -14,7 +14,7 @@ export class TnexBuilder {
   private _tableToName = new Map<object, string>();
   private _prefixToName = new Map<string, string>();
 
-  constructor(prefixSeparator = '_', tableNameSupplier = lowerCaseFirstLetter) {
+  constructor(prefixSeparator = "_", tableNameSupplier = lowerCaseFirstLetter) {
     this._separator = prefixSeparator;
     this._tableNameSupplier = tableNameSupplier;
   }
@@ -32,8 +32,9 @@ export class TnexBuilder {
     if (tableName == undefined) {
       if (!table.constructor) {
         throw new Error(
-            `No table name provided and table doesn't have a constructor to`
-                + ` infer a name from.`);
+          `No table name provided and table doesn't have a constructor to` +
+            ` infer a name from.`
+        );
       }
       tableName = this._tableNameSupplier(table.constructor.name);
     }
@@ -43,13 +44,15 @@ export class TnexBuilder {
     }
 
     let tablePrefix: string | null = null;
-    for (let [prop, value] of Object.entries(table)) {
+    for (const [prop, value] of Object.entries(table)) {
       if (!(value instanceof ColumnDescriptorImpl)) {
-        throw new Error(`Property "${prop}" in table "${tableName}" is not a`
-            + ` ColumnDescriptor.`);
+        throw new Error(
+          `Property "${prop}" in table "${tableName}" is not a` +
+            ` ColumnDescriptor.`
+        );
       }
 
-      let [prefix, name] = splitColumn(prop, this._separator);
+      const [prefix, name] = splitColumn(prop, this._separator);
       value.prefixedName = prop;
       value.unprefixedName = name;
 
@@ -58,15 +61,17 @@ export class TnexBuilder {
       } else {
         if (prefix != tablePrefix) {
           throw new Error(
-              `Inconsistent prefixing in table "${tableName}".`
-                  + ` Column "${prop}" doesn't match inferred prefix`
-                  + ` "${tablePrefix}".`);
+            `Inconsistent prefixing in table "${tableName}".` +
+              ` Column "${prop}" doesn't match inferred prefix` +
+              ` "${tablePrefix}".`
+          );
         }
       }
     }
     if (tablePrefix == null) {
       throw new Error(
-          `Table ${util.inspect(table)} must declare at least one column.`);
+        `Table ${util.inspect(table)} must declare at least one column.`
+      );
     }
     this._registeredNames.add(tableName);
     this._tableToName.set(table, tableName);
@@ -77,12 +82,9 @@ export class TnexBuilder {
 
   public build(knex: Knex): Tnex {
     return new Tnex(
-        knex,
-        new Scoper(
-            this._separator,
-            this._tableToName,
-            this._prefixToName),
-        knex,
+      knex,
+      new Scoper(this._separator, this._tableToName, this._prefixToName),
+      knex
     );
   }
 }

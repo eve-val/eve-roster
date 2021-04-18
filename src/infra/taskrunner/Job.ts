@@ -1,10 +1,9 @@
-import { EventEmitter } from 'events';
-import { Logger } from '../logging/Logger';
-import { Task } from './Task';
+import { EventEmitter } from "events";
+import { Logger } from "../logging/Logger";
+import { Task } from "./Task";
 
-
-export type JobResult = 'pending' | 'success' | 'partial' | 'failure';
-export type JobStatus = 'queued' | 'running' | 'finished';
+export type JobResult = "pending" | "success" | "partial" | "failure";
+export type JobStatus = "queued" | "running" | "finished";
 
 export interface JobLogger extends Logger {
   setProgress(progress: number | undefined, label: string | undefined): void;

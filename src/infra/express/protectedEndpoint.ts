@@ -6,110 +6,124 @@
  * is `'json'`, `handler` should return a promise to the Object that will make
  * up the JSON response.
  */
-import express = require('express');
+import express = require("express");
 
-import { BadRequestError } from '../../error/BadRequestError';
-import { NotFoundError } from '../../error/NotFoundError';
-import { NoSuchAccountError } from '../../error/NoSuchAccountError';
-import { NotLoggedInError } from '../../error/NotLoggedInError';
-import { UnauthorizedClientError } from '../../error/UnauthorizedClientError';
-import { UserVisibleError } from '../../error/UserVisibleError';
+import { BadRequestError } from "../../error/BadRequestError";
+import { NotFoundError } from "../../error/NotFoundError";
+import { NoSuchAccountError } from "../../error/NoSuchAccountError";
+import { NotLoggedInError } from "../../error/NotLoggedInError";
+import { UnauthorizedClientError } from "../../error/UnauthorizedClientError";
+import { UserVisibleError } from "../../error/UserVisibleError";
 
-import { Tnex } from '../../db/tnex';
-import { AccountPrivileges } from './privileges';
-import { getAccountPrivs, AccountSummary } from './getAccountPrivs';
-import { SchemaVerificationError } from '../../util/express/schemaVerifier';
-import { buildLoggerFromFilename } from '../../infra/logging/buildLogger';
-import { getSession, endSession } from './session';
+import { Tnex } from "../../db/tnex";
+import { AccountPrivileges } from "./privileges";
+import { getAccountPrivs, AccountSummary } from "./getAccountPrivs";
+import { SchemaVerificationError } from "../../util/express/schemaVerifier";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { getSession, endSession } from "./session";
 
 const logger = buildLoggerFromFilename(__filename);
 
+export type EndpointType = "json" | "html";
 
-export type EndpointType = 'json' | 'html';
-
-type ExpressHandler =
-    (req: express.Request, res: express.Response) => void;
+type ExpressHandler = (req: express.Request, res: express.Response) => void;
 
 export type JsonEndpointHandler<T extends object> = (
   req: express.Request,
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges,
-  ) => Promise<T>;
+  privs: AccountPrivileges
+) => Promise<T>;
 
 export type HtmlEndpointHandler<T extends Object> = (
   req: express.Request,
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges,
-  ) => Promise<HtmlPayload<T>>;
+  privs: AccountPrivileges
+) => Promise<HtmlPayload<T>>;
 
 export interface HtmlPayload<T extends object> {
-  template: string,
-  data: T,
+  template: string;
+  data: T;
 }
 
 export function htmlEndpoint<T extends object>(
-    handler: HtmlEndpointHandler<T>,
+  handler: HtmlEndpointHandler<T>
 ): ExpressHandler {
   return async function (req, res) {
     try {
       const session = getSession(req);
       const accountPrivs = await getAccountPrivs(req.db, session.accountId);
-      const payload =
-          await handler(
-              req, res, req.db, accountPrivs.account, accountPrivs.privs);
+      const payload = await handler(
+        req,
+        res,
+        req.db,
+        accountPrivs.account,
+        accountPrivs.privs
+      );
       res.render(payload.template, payload.data);
     } catch (e) {
-      handleError('html', e, req, res);
+      handleError("html", e, req, res);
     }
-  }
+  };
 }
 
 export function jsonEndpoint<T extends object>(
-    handler: JsonEndpointHandler<T>,
+  handler: JsonEndpointHandler<T>
 ): ExpressHandler {
-  return async function(req, res) {
+  return async function (req, res) {
     try {
       const session = getSession(req);
       const accountPrivs = await getAccountPrivs(req.db, session.accountId);
-      const payload =
-          await handler(
-              req, res, req.db, accountPrivs.account, accountPrivs.privs);
+      const payload = await handler(
+        req,
+        res,
+        req.db,
+        accountPrivs.account,
+        accountPrivs.privs
+      );
 
       const space = req.query.pretty != undefined ? 2 : undefined;
-      res.type('json');
+      res.type("json");
       res.send(JSON.stringify(payload, null, space));
-
     } catch (e) {
-      handleError('json', e, req, res);
+      handleError("json", e, req, res);
     }
-  }
+  };
 }
 
 function handleError(
-    type: EndpointType, e: Error, req: express.Request, res: express.Response) {
+  type: EndpointType,
+  e: Error,
+  req: express.Request,
+  res: express.Response
+) {
   if (isLoggableError(e)) {
     const accountId = req.session && req.session.accountId;
-    logger.error(`ERROR while handling endpoint ${req.originalUrl}`
-      + ` w/ accountId ${accountId}`, e);
+    logger.error(
+      `ERROR while handling endpoint ${req.originalUrl}` +
+        ` w/ accountId ${accountId}`,
+      e
+    );
   }
 
-  if (type == 'html' &&
-      (e instanceof NotLoggedInError || e instanceof NoSuchAccountError)) {
+  if (
+    type == "html" &&
+    (e instanceof NotLoggedInError || e instanceof NoSuchAccountError)
+  ) {
     endSession(req);
-    res.redirect('/login');
+    res.redirect("/login");
   } else {
-    let [status, message] = getResponse(e);
+    const [status, message] = getResponse(e);
     res.status(status);
     switch (type) {
-      case 'json':
-        res.type('json');
+      case "json":
+        res.type("json");
         res.send({ message: message });
         break;
-      case 'html':
+      case "html":
         res.send(message);
         break;
     }
@@ -118,18 +132,18 @@ function handleError(
 
 function getResponse(e: Error): [number, string] {
   if (e instanceof BadRequestError || e instanceof SchemaVerificationError) {
-    return [400, 'Bad request'];
+    return [400, "Bad request"];
   } else if (e instanceof NotFoundError) {
-    return [404, 'Not found'];
+    return [404, "Not found"];
   } else if (e instanceof UnauthorizedClientError) {
     // Possibly should be 404
-    return [403, 'Forbidden'];
+    return [403, "Forbidden"];
   } else {
     let message;
     if (e instanceof UserVisibleError) {
       message = e.message;
     } else {
-      message = 'Internal server error';
+      message = "Internal server error";
     }
     return [500, message];
   }

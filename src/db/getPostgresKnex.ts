@@ -1,6 +1,5 @@
-import pg = require('pg');
-import { knex, Knex } from 'knex';
-
+import pg = require("pg");
+import { knex, Knex } from "knex";
 
 const DEBUG_QUERIES = false;
 
@@ -20,35 +19,38 @@ if (DEBUG_QUERIES) {
   // Monkey-patch pg.Client.query to log out all queries, including a connection
   // id.
   let nextConnectionId = 0;
-  let queryFunc = pg.Client.prototype.query;
+  const queryFunc = pg.Client.prototype.query;
   pg.Client.prototype.query = loggingQuery as any;
 
   function loggingQuery(
-      this: pg.Client, query: any, values: any, callback: any) {
-
-    let self = this as any;
+    this: pg.Client,
+    query: any,
+    values: any,
+    callback: any
+  ) {
+    const self = this as any;
     if (self.__connectionId == null) {
       self.__connectionId = nextConnectionId;
       nextConnectionId++;
     }
 
-    let rawQuery = query.text ? query.text : query;
+    const rawQuery = query.text ? query.text : query;
     console.log(`[${self.__connectionId}] ${rawQuery}`);
     return queryFunc.call(this, query, values, callback);
   }
 }
 
-
-const CLIENT = 'pg';
+const CLIENT = "pg";
 
 function getConnection(env: any) {
   if (env.DATABASE_URL) {
     return env.DATABASE_URL;
   } else if (
-      env.DATABASE_HOST &&
-      env.DATABASE_USER &&
-      env.DATABASE_NAME &&
-      env.DATABASE_PASS) {
+    env.DATABASE_HOST &&
+    env.DATABASE_USER &&
+    env.DATABASE_NAME &&
+    env.DATABASE_PASS
+  ) {
     return {
       host: env.DATABASE_HOST,
       user: env.DATABASE_USER,
@@ -56,7 +58,9 @@ function getConnection(env: any) {
       password: env.DATABASE_PASS,
     };
   } else {
-    throw new Error('DATABASE_URL (or DATABASE_{HOST,USER,NAME,PASS}) env var must be specified.');
+    throw new Error(
+      "DATABASE_URL (or DATABASE_{HOST,USER,NAME,PASS}) env var must be specified."
+    );
   }
 }
 

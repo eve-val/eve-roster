@@ -5,51 +5,46 @@ Table of PaymentHistoryRows.
 -->
 
 <template>
-<div class="_payment-history" :class="{ compact: compactMode, }">
+  <div class="_payment-history" :class="{ compact: compactMode }">
+    <template v-if="payments != null">
+      <div class="header">
+        <div style="width: 270px; margin-left: 10px">SRP</div>
+        <div style="width: 255px">Recipient</div>
+        <div style="width: 65px; text-align: right">Losses</div>
+        <div style="width: 135px; text-align: right">Total payout</div>
+        <div style="flex: 1"></div>
+        <div style="width: 255px">Paid by</div>
+      </div>
 
-  <template v-if="payments != null">
-    <div class="header">
-      <div style="width: 270px; margin-left: 10px;">SRP</div>
-      <div style="width: 255px">Recipient</div>
-      <div style="width: 65px; text-align: right">Losses</div>
-      <div style="width: 135px; text-align: right">Total payout</div>
-      <div style="flex: 1"></div>
-      <div style="width: 255px">Paid by</div>
-    </div>
-
-    <payment-history-row
+      <payment-history-row
         v-for="payment in payments"
         :key="payment.id"
         :payment="payment"
-        >
-    </payment-history-row>
-
-    <div class="no-results" v-if="payments.length == 0">No results</div>
-  </template>
-
-  <div
-      v-if="suspectMoreToFetch"
-      class="more-cnt"
       >
-    <more-button
+      </payment-history-row>
+
+      <div class="no-results" v-if="payments.length == 0">No results</div>
+    </template>
+
+    <div v-if="suspectMoreToFetch" class="more-cnt">
+      <more-button
         :promise="fetchPromise"
         :hide-button="payments == null"
         @fetch-requested="fetchNextResults"
-        >
-    </more-button>
+      >
+      </more-button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue';
-import LoadingSpinner from '../shared/LoadingSpinner.vue';
-import MoreButton from './MoreButton.vue';
-import PaymentHistoryRow from './PaymentHistoryRow.vue';
+import Vue from "vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import MoreButton from "./MoreButton.vue";
+import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 
-import ajaxer from '../shared/ajaxer';
-import { NameCacheMixin } from '../shared/nameCache';
-
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -59,9 +54,9 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    forAccount: { type: Number, required: false, },
-    compactMode: { type: Boolean, required: false, default: false, },
+    identity: { type: Object, required: true },
+    forAccount: { type: Number, required: false },
+    compactMode: { type: Boolean, required: false, default: false },
   },
 
   data() {
@@ -90,30 +85,33 @@ export default Vue.extend({
     this.fetchNextResults();
   },
 
-  methods: Object.assign({
-    fetchNextResults() {
-      this.fetchPromise = ajaxer.getSrpPaymentHistory({
-        paid: this.forAccount != undefined ? undefined : true,
-        order: 'desc',
-        orderBy: 'modified',
-        startingAfter: this.finalTimestamp,
-        account: this.forAccount,
-        limit: this.resultsPerFetch,
-      });
+  methods: Object.assign(
+    {
+      fetchNextResults() {
+        this.fetchPromise = ajaxer.getSrpPaymentHistory({
+          paid: this.forAccount != undefined ? undefined : true,
+          order: "desc",
+          orderBy: "modified",
+          startingAfter: this.finalTimestamp,
+          account: this.forAccount,
+          limit: this.resultsPerFetch,
+        });
 
-      this.fetchPromise.then(response => {
-        this.addNames(response.data.names);
+        this.fetchPromise.then((response) => {
+          this.addNames(response.data.names);
 
-        this.payments = this.payments || [];
-        for (let payment of response.data.payments) {
-          this.payments.push(payment);
-        }
+          this.payments = this.payments || [];
+          for (let payment of response.data.payments) {
+            this.payments.push(payment);
+          }
 
-        this.suspectMoreToFetch =
+          this.suspectMoreToFetch =
             response.data.payments.length == this.resultsPerFetch;
-      });
+        });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 </script>
 
@@ -127,15 +125,15 @@ export default Vue.extend({
 }
 
 .top-line {
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 }
 
 .header {
   display: flex;
   font-size: 14px;
-  color: #A7A29C;
+  color: #a7a29c;
   padding-bottom: 5px;
-  border-bottom: 1px solid #2C2C2C;
+  border-bottom: 1px solid #2c2c2c;
 }
 
 .no-results {
@@ -144,7 +142,7 @@ export default Vue.extend({
   justify-content: center;
   height: 70px;
 
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   font-style: italic;
 }

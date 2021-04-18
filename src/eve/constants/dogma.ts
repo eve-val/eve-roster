@@ -1,4 +1,3 @@
-
 export const DGM_CATEGORY_REQUIRED_SKILL = 8;
 
 // IDs of dogma attributes related to skill requirements

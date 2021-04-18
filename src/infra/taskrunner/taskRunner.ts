@@ -8,7 +8,7 @@ import { Tnex } from "../../db/tnex";
  * Should be refactored away at some point.
  */
 
-var _scheduler: Scheduler;
+let _scheduler: Scheduler;
 
 export function init(db: Tnex) {
   _scheduler = new Scheduler(db);

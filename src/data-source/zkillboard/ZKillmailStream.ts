@@ -1,6 +1,6 @@
-import { Readable } from '../../util/stream/Readable';
-import { ZKillDescriptor } from './ZKillmail';
-import { fetchZKillResultPage } from './fetchZKillResultPage';
+import { Readable } from "../../util/stream/Readable";
+import { ZKillDescriptor } from "./ZKillmail";
+import { fetchZKillResultPage } from "./fetchZKillResultPage";
 
 /**
  * Readable stream representing a query for a ZKillboard API.
@@ -27,9 +27,8 @@ export class ZKillmailStream extends Readable<ZKillDescriptor> {
   }
 
   _read(size: number) {
-    this._performRead()
-    .catch(err => {
-      this.emit('error', err);
+    this._performRead().catch((err) => {
+      this.emit("error", err);
     });
   }
 
@@ -52,7 +51,7 @@ export class ZKillmailStream extends Readable<ZKillDescriptor> {
       if (kmds.length == 0) {
         this.push(null);
       } else {
-        for (let kmd of kmds) {
+        for (const kmd of kmds) {
           this.push(kmd);
         }
       }

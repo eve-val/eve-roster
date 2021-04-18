@@ -1,70 +1,76 @@
-import { jsonEndpoint } from '../../../../infra/express/protectedEndpoint';
-import { Tnex } from '../../../../db/tnex/Tnex';
-import { AccountPrivileges } from '../../../../infra/express/privileges';
-import { dao } from '../../../../db/dao';
-import { SrpVerdictStatus } from '../../../../db/dao/enums';
-import { SimpleNumMap, nil } from '../../../../util/simpleTypes';
-import { boolQuery, intQuery, enumQuery } from '../../../../util/express/paramVerifier';
-import { fetchEveNames } from '../../../../data-source/esi/names';
-import { srpLossToJson } from '../../../../domain/srp/srpLossToJson';
-import { SrpLossFilter, SrpLossRow } from '../../../../db/dao/SrpDao';
-import { ResultOrder } from '../../../../db/tnex';
-import { SrpLossJson, SrpTriageJson } from '../../../../domain/srp/SrpLossJson';
-import { triageLosses } from '../../../../domain/srp/triage/triageLosses';
-import { triagedLossesToSuggestionJson } from '../../../../domain/srp/triage/triagedLossesToSuggestionJson';
-
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
+import { Tnex } from "../../../../db/tnex/Tnex";
+import { AccountPrivileges } from "../../../../infra/express/privileges";
+import { dao } from "../../../../db/dao";
+import { SrpVerdictStatus } from "../../../../db/dao/enums";
+import { SimpleNumMap, nil } from "../../../../util/simpleTypes";
+import {
+  boolQuery,
+  intQuery,
+  enumQuery,
+} from "../../../../util/express/paramVerifier";
+import { fetchEveNames } from "../../../../data-source/esi/names";
+import { srpLossToJson } from "../../../../domain/srp/srpLossToJson";
+import { SrpLossFilter, SrpLossRow } from "../../../../db/dao/SrpDao";
+import { ResultOrder } from "../../../../db/tnex";
+import { SrpLossJson, SrpTriageJson } from "../../../../domain/srp/SrpLossJson";
+import { triageLosses } from "../../../../domain/srp/triage/triageLosses";
+import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson";
 
 export interface Output {
-  srps: SrpLossJson[],
-  names: SimpleNumMap<string>,
+  srps: SrpLossJson[];
+  names: SimpleNumMap<string>;
 }
-
 
 /**
  * Returns a list of losses and their associated SRP verdict and payment status.
  * Supports a wide variety of filters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
-
-  return handleEndpoint(
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Output> => {
+    return handleEndpoint(
       db,
       privs,
       {
-        status: boolQuery(req, 'pending')
-            ? SrpVerdictStatus.PENDING : undefined,
-        limit: intQuery(req, 'limit'),
-        order: enumQuery<ResultOrder>(req, 'order', ResultOrder),
-        fromKillmail: intQuery(req, 'fromKillmail'),
-        account: intQuery(req, 'account'),
-        character: intQuery(req, 'character'),
+        status: boolQuery(req, "pending")
+          ? SrpVerdictStatus.PENDING
+          : undefined,
+        limit: intQuery(req, "limit"),
+        order: enumQuery<ResultOrder>(req, "order", ResultOrder),
+        fromKillmail: intQuery(req, "fromKillmail"),
+        account: intQuery(req, "account"),
+        character: intQuery(req, "character"),
       },
-      boolQuery(req, 'includeTriage') || false);
-});
+      boolQuery(req, "includeTriage") || false
+    );
+  }
+);
 
 const DEFAULT_ROWS_PER_QUERY = 30;
 const MAX_ROWS_PER_QUERY = 100;
 
 async function handleEndpoint(
-    db: Tnex,
-    privs: AccountPrivileges,
-    filter: SrpLossFilter,
-    includeTriage: boolean,
+  db: Tnex,
+  privs: AccountPrivileges,
+  filter: SrpLossFilter,
+  includeTriage: boolean
 ) {
-  privs.requireRead('srp');
+  privs.requireRead("srp");
 
-  filter.limit =
-      Math.min(MAX_ROWS_PER_QUERY, filter.limit || DEFAULT_ROWS_PER_QUERY);
+  filter.limit = Math.min(
+    MAX_ROWS_PER_QUERY,
+    filter.limit || DEFAULT_ROWS_PER_QUERY
+  );
 
   const unresolvedIds = new Set<number | nil>();
 
   const rows = await dao.srp.listSrps(db, filter);
-  let srps = rows.map(row => srpLossToJson(row, unresolvedIds));
+  const srps = rows.map((row) => srpLossToJson(row, unresolvedIds));
 
   if (includeTriage) {
     const triaged = await triageLosses(db, rows);
-    const suggestionsJson =
-        await triagedLossesToSuggestionJson(triaged);
-    for (let srp of srps) {
+    const suggestionsJson = await triagedLossesToSuggestionJson(triaged);
+    for (const srp of srps) {
       srp.triage = suggestionsJson.get(srp.killmail) || null;
     }
   }

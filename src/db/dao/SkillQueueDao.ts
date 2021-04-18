@@ -1,57 +1,54 @@
-import { Tnex, val } from '../../db/tnex';
-import { Dao } from '../dao';
-import { characterSkillQueue, sdeType } from '../tables';
-import { defaultSkillName } from '../../domain/skills/defaultSkillName';
-
+import { Tnex, val } from "../../db/tnex";
+import { Dao } from "../dao";
+import { characterSkillQueue, sdeType } from "../tables";
+import { defaultSkillName } from "../../domain/skills/defaultSkillName";
 
 class SkillQueueDao {
-  constructor(
-      private _parent: Dao,
-      ) {
-  }
+  constructor(private _parent: Dao) {}
 
   getCachedSkillQueue(
-      db: Tnex, characterId: number): Promise<NamedSkillQueueRow[]> {
+    db: Tnex,
+    characterId: number
+  ): Promise<NamedSkillQueueRow[]> {
     return db
-        .select(characterSkillQueue)
-        .leftJoin(sdeType, 'styp_id', '=', 'characterSkillQueue_skill')
-        .where('characterSkillQueue_character', '=', val(characterId))
-        .orderBy('characterSkillQueue_queuePosition', 'asc')
-        .columns(
-            'characterSkillQueue_skill',
-            'characterSkillQueue_targetLevel',
-            'characterSkillQueue_startTime',
-            'characterSkillQueue_endTime',
-            'characterSkillQueue_levelStartSp',
-            'characterSkillQueue_levelEndSp',
-            'characterSkillQueue_trainingStartSp',
-            'styp_name',
-            )
-        .run()
-    .then(rows => {
-      return rows.map(row => {
-        return {
-          skill: row.characterSkillQueue_skill,
-          name:
+      .select(characterSkillQueue)
+      .leftJoin(sdeType, "styp_id", "=", "characterSkillQueue_skill")
+      .where("characterSkillQueue_character", "=", val(characterId))
+      .orderBy("characterSkillQueue_queuePosition", "asc")
+      .columns(
+        "characterSkillQueue_skill",
+        "characterSkillQueue_targetLevel",
+        "characterSkillQueue_startTime",
+        "characterSkillQueue_endTime",
+        "characterSkillQueue_levelStartSp",
+        "characterSkillQueue_levelEndSp",
+        "characterSkillQueue_trainingStartSp",
+        "styp_name"
+      )
+      .run()
+      .then((rows) => {
+        return rows.map((row) => {
+          return {
+            skill: row.characterSkillQueue_skill,
+            name:
               row.styp_name || defaultSkillName(row.characterSkillQueue_skill),
-          targetLevel: row.characterSkillQueue_targetLevel,
-          startTime: row.characterSkillQueue_startTime,
-          endTime: row.characterSkillQueue_endTime,
-          levelStartSp: row.characterSkillQueue_levelStartSp,
-          levelEndSp: row.characterSkillQueue_levelEndSp,
-          trainingStartSp: row.characterSkillQueue_trainingStartSp,
-        }
+            targetLevel: row.characterSkillQueue_targetLevel,
+            startTime: row.characterSkillQueue_startTime,
+            endTime: row.characterSkillQueue_endTime,
+            levelStartSp: row.characterSkillQueue_levelStartSp,
+            levelEndSp: row.characterSkillQueue_levelEndSp,
+            trainingStartSp: row.characterSkillQueue_trainingStartSp,
+          };
+        });
       });
-    })
   }
 
   setCachedSkillQueue(
-      db: Tnex,
-      characterId: number,
-      queueItems: SkillQueueRow[],
-      ) {
-
-    let items = queueItems.map((qi, index) => {
+    db: Tnex,
+    characterId: number,
+    queueItems: SkillQueueRow[]
+  ) {
+    const items = queueItems.map((qi, index) => {
       return {
         characterSkillQueue_character: characterId,
         characterSkillQueue_queuePosition: index,
@@ -66,27 +63,27 @@ class SkillQueueDao {
       };
     });
 
-    return db
-        .replace(
-            characterSkillQueue,
-            'characterSkillQueue_character',
-            characterId,
-            items);
+    return db.replace(
+      characterSkillQueue,
+      "characterSkillQueue_character",
+      characterId,
+      items
+    );
   }
 }
 export default SkillQueueDao;
 
 export interface SkillQueueRow {
-  skill: number,
-  targetLevel: number,
-  levelStartSp: number,
-  levelEndSp: number,
-  trainingStartSp: number,
+  skill: number;
+  targetLevel: number;
+  levelStartSp: number;
+  levelEndSp: number;
+  trainingStartSp: number;
   // startTime and endTime wil be null if the queue is paused.
-  startTime: number | null,
-  endTime: number | null,
+  startTime: number | null;
+  endTime: number | null;
 }
 
 export interface NamedSkillQueueRow extends SkillQueueRow {
-  name: string,
+  name: string;
 }

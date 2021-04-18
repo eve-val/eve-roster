@@ -1,24 +1,24 @@
 <template>
-<div class="root">
-  <table-header
+  <div class="root">
+    <table-header
       :columns="columns"
       :sortKey="sort.key"
       :reverseSort="sort.reverse"
       @selectSortKey="onSelectSortKey"
-      />
-  <account-row v-for="row in sortedRows"
+    />
+    <account-row
+      v-for="row in sortedRows"
       :columns="columns"
       :account="row"
       :key="row.main.id"
       :filter="filter"
-      />
-</div>
+    />
+  </div>
 </template>
 
 <script>
-import AccountRow from './AccountRow.vue';
-import TableHeader from './TableHeader.vue';
-
+import AccountRow from "./AccountRow.vue";
+import TableHeader from "./TableHeader.vue";
 
 export default {
   components: {
@@ -32,17 +32,17 @@ export default {
     filter: { type: String, required: false },
   },
 
-  data: function() {
+  data: function () {
     return {
       sort: {
-        key: 'name',
+        key: "name",
         reverse: false,
       },
     };
   },
 
   computed: {
-    sortColumn: function() {
+    sortColumn: function () {
       for (let col of this.columns) {
         if (col.key == this.sort.key) {
           return col;
@@ -51,13 +51,13 @@ export default {
       return null;
     },
 
-    sortedRows: function() {
+    sortedRows: function () {
       // Sort accounts
       this.rows.sort((a, b) => {
         return generalPurposeCompare(
-            getSortVal(this.sortColumn, a.aggregate, a),
-            getSortVal(this.sortColumn, b.aggregate, b),
-            this.sort.reverse
+          getSortVal(this.sortColumn, a.aggregate, a),
+          getSortVal(this.sortColumn, b.aggregate, b),
+          this.sort.reverse
         );
       });
 
@@ -65,9 +65,9 @@ export default {
       for (let row of this.rows) {
         row.alts.sort((a, b) => {
           return generalPurposeCompare(
-              getSortVal(this.sortColumn, a, null),
-              getSortVal(this.sortColumn, b, null),
-              this.sort.reverse
+            getSortVal(this.sortColumn, a, null),
+            getSortVal(this.sortColumn, b, null),
+            this.sort.reverse
           );
         });
       }
@@ -77,16 +77,16 @@ export default {
   },
 
   methods: {
-    onSelectSortKey: function(key) {
+    onSelectSortKey: function (key) {
       if (key == this.sort.key) {
         this.sort.reverse = !this.sort.reverse;
       } else {
         this.sort.key = key;
         this.sort.reverse = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 
 function getSortVal(column, character, account) {
   if (column.account) {
@@ -106,7 +106,7 @@ function generalPurposeCompare(a, b, reverse) {
   } else if (a == null && b == null) {
     cmp = 0;
   } else {
-    if (typeof a == 'string' && typeof b == 'string') {
+    if (typeof a == "string" && typeof b == "string") {
       cmp = a.localeCompare(b);
     } else {
       if (a > b) {
@@ -125,7 +125,6 @@ function generalPurposeCompare(a, b, reverse) {
 
   return cmp;
 }
-
 </script>
 
 <style scoped>

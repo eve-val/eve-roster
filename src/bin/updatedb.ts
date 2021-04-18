@@ -32,72 +32,67 @@
  * ```
  */
 
-import { getPostgresKnex } from '../db/getPostgresKnex';
-
+import { getPostgresKnex } from "../db/getPostgresKnex";
 
 // Directory is relative to project root
 const MIGRATE_CONFIG = {
-  directory: './schema',
+  directory: "./schema",
 };
 
 const knex = getPostgresKnex();
 
 export function updateDb(revert: boolean) {
   if (revert) {
-    console.log('Reverting schema changes...');
-    return knex.migrate.rollback(MIGRATE_CONFIG)
-    .then(reverts => {
-      let batch = reverts[0];
-      let scripts = reverts[1];
+    console.log("Reverting schema changes...");
+    return knex.migrate.rollback(MIGRATE_CONFIG).then((reverts) => {
+      const batch = reverts[0];
+      const scripts = reverts[1];
       if (scripts.length > 0) {
-        console.log('Batch', batch, 'rolled back successfully. Reverted:');
+        console.log("Batch", batch, "rolled back successfully. Reverted:");
         for (let i = 0; i < scripts.length; i++) {
           console.log(scripts[i]);
         }
       } else {
-        console.log('No schema changes to roll back');
+        console.log("No schema changes to roll back");
       }
     });
   } else {
     // Proceed with an update to latest schema
-    console.log('Updating...');
-    return knex.migrate.latest(MIGRATE_CONFIG)
-    .then(updates => {
-      let batch = updates[0];
-      let scripts = updates[1];
+    console.log("Updating...");
+    return knex.migrate.latest(MIGRATE_CONFIG).then((updates) => {
+      const batch = updates[0];
+      const scripts = updates[1];
       if (scripts.length > 0) {
-        console.log('Batch', batch, 'completed successfully. Applied:');
+        console.log("Batch", batch, "completed successfully. Applied:");
         for (let i = 0; i < scripts.length; i++) {
           console.log(scripts[i]);
         }
       } else {
-        console.log('Schema already up to date');
+        console.log("Schema already up to date");
       }
     });
   }
 }
-
-
 
 if (require.main == module) {
   let revert = false;
   if (process.argv.length > 2) {
     // Check if any remaining arguments are --revert or --rollback
     for (let i = 2; i < process.argv.length; i++) {
-      if (process.argv[i] == '--revert' || process.argv[i] == '--rollback') {
+      if (process.argv[i] == "--revert" || process.argv[i] == "--rollback") {
         revert = true;
       } else {
-        console.warn('Ignoring unknown argument:', process.argv[i]);
+        console.warn("Ignoring unknown argument:", process.argv[i]);
       }
     }
   }
 
   updateDb(revert)
-  .catch(e => {
-    console.error('Migration unsuccessful');
-    console.error(e);
-  })
-  .then(function() {
-    process.exit();
-  });
+    .catch((e) => {
+      console.error("Migration unsuccessful");
+      console.error(e);
+    })
+    .then(function () {
+      process.exit();
+    });
 }

@@ -1,1 +1,1 @@
-export { Duplex } from 'stream';
+export { Duplex } from "stream";

@@ -7,43 +7,38 @@ Battle reports are instances of BattleRow.
 -->
 
 <template>
-<div class="_battle-history">
-
-  <template v-if="battles != null">
-    <battle-row
+  <div class="_battle-history">
+    <template v-if="battles != null">
+      <battle-row
         v-for="battle in battles"
         :key="battle.id"
         :battle="battle"
         :has-edit-priv="identity.access['srp'] == 2"
         :start-in-edit-mode="true"
-        >
-    </battle-row>
-    <div v-if="battles.length == 0" class="no-results">No results</div>
-  </template>
-
-  <div
-      v-if="suspectMoreToFetch"
-      class="more-cnt"
       >
-    <more-button
+      </battle-row>
+      <div v-if="battles.length == 0" class="no-results">No results</div>
+    </template>
+
+    <div v-if="suspectMoreToFetch" class="more-cnt">
+      <more-button
         :promise="fetchPromise"
         :hide-button="battles == null"
         @fetch-requested="fetchNextResults"
-        >
-    </more-button>
+      >
+      </more-button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import _ from 'underscore';
-import Vue from 'vue';
-import BattleRow from './BattleRow.vue';
-import MoreButton from '../MoreButton.vue';
+import _ from "underscore";
+import Vue from "vue";
+import BattleRow from "./BattleRow.vue";
+import MoreButton from "../MoreButton.vue";
 
-import ajaxer from '../../shared/ajaxer';
-import { NameCacheMixin } from '../../shared/nameCache';
-
+import ajaxer from "../../shared/ajaxer";
+import { NameCacheMixin } from "../../shared/nameCache";
 
 export default Vue.extend({
   components: {
@@ -52,8 +47,8 @@ export default Vue.extend({
   },
 
   props: {
-    identity: { type: Object, required: true, },
-    triageMode: { type: Boolean, required: false, default: false, },
+    identity: { type: Object, required: true },
+    triageMode: { type: Boolean, required: false, default: false },
   },
 
   data() {
@@ -64,8 +59,7 @@ export default Vue.extend({
     };
   },
 
-  computed: {
-  },
+  computed: {},
 
   mounted() {
     this.reset();
@@ -77,45 +71,54 @@ export default Vue.extend({
     },
   },
 
-  methods: Object.assign({
-    reset() {
-      this.battles = null;
-      this.fetchPromise = null;
-      this.suspectMoreToFetch = true;
-      this.fetchNextResults();
-    },
+  methods: Object.assign(
+    {
+      reset() {
+        this.battles = null;
+        this.fetchPromise = null;
+        this.suspectMoreToFetch = true;
+        this.fetchNextResults();
+      },
 
-    fetchNextResults() {
-      const sentinelId = this.battles != null && this.battles.length > 0
-          ? this.battles[this.battles.length - 1].id : null;
-      const resultOrder = this.triageMode ? 'asc' : 'desc';
+      fetchNextResults() {
+        const sentinelId =
+          this.battles != null && this.battles.length > 0
+            ? this.battles[this.battles.length - 1].id
+            : null;
+        const resultOrder = this.triageMode ? "asc" : "desc";
 
-      this.fetchPromise = ajaxer.getBattles(
-        {
-          untriaged: this.triageMode,
-          orderBy: [{ key: 'battle_id', order: resultOrder }],
-          limit: RESULTS_PER_FETCH,
-          bound: sentinelId == null ? undefined : {
-            col: 'battle_id',
-            cmp: resultOrder == 'asc' ? '>' : '<',
-            value: sentinelId,
+        this.fetchPromise = ajaxer.getBattles(
+          {
+            untriaged: this.triageMode,
+            orderBy: [{ key: "battle_id", order: resultOrder }],
+            limit: RESULTS_PER_FETCH,
+            bound:
+              sentinelId == null
+                ? undefined
+                : {
+                    col: "battle_id",
+                    cmp: resultOrder == "asc" ? ">" : "<",
+                    value: sentinelId,
+                  },
           },
-        },
-        true);
+          true
+        );
 
-      this.fetchPromise.then(response => {
-        this.addNames(response.data.names);
-        if (this.battles == null) {
-          this.battles = [];
-        }
-        for (let battle of response.data.battles) {
-          this.battles.push(battle);
-        }
-        this.suspectMoreToFetch =
+        this.fetchPromise.then((response) => {
+          this.addNames(response.data.names);
+          if (this.battles == null) {
+            this.battles = [];
+          }
+          for (let battle of response.data.battles) {
+            this.battles.push(battle);
+          }
+          this.suspectMoreToFetch =
             response.data.battles.length == RESULTS_PER_FETCH;
-      });
+        });
+      },
     },
-  }, NameCacheMixin),
+    NameCacheMixin
+  ),
 });
 
 const RESULTS_PER_FETCH = 30;
@@ -132,7 +135,7 @@ const RESULTS_PER_FETCH = 30;
   justify-content: center;
   height: 70px;
 
-  color: #A7A29C;
+  color: #a7a29c;
   font-size: 14px;
   font-style: italic;
 }
