@@ -3,6 +3,7 @@ import _ = require("underscore");
 
 import { Dao } from "../dao";
 import { EsiNotification } from "../../data-source/esi/EsiNotification";
+import { fetchEveNames } from "../../data-source/esi/names";
 import { characterNotification, characterNotificationUpdate } from "../tables";
 import { Tnex, val } from "../tnex";
 
@@ -20,10 +21,16 @@ export default class CharacterNotificationDao {
       .groupBy("characterNotification_type")
       .run()
       .then((rows) =>
-        _.map(rows, function (row) {
+        _.map(rows, async function (row) {
+          const sols = [
+            ...row.characterNotification_text.matchAll(/solarSystemID: (\d+)/),
+          ];
           return {
             type: row.characterNotification_type,
             text: row.characterNotification_text,
+            system: sols[0]
+              ? (await fetchEveNames([+sols[0][1]]))[+sols[0][1]]
+              : "n/a",
           };
         })
       );

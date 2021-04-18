@@ -86,7 +86,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const len = characterIds.length;
   let progress = 0;
   let errors = 0;
-  for (const characterId of characterIds) {
+  const promises = characterIds.map(async (characterId) => {
     try {
       await updateCharacter(db, characterId);
     } catch (e) {
@@ -102,7 +102,8 @@ async function executor(db: Tnex, job: JobLogger) {
     }
     ++progress;
     job.setProgress(progress / len, undefined);
-  }
+  });
+  await Promise.all(promises);
 
   // Now, check the notifications table for any new notifications since last
   // run, deduped.
@@ -114,7 +115,7 @@ async function executor(db: Tnex, job: JobLogger) {
   );
   const span = getSpan(context.active());
   for (const msg of deduped) {
-    span?.addEvent("notification", msg);
+    span?.addEvent("notification", await msg);
   }
 
   if (errors) {
