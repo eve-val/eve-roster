@@ -91,8 +91,8 @@ async function executor(db: Tnex, job: JobLogger) {
     const span = tracer.startSpan("updateCharacterNotifications");
     span.setAttribute("characterId", characterId);
     try {
-      await context.with(setSpan(context.active(), span), async () => {
-        updateCharacter(db, characterId);
+      context.with(setSpan(context.active(), span), async () => {
+        await updateCharacter(db, characterId);
       });
     } catch (e) {
       ++errors;
