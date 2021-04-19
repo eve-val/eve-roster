@@ -73,6 +73,7 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
     task: syncNotifications,
     schedule: "27 * * * * *", // 27th second of every minute
     interval: moment.duration(1, "minutes").asMilliseconds(),
+    notification: "notification",
     silent: true,
   },
 ];
