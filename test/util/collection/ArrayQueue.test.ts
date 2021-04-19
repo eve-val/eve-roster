@@ -81,7 +81,8 @@ function stream(queue: ArrayQueue<number>, length: number, capacity: number) {
   const results: number[] = [];
 
   const remaining = Math.max(0, capacity - queue.size());
-  for (let i = 0; i < remaining; i++) {
+  let i;
+  for (i = 0; i < remaining; i++) {
     queue.enqueue(i);
   }
 

@@ -1,8 +1,6 @@
 import pg = require("pg");
 import { knex, Knex } from "knex";
 
-const DEBUG_QUERIES = false;
-
 // By default, pg returns columns of type "bigint" (20) as strings, not numbers,
 // since they could possibly overflow Javascript's number type (which is a
 // double, not an int8). However, this makes dealing with our timestamps, which
@@ -14,31 +12,6 @@ const DEBUG_QUERIES = false;
 pg.types.setTypeParser(20, function (value) {
   return parseInt(value);
 });
-
-if (DEBUG_QUERIES) {
-  // Monkey-patch pg.Client.query to log out all queries, including a connection
-  // id.
-  let nextConnectionId = 0;
-  const queryFunc = pg.Client.prototype.query;
-  pg.Client.prototype.query = loggingQuery as any;
-
-  function loggingQuery(
-    this: pg.Client,
-    query: any,
-    values: any,
-    callback: any
-  ) {
-    const self = this as any;
-    if (self.__connectionId == null) {
-      self.__connectionId = nextConnectionId;
-      nextConnectionId++;
-    }
-
-    const rawQuery = query.text ? query.text : query;
-    console.log(`[${self.__connectionId}] ${rawQuery}`);
-    return queryFunc.call(this, query, values, callback);
-  }
-}
 
 const CLIENT = "pg";
 

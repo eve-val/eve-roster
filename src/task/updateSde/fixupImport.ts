@@ -5,5 +5,4 @@ import { Tnex } from "../../db/tnex";
  * incompletely-defined attributes or inconsistent data patterns. There are a
  * surprising number of these, but most can be ignored.
  */
-export async function fixupImport(_db: Tnex) {
-}
+export async function fixupImport(_db: Tnex) {}

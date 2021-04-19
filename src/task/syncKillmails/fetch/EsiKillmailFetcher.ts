@@ -55,7 +55,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
 
   private async _fetchMail(id: number, hash: string, maxFailures: number) {
     let failures = 0;
-    while (true) {
+    for (;;) {
       try {
         return await fetchEsi(ESI_KILLMAILS_$killmailId_$killmailHash, {
           killmailId: id,

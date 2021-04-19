@@ -13,10 +13,7 @@ import { BadRequestError } from "../../../../error/BadRequestError";
 import { SrpVerdictStatus, SrpVerdictReason } from "../../../../db/dao/enums";
 import { NotFoundError } from "../../../../error/NotFoundError";
 import { idParam } from "../../../../util/express/paramVerifier";
-import { buildLoggerFromFilename } from "../../../../infra/logging/buildLogger";
 import { UserVisibleError } from "../../../../error/UserVisibleError";
-
-const logger = buildLoggerFromFilename(__filename);
 
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);

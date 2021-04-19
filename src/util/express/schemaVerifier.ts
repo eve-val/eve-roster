@@ -202,7 +202,7 @@ class ObjectSchema<T extends object> extends Schema {
     path.pop();
 
     for (const k in value) {
-      if (!this._subSchema.hasOwnProperty(k)) {
+      if (!Object.prototype.hasOwnProperty.call(this._subSchema, k)) {
         path.push(k);
         throw new SchemaVerificationError(
           `Unexpected property: ${pathToStr(path)}`

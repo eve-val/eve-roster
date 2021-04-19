@@ -1,5 +1,5 @@
 // Causes stack traces to reference the original .ts files
-require("source-map-support").install();
+import "source-map-support/register";
 
 require("heapdump");
 
@@ -16,7 +16,7 @@ import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
-const grpc = require("grpc");
+import grpc = require("grpc");
 
 const REQUIRED_VARS = [
   "COOKIE_SECRET",
