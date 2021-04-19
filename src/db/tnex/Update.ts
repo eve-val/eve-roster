@@ -1,4 +1,3 @@
-import Bluebird = require("bluebird");
 import { Knex } from "knex";
 
 import { Query } from "./Query";
@@ -46,7 +45,7 @@ export class Update<T extends object, F extends object> extends Query<
         .toString()
         .replace(` where `, ` from ${fromClause} where `);
 
-      return this._knex.raw(modifiedQuery).then((response) => {
+      return this._knex.raw(modifiedQuery).then((_response) => {
         return 0;
       });
     }

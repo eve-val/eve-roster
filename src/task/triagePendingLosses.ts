@@ -22,7 +22,7 @@ export const triagePendingLosses: Task = {
   executor,
 };
 
-async function executor(db: Tnex, job: JobLogger) {
+async function executor(db: Tnex, _job: JobLogger) {
   const rows = await dao.srp.listSrps(db, {
     status: SrpVerdictStatus.PENDING,
   });

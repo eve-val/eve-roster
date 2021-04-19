@@ -1,5 +1,4 @@
 import Bluebird = require("bluebird");
-import moment = require("moment");
 
 import * as time from "../../util/time";
 import { Tnex } from "../../db/tnex";
@@ -120,7 +119,6 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
 }
 
 function pruneCompletedSkills(queueData: NamedSkillQueueRow[]) {
-  const now = moment().valueOf();
   let i = 0;
   for (; i < queueData.length; i++) {
     const item = queueData[i];

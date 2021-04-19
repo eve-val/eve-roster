@@ -26,7 +26,7 @@ export class ZKillmailStream extends Readable<ZKillDescriptor> {
     this._maxPages = maxPages;
   }
 
-  _read(size: number) {
+  _read(_size: number) {
     this._performRead().catch((err) => {
       this.emit("error", err);
     });

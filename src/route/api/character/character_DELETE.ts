@@ -9,7 +9,7 @@ import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
 const logger = buildLoggerFromFilename(__filename);
 
 export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<{}> => {
+  (req, res, db, account, _privs): Promise<{}> => {
     const characterId = parseInt(req.params.id);
     logger.debug(`deleteCharacter ${account.id} ${characterId}`);
 

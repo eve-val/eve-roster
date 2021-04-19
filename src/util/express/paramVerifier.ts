@@ -1,7 +1,6 @@
 import express = require("express");
 
 import { BadRequestError } from "../../error/BadRequestError";
-import e = require("express");
 import { MixedObject } from "../simpleTypes";
 
 const POSITIVE_INTEGER_PATTERN = /^\d+$/;

@@ -2,7 +2,7 @@ import _ = require("underscore");
 import Bluebird = require("bluebird");
 
 import { dao } from "../../db/dao";
-import { Tnex, val } from "../../db/tnex";
+import { Tnex } from "../../db/tnex";
 import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups";
 import { serialize } from "../../util/asyncUtil";
 import { account } from "../../db/tables";

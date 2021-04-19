@@ -3,8 +3,8 @@ import path from "path";
 import webpack from "webpack";
 import { ProjectPaths } from "./paths";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
+import MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+import { VueLoaderPlugin } from "vue-loader";
 
 export function commonConfig(
   mode: "development" | "production",

@@ -1,4 +1,3 @@
-import moment = require("moment");
 import { Transform, TransformCallback } from "../../../util/stream/Transform";
 import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
 import { Killmail } from "../../../db/tables";
@@ -108,7 +107,8 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
         );
       }
 
-      for (var i = this._queue.start(); i < this._queue.end(); i++) {
+      let i;
+      for (i = this._queue.start(); i < this._queue.end(); i++) {
         if (this._queue.get(i).km_timestamp < row.km_timestamp) {
           this._logger.info(
             `Found an out of order killmail, inserting at position ${i}.`

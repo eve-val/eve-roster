@@ -1,12 +1,10 @@
-import { Writable, WritableOptions } from "./Writable";
-import { WriteStream } from "./Writable";
-import { ReadStream, Readable, ReadableOptions } from "./Readable";
+import { WritableOptions } from "./Writable";
+import { ReadStream, ReadableOptions } from "./Readable";
 import { BasicCallback } from "./core";
-import { Omit } from "../simpleTypes";
 
 export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
 export class Duplex<In, Out> {
-  constructor(opts?: DuplexOptions<Duplex<In, Out>, In, Out>);
+  constructor(opts?: DuplexOptions<Duplex<In, Out>, In>);
 
   _read?(size: number): void;
   _destroy?(error: Error | null, callback: BasicCallback): void;
@@ -162,7 +160,7 @@ export interface ReadWriteStream<In, Out> {
   ): this;
 }
 
-export interface DuplexOptions<This, In, Out>
+export interface DuplexOptions<This, In>
   extends WritableOptions<This, In>,
     ReadableOptions<This> {
   allowHalfOpen?: boolean;

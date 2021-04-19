@@ -5,7 +5,7 @@ import { Tnex } from "../../../../db/tnex";
 import { dao } from "../../../../db/dao";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { SimpleNumMap, AsyncReturnType } from "../../../../util/simpleTypes";
+import { SimpleNumMap } from "../../../../util/simpleTypes";
 import { fetchEveNames } from "../../../../data-source/esi/names";
 import { hasRosterScopes } from "../../../../domain/roster/hasRosterScopes";
 

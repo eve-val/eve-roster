@@ -5,7 +5,7 @@ import { idParam } from "../../../util/express/paramVerifier";
 import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError";
 
 export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<{}> => {
+  (req, res, db, account, _privs): Promise<{}> => {
     const targetAccountId = idParam(req, "id");
     const charId = idParam(req, "charId");
 
@@ -18,7 +18,7 @@ export default jsonEndpoint(
 
         return dao.ownership.deletePendingOwnership(db, account.id, charId);
       })
-      .then((deleteCount) => {
+      .then((_deleteCount) => {
         return {};
       });
   }

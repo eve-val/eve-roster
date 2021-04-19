@@ -11,7 +11,7 @@ export class Input {
 }
 export const inputSchema = new Input();
 
-export default jsonEndpoint((req, res, db, account, privs) => {
+export default jsonEndpoint((req, res, db, account, _privs) => {
   const accountParam = idParam(req, "id");
   const input = verify(req.body, inputSchema);
   const charId = input.characterId;

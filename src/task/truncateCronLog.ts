@@ -13,6 +13,6 @@ export const truncateCronLog: Task = {
   executor,
 };
 
-async function executor(db: Tnex, job: JobLogger) {
+async function executor(db: Tnex, _job: JobLogger) {
   await dao.cron.dropOldJobs(db, 10000);
 }

@@ -1,4 +1,3 @@
-import { number } from "../../util/express/schemaVerifier";
 import { EsiAsset } from "./EsiAsset";
 import { FetchMethod, Private, Public } from "./EsiEndpoint";
 import { EsiKillmail } from "./EsiKillmail";

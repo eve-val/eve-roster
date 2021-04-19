@@ -52,7 +52,7 @@ export default class ConfigDao {
             );
           }
         });
-    }).then((results) => {});
+    }).then((_results) => {});
   }
 
   getSiggyCredentials(db: Tnex) {
@@ -108,7 +108,7 @@ export default class ConfigDao {
         })
         .then(() => {
           return Bluebird.map(titleMappings, (link) => {
-            return db.insert(groupTitle, link).catch((e) => {
+            return db.insert(groupTitle, link).catch((_e) => {
               throw new UserVisibleError(
                 `Invalid title mapping "${link.groupTitle_title}" ->` +
                   ` "${link.groupTitle_group}".` +

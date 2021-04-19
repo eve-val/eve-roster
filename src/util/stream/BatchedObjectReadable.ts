@@ -19,7 +19,7 @@ export class BatchedObjectReadable<S> extends Readable<S> {
     this._iterator = iterator;
   }
 
-  _read(size: number) {
+  _read(_size: number): void {
     this._performRead().catch((err) => {
       this._state = "error";
       process.nextTick(() => this.emit("error", err));

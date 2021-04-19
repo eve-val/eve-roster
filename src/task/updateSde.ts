@@ -48,7 +48,7 @@ async function createTmpFile(prefix: string, postfix: string) {
   return new Promise<string>((resolve, reject) => {
     tmp.file(
       { prefix: prefix, postfix: postfix, discardDescriptor: true },
-      (err, path, fd, cleanupCallback) => {
+      (err, path, _fd, _cleanupCallback) => {
         if (err) {
           reject(err);
         } else {
@@ -61,7 +61,7 @@ async function createTmpFile(prefix: string, postfix: string) {
 
 function deleteFile(path: string | null) {
   if (path != null) {
-    fs.unlink(path, (err) => {
+    fs.unlink(path, (_err) => {
       // If there's an error, ah well, we did our best.
     });
   }

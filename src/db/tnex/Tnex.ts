@@ -173,7 +173,7 @@ export class Tnex {
     const strippedId = this._registry.stripPrefix(idColumn);
     const synthTable = `__updatesFor_${tableName}`;
     const columns = getColumnDescriptors(table).filter((col) =>
-      rows[0].hasOwnProperty(col.prefixedName)
+      Object.prototype.hasOwnProperty.call(rows[0], col.prefixedName)
     );
 
     const query: string[] = [];

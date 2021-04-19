@@ -141,7 +141,7 @@ async function fetchMails(kind: string, characterId: number, since: string) {
   const mails = [] as ZkillIncident[];
 
   let pageIndex = 1;
-  while (true) {
+  for (;;) {
     const page = await fetchMailsPage(kind, characterId, since, pageIndex);
     for (const incident of page) {
       mails.push(incident);

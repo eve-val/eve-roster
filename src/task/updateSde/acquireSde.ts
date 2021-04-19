@@ -4,7 +4,7 @@ import progress = require("progress-stream");
 
 import { JobLogger } from "../../infra/taskrunner/Job";
 
-const bz2 = require("unbzip2-stream");
+const bz2 = require("unbzip2-stream"); // eslint-disable-line @typescript-eslint/no-var-requires
 
 const FUZZWORKS_DUMP_URL = "https://www.fuzzwork.co.uk/dump";
 const SQLITE_DUMP_URL = `${FUZZWORKS_DUMP_URL}/sqlite-latest.sqlite.bz2`;

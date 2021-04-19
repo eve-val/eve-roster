@@ -41,7 +41,7 @@ test("Offset growth", () => {
 
 test("Offset insert before break", () => {
   const queue = new ArrayQueue<number>(10, false);
-  const result = stream(queue, 16, 9);
+  stream(queue, 16, 9);
   queue.insert(8, 47);
 
   expect(contents(queue)).toEqual([7, 47, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -81,7 +81,8 @@ function stream(queue: ArrayQueue<number>, length: number, capacity: number) {
   const results: number[] = [];
 
   const remaining = Math.max(0, capacity - queue.size());
-  for (var i = 0; i < remaining; i++) {
+  let i;
+  for (i = 0; i < remaining; i++) {
     queue.enqueue(i);
   }
 

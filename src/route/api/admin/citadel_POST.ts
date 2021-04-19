@@ -1,12 +1,7 @@
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { DEFAULT_NUM, toNum } from "../../../db/tnex";
+import { DEFAULT_NUM } from "../../../db/tnex";
 import { dao } from "../../../db/dao";
-import {
-  verify,
-  string,
-  boolean,
-  SchemaVerificationError,
-} from "../../../util/express/schemaVerifier";
+import { verify, string, boolean } from "../../../util/express/schemaVerifier";
 
 export class Input {
   name = string();

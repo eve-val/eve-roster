@@ -116,6 +116,6 @@ new Vue({
   el: "#app",
   router,
   data: {
-    identity: $__IDENTITY,
+    identity: $__IDENTITY, // eslint-disable-line no-undef
   },
 });

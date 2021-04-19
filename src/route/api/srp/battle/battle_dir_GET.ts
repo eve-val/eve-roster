@@ -38,7 +38,7 @@ const FILTER_SCHEMA = {
 };
 
 export default jsonEndpoint(
-  async (req, res, db, account, privs): Promise<BattleOutput> => {
+  async (req, res, db, _account, _privs): Promise<BattleOutput> => {
     const includeSrps = boolQuery(req, "includeSrp") || false;
     const filter = verify(jsonQuery(req, "filter") || {}, FILTER_SCHEMA);
 
