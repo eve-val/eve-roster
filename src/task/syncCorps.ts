@@ -35,7 +35,7 @@ function executor(db: Tnex, job: JobLogger) {
 
       const esiErrorCharacterIds: number[] = [];
 
-      return serialize(characterIds, (characterId, i) => {
+      return serialize(characterIds, (characterId, _) => {
         return updateCorporation(db, characterId)
           .catch((e) => {
             if (isAnyEsiError(e)) {

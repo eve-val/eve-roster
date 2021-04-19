@@ -1,4 +1,4 @@
-const moment = require("moment");
+import moment = require("moment");
 import _ = require("underscore");
 
 import { SrpLossRow } from "../../db/dao/SrpDao";

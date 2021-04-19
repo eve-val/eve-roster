@@ -13,7 +13,6 @@ import {
   Account,
   killmailBattle,
   KillmailBattle,
-  memberCorporation,
 } from "../tables";
 import { SrpVerdictStatus, SrpVerdictReason } from "./enums";
 import { val, Comparison } from "../tnex/core";

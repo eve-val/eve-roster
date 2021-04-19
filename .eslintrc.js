@@ -8,4 +8,12 @@ module.exports = {
     "prettier",
     "plugin:jest/recommended",
   ],
+  rules: {
+    "@typescript-eslint/no-explicit-any": ["error", { ignoreRestArgs: true }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+  },
+  env: {
+    browser: true,
+    node: true,
+  },
 };

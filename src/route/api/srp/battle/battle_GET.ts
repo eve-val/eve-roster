@@ -7,7 +7,7 @@ import {
 } from "../../../../domain/battle/battlesToJson";
 
 export default jsonEndpoint(
-  async (req, res, db, account, privs): Promise<BattleOutput> => {
+  async (req, res, db, _account, _privs): Promise<BattleOutput> => {
     const id = idParam(req, "id");
     const includeSrps = boolQuery(req, "includeSrp") || false;
 

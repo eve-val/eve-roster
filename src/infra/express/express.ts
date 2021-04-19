@@ -2,7 +2,6 @@ import Graceful from "node-graceful";
 Graceful.captureExceptions = true;
 
 import path = require("path");
-import util = require("util");
 
 import express from "express";
 import bodyParser from "body-parser";

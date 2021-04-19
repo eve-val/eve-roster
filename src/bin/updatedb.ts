@@ -41,7 +41,7 @@ const MIGRATE_CONFIG = {
 
 const knex = getPostgresKnex();
 
-export function updateDb(revert: boolean) {
+export function updateDb(revert: boolean): Promise<void> {
   if (revert) {
     console.log("Reverting schema changes...");
     return knex.migrate.rollback(MIGRATE_CONFIG).then((reverts) => {

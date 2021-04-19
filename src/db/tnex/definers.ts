@@ -37,7 +37,7 @@ export function float8(): number {
   return new ColumnDescriptorImpl(DataType.FLOAT8, "float8") as any;
 }
 
-export function decimal(precision: number, scale: number): number {
+export function decimal(_precision: number, _scale: number): number {
   return new ColumnDescriptorImpl(DataType.DECIMAL, "decimal") as any;
 }
 

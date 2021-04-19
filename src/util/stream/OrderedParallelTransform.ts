@@ -1,6 +1,5 @@
 import { Transform, TransformCallback } from "./Transform";
 import { BasicCallback } from "./core";
-import { checkNotNil } from "../assert";
 import { ArrayQueue } from "../collection/ArrayQueue";
 
 /**
@@ -34,7 +33,11 @@ export abstract class OrderedParallelTransform<In, Out> extends Transform<
    */
   protected abstract _processChunk(chunk: In): Promise<Out | null>;
 
-  _transform(chunk: In, encoding: string, callback: TransformCallback<Out>) {
+  _transform(
+    chunk: In,
+    encoding: string,
+    callback: TransformCallback<Out>
+  ): void {
     try {
       this._transformInternal(chunk, callback);
     } catch (err) {
@@ -42,7 +45,7 @@ export abstract class OrderedParallelTransform<In, Out> extends Transform<
     }
   }
 
-  _final(callback: BasicCallback) {
+  _final(callback: BasicCallback): void {
     if (this._errorState || this._resultBuffer.size() == 0) {
       callback();
     } else {

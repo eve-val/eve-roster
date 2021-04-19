@@ -13,7 +13,7 @@ export const truncateCharacterLocations: Task = {
   executor,
 };
 
-async function executor(db: Tnex, job: JobLogger) {
+async function executor(db: Tnex, _job: JobLogger) {
   const cutoff = moment().subtract(120, "days").valueOf();
 
   await dao.characterLocation.deleteOldLocations(db, cutoff);

@@ -1,7 +1,7 @@
 import { Duplex, DuplexOptions } from "./Duplex";
 
 export class Transform<In, Out> extends Duplex<In, Out> {
-  constructor(opts?: DuplexOptions<Transform<In, Out>, In, Out>);
+  constructor(opts?: DuplexOptions<Transform<In, Out>, In>);
 
   _transform?(
     chunk: In,

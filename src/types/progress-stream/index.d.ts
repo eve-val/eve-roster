@@ -1,5 +1,4 @@
 declare module "progress-stream" {
-  import * as fs from "fs";
   import * as stream from "stream";
 
   function progress(options: Options): ProgressStream;

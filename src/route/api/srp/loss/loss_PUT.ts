@@ -2,7 +2,6 @@ import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import {
   number,
   verify,
-  string,
   nullable,
   stringEnum,
 } from "../../../../util/express/schemaVerifier";
@@ -14,7 +13,6 @@ import { BadRequestError } from "../../../../error/BadRequestError";
 import { SrpVerdictStatus, SrpVerdictReason } from "../../../../db/dao/enums";
 import { NotFoundError } from "../../../../error/NotFoundError";
 import { idParam } from "../../../../util/express/paramVerifier";
-import { fetchEveNames } from "../../../../data-source/esi/names";
 import { buildLoggerFromFilename } from "../../../../infra/logging/buildLogger";
 import { UserVisibleError } from "../../../../error/UserVisibleError";
 

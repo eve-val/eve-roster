@@ -17,7 +17,7 @@ export default jsonEndpoint(function (
   res,
   db,
   account,
-  privs
+  _privs
 ): Promise<Payload> {
   return Promise.resolve()
     .then(() => {

@@ -1,4 +1,3 @@
-import moment = require("moment");
 import { Transform, TransformCallback } from "../../../util/stream/Transform";
 import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
 import { Killmail } from "../../../db/tables";

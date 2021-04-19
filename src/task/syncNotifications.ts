@@ -2,7 +2,6 @@ import _ = require("underscore");
 import moment from "moment";
 import { getAccessToken } from "../data-source/accessToken/accessToken";
 import { isAnyEsiError } from "../data-source/esi/error";
-import { EsiErrorKind } from "../data-source/esi/EsiError";
 import { EsiNotification } from "../data-source/esi/EsiNotification";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints";

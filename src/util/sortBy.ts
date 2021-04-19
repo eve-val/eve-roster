@@ -16,7 +16,7 @@ import { KeysOfType, nil } from "./simpleTypes";
  * @returns The sorted array. Because sorting is done in-place, this will be
  *    the same object as `arr`.
  */
-export function sortBy<T>(arr: T[], ...comparitors: Comparitor<T>[]) {
+export function sortBy<T>(arr: T[], ...comparitors: Comparitor<T>[]): T[] {
   const len = comparitors.length;
   arr.sort((a, b) => {
     for (let i = 0; i < len; i++) {

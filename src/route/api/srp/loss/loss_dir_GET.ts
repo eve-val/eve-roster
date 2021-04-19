@@ -11,9 +11,9 @@ import {
 } from "../../../../util/express/paramVerifier";
 import { fetchEveNames } from "../../../../data-source/esi/names";
 import { srpLossToJson } from "../../../../domain/srp/srpLossToJson";
-import { SrpLossFilter, SrpLossRow } from "../../../../db/dao/SrpDao";
+import { SrpLossFilter } from "../../../../db/dao/SrpDao";
 import { ResultOrder } from "../../../../db/tnex";
-import { SrpLossJson, SrpTriageJson } from "../../../../domain/srp/SrpLossJson";
+import { SrpLossJson } from "../../../../domain/srp/SrpLossJson";
 import { triageLosses } from "../../../../domain/srp/triage/triageLosses";
 import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson";
 

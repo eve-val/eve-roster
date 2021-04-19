@@ -19,14 +19,15 @@ export function formatNumber(
   const formatter =
     options.formatter || ((valueStr, unitStr) => `${valueStr}${unitStr}`);
 
+  let st;
   for (let i = 0; i < VALUE_STOPS.length; i++) {
-    stop = VALUE_STOPS[i];
-    if (value / stop.divisor < 1000) {
+    st = VALUE_STOPS[i];
+    if (value / st.divisor < 1000) {
       break;
     }
   }
 
-  const displayValue = value / stop.divisor;
+  const displayValue = value / st.divisor;
   let decimalPlaces;
   if (displayValue == 0) {
     decimalPlaces = 0;
@@ -41,5 +42,5 @@ export function formatNumber(
     decimalPlaces = options.decimalPlaces;
   }
 
-  return formatter(displayValue.toFixed(decimalPlaces), stop.symbol);
+  return formatter(displayValue.toFixed(decimalPlaces), st.symbol);
 }

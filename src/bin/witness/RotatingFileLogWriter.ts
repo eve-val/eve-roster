@@ -194,7 +194,3 @@ function openFileForAppend(
     }
   });
 }
-
-const INPUT_LOG_LINE_PATTERN = /^(\d+) ([EWIVD]) ?(.*)/;
-
-const TIMESTAMP_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";

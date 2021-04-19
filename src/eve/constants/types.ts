@@ -15,7 +15,7 @@ export const TYPE_DEVOTER = 12017;
 
 export const TYPE_SCORPION = 640;
 export const TYPE_BHAALGORN = 17920;
-export const TYPE_LESHACK = 47271;
+export const TYPE_LESHAK = 47271;
 
 export const TYPE_LOW_GRADE_GRAIL_ALPHA = 32101;
 export const TYPE_LOW_GRADE_GRAIL_BETA = 32102;

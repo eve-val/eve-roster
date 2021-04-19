@@ -61,9 +61,7 @@ import {
   TYPE_LEGION,
   TYPE_BHAALGORN,
   TYPE_DAMNATION,
-  TYPE_LOKI,
-  TYPE_VULTURE,
-  TYPE_LESHACK,
+  TYPE_LESHAK,
   TYPE_DEVOTER,
   TYPE_LOW_GRADE_SLAVES,
   TYPE_MID_GRADE_SLAVES,
@@ -77,7 +75,6 @@ import {
   MKT_GROUP_NAVY_CRUISERS,
   MKT_GROUP_PIRATE_BATTLESHIPS,
   MKT_GROUPS_T1_FRIGATES,
-  MKT_GROUPS_T1_CRUISERS,
   MKT_GROUPS_T1_DESTROYERS,
   MKT_GROUP_TRIGLAVIAN_FRIGATES,
   MKT_GROUP_TRIGLAVIAN_CRUISERS,
@@ -543,7 +540,7 @@ const GRAIL_IMPLANTS: FuncRule = {
       shipId: [TYPE_GUARDIAN],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     if (
       invMatchAll(killmail, TYPE_LOW_GRADE_GRAILS) ||
       invMatchAll(killmail, TYPE_HIGH_GRADE_GRAILS)
@@ -571,7 +568,7 @@ const TALON_IMPLANTS: FuncRule = {
       shipId: [TYPE_TENGU, TYPE_SCORPION],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     if (
       invMatchAll(killmail, TYPE_LOW_GRADE_TALONS) ||
       invMatchAll(killmail, TYPE_HIGH_GRADE_TALONS)
@@ -595,7 +592,7 @@ const TALISMAN_IMPLANTS: FuncRule = {
       shipId: [TYPE_LEGION, TYPE_BHAALGORN],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     if (
       invMatchAll(killmail, TYPE_LOW_GRADE_TALISMANS) ||
       invMatchAll(killmail, TYPE_MID_GRADE_TALISMANS) ||
@@ -624,7 +621,7 @@ const BASIC_MINDLINK_IMPLANTS: FuncRule = {
       ],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     const implant = invMatchAny(killmail, [
       TYPE_ARMORED_COMMAND_MINDLINK,
       TYPE_SHIELD_COMMAND_MINDLINK,
@@ -656,7 +653,7 @@ const NAVY_MINDLINK_IMPLANTS: FuncRule = {
       ],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     const implant = invMatchAny(killmail, [
       TYPE_IMPERIAL_NAVY_MINDLINK,
       TYPE_FEDERATION_NAVY_MINDLINK,
@@ -701,10 +698,10 @@ const SLAVE_IMPLANTS: FuncRule = {
   filter: {
     groupId: [GROUP_CAPSULE],
     relatedLoss: {
-      shipId: [TYPE_DAMNATION, TYPE_BHAALGORN, TYPE_LESHACK, TYPE_DEVOTER],
+      shipId: [TYPE_DAMNATION, TYPE_BHAALGORN, TYPE_LESHAK, TYPE_DEVOTER],
     },
   },
-  discriminant: (killmail, extra) => {
+  discriminant: (killmail, _extra) => {
     if (
       invMatchAll(killmail, TYPE_LOW_GRADE_SLAVES) ||
       invMatchAll(killmail, TYPE_MID_GRADE_SLAVES) ||
