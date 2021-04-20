@@ -131,6 +131,9 @@ export class Tnex {
     rows: T[],
     returning?: string
   ): Promise<any[] | void> {
+    if (rows.length === 0) {
+      return Promise.resolve([]);
+    }
     const tableName = this._registry.getTableName(table);
     return this._knex(tableName).insert(
       rows.map((row) => this._prepRowForInsert(row, table)),
