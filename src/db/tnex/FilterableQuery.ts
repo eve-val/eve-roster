@@ -109,6 +109,18 @@ export class FilterableQuery<T extends object> {
     return this;
   }
 
+  public whereNotIn<K extends StringKeyOf<T>>(
+    column: K,
+    values: T[K][] & ColumnType[]
+  ): this {
+    this._query = this._query.whereNotIn(
+      this._scoper.scopeColumn(column),
+      values
+    );
+
+    return this;
+  }
+
   /** Variant for matching against jsonb columns. */
   public whereContains<K1 extends StringKeyOf<T>>(
     column: K1,
