@@ -95,10 +95,13 @@ export default class CronDao {
         )
 
         // HACK to limit log spam until we get better UI
-        // Filter out all syncCharacter location entries unless they ended in
-        // error or were run in the last minute.
-        .where("cronLog_task", "!=", val("syncCharacterLocations"))
-        .orWhere("cronLog_result", "!=", val("success"))
+        // Filter out all syncCharacter & syncNotifications location entries
+        // unless they ended in error or were run in the last minute.
+        .whereNotIn("cronLog_task", [
+          "syncCharacterLocations",
+          "syncNotifications",
+        ])
+        .orWhere("cronLog_result", "=", val("failure"))
         .orWhere(
           "cronLog_start",
           ">=",
