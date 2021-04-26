@@ -54,7 +54,7 @@
     "cookie-session": "^1.4.0",
     "css-loader": "^5.2.4",
     "eslint-config-prettier": "^8.2.0",
-    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-jest": "^24.3.6",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "heapdump": "^0.3.15",
