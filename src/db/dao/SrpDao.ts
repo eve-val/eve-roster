@@ -1,5 +1,5 @@
 import { Dao } from "../dao";
-import { Tnex, DEFAULT_NUM } from "../../db/tnex";
+import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex";
 import {
   killmail,
   Killmail,
@@ -44,7 +44,7 @@ export default class SrpDao {
   constructor(private _dao: Dao) {}
 
   async createSrpEntries(db: Tnex, killmailIds: number[]) {
-    await db.insertAll(
+    await db.upsertAll(
       srpVerdict,
       killmailIds.map((kmId) => {
         return {
@@ -56,7 +56,16 @@ export default class SrpDao {
           srpv_modified: Date.now(),
           srpv_renderingAccount: null,
         };
-      })
+      }),
+      "srpv_killmail",
+      {
+        srpv_status: UpdatePolicy.PRESERVE_EXISTING,
+        srpv_reason: UpdatePolicy.PRESERVE_EXISTING,
+        srpv_payout: UpdatePolicy.PRESERVE_EXISTING,
+        srpv_reimbursement: UpdatePolicy.PRESERVE_EXISTING,
+        srpv_modified: UpdatePolicy.PRESERVE_EXISTING,
+        srpv_renderingAccount: UpdatePolicy.PRESERVE_EXISTING,
+      },
     );
   }
 
