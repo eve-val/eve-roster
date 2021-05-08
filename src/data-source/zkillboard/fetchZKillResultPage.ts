@@ -47,5 +47,5 @@ interface ErrorResponse {
 }
 
 const BASE_ZKILL_API_URL = "https://zkillboard.com/api/";
-const PAGE_FETCH_DELAY_MS = 1200;
+const PAGE_FETCH_DELAY_MS = 2400;
 const _rateLimiter = new RateLimiter(PAGE_FETCH_DELAY_MS);
