@@ -65,7 +65,7 @@ export default class SrpDao {
         srpv_reimbursement: UpdatePolicy.PRESERVE_EXISTING,
         srpv_modified: UpdatePolicy.PRESERVE_EXISTING,
         srpv_renderingAccount: UpdatePolicy.PRESERVE_EXISTING,
-      },
+      }
     );
   }
 
