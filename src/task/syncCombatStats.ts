@@ -19,7 +19,6 @@ export const syncCombatStats: Task = {
   executor,
 };
 
-const KB_EXPIRATION_DURATION = moment.duration(12, "hours").asMilliseconds();
 const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
@@ -47,9 +46,11 @@ function fetchAll(db: Tnex, job: JobLogger, year: number, month: number) {
       let updateCount = 0;
       let failureCount = 0;
       return serialize(rows, (row, idx) => {
-        const updated = row.cstats_updated || 0;
-        if (Date.now() - updated < KB_EXPIRATION_DURATION) {
-          // Already up-to-date, skip it...
+        if (
+          row.cstats_updated &&
+          moment(row.cstats_updated).month() == moment().month()
+        ) {
+          // Updated this month already, skip.
           return;
         }
         currentProgress = logProgressUpdate(
