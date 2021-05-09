@@ -321,8 +321,8 @@ export class Tnex {
       // See https://stackoverflow.com/questions/39058213
       const query = `INSERT INTO ?? (${colQs.join(",")})
           VALUES ${allRowsPattern}
-          ON CONFLICT(??) DO UPDATE
-          SET ${updates.join(",")}
+          ON CONFLICT(??) DO
+          ${!updates.length ? "NOTHING" : "UPDATE SET " + updates.join(",")}
           RETURNING CASE WHEN xmax::text::int > 0 THEN 0 ELSE 1 END AS count`;
 
       return this._knex.raw(query, bindings).then((response) => {
