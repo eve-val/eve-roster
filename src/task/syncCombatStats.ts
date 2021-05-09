@@ -15,7 +15,7 @@ export const syncCombatStats: Task = {
   name: "syncCombatStats",
   displayName: "Sync combat activity",
   description: "Updates members' recent kills/losses.",
-  timeout: moment.duration(30, "minutes").asMilliseconds(),
+  timeout: moment.duration(4, "hours").asMilliseconds(),
   executor,
 };
 
@@ -26,7 +26,7 @@ const MAX_FAILURES_BEFORE_BAILING = 10;
 
 function executor(db: Tnex, job: JobLogger) {
   const window = moment().subtract(1, "month");
-  return fetchAll(db, job, window.year(), window.month()).then(
+  return fetchAll(db, job, window.year(), 1 + window.month()).then(
     ([updateCount, failureCount]) => {
       logger.info(`Updated ${updateCount} characters' killboards.`);
       if (failureCount > 0 && updateCount == 0) {
@@ -118,7 +118,7 @@ function syncCharacterKillboard(
     })
     .then(() => {
       // Add another delay to avoid spamming zKill too much
-      return Bluebird.delay(1200);
+      return Bluebird.delay(10000);
     });
 }
 
@@ -187,7 +187,7 @@ function fetchMailsPage(
       })
     )
       // Add a delay here in order to prevent going over zKill's API limit.
-      .delay(1200)
+      .delay(10000)
       .then((response) => {
         if (!response.data || response.data.error) {
           const errorMessage = response.data && response.data.error;
