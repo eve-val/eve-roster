@@ -26,16 +26,16 @@ const MAX_FAILURES_BEFORE_BAILING = 10;
 
 function executor(db: Tnex, job: JobLogger) {
   const window = moment().subtract(1, "month");
-  return Promise.resolve()
-    .then(() => fetchAll(db, job, window.year(), window.month()))
-    .then(([updateCount, failureCount]) => {
+  return fetchAll(db, job, window.year(), window.month()).then(
+    ([updateCount, failureCount]) => {
       logger.info(`Updated ${updateCount} characters' killboards.`);
       if (failureCount > 0 && updateCount == 0) {
         throw new Error(`syncCombatStats failed completely.`);
       } else if (failureCount > 0 && updateCount > 0) {
         job.warn(`Failed to update ${failureCount} character killboards.`);
       }
-    });
+    }
+  );
 }
 
 // For each character, fetches their killboard stats and stores them.
