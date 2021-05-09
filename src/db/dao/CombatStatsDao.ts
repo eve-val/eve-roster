@@ -7,8 +7,13 @@ export default class CombatStatsDao {
 
   getAllCharacterCombatStatsTimestamps(db: Tnex) {
     return db
-      .select(character)
+      .select(t.account)
+      .join(t.accountGroup, "accountGroup_account", "=", "account_id")
+      .join(t.ownership, "ownership_account", "=", "account_id")
+      .join(t.character, "character_id", "=", "ownership_character")
       .leftJoin(combatStats, "cstats_character", "=", "character_id")
+      .where("accountGroup_group", "=", val(MEMBER_GROUP))
+      .andWhere("character_deleted", "=", val(false))
       .columns("character_id", "character_name", "cstats_updated")
       .run();
   }
