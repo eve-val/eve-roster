@@ -1,6 +1,7 @@
-import { Tnex } from "../../db/tnex";
+import { Tnex, val } from "../../db/tnex";
 import { Dao } from "../dao";
-import { character, combatStats } from "../tables";
+import * as t from "../tables";
+import { MEMBER_GROUP } from "../../domain/account/specialGroups";
 
 export default class CombatStatsDao {
   constructor(private _dao: Dao) {}
@@ -11,7 +12,7 @@ export default class CombatStatsDao {
       .join(t.accountGroup, "accountGroup_account", "=", "account_id")
       .join(t.ownership, "ownership_account", "=", "account_id")
       .join(t.character, "character_id", "=", "ownership_character")
-      .leftJoin(combatStats, "cstats_character", "=", "character_id")
+      .leftJoin(t.combatStats, "cstats_character", "=", "character_id")
       .where("accountGroup_group", "=", val(MEMBER_GROUP))
       .andWhere("character_deleted", "=", val(false))
       .columns("character_id", "character_name", "cstats_updated")
@@ -27,7 +28,7 @@ export default class CombatStatsDao {
     lossValue: number
   ) {
     return db.upsert(
-      combatStats,
+      t.combatStats,
       {
         cstats_character: characterId,
         cstats_killsInLastMonth: kills,
