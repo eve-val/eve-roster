@@ -19,7 +19,7 @@ export const syncCombatStats: Task = {
   executor,
 };
 
-const KB_EXPIRATION_DURATION = moment.duration(12, "hours").asMilliseconds();
+const KB_EXPIRATION_DURATION = moment.duration(7, "days").asMilliseconds();
 const PROGRESS_INTERVAL_PERC = 0.05;
 const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
