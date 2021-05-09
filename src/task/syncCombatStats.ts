@@ -6,7 +6,6 @@ import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";
 import { serialize } from "../util/asyncUtil";
 import { JobLogger } from "../infra/taskrunner/Job";
-import { formatZKillTimeArgument } from "../data-source/zkillboard/formatZKillTimeArgument";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 
@@ -26,21 +25,21 @@ const ZKILL_MAX_RESULTS_PER_PAGE = 200;
 const MAX_FAILURES_BEFORE_BAILING = 10;
 
 function executor(db: Tnex, job: JobLogger) {
-  return Promise.resolve()
-    .then(() => formatZKillTimeArgument(moment().subtract(60, "days")))
-    .then((startTime) => fetchAll(db, job, startTime))
-    .then(([updateCount, failureCount]) => {
+  const window = moment().subtract(1, "month");
+  return fetchAll(db, job, window.year(), window.month()).then(
+    ([updateCount, failureCount]) => {
       logger.info(`Updated ${updateCount} characters' killboards.`);
       if (failureCount > 0 && updateCount == 0) {
         throw new Error(`syncCombatStats failed completely.`);
       } else if (failureCount > 0 && updateCount > 0) {
         job.warn(`Failed to update ${failureCount} character killboards.`);
       }
-    });
+    }
+  );
 }
 
 // For each character, fetches their killboard stats and stores them.
-function fetchAll(db: Tnex, job: JobLogger, since: string) {
+function fetchAll(db: Tnex, job: JobLogger, year: number, month: number) {
   return dao.combatStats
     .getAllCharacterCombatStatsTimestamps(db)
     .then((rows) => {
@@ -63,7 +62,8 @@ function fetchAll(db: Tnex, job: JobLogger, since: string) {
           db,
           row.character_id,
           row.character_name,
-          since
+          year,
+          month
         )
           .then(() => {
             updateCount++;
@@ -90,10 +90,11 @@ function syncCharacterKillboard(
   db: Tnex,
   characterId: number,
   characterName: string,
-  since: string
+  year: number,
+  month: number
 ) {
   return serialize(["kills", "losses"], (kind) =>
-    fetchMails(kind, characterId, since)
+    fetchMails(kind, characterId, year, month)
   )
     .then(([kills, losses]) => {
       const killCount = kills.length;
@@ -137,12 +138,23 @@ function logProgressUpdate(
   return lastLoggedProgress;
 }
 
-async function fetchMails(kind: string, characterId: number, since: string) {
+async function fetchMails(
+  kind: string,
+  characterId: number,
+  year: number,
+  month: number
+) {
   const mails = [] as ZkillIncident[];
 
   let pageIndex = 1;
   for (;;) {
-    const page = await fetchMailsPage(kind, characterId, since, pageIndex);
+    const page = await fetchMailsPage(
+      kind,
+      characterId,
+      year,
+      month,
+      pageIndex
+    );
     for (const incident of page) {
       mails.push(incident);
     }
@@ -158,12 +170,13 @@ async function fetchMails(kind: string, characterId: number, since: string) {
 function fetchMailsPage(
   kind: string,
   characterId: number,
-  since: string,
+  year: number,
+  month: number,
   page: number
 ): Bluebird<ZkillIncident[]> {
   const url =
     `https://zkillboard.com/api/${kind}/characterID/${characterId}` +
-    `/startTime/${since}/page/${page}/zkbOnly/`;
+    `/year/${year}/month/${month}/page/${page}/zkbOnly/`;
   return (
     Bluebird.resolve(
       axios.get(url, {
