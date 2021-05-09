@@ -24,8 +24,8 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
   },
   {
     task: syncCombatStats,
-    schedule: "7 2 * * *", // Once a day at ~2AM
-    interval: moment.duration(1, "day").asMilliseconds(),
+    schedule: "7 2 1 * *", // Once a month at ~2AM
+    interval: moment.duration(1, "month").asMilliseconds(),
   },
   {
     task: syncKillmails,
