@@ -6,7 +6,6 @@ import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";
 import { serialize } from "../util/asyncUtil";
 import { JobLogger } from "../infra/taskrunner/Job";
-import { formatZKillTimeArgument } from "../data-source/zkillboard/formatZKillTimeArgument";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 
