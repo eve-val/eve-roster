@@ -4,7 +4,7 @@ orbs:
 jobs:
   deploy:
     docker:
-      - image: cimg/base
+      - image: cimg/base:stable
     steps:
       - checkout
       - add_ssh_keys
@@ -27,3 +27,7 @@ workflows:
           requires:
             - test
             - build
+          filters:
+            branches:
+              only:
+                - master
