@@ -9,6 +9,9 @@ jobs:
       - checkout
       - add_ssh_keys
       - run:
+          name: SSH key for of-sound-mind.com
+          command: ssh-keyscan of-sound-mind.com >> ~/.ssh/known_hosts
+      - run:
           name: Deploy Master to dokku staging
           command: git push dokku@of-sound-mind.com:roster-staging master
 workflows:
