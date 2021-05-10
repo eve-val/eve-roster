@@ -3,6 +3,8 @@ orbs:
   node: circleci/node@4.2.1
 jobs:
   deploy:
+    docker:
+      - image: cimg/base
     steps:
       - checkout
       - add_ssh_keys
