@@ -48,32 +48,30 @@ interface CharacterJson extends Alertable {
   siggyScore: number | null;
 }
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    privs.requireRead("roster");
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead("roster");
 
-    return Promise.all([
-      dao.roster.getCharactersOwnedByAssociatedAccounts(db),
-      dao.roster.getUnownedCorpCharacters(db),
-      getCorpNames(db),
-    ]).then(([ownedChars, unownedChars, corpNames]) => {
-      const accountList = [] as AccountJson[];
+  return Promise.all([
+    dao.roster.getCharactersOwnedByAssociatedAccounts(db),
+    dao.roster.getUnownedCorpCharacters(db),
+    getCorpNames(db),
+  ]).then(([ownedChars, unownedChars, corpNames]) => {
+    const accountList = [] as AccountJson[];
 
-      pushAccounts(ownedChars, privs, corpNames, accountList);
+    pushAccounts(ownedChars, privs, corpNames, accountList);
 
-      for (const unownedChar of unownedChars) {
-        accountList.push(
-          getJsonForUnownedCharacter(unownedChar, privs, corpNames)
-        );
-      }
+    for (const unownedChar of unownedChars) {
+      accountList.push(
+        getJsonForUnownedCharacter(unownedChar, privs, corpNames)
+      );
+    }
 
-      return {
-        columns: getProvidedColumns(privs),
-        rows: accountList,
-      };
-    });
-  }
-);
+    return {
+      columns: getProvidedColumns(privs),
+      rows: accountList,
+    };
+  });
+});
 
 function getCorpNames(db: Tnex) {
   return Promise.resolve()

@@ -19,11 +19,9 @@ const inputSchema = new Input();
  * Sets the timestamp where SRP tracking starts. A null value disables SRP
  * syncing.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<{}> => {
-    return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
+  return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
+});
 
 async function handleEndpoint(
   db: Tnex,

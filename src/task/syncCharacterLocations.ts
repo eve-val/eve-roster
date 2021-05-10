@@ -31,9 +31,8 @@ async function executor(db: Tnex, job: JobLogger) {
     await fillLocationCache(db);
   }
 
-  const initialRows = await dao.characterLocation.getMemberCharactersWithValidAccessTokens(
-    db
-  );
+  const initialRows =
+    await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
   const tokenMap = await getAccessTokensFromRows(db, initialRows);
   const esiErrors: Array<[number, string]> = [];
 
@@ -90,9 +89,8 @@ async function executor(db: Tnex, job: JobLogger) {
 }
 
 async function fillLocationCache(db: Tnex) {
-  const rows = await dao.characterLocation.getMostRecentMemberCharacterLocations(
-    db
-  );
+  const rows =
+    await dao.characterLocation.getMostRecentMemberCharacterLocations(db);
 
   for (const row of rows) {
     CHARLOC_CACHE.set(row.charloc_character, row);

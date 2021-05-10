@@ -8,9 +8,8 @@ export type Nullable<T> = {
  * Like ReturnType, but for functions that return promises. Obtains the type
  * of the promised value.
  */
-export type AsyncReturnType<
-  T extends (...args: any[]) => PromiseLike<any>
-> = T extends (...args: any[]) => PromiseLike<infer R> ? R : T;
+export type AsyncReturnType<T extends (...args: any[]) => PromiseLike<any>> =
+  T extends (...args: any[]) => PromiseLike<infer R> ? R : T;
 
 export type BasicType = number | boolean | string | object;
 

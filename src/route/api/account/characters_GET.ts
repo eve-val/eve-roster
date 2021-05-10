@@ -21,13 +21,11 @@ export interface CharacterDescription {
  * Returns a list of all characters owned by a particular account. Currently,
  * accounts can only ask about their own characters.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    const targetAccountId = idParam(req, "id");
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  const targetAccountId = idParam(req, "id");
 
-    return handleEndpoint(db, account, privs, targetAccountId);
-  }
-);
+  return handleEndpoint(db, account, privs, targetAccountId);
+});
 
 async function handleEndpoint(
   db: Tnex,

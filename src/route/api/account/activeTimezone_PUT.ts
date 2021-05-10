@@ -11,33 +11,31 @@ export class Input {
 }
 export const inputSchema = new Input();
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<{}> => {
-    const targetAccountId = idParam(req, "id");
+export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
+  const targetAccountId = idParam(req, "id");
 
-    const isOwner = targetAccountId == account.id;
-    privs.requireWrite("memberTimezone", isOwner);
+  const isOwner = targetAccountId == account.id;
+  privs.requireWrite("memberTimezone", isOwner);
 
-    return Promise.resolve()
-      .then(() => {
-        const input = verify(req.body, inputSchema);
+  return Promise.resolve()
+    .then(() => {
+      const input = verify(req.body, inputSchema);
 
-        if (!TIMEZONE_LABELS.includes(input.activeTimezone)) {
-          throw new BadRequestError(
-            `Invalid timezone: "${input.activeTimezone}".`
-          );
-        }
-        return dao.account.setActiveTimezone(
-          db,
-          targetAccountId,
-          input.activeTimezone
+      if (!TIMEZONE_LABELS.includes(input.activeTimezone)) {
+        throw new BadRequestError(
+          `Invalid timezone: "${input.activeTimezone}".`
         );
-      })
-      .then((updateCount) => {
-        if (updateCount != 1) {
-          throw new BadRequestError(`Invalid account id: "${req.params.id}".`);
-        }
-        return {};
-      });
-  }
-);
+      }
+      return dao.account.setActiveTimezone(
+        db,
+        targetAccountId,
+        input.activeTimezone
+      );
+    })
+    .then((updateCount) => {
+      if (updateCount != 1) {
+        throw new BadRequestError(`Invalid account id: "${req.params.id}".`);
+      }
+      return {};
+    });
+});

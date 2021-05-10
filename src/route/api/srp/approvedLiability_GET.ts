@@ -12,11 +12,9 @@ export interface Output {
  * Returns the sum of all approved but unpaid SRPs.
  */
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    return handleEndpoint(db, account, privs);
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs);
+});
 
 async function handleEndpoint(
   db: Tnex,

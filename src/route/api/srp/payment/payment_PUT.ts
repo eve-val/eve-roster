@@ -24,17 +24,15 @@ export interface Output {}
 /**
  * Marks a reimbursement as paid (or unpaid).
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    return handleEndpoint(
-      db,
-      account,
-      privs,
-      idParam(req, "id"),
-      verify(req.body, inputSchema)
-    );
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(
+    db,
+    account,
+    privs,
+    idParam(req, "id"),
+    verify(req.body, inputSchema)
+  );
+});
 
 async function handleEndpoint(
   db: Tnex,

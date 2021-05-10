@@ -84,4 +84,5 @@ function getSkillRank(skillId: number) {
   return sde.getSkillDefinition(skillId).rank;
 }
 
-type EsiSkill = typeof ESI_CHARACTERS_$characterId_SKILLS["response"]["skills"][0];
+type EsiSkill =
+  typeof ESI_CHARACTERS_$characterId_SKILLS["response"]["skills"][0];
