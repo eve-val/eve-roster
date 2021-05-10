@@ -23,11 +23,9 @@ export interface Output {}
  * character's current game client. The requesting account must own the
  * character.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs, verify(req.body, inputSchema));
+});
 
 async function handleEndpoint(
   db: Tnex,

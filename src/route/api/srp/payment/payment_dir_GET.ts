@@ -39,19 +39,17 @@ export enum OrderBy {
 /**
  * Returns a list of recent payments. Query can be filtered in a number of ways.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    return handleEndpoint(db, account, privs, {
-      paid: boolQuery(req, "paid"),
-      account: intQuery(req, "account"),
-      limit: intQuery(req, "limit"),
-      order:
-        enumQuery<ResultOrder>(req, "order", ResultOrder) || ResultOrder.DESC,
-      orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) || OrderBy.ID,
-      startingAfter: intQuery(req, "startingAfter"),
-    });
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs, {
+    paid: boolQuery(req, "paid"),
+    account: intQuery(req, "account"),
+    limit: intQuery(req, "limit"),
+    order:
+      enumQuery<ResultOrder>(req, "order", ResultOrder) || ResultOrder.DESC,
+    orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) || OrderBy.ID,
+    startingAfter: intQuery(req, "startingAfter"),
+  });
+});
 
 const DEFAULT_ROWS_PER_QUERY = 30;
 const MAX_ROWS_PER_QUERY = 100;

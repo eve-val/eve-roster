@@ -25,10 +25,8 @@ export async function getTaskLogs(db: Tnex) {
   });
 }
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    privs.requireRead("cronLogs", false);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead("cronLogs", false);
 
-    return getTaskLogs(db);
-  }
-);
+  return getTaskLogs(db);
+});

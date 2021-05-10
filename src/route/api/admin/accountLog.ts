@@ -17,28 +17,26 @@ export interface AccountLog {
   data: string | null;
 }
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    privs.requireRead("accountLogs", false);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead("accountLogs", false);
 
-    return Promise.resolve()
-      .then(() => {
-        return dao.log.getAccountLogsRecent(db);
-      })
-      .then((rows) => {
-        return {
-          rows: rows.map((row) => ({
-            id: row.accountLog_id,
-            timestamp: row.accountLog_timestamp,
-            accountId: row.accountLog_account,
-            originalAccount: row.accountLog_originalAccount,
-            mainCharacter: row.mainChar_name,
-            event: row.accountLog_event,
-            relatedCharacter: row.accountLog_relatedCharacter,
-            relatedCharacterName: row.relatedChar_name,
-            data: row.accountLog_data,
-          })),
-        };
-      });
-  }
-);
+  return Promise.resolve()
+    .then(() => {
+      return dao.log.getAccountLogsRecent(db);
+    })
+    .then((rows) => {
+      return {
+        rows: rows.map((row) => ({
+          id: row.accountLog_id,
+          timestamp: row.accountLog_timestamp,
+          accountId: row.accountLog_account,
+          originalAccount: row.accountLog_originalAccount,
+          mainCharacter: row.mainChar_name,
+          event: row.accountLog_event,
+          relatedCharacter: row.accountLog_relatedCharacter,
+          relatedCharacterName: row.relatedChar_name,
+          data: row.accountLog_data,
+        })),
+      };
+    });
+});

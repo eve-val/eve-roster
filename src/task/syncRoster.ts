@@ -113,34 +113,29 @@ async function updateMemberList(
   director: number
 ) {
   const token = await getAccessToken(db, director);
-  const [
-    memberIds,
-    titleDefs,
-    memberTitles,
-    memberRoles,
-    memberTracking,
-  ] = await Promise.all([
-    fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS, {
-      corporationId,
-      _token: token,
-    }),
-    fetchEsi(ESI_CORPORATIONS_$corporationId_TITLES, {
-      corporationId,
-      _token: token,
-    }),
-    fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, {
-      corporationId,
-      _token: token,
-    }),
-    fetchEsi(ESI_CORPORATIONS_$corporationId_ROLES, {
-      corporationId,
-      _token: token,
-    }),
-    fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERTRACKING, {
-      corporationId,
-      _token: token,
-    }),
-  ]);
+  const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] =
+    await Promise.all([
+      fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS, {
+        corporationId,
+        _token: token,
+      }),
+      fetchEsi(ESI_CORPORATIONS_$corporationId_TITLES, {
+        corporationId,
+        _token: token,
+      }),
+      fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES, {
+        corporationId,
+        _token: token,
+      }),
+      fetchEsi(ESI_CORPORATIONS_$corporationId_ROLES, {
+        corporationId,
+        _token: token,
+      }),
+      fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERTRACKING, {
+        corporationId,
+        _token: token,
+      }),
+    ]);
   const names = await fetchEveNames(memberIds);
 
   const rows = buildMemberRows(

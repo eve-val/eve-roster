@@ -39,12 +39,10 @@ const inputSchema = new Input();
 
 export interface Output {}
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    const input = verify(req.body, inputSchema);
-    return handleEndpoint(db, account, privs, input);
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  const input = verify(req.body, inputSchema);
+  return handleEndpoint(db, account, privs, input);
+});
 
 async function handleEndpoint(
   db: Tnex,

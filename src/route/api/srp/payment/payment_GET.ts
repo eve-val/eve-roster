@@ -27,13 +27,11 @@ export interface Output {
  * Return information about a SRP reimbursement as well as all of its associated
  * approved losses.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    const paymentId = idParam(req, "id");
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  const paymentId = idParam(req, "id");
 
-    return Promise.resolve(handleEndpoint(db, privs, paymentId));
-  }
-);
+  return Promise.resolve(handleEndpoint(db, privs, paymentId));
+});
 
 async function handleEndpoint(
   db: Tnex,

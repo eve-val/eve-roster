@@ -17,13 +17,11 @@ export interface Output {
  * Returns the data blob for a killmail as well as the names of any associated
  * entities (participants, items, etc.).
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    const killmailId = idParam(req, "id");
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  const killmailId = idParam(req, "id");
 
-    return handleEndpoint(db, privs, killmailId);
-  }
-);
+  return handleEndpoint(db, privs, killmailId);
+});
 
 async function handleEndpoint(
   db: Tnex,

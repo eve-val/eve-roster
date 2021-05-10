@@ -25,7 +25,8 @@ export enum DataType {
 }
 
 export class ColumnDescriptorImpl<T extends object>
-  implements ColumnDescriptor<T> {
+  implements ColumnDescriptor<T>
+{
   public prefixedName!: keyof T;
   public unprefixedName!: string;
   public type: DataType;

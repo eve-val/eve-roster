@@ -16,11 +16,9 @@ export interface Output {
 /**
  * Returns the suggested triage verdict(s) for a particular loss.
  */
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    return handleEndpoint(db, account, privs, idParam(req, "id"));
-  }
-);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  return handleEndpoint(db, account, privs, idParam(req, "id"));
+});
 
 async function handleEndpoint(
   db: Tnex,

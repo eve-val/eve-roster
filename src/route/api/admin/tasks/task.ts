@@ -7,16 +7,14 @@ export type Output = {
   description: string;
 }[];
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    privs.requireRead("serverConfig");
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead("serverConfig");
 
-    const tasks = getRunnableTasks().map((task) => ({
-      name: task.name,
-      displayName: task.displayName,
-      description: task.description,
-    }));
+  const tasks = getRunnableTasks().map((task) => ({
+    name: task.name,
+    displayName: task.displayName,
+    description: task.description,
+  }));
 
-    return Promise.resolve(tasks);
-  }
-);
+  return Promise.resolve(tasks);
+});

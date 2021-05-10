@@ -71,9 +71,8 @@ async function updateCharacter(db: Tnex, characterId: number) {
 
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
-  const tokens = await dao.characterLocation.getMemberCharactersWithValidAccessTokens(
-    db
-  );
+  const tokens =
+    await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
 
   const start = moment();
   const characterIds = _.pluck(tokens, "accessToken_character").filter(

@@ -16,45 +16,43 @@ export interface Output {
   accounts: { main: string; killsOnMain: number }[];
 }
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    privs.requireRead("characterSkills", false);
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  privs.requireRead("characterSkills", false);
 
-    // Format: <skillId>:<minLevel>,...
-    // eg. "3333:5,3335:5,3337:5"
-    const skillRequirements = parseQuery(stringQuery(req, "q"));
+  // Format: <skillId>:<minLevel>,...
+  // eg. "3333:5,3335:5,3337:5"
+  const skillRequirements = parseQuery(stringQuery(req, "q"));
 
-    let numAccounts: number;
+  let numAccounts: number;
 
-    return Promise.resolve()
-      .then(() => {
-        return dao.roster.getMemberAccounts(db);
-      })
-      .then((rows) => {
-        numAccounts = rows.length;
+  return Promise.resolve()
+    .then(() => {
+      return dao.roster.getMemberAccounts(db);
+    })
+    .then((rows) => {
+      numAccounts = rows.length;
 
-        return dao.statistics.getTrainedPercentage(db, skillRequirements);
-      })
-      .then((rows) => {
-        return {
-          query: skillRequirements.map(
-            (sr) => `${sde.getSkillName(sr.skill)} ${sr.minLevel}`
-          ),
-          stats: {
-            matchingAccounts: rows.length,
-            totalAccounts: numAccounts,
-            percentage: Math.round((rows.length / numAccounts) * 100) + "%",
-          },
-          accounts: rows.map((row: any) => {
-            return {
-              main: row.name,
-              killsOnMain: row.kills,
-            };
-          }),
-        };
-      });
-  }
-);
+      return dao.statistics.getTrainedPercentage(db, skillRequirements);
+    })
+    .then((rows) => {
+      return {
+        query: skillRequirements.map(
+          (sr) => `${sde.getSkillName(sr.skill)} ${sr.minLevel}`
+        ),
+        stats: {
+          matchingAccounts: rows.length,
+          totalAccounts: numAccounts,
+          percentage: Math.round((rows.length / numAccounts) * 100) + "%",
+        },
+        accounts: rows.map((row: any) => {
+          return {
+            main: row.name,
+            killsOnMain: row.kills,
+          };
+        }),
+      };
+    });
+});
 
 const SKILL_PATTERN = /^(\d+):(\d+),?/;
 

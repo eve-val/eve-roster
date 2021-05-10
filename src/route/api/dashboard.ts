@@ -31,69 +31,67 @@ interface CharacterJson {
   needsReauth: boolean;
 }
 
-export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Output> => {
-    let mainCharacter: number;
+export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+  let mainCharacter: number;
 
-    let characters = [] as CharacterJson[];
-    const access = {
-      designateMain: 0,
-      isMember: privs.isMember(),
-    };
+  let characters = [] as CharacterJson[];
+  const access = {
+    designateMain: 0,
+    isMember: privs.isMember(),
+  };
 
-    return Promise.resolve()
-      .then(() => {
-        return dao.account.getDetails(db, account.id);
-      })
-      .then((row) => {
-        if (row == null) {
-          throw new NotFoundError();
-        }
+  return Promise.resolve()
+    .then(() => {
+      return dao.account.getDetails(db, account.id);
+    })
+    .then((row) => {
+      if (row == null) {
+        throw new NotFoundError();
+      }
 
-        mainCharacter = row.account_mainCharacter;
-        access.designateMain = canDesignateMain(row.account_created) ? 2 : 0;
+      mainCharacter = row.account_mainCharacter;
+      access.designateMain = canDesignateMain(row.account_created) ? 2 : 0;
 
-        return dao.character.getCharactersOwnedByAccount(db, account.id);
-      })
-      .then((rows) => {
-        return parallelize(rows, (row) => {
-          return loadSummarizedQueue(db, row.character_id, "cached").then(
-            (queue) => {
-              return {
-                id: row.character_id,
-                name: row.character_name,
-                opsec: row.ownership_opsec && privs.isMember(),
-                corpStatus: getCorpStatus(row.mcorp_membership),
-                skillQueue: queue,
-                corpId: row.character_corporationId,
-                needsReauth: row.accessToken_needsUpdate !== false,
-              };
-            }
-          );
-        });
-      })
-      .then((_characters) => {
-        characters = _characters;
-
-        return dao.ownership.getAccountPendingOwnership(db, account.id);
-      })
-      .then((transfers) => {
-        const strippedTransfers = transfers.map((transfer) => ({
-          character: transfer.pendingOwnership_character,
-          name: transfer.character_name,
-        }));
-
-        return {
-          accountId: account.id,
-          characters: characters,
-          transfers: strippedTransfers,
-          loginParams: ccpSso.LOGIN_PARAMS,
-          mainCharacter: mainCharacter,
-          access: access,
-        };
+      return dao.character.getCharactersOwnedByAccount(db, account.id);
+    })
+    .then((rows) => {
+      return parallelize(rows, (row) => {
+        return loadSummarizedQueue(db, row.character_id, "cached").then(
+          (queue) => {
+            return {
+              id: row.character_id,
+              name: row.character_name,
+              opsec: row.ownership_opsec && privs.isMember(),
+              corpStatus: getCorpStatus(row.mcorp_membership),
+              skillQueue: queue,
+              corpId: row.character_corporationId,
+              needsReauth: row.accessToken_needsUpdate !== false,
+            };
+          }
+        );
       });
-  }
-);
+    })
+    .then((_characters) => {
+      characters = _characters;
+
+      return dao.ownership.getAccountPendingOwnership(db, account.id);
+    })
+    .then((transfers) => {
+      const strippedTransfers = transfers.map((transfer) => ({
+        character: transfer.pendingOwnership_character,
+        name: transfer.character_name,
+      }));
+
+      return {
+        accountId: account.id,
+        characters: characters,
+        transfers: strippedTransfers,
+        loginParams: ccpSso.LOGIN_PARAMS,
+        mainCharacter: mainCharacter,
+        access: access,
+      };
+    });
+});
 
 function getCorpStatus(membership: string | null) {
   // TODO: Push this schema all the way down to the client and remove the need
