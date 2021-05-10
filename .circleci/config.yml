@@ -1,13 +1,27 @@
 version: 2.1
 orbs:
   node: circleci/node@4.2.1
+jobs:
+  deploy:
+    steps:
+      - checkout
+      - add_ssh_keys
+      - run:
+          name: Deploy Master to dokku staging
+          command: git push dokku@of-sound-mind.com:roster-staging master
 workflows:
   build-and-test:
     jobs:
       - node/test:
           version: 14.16.1
           pkg-manager: yarn
+          name: test
       - node/test:
           version: 14.16.1
           pkg-manager: yarn
           run-command: build
+          name: build
+      - deploy:
+          requires:
+            - test
+            - build
