@@ -78,6 +78,12 @@ function updateCorporation(db: Tnex, characterId: number) {
       return fetchEsi(ESI_CHARACTERS_$characterId, { characterId });
     })
     .then((character) => {
+      if (character.corporation_id == -1) {
+        throw new EsiError(
+          CLIENT_ERROR,
+          `Invalid corporation while fetching "${characterId}"`,
+        );
+      }
       return dao.character.updateCharacter(db, characterId, {
         character_corporationId: character.corporation_id,
       });
