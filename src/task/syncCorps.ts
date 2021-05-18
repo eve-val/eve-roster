@@ -7,7 +7,7 @@ import { isAnyEsiError } from "../data-source/esi/error";
 import { isMissingCharError } from "../data-source/esi/error";
 import { UNKNOWN_CORPORATION_ID } from "../db/constants";
 import { CORP_DOOMHEIM } from "../shared/eveConstants";
-import { serialize } from "../util/asyncUtil";
+import { parallelize } from "../util/asyncUtil";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 import { ESI_CHARACTERS_$characterId } from "../data-source/esi/endpoints";
@@ -35,23 +35,27 @@ function executor(db: Tnex, job: JobLogger) {
 
       const esiErrorCharacterIds: number[] = [];
 
-      return serialize(characterIds, (characterId, _) => {
-        return updateCorporation(db, characterId)
-          .catch((e) => {
-            if (isAnyEsiError(e)) {
-              esiErrorCharacterIds.push(characterId);
-            } else {
-              throw e;
-            }
-          })
-          .then(() => {
-            completedCharacters++;
-            job.setProgress(
-              completedCharacters / characterIds.length,
-              undefined
-            );
-          });
-      }).then(() => {
+      return parallelize(
+        characterIds,
+        (characterId, _) => {
+          return updateCorporation(db, characterId)
+            .catch((e) => {
+              if (isAnyEsiError(e)) {
+                esiErrorCharacterIds.push(characterId);
+              } else {
+                throw e;
+              }
+            })
+            .then(() => {
+              completedCharacters++;
+              job.setProgress(
+                completedCharacters / characterIds.length,
+                undefined
+              );
+            });
+        },
+        10
+      ).then(() => {
         if (esiErrorCharacterIds.length > 0) {
           job.warn(`syncCorps got ESI errors for ${esiErrorCharacterIds}.`);
         }
