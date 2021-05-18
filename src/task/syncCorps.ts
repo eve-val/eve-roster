@@ -3,8 +3,11 @@ import moment = require("moment");
 import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";
 import { JobLogger } from "../infra/taskrunner/Job";
-import { isAnyEsiError } from "../data-source/esi/error";
-import { isMissingCharError } from "../data-source/esi/error";
+import {
+  isAnyEsiError,
+  isMissingCharError,
+  isRetryableError,
+} from "../data-source/esi/error";
 import { UNKNOWN_CORPORATION_ID } from "../db/constants";
 import { CORP_DOOMHEIM } from "../shared/eveConstants";
 import { parallelize } from "../util/asyncUtil";
@@ -70,11 +73,6 @@ function executor(db: Tnex, job: JobLogger) {
 function updateCorporation(db: Tnex, characterId: number) {
   return Promise.resolve()
     .then(() => {
-      return dao.character.updateCharacter(db, characterId, {
-        character_corporationId: UNKNOWN_CORPORATION_ID,
-      });
-    })
-    .then(() => {
       return fetchEsi(ESI_CHARACTERS_$characterId, { characterId });
     })
     .then((character) => {
@@ -82,13 +80,17 @@ function updateCorporation(db: Tnex, characterId: number) {
         character_corporationId: character.corporation_id,
       });
     })
-    .catch((e) => {
+    .catch(async (e) => {
       if (isMissingCharError(e)) {
         return dao.character.updateCharacter(db, characterId, {
           character_corporationId: CORP_DOOMHEIM,
         });
-      } else {
-        throw e;
       }
+      if (!isRetryableError(e)) {
+        await dao.character.updateCharacter(db, characterId, {
+          character_corporationId: UNKNOWN_CORPORATION_ID,
+        });
+      }
+      throw e;
     });
 }
