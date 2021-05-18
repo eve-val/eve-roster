@@ -95,7 +95,7 @@
     "jest": "^26.6.3",
     "request": "^2.88.2",
     "ts-jest": "^26.5.6",
-    "webpack-dev-middleware": "^4.1.0",
+    "webpack-dev-middleware": "^4.2.0",
     "webpack-hot-middleware": "^2.25.0"
   },
   "jest": {
