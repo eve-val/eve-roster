@@ -54,7 +54,7 @@ function executor(db: Tnex, job: JobLogger) {
               );
             });
         },
-        10
+        3
       ).then(() => {
         if (esiErrorCharacterIds.length > 0) {
           job.warn(`syncCorps got ESI errors for ${esiErrorCharacterIds}.`);
