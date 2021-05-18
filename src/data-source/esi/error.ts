@@ -18,6 +18,14 @@ export function isMissingCharError(error: any): error is EsiError {
   );
 }
 
+export function isRetryableError(error: any): error is EsiError {
+  return (
+    isAnyEsiError(error) &&
+    (error.kind == EsiErrorKind.CLIENT_ERROR ||
+      error.kind == EsiErrorKind.INTERNAL_SERVER_ERROR)
+  );
+}
+
 export function printError(e: any) {
   if (isAnyEsiError(e)) {
     return VError.fullStack(e);
