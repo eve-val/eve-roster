@@ -16,7 +16,7 @@
     "clean": "rm -rf out/ && rm -rf static/dist/"
   },
   "engines": {
-    "node": "14.16.1"
+    "node": "14.17.0"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.3.0",
