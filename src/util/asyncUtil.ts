@@ -1,15 +1,23 @@
+import pLimit = require("p-limit");
+
 /**
  * Calls `callback(item, index)` on each item in `list`. Returns a Promise
  * wrapping all of the values returned by the callback calls.
  */
 export function parallelize<T, U>(
   list: T[],
-  callback: (value: T, index: number) => U | PromiseLike<U>
+  callback: (value: T, index: number) => U | PromiseLike<U>,
+  limit = Infinity
 ): Promise<U[]> {
   const work = [] as (U | PromiseLike<U>)[];
+  const l = pLimit(limit);
 
   for (let i = 0; i < list.length; i++) {
-    work.push(callback(list[i], i));
+    work.push(
+      l(() => {
+        return callback(list[i], i);
+      })
+    );
   }
   return Promise.all(work);
 }
