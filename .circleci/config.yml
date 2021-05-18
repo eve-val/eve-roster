@@ -13,7 +13,7 @@ jobs:
           command: ssh-keyscan of-sound-mind.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy Master to dokku staging
-          command: git push dokku@of-sound-mind.com:roster-staging master
+          command: ssh -N dokku@of-sound-mind.com
 workflows:
   build-and-test:
     jobs:
