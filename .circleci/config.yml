@@ -12,7 +12,7 @@ jobs:
           name: SSH key for of-sound-mind.com
           command: ssh-keyscan of-sound-mind.com >> ~/.ssh/known_hosts
       - run:
-          name: Deploy Master to dokku staging
+          name: Deploy to dokku staging using preconfigured ssh key and server-side command
           command: ssh -N dokku@of-sound-mind.com
 workflows:
   build-and-test:
