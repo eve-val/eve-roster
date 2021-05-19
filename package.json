@@ -41,7 +41,7 @@
     "@types/pg": "^7.14.11",
     "@types/pg-pool": "^2.0.2",
     "@types/sqlite3": "^3.1.7",
-    "@types/terser-webpack-plugin": "^4.2.1",
+    "@types/terser-webpack-plugin": "^5.0.3",
     "@types/tmp": "^0.2.0",
     "@types/underscore": "^1.11.2",
     "@types/verror": "^1.10.4",
