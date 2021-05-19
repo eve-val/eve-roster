@@ -5,7 +5,7 @@
   "repository": "https://github.com/eve-val/eve-roster",
   "scripts": {
     "dokku": {
-      "predeploy": "yarn run build && yarn run updatedb",
+      "predeploy": "yarn run updatedb",
       "postdeploy": ""
     }
   }
