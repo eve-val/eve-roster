@@ -95,6 +95,28 @@ export function commonConfig(
       }),
     ],
 
+    stats: {
+      modules: false,
+    },
+    performance: {
+      hints: false,
+    },
+    optimization: {
+      moduleIds: "hashed",
+      runtimeChunk: "single",
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all",
+          },
+        },
+      },
+    },
+
     resolve: {
       // Files with these extensions can be imported without specifying the
       // extension (e.g. './foo' vs. './foo.ts');
