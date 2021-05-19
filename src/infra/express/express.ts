@@ -125,5 +125,8 @@ async function setupClientServing(app: express.Application) {
   }
 
   // Compiled front-end files from webpack
-  app.use(publicPath, express.static(outputPath));
+  app.use(
+    publicPath,
+    express.static(outputPath, { immutable: true, maxAge: "365d" })
+  );
 }
