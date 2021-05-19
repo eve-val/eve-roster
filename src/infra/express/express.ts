@@ -48,7 +48,7 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   );
 
   app.set("view engine", "pug");
-  app.set("views", "./views");
+  app.set("views", "./out/client");
 
   app.all("*", (req, res, next) => {
     req.db = db;

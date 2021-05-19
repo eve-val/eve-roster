@@ -5,6 +5,10 @@ import { ProjectPaths } from "./paths";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 import { VueLoaderPlugin } from "vue-loader";
+import TerserPlugin = require("terser-webpack-plugin");
+import CopyPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
 
 export function commonConfig(
   mode: "development" | "production",
@@ -24,7 +28,7 @@ export function commonConfig(
       path: path.join(paths.root, "out/client"),
 
       // The name of the final compiled bundle
-      filename: "build.js",
+      filename: "[name].[contenthash].js",
 
       // Public URL where compiled assets will be hosted (so they can refer to
       // one another).
@@ -93,6 +97,16 @@ export function commonConfig(
         DEVELOPMENT: JSON.stringify(mode == "development"),
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
+
+      new CopyPlugin({
+        patterns: [{ from: path.join(paths.root, "views", "login.pug") }],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.join(paths.root, "views", "home.pug"),
+        filename: "home.pug",
+        minify: false,
+      }),
+      new HtmlWebpackPugPlugin(),
     ],
 
     stats: {
@@ -102,6 +116,15 @@ export function commonConfig(
       hints: false,
     },
     optimization: {
+      minimizer: [
+        new TerserPlugin({
+          parallel: true,
+          sourceMap: true, // Must be set to true if using source-maps in production
+          terserOptions: {
+            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+          },
+        }),
+      ],
       moduleIds: "hashed",
       runtimeChunk: "single",
       splitChunks: {
@@ -110,7 +133,7 @@ export function commonConfig(
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
+            name: "vendor",
             chunks: "all",
           },
         },
