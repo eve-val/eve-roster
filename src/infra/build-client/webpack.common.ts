@@ -25,14 +25,14 @@ export function commonConfig(
 
     output: {
       // Directory to write compiled JS and any static assets to
-      path: path.join(paths.root, "out/client"),
+      path: paths.output,
 
       // The name of the final compiled bundle
       filename: "[name].[contenthash].js",
 
       // Public URL where compiled assets will be hosted (so they can refer to
       // one another).
-      publicPath: "/dist/",
+      publicPath: paths.public,
     },
 
     module: {

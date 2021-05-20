@@ -23,7 +23,7 @@ export function updateGroupsOnAllAccounts(db: Tnex) {
 }
 
 export function updateGroupsForAccount(db: Tnex, accountId: number) {
-  return Bluebird.resolve()
+  return Promise.resolve()
     .then(() => {
       return computeGroups(db, accountId);
     })
@@ -45,7 +45,7 @@ export function updateGroupsForAccount(db: Tnex, accountId: number) {
 }
 
 function computeGroups(db: Tnex, accountId: number) {
-  return Bluebird.all([
+  return Promise.all([
     dao.group.getExplicitGroups(db, accountId),
     getGroupsDerivedFromCharacters(db, accountId),
   ]).then(([accountGroups, [characterGroups, ownsAffiliatedChar]]) => {
@@ -64,7 +64,7 @@ function getGroupsDerivedFromCharacters(db: Tnex, accountId: number) {
       return Bluebird.reduce(
         rows,
         (ownsAffiliatedChar, row) => {
-          return Bluebird.resolve()
+          return Promise.resolve()
             .then(() => {
               return dao.group.getTitleDerivedGroups(
                 db,

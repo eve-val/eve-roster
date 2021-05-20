@@ -5,12 +5,16 @@ export function getProjectPaths() {
   return {
     root: getProjectRoot(),
     src: path.join(getProjectRoot(), "src"),
+    output: path.join(getProjectRoot(), "out/client"),
+    public: "/dist/",
   };
 }
 
 export interface ProjectPaths {
   root: string;
   src: string;
+  output: string;
+  public: string;
 }
 
 let projectRoot = null as string | null;
