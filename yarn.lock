@@ -548,10 +548,10 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api-metrics/-/api-metrics-0.19.0.tgz#3b5944ce86f4551cbff1afdc1d064adf18a2db68"
   integrity sha512-1JpnkwCkYgZvbcHkF0nNK6RkMqoEx7zxM3oyMEkFNT7F4nh4tFMDHJ+BRelMk8kzeYtnyZ0YCshhO9xS3SXSHQ==
 
-"@opentelemetry/api@^1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.0.0-rc.0.tgz#0c7c3f5e1285f99cedb563d74ad1adb9822b5144"
-  integrity sha512-iXKByCMfrlO5S6Oh97BuM56tM2cIBB0XsL/vWF/AtJrJEKx4MC/Xdu0xDsGXMGcNWpqF7ujMsjjnp0+UHBwnDQ==
+"@opentelemetry/api@^1.0.0-rc.0", "@opentelemetry/api@^1.0.0-rc.3":
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.0.0-rc.3.tgz#903ef6dddf04410d09072d43a060b87ccc162545"
+  integrity sha512-3PlJD9uN5iZrKmX054vOifGxZ/iH24+UFD5eW8Vyz08GUU7SdW8PNu4VSpTixWeuWo+Q6TELfSv7vVu43t+tbA==
 
 "@opentelemetry/context-async-hooks@0.19.0":
   version "0.19.0"
