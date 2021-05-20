@@ -93,7 +93,7 @@ export default class ConfigDao {
     titleMappings: GroupTitle[]
   ) {
     return db.transaction((db) => {
-      return Bluebird.resolve()
+      return Promise.resolve()
         .then(() => {
           return db.del(groupTitle).run();
         })

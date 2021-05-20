@@ -1,4 +1,3 @@
-import Bluebird = require("bluebird");
 import moment = require("moment");
 
 import { Tnex } from "../../db/tnex";
@@ -21,7 +20,7 @@ export function updateSkillQueue(
 ) {
   let newQueue: SkillQueueRow[];
 
-  return Bluebird.resolve()
+  return Promise.resolve()
     .then(() => {
       return accessToken || getAccessToken(db, characterId);
     })

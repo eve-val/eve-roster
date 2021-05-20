@@ -1,4 +1,3 @@
-import Bluebird = require("bluebird");
 import sqlite3 = require("sqlite3");
 
 import { Tnex, val, DEFAULT_NUM } from "../../db/tnex";
@@ -40,7 +39,7 @@ export async function ingestSde(
   job.info(`SDE MD5: ${md5}`);
 
   return db.transaction((db) => {
-    return Bluebird.resolve(ingestInternal(job, db, sdeDb, md5));
+    return Promise.resolve(ingestInternal(job, db, sdeDb, md5));
   });
 }
 

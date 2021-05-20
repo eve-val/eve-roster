@@ -117,9 +117,9 @@ function syncCharacterKillboard(
         lossValue
       );
     })
-    .then(() => {
+    .then(async () => {
       // Add another delay to avoid spamming zKill too much
-      return Bluebird.delay(10000);
+      await Bluebird.delay(10000);
     });
 }
 
@@ -164,6 +164,8 @@ async function fetchMails(
     } else {
       break;
     }
+    // Add a delay here in order to prevent going over zKill's API limit.
+    await Bluebird.delay(10000);
   }
   return mails;
 }
@@ -174,31 +176,26 @@ function fetchMailsPage(
   year: number,
   month: number,
   page: number
-): Bluebird<ZkillIncident[]> {
+): Promise<ZkillIncident[]> {
   const url =
     `https://zkillboard.com/api/${kind}/characterID/${characterId}` +
     `/year/${year}/month/${month}/page/${page}/zkbOnly/`;
-  return (
-    Bluebird.resolve(
-      axios.get(url, {
-        headers: {
-          "User-Agent": process.env.USER_AGENT || "Sound Roster App",
-          "Accept-Encoding": "gzip",
-        },
-      })
-    )
-      // Add a delay here in order to prevent going over zKill's API limit.
-      .delay(10000)
-      .then((response) => {
-        if (!response.data || response.data.error) {
-          const errorMessage = response.data && response.data.error;
-          throw new Error(
-            `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`
-          );
-        }
-        return response.data;
-      })
-  );
+  return Promise.resolve(
+    axios.get(url, {
+      headers: {
+        "User-Agent": process.env.USER_AGENT || "Sound Roster App",
+        "Accept-Encoding": "gzip",
+      },
+    })
+  ).then((response) => {
+    if (!response.data || response.data.error) {
+      const errorMessage = response.data && response.data.error;
+      throw new Error(
+        `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`
+      );
+    }
+    return response.data;
+  });
 }
 
 interface ZkillIncident {

@@ -1,5 +1,3 @@
-import Bluebird = require("bluebird");
-
 import { dao } from "../../db/dao";
 import { Tnex } from "../../db/tnex";
 import { PrivilegeName } from "../../db/dao/enums";
@@ -16,7 +14,7 @@ const debugGroups = checkDebugGroups(debugStr && JSON.parse(debugStr));
 export function getPrivileges(db: Tnex, accountId: number) {
   let groups: string[];
 
-  return Bluebird.resolve()
+  return Promise.resolve()
     .then(() => {
       return debugGroups || dao.group.getAccountGroups(db, accountId);
     })
