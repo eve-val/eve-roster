@@ -17,6 +17,7 @@ import { default as route_home } from "../../route/home";
 import { default as route_authenticate } from "../../route/authenticate";
 import { endSession } from "./session";
 import { checkNotNil } from "../../util/assert";
+import { getProjectPaths } from "../build-client/paths";
 
 const FRONTEND_ROUTES = [
   "/",
@@ -98,14 +99,14 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
 }
 
 async function setupClientServing(app: express.Application) {
-  const clientConfig = isDevelopment()
-    ? (await import("../build-client/webpack.dev")).default
-    : (await import("../build-client/webpack.prod")).default;
-
-  const outputPath = checkNotNil(clientConfig.output?.path);
-  const publicPath = checkNotNil(clientConfig.output?.publicPath);
+  const paths = getProjectPaths();
+  const outputPath = checkNotNil(paths.output);
+  const publicPath = checkNotNil(paths.public);
 
   if (isDevelopment()) {
+    const clientConfig = isDevelopment()
+      ? (await import("../build-client/webpack.dev")).default
+      : (await import("../build-client/webpack.prod")).default;
     const webpack = (await import("webpack")).default;
     const webpackDevMiddleware = (await import("webpack-dev-middleware"))
       .default;
