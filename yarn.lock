@@ -1154,13 +1154,14 @@
   resolved "https://registry.yarnpkg.com/@types/verror/-/verror-1.10.4.tgz#805c0612b3a0c124cf99f517364142946b74ba3b"
   integrity sha512-OjJdqx6QlbyZw9LShPwRW+Kmiegeg3eWNI41MQQKaG3vjdU2L9SRElntM51HmHBY1cu7izxQJ1lMYioQh3XMBg==
 
-"@types/webpack-dev-middleware@^4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@types/webpack-dev-middleware/-/webpack-dev-middleware-4.1.2.tgz#c683adc6a44d0b66e98f1932ab33d1c32d558142"
-  integrity sha512-SxXzPCqeZ03fJ2dg3iD7cSXvqZymmS5/2GD9fANRcyWN7HYK1H3ty6q7IInXZKvPrdUqij831G3RLIeKK6aGdw==
+"@types/webpack-dev-middleware@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack-dev-middleware/-/webpack-dev-middleware-4.3.0.tgz#45798564defdf4573cfe0458d1ab0fe4e9421115"
+  integrity sha512-J/dgC7QCZOMHINFFtz7aOJSFmiwHQujTHMtQFRMCobG9dfsLMfN9p5Vb8QPzjLZVY1q2+W5vHWpF5AoQnW2oRg==
   dependencies:
     "@types/connect" "*"
-    "@types/webpack" "^4"
+    tapable "^2.2.0"
+    webpack "^5"
 
 "@types/webpack-hot-middleware@^2.25.4":
   version "2.25.4"
