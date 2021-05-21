@@ -7,6 +7,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
+import favicon from "serve-favicon";
 
 import { Tnex } from "../../db/tnex";
 import { isDevelopment } from "../../util/config";
@@ -67,7 +68,6 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   app.get("/login", function (req, res) {
     res.render("login", {
       loginParams: LOGIN_PARAMS,
-      backgroundUrl: Math.floor(Math.random() * 5) + ".jpg",
     });
   });
 
@@ -84,8 +84,8 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   // Set up client serving and dev mode (if in dev mode)
   await setupClientServing(app);
 
-  // Static files in static/
-  app.use(express.static(path.join(__dirname, "../../../../static")));
+  // Serve our favicon
+  app.use(favicon(path.join(__dirname, "favicon.ico")));
 
   // Start the server
   const port = parseInt(process.env.PORT || "8081");

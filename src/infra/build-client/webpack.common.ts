@@ -11,6 +11,8 @@ import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
 import MiniCssExtractPlugin = require("mini-css-extract-plugin");
 import CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 import CleanupMiniCssExtractPlugin = require("cleanup-mini-css-extract-plugin");
+import ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+import { extendDefaultPlugins } from "svgo";
 
 export function commonConfig(
   mode: "development" | "production",
@@ -25,7 +27,7 @@ export function commonConfig(
     // determine what we include in the compiled bundle.
     entry: {
       main: path.join(paths.clientSrc, "home.js"),
-      logincss: path.join(paths.clientSrc, "css/login.css"),
+      login: path.join(paths.clientSrc, "login.js"),
     },
 
     output: {
@@ -118,15 +120,41 @@ export function commonConfig(
         template: path.join(paths.clientSrc, "views/home.pug"),
         filename: "home.pug",
         minify: true,
-        excludeChunks: ["logincss"],
+        chunks: ["main"],
       }),
       new HtmlWebpackPlugin({
         template: path.join(paths.clientSrc, "views/login.pug"),
         filename: "login.pug",
         minify: true,
-        chunks: ["logincss"],
+        chunks: ["login"],
       }),
       new HtmlWebpackPugPlugin(),
+
+      new ImageMinimizerPlugin({
+        minimizerOptions: {
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["mozjpeg", { quality: 80 }],
+            [
+              "pngquant",
+              {
+                quality: [0.6, 0.8],
+              },
+            ],
+            [
+              "svgo",
+              {
+                plugins: extendDefaultPlugins([
+                  {
+                    name: "removeViewBox",
+                    active: false,
+                  },
+                ]),
+              },
+            ],
+          ],
+        },
+      }),
     ],
 
     stats: {
