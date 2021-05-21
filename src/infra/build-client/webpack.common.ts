@@ -6,9 +6,11 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 import { VueLoaderPlugin } from "vue-loader";
 import TerserPlugin = require("terser-webpack-plugin");
-import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
+import MiniCssExtractPlugin = require("mini-css-extract-plugin");
+import CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+import CleanupMiniCssExtractPlugin = require("cleanup-mini-css-extract-plugin");
 
 export function commonConfig(
   mode: "development" | "production",
@@ -16,12 +18,16 @@ export function commonConfig(
 ): webpack.Configuration {
   return {
     // webpack gives us a lot of nice built-in behavior depending on whether
-    // this is 'development' or 'production'
+    // this is "development" or "production"
     mode: mode,
 
     // Main entry point of the app; the transitive dependencies of this file
     // determine what we include in the compiled bundle.
-    entry: [path.join(paths.src, "client/home.js")],
+    entry: {
+      main: path.join(paths.src, "client/home.js"),
+      logincss: path.join(paths.src, "client/css/login.css"),
+      homecss: path.join(paths.src, "client/css/home.css"),
+    },
 
     output: {
       // Directory to write compiled JS and any static assets to
@@ -48,6 +54,7 @@ export function commonConfig(
           test: /\.css$/,
           use: [
             "vue-style-loader",
+            MiniCssExtractPlugin.loader,
             // Converts url() and import@ references to dependencies and changes
             // them to refer to the final output filenames
             "css-loader",
@@ -81,13 +88,14 @@ export function commonConfig(
       // Cleans up any obsolete build artifacts (e.g. images that have since been
       // deleted).
       new CleanWebpackPlugin(),
+      new CleanupMiniCssExtractPlugin(),
 
       // Required for loading .vue files
       new VueLoaderPlugin(),
 
       // We use the `moment` library for timekeeping, which by default includes
       // a ton of localization information we don't need (and which would bloat
-      // the compiled binary). This plugin strips out all non-'en'
+      // the compiled binary). This plugin strips out all non-:'en'
       // localizations.
       new MomentLocalesPlugin(),
 
@@ -98,13 +106,17 @@ export function commonConfig(
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
 
-      new CopyPlugin({
-        patterns: [{ from: path.join(paths.root, "views", "login.pug") }],
-      }),
       new HtmlWebpackPlugin({
         template: path.join(paths.root, "views", "home.pug"),
         filename: "home.pug",
-        minify: false,
+        minify: true,
+        excludeChunks: ["logincss"],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.join(paths.root, "views", "login.pug"),
+        filename: "login.pug",
+        minify: true,
+        chunks: ["logincss"],
       }),
       new HtmlWebpackPugPlugin(),
     ],
@@ -117,6 +129,8 @@ export function commonConfig(
     },
     optimization: {
       minimizer: [
+        new MiniCssExtractPlugin(),
+        new CssMinimizerPlugin(),
         new TerserPlugin({
           parallel: true,
           sourceMap: true, // Must be set to true if using source-maps in production
@@ -142,10 +156,10 @@ export function commonConfig(
 
     resolve: {
       // Files with these extensions can be imported without specifying the
-      // extension (e.g. './foo' vs. './foo.ts');
+      // extension (e.g. "./foo" vs. "./foo.ts");
       extensions: [".tsx", ".ts", ".js", ".json"],
       alias: {
-        vue$: "vue/dist/vue.esm.js", // 'vue/dist/vue.common.js' for webpack 1
+        vue$: "vue/dist/vue.esm.js", // "vue/dist/vue.common.js" for webpack 1
       },
     },
   };
