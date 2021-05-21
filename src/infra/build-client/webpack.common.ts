@@ -26,7 +26,6 @@ export function commonConfig(
     entry: {
       main: path.join(paths.src, "client/home.js"),
       logincss: path.join(paths.src, "client/css/login.css"),
-      homecss: path.join(paths.src, "client/css/home.css"),
     },
 
     output: {

@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import "./css/home.css";
+
 import Dashboard from "./dashboard/Dashboard.vue";
 import Character from "./character/Character.vue";
 import Roster from "./roster/Roster.vue";
