@@ -124,7 +124,7 @@ export function commonConfig(
         template: path.join(paths.clientSrc, "views/login.pug"),
         filename: "login.pug",
         minify: true,
-        chunks: ["logincss"],
+        chunks: ["runtime", "logincss"],
       }),
       new HtmlWebpackPugPlugin(),
     ],
