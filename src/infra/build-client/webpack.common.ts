@@ -11,6 +11,8 @@ import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
 import MiniCssExtractPlugin = require("mini-css-extract-plugin");
 import CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 import CleanupMiniCssExtractPlugin = require("cleanup-mini-css-extract-plugin");
+import ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+import { extendDefaultPlugins } from "svgo";
 
 export function commonConfig(
   mode: "development" | "production",
@@ -127,6 +129,32 @@ export function commonConfig(
         chunks: ["login"],
       }),
       new HtmlWebpackPugPlugin(),
+
+      new ImageMinimizerPlugin({
+        minimizerOptions: {
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["mozjpeg", { quality: 80 }],
+            [
+              "pngquant",
+              {
+                quality: [0.6, 0.8],
+              },
+            ],
+            [
+              "svgo",
+              {
+                plugins: extendDefaultPlugins([
+                  {
+                    name: "removeViewBox",
+                    active: false,
+                  },
+                ]),
+              },
+            ],
+          ],
+        },
+      }),
     ],
 
     stats: {
