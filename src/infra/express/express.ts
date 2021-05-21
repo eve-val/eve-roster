@@ -84,7 +84,7 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   // Set up client serving and dev mode (if in dev mode)
   await setupClientServing(app);
 
-  // Static files in static/
+  // Serve our favicon
   app.use(favicon(path.join(__dirname, "favicon.ico")));
 
   // Start the server
