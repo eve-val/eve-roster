@@ -8,5 +8,6 @@ import bg4 from "./res/background/4.jpg";
 const backgrounds = [bg0, bg1, bg2, bg3, bg4];
 
 const root = document.getElementById("root");
-root.style.backgroundImage =
-  backgrounds[~~(Math.random() * backgrounds.length)];
+root.style.backgroundImage = `url(${
+  backgrounds[~~(Math.random() * backgrounds.length)]
+})`;
