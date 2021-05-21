@@ -24,8 +24,8 @@ export function commonConfig(
     // Main entry point of the app; the transitive dependencies of this file
     // determine what we include in the compiled bundle.
     entry: {
-      main: path.join(paths.src, "client/home.js"),
-      logincss: path.join(paths.src, "client/css/login.css"),
+      main: path.join(paths.clientSrc, "home.js"),
+      logincss: path.join(paths.clientSrc, "css/login.css"),
     },
 
     output: {
@@ -115,13 +115,13 @@ export function commonConfig(
       }),
 
       new HtmlWebpackPlugin({
-        template: path.join(paths.root, "views", "home.pug"),
+        template: path.join(paths.clientSrc, "views/home.pug"),
         filename: "home.pug",
         minify: true,
         excludeChunks: ["logincss"],
       }),
       new HtmlWebpackPlugin({
-        template: path.join(paths.root, "views", "login.pug"),
+        template: path.join(paths.clientSrc, "views/login.pug"),
         filename: "login.pug",
         minify: true,
         chunks: ["logincss"],

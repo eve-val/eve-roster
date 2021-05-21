@@ -5,6 +5,7 @@ export function getProjectPaths() {
   return {
     root: getProjectRoot(),
     src: path.join(getProjectRoot(), "src"),
+    clientSrc: path.join(getProjectRoot(), "src/client"),
     output: path.join(getProjectRoot(), "out/client"),
     public: "/dist/",
   };
@@ -13,6 +14,7 @@ export function getProjectPaths() {
 export interface ProjectPaths {
   root: string;
   src: string;
+  clientSrc: string;
   output: string;
   public: string;
 }
