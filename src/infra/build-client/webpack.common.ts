@@ -48,11 +48,20 @@ export function commonConfig(
           loader: "vue-loader",
         },
 
-        // CSS processing (for both .vue files and normal .css files)
+        // SASS and CSS files from Vue Single File Components:
         {
-          test: /\.css$/,
+          test: /\.vue\.(s?[ac]ss)$/,
           use: [
             "vue-style-loader",
+            // Converts url() and import@ references to dependencies and changes
+            // them to refer to the final output filenames
+            "css-loader",
+          ],
+        },
+        // SASS and CSS files (standalone):
+        {
+          test: /(?<!\.vue)\.(s?[ac]ss)$/,
+          use: [
             MiniCssExtractPlugin.loader,
             // Converts url() and import@ references to dependencies and changes
             // them to refer to the final output filenames
@@ -158,7 +167,7 @@ export function commonConfig(
       // extension (e.g. "./foo" vs. "./foo.ts");
       extensions: [".tsx", ".ts", ".js", ".json"],
       alias: {
-        vue$: "vue/dist/vue.esm.js", // "vue/dist/vue.common.js" for webpack 1
+        vue$: "vue/dist/vue.esm.js",
       },
     },
   };
