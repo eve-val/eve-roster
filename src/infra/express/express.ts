@@ -49,9 +49,6 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
     })
   );
 
-  app.set("view engine", "pug");
-  app.set("views", "./out/client");
-
   app.all("*", (req, res, next) => {
     req.db = db;
     next();
@@ -83,9 +80,6 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
 
   // Set up client serving and dev mode (if in dev mode)
   await setupClientServing(app);
-
-  // Serve our favicon
-  app.use(favicon(path.join(__dirname, "favicon.ico")));
 
   // Start the server
   const port = parseInt(process.env.PORT || "8081");
@@ -130,4 +124,7 @@ async function setupClientServing(app: express.Application) {
     publicPath,
     express.static(outputPath, { immutable: true, maxAge: "365d" })
   );
+  app.set("view engine", "pug");
+  app.set("views", outputPath);
+  app.use(favicon(path.join(outputPath, "favicon.ico")));
 }

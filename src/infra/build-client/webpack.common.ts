@@ -118,12 +118,14 @@ export function commonConfig(
 
       new HtmlWebpackPlugin({
         template: path.join(paths.clientSrc, "views/home.pug"),
+        favicon: path.join(paths.clientSrc, "res/favicon.ico"),
         filename: "home.pug",
         minify: true,
         chunks: ["main"],
       }),
       new HtmlWebpackPlugin({
         template: path.join(paths.clientSrc, "views/login.pug"),
+        favicon: path.join(paths.clientSrc, "res/favicon.ico"),
         filename: "login.pug",
         minify: true,
         chunks: ["login"],
