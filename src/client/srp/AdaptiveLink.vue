@@ -32,8 +32,8 @@ export default {
   components: {},
 
   props: {
-    linkClass: { type: String, required: false },
-    path: { type: String, required: false },
+    linkClass: { type: String, required: false, default: "" },
+    path: { type: String, required: false, default: "" },
   },
 
   methods: {

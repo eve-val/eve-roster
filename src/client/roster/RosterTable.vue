@@ -29,7 +29,7 @@ export default {
   props: {
     columns: { type: Array, required: true },
     rows: { type: Array, required: true },
-    filter: { type: String, required: false },
+    filter: { type: String, required: false, default: "" },
   },
 
   data: function () {

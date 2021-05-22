@@ -50,7 +50,7 @@ export default {
   },
 
   props: {
-    forAccount: { type: Number, required: false },
+    forAccount: { type: Number, required: false, default: -1 },
     identity: { type: Object, required: true },
     triageMode: { type: Boolean, required: true },
   },

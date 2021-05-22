@@ -35,7 +35,7 @@ export default {
   },
 
   props: {
-    promise: { type: Promise, required: false },
+    promise: { type: Promise, required: false, default: Promise.resolve() },
     hideButton: { type: Boolean, required: false },
   },
 

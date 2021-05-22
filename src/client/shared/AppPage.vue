@@ -25,7 +25,7 @@ export default {
 
   props: {
     identity: { type: Object, required: true },
-    contentWidth: { type: Number, required: false },
+    contentWidth: { type: Number, required: false, default: 500 },
   },
 };
 </script>

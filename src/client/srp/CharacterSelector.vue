@@ -50,7 +50,7 @@ export default {
 
   props: {
     accountId: { type: Number, required: true },
-    modelValue: { type: Number, required: false },
+    modelValue: { type: Number, required: false, default: -1 },
   },
 
   emits: ["update:modelValue"],

@@ -90,7 +90,7 @@ export default {
 
   props: {
     payment: { type: Object, required: true },
-    payingCharacter: { type: Number },
+    payingCharacter: { type: Number, default: -1 },
   },
 
   data() {

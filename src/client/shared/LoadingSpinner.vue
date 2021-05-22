@@ -139,6 +139,7 @@ export default {
     state: {
       type: String,
       required: false,
+      default: "spinning",
       validator: (value) => contains(STATE_VALUES, value),
     },
 
@@ -157,6 +158,7 @@ export default {
     adversityMessage: {
       type: String,
       required: false,
+      default: "",
     },
 
     /**
@@ -166,6 +168,7 @@ export default {
     tooltipGravity: {
       type: String,
       required: false,
+      default: "right",
     },
 
     /**
@@ -173,7 +176,7 @@ export default {
      * attempted. Displayed in the form
      * "There was an error while <actionLabel>."
      */
-    actionLabel: { type: String, required: false },
+    actionLabel: { type: String, required: false, default: "" },
 
     /**
      * In the case of a rejected promise, rethrow the error that caused the

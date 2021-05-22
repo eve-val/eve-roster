@@ -54,7 +54,7 @@ export default {
   props: {
     columns: { type: Array, required: true },
     account: { type: Object, required: true },
-    filter: { type: String, required: false },
+    filter: { type: String, required: false, default: "" },
   },
 
   data: function () {

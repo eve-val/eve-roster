@@ -14,7 +14,7 @@
 <script>
 export default {
   props: {
-    rootStyle: { type: Object, required: false },
+    rootStyle: { type: Object, required: false, default: null },
   },
 
   data: function () {

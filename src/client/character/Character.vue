@@ -194,7 +194,12 @@ export default {
   },
 
   watch: {
-    characterId(_value) {
+    characterId(value) {
+      if (value == null) {
+        // characterId briefly blips to nil during transitions.
+        // Don't attempt to fetch /api/character/NaN.
+        return;
+      }
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;

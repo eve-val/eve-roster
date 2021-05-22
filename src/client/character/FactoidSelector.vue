@@ -29,7 +29,7 @@ export default {
 
   props: {
     options: { type: Array, required: true },
-    initialValue: { type: String, required: false },
+    initialValue: { type: String, required: false, default: "" },
     submitHandler: { type: Function, required: true },
   },
 

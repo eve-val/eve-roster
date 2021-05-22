@@ -101,8 +101,8 @@ export default {
     character: { type: Object, required: true },
     columns: { type: Array, required: true },
     isMain: { type: Boolean, required: true },
-    account: { type: Object, required: false },
-    filter: { type: String, required: false },
+    account: { type: Object, required: false, default: null },
+    filter: { type: String, required: false, default: "" },
   },
 
   emits: ["toggleExpanded"],

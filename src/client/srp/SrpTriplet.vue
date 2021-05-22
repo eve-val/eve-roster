@@ -58,19 +58,19 @@ export default {
   },
 
   props: {
-    iconId: { type: Number, required: false },
+    iconId: { type: Number, required: false, default: -1 },
     /** One of the types listed in EveImage (Character, Corporation, etc). */
-    iconType: { type: String, required: false },
+    iconType: { type: String, required: false, default: "" },
     topLine: { type: String, required: true },
-    bottomLine: { type: String, required: false },
-    iconHref: { type: String, required: false },
-    topHref: { type: String, required: false },
-    botHref: { type: String, required: false },
+    bottomLine: { type: String, required: false, default: "" },
+    iconHref: { type: String, required: false, default: "" },
+    topHref: { type: String, required: false, default: "" },
+    botHref: { type: String, required: false, default: "" },
     /**
      * All entries are linked with the href unless overridden by the above
      * props.
      */
-    defaultHref: { type: String, required: false },
+    defaultHref: { type: String, required: false, default: "" },
   },
 
   computed: {
