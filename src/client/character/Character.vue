@@ -129,7 +129,7 @@ import { formatNumber } from "../shared/numberFormat";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
-import groupifySkills from "./skills";
+import { groupifySkills } from "./skills";
 
 export default {
   components: {

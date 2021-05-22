@@ -56,7 +56,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
-import groupifySkills from "./skills";
+import { groupifySkills } from "./skills";
 
 export default {
   components: {

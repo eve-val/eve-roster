@@ -137,11 +137,11 @@ export default {
       editing:
         this.hasEditPriv &&
         this.startInEditMode &&
-        this.srp.status == "pending",
-      selectedVerdictKey: this.srp.triage
-        ? this.srp.triage.suggestedOption
+        this.initialSrp.status == "pending",
+      selectedVerdictKey: this.initialSrp.triage
+        ? this.initialSrp.triage.suggestedOption
         : "custom",
-      inputPayout: this.rawPayoutToDisplayPayout(this.srp.payout),
+      inputPayout: this.rawPayoutToDisplayPayout(this.initialSrp.payout),
       saveStatus: "inactive", // inactive | saving | error
       fetchTriageStatus: "inactive", // inactive | active | error,
       originalPayout: null,
