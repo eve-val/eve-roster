@@ -43,18 +43,21 @@
 
       <div
         v-for="(displayVal, i) in subsequentDisplayVals"
-        :key="i"
+        :key="i + 3"
         class="col"
-        :style="cellStyle(i)"
+        :style="cellStyle(i + 3)"
       >
-        <template v-if="!tooltipMessage(i)">
+        <template v-if="!tooltipMessage(i + 3)">
           <span class="col-text">{{ displayVal | dashDefault }}</span>
         </template>
         <tooltip v-else gravity="right" :inline="true">
-          <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
+          <span
+            class="col-text"
+            :style="{ 'text-align': cellAlignment(i + 3) }"
+          >
             {{ displayVal | dashDefault }}
           </span>
-          <span slot="message">{{ tooltipMessage(i) }}</span>
+          <span slot="message">{{ tooltipMessage(i + 3) }}</span>
         </tooltip>
       </div>
     </div>
