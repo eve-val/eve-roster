@@ -354,7 +354,7 @@ function splitGravString(str) {
 }
 
 .message-max-sizer {
-  width: 250px;
+  max-width: 300px;
   text-align: center;
   flex: 0 0 auto;
 }
