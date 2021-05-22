@@ -31,10 +31,12 @@
           </div>
           <div class="data">
             <tooltip v-if="row.data" gravity="left bottom" :inline="false">
-              <div class="cell">{ ... }</div>
-              <pre slot="message" style="margin: 0">{{
-                prettyPrint(row.data)
-              }}</pre>
+              <template #default>
+                <div class="cell">{ ... }</div>
+              </template>
+              <template #message>
+                <pre style="margin: 0">{{ prettyPrint(row.data) }}</pre>
+              </template>
             </tooltip>
           </div>
         </div>

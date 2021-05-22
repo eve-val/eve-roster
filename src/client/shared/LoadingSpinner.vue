@@ -12,12 +12,16 @@
         :gravity="tooltipGravity || 'center top'"
         style="vertical-align: text-bottom"
       >
-        <img
-          class="inline-style-icon"
-          :src="errorIconSrc"
-          :style="{ width: size, height: size }"
-        />
-        <span v-if="derivedMessage" slot="message">{{ derivedMessage }}</span>
+        <template #default>
+          <img
+            class="inline-style-icon"
+            :src="errorIconSrc"
+            :style="{ width: size, height: size }"
+          />
+        </template>
+        <template #message>
+          <span v-if="derivedMessage">{{ derivedMessage }}</span>
+        </template>
       </tooltip>
 
       <div

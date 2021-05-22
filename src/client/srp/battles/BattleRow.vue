@@ -43,30 +43,33 @@ May also contain triage UI if triageMode is enabled.
           class="participant"
         >
           <tooltip gravity="center top">
-            <a
-              class="killmail-link"
-              :href="
-                member.loss
-                  ? zkillHref(member.loss.killmailId, 'kill')
-                  : undefined
-              "
-              target="_blank"
-            >
-              <eve-image
-                :id="member.shipId"
-                class="ship-image"
-                :size="36"
-                type="Type"
+            <template #default>
+              <a
+                class="killmail-link"
+                :href="
+                  member.loss
+                    ? zkillHref(member.loss.killmailId, 'kill')
+                    : undefined
+                "
+                target="_blank"
+              >
+                <eve-image
+                  :id="member.shipId"
+                  class="ship-image"
+                  :size="36"
+                  type="Type"
+                />
+              </a>
+            </template>
+            <template #message>
+              <srp-triplet
+                class="hover-triplet"
+                :icon-id="member.characterId || member.shipId"
+                :icon-type="member.characterId ? 'Character' : 'Type'"
+                :top-line="name(member.characterId || member.shipId)"
+                :bottom-line="name(member.shipId)"
               />
-            </a>
-            <srp-triplet
-              slot="message"
-              class="hover-triplet"
-              :icon-id="member.characterId || member.shipId"
-              :icon-type="member.characterId ? 'Character' : 'Type'"
-              :top-line="name(member.characterId || member.shipId)"
-              :bottom-line="name(member.shipId)"
-            />
+            </template>
           </tooltip>
           <div v-if="member.loss" class="death-scrim" />
         </div>

@@ -24,20 +24,21 @@ in most other places).
       :bottom-line="srp.timestamp"
       :default-href="zkillHref(srp.killmail, 'kill')"
     >
-      <a
-        v-if="srp.relatedKillmail != null"
-        slot="top-line-extra"
-        class="related-link"
-        :href="zkillHref(srp.relatedKillmail.id, 'kill')"
-      >
-        <eve-image
-          :id="srp.relatedKillmail.shipId"
-          type="Type"
-          :size="13"
-          @mouseenter.native="onRelatedHover"
-          @mouseleave.native="onRelatedUnhover"
-        />
-      </a>
+      <template #top-line-extra>
+        <a
+          v-if="srp.relatedKillmail != null"
+          class="related-link"
+          :href="zkillHref(srp.relatedKillmail.id, 'kill')"
+        >
+          <eve-image
+            :id="srp.relatedKillmail.shipId"
+            type="Type"
+            :size="13"
+            @mouseenter.native="onRelatedHover"
+            @mouseleave.native="onRelatedUnhover"
+          />
+        </a>
+      </template>
     </srp-triplet>
 
     <srp-triplet

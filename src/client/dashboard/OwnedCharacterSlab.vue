@@ -13,10 +13,14 @@
             :inline="true"
             gravity="center top"
           >
-            <img class="status-icon-img" :src="icon.src" />
-            <div slot="message">
-              {{ icon.label }}
-            </div>
+            <template #default>
+              <img class="status-icon-img" :src="icon.src" />
+            </template>
+            <template #message>
+              <div>
+                {{ icon.label }}
+              </div>
+            </template>
           </tooltip>
         </div>
         <div class="training-summary">
@@ -66,12 +70,13 @@
         tooltip-gravity="left"
       />
     </div>
-    <reauthentication-prompt
-      v-if="character.needsReauth"
-      slot="sub-slab-hanger"
-      :login-params="loginParams"
-      :character-name="character.name"
-    />
+    <template #sub-slab-hanger>
+      <reauthentication-prompt
+        v-if="character.needsReauth"
+        :login-params="loginParams"
+        :character-name="character.name"
+      />
+    </template>
   </character-slab-frame>
 </template>
 

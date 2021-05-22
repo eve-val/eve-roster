@@ -3,8 +3,12 @@
     <div class="horiz-aligner">
       <div class="alert col" :style="cellStyle(0)">
         <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
-          <img class="alert-icon" :src="alertIconSrc" />
-          <span slot="message">{{ alertMessage }}</span>
+          <template #default>
+            <img class="alert-icon" :src="alertIconSrc" />
+          </template>
+          <template #message>
+            <span>{{ alertMessage }}</span>
+          </template>
         </tooltip>
       </div>
 
@@ -23,13 +27,17 @@
           </template>
         </router-link>
         <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
-          <eve-image
-            :id="character.corporationId"
-            :type="'Corporation'"
-            :size="26"
-            class="corp-icon"
-          />
-          <span slot="message">{{ character.corporationName }}</span>
+          <template #default>
+            <eve-image
+              :id="character.corporationId"
+              :type="'Corporation'"
+              :size="26"
+              class="corp-icon"
+            />
+          </template>
+          <template #message>
+            <span>{{ character.corporationName }}</span>
+          </template>
         </tooltip>
       </div>
 
@@ -51,13 +59,17 @@
           <span class="col-text">{{ displayVal | dashDefault }}</span>
         </template>
         <tooltip v-else gravity="right" :inline="true">
-          <span
-            class="col-text"
-            :style="{ 'text-align': cellAlignment(i + 3) }"
-          >
-            {{ displayVal | dashDefault }}
-          </span>
-          <span slot="message">{{ tooltipMessage(i + 3) }}</span>
+          <template #default>
+            <span
+              class="col-text"
+              :style="{ 'text-align': cellAlignment(i + 3) }"
+            >
+              {{ displayVal | dashDefault }}
+            </span>
+          </template>
+          <template #message>
+            <span>{{ tooltipMessage(i + 3) }}</span>
+          </template>
         </tooltip>
       </div>
     </div>
