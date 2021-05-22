@@ -43,44 +43,46 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
  * e.g. 'Engineering'. Sorts the groups based on the ordering provided in
  * GROUP_DISPLAY_ORDER.
  */
-export function groupifySkills(skills) {
-  let skillGroupMap = _.groupBy(skills, "group");
+export default {
+  groupifySkills(skills) {
+    let skillGroupMap = _.groupBy(skills, "group");
 
-  let skillGroups = [];
-  for (let groupId in skillGroupMap) {
-    let skills = skillGroupMap[groupId];
+    let skillGroups = [];
+    for (let groupId in skillGroupMap) {
+      let skills = skillGroupMap[groupId];
 
-    // Sort skills by name
-    skills.sort((a, b) => a.name.localeCompare(b.name));
+      // Sort skills by name
+      skills.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Attach group name and sort position
-    let groupDescriptor = GROUP_DISPLAY_MAP[groupId];
-    if (groupDescriptor == undefined) {
-      let fallbackName = groupId == "null" ? "unknown" : groupId;
-      groupDescriptor = {
-        name: `Skill group ${fallbackName}`,
-        position: GROUP_DISPLAY_ORDER.length,
-      };
+      // Attach group name and sort position
+      let groupDescriptor = GROUP_DISPLAY_MAP[groupId];
+      if (groupDescriptor == undefined) {
+        let fallbackName = groupId == "null" ? "unknown" : groupId;
+        groupDescriptor = {
+          name: `Skill group ${fallbackName}`,
+          position: GROUP_DISPLAY_ORDER.length,
+        };
+      }
+
+      skillGroups.push({
+        name: groupDescriptor.name,
+        position: groupDescriptor.position,
+        skills: skills,
+      });
     }
 
-    skillGroups.push({
-      name: groupDescriptor.name,
-      position: groupDescriptor.position,
-      skills: skills,
+    // Sort groups by position
+    skillGroups.sort((a, b) => {
+      if (a.position > b.position) {
+        return 1;
+      } else if (b.position > a.position) {
+        return -1;
+      } else {
+        // Unknown groups will all have the same position; sort them by name
+        return a.name.localeCompare(b.name);
+      }
     });
-  }
 
-  // Sort groups by position
-  skillGroups.sort((a, b) => {
-    if (a.position > b.position) {
-      return 1;
-    } else if (b.position > a.position) {
-      return -1;
-    } else {
-      // Unknown groups will all have the same position; sort them by name
-      return a.name.localeCompare(b.name);
-    }
-  });
-
-  return skillGroups;
-}
+    return skillGroups;
+  },
+};

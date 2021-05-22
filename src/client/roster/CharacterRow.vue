@@ -84,9 +84,9 @@ import { formatNumber } from "../shared/numberFormat";
 import EveImage from "../shared/EveImage.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
-import infoIcon = require("../shared-res/circle-info.svg");
-import warningIcon = require("../shared-res/triangle-warning.svg");
-import errorIcon = require("../shared-res/triangle-error.svg");
+import infoIcon from "../shared-res/circle-info.svg";
+import warningIcon from "../shared-res/triangle-warning.svg";
+import errorIcon from "../shared-res/triangle-error.svg";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];

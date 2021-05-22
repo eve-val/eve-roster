@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import unknownIcon = require("./res/EveImage-Unknown.svg");
+import unknownIcon from "./res/EveImage-Unknown.svg";
 
 const SUPPORTED_TYPES = {
   Alliance: true,

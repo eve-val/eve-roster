@@ -96,13 +96,13 @@
  * up to you.
  */
 
-import _ = require("underscore");
+import contains from "underscore";
 import Tooltip from "./Tooltip.vue";
 
-import inlineErrorIcon = require("../shared-res/circle-error.svg");
-import inlineWarningIcon = require("../shared-res/circle-warning.svg");
-import blockErrorIcon = require("../shared-res/triangle-error.svg");
-import blockWarningIcon = require("../shared-res/triangle-warning.svg");
+import inlineErrorIcon from "../shared-res/circle-error.svg";
+import inlineWarningIcon from "../shared-res/circle-warning.svg";
+import blockErrorIcon from "../shared-res/triangle-error.svg";
+import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
 const DISPLAY_VALUES = ["inline", "block"];
 const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
@@ -128,7 +128,7 @@ export default {
       type: String,
       required: false,
       default: "inline",
-      validator: (value) => _.contains(DISPLAY_VALUES, value),
+      validator: (value) => contains(DISPLAY_VALUES, value),
     },
 
     /**
@@ -139,7 +139,7 @@ export default {
     state: {
       type: String,
       required: false,
-      validator: (value) => _.contains(STATE_VALUES, value),
+      validator: (value) => contains(STATE_VALUES, value),
     },
 
     /**
@@ -150,7 +150,7 @@ export default {
       type: String,
       required: false,
       default: "spinning",
-      validator: (value) => _.contains(STATE_VALUES, value),
+      validator: (value) => contains(STATE_VALUES, value),
     },
 
     /** Displayed if state is 'error' or 'warning'. */
@@ -262,7 +262,7 @@ export default {
 
           let result = onSuccess && onSuccess(payload);
           if (result) {
-            if (_.contains(STATE_VALUES, result.state)) {
+            if (contains(STATE_VALUES, result.state)) {
               newState = result.state;
             } else if (result.state != null) {
               console.warn("WARNING: Bad spinner state:", result.state);
