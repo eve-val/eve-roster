@@ -17,7 +17,7 @@
           v-if="tableRows != null"
           :columns="displayColumns"
           :rows="tableRows"
-          :filter="this.searchString"
+          :filter="searchString"
           class="table"
         />
       </div>

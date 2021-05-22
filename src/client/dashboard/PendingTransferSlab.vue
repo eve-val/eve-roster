@@ -12,14 +12,14 @@
           <div>
             <button
               class="roster-btn confirm-deny-btn"
-              :disabled="this.transferCharacterPromise"
+              :disabled="transferCharacterPromise"
               @click="transferCharacter"
             >
               Transfer character</button
             ><!--
         --><button
               class="roster-btn secondary confirm-deny-btn"
-              :disabled="this.transferCharacterPromise"
+              :disabled="transferCharacterPromise"
               @click="cancelTransfer"
             >
               Cancel

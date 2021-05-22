@@ -2,7 +2,7 @@
   <div
     class="_tooltip"
     :style="{
-      display: this.inline ? 'inline-flex' : 'flex',
+      display: inline ? 'inline-flex' : 'flex',
     }"
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"

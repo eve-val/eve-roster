@@ -43,9 +43,9 @@ in most other places).
 
     <srp-triplet
       class="victimlet"
-      :icon-id="this.srp.victim || srp.victimCorp"
+      :icon-id="srp.victim || srp.victimCorp"
       :icon-type="victimIconType"
-      :top-line="name(this.srp.victim || srp.victimCorp)"
+      :top-line="name(srp.victim || srp.victimCorp)"
       :bottom-line="name(srp.victimCorp)"
       :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
