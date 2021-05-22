@@ -9,22 +9,22 @@
   >
     <div class="flex-container" :style="flexContainerStyle">
       <!-- main content goes here -->
-      <slot></slot>
+      <slot />
       <div
-        class="nosize-container"
         v-if="$slots.message && hovering"
+        class="nosize-container"
         :style="nosizeContainerStyle"
       >
         <div class="message-max-sizer" :style="messageMaxSizerStyle">
           <div class="message-container" :style="messageContainerStyle">
             <!-- tooltip content goes here -->
-            <slot name="message"></slot>
+            <slot name="message" />
           </div>
         </div>
         <div class="hover-triangle" :style="triangleStyle">
-          <div class="hover-triangle-inset" :style="insetTriangleStyle"></div>
+          <div class="hover-triangle-inset" :style="insetTriangleStyle" />
         </div>
-        <div class="spacer" :style="spacerStyle"></div>
+        <div class="spacer" :style="spacerStyle" />
       </div>
     </div>
   </div>
@@ -212,7 +212,6 @@ export default {
         ARROW_RISE
       );
 
-      let left, top;
       if (this.horizontalGravity == "center") {
         style["left"] = `-${ARROW_BASE / 2}px`;
         style[this.verticalGravity] = `-${ARROW_RISE + 2}px`;

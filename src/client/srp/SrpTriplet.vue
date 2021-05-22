@@ -14,13 +14,12 @@ lines of text on the right. The text may be optionally wrapped in links.
       style="display: inline-block"
     >
       <eve-image
-        class="icon"
         :id="iconId"
+        class="icon"
         :type="iconType"
         :size="50"
         style="background-color: #101010"
-      >
-      </eve-image>
+      />
     </adaptive-link>
     <div class="text-cnt">
       <div class="top-line-cnt">
@@ -29,9 +28,9 @@ lines of text on the right. The text may be optionally wrapped in links.
           :path="effectiveTopHref"
           :link-class="'link-row'"
         >
-          {{ topLine }}</adaptive-link
-        >
-        <slot name="top-line-extra"></slot>
+          {{ topLine }}
+        </adaptive-link>
+        <slot name="top-line-extra" />
       </div>
       <adaptive-link
         class="bot-line"

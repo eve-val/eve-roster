@@ -11,9 +11,9 @@
         <div class="housing-flex-container">
           <citadel-row
             v-for="citadel in citadels"
+            :key="citadel.name"
             :row="citadel"
             :bus="bus"
-            :key="citadel.name"
           />
         </div>
       </div>

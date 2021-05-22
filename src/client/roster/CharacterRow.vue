@@ -18,7 +18,9 @@
             }}<span class="highlight">{{ filterMatch[1] }}</span
             >{{ filterMatch[2] }}
           </template>
-          <template v-else>{{ displayVals[1] }}</template>
+          <template v-else>
+            {{ displayVals[1] }}
+          </template>
         </router-link>
         <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
           <eve-image
@@ -40,9 +42,9 @@
       </div>
 
       <div
-        class="col"
         v-for="(displayVal, i) in subsequentDisplayVals"
         :key="i"
+        class="col"
         :style="cellStyle(i)"
       >
         <template v-if="!tooltipMessage(i)">
@@ -79,6 +81,16 @@ export default {
   components: {
     EveImage,
     Tooltip,
+  },
+
+  filters: {
+    dashDefault: function (value) {
+      if (value == null) {
+        return "-";
+      } else {
+        return value;
+      }
+    },
   },
 
   props: {
@@ -153,16 +165,6 @@ export default {
           this.character.corporationId
         ) != -1
       );
-    },
-  },
-
-  filters: {
-    dashDefault: function (value) {
-      if (value == null) {
-        return "-";
-      } else {
-        return value;
-      }
     },
   },
 

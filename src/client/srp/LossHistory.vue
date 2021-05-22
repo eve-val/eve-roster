@@ -9,7 +9,7 @@ Exposes various options for filtering the contents of the table.
 <template>
   <div class="_loss-history" :class="{ compact: compactMode }">
     <template v-if="rows != null">
-      <loss-heading></loss-heading>
+      <loss-heading />
       <loss-row
         v-for="row in rows"
         :key="row.killmail"
@@ -19,8 +19,7 @@ Exposes various options for filtering the contents of the table.
         :highlight-as-related="row.killmail == relatedKillmail"
         @related-hover="onRelatedHover"
         @related-unhover="onRelatedUnhover"
-      >
-      </loss-row>
+      />
       <div v-if="rows.length == 0" class="no-results">No results</div>
     </template>
 
@@ -29,8 +28,7 @@ Exposes various options for filtering the contents of the table.
         :promise="fetchPromise"
         :hide-button="rows == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
@@ -82,14 +80,14 @@ export default {
     },
   },
 
-  mounted() {
-    this.reset();
-  },
-
   watch: {
     triageMode(value) {
       this.reset();
     },
+  },
+
+  mounted() {
+    this.reset();
   },
 
   methods: Object.assign(

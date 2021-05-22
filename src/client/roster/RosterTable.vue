@@ -2,15 +2,15 @@
   <div class="root">
     <table-header
       :columns="columns"
-      :sortKey="sort.key"
-      :reverseSort="sort.reverse"
+      :sort-key="sort.key"
+      :reverse-sort="sort.reverse"
       @selectSortKey="onSelectSortKey"
     />
     <account-row
       v-for="row in sortedRows"
+      :key="row.main.id"
       :columns="columns"
       :account="row"
-      :key="row.main.id"
       :filter="filter"
     />
   </div>

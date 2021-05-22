@@ -12,8 +12,8 @@ triage options weren't initially provided, fetches them from the server.
     <div class="status-cnt">
       <select
         v-if="editing"
-        class="verdict-select"
         v-model="selectedVerdictKey"
+        class="verdict-select"
       >
         <option
           v-for="option in verdictOptions"
@@ -32,7 +32,7 @@ triage options weren't initially provided, fetches them from the server.
           {{ getStatusLabel(srp) }}
         </div>
 
-        <div class="rendered-by" v-if="renderingName">
+        <div v-if="renderingName" class="rendered-by">
           by
           <router-link
             v-if="renderingLink"
@@ -51,8 +51,8 @@ triage options weren't initially provided, fetches them from the server.
     <div class="payout-cnt">
       <div v-if="editing" class="payout-input-cnt">
         <input
-          class="payout-input"
           v-model.number="inputPayout"
+          class="payout-input"
           :disabled="!isApprovalSelected"
         />
         <input class="payout-denom" value="M" disabled />
@@ -66,7 +66,7 @@ triage options weren't initially provided, fetches them from the server.
           {{ rawPayoutToDisplayPayout(srp.payout) }}
           <span style="color: #8b8b8b">M</span>
         </router-link>
-        <template v-else>&mdash;</template>
+        <template v-else> &mdash; </template>
       </div>
     </div>
 
@@ -90,8 +90,7 @@ triage options weren't initially provided, fetches them from the server.
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </a>
       <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
         <a
@@ -107,8 +106,7 @@ triage options weren't initially provided, fetches them from the server.
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </div>
     </div>
   </div>
@@ -131,12 +129,6 @@ export default {
     srp: { type: Object, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
-  },
-
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
   },
 
   data() {
@@ -244,6 +236,12 @@ export default {
         return null;
       }
     },
+  },
+
+  mounted() {
+    if (this.editing) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    }
   },
 
   methods: Object.assign(

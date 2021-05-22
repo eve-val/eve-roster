@@ -7,41 +7,38 @@
       </div>
 
       <loading-spinner
-        class="root-spinner"
         ref="root_spinner"
+        class="root-spinner"
         display="block"
         size="34px"
-      >
-      </loading-spinner>
+      />
 
       <template v-if="tasks != null">
         <div class="header">Tasks</div>
         <transition-group name="task-block" tag="div">
           <task-slab
             v-for="task in tasksWithJobs"
+            :key="task.name"
             class="task-block"
             :task="task"
-            :key="task.name"
             @jobStarted="onJobStarted"
-          >
-          </task-slab>
+          />
           <div
-            class="active-task-divider"
             v-if="areAnyActiveJobs"
             key="__divider"
-          ></div>
+            class="active-task-divider"
+          />
           <task-slab
             v-for="task in tasksWithoutJobs"
+            :key="task.name"
             class="task-block"
             :task="task"
-            :key="task.name"
             @jobStarted="onJobStarted"
-          >
-          </task-slab>
+          />
         </transition-group>
 
         <div class="header">Task log</div>
-        <task-log :rows="taskLog"></task-log>
+        <task-log :rows="taskLog" />
       </template>
     </div>
   </admin-wrapper>
@@ -84,21 +81,6 @@ export default {
     };
   },
 
-  mounted: function () {
-    this.$refs.root_spinner
-      .observe(
-        Promise.all([
-          ajaxer.getAdminTasks(),
-          ajaxer.getAdminJobs(),
-          ajaxer.getAdminTaskLog(),
-        ])
-      )
-      .then(([tasks, jobs, logs]) => {
-        this.initializeTasks(tasks.data, jobs.data);
-        this.taskLog = logs.data;
-      });
-  },
-
   computed: {
     tasksWithJobs() {
       return this.tasks.filter((t) => t.job != null);
@@ -114,6 +96,21 @@ export default {
       }
       return false;
     },
+  },
+
+  mounted: function () {
+    this.$refs.root_spinner
+      .observe(
+        Promise.all([
+          ajaxer.getAdminTasks(),
+          ajaxer.getAdminJobs(),
+          ajaxer.getAdminTaskLog(),
+        ])
+      )
+      .then(([tasks, jobs, logs]) => {
+        this.initializeTasks(tasks.data, jobs.data);
+        this.taskLog = logs.data;
+      });
   },
 
   methods: {

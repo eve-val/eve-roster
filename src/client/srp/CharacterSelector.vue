@@ -9,11 +9,11 @@ character is paying.
 
 <template>
   <div class="_character-selector">
-    <select class="select" v-model="selectedId" ref="select">
+    <select ref="select" v-model="selectedId" class="select">
       <option
         v-for="character in validCharacters"
-        class="select-option"
         :key="character.id"
+        class="select-option"
         :value="character.id"
       >
         {{ character.name }}
@@ -22,13 +22,14 @@ character is paying.
     <div class="cover">
       <template v-if="selectedCharacter != null">
         <eve-image
-          class="char-icon"
           :id="selectedCharacter.id"
+          class="char-icon"
           :size="39"
           type="Character"
-        >
-        </eve-image>
-        <div class="char-name">{{ selectedCharacter.name }}</div>
+        />
+        <div class="char-name">
+          {{ selectedCharacter.name }}
+        </div>
         <img class="select-triangle" src="../shared-res/select-dropdown.png" />
       </template>
     </div>
@@ -64,7 +65,15 @@ export default {
       return _.findWhere(this.characters, { id: this.selectedId });
     },
     validCharacters() {
-      return this.characters.filter(isValidCharacter);
+      return this.characters.filter(this.isValidCharacter);
+    },
+  },
+
+  watch: {
+    selectedId(newValue) {
+      if (newValue != this.value) {
+        this.$emit("input", newValue);
+      }
     },
   },
 
@@ -79,14 +88,6 @@ export default {
         }
       }
     });
-  },
-
-  watch: {
-    selectedId(newValue) {
-      if (newValue != this.value) {
-        this.$emit("input", newValue);
-      }
-    },
   },
 
   methods: {

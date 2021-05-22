@@ -22,7 +22,7 @@ Root container for the SRP UI.
       </router-link>
     </div>
 
-    <router-view :identity="identity"></router-view>
+    <router-view :identity="identity" />
   </app-page>
 </template>
 

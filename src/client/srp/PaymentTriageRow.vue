@@ -22,14 +22,13 @@ the reimbursement as paid.
       :bottom-line="name(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
-    >
-    </srp-triplet>
+    />
 
     <div class="payout-cnt">
       <span class="copy-label">Amount</span>
       <input
-        class="payout-input"
         ref="payoutInput"
+        class="payout-input"
         readonly
         :value="payment.totalPayout"
       />
@@ -41,8 +40,8 @@ the reimbursement as paid.
     <div class="reason-cnt">
       <span class="copy-label">Reason</span>
       <input
-        class="reason-input"
         ref="reasonInput"
+        class="reason-input"
         readonly
         :value="'SRP #' + payment.id"
       />
@@ -58,8 +57,7 @@ the reimbursement as paid.
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </a>
       <div v-else class="undo-cnt">
         <a v-if="undoStatus != 'saving'" class="undo-link" @click="onUndoClick">
@@ -71,8 +69,7 @@ the reimbursement as paid.
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@
         trained: i <= trainedLevel,
         queued: i > trainedLevel && i <= queuedLevel,
       }"
-    ></div>
+    />
   </div>
 </template>
 

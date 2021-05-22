@@ -2,8 +2,8 @@
   <div class="_loading-spinner" :style="{ display: derivedDisplay }">
     <template v-if="derivedState != 'hidden'">
       <img
-        class="spinner"
         v-if="derivedState == 'spinning'"
+        class="spinner"
         src="./res/LoadingSpinner-spinner.svg"
         :style="{ width: size, height: size }"
       />
@@ -17,12 +17,12 @@
           :src="errorIconSrc"
           :style="{ width: size, height: size }"
         />
-        <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
+        <span v-if="derivedMessage" slot="message">{{ derivedMessage }}</span>
       </tooltip>
 
       <div
-        class="block-style-message"
         v-if="derivedState != 'spinning' && display == 'block'"
+        class="block-style-message"
       >
         <img class="block-style-icon" :src="errorIconSrc" />{{ derivedMessage }}
       </div>

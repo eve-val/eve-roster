@@ -9,9 +9,9 @@
       </div>
       <div class="rows">
         <div
-          class="row"
           v-for="row in rows"
           :key="row.id"
+          class="row"
           :class="[
             row.result == 'failure' ? 'failure' : '',
             row.result != 'failure' && row.result != 'success'
@@ -19,14 +19,20 @@
               : '',
           ]"
         >
-          <div class="cell task">{{ row.task }}</div>
-          <div class="cell start">{{ row.start | displayDate }}</div>
+          <div class="cell task">
+            {{ row.task }}
+          </div>
+          <div class="cell start">
+            {{ row.start | displayDate }}
+          </div>
           <div class="cell duration">
             <span v-if="row.end != null">
               {{ (row.end - row.start) | displayDuration }}
             </span>
           </div>
-          <div class="cell result">{{ row.result }}</div>
+          <div class="cell result">
+            {{ row.result }}
+          </div>
         </div>
       </div>
       <div class="length-reminder">Showing most recent 400 records</div>
@@ -38,14 +44,6 @@
 import moment from "moment";
 
 export default {
-  props: {
-    rows: { type: Array, required: true },
-  },
-
-  data: function () {
-    return {};
-  },
-
   filters: {
     displayDate: function (value) {
       if (value != null) {
@@ -57,6 +55,13 @@ export default {
     displayDuration: function (value) {
       return moment.duration(value).asSeconds().toFixed(1) + "s";
     },
+  },
+  props: {
+    rows: { type: Array, required: true },
+  },
+
+  data: function () {
+    return {};
   },
 };
 </script>

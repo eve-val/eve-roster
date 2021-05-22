@@ -7,13 +7,12 @@ A component that either looks like a "load more" button or a loading spinner.
 <template>
   <div class="_more-button">
     <loading-spinner
-      class="spinner"
       ref="spinner"
+      class="spinner"
       display="block"
       size="34px"
       default-state="hidden"
-    >
-    </loading-spinner>
+    />
     <button
       v-if="status != 'active' && !hideButton"
       class="btn"
@@ -46,14 +45,14 @@ export default {
     };
   },
 
-  mounted() {
-    this.observe(this.promise);
-  },
-
   watch: {
     promise(value) {
       this.observe(value);
     },
+  },
+
+  mounted() {
+    this.observe(this.promise);
   },
 
   methods: {

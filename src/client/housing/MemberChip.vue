@@ -1,11 +1,11 @@
 <template>
   <div
     class="chip"
-    @mousedown="onMouseDown"
     :style="{
       visibility: visible ? 'visible' : 'hidden',
       color: character.transactionInProgress ? 'green' : 'black',
     }"
+    @mousedown="onMouseDown"
   >
     <eve-image
       :id="character.characterId"

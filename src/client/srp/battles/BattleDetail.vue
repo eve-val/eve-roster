@@ -8,16 +8,14 @@ Page for displaying details about a specific battle.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">Battle #{{ battleId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px">
-    </loading-spinner>
+    <loading-spinner ref="spinner" display="block" size="34px" />
 
     <battle-row
       v-if="battle != null"
       :battle="battle"
       :has-edit-priv="identity.access['srp'] == 2"
       :start-in-edit-mode="true"
-    >
-    </battle-row>
+    />
   </app-page>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
   <div class="_dev-frame">
-    <app-header :identity="identity"></app-header>
+    <app-header :identity="identity" />
     <div class="split-container">
       <div class="sidebar">
         <router-link
-          class="sidebar-link"
           v-for="section in sections"
           :key="section.path"
+          class="sidebar-link"
           :to="'/dev/' + section.path"
         >
           {{ section.label }}
@@ -14,8 +14,10 @@
       </div>
       <div class="main">
         <template v-if="currentSection">
-          <div class="title">{{ currentSection.label }}</div>
-          <component :is="currentSection.component"></component>
+          <div class="title">
+            {{ currentSection.label }}
+          </div>
+          <component :is="currentSection.component" />
         </template>
         <template v-else>
           <div class="title">Component state development</div>

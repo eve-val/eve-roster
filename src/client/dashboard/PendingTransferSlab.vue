@@ -1,11 +1,11 @@
 <template>
-  <character-slab-frame :characterId="characterId">
+  <character-slab-frame :character-id="characterId">
     <div class="_pending-transfer-slab">
       <div class="body">
         <div>
-          <router-link class="name" :to="'/character/' + characterId">{{
-            name
-          }}</router-link>
+          <router-link class="name" :to="'/character/' + characterId">
+            {{ name }}
+          </router-link>
           <div class="prompt">
             This character is owned by another account. Are you sure?
           </div>
@@ -29,14 +29,13 @@
       </div>
       <!-- end body -->
       <loading-spinner
-        class="transfer-character-spinner"
         ref="spinner"
-        defaultState="hidden"
+        class="transfer-character-spinner"
+        default-state="hidden"
         size="20px"
-        tooltipGravity="left center"
-        actionLabel="transferring this character to you"
-      >
-      </loading-spinner>
+        tooltip-gravity="left center"
+        action-label="transferring this character to you"
+      />
     </div>
     <!-- end _pending-transfer-slab -->
   </character-slab-frame>

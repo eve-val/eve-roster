@@ -1,13 +1,13 @@
 <template>
   <admin-wrapper title="Setup" :identity="identity">
     <textarea
-      class="main-input"
       v-model="setupJson"
+      class="main-input"
       autocomplete="off"
       autocorrect="off"
       autocapitalize="off"
       spellcheck="false"
-    ></textarea>
+    />
     <div style="margin-top: 8px">
       <button
         class="roster-btn submit-btn"
@@ -17,22 +17,20 @@
         Submit
       </button>
       <loading-spinner
-        class="spinner"
         ref="spinner"
+        class="spinner"
         display="block"
         size="34px"
-      >
-      </loading-spinner>
+      />
     </div>
 
     <div class="section-title">SRP</div>
-    <srp-setup></srp-setup>
+    <srp-setup />
   </admin-wrapper>
 </template>
 
 <script>
 import Promise from "bluebird";
-import moment from "moment";
 
 import ajaxer from "../shared/ajaxer";
 

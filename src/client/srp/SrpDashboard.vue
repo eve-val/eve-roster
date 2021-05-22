@@ -13,16 +13,14 @@ Displays the user's recent losses and SRP payments.
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-    >
-    </payment-history>
+    />
 
     <div class="section-title">My losses</div>
     <loss-history
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-    >
-    </loss-history>
+    />
   </div>
 </template>
 

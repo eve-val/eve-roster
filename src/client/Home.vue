@@ -1,18 +1,18 @@
 <template>
   <keep-alive>
-    <router-view
-      v-if="$route.meta.keepAlive"
-      :identity="identity"
-    ></router-view>
+    <router-view v-if="$route.meta.keepAlive" :identity="identity" />
   </keep-alive>
-  <router-view v-if="!$route.meta.keepAlive" :identity="identity"></router-view>
+  <router-view v-if="!$route.meta.keepAlive" :identity="identity" />
 </template>
 
 <script>
 export default {
   props: {
     identity: {
-      default: {},
+      type: Object,
+      default: function () {
+        return {};
+      },
     },
   },
 };

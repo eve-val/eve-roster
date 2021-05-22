@@ -5,11 +5,11 @@
       <div class="table-cnt">
         <div class="title-row">
           <div class="title">Roster</div>
-          <loading-spinner class="loading-spinner" ref="spinner" size="33px" />
-          <div class="title-spacer"></div>
+          <loading-spinner ref="spinner" class="loading-spinner" size="33px" />
+          <div class="title-spacer" />
           <search-box
-            class="search-box"
             v-if="tableRows != null"
+            class="search-box"
             @change="onSearchStringChange"
           />
         </div>
@@ -21,7 +21,7 @@
           class="table"
         />
       </div>
-      <div class="member-count" v-if="tableRows != null">
+      <div v-if="tableRows != null" class="member-count">
         {{ tableRows.length }} members
       </div>
     </div>

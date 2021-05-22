@@ -10,7 +10,7 @@ Otherwise an anchor tag is used.
 
 <template>
   <div v-if="path == undefined" class="_adaptive-link">
-    <slot></slot>
+    <slot />
   </div>
   <a
     v-else-if="isExternalUrl(path)"
@@ -18,10 +18,10 @@ Otherwise an anchor tag is used.
     :href="path"
     target="_blank"
   >
-    <slot></slot>
+    <slot />
   </a>
   <router-link v-else :to="path" :class="[linkClass]">
-    <slot></slot>
+    <slot />
   </router-link>
 </template>
 

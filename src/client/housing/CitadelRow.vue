@@ -7,9 +7,9 @@
     <div>({{ row.occupants.length }}) {{ row.name }}</div>
     <div v-for="character in row.occupants">
       <member-chip
+        :key="character.characterId"
         :character="character"
         :bus="bus"
-        :key="character.characterId"
       />
     </div>
   </div>

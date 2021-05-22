@@ -1,31 +1,19 @@
 <template>
   <div class="_dev-task-slab">
-    <task-slab class="tb" :task="taskShortName(null)"></task-slab>
-    <task-slab class="tb" :task="taskSimple(null)"></task-slab>
-    <task-slab class="tb" :task="taskExtraLongText(null)"></task-slab>
+    <task-slab class="tb" :task="taskShortName(null)" />
+    <task-slab class="tb" :task="taskSimple(null)" />
+    <task-slab class="tb" :task="taskExtraLongText(null)" />
 
-    <task-slab class="tb" :task="taskExtraLongText(jobSimple())"></task-slab>
-    <task-slab class="tb" :task="taskExtraLongText(jobLabel())"></task-slab>
+    <task-slab class="tb" :task="taskExtraLongText(jobSimple())" />
+    <task-slab class="tb" :task="taskExtraLongText(jobLabel())" />
 
-    <task-slab class="tb" :task="taskShortName(jobNoProgress())"></task-slab>
-    <task-slab class="tb" :task="taskShortName(jobLowProgress())"></task-slab>
-    <task-slab class="tb" :task="taskShortName(jobHighProgress())"></task-slab>
+    <task-slab class="tb" :task="taskShortName(jobNoProgress())" />
+    <task-slab class="tb" :task="taskShortName(jobLowProgress())" />
+    <task-slab class="tb" :task="taskShortName(jobHighProgress())" />
 
-    <task-slab
-      class="tb"
-      :task="taskShortName(null)"
-      ref="runPending"
-    ></task-slab>
-    <task-slab
-      class="tb"
-      :task="taskShortName(null)"
-      ref="runError"
-    ></task-slab>
-    <task-slab
-      class="tb"
-      :task="taskShortName(null)"
-      ref="runResolved"
-    ></task-slab>
+    <task-slab ref="runPending" class="tb" :task="taskShortName(null)" />
+    <task-slab ref="runError" class="tb" :task="taskShortName(null)" />
+    <task-slab ref="runResolved" class="tb" :task="taskShortName(null)" />
   </div>
 </template>
 

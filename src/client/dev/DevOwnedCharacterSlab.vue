@@ -2,51 +2,51 @@
   <div class="_dev-owned-character-slap">
     <div class="entry-title">Main</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterBasic"
-      :isMain="true"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="true"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">Alt</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterBasic"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">Opsec alt</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterOpsecAlt"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">ESI failure</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterEsiFailure"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">Biomassed character</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterBiomassed"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
@@ -55,21 +55,21 @@
 
     <div class="entry-title">Empty queue</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterEmptyQueue"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">Paused queue</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterPausedQueue"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
@@ -79,32 +79,32 @@
     <div class="entry-title">Action pending</div>
     <owned-character-slab
       ref="actionPendingSlab"
-      :accountId="0"
+      :account-id="0"
       :character="characterBasic"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">Action failed</div>
     <owned-character-slab
       ref="actionFailedSlab"
-      :accountId="0"
+      :account-id="0"
       :character="characterBasic"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
     <div class="entry-title">ESI error</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterUnfresQueue"
-      :isMain="true"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="true"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
 
@@ -113,11 +113,11 @@
 
     <div class="entry-title">Needs reauth</div>
     <owned-character-slab
-      :accountId="0"
+      :account-id="0"
       :character="characterNeedsReauth"
-      :isMain="false"
-      :highlightMain="true"
-      :loginParams="loginParams"
+      :is-main="false"
+      :highlight-main="true"
+      :login-params="loginParams"
       :access="accessFull"
     />
   </div>

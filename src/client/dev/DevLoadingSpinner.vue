@@ -49,7 +49,7 @@
 
       <div>
         Inline error state with hover text
-        <loading-spinner state="error" adversityMessage="There was an error" />
+        <loading-spinner state="error" adversity-message="There was an error" />
       </div>
 
       <div>
@@ -61,7 +61,7 @@
         Inline warning state with hover text
         <loading-spinner
           state="warning"
-          adversityMessage="Warning: bad things are about to happen."
+          adversity-message="Warning: bad things are about to happen."
         />
       </div>
 
@@ -69,7 +69,7 @@
         <loading-spinner
           display="block"
           state="error"
-          adversityMessage="Something terrible has occurred."
+          adversity-message="Something terrible has occurred."
         />
       </div>
 
@@ -77,7 +77,7 @@
         <loading-spinner
           display="block"
           state="warning"
-          adversityMessage="Warning: Something terrible might have occurred."
+          adversity-message="Warning: Something terrible might have occurred."
         />
       </div>
 
@@ -103,7 +103,7 @@
 
       <div>
         Block pending
-        <loading-spinner display="block" ref="blockPending" />
+        <loading-spinner ref="blockPending" display="block" />
       </div>
 
       <div>
@@ -113,7 +113,7 @@
 
       <div>
         Block error
-        <loading-spinner display="block" ref="blockError" />
+        <loading-spinner ref="blockError" display="block" />
       </div>
 
       <div>
@@ -123,7 +123,7 @@
 
       <div>
         Block resolved
-        <loading-spinner display="block" ref="blockResolved" />
+        <loading-spinner ref="blockResolved" display="block" />
       </div>
     </div>
   </div>

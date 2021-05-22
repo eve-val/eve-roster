@@ -8,8 +8,7 @@ who the directors are and which of them we have tokens for.
 <template>
   <div class="_member-corp-detail">
     <div class="title-bar">
-      <eve-image class="icon" :id="corp.id" type="Corporation" :size="40">
-      </eve-image>
+      <eve-image :id="corp.id" class="icon" type="Corporation" :size="40" />
       <div class="name">
         {{ name(corp.id) }}
       </div>
@@ -22,10 +21,12 @@ who the directors are and which of them we have tokens for.
         </div>
         <div
           v-for="director in corp.directors"
-          class="table-row"
           :key="director.id"
+          class="table-row"
         >
-          <div class="director-name">{{ director.name }}</div>
+          <div class="director-name">
+            {{ director.name }}
+          </div>
           <div
             class="token-status"
             :style="{ color: !director.canUseToken ? '#FF5F32' : undefined }"

@@ -5,7 +5,7 @@
 
       <template v-if="queue != null">
         <div class="section-title">Training queue</div>
-        <div class="empty-queue" v-if="queue.entries.length == 0">
+        <div v-if="queue.entries.length == 0" class="empty-queue">
           Skill queue is empty
         </div>
         <template v-else>
@@ -15,7 +15,7 @@
             :entry="queueEntry"
             :position="i"
           />
-          <div class="queue-total-container" v-if="queue.durationLabel != null">
+          <div v-if="queue.durationLabel != null" class="queue-total-container">
             <div class="queue-total">
               <span style="color: #cdcdcd">Total:</span>
               {{ queue.durationLabel }}
@@ -27,17 +27,19 @@
       <template v-if="skillGroups != null">
         <div class="section-title">Skills</div>
         <div v-for="skillGroup in skillGroups" :key="skillGroup.id">
-          <div class="skillgroup-title">{{ skillGroup.name }}</div>
+          <div class="skillgroup-title">
+            {{ skillGroup.name }}
+          </div>
           <div class="skillgroup-container">
             <div
               v-for="skill in skillGroup.skills"
-              class="skill"
               :key="skill.id"
+              class="skill"
             >
               <skill-pips
                 class="skill-pips"
-                :trainedLevel="skill.level"
-                :queuedLevel="skill.queuedLevel || 0"
+                :trained-level="skill.level"
+                :queued-level="skill.queuedLevel || 0"
               />
               {{ skill.name }}
             </div>
@@ -87,10 +89,6 @@ export default {
     },
   },
 
-  mounted: function () {
-    this.fetchData();
-  },
-
   watch: {
     character: function (value) {
       this.queue = null;
@@ -98,6 +96,10 @@ export default {
 
       this.fetchData();
     },
+  },
+
+  mounted: function () {
+    this.fetchData();
   },
 
   methods: {

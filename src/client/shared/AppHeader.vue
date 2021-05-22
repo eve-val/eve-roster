@@ -1,23 +1,23 @@
 <template>
   <div class="header">
     <eve-image :id="99000739" type="Alliance" :size="40" class="app-icon" />
-    <router-link to="/" class="nav-link" exact>Dashboard</router-link>
-    <router-link to="/roster" v-if="canReadRoster" class="nav-link"
-      >Roster</router-link
-    >
-    <router-link to="/srp" v-if="identity.isMember" class="nav-link"
-      >SRP</router-link
-    >
-    <router-link to="/ships" v-if="identity.isMember" class="nav-link"
-      >Ships</router-link
-    >
-    <router-link to="/admin" v-if="canAccessAdminConsole" class="nav-link"
-      >Admin</router-link
-    >
-    <router-link to="/dev" v-if="canAccessDev" class="nav-link"
-      >Dev</router-link
-    >
-    <div class="spacer"></div>
+    <router-link to="/" class="nav-link" exact> Dashboard </router-link>
+    <router-link v-if="canReadRoster" to="/roster" class="nav-link">
+      Roster
+    </router-link>
+    <router-link v-if="identity.isMember" to="/srp" class="nav-link">
+      SRP
+    </router-link>
+    <router-link v-if="identity.isMember" to="/ships" class="nav-link">
+      Ships
+    </router-link>
+    <router-link v-if="canAccessAdminConsole" to="/admin" class="nav-link">
+      Admin
+    </router-link>
+    <router-link v-if="canAccessDev" to="/dev" class="nav-link">
+      Dev
+    </router-link>
+    <div class="spacer" />
     <div class="logout">
       <a class="nav-link" href="/logout">Log out</a>
     </div>

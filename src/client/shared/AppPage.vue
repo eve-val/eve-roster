@@ -10,7 +10,7 @@
       class="centering-container"
       :style="{ width: contentWidth ? contentWidth + 'px' : '1000px' }"
     >
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

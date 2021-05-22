@@ -25,9 +25,9 @@ in most other places).
       :default-href="zkillHref(srp.killmail, 'kill')"
     >
       <a
-        class="related-link"
         v-if="srp.relatedKillmail != null"
         slot="top-line-extra"
+        class="related-link"
         :href="zkillHref(srp.relatedKillmail.id, 'kill')"
       >
         <eve-image
@@ -36,8 +36,7 @@ in most other places).
           :size="13"
           @mouseenter.native="onRelatedHover"
           @mouseleave.native="onRelatedUnhover"
-        >
-        </eve-image>
+        />
       </a>
     </srp-triplet>
 
@@ -49,8 +48,7 @@ in most other places).
       :bottom-line="name(srp.victimCorp)"
       :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
-    >
-    </srp-triplet>
+    />
 
     <srp-triplet
       class="executionerlet"
@@ -62,16 +60,14 @@ in most other places).
         zkillHref(executionerAffiliation, executionerAffiliationType)
       "
       :top-href="zkillHref(srp.executioner.character, 'character')"
-    >
-    </srp-triplet>
+    />
 
     <srp-status
       class="srp-status"
       :srp="srp"
       :has-edit-priv="hasEditPriv"
       :start-in-edit-mode="startInEditMode"
-    >
-    </srp-status>
+    />
   </div>
 </template>
 
@@ -99,12 +95,6 @@ export default {
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
     highlightAsRelated: { type: Boolean, required: false, default: false },
-  },
-
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
   },
 
   computed: {
@@ -151,6 +141,12 @@ export default {
         return "ship";
       }
     },
+  },
+
+  mounted() {
+    if (this.editing) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    }
   },
 
   methods: Object.assign(

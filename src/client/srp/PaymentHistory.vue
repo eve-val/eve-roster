@@ -12,7 +12,7 @@ Table of PaymentHistoryRows.
         <div style="width: 255px">Recipient</div>
         <div style="width: 65px; text-align: right">Losses</div>
         <div style="width: 135px; text-align: right">Total payout</div>
-        <div style="flex: 1"></div>
+        <div style="flex: 1" />
         <div style="width: 255px">Paid by</div>
       </div>
 
@@ -20,10 +20,9 @@ Table of PaymentHistoryRows.
         v-for="payment in payments"
         :key="payment.id"
         :payment="payment"
-      >
-      </payment-history-row>
+      />
 
-      <div class="no-results" v-if="payments.length == 0">No results</div>
+      <div v-if="payments.length == 0" class="no-results">No results</div>
     </template>
 
     <div v-if="suspectMoreToFetch" class="more-cnt">
@@ -31,8 +30,7 @@ Table of PaymentHistoryRows.
         :promise="fetchPromise"
         :hide-button="payments == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>

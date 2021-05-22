@@ -11,8 +11,7 @@ A table row that represents a single SRP payment (either pending or paid).
       :top-line="`SRP #${payment.id}`"
       :bottom-line="payment.modifiedStr"
       :top-href="`/srp/payment/${payment.id}`"
-    >
-    </srp-triplet>
+    />
 
     <srp-triplet
       class="recipient"
@@ -22,17 +21,18 @@ A table row that represents a single SRP payment (either pending or paid).
       :bottom-line="name(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
-    >
-    </srp-triplet>
+    />
 
-    <div class="loss-count">{{ payment.totalLosses }}</div>
+    <div class="loss-count">
+      {{ payment.totalLosses }}
+    </div>
 
     <div class="payout">
       {{ displayPayout }}
       <span class="payout-denom">M</span>
     </div>
 
-    <div class="spacer"></div>
+    <div class="spacer" />
 
     <srp-triplet
       v-if="payment.payer != undefined"
@@ -43,8 +43,7 @@ A table row that represents a single SRP payment (either pending or paid).
       :bottom-line="name(payment.payerCorp)"
       :icon-href="`/character/${payment.payer}`"
       :top-href="`/character/${payment.payer}`"
-    >
-    </srp-triplet>
+    />
   </div>
 </template>
 

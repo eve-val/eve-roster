@@ -15,8 +15,7 @@ Battle reports are instances of BattleRow.
         :battle="battle"
         :has-edit-priv="identity.access['srp'] == 2"
         :start-in-edit-mode="true"
-      >
-      </battle-row>
+      />
       <div v-if="battles.length == 0" class="no-results">No results</div>
     </template>
 
@@ -25,8 +24,7 @@ Battle reports are instances of BattleRow.
         :promise="fetchPromise"
         :hide-button="battles == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
@@ -60,14 +58,14 @@ export default {
 
   computed: {},
 
-  mounted() {
-    this.reset();
-  },
-
   watch: {
     triageMode(value) {
       this.reset();
     },
+  },
+
+  mounted() {
+    this.reset();
   },
 
   methods: Object.assign(

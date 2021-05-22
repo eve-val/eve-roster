@@ -2,14 +2,14 @@
   <admin-wrapper title="Citadel management" :identity="identity">
     <div class="add-citadel">
       <input
-        class="citadel-name"
         v-model="newCitadel.name"
-        @keydown="addLogic"
+        class="citadel-name"
         placeholder="Type a new citadel name, then press enter to add..."
+        @keydown="addLogic"
       />
       <label
         >Type:
-        <select class="citadel-type" v-model="newCitadel.type">
+        <select v-model="newCitadel.type" class="citadel-type">
           <option value="Astrahus">Astrahus</option>
           <option value="Fortizar">Fortizar</option>
           <option value="Keepstar">Keepstar</option>
@@ -19,14 +19,14 @@
       </label>
       <label
         >Alliance Access:
-        <select class="alliance-access" v-model="newCitadel.allianceAccess">
+        <select v-model="newCitadel.allianceAccess" class="alliance-access">
           <option :value="true">YES</option>
           <option :value="false">NO</option>
         </select>
       </label>
       <label
         >Alliance Owned:
-        <select class="alliance-owned" v-model="newCitadel.allianceOwned">
+        <select v-model="newCitadel.allianceOwned" class="alliance-owned">
           <option :value="true">YES</option>
           <option :value="false">NO</option>
         </select>

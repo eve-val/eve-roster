@@ -1,15 +1,15 @@
 <template>
   <div class="factoid-selector">
-    <select class="selector" v-model="selectedValue">
+    <select v-model="selectedValue" class="selector">
       <option :value="null">Not assigned</option>
       <option v-for="option in options" :value="option.value">
         {{ option.label }}
       </option>
     </select>
     <loading-spinner
-      class="loading-spinner"
       ref="spinner"
-      defaultState="hidden"
+      class="loading-spinner"
+      default-state="hidden"
       size="16px"
     />
   </div>

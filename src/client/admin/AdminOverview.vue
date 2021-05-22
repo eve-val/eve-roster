@@ -16,38 +16,35 @@ Right now just shows the sync status of each member corporation.
       </div>
 
       <loading-spinner
-        class="spinner"
         ref="spinner"
+        class="spinner"
         display="block"
         size="34px"
-      >
-      </loading-spinner>
+      />
 
       <template v-if="loaded && primaryCorps.length > 0">
         <div class="section-heading">Primary corporations</div>
         <member-corp-detail
           v-for="corp in primaryCorps"
-          :corp="corp"
           :key="corp.id"
-        >
-        </member-corp-detail>
+          :corp="corp"
+        />
       </template>
 
       <template v-if="loaded && affiliatedCorps.length > 0">
         <div class="section-heading">Affiliate corporations</div>
         <member-corp-detail
           v-for="corp in affiliatedCorps"
-          :corp="corp"
           :key="corp.id"
-        >
-        </member-corp-detail>
+          :corp="corp"
+        />
       </template>
 
       <div v-if="loaded && primaryCorps.length == 0" class="setup-bother">
         <img class="bother-icon" src="../shared-res/triangle-warning.svg" />
         <div>
           No corporations added yet. Configure them in
-          <router-link to="/admin/setup">Setup</router-link>.
+          <router-link to="/admin/setup"> Setup </router-link>.
         </div>
       </div>
     </div>
@@ -83,6 +80,8 @@ export default {
     };
   },
 
+  computed: {},
+
   mounted: function () {
     this.$refs.spinner
       .observe(ajaxer.getAdminRosterSyncStatus())
@@ -94,8 +93,6 @@ export default {
         this.loaded = true;
       });
   },
-
-  computed: {},
 
   methods: Object.assign({}, NameCacheMixin),
 };

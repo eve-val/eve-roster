@@ -1,12 +1,12 @@
 <template>
   <ships-wrapper title="Corp ships in my hangars" :identity="identity">
     <loading-spinner
-      class="main-spinner"
       ref="spinner"
-      defaultState="hidden"
+      class="main-spinner"
+      default-state="hidden"
       size="34px"
     />
-    <ship-table :ships="ships" :showMainCharacter="false" />
+    <ship-table :ships="ships" :show-main-character="false" />
   </ships-wrapper>
 </template>
 

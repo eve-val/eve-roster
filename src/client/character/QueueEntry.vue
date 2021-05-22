@@ -4,12 +4,12 @@
       v-if="position == 0"
       class="progress-bar"
       :style="{ width: entry.progress * 100 + '%' }"
-    ></div>
+    />
     <div class="main-line">
       <skill-pips
         class="pips"
-        :trainedLevel="entry.skill.level"
-        :queuedLevel="entry.targetLevel"
+        :trained-level="entry.skill.level"
+        :queued-level="entry.targetLevel"
       />
       <div class="name">
         {{ entry.skill.name }}
@@ -25,7 +25,7 @@
         left: entry.proportionalStart * 100 + '%',
         width: (entry.proportionalEnd - entry.proportionalStart) * 100 + '%',
       }"
-    ></div>
+    />
   </div>
 </template>
 
@@ -39,15 +39,15 @@ export default {
     SkillPips,
   },
 
-  props: {
-    entry: { type: Object, required: true },
-    position: { type: Number, required: true },
-  },
-
   filters: {
     numeralize: function (value) {
       return SKILL_LEVEL_LABELS[value];
     },
+  },
+
+  props: {
+    entry: { type: Object, required: true },
+    position: { type: Number, required: true },
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <admin-wrapper title="Account log" :identity="identity">
-    <div class="table" v-if="rows">
+    <div v-if="rows" class="table">
       <div class="headers">
         <div class="cell timestamp">Timestamp</div>
         <div class="cell account">Account</div>
@@ -9,20 +9,26 @@
         <div class="cell data">Data</div>
       </div>
       <div class="rows">
-        <div class="row" v-for="row in rows" :key="row.id">
-          <div class="cell timestamp">{{ row.timestamp | displayDate }}</div>
+        <div v-for="row in rows" :key="row.id" class="row">
+          <div class="cell timestamp">
+            {{ row.timestamp | displayDate }}
+          </div>
           <div class="cell account">
             <span
-              class="original-account"
               v-if="row.originalAccount != row.accountId"
+              class="original-account"
             >
               {{ row.originalAccount }} &rightarrow;
             </span>
             {{ row.accountId }}
             <span class="main-character">/ {{ row.mainCharacter }}</span>
           </div>
-          <div class="cell event">{{ row.event }}</div>
-          <div class="cell related-char">{{ row.relatedCharacterName }}</div>
+          <div class="cell event">
+            {{ row.event }}
+          </div>
+          <div class="cell related-char">
+            {{ row.relatedCharacterName }}
+          </div>
           <div class="data">
             <tooltip v-if="row.data" gravity="left bottom" :inline="false">
               <div class="cell">{ ... }</div>
@@ -55,6 +61,12 @@ export default {
     Tooltip,
   },
 
+  filters: {
+    displayDate: function (value) {
+      return moment(value).format("Y/MM/DD HH:mm:ss Z");
+    },
+  },
+
   props: {
     identity: { type: Object, required: true },
   },
@@ -70,12 +82,6 @@ export default {
       let rows = response.data.rows;
       this.rows = rows;
     });
-  },
-
-  filters: {
-    displayDate: function (value) {
-      return moment(value).format("Y/MM/DD HH:mm:ss Z");
-    },
   },
 
   methods: {

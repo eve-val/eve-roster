@@ -1,12 +1,12 @@
 <template>
   <div class="_drop-menu">
     <div
-      class="content"
       v-if="shown"
+      class="content"
       :style="rootStyle"
       @mousedown="onLocalMouseDown"
     >
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -21,11 +21,6 @@ export default {
     return {
       shown: false,
     };
-  },
-
-  destroyed() {
-    document.body.removeEventListener("mousedown", this.globalListener);
-    this.destroyed = true;
   },
 
   watch: {
@@ -48,6 +43,11 @@ export default {
         }
       });
     },
+  },
+
+  destroyed() {
+    document.body.removeEventListener("mousedown", this.globalListener);
+    this.destroyed = true;
   },
 
   methods: {

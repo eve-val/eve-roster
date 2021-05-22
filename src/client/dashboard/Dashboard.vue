@@ -5,34 +5,34 @@
       <div class="title">
         Dashboard
         <loading-spinner
-          class="main-spinner"
           ref="spinner"
-          defaultState="hidden"
+          class="main-spinner"
+          default-state="hidden"
         />
       </div>
       <div class="characters-container">
         <pending-transfer-slab
           v-for="transfer in transfers"
-          class="slab"
           :key="transfer.character"
-          :characterId="transfer.character"
-          :accountId="accountId"
+          class="slab"
+          :character-id="transfer.character"
+          :account-id="accountId"
           :name="transfer.name"
           @requireRefresh="onRequireRefresh"
         />
         <owned-character-slab
           v-for="character in characters"
-          class="slab"
           :key="character.id"
-          :accountId="accountId"
+          class="slab"
+          :account-id="accountId"
           :character="character"
-          :loginParams="loginParams"
-          :isMain="character.id == mainCharacter"
-          :highlightMain="characters.length > 1"
+          :login-params="loginParams"
+          :is-main="character.id == mainCharacter"
+          :highlight-main="characters.length > 1"
           :access="access"
           @requireRefresh="onRequireRefresh"
         />
-        <div class="add-character" v-if="loginParams">
+        <div v-if="loginParams" class="add-character">
           <a
             class="add-character-link"
             :href="
