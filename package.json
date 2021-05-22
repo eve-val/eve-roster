@@ -6,7 +6,7 @@
   "author": "SOUND IT",
   "scripts": {
     "build": "yarn run build-server && webpack --config out/server/infra/build-client/webpack.prod.js",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue",
     "build-server": "tsc",
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "postinstall": "patch-package",
@@ -86,6 +86,7 @@
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-vue": "^7.9.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "html-webpack-pug-plugin": "^3.0.0",

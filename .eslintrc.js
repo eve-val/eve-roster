@@ -1,12 +1,18 @@
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "jest"],
+  parser: "vue-eslint-parser",
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+    project: "./tsconfig.json",
+    extraFileExtensions: [".vue"],
+  },
+  plugins: ["@typescript-eslint", "jest", "eslint-plugin-vue"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:jest/recommended",
+    "plugin:vue/vue3-recommended",
   ],
   rules: {
     "@typescript-eslint/ban-types": "off",
