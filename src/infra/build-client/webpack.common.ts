@@ -1,16 +1,21 @@
 import path from "path";
 
-import webpack from "webpack";
 import { ProjectPaths } from "./paths";
+
+import webpack from "webpack";
+import TerserPlugin = require("terser-webpack-plugin");
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+
 import { VueLoaderPlugin } from "vue-loader";
-import TerserPlugin = require("terser-webpack-plugin");
+
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
+
 import MiniCssExtractPlugin = require("mini-css-extract-plugin");
 import CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 import CleanupMiniCssExtractPlugin = require("cleanup-mini-css-extract-plugin");
+
 import ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 import { extendDefaultPlugins } from "svgo";
 
@@ -75,21 +80,7 @@ export function commonConfig(
         // TODO: Check if we want to include the hash here
         {
           test: /\.(png|jpg|gif|svg)$/,
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]?[hash]",
-
-            // This is necessary due to how vue-loader consumes images.
-            // See https://github.com/vuejs/vue-loader/issues/1612
-            esModule: false,
-          },
-        },
-
-        // Loader for JSON files
-        // TODO: We may not need this?
-        {
-          test: /\.json$/,
-          loader: "json-loader",
+          type: "asset",
         },
       ],
     },
@@ -120,14 +111,14 @@ export function commonConfig(
         template: path.join(paths.clientSrc, "views/home.pug"),
         favicon: path.join(paths.clientSrc, "res/favicon.ico"),
         filename: "home.pug",
-        minify: true,
+        minify: false,
         chunks: ["main"],
       }),
       new HtmlWebpackPlugin({
         template: path.join(paths.clientSrc, "views/login.pug"),
         favicon: path.join(paths.clientSrc, "res/favicon.ico"),
         filename: "login.pug",
-        minify: true,
+        minify: false,
         chunks: ["login"],
       }),
       new HtmlWebpackPugPlugin(),
@@ -169,15 +160,9 @@ export function commonConfig(
       minimizer: [
         new MiniCssExtractPlugin(),
         new CssMinimizerPlugin(),
-        new TerserPlugin({
-          parallel: true,
-          sourceMap: true, // Must be set to true if using source-maps in production
-          terserOptions: {
-            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-          },
-        }),
+        new TerserPlugin(),
       ],
-      moduleIds: "hashed",
+      moduleIds: "deterministic",
       runtimeChunk: "single",
       splitChunks: {
         minSize: 10000,
