@@ -42,12 +42,10 @@ shown. If not, results are ordered newest to oldest.
 </template>
 
 <script>
-import Vue from "vue";
-
 import LossHistory from "./LossHistory.vue";
 import BattleHistory from "./battles/BattleHistory.vue";
 
-export default Vue.extend({
+export default {
   components: {
     BattleHistory,
     LossHistory,
@@ -64,7 +62,7 @@ export default Vue.extend({
       mode: this.forAccount ? "losses" : "battles",
     };
   },
-});
+};
 </script>
 
 <style scoped>

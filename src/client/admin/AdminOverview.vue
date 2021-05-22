@@ -55,7 +55,6 @@ Right now just shows the sync status of each member corporation.
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
@@ -65,7 +64,7 @@ import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import MemberCorpDetail from "./overview/MemberCorpDetail.vue";
 
-export default Vue.extend({
+export default {
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -99,7 +98,7 @@ export default Vue.extend({
   computed: {},
 
   methods: Object.assign({}, NameCacheMixin),
-});
+};
 </script>
 
 <style scoped>

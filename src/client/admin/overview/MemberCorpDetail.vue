@@ -43,11 +43,10 @@ who the directors are and which of them we have tokens for.
 </template>
 
 <script>
-import Vue from "vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import EveImage from "../../shared/EveImage.vue";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
   },
@@ -63,7 +62,7 @@ export default Vue.extend({
   computed: {},
 
   methods: Object.assign({}, NameCacheMixin),
-});
+};
 </script>
 
 <style scoped>

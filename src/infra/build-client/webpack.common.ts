@@ -182,7 +182,10 @@ export function commonConfig(
       // extension (e.g. "./foo" vs. "./foo.ts");
       extensions: [".tsx", ".ts", ".js", ".json"],
       alias: {
-        vue$: "vue/dist/vue.esm.js",
+        vue$: path.join(
+          paths.root,
+          "node_modules/vue/dist/vue.runtime.esm-bundler.js"
+        ),
       },
     },
   };

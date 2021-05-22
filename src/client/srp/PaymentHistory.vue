@@ -38,7 +38,6 @@ Table of PaymentHistoryRows.
 </template>
 
 <script>
-import Vue from "vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentHistoryRow from "./PaymentHistoryRow.vue";
@@ -46,7 +45,7 @@ import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
     MoreButton,
@@ -112,7 +111,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

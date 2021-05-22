@@ -26,11 +26,9 @@ Otherwise an anchor tag is used.
 </template>
 
 <script>
-import Vue from "vue";
-
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default Vue.extend({
+export default {
   components: {},
 
   props: {
@@ -43,7 +41,7 @@ export default Vue.extend({
       return ABS_URL_PATTERN.test(path);
     },
   },
-});
+};
 </script>
 
 <style scoped>

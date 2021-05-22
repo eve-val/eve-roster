@@ -22,7 +22,6 @@ Page for displaying details about a specific battle.
 </template>
 
 <script>
-import Vue from "vue";
 import AppPage from "../../shared/AppPage.vue";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 import BattleRow from "./BattleRow.vue";
@@ -30,7 +29,7 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     AppPage,
     LoadingSpinner,
@@ -66,7 +65,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

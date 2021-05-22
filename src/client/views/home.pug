@@ -7,12 +7,3 @@ html
       var $__IDENTITY = !{identity};
   body
     #app
-      keep-alive
-        router-view(
-            'v-if'='$route.meta.keepAlive'
-            ':identity'='identity'
-            )
-      router-view(
-          'v-if'='!$route.meta.keepAlive'
-          ':identity'='identity'
-          )

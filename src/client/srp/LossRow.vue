@@ -76,7 +76,6 @@ in most other places).
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import EveImage from "../shared/EveImage.vue";
@@ -87,7 +86,7 @@ import SrpTriplet from "./SrpTriplet.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
     LoadingSpinner,
@@ -174,7 +173,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

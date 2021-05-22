@@ -15,15 +15,13 @@ Appropriately-spaced column labels for a table of LossRows.
 </template>
 
 <script>
-import Vue from "vue";
-
-export default Vue.extend({
+export default {
   components: {},
 
   props: {},
 
   methods: {},
-});
+};
 </script>
 
 <style scoped>

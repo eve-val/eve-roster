@@ -79,14 +79,13 @@ the reimbursement as paid.
 </template>
 
 <script>
-import Vue from "vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
     SrpTriplet,
@@ -173,7 +172,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

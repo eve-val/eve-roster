@@ -16,10 +16,9 @@
 </template>
 
 <script>
-import Vue from "vue";
 import AppHeader from "./AppHeader.vue";
 
-export default Vue.extend({
+export default {
   components: {
     AppHeader,
   },
@@ -28,7 +27,7 @@ export default Vue.extend({
     identity: { type: Object, required: true },
     contentWidth: { type: Number, required: false },
   },
-});
+};
 </script>
 
 <style scoped>

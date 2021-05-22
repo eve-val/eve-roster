@@ -27,12 +27,10 @@ Displays the user's recent losses and SRP payments.
 </template>
 
 <script>
-import Vue from "vue";
-
 import LossHistory from "./LossHistory.vue";
 import PaymentHistory from "./PaymentHistory.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LossHistory,
     PaymentHistory,
@@ -43,7 +41,7 @@ export default Vue.extend({
   },
 
   methods: {},
-});
+};
 </script>
 
 <style scoped>

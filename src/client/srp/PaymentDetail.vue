@@ -65,7 +65,6 @@ losses, etc.
 </template>
 
 <script>
-import Vue from "vue";
 import AppPage from "../shared/AppPage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
@@ -74,7 +73,7 @@ import LossRow from "./LossRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     AppPage,
     LoadingSpinner,
@@ -148,7 +147,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

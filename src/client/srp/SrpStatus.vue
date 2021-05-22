@@ -115,7 +115,6 @@ triage options weren't initially provided, fetches them from the server.
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
@@ -123,7 +122,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
@@ -342,7 +341,7 @@ export default Vue.extend({
       this.updateInputPayout(this.selectedVerdict.payout);
     },
   },
-});
+};
 
 const INELIGIBLE_STATUSES = [
   {

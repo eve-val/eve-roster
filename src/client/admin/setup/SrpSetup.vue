@@ -52,11 +52,10 @@ SRP tracking starts, if it does at all.
 </template>
 
 <script>
-import Vue from "vue";
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
@@ -136,7 +135,7 @@ export default Vue.extend({
         });
     },
   },
-});
+};
 
 function timestampToDateStr(timestamp) {
   const date = new Date(timestamp);

@@ -36,7 +36,6 @@ Exposes various options for filtering the contents of the table.
 </template>
 
 <script>
-import Vue from "vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
@@ -45,7 +44,7 @@ import MoreButton from "./MoreButton.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
     LossHeading,
@@ -133,7 +132,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

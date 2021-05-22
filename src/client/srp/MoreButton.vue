@@ -28,11 +28,9 @@ A component that either looks like a "load more" button or a loading spinner.
 </template>
 
 <script>
-import Vue from "vue";
-
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
@@ -85,7 +83,7 @@ export default Vue.extend({
       }
     },
   },
-});
+};
 </script>
 
 <style scoped>

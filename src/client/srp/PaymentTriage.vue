@@ -48,7 +48,6 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
 </template>
 
 <script>
-import Vue from "vue";
 import CharacterSelector from "./CharacterSelector.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentTriageRow from "./PaymentTriageRow.vue";
@@ -58,7 +57,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
 
-export default Vue.extend({
+export default {
   components: {
     CharacterSelector,
     MoreButton,
@@ -134,7 +133,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

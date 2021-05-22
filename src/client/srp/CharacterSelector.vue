@@ -37,14 +37,13 @@ character is paying.
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
   },
@@ -93,7 +92,7 @@ export default Vue.extend({
       return character.accessTokenValid && character.membership == "full";
     },
   },
-});
+};
 </script>
 
 <style scoped>

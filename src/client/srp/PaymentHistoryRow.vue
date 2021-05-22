@@ -49,12 +49,11 @@ A table row that represents a single SRP payment (either pending or paid).
 </template>
 
 <script>
-import Vue from "vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     SrpTriplet,
   },
@@ -70,7 +69,7 @@ export default Vue.extend({
   },
 
   methods: Object.assign({}, NameCacheMixin),
-});
+};
 </script>
 
 <style scoped>

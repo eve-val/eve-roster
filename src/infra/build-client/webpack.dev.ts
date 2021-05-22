@@ -16,8 +16,7 @@ const config: webpack.Configuration = merge(
     // Which approach to use while serving source maps
     // There are a dizzying array of options that trade accuracy for speed, etc.
     // See https://webpack.js.org/configuration/devtool/
-    devtool: "cheap-module-eval-source-map",
-
+    devtool: "eval-cheap-module-source-map",
     plugins: [
       // Allows for code replacement without page refresh
       new webpack.HotModuleReplacementPlugin(),

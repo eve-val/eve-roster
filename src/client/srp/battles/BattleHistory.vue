@@ -33,14 +33,13 @@ Battle reports are instances of BattleRow.
 
 <script>
 import _ from "underscore";
-import Vue from "vue";
 import BattleRow from "./BattleRow.vue";
 import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     BattleRow,
     MoreButton,
@@ -119,7 +118,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 
 const RESULTS_PER_FETCH = 30;
 </script>

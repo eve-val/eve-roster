@@ -70,8 +70,6 @@
 </style>
 
 <script>
-import Vue from "vue";
-
 import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 

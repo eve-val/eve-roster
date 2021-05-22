@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-
 import EveImage from "../shared/EveImage.vue";
 
 export default {
