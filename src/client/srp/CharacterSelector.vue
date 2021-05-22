@@ -48,15 +48,17 @@ export default {
     EveImage,
   },
 
+  emits: ["update:modelValue"],
+
   props: {
     accountId: { type: Number, required: true },
-    value: { type: Number, required: false },
+    modelValue: { type: Number, required: false },
   },
 
   data() {
     return {
       characters: [],
-      selectedId: this.value,
+      selectedId: this.modelValue,
     };
   },
 
@@ -71,8 +73,8 @@ export default {
 
   watch: {
     selectedId(newValue) {
-      if (newValue != this.value) {
-        this.$emit("input", newValue);
+      if (newValue != this.modelValue) {
+        this.$emit("update:modelValue", newValue);
       }
     },
   },
