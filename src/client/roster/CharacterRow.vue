@@ -116,7 +116,7 @@ export default {
 
     subsequentDisplayVals: function () {
       let labels = [];
-      this.columns.forEach(function (col, i) {
+      this.columns.forEach((col, i) => {
         if (i >= 3) {
           labels.push(this.displayVal(col));
         }
