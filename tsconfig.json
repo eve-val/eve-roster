@@ -28,6 +28,6 @@
     "allowJs": true /* Allow javascript files to be compiled. */,
     "sourceMap": true /* Generates corresponding '.map' file. */
   },
-  "include": ["src/**/*", "test/**/*", "schema/*", ".eslintrc.js"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "static", "out/**/*"]
 }
