@@ -18,8 +18,7 @@
         <div class="header">Tasks</div>
         <transition-group name="task-block" tag="div">
           <task-slab
-            v-for="task in tasks"
-            v-if="task.job != null"
+            v-for="task in tasksWithJobs"
             class="task-block"
             :task="task"
             :key="task.name"
@@ -32,8 +31,7 @@
             key="__divider"
           ></div>
           <task-slab
-            v-for="task in tasks"
-            v-if="task.job == null"
+            v-for="task in tasksWithoutJobs"
             class="task-block"
             :task="task"
             :key="task.name"
@@ -102,6 +100,12 @@ export default {
   },
 
   computed: {
+    tasksWithJobs() {
+      return this.tasks.filter((t) => t.job != null);
+    },
+    tasksWithoutJobs() {
+      return this.tasks.filter((t) => t.job == null);
+    },
     areAnyActiveJobs() {
       for (let i = 0; i < this.tasks.length; i++) {
         if (this.tasks[i].job != null) {

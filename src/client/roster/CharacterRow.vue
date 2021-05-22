@@ -41,9 +41,8 @@
 
       <div
         class="col"
-        v-for="(displayVal, i) in displayVals"
+        v-for="(displayVal, i) in subsequentDisplayVals"
         :key="i"
-        v-if="i >= 3"
         :style="cellStyle(i)"
       >
         <template v-if="!tooltipMessage(i)">
@@ -100,6 +99,16 @@ export default {
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
+      return labels;
+    },
+
+    subsequentDisplayVals: function () {
+      let labels = [];
+      this.columns.forEach(function (col, i) {
+        if (i >= 3) {
+          labels.push(this.displayVal(col));
+        }
+      });
       return labels;
     },
 

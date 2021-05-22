@@ -11,8 +11,7 @@ character is paying.
   <div class="_character-selector">
     <select class="select" v-model="selectedId" ref="select">
       <option
-        v-for="character in characters"
-        v-if="isValidCharacter(character)"
+        v-for="character in validCharacters"
         class="select-option"
         :key="character.id"
         :value="character.id"
@@ -63,6 +62,9 @@ export default {
   computed: {
     selectedCharacter() {
       return _.findWhere(this.characters, { id: this.selectedId });
+    },
+    validCharacters() {
+      return this.characters.filter(isValidCharacter);
     },
   },
 
