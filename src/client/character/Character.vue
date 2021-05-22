@@ -129,6 +129,7 @@ import { formatNumber } from "../shared/numberFormat";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
+import groupifySkills from "./skills";
 
 export default {
   components: {
@@ -193,7 +194,7 @@ export default {
   },
 
   watch: {
-    characterId(value) {
+    characterId(_value) {
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;

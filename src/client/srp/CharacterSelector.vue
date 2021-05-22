@@ -48,12 +48,12 @@ export default {
     EveImage,
   },
 
-  emits: ["update:modelValue"],
-
   props: {
     accountId: { type: Number, required: true },
     modelValue: { type: Number, required: false },
   },
+
+  emits: ["update:modelValue"],
 
   data() {
     return {

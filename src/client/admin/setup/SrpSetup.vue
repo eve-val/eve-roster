@@ -60,8 +60,6 @@ export default {
   },
 
   data() {
-    const startDate = new Date();
-
     return {
       loaded: false,
       trackSrp: false,
@@ -103,7 +101,7 @@ export default {
   },
 
   methods: {
-    onSaveClick(e) {
+    onSaveClick(_e) {
       const trackSrp = this.trackSrp;
       const startInput = this.startInput;
 

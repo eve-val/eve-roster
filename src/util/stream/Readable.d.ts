@@ -1,3 +1,5 @@
+/* global NodeJS */
+
 import { EventEmitter } from "events";
 import { BasicCallback } from "./core";
 import { WriteStream } from "./Writable";

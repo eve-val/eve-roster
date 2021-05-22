@@ -1,3 +1,5 @@
+/* global NodeJS */
+
 import { WriteStream } from "./Writable";
 import { ReadStream } from "./Readable";
 import { ReadWriteStream } from "./Duplex";

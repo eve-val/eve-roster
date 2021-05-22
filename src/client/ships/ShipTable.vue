@@ -53,7 +53,8 @@ export default {
 
   computed: {
     sorted: function () {
-      this.ships.sort((a, b) => {
+      const copy = [...this.ships];
+      copy.sort((a, b) => {
         for (let prop of this.sortOrder) {
           let ap = a[prop];
           let bp = b[prop];
@@ -63,7 +64,7 @@ export default {
         }
         return 0;
       });
-      return this.ships;
+      return copy;
     },
   },
 

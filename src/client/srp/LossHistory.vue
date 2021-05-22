@@ -34,7 +34,6 @@ Exposes various options for filtering the contents of the table.
 </template>
 
 <script>
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 import MoreButton from "./MoreButton.vue";
@@ -44,7 +43,6 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 export default {
   components: {
-    LoadingSpinner,
     LossHeading,
     LossRow,
     MoreButton,
@@ -81,7 +79,7 @@ export default {
   },
 
   watch: {
-    triageMode(value) {
+    triageMode(_value) {
       this.reset();
     },
   },
@@ -124,7 +122,7 @@ export default {
         this.relatedKillmail = killmailId;
       },
 
-      onRelatedUnhover(killmailId) {
+      onRelatedUnhover(_killmailId) {
         this.relatedKillmail = null;
       },
     },

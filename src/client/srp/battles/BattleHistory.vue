@@ -30,7 +30,6 @@ Battle reports are instances of BattleRow.
 </template>
 
 <script>
-import _ from "underscore";
 import BattleRow from "./BattleRow.vue";
 import MoreButton from "../MoreButton.vue";
 
@@ -59,7 +58,7 @@ export default {
   computed: {},
 
   watch: {
-    triageMode(value) {
+    triageMode(_value) {
       this.reset();
     },
   },

@@ -89,7 +89,7 @@ May also contain triage UI if triageMode is enabled.
           :default-href="zkillHref(srp.killmail, 'kill')"
         />
         <srp-status
-          :srp="srp"
+          :initial-srp="srp"
           :has-edit-priv="hasEditPriv"
           :start-in-edit-mode="startInEditMode"
         />

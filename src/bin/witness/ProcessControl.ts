@@ -1,3 +1,5 @@
+/* global NodeJS */
+
 import * as child_process from "child_process";
 import { ChildProcess } from "child_process";
 import * as logger from "./logger";

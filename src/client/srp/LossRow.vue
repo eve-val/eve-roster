@@ -34,8 +34,8 @@ in most other places).
             :id="srp.relatedKillmail.shipId"
             type="Type"
             :size="13"
-            @mouseenter.native="onRelatedHover"
-            @mouseleave.native="onRelatedUnhover"
+            @mouseenter="onRelatedHover"
+            @mouseleave="onRelatedUnhover"
           />
         </a>
       </template>
@@ -65,7 +65,7 @@ in most other places).
 
     <srp-status
       class="srp-status"
-      :srp="srp"
+      :initial-srp="srp"
       :has-edit-priv="hasEditPriv"
       :start-in-edit-mode="startInEditMode"
     />
@@ -73,20 +73,15 @@ in most other places).
 </template>
 
 <script>
-import _ from "underscore";
-
 import EveImage from "../shared/EveImage.vue";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
-import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 export default {
   components: {
     EveImage,
-    LoadingSpinner,
     SrpStatus,
     SrpTriplet,
   },
@@ -97,6 +92,8 @@ export default {
     startInEditMode: { type: Boolean, required: true },
     highlightAsRelated: { type: Boolean, required: false, default: false },
   },
+
+  emits: ["related-hover", "related-unhover"],
 
   computed: {
     victimIconType() {
@@ -152,11 +149,11 @@ export default {
 
   methods: Object.assign(
     {
-      onRelatedHover(e) {
+      onRelatedHover(_e) {
         this.$emit("related-hover", this.srp.relatedKillmail.id);
       },
 
-      onRelatedUnhover(e) {
+      onRelatedUnhover(_e) {
         this.$emit("related-unhover", this.srp.relatedKillmail.id);
       },
 

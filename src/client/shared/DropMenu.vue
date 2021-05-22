@@ -24,7 +24,7 @@ export default {
   },
 
   watch: {
-    shown: function (value) {
+    shown: function (_value) {
       // Set a slight delay to allow for any currently-dispatching mousedown
       // event to finish dispatching.
       setTimeout(() => {
@@ -45,7 +45,7 @@ export default {
     },
   },
 
-  destroyed() {
+  unmounted() {
     document.body.removeEventListener("mousedown", this.globalListener);
     this.destroyed = true;
   },

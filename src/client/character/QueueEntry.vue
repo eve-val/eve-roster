@@ -39,15 +39,15 @@ export default {
     SkillPips,
   },
 
+  props: {
+    entry: { type: Object, required: true },
+    position: { type: Number, required: true },
+  },
+
   methods: {
     numeralize: function (value) {
       return SKILL_LEVEL_LABELS[value];
     },
-  },
-
-  props: {
-    entry: { type: Object, required: true },
-    position: { type: Number, required: true },
   },
 };
 </script>

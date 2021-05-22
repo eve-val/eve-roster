@@ -2,6 +2,7 @@
   <div class="pips">
     <div
       v-for="i in 5"
+      :key="i"
       class="pip"
       :class="{
         trained: i <= trainedLevel,

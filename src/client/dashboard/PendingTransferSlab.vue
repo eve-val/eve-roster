@@ -59,6 +59,8 @@ export default {
     name: { type: String, required: true },
   },
 
+  emits: ["requireRefresh"],
+
   data: function () {
     return { transferCharacterPromise: null };
   },

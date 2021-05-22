@@ -32,7 +32,7 @@
         </select>
       </label>
     </div>
-    <div v-for="citadel in sortedCitadels" class="citadel">
+    <div v-for="citadel in sortedCitadels" :key="citadel.id" class="citadel">
       <input
         class="name"
         :value="citadel.name"
@@ -101,7 +101,7 @@ export default {
     },
 
     removeCitadel(id) {
-      this.deletePromise = ajaxer.deleteCitadel(id).then((response) => {
+      this.deletePromise = ajaxer.deleteCitadel(id).then((_response) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
             this.citadels.splice(i, 1);
@@ -112,7 +112,7 @@ export default {
     },
 
     renameCitadel(id, name) {
-      this.renamePromise = ajaxer.putCitadelName(id, name).then((response) => {
+      this.renamePromise = ajaxer.putCitadelName(id, name).then((_response) => {
         this.citadels.map((citadel) => {
           if (citadel.id === id) {
             citadel.name = name;
@@ -137,8 +137,6 @@ export default {
     },
 
     editLogic(oldName, event) {
-      let text = event.target.value;
-
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();

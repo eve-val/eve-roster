@@ -46,14 +46,12 @@
 
 <script>
 import Promise from "bluebird";
-import moment from "moment";
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
 
 import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-import Tooltip from "../shared/Tooltip.vue";
 
 import TaskSlab from "./TaskSlab.vue";
 import TaskLog from "./TaskLog.vue";
@@ -66,7 +64,6 @@ export default {
     LoadingSpinner,
     TaskSlab,
     TaskLog,
-    Tooltip,
   },
 
   props: {
@@ -208,7 +205,7 @@ export default {
       }
     },
 
-    sortTasks(tasks) {
+    sortTasks() {
       this.tasks.sort((a, b) => {
         let cmp = compareJobs(a, b);
         if (cmp == 0) {

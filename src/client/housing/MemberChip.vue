@@ -26,8 +26,9 @@ export default {
 
   props: {
     character: { type: Object, required: true },
-    bus: { type: Vue, required: false },
   },
+
+  emits: ["chipDrag"],
 
   data: function () {
     return {
@@ -41,18 +42,16 @@ export default {
     },
 
     onMouseDown: function (ev) {
-      if (this.bus) {
-        var bounds = this.$el.getBoundingClientRect();
-        this.bus.$emit(
-          "chipDrag",
-          this,
-          this.character.name,
-          this.character.homeCitadel,
-          bounds,
-          ev.screenX,
-          ev.screenY
-        );
-      }
+      var bounds = this.$el.getBoundingClientRect();
+      this.$emit(
+        "chipDrag",
+        this,
+        this.character.name,
+        this.character.homeCitadel,
+        bounds,
+        ev.screenX,
+        ev.screenY
+      );
     },
   },
 };

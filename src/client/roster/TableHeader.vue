@@ -34,6 +34,8 @@ export default {
     reverseSort: { type: Boolean, required: true },
   },
 
+  emits: ["selectSortKey"],
+
   data: function () {
     return {};
   },

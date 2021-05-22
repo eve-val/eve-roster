@@ -2,7 +2,11 @@
   <div class="factoid-selector">
     <select v-model="selectedValue" class="selector">
       <option :value="null">Not assigned</option>
-      <option v-for="option in options" :value="option.value">
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
         {{ option.label }}
       </option>
     </select>

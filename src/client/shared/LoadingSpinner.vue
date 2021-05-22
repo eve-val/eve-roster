@@ -96,13 +96,13 @@
  * up to you.
  */
 
-import _ from "underscore";
+import _ = require("underscore");
 import Tooltip from "./Tooltip.vue";
 
-const inlineErrorIcon = require("../shared-res/circle-error.svg");
-const inlineWarningIcon = require("../shared-res/circle-warning.svg");
-const blockErrorIcon = require("../shared-res/triangle-error.svg");
-const blockWarningIcon = require("../shared-res/triangle-warning.svg");
+import inlineErrorIcon = require("../shared-res/circle-error.svg");
+import inlineWarningIcon = require("../shared-res/circle-warning.svg");
+import blockErrorIcon = require("../shared-res/triangle-error.svg");
+import blockWarningIcon = require("../shared-res/triangle-warning.svg");
 
 const DISPLAY_VALUES = ["inline", "block"];
 const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
@@ -225,6 +225,8 @@ export default {
             default:
               return blockErrorIcon;
           }
+        default:
+          return null;
       }
     },
   },

@@ -125,7 +125,7 @@ export default {
         });
     },
 
-    onRequireRefresh(characterId) {
+    onRequireRefresh(_characterId) {
       this.fetchData();
     },
 

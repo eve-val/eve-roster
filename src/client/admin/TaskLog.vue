@@ -44,6 +44,13 @@
 import moment from "moment";
 
 export default {
+  props: {
+    rows: { type: Array, required: true },
+  },
+
+  data: function () {
+    return {};
+  },
   methods: {
     displayDate: function (value) {
       if (value != null) {
@@ -55,13 +62,6 @@ export default {
     displayDuration: function (value) {
       return moment.duration(value).asSeconds().toFixed(1) + "s";
     },
-  },
-  props: {
-    rows: { type: Array, required: true },
-  },
-
-  data: function () {
-    return {};
   },
 };
 </script>

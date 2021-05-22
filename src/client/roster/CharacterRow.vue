@@ -80,14 +80,13 @@
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
-import rosterColumns from "./rosterColumns";
 
 import EveImage from "../shared/EveImage.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
-const infoIcon = require("../shared-res/circle-info.svg");
-const warningIcon = require("../shared-res/triangle-warning.svg");
-const errorIcon = require("../shared-res/triangle-error.svg");
+import infoIcon = require("../shared-res/circle-info.svg");
+import warningIcon = require("../shared-res/triangle-warning.svg");
+import errorIcon = require("../shared-res/triangle-error.svg");
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
@@ -105,6 +104,8 @@ export default {
     account: { type: Object, required: false },
     filter: { type: String, required: false },
   },
+
+  emits: ["toggleExpanded"],
 
   data: function () {
     return {};
@@ -235,7 +236,6 @@ export default {
           } else {
             return altsLabel(this.account.alts.length);
           }
-          break;
         case "lastSeen":
           return this.character.lastSeenLabel || "-";
         default:

@@ -13,6 +13,8 @@
 export default {
   props: {},
 
+  emits: ["change"],
+
   data: function () {
     return {};
   },

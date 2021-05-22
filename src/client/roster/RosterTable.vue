@@ -52,8 +52,9 @@ export default {
     },
 
     sortedRows: function () {
+      const copy = [...this.rows];
       // Sort accounts
-      this.rows.sort((a, b) => {
+      copy.sort((a, b) => {
         return generalPurposeCompare(
           getSortVal(this.sortColumn, a.aggregate, a),
           getSortVal(this.sortColumn, b.aggregate, b),
@@ -62,17 +63,19 @@ export default {
       });
 
       // Sort alts
-      for (let row of this.rows) {
-        row.alts.sort((a, b) => {
+      for (let row of copy) {
+        const alts = [...row.alts];
+        alts.sort((a, b) => {
           return generalPurposeCompare(
             getSortVal(this.sortColumn, a, null),
             getSortVal(this.sortColumn, b, null),
             this.sort.reverse
           );
         });
+        row.alts = alts;
       }
 
-      return this.rows;
+      return copy;
     },
   },
 

@@ -126,13 +126,14 @@ export default {
   },
 
   props: {
-    srp: { type: Object, required: true },
+    initialSrp: { type: Object, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
 
   data() {
     return {
+      srp: this.initialSrp,
       editing:
         this.hasEditPriv &&
         this.startInEditMode &&
@@ -238,6 +239,12 @@ export default {
     },
   },
 
+  watch: {
+    selectedVerdict(_newVerdict) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    },
+  },
+
   mounted() {
     if (this.editing) {
       this.updateInputPayout(this.selectedVerdict.payout);
@@ -246,7 +253,7 @@ export default {
 
   methods: Object.assign(
     {
-      onSaveClick(e) {
+      onSaveClick(_e) {
         const payout = this.displayPayoutToRawPayout(this.inputPayout);
         const verdict = this.selectedVerdict.verdict;
         const reason = this.selectedVerdict.reason;
@@ -263,16 +270,16 @@ export default {
             this.srp.reason = reason;
             this.editing = false;
             this.srp.renderingCharacter = response.data.id;
-            addNames({
+            this.addNames({
               [response.data.id]: response.data.name,
             });
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.saveStatus = "error";
           });
       },
 
-      onEditClick(e) {
+      onEditClick(_e) {
         if (this.srp.triage == null) {
           if (this.fetchTriageStatus == "active") {
             return;
@@ -303,7 +310,7 @@ export default {
 
               this.editing = true;
             })
-            .catch((e) => {
+            .catch((_e) => {
               this.fetchTriageStatus = "error";
             });
         } else {
@@ -333,12 +340,6 @@ export default {
     },
     NameCacheMixin
   ),
-
-  watch: {
-    selectedVerdict(newVerdict) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    },
-  },
 };
 
 const INELIGIBLE_STATUSES = [

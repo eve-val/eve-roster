@@ -114,6 +114,8 @@ export default {
     access: { type: Object, required: true },
   },
 
+  emits: ["requireRefresh"],
+
   data: function () {
     return {};
   },
@@ -221,7 +223,7 @@ export default {
         this.character.corpStatus == "external"
       ) {
         items.push({
-          tag: "designate-opsec",
+          tag: "toggle-opsec",
           label: this.character.opsec
             ? "Show in roster"
             : "Don't show in roster",
@@ -239,7 +241,7 @@ export default {
   },
 
   methods: {
-    onMouseOut(e) {
+    onMouseOut(_e) {
       if (this.$refs.menu) {
         this.$refs.menu.hide();
       }
@@ -251,8 +253,8 @@ export default {
         case "designate-main":
           this.designateAsMain();
           break;
-        case "designate-opsec":
-          this.setIsOpsec(!this.character.opsec);
+        case "toggle-opsec":
+          this.toggleOpsec();
           break;
         case "delete-char":
           this.markDeleted();
@@ -270,7 +272,7 @@ export default {
         });
     },
 
-    setIsOpsec(isOpsec) {
+    toggleOpsec() {
       this.$refs.spinner
         .observe(
           ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)

@@ -53,6 +53,8 @@ export default {
     task: { type: Object, required: true },
   },
 
+  emits: ["jobStarted"],
+
   data: () => ({
     runPromise: null,
   }),

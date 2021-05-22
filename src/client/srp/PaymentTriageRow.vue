@@ -105,7 +105,7 @@ export default {
 
   methods: Object.assign(
     {
-      onCopyReasonClick(e) {
+      onCopyReasonClick(_e) {
         this.$refs.reasonInput.select();
         try {
           document.execCommand("copy");
@@ -114,7 +114,7 @@ export default {
         }
       },
 
-      onCopyPayoutClick(e) {
+      onCopyPayoutClick(_e) {
         this.$refs.payoutInput.select();
         try {
           document.execCommand("copy");
@@ -127,7 +127,7 @@ export default {
         );
       },
 
-      onSaveClick(e) {
+      onSaveClick(_e) {
         if (this.saveStatus == "saving" || this.payingCharacter == null) {
           return;
         }
@@ -144,12 +144,12 @@ export default {
             this.saveStatus = "inactive";
             this.paid = true;
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.saveStatus = "error";
           });
       },
 
-      onUndoClick(e) {
+      onUndoClick(_e) {
         if (this.undoStatus == "saving") {
           return;
         }
@@ -162,7 +162,7 @@ export default {
             this.undoStatus = "inactive";
             this.paid = false;
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.undoStatus = "error";
           });
       },

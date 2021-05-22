@@ -125,19 +125,19 @@ export default {
           });
       },
 
-      onUndoClick(e) {
+      onUndoClick(_e) {
         if (this.undoStatus == "saving") {
           return;
         }
         this.undoStatus = "saving";
         this.$refs.undoSpinner
           .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-          .then((response) => {
+          .then((_response) => {
             this.undoStatus = "inactive";
             this.payment.paid = false;
             this.fetchData();
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.undoStatus = "error";
           });
       },

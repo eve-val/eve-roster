@@ -39,6 +39,8 @@ export default {
     hideButton: { type: Boolean, required: false },
   },
 
+  emits: ["fetch-requested"],
+
   data() {
     return {
       status: "inactive", // inactive | active | error
@@ -66,7 +68,7 @@ export default {
               this.status = "inactive";
             }
           })
-          .catch((e) => {
+          .catch((_e) => {
             if (promise == this.promise) {
               this.status = "inactive";
             }
@@ -76,7 +78,7 @@ export default {
       }
     },
 
-    onButtonClick(e) {
+    onButtonClick(_e) {
       if (this.status != "active") {
         this.$emit("fetch-requested");
       }
