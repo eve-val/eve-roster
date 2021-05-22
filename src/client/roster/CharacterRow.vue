@@ -50,13 +50,13 @@
       </div>
 
       <div
-        v-for="(displayVal, i) in subsequentDisplayVals"
+        v-for="(dv, i) in subsequentDisplayVals"
         :key="i + 3"
         class="col"
         :style="cellStyle(i + 3)"
       >
         <template v-if="!tooltipMessage(i + 3)">
-          <span class="col-text">{{ displayVal | dashDefault }}</span>
+          <span class="col-text">{{ dashDefault(dv) }}</span>
         </template>
         <tooltip v-else gravity="right" :inline="true">
           <template #default>
@@ -64,7 +64,7 @@
               class="col-text"
               :style="{ 'text-align': cellAlignment(i + 3) }"
             >
-              {{ displayVal | dashDefault }}
+              {{ dashDefault(dv) }}
             </span>
           </template>
           <template #message>
@@ -96,16 +96,6 @@ export default {
   components: {
     EveImage,
     Tooltip,
-  },
-
-  filters: {
-    dashDefault: function (value) {
-      if (value == null) {
-        return "-";
-      } else {
-        return value;
-      }
-    },
   },
 
   props: {
@@ -258,6 +248,14 @@ export default {
           } else {
             return this.character[col.key];
           }
+      }
+    },
+
+    dashDefault: function (value) {
+      if (value == null) {
+        return "-";
+      } else {
+        return value;
       }
     },
 

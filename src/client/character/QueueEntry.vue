@@ -13,7 +13,7 @@
       />
       <div class="name">
         {{ entry.skill.name }}
-        <span class="numeral-level">{{ entry.targetLevel | numeralize }}</span>
+        <span class="numeral-level">{{ numeralize(entry.targetLevel) }}</span>
       </div>
       <div class="duration" :title="entry.eta">
         {{ entry.durationLabel || "Paused" }}
@@ -39,7 +39,7 @@ export default {
     SkillPips,
   },
 
-  filters: {
+  methods: {
     numeralize: function (value) {
       return SKILL_LEVEL_LABELS[value];
     },

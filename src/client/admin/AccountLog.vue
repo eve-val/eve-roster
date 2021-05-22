@@ -11,7 +11,7 @@
       <div class="rows">
         <div v-for="row in rows" :key="row.id" class="row">
           <div class="cell timestamp">
-            {{ row.timestamp | displayDate }}
+            {{ displayDate(row.timestamp) }}
           </div>
           <div class="cell account">
             <span
@@ -63,12 +63,6 @@ export default {
     Tooltip,
   },
 
-  filters: {
-    displayDate: function (value) {
-      return moment(value).format("Y/MM/DD HH:mm:ss Z");
-    },
-  },
-
   props: {
     identity: { type: Object, required: true },
   },
@@ -89,6 +83,9 @@ export default {
   methods: {
     prettyPrint: function (jsonStr) {
       return JSON.stringify(JSON.parse(jsonStr), null, 2);
+    },
+    displayDate: function (value) {
+      return moment(value).format("Y/MM/DD HH:mm:ss Z");
     },
   },
 };

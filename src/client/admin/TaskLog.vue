@@ -23,11 +23,11 @@
             {{ row.task }}
           </div>
           <div class="cell start">
-            {{ row.start | displayDate }}
+            {{ displayDate(row.start) }}
           </div>
           <div class="cell duration">
             <span v-if="row.end != null">
-              {{ (row.end - row.start) | displayDuration }}
+              {{ displayDuration(row.end - row.start) }}
             </span>
           </div>
           <div class="cell result">
@@ -44,7 +44,7 @@
 import moment from "moment";
 
 export default {
-  filters: {
+  methods: {
     displayDate: function (value) {
       if (value != null) {
         return moment(value).format("Y/MM/DD HH:mm:ss Z");
