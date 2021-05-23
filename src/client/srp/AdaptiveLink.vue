@@ -10,7 +10,7 @@ Otherwise an anchor tag is used.
 
 <template>
   <div v-if="path == undefined" class="_adaptive-link">
-    <slot></slot>
+    <slot />
   </div>
   <a
     v-else-if="isExternalUrl(path)"
@@ -18,24 +18,22 @@ Otherwise an anchor tag is used.
     :href="path"
     target="_blank"
   >
-    <slot></slot>
+    <slot />
   </a>
   <router-link v-else :to="path" :class="[linkClass]">
-    <slot></slot>
+    <slot />
   </router-link>
 </template>
 
 <script>
-import Vue from "vue";
-
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default Vue.extend({
+export default {
   components: {},
 
   props: {
-    linkClass: { type: String, required: false },
-    path: { type: String, required: false },
+    linkClass: { type: String, required: false, default: "" },
+    path: { type: String, required: false, default: "" },
   },
 
   methods: {
@@ -43,7 +41,7 @@ export default Vue.extend({
       return ABS_URL_PATTERN.test(path);
     },
   },
-});
+};
 </script>
 
 <style scoped>

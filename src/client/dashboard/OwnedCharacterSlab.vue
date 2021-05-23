@@ -1,21 +1,26 @@
 <template>
-  <character-slab-frame :characterId="character.id">
+  <character-slab-frame :character-id="character.id">
     <div class="_owned-character-slab" @mouseleave="onMouseOut">
       <div class="body">
         <div>
-          <router-link class="name" :to="'/character/' + character.id">{{
-            character.name
-          }}</router-link
+          <router-link class="name" :to="'/character/' + character.id">
+            {{ character.name }} </router-link
           ><!--
      --><tooltip
-            class="status-icon"
             v-for="icon in statusIcons"
             :key="icon.key"
+            class="status-icon"
             :inline="true"
             gravity="center top"
           >
-            <img class="status-icon-img" :src="icon.src" />
-            <div slot="message">{{ icon.label }}</div>
+            <template #default>
+              <img class="status-icon-img" :src="icon.src" />
+            </template>
+            <template #message>
+              <div>
+                {{ icon.label }}
+              </div>
+            </template>
           </tooltip>
         </div>
         <div class="training-summary">
@@ -23,7 +28,7 @@
             <div
               class="training-progress"
               :style="{ width: progressTrackWidth }"
-            ></div>
+            />
             <span class="training-label">{{ trainingLabel }}</span>
           </div>
           <span
@@ -32,23 +37,25 @@
             >{{ skillInTraining.timeRemaining }}</span
           >
         </div>
-        <div class="queue-summary">{{ queueLabel }}</div>
+        <div class="queue-summary">
+          {{ queueLabel }}
+        </div>
       </div>
-      <div class="menu" v-if="menuItems.length > 0">
-        <div class="menu-arrow" @mousedown="$refs.menu.toggle()"></div>
+      <div v-if="menuItems.length > 0" class="menu">
+        <div class="menu-arrow" @mousedown="$refs.menu.toggle()" />
         <drop-menu
-          class="menu-body"
           ref="menu"
-          :rootStyle="{
+          class="menu-body"
+          :root-style="{
             position: 'absolute',
             right: '7px',
             top: '18px',
           }"
         >
           <div
-            class="menu-item"
             v-for="item in menuItems"
             :key="item.tag"
+            class="menu-item"
             @click="onMenuItemClick(item)"
           >
             {{ item.label }}
@@ -56,20 +63,20 @@
         </drop-menu>
       </div>
       <loading-spinner
-        class="working-spinner"
         ref="spinner"
-        defaultState="hidden"
+        class="working-spinner"
+        default-state="hidden"
         size="13px"
-        tooltipGravity="left"
+        tooltip-gravity="left"
       />
     </div>
-    <reauthentication-prompt
-      v-if="character.needsReauth"
-      slot="sub-slab-hanger"
-      :loginParams="loginParams"
-      :characterName="character.name"
-    >
-    </reauthentication-prompt>
+    <template #sub-slab-hanger>
+      <reauthentication-prompt
+        v-if="character.needsReauth"
+        :login-params="loginParams"
+        :character-name="character.name"
+      />
+    </template>
   </character-slab-frame>
 </template>
 
@@ -106,6 +113,8 @@ export default {
     loginParams: { type: String, required: true },
     access: { type: Object, required: true },
   },
+
+  emits: ["requireRefresh"],
 
   data: function () {
     return {};
@@ -214,7 +223,7 @@ export default {
         this.character.corpStatus == "external"
       ) {
         items.push({
-          tag: "designate-opsec",
+          tag: "toggle-opsec",
           label: this.character.opsec
             ? "Show in roster"
             : "Don't show in roster",
@@ -232,7 +241,7 @@ export default {
   },
 
   methods: {
-    onMouseOut(e) {
+    onMouseOut(_e) {
       if (this.$refs.menu) {
         this.$refs.menu.hide();
       }
@@ -244,8 +253,8 @@ export default {
         case "designate-main":
           this.designateAsMain();
           break;
-        case "designate-opsec":
-          this.setIsOpsec(!this.character.opsec);
+        case "toggle-opsec":
+          this.toggleOpsec();
           break;
         case "delete-char":
           this.markDeleted();
@@ -263,7 +272,7 @@ export default {
         });
     },
 
-    setIsOpsec(isOpsec) {
+    toggleOpsec() {
       this.$refs.spinner
         .observe(
           ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)

@@ -9,8 +9,7 @@ losses, etc.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">SRP #{{ srpId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px">
-    </loading-spinner>
+    <loading-spinner ref="spinner" display="block" size="34px" />
 
     <template v-if="payment != null">
       <div class="section-title">Status</div>
@@ -30,7 +29,7 @@ losses, etc.
           <span style="color: #cdcdcd">{{ payment.modifiedLabel }}</span>
           by
           <router-link class="stat-link" :to="`/character/${payment.payer}`">
-            {{ name(payment.payer) }}</router-link
+            {{ name(payment.payer) }} </router-link
           >.
 
           <a v-if="canEditSrp" class="undo-link" @click="onUndoClick"> Undo </a>
@@ -38,21 +37,19 @@ losses, etc.
             ref="undoSpinner"
             display="inline"
             default-state="hidden"
-          >
-          </loading-spinner>
+          />
         </div>
       </div>
 
       <div class="section-title">Losses</div>
-      <loss-heading></loss-heading>
+      <loss-heading />
       <loss-row
         v-for="loss in losses"
         :key="loss.killmail"
         :srp="loss"
         :has-edit-priv="canEditSrp"
         :start-in-edit-mode="false"
-      >
-      </loss-row>
+      />
       <div class="total-row">
         <div class="total-label">Total</div>
         <div class="total-value">
@@ -65,7 +62,6 @@ losses, etc.
 </template>
 
 <script>
-import Vue from "vue";
 import AppPage from "../shared/AppPage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
@@ -74,7 +70,7 @@ import LossRow from "./LossRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     AppPage,
     LoadingSpinner,
@@ -129,26 +125,26 @@ export default Vue.extend({
           });
       },
 
-      onUndoClick(e) {
+      onUndoClick(_e) {
         if (this.undoStatus == "saving") {
           return;
         }
         this.undoStatus = "saving";
         this.$refs.undoSpinner
           .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-          .then((response) => {
+          .then((_response) => {
             this.undoStatus = "inactive";
             this.payment.paid = false;
             this.fetchData();
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.undoStatus = "error";
           });
       },
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

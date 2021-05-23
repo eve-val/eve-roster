@@ -1,9 +1,9 @@
 <template>
-  <div class="accountRow" v-show="filterMatches.any || filterMatches.inactive">
+  <div v-show="filterMatches.any || filterMatches.inactive" class="accountRow">
     <character-row
       :character="expanded ? account.main : account.aggregate"
       :columns="columns"
-      :isMain="true"
+      :is-main="true"
       :account="account"
       :filter="filter"
       class="main-row"
@@ -14,17 +14,17 @@
     />
     <transition
       name="alts-expand"
+      :css="false"
       @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter"
       @before-leave="beforeLeave"
       @leave="leave"
       @after-leave="afterLeave"
-      :css="false"
     >
       <div
-        class="alt-cnt"
         v-show="expanded"
+        class="alt-cnt"
         :style="{
           'background-color': expanded ? '#2D2B29' : '#202020',
         }"
@@ -34,7 +34,7 @@
           :key="alt.id"
           :character="alt"
           :columns="columns"
-          :isMain="false"
+          :is-main="false"
           :filter="filter"
         />
       </div>
@@ -54,7 +54,7 @@ export default {
   props: {
     columns: { type: Array, required: true },
     account: { type: Object, required: true },
-    filter: { type: String, required: false },
+    filter: { type: String, required: false, default: "" },
   },
 
   data: function () {

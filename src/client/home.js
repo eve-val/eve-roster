@@ -1,7 +1,7 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-
+import { createApp } from "vue";
+import { createRouter, createWebHistory } from "vue-router";
 import "./css/home.css";
+import Home from "./Home.vue";
 
 import Dashboard from "./dashboard/Dashboard.vue";
 import Character from "./character/Character.vue";
@@ -44,7 +44,7 @@ const routes = [
     children: [
       {
         path: "",
-        redirect: "dashboard",
+        redirect: "/srp/dashboard",
       },
       {
         path: "dashboard",
@@ -107,17 +107,13 @@ if (process.env.NODE_ENV == "development") {
   );
 }
 
-const router = new VueRouter({
-  mode: "history",
+const router = createRouter({
+  history: createWebHistory(),
   routes: routes,
 });
 
-Vue.use(VueRouter);
-
-new Vue({
-  el: "#app",
-  router,
-  data: {
-    identity: $__IDENTITY, // eslint-disable-line no-undef
-  },
-});
+createApp(Home, {
+  identity: $__IDENTITY, // eslint-disable-line no-undef
+})
+  .use(router)
+  .mount("#app");

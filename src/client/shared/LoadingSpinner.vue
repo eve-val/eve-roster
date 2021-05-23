@@ -2,8 +2,8 @@
   <div class="_loading-spinner" :style="{ display: derivedDisplay }">
     <template v-if="derivedState != 'hidden'">
       <img
-        class="spinner"
         v-if="derivedState == 'spinning'"
+        class="spinner"
         src="./res/LoadingSpinner-spinner.svg"
         :style="{ width: size, height: size }"
       />
@@ -12,17 +12,21 @@
         :gravity="tooltipGravity || 'center top'"
         style="vertical-align: text-bottom"
       >
-        <img
-          class="inline-style-icon"
-          :src="errorIconSrc"
-          :style="{ width: size, height: size }"
-        />
-        <span slot="message" v-if="derivedMessage">{{ derivedMessage }}</span>
+        <template #default>
+          <img
+            class="inline-style-icon"
+            :src="errorIconSrc"
+            :style="{ width: size, height: size }"
+          />
+        </template>
+        <template #message>
+          <span v-if="derivedMessage">{{ derivedMessage }}</span>
+        </template>
       </tooltip>
 
       <div
-        class="block-style-message"
         v-if="derivedState != 'spinning' && display == 'block'"
+        class="block-style-message"
       >
         <img class="block-style-icon" :src="errorIconSrc" />{{ derivedMessage }}
       </div>
@@ -92,13 +96,13 @@
  * up to you.
  */
 
-import _ from "underscore";
+import contains from "underscore";
 import Tooltip from "./Tooltip.vue";
 
-const inlineErrorIcon = require("../shared-res/circle-error.svg");
-const inlineWarningIcon = require("../shared-res/circle-warning.svg");
-const blockErrorIcon = require("../shared-res/triangle-error.svg");
-const blockWarningIcon = require("../shared-res/triangle-warning.svg");
+import inlineErrorIcon from "../shared-res/circle-error.svg";
+import inlineWarningIcon from "../shared-res/circle-warning.svg";
+import blockErrorIcon from "../shared-res/triangle-error.svg";
+import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
 const DISPLAY_VALUES = ["inline", "block"];
 const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
@@ -124,7 +128,7 @@ export default {
       type: String,
       required: false,
       default: "inline",
-      validator: (value) => _.contains(DISPLAY_VALUES, value),
+      validator: (value) => contains(DISPLAY_VALUES, value),
     },
 
     /**
@@ -135,7 +139,8 @@ export default {
     state: {
       type: String,
       required: false,
-      validator: (value) => _.contains(STATE_VALUES, value),
+      default: null,
+      validator: (value) => contains(STATE_VALUES, value),
     },
 
     /**
@@ -146,13 +151,14 @@ export default {
       type: String,
       required: false,
       default: "spinning",
-      validator: (value) => _.contains(STATE_VALUES, value),
+      validator: (value) => contains(STATE_VALUES, value),
     },
 
     /** Displayed if state is 'error' or 'warning'. */
     adversityMessage: {
       type: String,
       required: false,
+      default: "",
     },
 
     /**
@@ -162,6 +168,7 @@ export default {
     tooltipGravity: {
       type: String,
       required: false,
+      default: "right",
     },
 
     /**
@@ -169,7 +176,7 @@ export default {
      * attempted. Displayed in the form
      * "There was an error while <actionLabel>."
      */
-    actionLabel: { type: String, required: false },
+    actionLabel: { type: String, required: false, default: "" },
 
     /**
      * In the case of a rejected promise, rethrow the error that caused the
@@ -221,6 +228,8 @@ export default {
             default:
               return blockErrorIcon;
           }
+        default:
+          return null;
       }
     },
   },
@@ -256,7 +265,7 @@ export default {
 
           let result = onSuccess && onSuccess(payload);
           if (result) {
-            if (_.contains(STATE_VALUES, result.state)) {
+            if (contains(STATE_VALUES, result.state)) {
               newState = result.state;
             } else if (result.state != null) {
               console.warn("WARNING: Bad spinner state:", result.state);

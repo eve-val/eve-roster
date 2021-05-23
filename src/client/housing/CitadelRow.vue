@@ -1,15 +1,11 @@
 <template>
-  <div
-    class="row"
-    @mouseenter="emitEvent('hover')"
-    @mouseleave="emitEvent('unhover')"
-  >
+  <div class="row" @mouseenter="$emit('hover')" @mouseleave="$emit('unhover')">
     <div>({{ row.occupants.length }}) {{ row.name }}</div>
-    <div v-for="character in row.occupants">
+    <div v-for="character in row.occupants" :key="character.characterId">
       <member-chip
-        :character="character"
-        :bus="bus"
         :key="character.characterId"
+        :character="character"
+        @chipDrag="$emit('chipDrag', ...arguments)"
       />
     </div>
   </div>
@@ -25,14 +21,9 @@ export default {
 
   props: {
     row: { type: Object, required: true },
-    bus: { type: Object, required: true },
   },
 
-  methods: {
-    emitEvent: function (type) {
-      this.bus.$emit(type, this);
-    },
-  },
+  emits: ["hover", "unhover", "chipDrag"],
 };
 </script>
 

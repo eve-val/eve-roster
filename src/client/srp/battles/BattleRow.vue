@@ -12,14 +12,18 @@ May also contain triage UI if triageMode is enabled.
       <router-link class="start-time" :to="`/srp/battle/${battle.id}`">
         {{ battle.startLabel }}
       </router-link>
-      <div class="locations">{{ battle.locations.map(name).join(", ") }}</div>
-      <div class="total-losses">{{ formatIskValue(battleLosses) }}</div>
+      <div class="locations">
+        {{ battle.locations.map(name).join(", ") }}
+      </div>
+      <div class="total-losses">
+        {{ formatIskValue(battleLosses) }}
+      </div>
     </div>
 
     <div
-      class="team-row"
       v-for="team in battle.teams"
       :key="team.corporationId"
+      class="team-row"
     >
       <srp-triplet
         v-if="team.corporationId != 0"
@@ -30,50 +34,52 @@ May also contain triage UI if triageMode is enabled.
         :bottom-line="team.allianceId && name(team.allianceId)"
         :default-href="zkillHref(team.corporationId, 'corporation')"
         :bot-href="team.allianceId && zkillHref(team.allianceId, 'alliance')"
-      >
-      </srp-triplet>
+      />
       <div v-else class="empty-team">Unaffiliated</div>
       <div class="participant-cnt">
         <div
-          class="participant"
           v-for="member in team.members"
           :key="member.id"
+          class="participant"
         >
           <tooltip gravity="center top">
-            <a
-              class="killmail-link"
-              :href="
-                member.loss
-                  ? zkillHref(member.loss.killmailId, 'kill')
-                  : undefined
-              "
-              target="_blank"
-            >
-              <eve-image
-                class="ship-image"
-                :id="member.shipId"
-                :size="36"
-                type="Type"
+            <template #default>
+              <a
+                class="killmail-link"
+                :href="
+                  member.loss
+                    ? zkillHref(member.loss.killmailId, 'kill')
+                    : undefined
+                "
+                target="_blank"
               >
-              </eve-image>
-            </a>
-            <srp-triplet
-              class="hover-triplet"
-              slot="message"
-              :icon-id="member.characterId || member.shipId"
-              :icon-type="member.characterId ? 'Character' : 'Type'"
-              :top-line="name(member.characterId || member.shipId)"
-              :bottom-line="name(member.shipId)"
-            >
-            </srp-triplet>
+                <eve-image
+                  :id="member.shipId"
+                  class="ship-image"
+                  :size="36"
+                  type="Type"
+                />
+              </a>
+            </template>
+            <template #message>
+              <srp-triplet
+                class="hover-triplet"
+                :icon-id="member.characterId || member.shipId"
+                :icon-type="member.characterId ? 'Character' : 'Type'"
+                :top-line="name(member.characterId || member.shipId)"
+                :bottom-line="name(member.shipId)"
+              />
+            </template>
           </tooltip>
-          <div class="death-scrim" v-if="member.loss"></div>
+          <div v-if="member.loss" class="death-scrim" />
         </div>
       </div>
-      <div class="loss-count">{{ formatIskValue(team.totalLosses) }}</div>
+      <div class="loss-count">
+        {{ formatIskValue(team.totalLosses) }}
+      </div>
     </div>
-    <div class="srp-cnt" v-if="battle.srps.length > 0">
-      <div class="srp" v-for="srp in battle.srps" :key="srp.killmail">
+    <div v-if="battle.srps.length > 0" class="srp-cnt">
+      <div v-for="srp in battle.srps" :key="srp.killmail" class="srp">
         <srp-triplet
           class="srp-triplet"
           :icon-id="srp.shipType"
@@ -81,21 +87,18 @@ May also contain triage UI if triageMode is enabled.
           :top-line="name(srp.victim)"
           :bottom-line="name(srp.shipType)"
           :default-href="zkillHref(srp.killmail, 'kill')"
-        >
-        </srp-triplet>
+        />
         <srp-status
-          :srp="srp"
+          :initial-srp="srp"
           :has-edit-priv="hasEditPriv"
           :start-in-edit-mode="startInEditMode"
-        >
-        </srp-status>
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import EveImage from "../../shared/EveImage.vue";
 import SrpTriplet from "../SrpTriplet.vue";
 import SrpStatus from "../SrpStatus.vue";
@@ -103,7 +106,7 @@ import Tooltip from "../../shared/Tooltip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
     SrpStatus,
@@ -149,7 +152,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

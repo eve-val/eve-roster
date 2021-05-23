@@ -1,6 +1,6 @@
 <template>
   <div class="_admin-wrapper">
-    <app-header :identity="identity"></app-header>
+    <app-header :identity="identity" />
     <div class="split-container">
       <div class="sidebar">
         <router-link class="sidebar-link" to="/admin/overview">
@@ -20,8 +20,10 @@
         </router-link>
       </div>
       <div class="main">
-        <div class="title">{{ title }}</div>
-        <slot></slot>
+        <div class="title">
+          {{ title }}
+        </div>
+        <slot />
       </div>
     </div>
   </div>

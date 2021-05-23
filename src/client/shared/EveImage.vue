@@ -6,9 +6,9 @@
 </template>
 
 <script>
-const unknownIcon = require("./res/EveImage-Unknown.svg");
+import unknownIcon from "./res/EveImage-Unknown.svg";
 
-let SUPPORTED_TYPES = {
+const SUPPORTED_TYPES = {
   Alliance: true,
   Corporation: true,
   Character: true,
@@ -16,13 +16,13 @@ let SUPPORTED_TYPES = {
   Render: true,
 };
 
-let SUPPORTED_SIZES = [32, 64, 128, 256, 512];
+const SUPPORTED_SIZES = [32, 64, 128, 256, 512];
 
 export default {
   props: {
     id: {
       type: Number,
-      required: false,
+      required: true,
     },
     type: {
       type: String,

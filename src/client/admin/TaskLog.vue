@@ -9,9 +9,9 @@
       </div>
       <div class="rows">
         <div
-          class="row"
           v-for="row in rows"
           :key="row.id"
+          class="row"
           :class="[
             row.result == 'failure' ? 'failure' : '',
             row.result != 'failure' && row.result != 'success'
@@ -19,14 +19,20 @@
               : '',
           ]"
         >
-          <div class="cell task">{{ row.task }}</div>
-          <div class="cell start">{{ row.start | displayDate }}</div>
+          <div class="cell task">
+            {{ row.task }}
+          </div>
+          <div class="cell start">
+            {{ displayDate(row.start) }}
+          </div>
           <div class="cell duration">
             <span v-if="row.end != null">
-              {{ (row.end - row.start) | displayDuration }}
+              {{ displayDuration(row.end - row.start) }}
             </span>
           </div>
-          <div class="cell result">{{ row.result }}</div>
+          <div class="cell result">
+            {{ row.result }}
+          </div>
         </div>
       </div>
       <div class="length-reminder">Showing most recent 400 records</div>
@@ -45,8 +51,7 @@ export default {
   data: function () {
     return {};
   },
-
-  filters: {
+  methods: {
     displayDate: function (value) {
       if (value != null) {
         return moment(value).format("Y/MM/DD HH:mm:ss Z");

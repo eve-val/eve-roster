@@ -7,13 +7,12 @@ A component that either looks like a "load more" button or a loading spinner.
 <template>
   <div class="_more-button">
     <loading-spinner
-      class="spinner"
       ref="spinner"
+      class="spinner"
       display="block"
       size="34px"
       default-state="hidden"
-    >
-    </loading-spinner>
+    />
     <button
       v-if="status != 'active' && !hideButton"
       class="btn"
@@ -28,19 +27,19 @@ A component that either looks like a "load more" button or a loading spinner.
 </template>
 
 <script>
-import Vue from "vue";
-
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
 
   props: {
-    promise: { type: Promise, required: false },
+    promise: { type: Promise, required: false, default: Promise.resolve() },
     hideButton: { type: Boolean, required: false },
   },
+
+  emits: ["fetch-requested"],
 
   data() {
     return {
@@ -48,14 +47,14 @@ export default Vue.extend({
     };
   },
 
-  mounted() {
-    this.observe(this.promise);
-  },
-
   watch: {
     promise(value) {
       this.observe(value);
     },
+  },
+
+  mounted() {
+    this.observe(this.promise);
   },
 
   methods: {
@@ -69,7 +68,7 @@ export default Vue.extend({
               this.status = "inactive";
             }
           })
-          .catch((e) => {
+          .catch((_e) => {
             if (promise == this.promise) {
               this.status = "inactive";
             }
@@ -79,13 +78,13 @@ export default Vue.extend({
       }
     },
 
-    onButtonClick(e) {
+    onButtonClick(_e) {
       if (this.status != "active") {
         this.$emit("fetch-requested");
       }
     },
   },
-});
+};
 </script>
 
 <style scoped>

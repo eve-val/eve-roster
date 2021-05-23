@@ -22,14 +22,13 @@ the reimbursement as paid.
       :bottom-line="name(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
-    >
-    </srp-triplet>
+    />
 
     <div class="payout-cnt">
       <span class="copy-label">Amount</span>
       <input
-        class="payout-input"
         ref="payoutInput"
+        class="payout-input"
         readonly
         :value="payment.totalPayout"
       />
@@ -41,8 +40,8 @@ the reimbursement as paid.
     <div class="reason-cnt">
       <span class="copy-label">Reason</span>
       <input
-        class="reason-input"
         ref="reasonInput"
+        class="reason-input"
         readonly
         :value="'SRP #' + payment.id"
       />
@@ -58,8 +57,7 @@ the reimbursement as paid.
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </a>
       <div v-else class="undo-cnt">
         <a v-if="undoStatus != 'saving'" class="undo-link" @click="onUndoClick">
@@ -71,22 +69,20 @@ the reimbursement as paid.
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
     SrpTriplet,
@@ -94,7 +90,7 @@ export default Vue.extend({
 
   props: {
     payment: { type: Object, required: true },
-    payingCharacter: { type: Number },
+    payingCharacter: { type: Number, default: -1 },
   },
 
   data() {
@@ -109,7 +105,7 @@ export default Vue.extend({
 
   methods: Object.assign(
     {
-      onCopyReasonClick(e) {
+      onCopyReasonClick(_e) {
         this.$refs.reasonInput.select();
         try {
           document.execCommand("copy");
@@ -118,7 +114,7 @@ export default Vue.extend({
         }
       },
 
-      onCopyPayoutClick(e) {
+      onCopyPayoutClick(_e) {
         this.$refs.payoutInput.select();
         try {
           document.execCommand("copy");
@@ -131,7 +127,7 @@ export default Vue.extend({
         );
       },
 
-      onSaveClick(e) {
+      onSaveClick(_e) {
         if (this.saveStatus == "saving" || this.payingCharacter == null) {
           return;
         }
@@ -148,12 +144,12 @@ export default Vue.extend({
             this.saveStatus = "inactive";
             this.paid = true;
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.saveStatus = "error";
           });
       },
 
-      onUndoClick(e) {
+      onUndoClick(_e) {
         if (this.undoStatus == "saving") {
           return;
         }
@@ -166,14 +162,14 @@ export default Vue.extend({
             this.undoStatus = "inactive";
             this.paid = false;
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.undoStatus = "error";
           });
       },
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

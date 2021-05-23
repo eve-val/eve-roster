@@ -15,8 +15,7 @@ Battle reports are instances of BattleRow.
         :battle="battle"
         :has-edit-priv="identity.access['srp'] == 2"
         :start-in-edit-mode="true"
-      >
-      </battle-row>
+      />
       <div v-if="battles.length == 0" class="no-results">No results</div>
     </template>
 
@@ -25,22 +24,19 @@ Battle reports are instances of BattleRow.
         :promise="fetchPromise"
         :hide-button="battles == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
 
 <script>
-import _ from "underscore";
-import Vue from "vue";
 import BattleRow from "./BattleRow.vue";
 import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     BattleRow,
     MoreButton,
@@ -61,14 +57,14 @@ export default Vue.extend({
 
   computed: {},
 
-  mounted() {
-    this.reset();
-  },
-
   watch: {
-    triageMode(value) {
+    triageMode(_value) {
       this.reset();
     },
+  },
+
+  mounted() {
+    this.reset();
   },
 
   methods: Object.assign(
@@ -119,7 +115,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 
 const RESULTS_PER_FETCH = 30;
 </script>

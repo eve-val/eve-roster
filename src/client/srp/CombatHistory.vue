@@ -12,15 +12,15 @@ shown. If not, results are ordered newest to oldest.
 
 <template>
   <div class="_approve">
-    <div class="mode-cnt" v-if="!forAccount">
+    <div v-if="!forAccount" class="mode-cnt">
       Show
-      <select class="mode-select" v-model="mode">
+      <select v-model="mode" class="mode-select">
         <option value="battles">Battle reports</option>
         <option value="losses">Losses</option>
       </select>
     </div>
 
-    <div class="account-header" v-if="forAccount">
+    <div v-if="forAccount" class="account-header">
       Showing results for a single account:
     </div>
 
@@ -28,33 +28,29 @@ shown. If not, results are ordered newest to oldest.
       v-if="mode == 'battles'"
       :identity="identity"
       :triage-mode="triageMode"
-    >
-    </battle-history>
+    />
 
     <loss-history
       v-if="mode == 'losses'"
       :identity="identity"
       :for-account="forAccount"
       :triage-mode="triageMode"
-    >
-    </loss-history>
+    />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-
 import LossHistory from "./LossHistory.vue";
 import BattleHistory from "./battles/BattleHistory.vue";
 
-export default Vue.extend({
+export default {
   components: {
     BattleHistory,
     LossHistory,
   },
 
   props: {
-    forAccount: { type: Number, required: false },
+    forAccount: { type: Number, required: false, default: -1 },
     identity: { type: Object, required: true },
     triageMode: { type: Boolean, required: true },
   },
@@ -64,7 +60,7 @@ export default Vue.extend({
       mode: this.forAccount ? "losses" : "battles",
     };
   },
-});
+};
 </script>
 
 <style scoped>

@@ -10,10 +10,9 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
       <div class="selector-cnt">
         <div class="selector-label">Paying with</div>
         <character-selector
-          :accountId="identity.account.id"
           v-model="payingCharacter"
-        >
-        </character-selector>
+          :account-id="identity.account.id"
+        />
       </div>
       <div class="liability-summary">
         <span class="liability-label">Approved liability:</span>
@@ -23,17 +22,16 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
     </div>
 
     <template v-if="payments != null">
-      <div class="top-line"></div>
+      <div class="top-line" />
 
       <payment-triage-row
         v-for="payment in payments"
         :key="payment.id"
         :payment="payment"
         :paying-character="payingCharacter"
-      >
-      </payment-triage-row>
+      />
 
-      <div class="no-results" v-if="payments.length == 0">No results</div>
+      <div v-if="payments.length == 0" class="no-results">No results</div>
     </template>
 
     <div v-if="suspectMoreToFetch" class="more-cnt">
@@ -41,14 +39,12 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
         :promise="fetchPromise"
         :hide-button="payments == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import CharacterSelector from "./CharacterSelector.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentTriageRow from "./PaymentTriageRow.vue";
@@ -58,7 +54,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
 
-export default Vue.extend({
+export default {
   components: {
     CharacterSelector,
     MoreButton,
@@ -67,6 +63,18 @@ export default Vue.extend({
 
   props: {
     identity: { type: Object, required: true },
+  },
+
+  data() {
+    return {
+      fetchPromise: null,
+      suspectMoreToFetch: true,
+
+      payments: null,
+      payingCharacter: null,
+
+      approvedLiability: 0,
+    };
   },
 
   computed: {
@@ -85,18 +93,6 @@ export default Vue.extend({
         return this.approvedLiability.toLocaleString();
       }
     },
-  },
-
-  data() {
-    return {
-      fetchPromise: null,
-      suspectMoreToFetch: true,
-
-      payments: null,
-      payingCharacter: null,
-
-      approvedLiability: 0,
-    };
   },
 
   mounted() {
@@ -134,7 +130,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

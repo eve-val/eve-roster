@@ -10,11 +10,11 @@
         <loading-spinner
           ref="spinner"
           display="block"
-          defaultState="hidden"
+          default-state="hidden"
           size="34px"
         />
       </div>
-      <div class="root-container" v-if="character">
+      <div v-if="character" class="root-container">
         <div class="sidebar">
           <eve-image
             :id="characterId"
@@ -23,7 +23,9 @@
             style="border: 1px solid #463830"
           />
           <div class="factoid-title">Corporation</div>
-          <div class="factoid">{{ corporationName || "-" }}</div>
+          <div class="factoid">
+            {{ corporationName || "-" }}
+          </div>
 
           <template v-if="character">
             <div class="factoid-title">Total SP</div>
@@ -38,19 +40,18 @@
               <router-link
                 class="character-link"
                 :to="'/character/' + account.main.id"
-                >{{ account.main.name }}</router-link
               >
+                {{ account.main.name }}
+              </router-link>
             </div>
           </template>
 
           <template v-if="account.alts">
             <div class="factoid-title">Alts</div>
-            <div class="factoid" v-for="alt in account.alts" :key="alt.id">
-              <router-link
-                class="character-link"
-                :to="'/character/' + alt.id"
-                >{{ alt.name }}</router-link
-              >
+            <div v-for="alt in account.alts" :key="alt.id" class="factoid">
+              <router-link class="character-link" :to="'/character/' + alt.id">
+                {{ alt.name }}
+              </router-link>
             </div>
           </template>
 
@@ -58,14 +59,17 @@
             <template v-if="canWriteSrp">
               <div class="factoid-title">SRP</div>
               <div class="factoid">
-                <router-link class="srp-link" :to="'/srp/history/' + account.id"
-                  >View Losses</router-link
+                <router-link
+                  class="srp-link"
+                  :to="'/srp/history/' + account.id"
                 >
+                  View Losses
+                </router-link>
               </div>
               <div class="factoid">
-                <router-link class="srp-link" :to="'/srp/triage/' + account.id"
-                  >Triage Losses</router-link
-                >
+                <router-link class="srp-link" :to="'/srp/triage/' + account.id">
+                  Triage Losses
+                </router-link>
               </div>
             </template>
 
@@ -73,8 +77,8 @@
             <factoid-selector
               v-if="canWriteTimezone"
               :options="timezoneOptions"
-              :initialValue="account.activeTimezone"
-              :submitHandler="submitTimezone.bind(this)"
+              :initial-value="account.activeTimezone"
+              :submit-handler="submitTimezone.bind(this)"
             />
             <div v-else class="factoid">
               {{ account.activeTimezone || "-" }}
@@ -85,29 +89,31 @@
               <factoid-selector
                 v-if="canWriteCitadel"
                 :options="citadelOptions"
-                :initialValue="account.citadelName"
-                :submitHandler="submitHousing.bind(this)"
+                :initial-value="account.citadelName"
+                :submit-handler="submitHousing.bind(this)"
               />
-              <div v-else class="factoid">{{ account.citadelName || "-" }}</div>
+              <div v-else class="factoid">
+                {{ account.citadelName || "-" }}
+              </div>
             </template>
 
             <template v-if="account.groups != null">
               <div class="factoid-title">Groups</div>
-              <div class="factoid" v-for="group in account.groups" :key="group">
+              <div v-for="group in account.groups" :key="group" class="factoid">
                 {{ group }}
               </div>
-              <div class="factoid" v-if="account.groups.length == 0">-</div>
+              <div v-if="account.groups.length == 0" class="factoid">-</div>
             </template>
           </template>
 
           <div class="factoid-title">Titles</div>
-          <div class="factoid" v-for="title in character.titles" :key="title">
+          <div v-for="title in character.titles" :key="title" class="factoid">
             {{ title }}
           </div>
-          <div class="factoid" v-if="character.titles.length == 0">-</div>
+          <div v-if="character.titles.length == 0" class="factoid">-</div>
         </div>
         <div class="content">
-          <skill-sheet :characterId="characterId" :access="access" />
+          <skill-sheet :character-id="characterId" :access="access" />
         </div>
       </div>
     </div>
@@ -123,6 +129,7 @@ import { formatNumber } from "../shared/numberFormat";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
+import { groupifySkills } from "./skills";
 
 export default {
   components: {
@@ -186,12 +193,8 @@ export default {
     },
   },
 
-  mounted: function () {
-    this.fetchData();
-  },
-
   watch: {
-    characterId(value) {
+    characterId(_value) {
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
@@ -216,8 +219,15 @@ export default {
     },
   },
 
+  mounted: function () {
+    this.fetchData();
+  },
+
   methods: {
     fetchData() {
+      if (!this.characterId) {
+        return;
+      }
       this.$refs.spinner
         .observe(ajaxer.getCharacter(this.characterId))
         .then((response) => {

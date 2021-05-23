@@ -2,14 +2,14 @@
   <admin-wrapper title="Citadel management" :identity="identity">
     <div class="add-citadel">
       <input
-        class="citadel-name"
         v-model="newCitadel.name"
-        @keydown="addLogic"
+        class="citadel-name"
         placeholder="Type a new citadel name, then press enter to add..."
+        @keydown="addLogic"
       />
       <label
         >Type:
-        <select class="citadel-type" v-model="newCitadel.type">
+        <select v-model="newCitadel.type" class="citadel-type">
           <option value="Astrahus">Astrahus</option>
           <option value="Fortizar">Fortizar</option>
           <option value="Keepstar">Keepstar</option>
@@ -19,20 +19,20 @@
       </label>
       <label
         >Alliance Access:
-        <select class="alliance-access" v-model="newCitadel.allianceAccess">
+        <select v-model="newCitadel.allianceAccess" class="alliance-access">
           <option :value="true">YES</option>
           <option :value="false">NO</option>
         </select>
       </label>
       <label
         >Alliance Owned:
-        <select class="alliance-owned" v-model="newCitadel.allianceOwned">
+        <select v-model="newCitadel.allianceOwned" class="alliance-owned">
           <option :value="true">YES</option>
           <option :value="false">NO</option>
         </select>
       </label>
     </div>
-    <div v-for="citadel in sortedCitadels" class="citadel">
+    <div v-for="citadel in sortedCitadels" :key="citadel.id" class="citadel">
       <input
         class="name"
         :value="citadel.name"
@@ -101,7 +101,7 @@ export default {
     },
 
     removeCitadel(id) {
-      this.deletePromise = ajaxer.deleteCitadel(id).then((response) => {
+      this.deletePromise = ajaxer.deleteCitadel(id).then((_response) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
             this.citadels.splice(i, 1);
@@ -112,7 +112,7 @@ export default {
     },
 
     renameCitadel(id, name) {
-      this.renamePromise = ajaxer.putCitadelName(id, name).then((response) => {
+      this.renamePromise = ajaxer.putCitadelName(id, name).then((_response) => {
         this.citadels.map((citadel) => {
           if (citadel.id === id) {
             citadel.name = name;
@@ -137,8 +137,6 @@ export default {
     },
 
     editLogic(oldName, event) {
-      let text = event.target.value;
-
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();

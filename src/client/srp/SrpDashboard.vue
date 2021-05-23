@@ -13,26 +13,22 @@ Displays the user's recent losses and SRP payments.
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-    >
-    </payment-history>
+    />
 
     <div class="section-title">My losses</div>
     <loss-history
       :identity="identity"
       :compact-mode="true"
       :for-account="identity.account.id"
-    >
-    </loss-history>
+    />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-
 import LossHistory from "./LossHistory.vue";
 import PaymentHistory from "./PaymentHistory.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LossHistory,
     PaymentHistory,
@@ -43,7 +39,7 @@ export default Vue.extend({
   },
 
   methods: {},
-});
+};
 </script>
 
 <style scoped>

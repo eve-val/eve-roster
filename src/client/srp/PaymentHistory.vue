@@ -12,7 +12,7 @@ Table of PaymentHistoryRows.
         <div style="width: 255px">Recipient</div>
         <div style="width: 65px; text-align: right">Losses</div>
         <div style="width: 135px; text-align: right">Total payout</div>
-        <div style="flex: 1"></div>
+        <div style="flex: 1" />
         <div style="width: 255px">Paid by</div>
       </div>
 
@@ -20,10 +20,9 @@ Table of PaymentHistoryRows.
         v-for="payment in payments"
         :key="payment.id"
         :payment="payment"
-      >
-      </payment-history-row>
+      />
 
-      <div class="no-results" v-if="payments.length == 0">No results</div>
+      <div v-if="payments.length == 0" class="no-results">No results</div>
     </template>
 
     <div v-if="suspectMoreToFetch" class="more-cnt">
@@ -31,31 +30,27 @@ Table of PaymentHistoryRows.
         :promise="fetchPromise"
         :hide-button="payments == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
-    LoadingSpinner,
     MoreButton,
     PaymentHistoryRow,
   },
 
   props: {
     identity: { type: Object, required: true },
-    forAccount: { type: Number, required: false },
+    forAccount: { type: Number, required: false, default: -1 },
     compactMode: { type: Boolean, required: false, default: false },
   },
 
@@ -112,7 +107,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

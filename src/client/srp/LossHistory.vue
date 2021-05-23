@@ -9,7 +9,7 @@ Exposes various options for filtering the contents of the table.
 <template>
   <div class="_loss-history" :class="{ compact: compactMode }">
     <template v-if="rows != null">
-      <loss-heading></loss-heading>
+      <loss-heading />
       <loss-row
         v-for="row in rows"
         :key="row.killmail"
@@ -19,8 +19,7 @@ Exposes various options for filtering the contents of the table.
         :highlight-as-related="row.killmail == relatedKillmail"
         @related-hover="onRelatedHover"
         @related-unhover="onRelatedUnhover"
-      >
-      </loss-row>
+      />
       <div v-if="rows.length == 0" class="no-results">No results</div>
     </template>
 
@@ -29,15 +28,12 @@ Exposes various options for filtering the contents of the table.
         :promise="fetchPromise"
         :hide-button="rows == null"
         @fetch-requested="fetchNextResults"
-      >
-      </more-button>
+      />
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 import MoreButton from "./MoreButton.vue";
@@ -45,9 +41,8 @@ import MoreButton from "./MoreButton.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
-    LoadingSpinner,
     LossHeading,
     LossRow,
     MoreButton,
@@ -55,7 +50,7 @@ export default Vue.extend({
 
   props: {
     identity: { type: Object, required: true },
-    forAccount: { type: Number, required: false },
+    forAccount: { type: Number, required: false, default: -1 },
     triageMode: { type: Boolean, required: false, default: false },
     compactMode: { type: Boolean, required: false, default: false },
   },
@@ -83,14 +78,14 @@ export default Vue.extend({
     },
   },
 
-  mounted() {
-    this.reset();
-  },
-
   watch: {
-    triageMode(value) {
+    triageMode(_value) {
       this.reset();
     },
+  },
+
+  mounted() {
+    this.reset();
   },
 
   methods: Object.assign(
@@ -127,13 +122,13 @@ export default Vue.extend({
         this.relatedKillmail = killmailId;
       },
 
-      onRelatedUnhover(killmailId) {
+      onRelatedUnhover(_killmailId) {
         this.relatedKillmail = null;
       },
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

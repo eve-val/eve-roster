@@ -1,6 +1,6 @@
 <template>
   <admin-wrapper title="Account log" :identity="identity">
-    <div class="table" v-if="rows">
+    <div v-if="rows" class="table">
       <div class="headers">
         <div class="cell timestamp">Timestamp</div>
         <div class="cell account">Account</div>
@@ -9,26 +9,34 @@
         <div class="cell data">Data</div>
       </div>
       <div class="rows">
-        <div class="row" v-for="row in rows" :key="row.id">
-          <div class="cell timestamp">{{ row.timestamp | displayDate }}</div>
+        <div v-for="row in rows" :key="row.id" class="row">
+          <div class="cell timestamp">
+            {{ displayDate(row.timestamp) }}
+          </div>
           <div class="cell account">
             <span
-              class="original-account"
               v-if="row.originalAccount != row.accountId"
+              class="original-account"
             >
               {{ row.originalAccount }} &rightarrow;
             </span>
             {{ row.accountId }}
             <span class="main-character">/ {{ row.mainCharacter }}</span>
           </div>
-          <div class="cell event">{{ row.event }}</div>
-          <div class="cell related-char">{{ row.relatedCharacterName }}</div>
+          <div class="cell event">
+            {{ row.event }}
+          </div>
+          <div class="cell related-char">
+            {{ row.relatedCharacterName }}
+          </div>
           <div class="data">
-            <tooltip v-if="row.data" gravity="left bottom" :inline="false">
-              <div class="cell">{ ... }</div>
-              <pre slot="message" style="margin: 0">{{
-                prettyPrint(row.data)
-              }}</pre>
+            <tooltip v-if="row.data" gravity="right bottom" :inline="false">
+              <template #default>
+                <div class="cell">{ ... }</div>
+              </template>
+              <template #message>
+                <pre style="margin: 0">{{ prettyPrint(row.data) }}</pre>
+              </template>
             </tooltip>
           </div>
         </div>
@@ -72,15 +80,12 @@ export default {
     });
   },
 
-  filters: {
-    displayDate: function (value) {
-      return moment(value).format("Y/MM/DD HH:mm:ss Z");
-    },
-  },
-
   methods: {
     prettyPrint: function (jsonStr) {
       return JSON.stringify(JSON.parse(jsonStr), null, 2);
+    },
+    displayDate: function (value) {
+      return moment(value).format("Y/MM/DD HH:mm:ss Z");
     },
   },
 };

@@ -1,22 +1,24 @@
 <template>
   <div>
-    <app-header :identity="identity"></app-header>
+    <app-header :identity="identity" />
     <div class="split-container">
       <div class="sidebar">
         <router-link class="sidebar-link" to="/ships/borrowed-by-me">
           Borrowed by me
         </router-link>
         <router-link
+          v-if="canSeeAllBorrowedShips"
           class="sidebar-link"
           to="/ships/borrowed-all"
-          v-if="canSeeAllBorrowedShips"
         >
           All borrowed ships
         </router-link>
       </div>
       <div class="main">
-        <div class="title">{{ title }}</div>
-        <slot></slot>
+        <div class="title">
+          {{ title }}
+        </div>
+        <slot />
       </div>
     </div>
   </div>

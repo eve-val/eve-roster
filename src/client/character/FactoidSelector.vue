@@ -1,15 +1,19 @@
 <template>
   <div class="factoid-selector">
-    <select class="selector" v-model="selectedValue">
+    <select v-model="selectedValue" class="selector">
       <option :value="null">Not assigned</option>
-      <option v-for="option in options" :value="option.value">
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
         {{ option.label }}
       </option>
     </select>
     <loading-spinner
-      class="loading-spinner"
       ref="spinner"
-      defaultState="hidden"
+      class="loading-spinner"
+      default-state="hidden"
       size="16px"
     />
   </div>
@@ -25,7 +29,7 @@ export default {
 
   props: {
     options: { type: Array, required: true },
-    initialValue: { type: String, required: false },
+    initialValue: { type: String, required: false, default: "" },
     submitHandler: { type: Function, required: true },
   },
 

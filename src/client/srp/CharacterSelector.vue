@@ -9,12 +9,11 @@ character is paying.
 
 <template>
   <div class="_character-selector">
-    <select class="select" v-model="selectedId" ref="select">
+    <select ref="select" v-model="selectedId" class="select">
       <option
-        v-for="character in characters"
-        v-if="isValidCharacter(character)"
-        class="select-option"
+        v-for="character in validCharacters"
         :key="character.id"
+        class="select-option"
         :value="character.id"
       >
         {{ character.name }}
@@ -23,13 +22,14 @@ character is paying.
     <div class="cover">
       <template v-if="selectedCharacter != null">
         <eve-image
-          class="char-icon"
           :id="selectedCharacter.id"
+          class="char-icon"
           :size="39"
           type="Character"
-        >
-        </eve-image>
-        <div class="char-name">{{ selectedCharacter.name }}</div>
+        />
+        <div class="char-name">
+          {{ selectedCharacter.name }}
+        </div>
         <img class="select-triangle" src="../shared-res/select-dropdown.png" />
       </template>
     </div>
@@ -37,33 +37,45 @@ character is paying.
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
   },
 
   props: {
     accountId: { type: Number, required: true },
-    value: { type: Number, required: false },
+    modelValue: { type: Number, required: false, default: -1 },
   },
+
+  emits: ["update:modelValue"],
 
   data() {
     return {
       characters: [],
-      selectedId: this.value,
+      selectedId: this.modelValue,
     };
   },
 
   computed: {
     selectedCharacter() {
       return _.findWhere(this.characters, { id: this.selectedId });
+    },
+    validCharacters() {
+      return this.characters.filter(this.isValidCharacter);
+    },
+  },
+
+  watch: {
+    selectedId(newValue) {
+      if (newValue != this.modelValue) {
+        this.$emit("update:modelValue", newValue);
+      }
     },
   },
 
@@ -80,20 +92,12 @@ export default Vue.extend({
     });
   },
 
-  watch: {
-    selectedId(newValue) {
-      if (newValue != this.value) {
-        this.$emit("input", newValue);
-      }
-    },
-  },
-
   methods: {
     isValidCharacter(character) {
       return character.accessTokenValid && character.membership == "full";
     },
   },
-});
+};
 </script>
 
 <style scoped>

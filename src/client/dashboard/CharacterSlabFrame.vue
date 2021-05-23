@@ -3,10 +3,10 @@
     <div class="slab-main">
       <eve-image :id="characterId" :size="105" type="Character" />
       <div class="body">
-        <slot></slot>
+        <slot />
       </div>
     </div>
-    <slot name="sub-slab-hanger"></slot>
+    <slot name="sub-slab-hanger" />
   </div>
 </template>
 

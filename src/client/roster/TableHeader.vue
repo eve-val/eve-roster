@@ -4,13 +4,13 @@
       v-for="column in columns"
       :key="column.key"
       class="column-header"
-      @mousedown="$emit('selectSortKey', column.key)"
       :style="{
         width: column.width + 'px',
         'text-align': column.numeric ? 'right' : 'left',
         'margin-left':
           column.margin != undefined ? column.margin + 'px' : undefined,
       }"
+      @mousedown="$emit('selectSortKey', column.key)"
     >
       <img
         v-if="column.key == sortKey"
@@ -33,6 +33,8 @@ export default {
     sortKey: { type: String, required: true },
     reverseSort: { type: Boolean, required: true },
   },
+
+  emits: ["selectSortKey"],
 
   data: function () {
     return {};

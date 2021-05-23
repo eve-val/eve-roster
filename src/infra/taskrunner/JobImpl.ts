@@ -1,3 +1,5 @@
+/* global NodeJS */
+
 import { EventEmitter } from "events";
 
 import { Job, JobStatus, JobResult, JobLogger } from "./Job";

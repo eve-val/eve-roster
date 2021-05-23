@@ -7,43 +7,38 @@
       </div>
 
       <loading-spinner
-        class="root-spinner"
         ref="root_spinner"
+        class="root-spinner"
         display="block"
         size="34px"
-      >
-      </loading-spinner>
+      />
 
       <template v-if="tasks != null">
         <div class="header">Tasks</div>
         <transition-group name="task-block" tag="div">
           <task-slab
-            v-for="task in tasks"
-            v-if="task.job != null"
+            v-for="task in tasksWithJobs"
+            :key="task.name"
             class="task-block"
             :task="task"
-            :key="task.name"
             @jobStarted="onJobStarted"
-          >
-          </task-slab>
+          />
           <div
-            class="active-task-divider"
             v-if="areAnyActiveJobs"
             key="__divider"
-          ></div>
+            class="active-task-divider"
+          />
           <task-slab
-            v-for="task in tasks"
-            v-if="task.job == null"
+            v-for="task in tasksWithoutJobs"
+            :key="task.name"
             class="task-block"
             :task="task"
-            :key="task.name"
             @jobStarted="onJobStarted"
-          >
-          </task-slab>
+          />
         </transition-group>
 
         <div class="header">Task log</div>
-        <task-log :rows="taskLog"></task-log>
+        <task-log :rows="taskLog" />
       </template>
     </div>
   </admin-wrapper>
@@ -51,14 +46,12 @@
 
 <script>
 import Promise from "bluebird";
-import moment from "moment";
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
 
 import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-import Tooltip from "../shared/Tooltip.vue";
 
 import TaskSlab from "./TaskSlab.vue";
 import TaskLog from "./TaskLog.vue";
@@ -71,7 +64,6 @@ export default {
     LoadingSpinner,
     TaskSlab,
     TaskLog,
-    Tooltip,
   },
 
   props: {
@@ -84,6 +76,23 @@ export default {
       taskLog: [],
       polling: false,
     };
+  },
+
+  computed: {
+    tasksWithJobs() {
+      return this.tasks.filter((t) => t.job != null);
+    },
+    tasksWithoutJobs() {
+      return this.tasks.filter((t) => t.job == null);
+    },
+    areAnyActiveJobs() {
+      for (let i = 0; i < this.tasks.length; i++) {
+        if (this.tasks[i].job != null) {
+          return true;
+        }
+      }
+      return false;
+    },
   },
 
   mounted: function () {
@@ -99,17 +108,6 @@ export default {
         this.initializeTasks(tasks.data, jobs.data);
         this.taskLog = logs.data;
       });
-  },
-
-  computed: {
-    areAnyActiveJobs() {
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].job != null) {
-          return true;
-        }
-      }
-      return false;
-    },
   },
 
   methods: {
@@ -207,7 +205,7 @@ export default {
       }
     },
 
-    sortTasks(tasks) {
+    sortTasks() {
       this.tasks.sort((a, b) => {
         let cmp = compareJobs(a, b);
         if (cmp == 0) {

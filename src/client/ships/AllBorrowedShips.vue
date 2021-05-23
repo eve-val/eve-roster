@@ -1,12 +1,12 @@
 <template>
   <ships-wrapper title="All borrowed corp ships" :identity="identity">
     <loading-spinner
-      class="main-spinner"
       ref="spinner"
-      defaultState="hidden"
+      class="main-spinner"
+      default-state="hidden"
       size="34px"
     />
-    <ship-table :ships="ships" :showMainCharacter="true" />
+    <ship-table :ships="ships" :show-main-character="true" />
   </ships-wrapper>
 </template>
 

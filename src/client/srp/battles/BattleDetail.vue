@@ -8,21 +8,18 @@ Page for displaying details about a specific battle.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">Battle #{{ battleId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px">
-    </loading-spinner>
+    <loading-spinner ref="spinner" display="block" size="34px" />
 
     <battle-row
       v-if="battle != null"
       :battle="battle"
       :has-edit-priv="identity.access['srp'] == 2"
       :start-in-edit-mode="true"
-    >
-    </battle-row>
+    />
   </app-page>
 </template>
 
 <script>
-import Vue from "vue";
 import AppPage from "../../shared/AppPage.vue";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 import BattleRow from "./BattleRow.vue";
@@ -30,7 +27,7 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     AppPage,
     LoadingSpinner,
@@ -66,7 +63,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

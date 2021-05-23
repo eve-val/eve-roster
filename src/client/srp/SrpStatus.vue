@@ -12,8 +12,8 @@ triage options weren't initially provided, fetches them from the server.
     <div class="status-cnt">
       <select
         v-if="editing"
-        class="verdict-select"
         v-model="selectedVerdictKey"
+        class="verdict-select"
       >
         <option
           v-for="option in verdictOptions"
@@ -32,7 +32,7 @@ triage options weren't initially provided, fetches them from the server.
           {{ getStatusLabel(srp) }}
         </div>
 
-        <div class="rendered-by" v-if="renderingName">
+        <div v-if="renderingName" class="rendered-by">
           by
           <router-link
             v-if="renderingLink"
@@ -51,8 +51,8 @@ triage options weren't initially provided, fetches them from the server.
     <div class="payout-cnt">
       <div v-if="editing" class="payout-input-cnt">
         <input
-          class="payout-input"
           v-model.number="inputPayout"
+          class="payout-input"
           :disabled="!isApprovalSelected"
         />
         <input class="payout-denom" value="M" disabled />
@@ -66,7 +66,7 @@ triage options weren't initially provided, fetches them from the server.
           {{ rawPayoutToDisplayPayout(srp.payout) }}
           <span style="color: #8b8b8b">M</span>
         </router-link>
-        <template v-else>&mdash;</template>
+        <template v-else> &mdash; </template>
       </div>
     </div>
 
@@ -90,8 +90,7 @@ triage options weren't initially provided, fetches them from the server.
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </a>
       <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
         <a
@@ -107,15 +106,13 @@ triage options weren't initially provided, fetches them from the server.
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
-        >
-        </loading-spinner>
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
@@ -123,33 +120,28 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
 
   props: {
-    srp: { type: Object, required: true },
+    initialSrp: { type: Object, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
 
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
-  },
-
   data() {
     return {
+      srp: this.initialSrp,
       editing:
         this.hasEditPriv &&
         this.startInEditMode &&
-        this.srp.status == "pending",
-      selectedVerdictKey: this.srp.triage
-        ? this.srp.triage.suggestedOption
+        this.initialSrp.status == "pending",
+      selectedVerdictKey: this.initialSrp.triage
+        ? this.initialSrp.triage.suggestedOption
         : "custom",
-      inputPayout: this.rawPayoutToDisplayPayout(this.srp.payout),
+      inputPayout: this.rawPayoutToDisplayPayout(this.initialSrp.payout),
       saveStatus: "inactive", // inactive | saving | error
       fetchTriageStatus: "inactive", // inactive | active | error,
       originalPayout: null,
@@ -247,9 +239,21 @@ export default Vue.extend({
     },
   },
 
+  watch: {
+    selectedVerdict(_newVerdict) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    },
+  },
+
+  mounted() {
+    if (this.editing) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    }
+  },
+
   methods: Object.assign(
     {
-      onSaveClick(e) {
+      onSaveClick(_e) {
         const payout = this.displayPayoutToRawPayout(this.inputPayout);
         const verdict = this.selectedVerdict.verdict;
         const reason = this.selectedVerdict.reason;
@@ -266,16 +270,16 @@ export default Vue.extend({
             this.srp.reason = reason;
             this.editing = false;
             this.srp.renderingCharacter = response.data.id;
-            addNames({
+            this.addNames({
               [response.data.id]: response.data.name,
             });
           })
-          .catch((e) => {
+          .catch((_e) => {
             this.saveStatus = "error";
           });
       },
 
-      onEditClick(e) {
+      onEditClick(_e) {
         if (this.srp.triage == null) {
           if (this.fetchTriageStatus == "active") {
             return;
@@ -306,7 +310,7 @@ export default Vue.extend({
 
               this.editing = true;
             })
-            .catch((e) => {
+            .catch((_e) => {
               this.fetchTriageStatus = "error";
             });
         } else {
@@ -336,13 +340,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-
-  watch: {
-    selectedVerdict(newVerdict) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    },
-  },
-});
+};
 
 const INELIGIBLE_STATUSES = [
   {

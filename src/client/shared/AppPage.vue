@@ -10,25 +10,24 @@
       class="centering-container"
       :style="{ width: contentWidth ? contentWidth + 'px' : '1000px' }"
     >
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import AppHeader from "./AppHeader.vue";
 
-export default Vue.extend({
+export default {
   components: {
     AppHeader,
   },
 
   props: {
     identity: { type: Object, required: true },
-    contentWidth: { type: Number, required: false },
+    contentWidth: { type: Number, required: false, default: 500 },
   },
-});
+};
 </script>
 
 <style scoped>

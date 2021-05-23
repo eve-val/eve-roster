@@ -1,8 +1,10 @@
 <template>
   <div class="_task-block" :style="rootStyle" :class="rootClasses">
-    <div class="progress-bar" :style="progressBarStyle"></div>
+    <div class="progress-bar" :style="progressBarStyle" />
     <div class="foreground">
-      <div class="task-name">{{ task.displayName }}</div>
+      <div class="task-name">
+        {{ task.displayName }}
+      </div>
       <div class="middle-area">
         <span v-if="task.job" style="color: #e1c87b">{{
           task.job.progressLabel || ""
@@ -18,12 +20,11 @@
         </div>
         <div v-if="!task.job" class="run-block">
           <loading-spinner
-            class="run-spinner"
             ref="runSpinner"
+            class="run-spinner"
             display="inline"
-            defaultState="hidden"
-          >
-          </loading-spinner>
+            default-state="hidden"
+          />
           <button
             class="roster-btn run-btn"
             :disabled="runPromise != null"
@@ -51,6 +52,8 @@ export default {
   props: {
     task: { type: Object, required: true },
   },
+
+  emits: ["jobStarted"],
 
   data: () => ({
     runPromise: null,

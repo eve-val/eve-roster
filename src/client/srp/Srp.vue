@@ -22,15 +22,14 @@ Root container for the SRP UI.
       </router-link>
     </div>
 
-    <router-view :identity="identity"></router-view>
+    <router-view :identity="identity" />
   </app-page>
 </template>
 
 <script>
-import Vue from "vue";
 import AppPage from "../shared/AppPage.vue";
 
-export default Vue.extend({
+export default {
   components: {
     AppPage,
   },
@@ -50,7 +49,7 @@ export default Vue.extend({
   },
 
   methods: {},
-});
+};
 </script>
 
 <style scoped>

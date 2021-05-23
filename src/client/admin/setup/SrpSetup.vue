@@ -14,16 +14,16 @@ SRP tracking starts, if it does at all.
     }"
   >
     <div class="left">
-      <label><input type="checkbox" v-model="trackSrp" /> Track SRP</label>
+      <label><input v-model="trackSrp" type="checkbox" /> Track SRP</label>
       <div
         class="date-picker"
         :style="{ opacity: trackSrp ? undefined : '0.5' }"
       >
         Starting from
         <input
+          v-model="startInput"
           class="date-input"
           type="date"
-          v-model="startInput"
           :disabled="!trackSrp"
         />
       </div>
@@ -33,16 +33,15 @@ SRP tracking starts, if it does at all.
       :style="{ visibility: dirtyChanges ? 'visible' : 'hidden' }"
     >
       <loading-spinner
-        class="spinner"
         ref="spinner"
+        class="spinner"
         display="inline"
         size="30px"
         default-state="hidden"
-      >
-      </loading-spinner>
+      />
       <button
-        class="roster-btn save-btn"
         v-if="requestStatus != 'active'"
+        class="roster-btn save-btn"
         @click="onSaveClick"
       >
         Save
@@ -52,18 +51,15 @@ SRP tracking starts, if it does at all.
 </template>
 
 <script>
-import Vue from "vue";
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
-export default Vue.extend({
+export default {
   components: {
     LoadingSpinner,
   },
 
   data() {
-    const startDate = new Date();
-
     return {
       loaded: false,
       trackSrp: false,
@@ -105,7 +101,7 @@ export default Vue.extend({
   },
 
   methods: {
-    onSaveClick(e) {
+    onSaveClick(_e) {
       const trackSrp = this.trackSrp;
       const startInput = this.startInput;
 
@@ -136,7 +132,7 @@ export default Vue.extend({
         });
     },
   },
-});
+};
 
 function timestampToDateStr(timestamp) {
   const date = new Date(timestamp);

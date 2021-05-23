@@ -3,8 +3,12 @@
     <div class="horiz-aligner">
       <div class="alert col" :style="cellStyle(0)">
         <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
-          <img class="alert-icon" :src="alertIconSrc" />
-          <span slot="message">{{ alertMessage }}</span>
+          <template #default>
+            <img class="alert-icon" :src="alertIconSrc" />
+          </template>
+          <template #message>
+            <span>{{ alertMessage }}</span>
+          </template>
         </tooltip>
       </div>
 
@@ -18,16 +22,22 @@
             }}<span class="highlight">{{ filterMatch[1] }}</span
             >{{ filterMatch[2] }}
           </template>
-          <template v-else>{{ displayVals[1] }}</template>
+          <template v-else>
+            {{ displayVals[1] }}
+          </template>
         </router-link>
         <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
-          <eve-image
-            :id="character.corporationId"
-            :type="'Corporation'"
-            :size="26"
-            class="corp-icon"
-          />
-          <span slot="message">{{ character.corporationName }}</span>
+          <template #default>
+            <eve-image
+              :id="character.corporationId"
+              :type="'Corporation'"
+              :size="26"
+              class="corp-icon"
+            />
+          </template>
+          <template #message>
+            <span>{{ character.corporationName }}</span>
+          </template>
         </tooltip>
       </div>
 
@@ -40,20 +50,26 @@
       </div>
 
       <div
+        v-for="(dv, i) in subsequentDisplayVals"
+        :key="i + 3"
         class="col"
-        v-for="(displayVal, i) in displayVals"
-        :key="i"
-        v-if="i >= 3"
-        :style="cellStyle(i)"
+        :style="cellStyle(i + 3)"
       >
-        <template v-if="!tooltipMessage(i)">
-          <span class="col-text">{{ displayVal | dashDefault }}</span>
+        <template v-if="!tooltipMessage(i + 3)">
+          <span class="col-text">{{ dashDefault(dv) }}</span>
         </template>
         <tooltip v-else gravity="right" :inline="true">
-          <span class="col-text" :style="{ 'text-align': cellAlignment(i) }">
-            {{ displayVal | dashDefault }}
-          </span>
-          <span slot="message">{{ tooltipMessage(i) }}</span>
+          <template #default>
+            <span
+              class="col-text"
+              :style="{ 'text-align': cellAlignment(i + 3) }"
+            >
+              {{ dashDefault(dv) }}
+            </span>
+          </template>
+          <template #message>
+            <span>{{ tooltipMessage(i + 3) }}</span>
+          </template>
         </tooltip>
       </div>
     </div>
@@ -64,14 +80,13 @@
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
-import rosterColumns from "./rosterColumns";
 
 import EveImage from "../shared/EveImage.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
-const infoIcon = require("../shared-res/circle-info.svg");
-const warningIcon = require("../shared-res/triangle-warning.svg");
-const errorIcon = require("../shared-res/triangle-error.svg");
+import infoIcon from "../shared-res/circle-info.svg";
+import warningIcon from "../shared-res/triangle-warning.svg";
+import errorIcon from "../shared-res/triangle-error.svg";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
@@ -86,9 +101,11 @@ export default {
     character: { type: Object, required: true },
     columns: { type: Array, required: true },
     isMain: { type: Boolean, required: true },
-    account: { type: Object, required: false },
-    filter: { type: String, required: false },
+    account: { type: Object, required: false, default: null },
+    filter: { type: String, required: false, default: "" },
   },
+
+  emits: ["toggleExpanded"],
 
   data: function () {
     return {};
@@ -100,6 +117,16 @@ export default {
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
+      return labels;
+    },
+
+    subsequentDisplayVals: function () {
+      let labels = [];
+      this.columns.forEach((col, i) => {
+        if (i >= 3) {
+          labels.push(this.displayVal(col));
+        }
+      });
       return labels;
     },
 
@@ -144,16 +171,6 @@ export default {
           this.character.corporationId
         ) != -1
       );
-    },
-  },
-
-  filters: {
-    dashDefault: function (value) {
-      if (value == null) {
-        return "-";
-      } else {
-        return value;
-      }
     },
   },
 
@@ -219,7 +236,6 @@ export default {
           } else {
             return altsLabel(this.account.alts.length);
           }
-          break;
         case "lastSeen":
           return this.character.lastSeenLabel || "-";
         default:
@@ -232,6 +248,14 @@ export default {
           } else {
             return this.character[col.key];
           }
+      }
+    },
+
+    dashDefault: function (value) {
+      if (value == null) {
+        return "-";
+      } else {
+        return value;
       }
     },
 

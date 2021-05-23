@@ -24,33 +24,32 @@ in most other places).
       :bottom-line="srp.timestamp"
       :default-href="zkillHref(srp.killmail, 'kill')"
     >
-      <a
-        class="related-link"
-        v-if="srp.relatedKillmail != null"
-        slot="top-line-extra"
-        :href="zkillHref(srp.relatedKillmail.id, 'kill')"
-      >
-        <eve-image
-          :id="srp.relatedKillmail.shipId"
-          type="Type"
-          :size="13"
-          @mouseenter.native="onRelatedHover"
-          @mouseleave.native="onRelatedUnhover"
+      <template #top-line-extra>
+        <a
+          v-if="srp.relatedKillmail != null"
+          class="related-link"
+          :href="zkillHref(srp.relatedKillmail.id, 'kill')"
         >
-        </eve-image>
-      </a>
+          <eve-image
+            :id="srp.relatedKillmail.shipId"
+            type="Type"
+            :size="13"
+            @mouseenter="onRelatedHover"
+            @mouseleave="onRelatedUnhover"
+          />
+        </a>
+      </template>
     </srp-triplet>
 
     <srp-triplet
       class="victimlet"
-      :icon-id="this.srp.victim || srp.victimCorp"
+      :icon-id="srp.victim || srp.victimCorp"
       :icon-type="victimIconType"
-      :top-line="name(this.srp.victim || srp.victimCorp)"
+      :top-line="name(srp.victim || srp.victimCorp)"
       :bottom-line="name(srp.victimCorp)"
       :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
-    >
-    </srp-triplet>
+    />
 
     <srp-triplet
       class="executionerlet"
@@ -62,35 +61,27 @@ in most other places).
         zkillHref(executionerAffiliation, executionerAffiliationType)
       "
       :top-href="zkillHref(srp.executioner.character, 'character')"
-    >
-    </srp-triplet>
+    />
 
     <srp-status
       class="srp-status"
-      :srp="srp"
+      :initial-srp="srp"
       :has-edit-priv="hasEditPriv"
       :start-in-edit-mode="startInEditMode"
-    >
-    </srp-status>
+    />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import _ from "underscore";
-
 import EveImage from "../shared/EveImage.vue";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
-import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default Vue.extend({
+export default {
   components: {
     EveImage,
-    LoadingSpinner,
     SrpStatus,
     SrpTriplet,
   },
@@ -102,11 +93,7 @@ export default Vue.extend({
     highlightAsRelated: { type: Boolean, required: false, default: false },
   },
 
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
-  },
+  emits: ["related-hover", "related-unhover"],
 
   computed: {
     victimIconType() {
@@ -154,13 +141,19 @@ export default Vue.extend({
     },
   },
 
+  mounted() {
+    if (this.editing) {
+      this.updateInputPayout(this.selectedVerdict.payout);
+    }
+  },
+
   methods: Object.assign(
     {
-      onRelatedHover(e) {
+      onRelatedHover(_e) {
         this.$emit("related-hover", this.srp.relatedKillmail.id);
       },
 
-      onRelatedUnhover(e) {
+      onRelatedUnhover(_e) {
         this.$emit("related-unhover", this.srp.relatedKillmail.id);
       },
 
@@ -174,7 +167,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>

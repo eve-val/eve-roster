@@ -1,3 +1,5 @@
+/* global NodeJS */
+
 import { WritableOptions } from "./Writable";
 import { ReadStream, ReadableOptions } from "./Readable";
 import { BasicCallback } from "./core";

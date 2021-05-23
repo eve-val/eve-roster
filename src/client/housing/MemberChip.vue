@@ -1,11 +1,11 @@
 <template>
   <div
     class="chip"
-    @mousedown="onMouseDown"
     :style="{
       visibility: visible ? 'visible' : 'hidden',
       color: character.transactionInProgress ? 'green' : 'black',
     }"
+    @mousedown="onMouseDown"
   >
     <eve-image
       :id="character.characterId"
@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-
 import EveImage from "../shared/EveImage.vue";
 
 export default {
@@ -28,8 +26,9 @@ export default {
 
   props: {
     character: { type: Object, required: true },
-    bus: { type: Vue, required: false },
   },
+
+  emits: ["chipDrag"],
 
   data: function () {
     return {
@@ -43,18 +42,16 @@ export default {
     },
 
     onMouseDown: function (ev) {
-      if (this.bus) {
-        var bounds = this.$el.getBoundingClientRect();
-        this.bus.$emit(
-          "chipDrag",
-          this,
-          this.character.name,
-          this.character.homeCitadel,
-          bounds,
-          ev.screenX,
-          ev.screenY
-        );
-      }
+      var bounds = this.$el.getBoundingClientRect();
+      this.$emit(
+        "chipDrag",
+        this,
+        this.character.name,
+        this.character.homeCitadel,
+        bounds,
+        ev.screenX,
+        ev.screenY
+      );
     },
   },
 };

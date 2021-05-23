@@ -1,27 +1,27 @@
 <template>
-  <table class="table" v-if="ships.length">
+  <table v-if="ships.length" class="table">
     <thead>
       <tr>
         <th
-          class="char-name"
-          v-on:click="setSort('mainCharacterName')"
           v-if="showMainCharacter"
+          class="char-name"
+          @click="setSort('mainCharacterName')"
         >
           Main
         </th>
-        <th class="char-name" v-on:click="setSort('characterName')">
-          Character
-        </th>
-        <th class="ship-type" v-on:click="setSort('type')">Type</th>
-        <th class="ship-name" v-on:click="setSort('name')">Name</th>
-        <th class="ship-loc" v-on:click="setSort('locationDescription')">
+        <th class="char-name" @click="setSort('characterName')">Character</th>
+        <th class="ship-type" @click="setSort('type')">Type</th>
+        <th class="ship-name" @click="setSort('name')">Name</th>
+        <th class="ship-loc" @click="setSort('locationDescription')">
           Location
         </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="ship in sorted" :key="ship.id">
-        <td v-if="showMainCharacter">{{ ship.mainCharacterName }}</td>
+        <td v-if="showMainCharacter">
+          {{ ship.mainCharacterName }}
+        </td>
         <td>{{ ship.characterName }}</td>
         <td>{{ ship.type }}</td>
         <td>{{ ship.name }}</td>
@@ -29,7 +29,7 @@
       </tr>
     </tbody>
   </table>
-  <div class="empty-list" v-else>No borrowed corp ships found. Neat!</div>
+  <div v-else class="empty-list">No borrowed corp ships found. Neat!</div>
 </template>
 
 <script>
@@ -53,7 +53,8 @@ export default {
 
   computed: {
     sorted: function () {
-      this.ships.sort((a, b) => {
+      const copy = [...this.ships];
+      copy.sort((a, b) => {
         for (let prop of this.sortOrder) {
           let ap = a[prop];
           let bp = b[prop];
@@ -63,7 +64,7 @@ export default {
         }
         return 0;
       });
-      return this.ships;
+      return copy;
     },
   },
 

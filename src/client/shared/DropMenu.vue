@@ -1,12 +1,12 @@
 <template>
   <div class="_drop-menu">
     <div
-      class="content"
       v-if="shown"
+      class="content"
       :style="rootStyle"
       @mousedown="onLocalMouseDown"
     >
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 <script>
 export default {
   props: {
-    rootStyle: { type: Object, required: false },
+    rootStyle: { type: Object, required: false, default: null },
   },
 
   data: function () {
@@ -23,13 +23,8 @@ export default {
     };
   },
 
-  destroyed() {
-    document.body.removeEventListener("mousedown", this.globalListener);
-    this.destroyed = true;
-  },
-
   watch: {
-    shown: function (value) {
+    shown: function (_value) {
       // Set a slight delay to allow for any currently-dispatching mousedown
       // event to finish dispatching.
       setTimeout(() => {
@@ -48,6 +43,11 @@ export default {
         }
       });
     },
+  },
+
+  unmounted() {
+    document.body.removeEventListener("mousedown", this.globalListener);
+    this.destroyed = true;
   },
 
   methods: {

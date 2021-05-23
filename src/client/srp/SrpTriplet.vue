@@ -14,13 +14,12 @@ lines of text on the right. The text may be optionally wrapped in links.
       style="display: inline-block"
     >
       <eve-image
-        class="icon"
         :id="iconId"
+        class="icon"
         :type="iconType"
         :size="50"
         style="background-color: #101010"
-      >
-      </eve-image>
+      />
     </adaptive-link>
     <div class="text-cnt">
       <div class="top-line-cnt">
@@ -29,9 +28,9 @@ lines of text on the right. The text may be optionally wrapped in links.
           :path="effectiveTopHref"
           :link-class="'link-row'"
         >
-          {{ topLine }}</adaptive-link
-        >
-        <slot name="top-line-extra"></slot>
+          {{ topLine }}
+        </adaptive-link>
+        <slot name="top-line-extra" />
       </div>
       <adaptive-link
         class="bot-line"
@@ -45,7 +44,6 @@ lines of text on the right. The text may be optionally wrapped in links.
 </template>
 
 <script>
-import Vue from "vue";
 import AdaptiveLink from "./AdaptiveLink.vue";
 import EveImage from "../shared/EveImage.vue";
 
@@ -53,26 +51,26 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default Vue.extend({
+export default {
   components: {
     AdaptiveLink,
     EveImage,
   },
 
   props: {
-    iconId: { type: Number, required: false },
+    iconId: { type: Number, required: false, default: -1 },
     /** One of the types listed in EveImage (Character, Corporation, etc). */
-    iconType: { type: String, required: false },
+    iconType: { type: String, required: false, default: "" },
     topLine: { type: String, required: true },
-    bottomLine: { type: String, required: false },
-    iconHref: { type: String, required: false },
-    topHref: { type: String, required: false },
-    botHref: { type: String, required: false },
+    bottomLine: { type: String, required: false, default: "" },
+    iconHref: { type: String, required: false, default: "" },
+    topHref: { type: String, required: false, default: "" },
+    botHref: { type: String, required: false, default: "" },
     /**
      * All entries are linked with the href unless overridden by the above
      * props.
      */
-    defaultHref: { type: String, required: false },
+    defaultHref: { type: String, required: false, default: "" },
   },
 
   computed: {
@@ -97,7 +95,7 @@ export default Vue.extend({
     },
     NameCacheMixin
   ),
-});
+};
 </script>
 
 <style scoped>
