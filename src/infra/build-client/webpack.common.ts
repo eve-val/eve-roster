@@ -31,8 +31,8 @@ export function commonConfig(
     // Main entry point of the app; the transitive dependencies of this file
     // determine what we include in the compiled bundle.
     entry: {
-      main: path.join(paths.clientSrc, "home.js"),
-      login: path.join(paths.clientSrc, "login.js"),
+      main: path.join(paths.clientSrc, "home.ts"),
+      login: path.join(paths.clientSrc, "login.ts"),
     },
 
     output: {
@@ -49,6 +49,15 @@ export function commonConfig(
 
     module: {
       rules: [
+        {
+          test: /\.tsx?$/,
+          loader: "ts-loader",
+          options: {
+            appendTsSuffixTo: [/\.vue$/],
+          },
+          exclude: /node_modules/,
+        },
+
         // Compilation for Vue single file components (*.vue)
         {
           test: /\.vue$/,

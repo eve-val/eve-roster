@@ -16,11 +16,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AccountRow from "./AccountRow.vue";
 import TableHeader from "./TableHeader.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     AccountRow,
     TableHeader,
@@ -89,7 +90,7 @@ export default {
       }
     },
   },
-};
+});
 
 function getSortVal(column, character, account) {
   if (column.account) {

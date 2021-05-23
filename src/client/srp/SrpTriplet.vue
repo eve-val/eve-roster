@@ -43,7 +43,7 @@ lines of text on the right. The text may be optionally wrapped in links.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AdaptiveLink from "./AdaptiveLink.vue";
 import EveImage from "../shared/EveImage.vue";
 
@@ -51,7 +51,8 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     AdaptiveLink,
     EveImage,
@@ -95,7 +96,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

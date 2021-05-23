@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import "./css/home.css";
 import Home from "./Home.vue";
 
@@ -27,7 +27,7 @@ import AllBorrowedShips from "./ships/AllBorrowedShips.vue";
 
 // Anything added here should also be in server.js:FRONTEND_ROUTES
 // TODO(aiiane): make server.js just read it directly from here
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: "/", component: Dashboard, meta: { keepAlive: false } },
   { path: "/roster", component: Roster, meta: { keepAlive: true } },
   { path: "/character/:id", component: Character, meta: { keepAlive: false } },
@@ -59,7 +59,7 @@ const routes = [
         path: "history/:id",
         component: CombatHistory,
         props: (route) => ({
-          forAccount: parseInt(route.params.id),
+          forAccount: parseInt(<string>route.params.id),
           triageMode: false,
         }),
       },
@@ -76,7 +76,7 @@ const routes = [
         path: "triage/:id",
         component: CombatHistory,
         props: (route) => ({
-          forAccount: parseInt(route.params.id),
+          forAccount: parseInt(<string>route.params.id),
           triageMode: true,
         }),
       },
@@ -89,12 +89,12 @@ const routes = [
   {
     path: "/srp/payment/:id",
     component: PaymentDetail,
-    props: (route) => ({ srpId: parseInt(route.params.id) }),
+    props: (route) => ({ srpId: parseInt(<string>route.params.id) }),
   },
   {
     path: "/srp/battle/:id",
     component: BattleDetail,
-    props: (route) => ({ battleId: parseInt(route.params.id) }),
+    props: (route) => ({ battleId: parseInt(<string>route.params.id) }),
   },
   { path: "/ships", redirect: "/ships/borrowed-by-me" },
   { path: "/ships/borrowed-by-me", component: ShipsBorrowedByMe },
@@ -112,6 +112,17 @@ const router = createRouter({
   routes: routes,
 });
 
+export type Identity = {
+  account: {
+    id: number;
+  };
+  access: {
+    [key: string]: number;
+  };
+  isMember: boolean;
+};
+
+declare const $__IDENTITY: Identity;
 createApp(Home, {
   identity: $__IDENTITY, // eslint-disable-line no-undef
 })

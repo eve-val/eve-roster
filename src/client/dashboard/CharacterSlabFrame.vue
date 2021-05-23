@@ -10,10 +10,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "../shared/EveImage.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
   },
@@ -21,7 +22,7 @@ export default {
   props: {
     characterId: { type: Number, required: true },
   },
-};
+});
 </script>
 
 <style scoped>

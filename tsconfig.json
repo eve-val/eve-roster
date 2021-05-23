@@ -29,5 +29,5 @@
     "sourceMap": true /* Generates corresponding '.map' file. */
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "static", "out/**/*"]
+  "exclude": ["node_modules", "static", "out/**/*", "src/client"]
 }

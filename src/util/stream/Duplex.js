@@ -1,1 +1,0 @@
-export { Duplex } from "stream";

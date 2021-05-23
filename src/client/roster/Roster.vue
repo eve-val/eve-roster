@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 import ajaxer from "../shared/ajaxer";
 
@@ -39,7 +39,10 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import RosterTable from "./RosterTable.vue";
 import SearchBox from "./SearchBox.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     LoadingSpinner,
@@ -48,7 +51,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
@@ -79,7 +82,7 @@ export default {
   },
 
   methods: {
-    onSearchStringChange: _.debounce(function (str) {
+    onSearchStringChange: _.debounce((str: string) => {
       if (str.length == 0) {
         this.searchString = null;
       } else if (str.length >= 3) {
@@ -87,7 +90,7 @@ export default {
       }
     }, 100),
   },
-};
+});
 
 const APPEND_ATTRS = new Set(["alertMessage"]);
 
@@ -133,7 +136,7 @@ function computeAggregateCharacter(account) {
   return aggregate;
 }
 
-function aggProp(prop, ...chars) {
+function aggProp(prop: string, ...chars: Map<string, string>[]) {
   let text = "";
   for (let char of chars) {
     if (char[prop]) {

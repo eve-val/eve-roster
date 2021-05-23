@@ -33,7 +33,7 @@ Exposes various options for filtering the contents of the table.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 import MoreButton from "./MoreButton.vue";
@@ -41,7 +41,10 @@ import MoreButton from "./MoreButton.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LossHeading,
     LossRow,
@@ -49,7 +52,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     forAccount: { type: Number, required: false, default: null },
     triageMode: { type: Boolean, required: false, default: false },
     compactMode: { type: Boolean, required: false, default: false },
@@ -128,7 +131,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

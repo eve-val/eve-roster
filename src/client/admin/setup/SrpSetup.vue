@@ -50,11 +50,12 @@ SRP tracking starts, if it does at all.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -101,7 +102,7 @@ export default {
   },
 
   methods: {
-    onSaveClick(_e) {
+    onSaveClick() {
       const trackSrp = this.trackSrp;
       const startInput = this.startInput;
 
@@ -132,9 +133,9 @@ export default {
         });
     },
   },
-};
+});
 
-function timestampToDateStr(timestamp) {
+function timestampToDateStr(timestamp: number) {
   const date = new Date(timestamp);
   return (
     date.getUTCFullYear() +

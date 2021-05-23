@@ -22,10 +22,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {},
 
   props: {
@@ -56,7 +57,7 @@ export default {
       return classes;
     },
   },
-};
+});
 </script>
 
 <style scoped>

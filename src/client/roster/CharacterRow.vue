@@ -76,7 +76,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
@@ -91,7 +91,8 @@ import errorIcon from "../shared-res/triangle-error.svg";
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     Tooltip,
@@ -175,7 +176,7 @@ export default {
   },
 
   methods: {
-    cellStyle: function (idx) {
+    cellStyle: function (idx: number) {
       let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
@@ -193,7 +194,7 @@ export default {
       };
     },
 
-    tooltipMessage: function (idx) {
+    tooltipMessage: function (idx: number) {
       let col = this.columns[idx];
       if (!col.metaKey) {
         // No tooltip to display
@@ -251,7 +252,7 @@ export default {
       }
     },
 
-    dashDefault: function (value) {
+    dashDefault: function (value: null | string | number) {
       if (value == null) {
         return "-";
       } else {
@@ -259,7 +260,7 @@ export default {
       }
     },
 
-    cellAlignment(colIdx) {
+    cellAlignment(colIdx: number) {
       let col = this.columns[colIdx];
       let align = "left";
       if (col.key == "warning") {
@@ -270,13 +271,13 @@ export default {
       return align;
     },
   },
-};
+});
 
-function iskLabel(isk) {
+function iskLabel(isk: number) {
   return formatNumber(isk) + " ISK";
 }
 
-function altsLabel(altsCount) {
+function altsLabel(altsCount: number) {
   if (altsCount == 0) {
     return "";
   } else if (altsCount == 1) {

@@ -42,11 +42,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import filter from "./filter";
 import CharacterRow from "./CharacterRow.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     CharacterRow,
   },
@@ -133,7 +134,7 @@ export default {
       el.style.height = "auto";
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -29,7 +29,7 @@
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import Promise from "bluebird";
 
 import ajaxer from "../shared/ajaxer";
@@ -40,7 +40,10 @@ import SrpSetup from "./setup/SrpSetup.vue";
 
 const JSON_COMMENT_PATTERN = /\s*\/\/[^\n]*\n?/g;
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -48,7 +51,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -90,7 +93,7 @@ export default {
         });
     },
   },
-};
+});
 </script>
 
 <style scoped>

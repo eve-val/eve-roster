@@ -35,21 +35,24 @@ Table of PaymentHistoryRows.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MoreButton from "./MoreButton.vue";
 import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     MoreButton,
     PaymentHistoryRow,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     forAccount: { type: Number, required: false, default: undefined },
     compactMode: { type: Boolean, required: false, default: false },
   },
@@ -107,7 +110,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

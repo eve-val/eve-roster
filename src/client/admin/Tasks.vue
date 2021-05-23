@@ -44,7 +44,7 @@
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import Promise from "bluebird";
 import _ from "underscore";
 
@@ -58,7 +58,26 @@ import TaskLog from "./TaskLog.vue";
 
 const POLL_FREQUENCY = 4000;
 
-export default {
+type Job = {
+  id: number;
+  task: string;
+  startTime: number;
+  progress: number | null;
+  progressLabel: string | null;
+};
+
+type Task = {
+  name: string;
+  displayName: string;
+  description: string;
+  isSynthetic: boolean;
+  job: Job;
+};
+
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -67,12 +86,12 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
     return {
-      tasks: null,
+      tasks: <Task[]>[],
       taskLog: [],
       polling: false,
     };
@@ -224,7 +243,7 @@ export default {
       });
     },
   },
-};
+});
 
 function compareJobs(a, b) {
   if (a.job != null && b.job == null) {

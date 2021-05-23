@@ -44,22 +44,26 @@
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import AdminWrapper from "./AdminWrapper.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
     return {
       citadels: [],
+      citadelsPromise: null,
       newCitadel: {
         name: "",
         type: "Astrahus",
@@ -156,7 +160,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

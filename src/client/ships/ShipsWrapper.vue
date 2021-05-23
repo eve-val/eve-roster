@@ -24,16 +24,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AppHeader from "../shared/AppHeader.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     title: { type: String, required: true },
   },
 
@@ -42,7 +45,7 @@ export default {
       return this.identity.access["characterShips"] >= 1;
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -98,7 +98,7 @@ May also contain triage UI if triageMode is enabled.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "../../shared/EveImage.vue";
 import SrpTriplet from "../SrpTriplet.vue";
 import SrpStatus from "../SrpStatus.vue";
@@ -106,7 +106,8 @@ import Tooltip from "../../shared/Tooltip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     SrpStatus,
@@ -152,7 +153,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

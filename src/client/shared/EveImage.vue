@@ -5,7 +5,7 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import unknownIcon from "./res/EveImage-Unknown.svg";
 
 const SUPPORTED_TYPES = {
@@ -18,7 +18,8 @@ const SUPPORTED_TYPES = {
 
 const SUPPORTED_SIZES = [32, 64, 128, 256, 512];
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     id: {
       type: Number,
@@ -66,7 +67,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

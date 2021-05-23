@@ -75,14 +75,15 @@ the reimbursement as paid.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
     SrpTriplet,
@@ -105,7 +106,7 @@ export default {
 
   methods: Object.assign(
     {
-      onCopyReasonClick(_e) {
+      onCopyReasonClick() {
         this.$refs.reasonInput.select();
         try {
           document.execCommand("copy");
@@ -114,7 +115,7 @@ export default {
         }
       },
 
-      onCopyPayoutClick(_e) {
+      onCopyPayoutClick() {
         this.$refs.payoutInput.select();
         try {
           document.execCommand("copy");
@@ -127,7 +128,7 @@ export default {
         );
       },
 
-      onSaveClick(_e) {
+      onSaveClick() {
         if (this.saveStatus == "saving" || this.payingCharacter == null) {
           return;
         }
@@ -144,12 +145,12 @@ export default {
             this.saveStatus = "inactive";
             this.paid = true;
           })
-          .catch((_e) => {
+          .catch(() => {
             this.saveStatus = "error";
           });
       },
 
-      onUndoClick(_e) {
+      onUndoClick() {
         if (this.undoStatus == "saving") {
           return;
         }
@@ -162,14 +163,14 @@ export default {
             this.undoStatus = "inactive";
             this.paid = false;
           })
-          .catch((_e) => {
+          .catch(() => {
             this.undoStatus = "error";
           });
       },
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

@@ -8,7 +8,7 @@ const filter = {
   },
 
   match: function (str, f) {
-    let i = filter.matchIndex(str, f);
+    const i = filter.matchIndex(str, f);
     if (i == -1) {
       return null;
     } else {

@@ -19,10 +19,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -44,7 +45,7 @@ export default {
       this.$refs.spinner.observe(this.submitHandler(value || null));
     },
   },
-};
+});
 </script>
 
 <style scoped>

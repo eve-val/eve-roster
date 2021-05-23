@@ -17,10 +17,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import TaskSlab from "../admin/TaskSlab.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     TaskSlab,
   },
@@ -115,7 +116,7 @@ export default {
       };
     },
   },
-};
+});
 
 function pendingPromise() {
   return new Promise(() => {});

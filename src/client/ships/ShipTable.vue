@@ -32,8 +32,9 @@
   <div v-else class="empty-list">No borrowed corp ships found. Neat!</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     showMainCharacter: { type: Boolean, required: false, default: false },
     ships: { type: Array, required: true },
@@ -76,7 +77,7 @@ export default {
       this.sortOrder.unshift(column);
     },
   },
-};
+});
 </script>
 
 <style scoped>

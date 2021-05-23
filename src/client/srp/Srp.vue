@@ -26,16 +26,19 @@ Root container for the SRP UI.
   </app-page>
 </template>
 
-<script>
+<script lang="ts">
 import AppPage from "../shared/AppPage.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppPage,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -49,7 +52,7 @@ export default {
   },
 
   methods: {},
-};
+});
 </script>
 
 <style scoped>

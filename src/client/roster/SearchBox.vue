@@ -9,8 +9,9 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {},
 
   emits: ["change"],
@@ -29,7 +30,7 @@ export default {
       this.$emit("change", ev.target.value);
     },
   },
-};
+});
 </script>
 
 <style scoped>

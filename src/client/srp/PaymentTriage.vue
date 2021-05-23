@@ -44,7 +44,7 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import CharacterSelector from "./CharacterSelector.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentTriageRow from "./PaymentTriageRow.vue";
@@ -54,7 +54,10 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     CharacterSelector,
     MoreButton,
@@ -62,7 +65,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -130,7 +133,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

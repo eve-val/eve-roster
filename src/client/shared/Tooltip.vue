@@ -30,9 +30,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 const HORIZONTAL_GRAVITIES = ["left", "center", "right"];
 const VERTICAL_GRAVITIES = ["top", "center", "bottom"];
+
+type Dictionary<T> = { [key: string]: T };
+type Nullable<T> = T | null;
+type CssStyleObject = Partial<CSSStyleDeclaration> &
+  Dictionary<Nullable<string>>;
+type HorizontalGravity = "left" | "center" | "right";
+type VerticalGravity = "top" | "center" | "bottom";
 
 const MARGIN_TO_TARGET = 3;
 const ARROW_RISE = 7;
@@ -40,14 +47,15 @@ const ARROW_BASE = 14;
 const ARROW_FILL = "#3e3e3e";
 const ARROW_INSET_FILL = "#202020";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     /**
      * Where the tooltip appears relative to the original object.
      * Format: `<horizontal> <vertical>`
      * e.g. `left center`
      * Horizontal options: `left`, `center`, `right`
-     * Vertical optioins: `top`, `center`, `bottom`
+     * Vertical options: `top`, `center`, `bottom`
      */
     gravity: {
       type: String,
@@ -84,7 +92,7 @@ export default {
       if (!HORIZONTAL_GRAVITIES.includes(hgrav)) {
         hgrav = "center";
       }
-      return hgrav;
+      return <HorizontalGravity>hgrav;
     },
 
     verticalGravity() {
@@ -96,13 +104,13 @@ export default {
         vgrav = "bottom";
       }
 
-      return vgrav;
+      return <VerticalGravity>vgrav;
     },
 
     flexContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
-      switch (this.horizontalGravity) {
+      switch (this.horizontalGravity()) {
         case "left":
           style["flex-direction"] = "row-reverse";
           // style['justify-content'] = 'flex-end';
@@ -112,7 +120,7 @@ export default {
           // style['justify-content'] = 'flex-start';
           break;
         case "center":
-          switch (this.verticalGravity) {
+          switch (this.verticalGravity()) {
             case "top":
               style["flex-direction"] = "column-reverse";
               break;
@@ -127,11 +135,11 @@ export default {
     },
 
     nosizeContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
-      if (this.horizontalGravity == "center") {
+      if (this.horizontalGravity() == "center") {
         style["align-items"] = "center";
-        switch (this.verticalGravity) {
+        switch (this.verticalGravity()) {
           case "top":
             style["flex-direction"] = "column";
             break;
@@ -139,14 +147,14 @@ export default {
             style["flex-direction"] = "column-reverse";
             break;
         }
-        switch (this.verticalGravity) {
+        switch (this.verticalGravity()) {
           case "top":
             break;
           case "bottom":
             break;
         }
       } else {
-        switch (this.horizontalGravity) {
+        switch (this.horizontalGravity()) {
           case "left":
             style["flex-direction"] = "row";
             break;
@@ -154,7 +162,7 @@ export default {
             style["flex-direction"] = "row-reverse";
             break;
         }
-        switch (this.verticalGravity) {
+        switch (this.verticalGravity()) {
           case "top":
             style["align-items"] = "flex-end";
             break;
@@ -171,9 +179,9 @@ export default {
     },
 
     spacerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
       let marginStr = MARGIN_TO_TARGET + "px";
-      switch (this.triangleDirection) {
+      switch (this.triangleDirection()) {
         case "left":
         case "right":
           style["width"] = marginStr;
@@ -191,8 +199,8 @@ export default {
     triangleStyle() {
       let style = this.getTriangleStyle(ARROW_FILL, ARROW_BASE, ARROW_RISE);
 
-      if (this.horizontalGravity != "center") {
-        switch (this.verticalGravity) {
+      if (this.horizontalGravity() != "center") {
+        switch (this.verticalGravity()) {
           case "top":
             style["top"] = `${ARROW_BASE / 2}px`;
             break;
@@ -212,21 +220,21 @@ export default {
         ARROW_RISE
       );
 
-      if (this.horizontalGravity == "center") {
+      if (this.horizontalGravity() == "center") {
         style["left"] = `-${ARROW_BASE / 2}px`;
-        style[this.verticalGravity] = `-${ARROW_RISE + 2}px`;
+        style[this.verticalGravity()] = `-${ARROW_RISE + 2}px`;
       } else {
         style["top"] = `-${ARROW_BASE / 2}px`;
-        style[this.horizontalGravity] = `-${ARROW_RISE + 2}px`;
+        style[this.horizontalGravity()] = `-${ARROW_RISE + 2}px`;
       }
 
       return style;
     },
 
     messageMaxSizerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
-      switch (this.horizontalGravity) {
+      switch (this.horizontalGravity()) {
         case "left":
           style["text-align"] = "right";
           break;
@@ -242,10 +250,10 @@ export default {
     },
 
     messageContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
-      if (this.horizontalGravity != "center") {
-        switch (this.verticalGravity) {
+      if (this.horizontalGravity() != "center") {
+        switch (this.verticalGravity()) {
           case "top":
             style.top = "13px";
             break;
@@ -261,9 +269,9 @@ export default {
     },
 
     triangleDirection() {
-      switch (this.horizontalGravity) {
+      switch (this.horizontalGravity()) {
         case "center":
-          switch (this.verticalGravity) {
+          switch (this.verticalGravity()) {
             case "top":
               return "down";
             case "bottom":
@@ -280,16 +288,16 @@ export default {
   },
 
   methods: {
-    getTriangleStyle: function (color, base, rise) {
-      let style = {};
+    getTriangleStyle: function (color: string, base: number, rise: number) {
+      let style: CssStyleObject = {};
 
       const solidBorder = `${rise}px solid ${color}`;
       const transBorder = `${base / 2}px solid transparent`;
 
-      if (this.horizontalGravity == "center") {
+      if (this.horizontalGravity() == "center") {
         style["border-left"] = transBorder;
         style["border-right"] = transBorder;
-        switch (this.verticalGravity) {
+        switch (this.verticalGravity()) {
           case "top":
             style["border-top"] = solidBorder;
             break;
@@ -300,7 +308,7 @@ export default {
       } else {
         style["border-top"] = transBorder;
         style["border-bottom"] = transBorder;
-        switch (this.horizontalGravity) {
+        switch (this.horizontalGravity()) {
           case "left":
             style["border-left"] = solidBorder;
             break;
@@ -313,9 +321,9 @@ export default {
       return style;
     },
   },
-};
+});
 
-function splitGravString(str) {
+function splitGravString(str: string) {
   return str.trim().split(/\s+/);
 }
 </script>

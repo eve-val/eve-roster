@@ -72,14 +72,15 @@ in most other places).
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "../shared/EveImage.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     SrpStatus,
@@ -141,19 +142,13 @@ export default {
     },
   },
 
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
-  },
-
   methods: Object.assign(
     {
-      onRelatedHover(_e) {
+      onRelatedHover() {
         this.$emit("related-hover", this.srp.relatedKillmail.id);
       },
 
-      onRelatedUnhover(_e) {
+      onRelatedUnhover() {
         this.$emit("related-unhover", this.srp.relatedKillmail.id);
       },
 
@@ -167,7 +162,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

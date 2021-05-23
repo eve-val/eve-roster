@@ -26,10 +26,11 @@ A component that either looks like a "load more" button or a loading spinner.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -68,7 +69,7 @@ export default {
               this.status = "inactive";
             }
           })
-          .catch((_e) => {
+          .catch(() => {
             if (promise == this.promise) {
               this.status = "inactive";
             }
@@ -78,13 +79,13 @@ export default {
       }
     },
 
-    onButtonClick(_e) {
+    onButtonClick() {
       if (this.status != "active") {
         this.$emit("fetch-requested");
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

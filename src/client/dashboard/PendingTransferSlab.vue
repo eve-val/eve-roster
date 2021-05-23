@@ -41,13 +41,14 @@
   </character-slab-frame>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import CharacterSlabFrame from "./CharacterSlabFrame.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     CharacterSlabFrame,
     LoadingSpinner,
@@ -86,7 +87,7 @@ export default {
         });
     },
   },
-};
+});
 </script>
 
 <style scoped>

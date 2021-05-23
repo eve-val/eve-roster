@@ -50,15 +50,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
 import { groupifySkills } from "./skills";
+import { Identity } from "../home";
 
-export default {
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
 
@@ -68,7 +70,7 @@ export default {
 
   props: {
     characterId: { type: Number, required: true },
-    access: { type: Object, required: true },
+    access: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
@@ -134,7 +136,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

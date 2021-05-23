@@ -112,7 +112,7 @@ triage options weren't initially provided, fetches them from the server.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
@@ -120,7 +120,8 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -253,7 +254,7 @@ export default {
 
   methods: Object.assign(
     {
-      onSaveClick(_e) {
+      onSaveClick() {
         const payout = this.displayPayoutToRawPayout(this.inputPayout);
         const verdict = this.selectedVerdict.verdict;
         const reason = this.selectedVerdict.reason;
@@ -274,12 +275,12 @@ export default {
               [response.data.id]: response.data.name,
             });
           })
-          .catch((_e) => {
+          .catch(() => {
             this.saveStatus = "error";
           });
       },
 
-      onEditClick(_e) {
+      onEditClick() {
         if (this.srp.triage == null) {
           if (this.fetchTriageStatus == "active") {
             return;
@@ -310,7 +311,7 @@ export default {
 
               this.editing = true;
             })
-            .catch((_e) => {
+            .catch(() => {
               this.fetchTriageStatus = "error";
             });
         } else {
@@ -318,15 +319,15 @@ export default {
         }
       },
 
-      updateInputPayout(value) {
+      updateInputPayout(value: number) {
         this.inputPayout = this.rawPayoutToDisplayPayout(value);
       },
 
-      rawPayoutToDisplayPayout(rawPayout) {
+      rawPayoutToDisplayPayout(rawPayout: number): number {
         return Math.round(rawPayout / 1000000);
       },
 
-      displayPayoutToRawPayout(displayPayout) {
+      displayPayoutToRawPayout(displayPayout: number) {
         return displayPayout * 1000000;
       },
 
@@ -340,7 +341,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 
 const INELIGIBLE_STATUSES = [
   {

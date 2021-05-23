@@ -47,7 +47,7 @@
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import moment from "moment";
 
 import ajaxer from "../shared/ajaxer";
@@ -56,7 +56,10 @@ import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -64,7 +67,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -88,7 +91,7 @@ export default {
       return moment(value).format("Y/MM/DD HH:mm:ss Z");
     },
   },
-};
+});
 </script>
 
 <style scoped>

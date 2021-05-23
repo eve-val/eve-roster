@@ -11,10 +11,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MemberChip from "./MemberChip.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     MemberChip,
   },
@@ -24,7 +25,7 @@ export default {
   },
 
   emits: ["hover", "unhover", "chipDrag"],
-};
+});
 </script>
 
 <style scoped>

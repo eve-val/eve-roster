@@ -129,10 +129,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -147,7 +148,7 @@ export default {
     this.$refs.inlineResolved.observe(resolvedPromise());
     this.$refs.blockResolved.observe(resolvedPromise());
   },
-};
+});
 
 function pendingPromise() {
   return new Promise(() => {});

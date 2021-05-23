@@ -80,7 +80,7 @@
   </character-slab-frame>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import CharacterSlabFrame from "./CharacterSlabFrame.vue";
@@ -96,7 +96,8 @@ import warningIcon from "../shared-res/triangle-warning.svg";
 
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     CharacterSlabFrame,
     ReauthenticationPrompt,
@@ -197,7 +198,7 @@ export default {
         });
       }
 
-      let queueWarning = this.character.skillQueue.warning;
+      const queueWarning = this.character.skillQueue.warning;
       if (queueWarning) {
         icons.push({
           key: "esi-failure",
@@ -241,7 +242,7 @@ export default {
   },
 
   methods: {
-    onMouseOut(_e) {
+    onMouseOut() {
       if (this.$refs.menu) {
         this.$refs.menu.hide();
       }
@@ -290,9 +291,9 @@ export default {
         });
     },
   },
-};
+});
 
-function getQueueWarningLabel(warning) {
+function getQueueWarningLabel(warning: string) {
   let generalWarning = "Skill queue may be out of date.";
 
   switch (warning) {

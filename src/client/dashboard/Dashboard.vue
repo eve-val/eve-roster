@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
@@ -59,7 +59,10 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     LoadingSpinner,
@@ -68,7 +71,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
@@ -125,7 +128,7 @@ export default {
         });
     },
 
-    onRequireRefresh(_characterId) {
+    onRequireRefresh(_characterId: number) {
       this.fetchData();
     },
 
@@ -142,7 +145,7 @@ export default {
       });
     },
   },
-};
+});
 
 function compareIsMainCharacter(a, b, mainCharacterId) {
   if (a.id == mainCharacterId) {

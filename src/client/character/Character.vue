@@ -120,7 +120,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
@@ -131,7 +131,10 @@ import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
 import { groupifySkills } from "./skills";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     EveImage,
@@ -142,7 +145,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
@@ -155,11 +158,13 @@ export default {
 
       characterPromise: null,
       corporationName: null,
+      skillsMap: null,
+      queue: null,
     };
   },
 
   computed: {
-    characterId: function () {
+    characterId: function (): number {
       return parseInt(this.$route.params.id);
     },
 
@@ -176,7 +181,7 @@ export default {
     },
 
     timezoneOptions: function () {
-      return this.timezones.map((timezone) => {
+      return this.timezones.map((timezone: string) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
           value: timezone,
@@ -194,7 +199,7 @@ export default {
   },
 
   watch: {
-    characterId(_value) {
+    characterId(_value: number) {
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
@@ -256,7 +261,7 @@ export default {
         map[skill.id] = skill;
         skill.queuedLevel = null;
       }
-      this.skillMap = map;
+      this.skillsMap = map;
       this.skillGroups = groupifySkills(skills);
       this.maybeInjectQueueDataIntoSkillsMap();
     },
@@ -277,7 +282,7 @@ export default {
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
   },
-};
+});
 
 const TIMEZONE_HINTS = {
   "US West": "PT/MT",

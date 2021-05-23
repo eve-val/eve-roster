@@ -31,7 +31,7 @@ const GROUP_DISPLAY_ORDER = [
 
 const GROUP_DISPLAY_MAP = {};
 for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
-  let group = GROUP_DISPLAY_ORDER[i];
+  const group = GROUP_DISPLAY_ORDER[i];
   GROUP_DISPLAY_MAP[group.groupId] = {
     name: group.name,
     position: i,
@@ -44,11 +44,11 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
  * GROUP_DISPLAY_ORDER.
  */
 export function groupifySkills(skills) {
-  let skillGroupMap = _.groupBy(skills, "group");
+  const skillGroupMap = _.groupBy(skills, "group");
 
-  let skillGroups = [];
-  for (let groupId in skillGroupMap) {
-    let skills = skillGroupMap[groupId];
+  const skillGroups = [];
+  for (const groupId in skillGroupMap) {
+    const skills = skillGroupMap[groupId];
 
     // Sort skills by name
     skills.sort((a, b) => a.name.localeCompare(b.name));
@@ -56,7 +56,7 @@ export function groupifySkills(skills) {
     // Attach group name and sort position
     let groupDescriptor = GROUP_DISPLAY_MAP[groupId];
     if (groupDescriptor == undefined) {
-      let fallbackName = groupId == "null" ? "unknown" : groupId;
+      const fallbackName = groupId == "null" ? "unknown" : groupId;
       groupDescriptor = {
         name: `Skill group ${fallbackName}`,
         position: GROUP_DISPLAY_ORDER.length,

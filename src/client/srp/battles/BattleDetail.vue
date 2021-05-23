@@ -19,7 +19,7 @@ Page for displaying details about a specific battle.
   </app-page>
 </template>
 
-<script>
+<script lang="ts">
 import AppPage from "../../shared/AppPage.vue";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 import BattleRow from "./BattleRow.vue";
@@ -27,7 +27,10 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default {
+import { Identity } from "../../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppPage,
     LoadingSpinner,
@@ -35,7 +38,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     battleId: { type: Number, required: true },
   },
 
@@ -63,7 +66,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

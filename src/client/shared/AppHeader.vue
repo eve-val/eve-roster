@@ -24,10 +24,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "./EveImage.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
   },
@@ -52,7 +53,7 @@ export default {
       return process.env.NODE_ENV == "development";
     },
   },
-};
+});
 </script>
 
 <style scoped>

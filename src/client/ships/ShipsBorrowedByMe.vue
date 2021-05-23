@@ -10,14 +10,17 @@
   </ships-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import ShipsWrapper from "./ShipsWrapper.vue";
 import ShipTable from "./ShipTable.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     ShipsWrapper,
     ShipTable,
@@ -25,7 +28,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data: function () {
@@ -41,5 +44,5 @@ export default {
         this.ships = response.data;
       });
   },
-};
+});
 </script>

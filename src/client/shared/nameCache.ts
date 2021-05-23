@@ -1,4 +1,4 @@
-const nameCache = new Map();
+const nameCache = new Map<number, string>();
 
 /**
  * Mixin for the `methods` object on Vue components. Gives the component access
@@ -13,13 +13,13 @@ const nameCache = new Map();
  * access the map without it being passed to them explicitly.
  */
 export const NameCacheMixin = {
-  addNames(names) {
-    for (let id in names) {
+  addNames(names: Map<number, string>) {
+    for (const id in names) {
       nameCache.set(parseInt(id), names[id]);
     }
   },
 
-  name(id) {
+  name(id: number) {
     return nameCache.get(id) || "[Unknown entity]";
   },
 };

@@ -38,13 +38,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Promise from "bluebird";
 import ajaxer from "../shared/ajaxer";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -120,7 +121,7 @@ export default {
       this.runPromise = promise;
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -61,7 +61,7 @@ losses, etc.
   </app-page>
 </template>
 
-<script>
+<script lang="ts">
 import AppPage from "../shared/AppPage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
@@ -70,7 +70,10 @@ import LossRow from "./LossRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppPage,
     LoadingSpinner,
@@ -79,7 +82,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     srpId: { type: Number, required: true },
   },
 
@@ -125,7 +128,7 @@ export default {
           });
       },
 
-      onUndoClick(_e) {
+      onUndoClick() {
         if (this.undoStatus == "saving") {
           return;
         }
@@ -137,14 +140,14 @@ export default {
             this.payment.paid = false;
             this.fetchData();
           })
-          .catch((_e) => {
+          .catch(() => {
             this.undoStatus = "error";
           });
       },
     },
     NameCacheMixin
   ),
-};
+});
 </script>
 
 <style scoped>

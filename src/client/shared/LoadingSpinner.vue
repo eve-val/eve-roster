@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * Generic loading spinner
  *
@@ -107,7 +107,8 @@ import blockWarningIcon from "../shared-res/triangle-warning.svg";
 const DISPLAY_VALUES = ["inline", "block"];
 const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     Tooltip,
   },
@@ -307,7 +308,7 @@ export default {
         });
     },
   },
-};
+});
 </script>
 
 <style scoped>

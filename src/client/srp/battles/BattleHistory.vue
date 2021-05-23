@@ -29,21 +29,24 @@ Battle reports are instances of BattleRow.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BattleRow from "./BattleRow.vue";
 import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default {
+import { Identity } from "../../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     BattleRow,
     MoreButton,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     triageMode: { type: Boolean, required: false, default: false },
   },
 
@@ -115,7 +118,7 @@ export default {
     },
     NameCacheMixin
   ),
-};
+});
 
 const RESULTS_PER_FETCH = 30;
 </script>

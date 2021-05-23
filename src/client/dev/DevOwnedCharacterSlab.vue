@@ -123,11 +123,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     OwnedCharacterSlab,
   },
@@ -156,7 +157,7 @@ export default {
     this.$refs.actionPendingSlab.$refs.spinner.observe(pendingPromise());
     this.$refs.actionFailedSlab.$refs.spinner.observe(errorPromise());
   },
-};
+});
 
 function pendingPromise() {
   return new Promise(() => {});
