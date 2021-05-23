@@ -77,9 +77,11 @@ import EveImage from "../shared/EveImage.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
+import { Srp } from "./types";
+import { AssetType } from "../shared/types";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,
@@ -88,16 +90,20 @@ export default defineComponent({
   },
 
   props: {
-    srp: { type: Object, required: true },
-    hasEditPriv: { type: Boolean, required: true },
-    startInEditMode: { type: Boolean, required: true },
-    highlightAsRelated: { type: Boolean, required: false, default: false },
+    srp: { type: Object as PropType<Srp>, required: true },
+    hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
+    startInEditMode: { type: Boolean as PropType<boolean>, required: true },
+    highlightAsRelated: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
   },
 
   emits: ["related-hover", "related-unhover"],
 
   computed: {
-    victimIconType() {
+    victimIconType(): AssetType {
       if (this.srp.victim != undefined) {
         return "Character";
       } else {
@@ -105,7 +111,7 @@ export default defineComponent({
       }
     },
 
-    victimHref() {
+    victimHref(): string | null {
       if (this.srp.victim != undefined) {
         return `/character/${this.srp.victim}`;
       } else {
@@ -113,7 +119,7 @@ export default defineComponent({
       }
     },
 
-    executionerIconType() {
+    executionerIconType(): AssetType {
       if (this.srp.executioner.alliance) {
         return "Alliance";
       } else if (this.srp.executioner.corporation) {
@@ -123,7 +129,7 @@ export default defineComponent({
       }
     },
 
-    executionerAffiliation() {
+    executionerAffiliation(): number {
       return (
         this.srp.executioner.alliance ||
         this.srp.executioner.corporation ||
@@ -131,7 +137,7 @@ export default defineComponent({
       );
     },
 
-    executionerAffiliationType() {
+    executionerAffiliationType(): string {
       if (this.srp.executioner.alliance) {
         return "alliance";
       } else if (this.srp.executioner.corporation) {
@@ -152,7 +158,7 @@ export default defineComponent({
         this.$emit("related-unhover", this.srp.relatedKillmail.id);
       },
 
-      zkillHref(id, type) {
+      zkillHref(id: number, type: string): string | undefined {
         if (id == undefined) {
           return undefined;
         } else {

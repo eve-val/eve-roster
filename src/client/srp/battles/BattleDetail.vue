@@ -28,7 +28,7 @@ import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
 import { Identity } from "../../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -39,7 +39,7 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    battleId: { type: Number, required: true },
+    battleId: { type: Number as PropType<number>, required: true },
   },
 
   data() {
@@ -58,7 +58,7 @@ export default defineComponent({
         this.battle = null;
         this.$refs.spinner
           .observe(ajaxer.getBattle(this.battleId, true))
-          .then((response) => {
+          .then((response: AxiosResponse) => {
             this.addNames(response.data.names);
             this.battle = response.data.battles[0];
           });

@@ -42,7 +42,7 @@ import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -53,9 +53,21 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    forAccount: { type: Number, required: false, default: null },
-    triageMode: { type: Boolean, required: false, default: false },
-    compactMode: { type: Boolean, required: false, default: false },
+    forAccount: {
+      type: Number as PropType<number | null>,
+      required: false,
+      default: null,
+    },
+    triageMode: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
+    compactMode: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -64,11 +76,16 @@ export default defineComponent({
       fetchPromise: null,
       suspectMoreToFetch: true,
       relatedKillmail: null,
+    } as {
+      rows: null | number[];
+      fetchPromise: null | Promise<Object>;
+      suspectMoreToFetch: boolean;
+      relatedKillmail: null | number;
     };
   },
 
   computed: {
-    resultsPerFetch() {
+    resultsPerFetch(): number {
       return this.compactMode ? 10 : 30;
     },
 
@@ -82,7 +99,7 @@ export default defineComponent({
   },
 
   watch: {
-    triageMode(_value) {
+    triageMode(_value: boolean) {
       this.reset();
     },
   },
@@ -110,7 +127,7 @@ export default defineComponent({
           includeTriage: this.triageMode,
         });
 
-        this.fetchPromise.then((response) => {
+        this.fetchPromise.then((response: AxiosResponse) => {
           this.addNames(response.data.names);
           this.rows = this.rows || [];
           for (let srp of response.data.srps) {
@@ -121,11 +138,11 @@ export default defineComponent({
         });
       },
 
-      onRelatedHover(killmailId) {
+      onRelatedHover(killmailId: number) {
         this.relatedKillmail = killmailId;
       },
 
-      onRelatedUnhover(_killmailId) {
+      onRelatedUnhover(_killmailId: number) {
         this.relatedKillmail = null;
       },
     },

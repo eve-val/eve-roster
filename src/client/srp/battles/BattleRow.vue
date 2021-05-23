@@ -106,7 +106,9 @@ import Tooltip from "../../shared/Tooltip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 
-import { defineComponent } from "vue";
+import { Battle } from "../types";
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,
@@ -116,19 +118,15 @@ export default defineComponent({
   },
 
   props: {
-    battle: { type: Object, required: true },
-    hasEditPriv: { type: Boolean, required: true },
-    startInEditMode: { type: Boolean, required: true },
+    battle: { type: Object as PropType<Battle>, required: true },
+    hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
+    startInEditMode: { type: Boolean as PropType<boolean>, required: true },
   },
 
-  data() {
-    return {
-      status: "inactive", // inactive | active | error
-    };
-  },
+  data() {},
 
   computed: {
-    battleLosses() {
+    battleLosses(): number {
       let sum = 0;
       for (let team of this.battle.teams) {
         sum += team.totalLosses;
@@ -139,7 +137,7 @@ export default defineComponent({
 
   methods: Object.assign(
     {
-      zkillHref(id, type) {
+      zkillHref(id: undefined | number, type: string): undefined | string {
         if (id == undefined) {
           return undefined;
         } else {
@@ -147,7 +145,7 @@ export default defineComponent({
         }
       },
 
-      formatIskValue(value) {
+      formatIskValue(value: number): string {
         return `${formatNumber(value)} ISK`;
       },
     },

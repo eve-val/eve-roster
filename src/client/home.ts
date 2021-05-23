@@ -25,6 +25,8 @@ import BattleDetail from "./srp/battles/BattleDetail.vue";
 import ShipsBorrowedByMe from "./ships/ShipsBorrowedByMe.vue";
 import AllBorrowedShips from "./ships/AllBorrowedShips.vue";
 
+import { SimpleMap } from "../util/simpleTypes";
+
 // Anything added here should also be in server.js:FRONTEND_ROUTES
 // TODO(aiiane): make server.js just read it directly from here
 const routes: RouteRecordRaw[] = [
@@ -116,9 +118,7 @@ export type Identity = {
   account: {
     id: number;
   };
-  access: {
-    [key: string]: number;
-  };
+  access: SimpleMap<number>;
   isMember: boolean;
 };
 

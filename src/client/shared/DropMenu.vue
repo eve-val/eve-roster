@@ -50,7 +50,9 @@ export default defineComponent({
   },
 
   unmounted() {
-    document.body.removeEventListener("mousedown", this.globalListener);
+    if (this.globalListener != null) {
+      document.body.removeEventListener("mousedown", this.globalListener);
+    }
     this.destroyed = true;
   },
 

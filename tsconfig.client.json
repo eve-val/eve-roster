@@ -1,5 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/client/**/*"],
+  "include": [
+    "src/client/**/*",
+    "src/util/**/*",
+    "src/shared/**/*",
+    "src/routes/api/**/*"
+  ],
   "exclude": ["node_modules", "static", "out/**/*"]
 }

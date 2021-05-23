@@ -67,10 +67,18 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 
+import { Loss, Payment } from "./types";
+
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
+import { AxiosResponse } from "axios";
 import { Identity } from "../home";
+
+const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
+type UndoStatus = typeof UNDO_STATUSES[number];
+
+import { AxiosResponse } from "axios";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -83,19 +91,23 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    srpId: { type: Number, required: true },
+    srpId: { type: Number as PropType<number>, required: true },
   },
 
   data() {
     return {
       payment: null,
       losses: [],
-      undoStatus: "inactive", // inactive | saving | error
+      undoStatus: "inactive",
+    } as {
+      payment: Payment | null;
+      losses: Loss[] | null;
+      undoStatus: UndoStatus;
     };
   },
 
   computed: {
-    totalPayout() {
+    totalPayout(): string {
       let sum = 0;
       for (let loss of this.losses) {
         sum += loss.payout;
@@ -105,7 +117,7 @@ export default defineComponent({
       });
     },
 
-    canEditSrp() {
+    canEditSrp(): boolean {
       return this.identity.access["srp"] == 2;
     },
   },
@@ -121,7 +133,7 @@ export default defineComponent({
         this.losses = null;
         this.$refs.spinner
           .observe(ajaxer.getSrpPayment(this.srpId))
-          .then((response) => {
+          .then((response: AxiosResponse) => {
             this.addNames(response.data.names);
             this.payment = response.data.payment;
             this.losses = response.data.losses;
@@ -135,7 +147,7 @@ export default defineComponent({
         this.undoStatus = "saving";
         this.$refs.undoSpinner
           .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-          .then((_response) => {
+          .then((_response: AxiosResponse<{}>) => {
             this.undoStatus = "inactive";
             this.payment.paid = false;
             this.fetchData();

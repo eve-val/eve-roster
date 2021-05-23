@@ -9,7 +9,7 @@ import { parallelize } from "../../util/asyncUtil";
 import * as ccpSso from "../../domain/sso/loginParams";
 import { canDesignateMain } from "../../domain/account/canDesignateMain";
 
-interface Output {
+export interface Output {
   accountId: number;
   characters: CharacterJson[];
   transfers: { character: number; name: string }[];
@@ -21,7 +21,7 @@ interface Output {
   };
 }
 
-interface CharacterJson {
+export interface CharacterJson {
   id: number;
   name: string;
   opsec: boolean;

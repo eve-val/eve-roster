@@ -33,11 +33,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { Ship } from "./ships";
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
-    showMainCharacter: { type: Boolean, required: false, default: false },
-    ships: { type: Array, required: true },
+    showMainCharacter: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
+    ships: { type: Array as PropType<Ship>, required: true },
   },
 
   data: function () {
@@ -49,13 +55,15 @@ export default defineComponent({
         "type",
         "name",
       ],
+    } as {
+      sortOrder: string[];
     };
   },
 
   computed: {
-    sorted: function () {
-      const copy = [...this.ships];
-      copy.sort((a, b) => {
+    sorted: function (): Ship[] {
+      const copy: Ship[] = [...this.ships];
+      copy.sort((a: Ship, b: Ship) => {
         for (let prop of this.sortOrder) {
           let ap = a[prop];
           let bp = b[prop];
@@ -70,7 +78,7 @@ export default defineComponent({
   },
 
   methods: {
-    setSort: function (column) {
+    setSort: function (column: string) {
       const idx = this.sortOrder.indexOf(column);
       if (idx < 0) return;
       this.sortOrder.splice(idx, 1);

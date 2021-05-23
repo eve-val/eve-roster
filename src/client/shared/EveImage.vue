@@ -8,51 +8,45 @@
 <script lang="ts">
 import unknownIcon from "./res/EveImage-Unknown.svg";
 
-const SUPPORTED_TYPES = {
-  Alliance: true,
-  Corporation: true,
-  Character: true,
-  Type: true,
-  Render: true,
-};
+import { SUPPORTED_TYPES, AssetType } from "./types";
 
-const SUPPORTED_SIZES = [32, 64, 128, 256, 512];
+const SUPPORTED_SIZES = [32, 64, 128, 256, 512] as const;
+type AssetSize = typeof SUPPORTED_SIZES[number];
 
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     id: {
-      type: Number,
+      type: Number as PropType<number>,
       required: false,
       default: null,
     },
     type: {
-      type: String,
+      type: String as PropType<AssetType | null>,
       required: true,
-      validator: function (value) {
-        return SUPPORTED_TYPES[value] != undefined;
-      },
+      validator: (value: string) =>
+        !value || (<readonly string[]>SUPPORTED_TYPES).includes(value),
     },
     size: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true,
     },
   },
 
   computed: {
-    requestSize: function () {
-      let requestSize;
+    requestSize: function (): AssetSize {
+      let requestSize: AssetSize = SUPPORTED_SIZES[0];
       for (let i = 0; i < SUPPORTED_SIZES.length; i++) {
         requestSize = SUPPORTED_SIZES[i];
-        if (requestSize >= this.size) {
+        if (<number>requestSize >= this.size) {
           break;
         }
       }
       return requestSize;
     },
 
-    portraitSrc: function () {
-      if (this.id == null) {
+    portraitSrc: function (): string {
+      if (this.id == null || this.type == null) {
         return unknownIcon;
       } else {
         return (

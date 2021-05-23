@@ -55,7 +55,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 const RESULTS_PER_FETCH = 30;
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -81,7 +81,7 @@ export default defineComponent({
   },
 
   computed: {
-    finalId() {
+    finalId(): number | undefined {
       if (!this.payments || this.payments.length == 0) {
         return undefined;
       } else {
@@ -89,7 +89,7 @@ export default defineComponent({
       }
     },
 
-    approvedLiabilityDisplay() {
+    approvedLiabilityDisplay(): string {
       if (!this.approvedLiability) {
         return "0";
       } else {
@@ -101,7 +101,7 @@ export default defineComponent({
   mounted() {
     this.fetchNextResults();
 
-    ajaxer.getSrpApprovedLiability().then((response) => {
+    ajaxer.getSrpApprovedLiability().then((response: AxiosResponse) => {
       this.approvedLiability = response.data.approvedLiability;
     });
   },
@@ -118,7 +118,7 @@ export default defineComponent({
           limit: RESULTS_PER_FETCH,
         });
 
-        this.fetchPromise.then((response) => {
+        this.fetchPromise.then((response: AxiosResponse) => {
           this.addNames(response.data.names);
 
           this.payments = this.payments || [];

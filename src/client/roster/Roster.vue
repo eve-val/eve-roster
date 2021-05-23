@@ -32,7 +32,8 @@
 import _ from "underscore";
 import ajaxer from "../shared/ajaxer";
 
-import rosterColumns from "./rosterColumns";
+import rosterColumns, { Column } from "./rosterColumns";
+import { Character, Account } from "../shared/types";
 
 import AppHeader from "../shared/AppHeader.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
@@ -40,7 +41,7 @@ import RosterTable from "./RosterTable.vue";
 import SearchBox from "./SearchBox.vue";
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -59,26 +60,35 @@ export default defineComponent({
       displayColumns: null,
       tableRows: null,
       searchString: null,
+    } as {
+      displayColumns: null | Column[];
+      tableRows: null | Account[];
+      searchString: null | string;
     };
   },
 
   mounted: function () {
-    this.$refs.spinner.observe(ajaxer.getRoster()).then((response) => {
-      let providedColumns = response.data.columns;
+    this.$refs.spinner
+      .observe(ajaxer.getRoster())
+      .then(
+        (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
+          let providedColumns: string[] = response.data.columns;
 
-      this.displayColumns = rosterColumns.filter((col) => {
-        let sourceColumns = col.derivedFrom || [col.key];
+          this.displayColumns = rosterColumns.filter((col: Column) => {
+            let sourceColumns: string[] = col.derivedFrom || [col.key];
 
-        return _.reduce(
-          sourceColumns,
-          (accum, sourceCol) => accum && providedColumns.includes(sourceCol),
-          true
-        );
-      });
+            return _.reduce(
+              sourceColumns,
+              (accum: string[], sourceCol: string) =>
+                accum && providedColumns.includes(sourceCol),
+              true
+            );
+          });
 
-      let rows = injectDerivedData(response.data.rows);
-      this.tableRows = rows;
-    });
+          let rows = injectDerivedData(response.data.rows);
+          this.tableRows = rows;
+        }
+      );
   },
 
   methods: {
@@ -105,7 +115,7 @@ const SUM_ATTRS = new Set([
 
 const MAX_ATTRS = new Set(["lastSeen", "alertLevel"]);
 
-function injectDerivedData(data) {
+function injectDerivedData(data: Account[]): Account[] {
   for (let account of data) {
     injectDerivedProps(account);
     account.aggregate = computeAggregateCharacter(account);
@@ -113,7 +123,7 @@ function injectDerivedData(data) {
   return data;
 }
 
-function computeAggregateCharacter(account) {
+function computeAggregateCharacter(account: Account): Character {
   let aggregate = {};
 
   // Calculate key set as union of keys in main and all alts
@@ -136,7 +146,7 @@ function computeAggregateCharacter(account) {
   return aggregate;
 }
 
-function aggProp(prop: string, ...chars: Map<string, string>[]) {
+function aggProp(prop: string, ...chars: Map<string, string>[]): string {
   let text = "";
   for (let char of chars) {
     if (char[prop]) {
@@ -149,7 +159,7 @@ function aggProp(prop: string, ...chars: Map<string, string>[]) {
   return text;
 }
 
-function sumProp(prop, ...chars) {
+function sumProp(prop: string, ...chars: Character[]): null | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
@@ -161,7 +171,7 @@ function sumProp(prop, ...chars) {
   return sawNotNull ? sum : null;
 }
 
-function maxProp(prop, ...chars) {
+function maxProp(prop: string, ...chars: Character[]): number | null {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {
@@ -173,7 +183,7 @@ function maxProp(prop, ...chars) {
   return sawNotNull ? best : null;
 }
 
-function injectDerivedProps(account) {
+function injectDerivedProps(account: Account) {
   for (let character of [account.main, ...account.alts]) {
     let lastSeen = getLastSeen(character);
     if (lastSeen != null) {
@@ -183,7 +193,7 @@ function injectDerivedProps(account) {
   }
 }
 
-function getLastSeen(character) {
+function getLastSeen(character: Character): null | number {
   if (character.logonDate == null || character.logoffDate == null) {
     return null;
   } else if (character.logonDate > character.logoffDate) {
@@ -193,7 +203,7 @@ function getLastSeen(character) {
   }
 }
 
-function getActivity(character) {
+function getActivity(character: Character): null | number {
   if (character.siggyScore == null || character.killsInLastMonth == null) {
     return null;
   } else {

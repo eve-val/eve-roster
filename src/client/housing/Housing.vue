@@ -50,7 +50,7 @@ import MemberChip from "./MemberChip.vue";
 const UNASSIGNED_KEY = "__unassigned__";
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -129,7 +129,7 @@ export default defineComponent({
   created: function () {
     ajaxer
       .fetchRoster()
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         this.pilots = this.transformPilots(response.data);
       })
       .catch(function (err) {

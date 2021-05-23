@@ -37,7 +37,7 @@ import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
 import { Identity } from "../../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -103,7 +103,7 @@ export default defineComponent({
           true
         );
 
-        this.fetchPromise.then((response) => {
+        this.fetchPromise.then((response: AxiosResponse) => {
           this.addNames(response.data.names);
           if (this.battles == null) {
             this.battles = [];

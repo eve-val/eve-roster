@@ -42,7 +42,9 @@ import _ from "underscore";
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
+import { Character } from "../shared/types";
 
+import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -60,20 +62,23 @@ export default defineComponent({
     return {
       characters: [],
       selectedId: this.modelValue,
+    } as {
+      characters: Character[];
+      selectedId: number;
     };
   },
 
   computed: {
-    selectedCharacter() {
+    selectedCharacter(): Character | undefined {
       return _.findWhere(this.characters, { id: this.selectedId });
     },
-    validCharacters() {
+    validCharacters(): Character[] {
       return this.characters.filter(this.isValidCharacter);
     },
   },
 
   watch: {
-    selectedId(newValue) {
+    selectedId(newValue: number) {
       if (newValue != this.modelValue) {
         this.$emit("update:modelValue", newValue);
       }
@@ -81,20 +86,22 @@ export default defineComponent({
   },
 
   mounted() {
-    ajaxer.getAccountCharacters(this.accountId).then((response) => {
-      this.characters = response.data;
+    ajaxer
+      .getAccountCharacters(this.accountId)
+      .then((response: AxiosResponse) => {
+        this.characters = response.data;
 
-      for (let character of this.characters) {
-        if (this.isValidCharacter(character)) {
-          this.selectedId = character.id;
-          break;
+        for (let character of this.characters) {
+          if (this.isValidCharacter(character)) {
+            this.selectedId = character.id;
+            break;
+          }
         }
-      }
-    });
+      });
   },
 
   methods: {
-    isValidCharacter(character) {
+    isValidCharacter(character: Character): boolean {
       return character.accessTokenValid && character.membership == "full";
     },
   },

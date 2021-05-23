@@ -94,7 +94,19 @@ import opsecIcon from "./res/hidden-icon.svg";
 import biomassedIcon from "./res/biomassed.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 
+type Icon = {
+  key: string;
+  src: string;
+  label: string;
+};
+
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
+
+type MenuItem = {
+  key: string;
+  label: string;
+  tag: string;
+};
 
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -122,7 +134,7 @@ export default defineComponent({
   },
 
   computed: {
-    biomassed() {
+    biomassed(): boolean {
       return this.character.corpId == CORP_DOOMHEIM;
     },
 
@@ -134,7 +146,7 @@ export default defineComponent({
       return this.character.skillQueue.queue;
     },
 
-    trainingLabel() {
+    trainingLabel(): string {
       if (this.character.skillQueue.queueStatus == "empty") {
         return "Skill queue empty";
       } else if (this.character.skillQueue.queueStatus == "paused") {
@@ -144,7 +156,7 @@ export default defineComponent({
       }
     },
 
-    queueLabel() {
+    queueLabel(): string {
       switch (this.character.skillQueue.queueStatus) {
         case "active":
           return (
@@ -159,7 +171,7 @@ export default defineComponent({
       }
     },
 
-    progressTrackWidth() {
+    progressTrackWidth(): string {
       if (this.character.skillQueue.queueStatus != "active") {
         return "0";
       } else {
@@ -167,8 +179,8 @@ export default defineComponent({
       }
     },
 
-    statusIcons() {
-      let icons = [];
+    statusIcons(): Icon[] {
+      let icons: Icon[] = [];
 
       if (this.isMain && this.highlightMain) {
         icons.push({
@@ -210,8 +222,8 @@ export default defineComponent({
       return icons;
     },
 
-    menuItems() {
-      let items = [];
+    menuItems(): MenuItem[] {
+      let items: MenuItem[] = [];
       if (!this.isMain && this.access.designateMain == 2 && !this.biomassed) {
         items.push({
           tag: "designate-main",
@@ -248,7 +260,7 @@ export default defineComponent({
       }
     },
 
-    onMenuItemClick(menuItem) {
+    onMenuItemClick(menuItem: MenuItem) {
       this.$refs.menu.hide();
       switch (menuItem.tag) {
         case "designate-main":

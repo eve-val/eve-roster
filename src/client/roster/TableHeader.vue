@@ -25,12 +25,17 @@
 <script lang="ts">
 import _ from "underscore";
 
-import { defineComponent } from "vue";
+type Column = {
+  key: string;
+  numeric: boolean;
+};
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {},
 
   props: {
-    columns: { type: Array, required: true },
+    columns: { type: Array as PropType<Column[]>, required: true },
     sortKey: { type: String, required: true },
     reverseSort: { type: Boolean, required: true },
   },
@@ -42,12 +47,12 @@ export default defineComponent({
   },
 
   computed: {
-    arrowClasses: function () {
+    arrowClasses: function (): string[] {
       let classes = [];
       if (this.reverseSort) {
         classes.push("reverse");
       }
-      let col = _.find(this.columns, (col) => col.key == this.sortKey);
+      let col = _.find(this.columns, (col: Column) => col.key == this.sortKey);
       let numeric = col != null && col.numeric;
       if (numeric) {
         classes.push("right");

@@ -46,12 +46,13 @@ lines of text on the right. The text may be optionally wrapped in links.
 <script lang="ts">
 import AdaptiveLink from "./AdaptiveLink.vue";
 import EveImage from "../shared/EveImage.vue";
+import { AssetType } from "../shared/types";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdaptiveLink,
@@ -60,8 +61,11 @@ export default defineComponent({
 
   props: {
     iconId: { type: Number, required: false, default: null },
-    /** One of the types listed in EveImage (Character, Corporation, etc). */
-    iconType: { type: String, required: false, default: "" },
+    iconType: {
+      type: String as PropType<AssetType | null>,
+      required: false,
+      default: null,
+    },
     topLine: { type: String, required: true },
     bottomLine: { type: String, required: false, default: "" },
     iconHref: { type: String, required: false, default: "" },
@@ -75,22 +79,22 @@ export default defineComponent({
   },
 
   computed: {
-    effectiveIconHref() {
+    effectiveIconHref(): string {
       return this.iconHref || this.defaultHref;
     },
 
-    effectiveTopHref() {
+    effectiveTopHref(): string {
       return this.topHref || this.defaultHref;
     },
 
-    effectiveBotHref() {
+    effectiveBotHref(): string {
       return this.botHref || this.defaultHref;
     },
   },
 
   methods: Object.assign(
     {
-      isExternalUrl(url) {
+      isExternalUrl(url: string): boolean {
         return ABS_URL_PATTERN.test(url);
       },
     },

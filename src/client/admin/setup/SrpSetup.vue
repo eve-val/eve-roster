@@ -54,6 +54,9 @@ SRP tracking starts, if it does at all.
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
+const STATUSES = ["active", "inactive", "error"] as const;
+type Status = typeof STATUSES[number];
+import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -70,11 +73,20 @@ export default defineComponent({
         startInput: timestampToDateStr(Date.now()),
       },
       requestStatus: "inactive",
+    } as {
+      loaded: boolean;
+      trackSrp: boolean;
+      startInput: string;
+      savedState: {
+        trackSrp: boolean;
+        startInput: string;
+      };
+      requestStatus: Status;
     };
   },
 
   computed: {
-    dirtyChanges() {
+    dirtyChanges(): boolean {
       return (
         this.trackSrp != this.savedState.trackSrp ||
         this.startInput != this.savedState.startInput
@@ -83,7 +95,7 @@ export default defineComponent({
   },
 
   mounted() {
-    ajaxer.getAdminSrpJurisdiction().then((response) => {
+    ajaxer.getAdminSrpJurisdiction().then((response: AxiosResponse) => {
       this.loaded = true;
 
       const jurisdiction = response.data.srpJurisdiction;
@@ -118,6 +130,9 @@ export default defineComponent({
           return;
         }
       }
+      if (timestamp == null) {
+        return;
+      }
 
       this.requestStatus = "active";
       this.$refs.spinner
@@ -127,7 +142,7 @@ export default defineComponent({
           this.savedState.startInput = startInput;
           this.requestStatus = "inactive";
         })
-        .catch((e) => {
+        .catch((e: Error) => {
           this.requestStatus = "error";
           throw e;
         });

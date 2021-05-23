@@ -46,7 +46,14 @@
 import filter from "./filter";
 import CharacterRow from "./CharacterRow.vue";
 
-import { defineComponent } from "vue";
+type Matches = {
+  inactive: boolean;
+  any: boolean;
+  main: boolean;
+  alt: boolean;
+};
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     CharacterRow,
@@ -55,12 +62,13 @@ export default defineComponent({
   props: {
     columns: { type: Array, required: true },
     account: { type: Object, required: true },
-    filter: { type: String, required: false, default: "" },
+    filter: { type: String as PropType<string>, required: false, default: "" },
   },
 
   data: function () {
     return {
       clickExpanded: false,
+      absHeight: 0,
     };
   },
 
@@ -69,8 +77,8 @@ export default defineComponent({
       return this.clickExpanded || this.filterMatches.alt;
     },
 
-    filterMatches: function () {
-      let matches = {
+    filterMatches: function (): Matches {
+      let matches: Matches = {
         inactive: this.filter == null || this.filter == "",
         any: false,
         main: false,
@@ -92,7 +100,7 @@ export default defineComponent({
   },
 
   methods: {
-    beforeEnter: function (el) {
+    beforeEnter: function (el: HTMLElement) {
       let oldDisplay = el.style.display;
       el.style.display = "block";
       el.style.height = "auto";
@@ -101,7 +109,7 @@ export default defineComponent({
       el.style.height = "0";
     },
 
-    enter: function (el, done) {
+    enter: function (el: HTMLElement, done: () => void) {
       // I don't understand why this setTimeout call is necessary
       setTimeout(() => {
         el.style.height = this.absHeight + "px";
@@ -112,15 +120,15 @@ export default defineComponent({
       });
     },
 
-    afterEnter: function (el) {
+    afterEnter: function (el: HTMLElement) {
       el.style.height = "auto";
     },
 
-    beforeLeave: function (el) {
+    beforeLeave: function (el: HTMLElement) {
       el.style.height = el.offsetHeight + "px";
     },
 
-    leave: function (el, done) {
+    leave: function (el: HTMLElement, done: () => void) {
       setTimeout(() => {
         el.style.height = "0";
         // TODO: actually listen for css transitionend event
@@ -130,7 +138,7 @@ export default defineComponent({
       });
     },
 
-    afterLeave: function (el) {
+    afterLeave: function (el: HTMLElement) {
       el.style.height = "auto";
     },
   },

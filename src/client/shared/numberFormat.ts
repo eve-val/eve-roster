@@ -21,7 +21,7 @@ export function formatNumber(
   const formatter =
     options.formatter || ((valueStr, unitStr) => `${valueStr}${unitStr}`);
 
-  let st: Stop;
+  let st: Stop = VALUE_STOPS[0];
   for (let i = 0; i < VALUE_STOPS.length; i++) {
     st = VALUE_STOPS[i];
     if (value / st.divisor < 1000) {
@@ -30,7 +30,7 @@ export function formatNumber(
   }
 
   const displayValue = value / st.divisor;
-  let decimalPlaces;
+  let decimalPlaces = 0;
   if (displayValue == 0) {
     decimalPlaces = 0;
   } else if (
@@ -41,7 +41,7 @@ export function formatNumber(
     const primaryDigits = Math.floor(Math.log10(displayValue) + 1);
     decimalPlaces = Math.max(0, 3 - primaryDigits);
   } else {
-    decimalPlaces = options.decimalPlaces;
+    decimalPlaces = <number>options.decimalPlaces;
   }
 
   return formatter(displayValue.toFixed(decimalPlaces), st.symbol);

@@ -58,11 +58,16 @@ import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 import AdminWrapper from "./AdminWrapper.vue";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import LoadingSpinner, { SpinnerRef } from "../shared/LoadingSpinner.vue";
 import MemberCorpDetail from "./overview/MemberCorpDetail.vue";
 
 import { Identity } from "../home";
 
+import {
+  Output,
+  CorpSection,
+} from "../../route/api/admin/roster/syncStatus_GET";
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -80,15 +85,20 @@ export default defineComponent({
       loaded: false,
       primaryCorps: [],
       affiliatedCorps: [],
+    } as {
+      loaded: boolean;
+      primaryCorps: CorpSection[];
+      affiliatedCorps: CorpSection[];
     };
   },
 
   computed: {},
 
   mounted: function () {
-    this.$refs.spinner
-      .observe(ajaxer.getAdminRosterSyncStatus())
-      .then((response) => {
+    const spinner: SpinnerRef = this.$refs.spinner;
+    spinner
+      .observe<Output>(ajaxer.getAdminRosterSyncStatus())
+      .then((response: AxiosResponse<Output>) => {
         this.addNames(response.data.names);
         const groups = _.groupBy(response.data.corporations, "type");
         this.primaryCorps = groups["full"];

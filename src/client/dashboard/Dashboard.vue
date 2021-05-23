@@ -60,6 +60,8 @@ import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
 import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { Output, CharacterJson } from "../../route/api/dashboard";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -82,6 +84,13 @@ export default defineComponent({
       loginParams: null,
       mainCharacter: null,
       access: null,
+    } as {
+      accountId: null | number;
+      characters: CharacterJson[];
+      transfers: { character: number; name: string }[];
+      loginParams: Object | null;
+      mainCharacter: number | null;
+      access: { designateMain: number; isMember: boolean } | null;
     };
   },
 
@@ -99,7 +108,7 @@ export default defineComponent({
 
       this.$refs.spinner
         .observe(ajaxer.getDashboard())
-        .then((response) => {
+        .then((response: AxiosResponse<Output>) => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
           this.transfers = response.data.transfers;
@@ -113,7 +122,7 @@ export default defineComponent({
             ajaxer.getFreshSkillQueueSummaries()
           );
         })
-        .then((response) => {
+        .then((response: AxiosResponse) => {
           let freshSummaries = response.data;
           for (let character of this.characters) {
             let updatedEntry = _.findWhere(freshSummaries, {
@@ -133,7 +142,7 @@ export default defineComponent({
     },
 
     sortCharacters() {
-      this.characters.sort((a, b) => {
+      this.characters.sort((a: CharacterJson, b: CharacterJson) => {
         let result = compareIsMainCharacter(a, b, this.mainCharacter);
         if (result == 0) {
           result = compareHasActiveSkillQueue(a, b);
@@ -147,7 +156,11 @@ export default defineComponent({
   },
 });
 
-function compareIsMainCharacter(a, b, mainCharacterId) {
+function compareIsMainCharacter(
+  a: CharacterJson,
+  b: CharacterJson,
+  mainCharacterId: number | null
+): number {
   if (a.id == mainCharacterId) {
     return -1;
   } else if (b.id == mainCharacterId) {
@@ -157,7 +170,10 @@ function compareIsMainCharacter(a, b, mainCharacterId) {
   }
 }
 
-function compareHasActiveSkillQueue(a, b) {
+function compareHasActiveSkillQueue(
+  a: CharacterJson,
+  b: CharacterJson
+): number {
   let aActive = a.skillQueue.queueStatus == "active";
   let bActive = b.skillQueue.queueStatus == "active";
 

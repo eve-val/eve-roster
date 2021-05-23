@@ -42,8 +42,11 @@ import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { Identity } from "../home";
+import { Payment } from "./types";
 
+import { SimpleNumMap } from "../../util/simpleTypes";
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -53,8 +56,16 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    forAccount: { type: Number, required: false, default: undefined },
-    compactMode: { type: Boolean, required: false, default: false },
+    forAccount: {
+      type: Number as PropType<number | undefined>,
+      required: false,
+      default: undefined,
+    },
+    compactMode: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -62,15 +73,19 @@ export default defineComponent({
       payments: null,
       fetchPromise: null,
       suspectMoreToFetch: true,
+    } as {
+      payments: Payment[] | null;
+      fetchPromise: Promise<AxiosResponse> | null;
+      suspectMoreToFetch: boolean;
     };
   },
 
   computed: {
-    resultsPerFetch() {
+    resultsPerFetch(): number {
       return this.compactMode ? 3 : 30;
     },
 
-    finalTimestamp() {
+    finalTimestamp(): number | undefined {
       if (!this.payments || this.payments.length == 0) {
         return undefined;
       } else {
@@ -95,17 +110,24 @@ export default defineComponent({
           limit: this.resultsPerFetch,
         });
 
-        this.fetchPromise.then((response) => {
-          this.addNames(response.data.names);
+        this.fetchPromise.then(
+          (
+            response: AxiosResponse<{
+              names: SimpleNumMap<string>;
+              payments: Payment[];
+            }>
+          ) => {
+            this.addNames(response.data.names);
 
-          this.payments = this.payments || [];
-          for (let payment of response.data.payments) {
-            this.payments.push(payment);
+            this.payments = this.payments || [];
+            for (let payment of response.data.payments) {
+              this.payments.push(payment);
+            }
+
+            this.suspectMoreToFetch =
+              response.data.payments.length == this.resultsPerFetch;
           }
-
-          this.suspectMoreToFetch =
-            response.data.payments.length == this.resultsPerFetch;
-        });
+        );
       },
     },
     NameCacheMixin

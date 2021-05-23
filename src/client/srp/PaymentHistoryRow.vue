@@ -52,18 +52,20 @@ import SrpTriplet from "./SrpTriplet.vue";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { defineComponent } from "vue";
+import { Payment } from "./types";
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     SrpTriplet,
   },
 
   props: {
-    payment: { type: Object, required: true },
+    payment: { type: Object as PropType<Payment>, required: true },
   },
 
   computed: {
-    displayPayout() {
+    displayPayout(): string {
       return (this.payment.totalPayout / 1000000).toFixed(0);
     },
   },

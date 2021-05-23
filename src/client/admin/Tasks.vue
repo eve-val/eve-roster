@@ -56,27 +56,12 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import TaskSlab from "./TaskSlab.vue";
 import TaskLog from "./TaskLog.vue";
 
+import { Task, Job } from "./types";
+
 const POLL_FREQUENCY = 4000;
 
-type Job = {
-  id: number;
-  task: string;
-  startTime: number;
-  processed: boolean;
-  progress: number | null;
-  progressLabel: string | null;
-};
-
-type Task = {
-  name: string;
-  displayName: string;
-  description: string;
-  isSynthetic: boolean;
-  job: Job;
-};
-
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -131,7 +116,7 @@ export default defineComponent({
   },
 
   methods: {
-    initializeTasks(tasks, jobs) {
+    initializeTasks(tasks: Task[], jobs: Job[]) {
       for (let task of tasks) {
         task.job = null;
         task.isSynthetic = false;
@@ -144,7 +129,7 @@ export default defineComponent({
       }
     },
 
-    onJobStarted(taskName) {
+    onJobStarted(taskName: string) {
       let task = _.findWhere(this.tasks, { name: taskName });
       if (task == null) {
         console.error("Unknown task:", taskName);
@@ -171,7 +156,7 @@ export default defineComponent({
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs().then((response) => {
+        ajaxer.getAdminJobs().then((response: AxiosResponse) => {
           this.applyJobs(response.data);
           if (this.areAnyActiveJobs) {
             setTimeout(poll, POLL_FREQUENCY);
@@ -239,7 +224,7 @@ export default defineComponent({
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog().then((response) => {
+      ajaxer.getAdminTaskLog().then((response: AxiosResponse) => {
         this.taskLog = response.data;
       });
     },
@@ -256,7 +241,7 @@ function compareJobs(a: Task, b: Task) {
   }
 }
 
-function compareStartTimes(a, b) {
+function compareStartTimes(a: Task, b: Task) {
   let startA = a.job && a.job.startTime;
   let startB = b.job && b.job.startTime;
 

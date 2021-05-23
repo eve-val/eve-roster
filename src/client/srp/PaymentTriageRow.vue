@@ -82,7 +82,12 @@ import SrpTriplet from "./SrpTriplet.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { defineComponent } from "vue";
+import { Payment } from "./types";
+
+const STATUSES = ["inactive", "saving", "error"];
+type Status = typeof STATUSES[number];
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -90,15 +95,19 @@ export default defineComponent({
   },
 
   props: {
-    payment: { type: Object, required: true },
+    payment: { type: Object as PropType<Payment>, required: true },
     payingCharacter: { type: Number, default: null },
   },
 
   data() {
     return {
       paid: false,
-      saveStatus: "inactive", // inactive | saving | error
-      undoStatus: "inactive", // inactive | saving | error
+      saveStatus: "inactive",
+      undoStatus: "inactive",
+    } as {
+      paid: boolean;
+      saveStatus: Status;
+      undoStatus: Status;
     };
   },
 

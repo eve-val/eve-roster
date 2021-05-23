@@ -18,7 +18,7 @@ import ShipTable from "./ShipTable.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -40,7 +40,7 @@ export default defineComponent({
   mounted: function () {
     this.$refs.spinner
       .observe(ajaxer.getAllBorrowedShips())
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         this.ships = response.data;
       });
   },

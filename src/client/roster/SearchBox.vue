@@ -21,16 +21,30 @@ export default defineComponent({
   },
 
   methods: {
-    onSearchBoxInput: function (ev) {
-      this.$emit("change", ev.target.value.trim());
+    onSearchBoxInput: function (ev: Event) {
+      if (ev.target != null && hasValue(ev)) {
+        this.$emit("change", ev.target.value.trim());
+      }
     },
 
-    onSearchBoxEsc: function (ev) {
-      ev.target.value = "";
-      this.$emit("change", ev.target.value);
+    onSearchBoxEsc: function (ev: Event) {
+      if (ev.target != null && hasValue(ev)) {
+        ev.target.value = "";
+        this.$emit("change", "");
+      }
     },
   },
 });
+
+interface IEventTargetValue {
+  target: {
+    value: string;
+  };
+}
+
+function hasValue(ev: Event): ev is IEventTargetValue {
+  return typeof ev.target?.value === "string";
+}
 </script>
 
 <style scoped>

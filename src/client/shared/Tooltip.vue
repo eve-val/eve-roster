@@ -31,15 +31,10 @@
 </template>
 
 <script lang="ts">
-const HORIZONTAL_GRAVITIES = ["left", "center", "right"];
-const VERTICAL_GRAVITIES = ["top", "center", "bottom"];
-
-type Dictionary<T> = { [key: string]: T };
-type Nullable<T> = T | null;
-type CssStyleObject = Partial<CSSStyleDeclaration> &
-  Dictionary<Nullable<string>>;
-type HorizontalGravity = "left" | "center" | "right";
-type VerticalGravity = "top" | "center" | "bottom";
+const HORIZONTAL_GRAVITIES = ["left", "center", "right"] as const;
+type HorizontalGravity = typeof HORIZONTAL_GRAVITIES[number];
+const VERTICAL_GRAVITIES = ["top", "center", "bottom"] as const;
+type VerticalGravity = typeof VERTICAL_GRAVITIES[number];
 
 const MARGIN_TO_TARGET = 3;
 const ARROW_RISE = 7;
@@ -47,7 +42,8 @@ const ARROW_BASE = 14;
 const ARROW_FILL = "#3e3e3e";
 const ARROW_INSET_FILL = "#202020";
 
-import { defineComponent } from "vue";
+import { CssStyleObject } from "./types";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     /**
@@ -58,15 +54,18 @@ export default defineComponent({
      * Vertical options: `top`, `center`, `bottom`
      */
     gravity: {
-      type: String,
+      type: String as PropType<string>,
       required: false,
       default: "center bottom",
       validator: function (value) {
         let pieces = splitGravString(value);
-        if (!HORIZONTAL_GRAVITIES.includes(pieces[0])) {
+        if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(pieces[0])) {
           return false;
         }
-        if (pieces[1] && !VERTICAL_GRAVITIES.includes(pieces[1])) {
+        if (
+          pieces[1] &&
+          !(<readonly string[]>VERTICAL_GRAVITIES).includes(pieces[1])
+        ) {
           return false;
         }
         return true;
@@ -87,20 +86,20 @@ export default defineComponent({
   },
 
   computed: {
-    horizontalGravity() {
+    horizontalGravity(): HorizontalGravity {
       let hgrav = splitGravString(this.gravity)[0];
-      if (!HORIZONTAL_GRAVITIES.includes(hgrav)) {
+      if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(hgrav)) {
         hgrav = "center";
       }
       return <HorizontalGravity>hgrav;
     },
 
-    verticalGravity() {
+    verticalGravity(): VerticalGravity {
       let vgrav = splitGravString(this.gravity)[1] || "center";
-      if (!VERTICAL_GRAVITIES.includes(vgrav)) {
+      if (!(<readonly string[]>VERTICAL_GRAVITIES).includes(vgrav)) {
         vgrav = "center";
       }
-      if (this.horizontalGravity == "center" && vgrav == "center") {
+      if (this.horizontalGravity() == "center" && vgrav == "center") {
         vgrav = "bottom";
       }
 
@@ -288,7 +287,11 @@ export default defineComponent({
   },
 
   methods: {
-    getTriangleStyle: function (color: string, base: number, rise: number) {
+    getTriangleStyle: function (
+      color: string,
+      base: number,
+      rise: number
+    ): CssStyleObject {
       let style: CssStyleObject = {};
 
       const solidBorder = `${rise}px solid ${color}`;
@@ -323,7 +326,7 @@ export default defineComponent({
   },
 });
 
-function splitGravString(str: string) {
+function splitGravString(str: string): readonly string[] {
   return str.trim().split(/\s+/);
 }
 </script>

@@ -1,4 +1,15 @@
-export default [
+export interface Column {
+  label: string;
+  key: string;
+  width: number;
+  margin?: number;
+  numeric?: boolean;
+  metaKey?: string;
+  derivedFrom?: string[];
+  account?: boolean;
+}
+
+const columns: Column[] = [
   { label: "", key: "alertMessage", width: 35, margin: 0, derivedFrom: [] },
   {
     label: "Name",
@@ -27,3 +38,5 @@ export default [
     metaKey: "lossValueInLastMonth",
   },
 ];
+
+export default columns;

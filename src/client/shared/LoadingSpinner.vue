@@ -96,19 +96,22 @@
  * up to you.
  */
 
-import contains from "underscore";
 import Tooltip from "./Tooltip.vue";
+
+import { AxiosResponse } from "axios";
 
 import inlineErrorIcon from "../shared-res/circle-error.svg";
 import inlineWarningIcon from "../shared-res/circle-warning.svg";
 import blockErrorIcon from "../shared-res/triangle-error.svg";
 import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
-const DISPLAY_VALUES = ["inline", "block"];
-const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
+const DISPLAY_VALUES = ["inline", "block", "none"] as const;
+type DisplayValue = typeof DISPLAY_VALUES[number];
+const STATE_VALUES = ["hidden", "spinning", "error", "warning"] as const;
+type StateValue = typeof STATE_VALUES[number];
 
-import { defineComponent } from "vue";
-export default defineComponent({
+import { defineComponent, PropType } from "vue";
+const Spinner = defineComponent({
   components: {
     Tooltip,
   },
@@ -126,10 +129,11 @@ export default defineComponent({
      * 'block': Replace spinner with icon and error message.
      */
     display: {
-      type: String,
+      type: String as PropType<DisplayValue>,
       required: false,
       default: "inline",
-      validator: (value) => contains(DISPLAY_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>DISPLAY_VALUES).includes(value),
     },
 
     /**
@@ -138,10 +142,11 @@ export default defineComponent({
      * instead of the spinner. This value overrides anything set by a promise.
      */
     state: {
-      type: String,
+      type: String as PropType<StateValue | null>,
       required: false,
       default: null,
-      validator: (value) => contains(STATE_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>STATE_VALUES).includes(value),
     },
 
     /**
@@ -149,15 +154,16 @@ export default defineComponent({
      * See `state` for appropriate values. Default: 'spinning'.
      */
     defaultState: {
-      type: String,
+      type: String as PropType<StateValue>,
       required: false,
       default: "spinning",
-      validator: (value) => contains(STATE_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>STATE_VALUES).includes(value),
     },
 
     /** Displayed if state is 'error' or 'warning'. */
     adversityMessage: {
-      type: String,
+      type: String as PropType<string>,
       required: false,
       default: "",
     },
@@ -167,7 +173,7 @@ export default defineComponent({
      * 'error'/'warning' and `display` is 'inline'.
      */
     tooltipGravity: {
-      type: String,
+      type: String as PropType<string>,
       required: false,
       default: "right",
     },
@@ -177,25 +183,36 @@ export default defineComponent({
      * attempted. Displayed in the form
      * "There was an error while <actionLabel>."
      */
-    actionLabel: { type: String, required: false, default: "" },
+    actionLabel: {
+      type: String as PropType<string>,
+      required: false,
+      default: "",
+    },
 
     /**
      * In the case of a rejected promise, rethrow the error that caused the
      * rejection. This will cause the promise returned by `observe()` to
      * be rejected with the original error. Default: true.
      */
-    rethrowError: { type: Boolean, required: false, default: true },
+    rethrowError: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: true,
+    },
   },
 
   data: function () {
     return {
       stateFromPromise: null,
       messageFromPromise: null,
+    } as {
+      stateFromPromise: null | StateValue;
+      messageFromPromise: null | string;
     };
   },
 
   computed: {
-    derivedDisplay() {
+    derivedDisplay(): DisplayValue {
       if (this.derivedState == "hidden") {
         return "none";
       } else {
@@ -203,15 +220,15 @@ export default defineComponent({
       }
     },
 
-    derivedState() {
+    derivedState(): StateValue {
       return this.state || this.stateFromPromise || this.defaultState;
     },
 
-    derivedMessage() {
+    derivedMessage(): string {
       return this.messageFromPromise || this.adversityMessage;
     },
 
-    errorIconSrc() {
+    errorIconSrc(): string | null {
       switch (this.display) {
         case "inline":
           switch (this.derivedState) {
@@ -250,7 +267,10 @@ export default defineComponent({
      *        the promise. Passed the payload from the promise. Should return
      *        An object of the form `{ state: String, message?: String }`.
      */
-    observe(promise, onSuccess) {
+    observe<T>(
+      promise: Promise<T>,
+      onSuccess: (p: T) => { state: StateValue; message?: string }
+    ) {
       this.messageFromPromise = null;
       if (promise == null) {
         this.stateFromPromise = null;
@@ -259,15 +279,15 @@ export default defineComponent({
       this.stateFromPromise = "spinning";
 
       return promise
-        .then((payload) => {
+        .then((payload: T) => {
           let newState = "hidden";
 
           this.stateFromPromise = "hidden";
 
           let result = onSuccess && onSuccess(payload);
           if (result) {
-            if (contains(STATE_VALUES, result.state)) {
-              newState = result.state;
+            if (STATE_VALUES.find((state) => state === result.state)) {
+              newState = <StateValue>result.state;
             } else if (result.state != null) {
               console.warn("WARNING: Bad spinner state:", result.state);
             }
@@ -284,18 +304,18 @@ export default defineComponent({
           // Pass data payload along to actual consumer.
           return payload;
         })
-        .catch((e) => {
+        .catch((e: string | Error | AxiosResponse) => {
           this.stateFromPromise = "error";
 
           let preface =
             `There was an error while ` +
             `${this.actionLabel || "performing this action"}. `;
           let message;
-          if (typeof e == "string") {
+          if (isString(e)) {
             message = e;
-          } else if (e.response && e.response.data && e.response.data.message) {
+          } else if (hasResponseMessage(e) && e.response.data.message) {
             message = e.response.data.message;
-          } else if (e.message) {
+          } else if (isError(e) && e.message) {
             message = e.message;
           } else {
             message = "";
@@ -309,6 +329,21 @@ export default defineComponent({
     },
   },
 });
+
+function isString(e: any): e is string {
+  return typeof e === "string";
+}
+function isError(e: any): e is Error {
+  return typeof e.message === "string";
+}
+function hasResponseMessage(
+  e: any
+): e is { response: AxiosResponse<{ message: string }> } {
+  return typeof e.response !== undefined && typeof e.response.data === "string";
+}
+
+export type SpinnerRef = InstanceType<typeof Spinner>;
+export default Spinner;
 </script>
 
 <style scoped>

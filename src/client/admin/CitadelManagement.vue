@@ -15,6 +15,9 @@
           <option value="Keepstar">Keepstar</option>
           <option value="Raitaru">Raitaru</option>
           <option value="Azbel">Azbel</option>
+          <option value="Sotiyo">Sotiyo</option>
+          <option value="Athanor">Athanor</option>
+          <option value="Tatara">Tatara</option>
         </select>
       </label>
       <label
@@ -50,6 +53,27 @@ import AdminWrapper from "./AdminWrapper.vue";
 
 import { Identity } from "../home";
 
+const CITADEL_TYPES = [
+  "Astrahus",
+  "Fortizar",
+  "Keepstar",
+  "Raitaru",
+  "Azbel",
+  "Sotiyo",
+  "Athanor",
+  "Tatara",
+];
+type CitadelType = typeof CITADEL_TYPES[number];
+
+type Citadel = {
+  id: number | null;
+  name: string;
+  type: CitadelType;
+  allianceAccess: boolean;
+  allianceOwned: boolean;
+};
+
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -62,9 +86,10 @@ export default defineComponent({
 
   data: function () {
     return {
-      citadels: [],
+      citadels: <Citadel[]>[],
       citadelsPromise: null,
-      newCitadel: {
+      newCitadel: <Citadel>{
+        id: null,
         name: "",
         type: "Astrahus",
         allianceAccess: true,
@@ -74,9 +99,9 @@ export default defineComponent({
   },
 
   computed: {
-    sortedCitadels: function () {
+    sortedCitadels: function (): Citadel[] {
       let sortedCitadels = this.citadels.slice();
-      sortedCitadels.sort((a, b) => {
+      sortedCitadels.sort((a: Citadel, b: Citadel) => {
         return a.name.localeCompare(b.name);
       });
       return sortedCitadels;
@@ -89,16 +114,18 @@ export default defineComponent({
 
   methods: {
     fetchData() {
-      this.citadelsPromise = ajaxer.getCitadels().then((response) => {
-        this.citadels = response.data.citadels;
-      });
+      this.citadelsPromise = ajaxer
+        .getCitadels()
+        .then((response: AxiosResponse) => {
+          this.citadels = response.data.citadels;
+        });
     },
 
     addCitadel() {
       let c = this.newCitadel;
       this.addPromise = ajaxer
         .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
           this.citadels.push(response.data);
           this.newCitadel.name = "";
         });

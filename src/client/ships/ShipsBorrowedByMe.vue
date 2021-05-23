@@ -12,12 +12,15 @@
 
 <script lang="ts">
 import ajaxer from "../shared/ajaxer";
+import { Ship } from "./ships";
 
 import ShipsWrapper from "./ShipsWrapper.vue";
 import ShipTable from "./ShipTable.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import { Identity } from "../home";
+
+import { AxiosResponse } from "axios";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -33,14 +36,14 @@ export default defineComponent({
 
   data: function () {
     return {
-      ships: [],
+      ships: <Ship[]>[],
     };
   },
 
   mounted: function () {
     this.$refs.spinner
       .observe(ajaxer.getShipsBorrowedByMe())
-      .then((response) => {
+      .then((response: AxiosResponse<Ship[]>) => {
         this.ships = response.data;
       });
   },

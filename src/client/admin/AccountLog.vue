@@ -57,7 +57,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -77,17 +77,19 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$refs.spinner.observe(ajaxer.getAdminAccountLog()).then((response) => {
-      let rows = response.data.rows;
-      this.rows = rows;
-    });
+    this.$refs.spinner
+      .observe(ajaxer.getAdminAccountLog())
+      .then((response: AxiosResponse) => {
+        let rows = response.data.rows;
+        this.rows = rows;
+      });
   },
 
   methods: {
-    prettyPrint: function (jsonStr) {
+    prettyPrint: function (jsonStr: string): string {
       return JSON.stringify(JSON.parse(jsonStr), null, 2);
     },
-    displayDate: function (value) {
+    displayDate: function (value: number): string {
       return moment(value).format("Y/MM/DD HH:mm:ss Z");
     },
   },

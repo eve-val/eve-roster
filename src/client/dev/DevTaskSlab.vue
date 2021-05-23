@@ -20,6 +20,8 @@
 <script lang="ts">
 import TaskSlab from "../admin/TaskSlab.vue";
 
+import { Task, Job } from "../admin/types";
+
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -37,7 +39,7 @@ export default defineComponent({
   },
 
   methods: {
-    taskSimple(job) {
+    taskSimple(job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub engine cowling",
@@ -46,7 +48,7 @@ export default defineComponent({
       };
     },
 
-    taskShortName(job) {
+    taskShortName(job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Fix droids",
@@ -55,7 +57,7 @@ export default defineComponent({
       };
     },
 
-    taskExtraLongText(job) {
+    taskExtraLongText(job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub filthy engine cowling",
@@ -66,7 +68,7 @@ export default defineComponent({
       };
     },
 
-    jobSimple() {
+    jobSimple(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -76,7 +78,7 @@ export default defineComponent({
       };
     },
 
-    jobLabel() {
+    jobLabel(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -86,7 +88,7 @@ export default defineComponent({
       };
     },
 
-    jobNoProgress() {
+    jobNoProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -96,7 +98,7 @@ export default defineComponent({
       };
     },
 
-    jobLowProgress() {
+    jobLowProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -106,7 +108,7 @@ export default defineComponent({
       };
     },
 
-    jobHighProgress() {
+    jobHighProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -118,11 +120,11 @@ export default defineComponent({
   },
 });
 
-function pendingPromise() {
+function pendingPromise(): Promise<void> {
   return new Promise(() => {});
 }
 
-function errorPromise() {
+function errorPromise(): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error("A terrible error has occurred."));
@@ -130,7 +132,7 @@ function errorPromise() {
   });
 }
 
-function resolvedPromise() {
+function resolvedPromise(): Promise<void> {
   return Promise.resolve();
 }
 </script>

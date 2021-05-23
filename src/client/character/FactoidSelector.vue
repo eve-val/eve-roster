@@ -37,6 +37,8 @@ export default defineComponent({
   data: function () {
     return {
       selectedValue: this.initialValue,
+    } as {
+      selectedValue: string;
     };
   },
 

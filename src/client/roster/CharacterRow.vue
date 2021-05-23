@@ -80,6 +80,7 @@
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
+import { CssStyleObject } from "../shared/types";
 
 import EveImage from "../shared/EveImage.vue";
 import Tooltip from "../shared/Tooltip.vue";
@@ -113,16 +114,16 @@ export default defineComponent({
   },
 
   computed: {
-    displayVals: function () {
-      let labels = [];
+    displayVals: function (): string[] {
+      let labels: string[] = [];
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
       return labels;
     },
 
-    subsequentDisplayVals: function () {
-      let labels = [];
+    subsequentDisplayVals: function (): string[] {
+      let labels: string[] = [];
       this.columns.forEach((col, i) => {
         if (i >= 3) {
           labels.push(this.displayVal(col));
@@ -131,7 +132,7 @@ export default defineComponent({
       return labels;
     },
 
-    alertIconSrc: function () {
+    alertIconSrc: function (): string {
       let level = 0;
       if (this.isMain) {
         level = Math.max(
@@ -145,7 +146,7 @@ export default defineComponent({
       return MSG_ICONS[level];
     },
 
-    alertMessage: function () {
+    alertMessage: function (): string | null {
       let message;
       if (this.isMain) {
         // Must include any account message
@@ -161,12 +162,12 @@ export default defineComponent({
       return message.length > 0 ? message : null;
     },
 
-    filterMatch: function () {
+    filterMatch: function (): string[] | null {
       let match = filter.match(this.character.name, this.filter);
       return match;
     },
 
-    inPrimaryCorp: function () {
+    inPrimaryCorp: function (): boolean {
       return (
         eveConstants.primaryCorporations.indexOf(
           this.character.corporationId
@@ -176,7 +177,7 @@ export default defineComponent({
   },
 
   methods: {
-    cellStyle: function (idx: number) {
+    cellStyle: function (idx: number): CssStyleObject {
       let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
@@ -194,7 +195,7 @@ export default defineComponent({
       };
     },
 
-    tooltipMessage: function (idx: number) {
+    tooltipMessage: function (idx: number): string | null {
       let col = this.columns[idx];
       if (!col.metaKey) {
         // No tooltip to display
@@ -229,7 +230,7 @@ export default defineComponent({
       }
     },
 
-    displayVal: function (col) {
+    displayVal: function (col): string {
       switch (col.key) {
         case "alts":
           if (!this.isMain) {
@@ -252,7 +253,7 @@ export default defineComponent({
       }
     },
 
-    dashDefault: function (value: null | string | number) {
+    dashDefault: function (value: null | string | number): string | number {
       if (value == null) {
         return "-";
       } else {
@@ -260,7 +261,7 @@ export default defineComponent({
       }
     },
 
-    cellAlignment(colIdx: number) {
+    cellAlignment(colIdx: number): string {
       let col = this.columns[colIdx];
       let align = "left";
       if (col.key == "warning") {
@@ -273,11 +274,11 @@ export default defineComponent({
   },
 });
 
-function iskLabel(isk: number) {
+function iskLabel(isk: number): string {
   return formatNumber(isk) + " ISK";
 }
 
-function altsLabel(altsCount: number) {
+function altsLabel(altsCount: number): string {
   if (altsCount == 0) {
     return "";
   } else if (altsCount == 1) {

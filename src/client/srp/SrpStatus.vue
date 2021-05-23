@@ -116,20 +116,25 @@ triage options weren't initially provided, fetches them from the server.
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-
+import { AxiosResponse } from "axios";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { defineComponent } from "vue";
+const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
+type RequestStatus = typeof REQUEST_STATUSES[number];
+
+import { VerdictOption, Srp, Triage } from "./types";
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    initialSrp: { type: Object, required: true },
-    hasEditPriv: { type: Boolean, required: true },
-    startInEditMode: { type: Boolean, required: true },
+    initialSrp: { type: Object as PropType<Srp>, required: true },
+    hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
+    startInEditMode: { type: Boolean as PropType<boolean>, required: true },
   },
 
   data() {
@@ -146,28 +151,37 @@ export default defineComponent({
       saveStatus: "inactive", // inactive | saving | error
       fetchTriageStatus: "inactive", // inactive | active | error,
       originalPayout: null,
+    } as {
+      srp: Srp;
+      editing: boolean;
+      selectedVerdictKey: string;
+      inputPayout: number;
+      saveStatus: RequestStatus;
+      fetchTriageStatus: RequestStatus;
+      originalPayout: number | null;
     };
   },
 
   computed: {
-    selectedVerdict() {
+    selectedVerdict(): VerdictOption | undefined {
       return _.findWhere(this.verdictOptions, { key: this.selectedVerdictKey });
     },
 
-    isApprovalSelected() {
-      return this.selectedVerdict.verdict == "approved";
+    isApprovalSelected(): boolean {
+      const selected = this.selectedVerdict;
+      return selected ? selected.verdict == "approved" : false;
     },
 
-    isSaveButtonEnabled() {
+    isSaveButtonEnabled(): boolean {
       return (
-        this.saveStatus != "saving" &&
+        this.saveStatus != "active" &&
         isValidInputPayout(this.inputPayout) &&
-        (this.inputPayout > 0 || this.selectedVerdict().verdict != "approved")
+        !this.isApprovalSelected
       );
     },
 
-    verdictOptions() {
-      let options = [];
+    verdictOptions(): VerdictOption[] {
+      let options: VerdictOption[] = [];
       if (this.srp.triage != null) {
         for (let option of this.srp.triage.extraOptions) {
           options.push({
@@ -241,14 +255,16 @@ export default defineComponent({
   },
 
   watch: {
-    selectedVerdict(_newVerdict) {
-      this.updateInputPayout(this.selectedVerdict().payout);
+    selectedVerdict(newVerdict: VerdictOption) {
+      this.updateInputPayout(newVerdict.payout);
     },
   },
 
   mounted() {
     if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict().payout);
+      if (this.selectedVerdict) {
+        this.updateInputPayout(this.selectedVerdict.payout);
+      }
     }
   },
 
@@ -256,15 +272,15 @@ export default defineComponent({
     {
       onSaveClick() {
         const payout = this.displayPayoutToRawPayout(this.inputPayout);
-        const verdict = this.selectedVerdict().verdict;
-        const reason = this.selectedVerdict().reason;
+        const verdict = this.selectedVerdict.verdict;
+        const reason = this.selectedVerdict.reason;
 
-        this.saveStatus = "saving";
+        this.saveStatus = "active";
         this.$refs.saveSpinner
           .observe(
             ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
           )
-          .then((response) => {
+          .then((response: AxiosResponse) => {
             this.saveStatus = "inactive";
             this.srp.payout = payout;
             this.srp.status = verdict;
@@ -288,7 +304,7 @@ export default defineComponent({
           this.fetchTriageStatus = "active";
           this.$refs.editSpinner
             .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
-            .then((response) => {
+            .then((response: AxiosResponse<{ triage: Triage }>) => {
               this.fetchTriageStatus = "inactive";
               this.srp.triage = response.data.triage;
 
@@ -319,7 +335,7 @@ export default defineComponent({
         }
       },
 
-      updateInputPayout(value: number) {
+      updateInputPayout(value: number): number {
         this.inputPayout = this.rawPayoutToDisplayPayout(value);
       },
 
@@ -331,7 +347,7 @@ export default defineComponent({
         return displayPayout * 1000000;
       },
 
-      getStatusLabel(srp) {
+      getStatusLabel(srp: Srp) {
         let entry = _.findWhere(ALL_STATUSES, {
           status: srp.status,
           reason: srp.reason,
@@ -427,8 +443,8 @@ const ALL_STATUSES = [
   },
 ].concat(INELIGIBLE_STATUSES, UNSETTABLE_STATUSES);
 
-function isValidInputPayout(inputPayout) {
-  return typeof inputPayout == "number" && inputPayout >= 0;
+function isValidInputPayout(inputPayout: number): boolean {
+  return inputPayout >= 0;
 }
 </script>
 

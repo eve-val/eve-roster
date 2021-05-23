@@ -39,29 +39,31 @@
 </template>
 
 <script lang="ts">
-import Promise from "bluebird";
 import ajaxer from "../shared/ajaxer";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-
-import { defineComponent } from "vue";
+import { Task } from "./types";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    task: { type: Object, required: true },
+    task: { type: Object as PropType<Task>, required: true },
   },
 
   emits: ["jobStarted"],
 
-  data: () => ({
-    runPromise: null,
-  }),
+  data: () =>
+    ({
+      runPromise: null,
+    } as {
+      runPromise: Promise<any>;
+    }),
 
   computed: {
-    rootStyle() {
+    rootStyle(): { backgroundColor: string } {
       let bgColor;
       if (this.task.job && this.task.job.progress != null) {
         bgColor = "#2e291e";
@@ -76,7 +78,7 @@ export default defineComponent({
       };
     },
 
-    rootClasses() {
+    rootClasses(): string[] {
       let classes = [];
       if (this.task.job) {
         classes.push("chevron-background");
@@ -85,18 +87,14 @@ export default defineComponent({
     },
 
     progressBarStyle(): { width: string } {
-      let widthPerc = (this.task.job && this.task.job.progress) || 0;
+      let widthPerc = this.task.job?.progress || 0;
       return {
         width: widthPerc * 100 + "%",
       };
     },
 
-    middleText() {
-      if (this.task.job) {
-        return this.task.job.progressLabel;
-      } else {
-        return this.task.description;
-      }
+    middleText(): string {
+      return this.task.job?.progressLabel || this.task.description;
     },
   },
 
@@ -107,7 +105,7 @@ export default defineComponent({
       }
     },
 
-    awaitRunResult(promise: Promise) {
+    awaitRunResult(promise: Promise<any>) {
       promise = this.$refs.runSpinner
         .observe(Promise.resolve(promise))
         .then(() => {

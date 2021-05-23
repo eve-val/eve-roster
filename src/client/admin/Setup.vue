@@ -41,7 +41,7 @@ import SrpSetup from "./setup/SrpSetup.vue";
 const JSON_COMMENT_PATTERN = /\s*\/\/[^\n]*\n?/g;
 
 import { Identity } from "../home";
-
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -58,13 +58,18 @@ export default defineComponent({
     return {
       setupJson: "",
       savingSetup: false,
+    } as {
+      setupJson: string;
+      savingSetup: boolean;
     };
   },
 
   mounted() {
-    this.$refs.spinner.observe(ajaxer.getAdminSetup()).then((response) => {
-      this.setupJson = JSON.stringify(response.data, null, 2);
-    });
+    this.$refs.spinner
+      .observe(ajaxer.getAdminSetup())
+      .then((response: AxiosResponse<string>) => {
+        this.setupJson = JSON.stringify(response.data, null, 2);
+      });
   },
 
   methods: {
@@ -75,7 +80,7 @@ export default defineComponent({
       this.savingSetup = true;
 
       this.$refs.spinner
-        .observe(
+        .observe<{}>(
           Promise.resolve()
             .then(() => {
               let cleanedJson = this.setupJson.replace(
@@ -84,7 +89,7 @@ export default defineComponent({
               );
               return JSON.parse(cleanedJson);
             })
-            .then((setupJson) => {
+            .then((setupJson: string) => {
               return ajaxer.putAdminSetup(setupJson);
             })
         )

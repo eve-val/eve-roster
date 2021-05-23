@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET";
 
 export default {
   getDashboard() {
@@ -99,8 +100,8 @@ export default {
     return axios.get("/api/dashboard/queueSummary");
   },
 
-  getAdminRosterSyncStatus() {
-    return axios.get("/api/admin/roster/syncStatus");
+  getAdminRosterSyncStatus(): Promise<AxiosResponse<syncStatus_Output>> {
+    return axios.get<syncStatus_Output>("/api/admin/roster/syncStatus");
   },
 
   getAdminAccountLog() {
@@ -126,7 +127,7 @@ export default {
   },
 
   getAdminSetup() {
-    return axios.get("/api/admin/setup");
+    return axios.get<{}>("/api/admin/setup");
   },
 
   putAdminSetup(setupObj: string) {
@@ -197,8 +198,12 @@ export default {
     return axios.get(`/api/srp/payment/${paymentId}`);
   },
 
-  putSrpPaymentStatus(srp: number, paid: number, payingCharacter: number) {
-    return axios.put(`/api/srp/payment/${srp}`, {
+  putSrpPaymentStatus(
+    srp: number,
+    paid: boolean,
+    payingCharacter: number
+  ): Promise<AxiosResponse<{}>> {
+    return axios.put<{}>(`/api/srp/payment/${srp}`, {
       paid: paid,
       payingCharacter: payingCharacter,
     });

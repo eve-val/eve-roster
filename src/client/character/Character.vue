@@ -126,13 +126,16 @@ import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
+import { SimpleMap } from "../../shared/simpleTypes";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
-import { groupifySkills } from "./skills";
+import { Skill, groupifySkills } from "./skills";
 
 import { Identity } from "../home";
+import { Character, Account } from "../shared/types";
 
+import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -160,6 +163,16 @@ export default defineComponent({
       corporationName: null,
       skillsMap: null,
       queue: null,
+    } as {
+      character: Character | null;
+      account: Account | null;
+      access: SimpleMap<number> | null;
+      timezones: Object[] | null;
+      citadels: string[] | null;
+      characterPromise: Promise<Character> | null;
+      corporationName: string | null;
+      skillsMap: object | null;
+      queue: Object[] | null;
     };
   },
 
@@ -168,19 +181,19 @@ export default defineComponent({
       return parseInt(this.$route.params.id);
     },
 
-    canWriteSrp: function () {
+    canWriteSrp: function (): boolean {
       return this.identity.access["srp"] == 2;
     },
 
-    canWriteTimezone: function () {
+    canWriteTimezone: function (): boolean {
       return this.access != null && this.access["memberTimezone"] == 2;
     },
 
-    canWriteCitadel: function () {
+    canWriteCitadel: function (): boolean {
       return this.access != null && this.access["memberHousing"] == 2;
     },
 
-    timezoneOptions: function () {
+    timezoneOptions: function (): { value: string; label: string }[] {
       return this.timezones.map((timezone: string) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
@@ -190,8 +203,8 @@ export default defineComponent({
       });
     },
 
-    citadelOptions: function () {
-      return this.citadels.map((citadel) => ({
+    citadelOptions: function (): { label: string; value: string } {
+      return this.citadels.map((citadel: string) => ({
         label: citadel,
         value: citadel,
       }));
@@ -213,7 +226,7 @@ export default defineComponent({
       if (value && value.corporationId) {
         ajaxer
           .getCorporation(value.corporationId)
-          .then((response) => {
+          .then((response: AxiosResponse) => {
             this.corporationName = response.data.name;
           })
           .catch((e) => {
@@ -235,12 +248,14 @@ export default defineComponent({
       }
       this.$refs.spinner
         .observe(ajaxer.getCharacter(this.characterId))
-        .then((response) => {
+        .then((response: AxiosResponse) => {
           this.character = response.data.character;
           this.account = response.data.account;
           this.access = response.data.access;
           if (response.data.citadels) {
-            response.data.citadels.sort((a, b) => a.localeCompare(b));
+            response.data.citadels.sort((a: string, b: string) =>
+              a.localeCompare(b)
+            );
           }
           this.citadels = response.data.citadels;
           this.timezones = response.data.timezones;
@@ -255,7 +270,7 @@ export default defineComponent({
       }
     },
 
-    processSkillsData(skills) {
+    processSkillsData(skills: Skill[]) {
       let map = {};
       for (let skill of skills) {
         map[skill.id] = skill;
@@ -274,17 +289,17 @@ export default defineComponent({
       }
     },
 
-    submitTimezone(timezone) {
+    submitTimezone(timezone: string) {
       return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
     },
 
-    submitHousing(citadelName) {
+    submitHousing(citadelName: string) {
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
   },
 });
 
-const TIMEZONE_HINTS = {
+const TIMEZONE_HINTS: { [key: string]: string | null } = {
   "US West": "PT/MT",
   "US East": "CT/ET",
   "EU West": "WET/CET",

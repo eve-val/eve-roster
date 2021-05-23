@@ -46,7 +46,7 @@ export default defineComponent({
   },
 
   methods: {
-    numeralize: function (value) {
+    numeralize: function (value: number) {
       return SKILL_LEVEL_LABELS[value];
     },
   },

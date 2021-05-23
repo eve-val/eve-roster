@@ -29,27 +29,40 @@ A component that either looks like a "load more" button or a loading spinner.
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent } from "vue";
+const STATUSES = ["inactive", "active", "error"] as const;
+type Status = typeof STATUSES[number];
+
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    promise: { type: Promise, required: false, default: Promise.resolve() },
-    hideButton: { type: Boolean, required: false },
+    promise: {
+      type: Promise as PropType<Promise<any>>,
+      required: false,
+      default: Promise.resolve(),
+    },
+    hideButton: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
   },
 
   emits: ["fetch-requested"],
 
   data() {
     return {
-      status: "inactive", // inactive | active | error
+      status: "inactive",
+    } as {
+      status: Status;
     };
   },
 
   watch: {
-    promise(value) {
+    promise(value: Promise<any>) {
       this.observe(value);
     },
   },
@@ -59,7 +72,7 @@ export default defineComponent({
   },
 
   methods: {
-    observe(promise) {
+    observe<T>(promise: Promise<T> | null) {
       this.$refs.spinner.observe(promise);
       if (promise != null) {
         this.status = "active";
