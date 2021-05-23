@@ -6,7 +6,7 @@
   "author": "SOUND IT",
   "scripts": {
     "build": "yarn run build-server && webpack --config out/server/infra/build-client/webpack.prod.js",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue --max-warnings=0",
     "build-server": "tsc",
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "postinstall": "patch-package",

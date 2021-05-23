@@ -194,7 +194,7 @@ export default {
   },
 
   watch: {
-    characterId(value) {
+    characterId(_value) {
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
