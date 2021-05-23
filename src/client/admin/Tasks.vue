@@ -98,11 +98,11 @@ export default defineComponent({
   },
 
   computed: {
-    tasksWithJobs() {
-      return this.tasks.filter((t) => t.job != null);
+    tasksWithJobs(): Task[] {
+      return this.tasks.filter((t: Task) => t.job != null);
     },
-    tasksWithoutJobs() {
-      return this.tasks.filter((t) => t.job == null);
+    tasksWithoutJobs(): Task[] {
+      return this.tasks.filter((t: Task) => t.job == null);
     },
     areAnyActiveJobs() {
       for (let i = 0; i < this.tasks.length; i++) {

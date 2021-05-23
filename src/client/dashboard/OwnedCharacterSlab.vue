@@ -148,11 +148,11 @@ export default defineComponent({
       switch (this.character.skillQueue.queueStatus) {
         case "active":
           return (
-            `${this.queue.timeRemaining} in queue` +
-            ` (${this.queue.count} skills)`
+            `${this.queue().timeRemaining} in queue` +
+            ` (${this.queue().count} skills)`
           );
         case "paused":
-          return `${this.queue.count} skills in queue`;
+          return `${this.queue().count} skills in queue`;
         case "empty":
         default:
           return "";

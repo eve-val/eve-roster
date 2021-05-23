@@ -104,7 +104,7 @@ export default defineComponent({
         });
     },
 
-    removeCitadel(id) {
+    removeCitadel(id: number) {
       this.deletePromise = ajaxer.deleteCitadel(id).then((_response) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
@@ -115,7 +115,7 @@ export default defineComponent({
       });
     },
 
-    renameCitadel(id, name) {
+    renameCitadel(id: number, name: string) {
       this.renamePromise = ajaxer.putCitadelName(id, name).then((_response) => {
         this.citadels.map((citadel) => {
           if (citadel.id === id) {
@@ -125,7 +125,7 @@ export default defineComponent({
       });
     },
 
-    addLogic(event) {
+    addLogic(event: Event) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
@@ -140,7 +140,7 @@ export default defineComponent({
       }
     },
 
-    editLogic(oldName, event) {
+    editLogic(oldName: string, event: Event) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
@@ -152,7 +152,7 @@ export default defineComponent({
       }
     },
 
-    validate(id, name, event) {
+    validate(id: number, name: string, event: Event) {
       this.editLogic(name, event);
       let newName = event.target.value;
       if (newName !== name) {

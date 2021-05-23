@@ -162,7 +162,7 @@ export default defineComponent({
       return (
         this.saveStatus != "saving" &&
         isValidInputPayout(this.inputPayout) &&
-        (this.inputPayout > 0 || this.selectedVerdict.verdict != "approved")
+        (this.inputPayout > 0 || this.selectedVerdict().verdict != "approved")
       );
     },
 
@@ -242,13 +242,13 @@ export default defineComponent({
 
   watch: {
     selectedVerdict(_newVerdict) {
-      this.updateInputPayout(this.selectedVerdict.payout);
+      this.updateInputPayout(this.selectedVerdict().payout);
     },
   },
 
   mounted() {
     if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
+      this.updateInputPayout(this.selectedVerdict().payout);
     }
   },
 
@@ -256,8 +256,8 @@ export default defineComponent({
     {
       onSaveClick() {
         const payout = this.displayPayoutToRawPayout(this.inputPayout);
-        const verdict = this.selectedVerdict.verdict;
-        const reason = this.selectedVerdict.reason;
+        const verdict = this.selectedVerdict().verdict;
+        const reason = this.selectedVerdict().reason;
 
         this.saveStatus = "saving";
         this.$refs.saveSpinner
