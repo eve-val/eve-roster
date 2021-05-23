@@ -13,7 +13,7 @@ const nameCache = new Map<number, string>();
  * access the map without it being passed to them explicitly.
  */
 export const NameCacheMixin = {
-  addNames(names: Map<number, string>) {
+  addNames(names: { [index: string]: string }) {
     for (const id in names) {
       nameCache.set(parseInt(id), names[id]);
     }

@@ -1,4 +1,6 @@
-const VALUE_STOPS = [
+type Stop = { symbol: string; divisor: number };
+
+const VALUE_STOPS: Stop[] = [
   { symbol: "", divisor: 1 },
   { symbol: "k", divisor: 1e3 },
   { symbol: "m", divisor: 1e6 },
@@ -7,19 +9,19 @@ const VALUE_STOPS = [
 ];
 
 export function formatNumber(
-  value,
-  /**
-   * {
-   *    decimalPlaces: number,
-   *    formatter: (value: string, unit: string) => string,
-   * }
-   */
-  options = {}
+  value: number,
+  options: {
+    decimalPlaces: number | string | null;
+    formatter: null | ((value: string, unit: string) => string);
+  } = {
+    decimalPlaces: "auto",
+    formatter: null,
+  }
 ) {
   const formatter =
     options.formatter || ((valueStr, unitStr) => `${valueStr}${unitStr}`);
 
-  let st;
+  let st: Stop;
   for (let i = 0; i < VALUE_STOPS.length; i++) {
     st = VALUE_STOPS[i];
     if (value / st.divisor < 1000) {

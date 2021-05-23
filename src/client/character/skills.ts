@@ -1,6 +1,6 @@
 import _ from "underscore";
 
-const GROUP_DISPLAY_ORDER = [
+const GROUP_DISPLAY_ORDER: { groupId: number; name: string }[] = [
   { groupId: 257, name: "Spaceship Command" },
   { groupId: 275, name: "Navigation" },
   { groupId: 1216, name: "Engineering" },
@@ -29,7 +29,9 @@ const GROUP_DISPLAY_ORDER = [
   { groupId: 1545, name: "Structure Management" },
 ];
 
-const GROUP_DISPLAY_MAP = {};
+const GROUP_DISPLAY_MAP: {
+  [index: number]: { name: string; position: number };
+} = {};
 for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   const group = GROUP_DISPLAY_ORDER[i];
   GROUP_DISPLAY_MAP[group.groupId] = {

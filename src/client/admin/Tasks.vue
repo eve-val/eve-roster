@@ -62,6 +62,7 @@ type Job = {
   id: number;
   task: string;
   startTime: number;
+  processed: boolean;
   progress: number | null;
   progressLabel: string | null;
 };
@@ -182,7 +183,7 @@ export default defineComponent({
       poll();
     },
 
-    applyJobs(jobs) {
+    applyJobs(jobs: Job[]) {
       // Merge jobs into this.tasks
       let jobEnded = false;
       for (let i = 0; i < this.tasks.length; i++) {
@@ -225,7 +226,7 @@ export default defineComponent({
     },
 
     sortTasks() {
-      this.tasks.sort((a, b) => {
+      this.tasks.sort((a: Task, b: Task) => {
         let cmp = compareJobs(a, b);
         if (cmp == 0) {
           cmp = compareStartTimes(a, b);
@@ -245,7 +246,7 @@ export default defineComponent({
   },
 });
 
-function compareJobs(a, b) {
+function compareJobs(a: Task, b: Task) {
   if (a.job != null && b.job == null) {
     return -1;
   } else if (b.job != null && a.job == null) {

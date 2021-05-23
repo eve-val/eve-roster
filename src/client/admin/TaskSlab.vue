@@ -84,7 +84,7 @@ export default defineComponent({
       return classes;
     },
 
-    progressBarStyle() {
+    progressBarStyle(): { width: string } {
       let widthPerc = (this.task.job && this.task.job.progress) || 0;
       return {
         width: widthPerc * 100 + "%",
@@ -107,7 +107,7 @@ export default defineComponent({
       }
     },
 
-    awaitRunResult(promise) {
+    awaitRunResult(promise: Promise) {
       promise = this.$refs.runSpinner
         .observe(Promise.resolve(promise))
         .then(() => {

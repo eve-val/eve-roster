@@ -207,11 +207,11 @@ export default defineComponent({
       return options;
     },
 
-    editable() {
+    editable(): boolean {
       return this.hasEditPriv && this.status != "paid";
     },
 
-    statusLink() {
+    statusLink(): string | null {
       if (this.srp.status == "paid") {
         return `/srp/payment/${this.srp.reimbursement}`;
       } else {
@@ -219,7 +219,7 @@ export default defineComponent({
       }
     },
 
-    renderingName() {
+    renderingName(): string | null {
       if (this.srp.renderingCharacter != null) {
         return this.name(this.srp.renderingCharacter);
       } else if (this.srp.status != "pending") {
@@ -229,7 +229,7 @@ export default defineComponent({
       }
     },
 
-    renderingLink() {
+    renderingLink(): string | null {
       if (this.srp.status == "paid") {
         return `/character/${this.srp.payingCharacter}`;
       } else if (this.srp.renderingCharacter != null) {

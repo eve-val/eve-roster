@@ -65,7 +65,7 @@ export default defineComponent({
   },
 
   computed: {
-    expanded: function () {
+    expanded: function (): boolean {
       return this.clickExpanded || this.filterMatches.alt;
     },
 
