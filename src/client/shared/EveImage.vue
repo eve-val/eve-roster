@@ -22,7 +22,8 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true,
+      required: false,
+      default: null,
     },
     type: {
       type: String,
