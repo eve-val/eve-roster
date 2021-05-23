@@ -139,7 +139,7 @@ export default {
     state: {
       type: String,
       required: false,
-      default: "spinning",
+      default: null,
       validator: (value) => contains(STATE_VALUES, value),
     },
 

@@ -195,11 +195,6 @@ export default {
 
   watch: {
     characterId(value) {
-      if (value == null) {
-        // characterId briefly blips to nil during transitions.
-        // Don't attempt to fetch /api/character/NaN.
-        return;
-      }
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
@@ -230,6 +225,9 @@ export default {
 
   methods: {
     fetchData() {
+      if (!this.characterId) {
+        return;
+      }
       this.$refs.spinner
         .observe(ajaxer.getCharacter(this.characterId))
         .then((response) => {
