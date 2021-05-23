@@ -58,7 +58,7 @@ export default {
   },
 
   props: {
-    iconId: { type: Number, required: false, default: -1 },
+    iconId: { type: Number, required: false, default: null },
     /** One of the types listed in EveImage (Character, Corporation, etc). */
     iconType: { type: String, required: false, default: "" },
     topLine: { type: String, required: true },
