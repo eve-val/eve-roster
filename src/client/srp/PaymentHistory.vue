@@ -50,7 +50,7 @@ export default {
 
   props: {
     identity: { type: Object, required: true },
-    forAccount: { type: Number, required: false, default: -1 },
+    forAccount: { type: Number, required: false, default: undefined },
     compactMode: { type: Boolean, required: false, default: false },
   },
 
@@ -84,7 +84,7 @@ export default {
     {
       fetchNextResults() {
         this.fetchPromise = ajaxer.getSrpPaymentHistory({
-          paid: this.forAccount != undefined ? undefined : true,
+          paid: this.forAccount ? true : undefined,
           order: "desc",
           orderBy: "modified",
           startingAfter: this.finalTimestamp,
