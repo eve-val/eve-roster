@@ -50,7 +50,6 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
     })
   );
 
-
   // For healthchecks
   app.get("/healthz", function (req, res) {
     res.send("ok");
