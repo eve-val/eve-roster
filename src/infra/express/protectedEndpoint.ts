@@ -6,7 +6,7 @@
  * is `'json'`, `handler` should return a promise to the Object that will make
  * up the JSON response.
  */
-import express = require("express");
+import express, { Request } from "express";
 
 import { BadRequestError } from "../../error/BadRequestError";
 import { NotFoundError } from "../../error/NotFoundError";
@@ -25,6 +25,12 @@ import { getSession, endSession } from "./session";
 const logger = buildLoggerFromFilename(__filename);
 
 export type EndpointType = "json" | "html";
+
+declare module "express" {
+  interface Request {
+    db: Tnex;
+  }
+}
 
 type ExpressHandler = (req: express.Request, res: express.Response) => void;
 

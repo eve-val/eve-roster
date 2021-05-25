@@ -126,7 +126,7 @@ import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
-import { SimpleMap } from "../../shared/simpleTypes";
+import { SimpleMap } from "../../util/simpleTypes";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
@@ -156,8 +156,8 @@ export default defineComponent({
       character: null,
       account: null,
       access: null,
-      timezones: null,
-      citadels: null,
+      timezones: [],
+      citadels: [],
 
       characterPromise: null,
       corporationName: null,
@@ -167,8 +167,8 @@ export default defineComponent({
       character: Character | null;
       account: Account | null;
       access: SimpleMap<number> | null;
-      timezones: Object[] | null;
-      citadels: string[] | null;
+      timezones: string[];
+      citadels: string[];
       characterPromise: Promise<Character> | null;
       corporationName: string | null;
       skillsMap: object | null;
@@ -178,6 +178,7 @@ export default defineComponent({
 
   computed: {
     characterId: function (): number {
+      // TODO: take first index of [] if array.
       return parseInt(this.$route.params.id);
     },
 
@@ -203,7 +204,7 @@ export default defineComponent({
       });
     },
 
-    citadelOptions: function (): { label: string; value: string } {
+    citadelOptions: function (): { label: string; value: string }[] {
       return this.citadels.map((citadel: string) => ({
         label: citadel,
         value: citadel,

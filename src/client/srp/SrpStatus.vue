@@ -335,7 +335,7 @@ export default defineComponent({
         }
       },
 
-      updateInputPayout(value: number): number {
+      updateInputPayout(value: number) {
         this.inputPayout = this.rawPayoutToDisplayPayout(value);
       },
 
@@ -343,16 +343,16 @@ export default defineComponent({
         return Math.round(rawPayout / 1000000);
       },
 
-      displayPayoutToRawPayout(displayPayout: number) {
+      displayPayoutToRawPayout(displayPayout: number): number {
         return displayPayout * 1000000;
       },
 
-      getStatusLabel(srp: Srp) {
+      getStatusLabel(srp: Srp): string {
         let entry = _.findWhere(ALL_STATUSES, {
           status: srp.status,
           reason: srp.reason,
         });
-        return (entry && entry.label) || "Unknown status";
+        return entry?.label || "Unknown status";
       },
     },
     NameCacheMixin

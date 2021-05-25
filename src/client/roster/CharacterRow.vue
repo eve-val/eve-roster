@@ -89,6 +89,8 @@ import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
+import { Column } from "./types";
+
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
 
@@ -143,7 +145,11 @@ export default defineComponent({
         level = this.character.alertLevel || 0;
       }
 
-      return MSG_ICONS[level];
+      if (level < 0 || level >= MSG_ICONS.length) {
+        return MSG_ICONS[0];
+      } else {
+        return MSG_ICONS[level];
+      }
     },
 
     alertMessage: function (): string | null {
@@ -230,7 +236,7 @@ export default defineComponent({
       }
     },
 
-    displayVal: function (col): string {
+    displayVal: function (col: Column): string {
       switch (col.key) {
         case "alts":
           if (!this.isMain) {

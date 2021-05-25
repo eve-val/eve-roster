@@ -25,10 +25,7 @@
 <script lang="ts">
 import _ from "underscore";
 
-type Column = {
-  key: string;
-  numeric: boolean;
-};
+import { Column } from "./types";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

@@ -28,7 +28,7 @@ export default defineComponent({
     },
 
     onSearchBoxEsc: function (ev: Event) {
-      if (ev.target != null && hasValue(ev)) {
+      if (hasValue(ev.target)) {
         ev.target.value = "";
         this.$emit("change", "");
       }
@@ -36,14 +36,12 @@ export default defineComponent({
   },
 });
 
-interface IEventTargetValue {
-  target: {
-    value: string;
-  };
+interface IEventTargetValue extends HTMLElement {
+  value: string;
 }
 
-function hasValue(ev: Event): ev is IEventTargetValue {
-  return typeof ev.target?.value === "string";
+function hasValue(t: HTMLElement | null): t is IEventTargetValue {
+  return typeof t?.value === "string";
 }
 </script>
 

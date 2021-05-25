@@ -19,8 +19,8 @@ export type Battle = {
 export type VerdictOption = {
   key: string;
   label: string;
-  payout: number;
   verdict: string;
+  payout: number;
   reason: string | null;
 };
 

@@ -41,6 +41,7 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
 }
 
 export interface Skill {
+  id: number;
   group: string;
   name: string;
   queuedLevel?: number;
