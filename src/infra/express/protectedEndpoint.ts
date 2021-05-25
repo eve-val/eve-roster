@@ -7,6 +7,11 @@
  * up the JSON response.
  */
 import express, { Request } from "express";
+declare module "express" {
+  interface Request {
+    db: Tnex;
+  }
+}
 
 import { BadRequestError } from "../../error/BadRequestError";
 import { NotFoundError } from "../../error/NotFoundError";
@@ -25,12 +30,6 @@ import { getSession, endSession } from "./session";
 const logger = buildLoggerFromFilename(__filename);
 
 export type EndpointType = "json" | "html";
-
-declare module "express" {
-  interface Request {
-    db: Tnex;
-  }
-}
 
 type ExpressHandler = (req: express.Request, res: express.Response) => void;
 

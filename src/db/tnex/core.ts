@@ -31,7 +31,7 @@ export type StringKeyOf<T> = Extract<keyof T, string>;
  * Given a type, makes all properties AND subproperties optional.
  */
 export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends Array<any>
+  [P in keyof T]?: T[P] extends any[]
     ? T[P]
     : T[P] extends object
     ? DeepPartial<T[P]>

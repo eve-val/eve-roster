@@ -157,7 +157,7 @@ export class Tnex {
   public updateAll<T extends object, K extends StringKeyOf<T>>(
     table: T,
     idColumn: K,
-    rows: Array<Partial<T> & Pick<T, K>>
+    rows: (Partial<T> & Pick<T, K>)[]
   ) {
     // Query structure:
     // UPDATE tableName SET

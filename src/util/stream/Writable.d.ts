@@ -8,7 +8,7 @@ export class Writable<T> {
 
   _write(chunk: T, encoding: string, callback: BasicCallback): void;
   _writev?(
-    chunks: Array<{ chunk: T; encoding: string }>,
+    chunks: { chunk: T; encoding: string }[],
     callback: BasicCallback
   ): void;
   _destroy(error: Error | null, callback: BasicCallback): void;
@@ -125,7 +125,7 @@ export interface WritableOptions<This, T> {
   write?(this: This, chunk: T, encoding: string, callback: BasicCallback): void;
   writev?(
     this: This,
-    chunks: Array<{ chunk: T; encoding: string }>,
+    chunks: { chunk: T; encoding: string }[],
     callback: BasicCallback
   ): void;
   destroy?(this: This, error: Error | null, callback: BasicCallback): void;

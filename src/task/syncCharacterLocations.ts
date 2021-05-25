@@ -34,7 +34,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const initialRows =
     await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
   const tokenMap = await getAccessTokensFromRows(db, initialRows);
-  const esiErrors: Array<[number, string]> = [];
+  const esiErrors: [number, string][] = [];
 
   const tasks: Promise<CharacterLocation | null>[] = [];
   for (const row of initialRows) {
