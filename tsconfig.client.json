@@ -4,6 +4,7 @@
     "src/client/**/*",
     "src/util/**/*",
     "src/shared/**/*",
+    "src/types/**/*",
     "src/routes/api/**/*"
   ],
   "exclude": ["node_modules", "static", "out/**/*"]
