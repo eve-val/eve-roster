@@ -55,7 +55,10 @@ export function htmlEndpoint<T extends object>(
   return async function (req, res) {
     try {
       const session = getSession(req);
-      const accountPrivs = await getAccountPrivs(req.app.locals.db, session.accountId);
+      const accountPrivs = await getAccountPrivs(
+        req.app.locals.db,
+        session.accountId
+      );
       const payload = await handler(
         req,
         res,
@@ -76,7 +79,10 @@ export function jsonEndpoint<T extends object>(
   return async function (req, res) {
     try {
       const session = getSession(req);
-      const accountPrivs = await getAccountPrivs(req.app.locals.db, session.accountId);
+      const accountPrivs = await getAccountPrivs(
+        req.app.locals.db,
+        session.accountId
+      );
       const payload = await handler(
         req,
         res,
