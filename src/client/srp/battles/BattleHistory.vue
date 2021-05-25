@@ -35,9 +35,16 @@ import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
-
+import { Battle } from "./types";
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
+import { SimpleNumMap } from "../../../util/simpleTypes";
+
+type Response = AxiosResponse<{
+  name: SimpleNumMap<string>;
+  battles: Battle[];
+}>;
+
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -47,7 +54,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    triageMode: { type: Boolean, required: false, default: false },
+    triageMode: {
+      type: Boolean as PropType<boolean>,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -55,13 +66,17 @@ export default defineComponent({
       battles: null,
       fetchPromise: null,
       suspectMoreToFetch: true,
+    } as {
+      battles: Battle[];
+      fetchPromise: Promise<Response>;
+      suspectMoreToFetch: boolean;
     };
   },
 
   computed: {},
 
   watch: {
-    triageMode(_value) {
+    triageMode(_value: boolean) {
       this.reset();
     },
   },
@@ -103,7 +118,7 @@ export default defineComponent({
           true
         );
 
-        this.fetchPromise.then((response: AxiosResponse) => {
+        this.fetchPromise.then((response: Response) => {
           this.addNames(response.data.names);
           if (this.battles == null) {
             this.battles = [];

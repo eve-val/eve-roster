@@ -40,7 +40,13 @@ import DevTaskSlab from "./DevTaskSlab.vue";
 
 import { Identity } from "../home";
 
-import { defineComponent, PropType } from "vue";
+interface Section {
+  component: ComponentOptions;
+  label: string;
+  path: string;
+}
+
+import { defineComponent, PropType, ComponentOptions } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -71,11 +77,13 @@ export default defineComponent({
           path: "dev-task-slab",
         },
       ],
+    } as {
+      sections: Section[];
     };
   },
 
   computed: {
-    currentSection() {
+    currentSection(): Section | undefined {
       return _.findWhere(this.sections, { path: this.$route.params.section });
     },
   },

@@ -36,7 +36,9 @@ export default defineComponent({
 
   data: function () {
     return {
-      ships: <Ship[]>[],
+      ships: [],
+    } as {
+      ships: Ship[];
     };
   },
 

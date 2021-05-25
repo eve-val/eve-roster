@@ -27,6 +27,9 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
+import { Battle } from "../types";
+import { SimpleNumMap } from "../../../util/simpleTypes";
+
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
@@ -45,6 +48,8 @@ export default defineComponent({
   data() {
     return {
       battle: null,
+    } as {
+      battle: Battle | null;
     };
   },
 
@@ -56,12 +61,17 @@ export default defineComponent({
     {
       fetchData() {
         this.battle = null;
-        this.$refs.spinner
-          .observe(ajaxer.getBattle(this.battleId, true))
-          .then((response: AxiosResponse) => {
+        this.$refs.spinner.observe(ajaxer.getBattle(this.battleId, true)).then(
+          (
+            response: AxiosResponse<{
+              battles: Battle[];
+              names: SimpleNumMap<string>;
+            }>
+          ) => {
             this.addNames(response.data.names);
             this.battle = response.data.battles[0];
-          });
+          }
+        );
       },
     },
     NameCacheMixin

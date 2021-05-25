@@ -39,7 +39,7 @@ export default defineComponent({
   },
 
   methods: {
-    taskSimple(job): Task {
+    taskSimple(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub engine cowling",
@@ -48,7 +48,7 @@ export default defineComponent({
       };
     },
 
-    taskShortName(job): Task {
+    taskShortName(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Fix droids",
@@ -57,7 +57,7 @@ export default defineComponent({
       };
     },
 
-    taskExtraLongText(job): Task {
+    taskExtraLongText(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub filthy engine cowling",

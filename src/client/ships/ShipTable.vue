@@ -43,7 +43,7 @@ export default defineComponent({
       required: false,
       default: false,
     },
-    ships: { type: Array as PropType<Ship>, required: true },
+    ships: { type: Array as PropType<Ship[]>, required: true },
   },
 
   data: function () {

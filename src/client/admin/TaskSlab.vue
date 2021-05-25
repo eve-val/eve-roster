@@ -59,7 +59,7 @@ export default defineComponent({
     ({
       runPromise: null,
     } as {
-      runPromise: Promise<any>;
+      runPromise: Promise<any> | null;
     }),
 
   computed: {

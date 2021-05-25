@@ -40,7 +40,7 @@ interface IEventTargetValue extends HTMLElement {
   value: string;
 }
 
-function hasValue(t: HTMLElement | null): t is IEventTargetValue {
+function hasValue(t: EventTarget | null): t is IEventTargetValue {
   return typeof t?.value === "string";
 }
 </script>
