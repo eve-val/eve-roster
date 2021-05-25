@@ -59,7 +59,7 @@ export class Scheduler {
     );
   }
 
-  public getRunningJobs(): ReadonlyArray<Job> {
+  public getRunningJobs(): readonly Job[] {
     return this._runningJobs;
   }
 

@@ -4,8 +4,8 @@ import { Tnex } from "../db/tnex";
 
 declare global {
   namespace Express {
-    interface Request {
-      db: Tnex;
+    interface Application {
+      locals: Record<"db", Tnex>;
     }
   }
 }

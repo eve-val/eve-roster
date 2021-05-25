@@ -37,6 +37,7 @@ const FRONTEND_ROUTES = [
 
 export async function init(db: Tnex, onServing: (port: number) => void) {
   const app = express();
+  app.locals.db = db;
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,11 +49,6 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
       secret: process.env.COOKIE_SECRET,
     })
   );
-
-  app.all("*", (req, res, next) => {
-    req.db = db;
-    next();
-  });
 
   // For healthchecks
   app.get("/healthz", function (req, res) {

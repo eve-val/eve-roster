@@ -44,7 +44,7 @@ export default async function (req: express.Request, res: express.Response) {
 
     const session = getSession(req);
     const accountId = await handleEndpoint(
-      req.db,
+      req.app.locals.db,
       session.accountId,
       authType,
       authCode

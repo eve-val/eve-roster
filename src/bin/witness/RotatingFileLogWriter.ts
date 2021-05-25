@@ -46,7 +46,7 @@ export class RotatingFileLogWriter extends Writable {
   }
 
   _writev?(
-    chunks: Array<{ chunk: Buffer; encoding: string }>,
+    chunks: { chunk: Buffer; encoding: string }[],
     callback: BasicCallback
   ): void {
     try {

@@ -6,7 +6,7 @@
  * is `'json'`, `handler` should return a promise to the Object that will make
  * up the JSON response.
  */
-import express = require("express");
+import express from "express";
 
 import { BadRequestError } from "../../error/BadRequestError";
 import { NotFoundError } from "../../error/NotFoundError";
@@ -55,11 +55,14 @@ export function htmlEndpoint<T extends object>(
   return async function (req, res) {
     try {
       const session = getSession(req);
-      const accountPrivs = await getAccountPrivs(req.db, session.accountId);
+      const accountPrivs = await getAccountPrivs(
+        req.app.locals.db,
+        session.accountId
+      );
       const payload = await handler(
         req,
         res,
-        req.db,
+        req.app.locals.db,
         accountPrivs.account,
         accountPrivs.privs
       );
@@ -76,11 +79,14 @@ export function jsonEndpoint<T extends object>(
   return async function (req, res) {
     try {
       const session = getSession(req);
-      const accountPrivs = await getAccountPrivs(req.db, session.accountId);
+      const accountPrivs = await getAccountPrivs(
+        req.app.locals.db,
+        session.accountId
+      );
       const payload = await handler(
         req,
         res,
-        req.db,
+        req.app.locals.db,
         accountPrivs.account,
         accountPrivs.privs
       );

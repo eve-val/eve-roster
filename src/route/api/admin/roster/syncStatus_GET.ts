@@ -17,12 +17,12 @@ export interface Output {
 export interface CorpSection {
   id: number;
   type: string;
-  directors: Array<{
+  directors: {
     id: number;
     name: string;
     canUseToken: boolean;
     tokenStatusLabel: string;
-  }>;
+  }[];
 }
 
 /**
