@@ -13,7 +13,7 @@ export class Duplex<In, Out> {
 
   _write(chunk: Out, encoding: string, callback: BasicCallback): void;
   _writev?(
-    chunks: Array<{ chunk: Out; encoding: string }>,
+    chunks: { chunk: Out; encoding: string }[],
     callback: BasicCallback
   ): void;
   _final(callback: BasicCallback): void;

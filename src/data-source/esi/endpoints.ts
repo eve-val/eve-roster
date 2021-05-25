@@ -191,7 +191,7 @@ export const ESI_CORPORATIONS_$corporationId_TITLES = {
     corporationId: number;
   },
   access: Private.ACCESS,
-  response: [] as Array<{
+  response: [] as {
     title_id: number;
     name: string;
     roles: string[];
@@ -202,7 +202,7 @@ export const ESI_CORPORATIONS_$corporationId_TITLES = {
     grantable_roles_at_base: string[];
     grantable_roles_at_hq: string[];
     grantable_roles_at_other: string[];
-  }>,
+  }[],
 };
 
 export const ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES = {
@@ -212,10 +212,10 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES = {
     corporationId: number;
   },
   access: Private.ACCESS,
-  response: [] as Array<{
+  response: [] as {
     character_id: number;
     titles: number[];
-  }>,
+  }[],
 };
 
 export const ESI_CORPORATIONS_$corporationId_ROLES = {
@@ -225,11 +225,11 @@ export const ESI_CORPORATIONS_$corporationId_ROLES = {
     corporationId: number;
   },
   access: Private.ACCESS,
-  response: [] as Array<{
+  response: [] as {
     character_id: number;
     roles?: string[];
     grantable_roles?: string[];
-  }>,
+  }[],
 };
 
 export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
@@ -239,7 +239,7 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
     corporationId: number;
   },
   access: Private.ACCESS,
-  response: [] as Array<{
+  response: [] as {
     character_id: number;
     start_date: string;
     base_id: number;
@@ -247,7 +247,7 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
     logoff_date: string;
     location_id: number;
     ship_type_id: number;
-  }>,
+  }[],
 };
 
 export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
@@ -260,10 +260,10 @@ export const ESI_CORPORATIONS_$corporationId_KILLMAILS_RECENT = {
     page: 1 as number,
   },
   access: Private.ACCESS,
-  response: [] as Array<{
+  response: [] as {
     killmail_hash: string;
     killmail_id: number;
-  }>,
+  }[],
 };
 
 export const ESI_KILLMAILS_$killmailId_$killmailHash = {

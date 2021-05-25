@@ -6,7 +6,12 @@
  * is `'json'`, `handler` should return a promise to the Object that will make
  * up the JSON response.
  */
-import express = require("express");
+import express, { Request } from "express";
+declare module "express" {
+  interface Request {
+    db: Tnex;
+  }
+}
 
 import { BadRequestError } from "../../error/BadRequestError";
 import { NotFoundError } from "../../error/NotFoundError";

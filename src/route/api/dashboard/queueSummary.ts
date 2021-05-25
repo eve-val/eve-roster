@@ -7,10 +7,10 @@ import {
   SkillQueueSummary,
 } from "../../../domain/skills/skillQueueSummarizer";
 
-export type Payload = Array<{
+export type Payload = {
   id: number;
   skillQueue: SkillQueueSummary;
-}>;
+}[];
 
 export default jsonEndpoint(function (
   req,
