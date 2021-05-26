@@ -131,7 +131,7 @@ export default defineComponent({
     }) {
       let skillMap: SimpleNumMap<Skill> = new Map<number, Skill>();
       for (let skill of data.skills) {
-        skillMap.set(skill.id) = skill;
+        skillMap.set(skill.id, skill);
         skill.queuedLevel = null;
       }
       this.skillGroups = groupifySkills(data.skills);

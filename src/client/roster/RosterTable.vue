@@ -20,7 +20,9 @@
 import AccountRow from "./AccountRow.vue";
 import TableHeader from "./TableHeader.vue";
 
-import { defineComponent } from "vue";
+import { Column } from "./rosterColumns";
+import { Account, Character } from "../shared/types";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AccountRow,
@@ -28,9 +30,9 @@ export default defineComponent({
   },
 
   props: {
-    columns: { type: Array, required: true },
-    rows: { type: Array, required: true },
-    filter: { type: String, required: false, default: "" },
+    columns: { type: Array as PropType<Column[]>, required: true },
+    rows: { type: Array as PropType<Account[]>, required: true },
+    filter: { type: String as PropType<string>, required: false, default: "" },
   },
 
   data: function () {
@@ -43,7 +45,7 @@ export default defineComponent({
   },
 
   computed: {
-    sortColumn: function () {
+    sortColumn: function (): Column | null {
       for (let col of this.columns) {
         if (col.key == this.sort.key) {
           return col;
@@ -55,7 +57,7 @@ export default defineComponent({
     sortedRows: function () {
       const copy = [...this.rows];
       // Sort accounts
-      copy.sort((a, b) => {
+      copy.sort((a: Account, b: Account) => {
         return generalPurposeCompare(
           getSortVal(this.sortColumn, a.aggregate, a),
           getSortVal(this.sortColumn, b.aggregate, b),
@@ -66,7 +68,7 @@ export default defineComponent({
       // Sort alts
       for (let row of copy) {
         const alts = [...row.alts];
-        alts.sort((a, b) => {
+        alts.sort((a: Character, b: Character) => {
           return generalPurposeCompare(
             getSortVal(this.sortColumn, a, null),
             getSortVal(this.sortColumn, b, null),
@@ -92,7 +94,11 @@ export default defineComponent({
   },
 });
 
-function getSortVal(column, character, account) {
+function getSortVal(
+  column: Column,
+  character: Character,
+  account: Account
+): number | string | null | undefined {
   if (column.account) {
     return account && account[column.key];
   } else {
@@ -100,7 +106,7 @@ function getSortVal(column, character, account) {
   }
 }
 
-function generalPurposeCompare(a, b, reverse) {
+function generalPurposeCompare(a: any, b: any, reverse: boolean) {
   let cmp;
 
   if (a == null && b != null) {

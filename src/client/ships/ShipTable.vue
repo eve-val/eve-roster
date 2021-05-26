@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { Ship } from "./ships";
+type SortKey = keyof Omit<Ship, "id">;
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -56,7 +57,7 @@ export default defineComponent({
         "name",
       ],
     } as {
-      sortOrder: string[];
+      sortOrder: SortKey[];
     };
   },
 
@@ -78,7 +79,7 @@ export default defineComponent({
   },
 
   methods: {
-    setSort: function (column: string) {
+    setSort: function (column: SortKey) {
       const idx = this.sortOrder.indexOf(column);
       if (idx < 0) return;
       this.sortOrder.splice(idx, 1);

@@ -90,10 +90,12 @@ import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
 import { Column } from "./rosterColumns";
-import { Character } from "../shared/types";
+import { Account, Character } from "../shared/types";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
-const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
+const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon] as const;
+
+type Value = string | number | null | undefined;
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -121,16 +123,16 @@ export default defineComponent({
   },
 
   computed: {
-    displayVals: function (): string[] {
-      let labels: string[] = [];
+    displayVals: function (): Value[] {
+      let labels: Value[] = [];
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
       return labels;
     },
 
-    subsequentDisplayVals: function (): string[] {
-      let labels: string[] = [];
+    subsequentDisplayVals: function (): Value[] {
+      let labels: Value[] = [];
       this.columns.forEach((col, i) => {
         if (i >= 3) {
           labels.push(this.displayVal(col));
@@ -139,7 +141,7 @@ export default defineComponent({
       return labels;
     },
 
-    alertIconSrc: function (): string {
+    alertIconSrc: function (): string | null {
       let level = 0;
       if (this.isMain) {
         level = Math.max(
@@ -150,11 +152,7 @@ export default defineComponent({
         level = this.character.alertLevel || 0;
       }
 
-      if (level < 0 || level >= MSG_ICONS.length) {
-        return MSG_ICONS[0];
-      } else {
-        return MSG_ICONS[level];
-      }
+      return MSG_ICONS[level];
     },
 
     alertMessage: function (): string | null {
@@ -206,7 +204,7 @@ export default defineComponent({
       };
     },
 
-    tooltipMessage: function (idx: number): string | null {
+    tooltipMessage: function (idx: number): Value {
       let col = this.columns[idx];
       if (!col.metaKey) {
         // No tooltip to display
@@ -231,17 +229,17 @@ export default defineComponent({
           col.metaKey == "lossValueInLastMonth"
         ) {
           // Special case to reformat numeric value to a friendly ISK string
-          metaValue = iskLabel(metaValue);
+          // type checked above.
+          metaValue = iskLabel(<number>metaValue);
         }
-
-        return metaValue;
+        return <string | number>metaValue;
       } else {
         // Meta data was not included in the server response
         return null;
       }
     },
 
-    displayVal: function (col: Column): string {
+    displayVal: function (col: Column): Value {
       switch (col.key) {
         case "alts":
           if (!this.isMain) {
@@ -256,7 +254,7 @@ export default defineComponent({
             if (!this.isMain) {
               return "″"; // ditto symbol
             } else {
-              return this.account[col.key];
+              return <Value>this.account[col.key];
             }
           } else {
             return this.character[col.key];
@@ -275,7 +273,7 @@ export default defineComponent({
     cellAlignment(colIdx: number): string {
       let col = this.columns[colIdx];
       let align = "left";
-      if (col.key == "warning") {
+      if (col.key == "alertLevel") {
         align = "center";
       } else if (col.numeric) {
         align = "right";

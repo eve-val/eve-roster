@@ -1,11 +1,28 @@
-export interface Column {
+import { Character, Account } from "../shared/types";
+
+interface RenderColumn {
   label: string;
-  key: string;
   width: number;
   margin?: number;
   numeric?: boolean;
-  metaKey?: string;
   derivedFrom?: string[];
+}
+
+interface CharacterColumn extends RenderColumn {
+  key: keyof Character;
+  metaKey?: keyof Character;
+  account?: false;
+}
+interface AccountColumn extends RenderColumn {
+  key: keyof Omit<Account, "main">;
+  metaKey?: keyof Omit<Account, "main" | "alts">;
+  account: true;
+}
+export type Column = CharacterColumn | AccountColumn;
+
+interface CharacterColumn extends RenderColumn {
+  key: keyof Character | keyof Account;
+  metaKey?: keyof Character | keyof Account;
   account?: boolean;
 }
 
