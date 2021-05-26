@@ -69,6 +69,8 @@ import LossRow from "./LossRow.vue";
 
 import { Loss, Payment } from "./types";
 
+import { SimpleNumMap } from "../../util/simpleTypes";
+
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
@@ -131,13 +133,19 @@ export default defineComponent({
       fetchData() {
         this.payment = null;
         this.losses = null;
-        this.$refs.spinner
-          .observe(ajaxer.getSrpPayment(this.srpId))
-          .then((response: AxiosResponse) => {
+        this.$refs.spinner.observe(ajaxer.getSrpPayment(this.srpId)).then(
+          (
+            response: AxiosResponse<{
+              names: SimpleNumMap<string>;
+              payment: Payment;
+              losses: Loss[];
+            }>
+          ) => {
             this.addNames(response.data.names);
             this.payment = response.data.payment;
             this.losses = response.data.losses;
-          });
+          }
+        );
       },
 
       onUndoClick() {

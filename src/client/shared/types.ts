@@ -12,8 +12,11 @@ type Nullable<T> = T | null | undefined;
 export type CssStyleObject = Partial<CSSStyleDeclaration> &
   Dictionary<Nullable<string>>;
 
+// import * as serverTypes from "../../route/api/roster";
+
 export interface Character {
   id: number;
+  corporationId: number;
   name: string;
   accessTokenValid: boolean;
   membership: string;

@@ -102,18 +102,19 @@ export default defineComponent({
   },
 });
 
-const APPEND_ATTRS = new Set(["alertMessage"]);
-
-const SUM_ATTRS = new Set([
+const APPEND_ATTRS = ["alertMessage"] as const;
+type AppendAttr = typeof APPEND_ATTRS[number];
+const SUM_ATTRS = [
   "killsInLastMonth",
   "killValueInLastMonth",
   "lossesInLastMonth",
   "lossValueInLastMonth",
   "siggyScore",
   "activityScore",
-]);
-
-const MAX_ATTRS = new Set(["lastSeen", "alertLevel"]);
+] as const;
+type SumAttr = typeof SUM_ATTRS[number];
+const MAX_ATTRS = ["lastSeen", "alertLevel"] as const;
+type MaxAttr = typeof MAX_ATTRS[number];
 
 function injectDerivedData(data: Account[]): Account[] {
   for (let account of data) {
@@ -124,7 +125,7 @@ function injectDerivedData(data: Account[]): Account[] {
 }
 
 function computeAggregateCharacter(account: Account): Character {
-  let aggregate = {};
+  let aggregate: Character;
 
   // Calculate key set as union of keys in main and all alts
   let keys = Object.keys(account.main);
@@ -132,13 +133,13 @@ function computeAggregateCharacter(account: Account): Character {
     keys.push(...Object.keys(alt));
   }
 
-  for (let v of new Set(keys)) {
-    if (APPEND_ATTRS.has(v)) {
-      aggregate[v] = aggProp(v, account.main, ...account.alts);
-    } else if (SUM_ATTRS.has(v)) {
-      aggregate[v] = sumProp(v, account.main, ...account.alts);
-    } else if (MAX_ATTRS.has(v)) {
-      aggregate[v] = maxProp(v, account.main, ...account.alts);
+  for (let v of keys) {
+    if (APPEND_ATTRS.includes(v)) {
+      aggregate[v] = aggProp(<AppendAttr>v, account.main, ...account.alts);
+    } else if (SUM_ATTRS.includes(v)) {
+      aggregate[v] = sumProp(<SumAttr>v, account.main, ...account.alts);
+    } else if (MAX_ATTRS.includes(v)) {
+      aggregate[v] = maxProp(<MaxAttr>v, account.main, ...account.alts);
     } else {
       aggregate[v] = account.main[v];
     }
@@ -146,7 +147,7 @@ function computeAggregateCharacter(account: Account): Character {
   return aggregate;
 }
 
-function aggProp(prop: string, ...chars: Map<string, string>[]): string {
+function aggProp(prop: AppendAttr, ...chars: Character[]): string {
   let text = "";
   for (let char of chars) {
     if (char[prop]) {
@@ -159,7 +160,7 @@ function aggProp(prop: string, ...chars: Map<string, string>[]): string {
   return text;
 }
 
-function sumProp(prop: string, ...chars: Character[]): null | number {
+function sumProp(prop: SumAttr, ...chars: Character[]): null | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
@@ -171,7 +172,7 @@ function sumProp(prop: string, ...chars: Character[]): null | number {
   return sawNotNull ? sum : null;
 }
 
-function maxProp(prop: string, ...chars: Character[]): number | null {
+function maxProp(prop: MaxAttr, ...chars: Character[]): number | null {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {

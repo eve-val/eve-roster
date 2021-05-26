@@ -158,8 +158,6 @@ export default defineComponent({
       access: null,
       timezones: [],
       citadels: [],
-
-      characterPromise: null,
       corporationName: null,
       skillsMap: null,
       queue: null,
@@ -169,10 +167,9 @@ export default defineComponent({
       access: SimpleMap<number> | null;
       timezones: string[];
       citadels: string[];
-      characterPromise: Promise<Character> | null;
       corporationName: string | null;
-      skillsMap: object | null;
-      queue: Object[] | null;
+      skillsMap: Map<number, Skill> | null;
+      queue: { id: number; targetLevel: number }[] | null;
     };
   },
 
@@ -218,12 +215,11 @@ export default defineComponent({
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
       this.corporationName = null;
-      this.characterPromise = null;
 
       this.fetchData();
     },
 
-    character(value) {
+    character(value: Character | null) {
       if (value && value.corporationId) {
         ajaxer
           .getCorporation(value.corporationId)

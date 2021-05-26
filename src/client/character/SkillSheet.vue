@@ -124,7 +124,7 @@ export default defineComponent({
       skills: Skill[];
       queue: undefined | { entries: { id: number; targetLevel: number } };
     }) {
-      let skillMap = {};
+      let skillMap: Map<number, Skill> = {};
       for (let skill of data.skills) {
         skillMap[skill.id] = skill;
         skill.queuedLevel = null;

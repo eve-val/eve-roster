@@ -92,7 +92,7 @@ export default defineComponent({
       return this.compactMode ? 10 : 30;
     },
 
-    finalKillmail(): number {
+    finalKillmail(): number | undefined {
       if (this.rows == null || this.rows.length == 0) {
         return undefined;
       } else {

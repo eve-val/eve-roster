@@ -22,7 +22,7 @@ export default defineComponent({
 
   methods: {
     onSearchBoxInput: function (ev: Event) {
-      if (ev.target != null && hasValue(ev)) {
+      if (hasValue(ev.target)) {
         this.$emit("change", ev.target.value.trim());
       }
     },
