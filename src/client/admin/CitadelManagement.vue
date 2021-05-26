@@ -65,13 +65,13 @@ const CITADEL_TYPES = [
 ];
 type CitadelType = typeof CITADEL_TYPES[number];
 
-type Citadel = {
+interface Citadel {
   id: number | null;
   name: string;
   type: CitadelType;
   allianceAccess: boolean;
   allianceOwned: boolean;
-};
+}
 
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
@@ -86,15 +86,17 @@ export default defineComponent({
 
   data: function () {
     return {
-      citadels: <Citadel[]>[],
-      citadelsPromise: null,
-      newCitadel: <Citadel>{
+      citadels: [],
+      newCitadel: {
         id: null,
         name: "",
         type: "Astrahus",
         allianceAccess: true,
         allianceOwned: true,
       },
+    } as {
+      citadels: Citadel[];
+      newCitadel: Citadel;
     };
   },
 
@@ -114,25 +116,25 @@ export default defineComponent({
 
   methods: {
     fetchData() {
-      this.citadelsPromise = ajaxer
+      ajaxer
         .getCitadels()
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<{ citadels: Citadel[] }>) => {
           this.citadels = response.data.citadels;
         });
     },
 
     addCitadel() {
       let c = this.newCitadel;
-      this.addPromise = ajaxer
+      ajaxer
         .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<Citadel>) => {
           this.citadels.push(response.data);
           this.newCitadel.name = "";
         });
     },
 
     removeCitadel(id: number) {
-      this.deletePromise = ajaxer.deleteCitadel(id).then((_response) => {
+      ajaxer.deleteCitadel(id).then((_response: AxiosResponse<{}>) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
             this.citadels.splice(i, 1);
@@ -143,8 +145,8 @@ export default defineComponent({
     },
 
     renameCitadel(id: number, name: string) {
-      this.renamePromise = ajaxer.putCitadelName(id, name).then((_response) => {
-        this.citadels.map((citadel) => {
+      ajaxer.putCitadelName(id, name).then((_response: AxiosResponse<{}>) => {
+        this.citadels.map((citadel: Citadel) => {
           if (citadel.id === id) {
             citadel.name = name;
           }

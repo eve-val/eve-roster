@@ -12,5 +12,5 @@ export type Task = {
   displayName: string;
   description: string;
   isSynthetic: boolean;
-  job: Job;
+  job: Job | null;
 };

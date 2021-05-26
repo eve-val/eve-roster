@@ -231,7 +231,7 @@ export default defineComponent({
   },
 });
 
-function compareJobs(a: Task, b: Task) {
+function compareJobs(a: Task, b: Task): number {
   if (a.job != null && b.job == null) {
     return -1;
   } else if (b.job != null && a.job == null) {
@@ -241,17 +241,22 @@ function compareJobs(a: Task, b: Task) {
   }
 }
 
-function compareStartTimes(a: Task, b: Task) {
-  let startA = a.job && a.job.startTime;
-  let startB = b.job && b.job.startTime;
+function compareStartTimes(a: Task, b: Task): number {
+  const startA = a.job?.startTime;
+  const startB = b.job?.startTime;
 
-  let cmp = 0;
-  if (startA != null && startA < startB) {
-    cmp = -1;
-  } else if (startB != null && startB < startA) {
-    cmp = 1;
+  if (startA == null && startB == null) {
+    return 0;
+  } else if (startB == null) {
+    return -1;
+  } else if (startA == null) {
+    return 1;
+  } else if (startA < startB) {
+    return -1;
+  } else if (startB < startA) {
+    return 1;
   }
-  return cmp;
+  return 0;
 }
 </script>
 

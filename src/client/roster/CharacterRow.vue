@@ -89,12 +89,13 @@ import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
-import { Column } from "./types";
+import { Column } from "./rosterColumns";
+import { Character } from "../shared/types";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
 
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,
@@ -102,11 +103,15 @@ export default defineComponent({
   },
 
   props: {
-    character: { type: Object, required: true },
-    columns: { type: Array, required: true },
-    isMain: { type: Boolean, required: true },
-    account: { type: Object, required: false, default: null },
-    filter: { type: String, required: false, default: "" },
+    character: { type: Object as PropType<Character>, required: true },
+    columns: { type: Array as PropType<Column[]>, required: true },
+    isMain: { type: Boolean as PropType<boolean>, required: true },
+    account: {
+      type: Object as PropType<Account>,
+      required: false,
+      default: null,
+    },
+    filter: { type: String as PropType<string>, required: false, default: "" },
   },
 
   emits: ["toggleExpanded"],

@@ -57,7 +57,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
 import { Skill, groupifySkills } from "./skills";
-import { SimpleMap } from "../../util/simpleTypes";
+import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
 import { defineComponent, PropType } from "vue";
@@ -109,7 +109,12 @@ export default defineComponent({
       if (this.canReadSkills) {
         this.$refs.spinner.observe(
           ajaxer.getSkills(this.characterId),
-          (response: AxiosResponse) => {
+          (
+            response: AxiosResponse<{
+              warning?: string;
+              entries: { id: number; targetLevel: number };
+            }>
+          ) => {
             this.processData(response.data);
             if (response.data.warning) {
               return { state: "warning", message: response.data.warning };
@@ -124,9 +129,9 @@ export default defineComponent({
       skills: Skill[];
       queue: undefined | { entries: { id: number; targetLevel: number } };
     }) {
-      let skillMap: Map<number, Skill> = {};
+      let skillMap: SimpleNumMap<Skill> = new Map<number, Skill>();
       for (let skill of data.skills) {
-        skillMap[skill.id] = skill;
+        skillMap.set(skill.id) = skill;
         skill.queuedLevel = null;
       }
       this.skillGroups = groupifySkills(data.skills);
@@ -134,7 +139,7 @@ export default defineComponent({
       if (data.queue != undefined) {
         this.queue = data.queue;
         for (let qe of data.queue.entries) {
-          let skill = skillMap[qe.id];
+          let skill = skillMap.get(qe.id);
           skill.queuedLevel = qe.targetLevel;
           qe.skill = skill;
         }

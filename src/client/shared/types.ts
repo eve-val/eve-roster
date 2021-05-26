@@ -12,24 +12,13 @@ type Nullable<T> = T | null | undefined;
 export type CssStyleObject = Partial<CSSStyleDeclaration> &
   Dictionary<Nullable<string>>;
 
-// import * as serverTypes from "../../route/api/roster";
+import * as serverTypes from "../../route/api/roster";
 
-export interface Character {
-  id: number;
-  corporationId: number;
-  name: string;
-  accessTokenValid: boolean;
-  membership: string;
-  lastSeen: number;
-  activityScore?: number;
-  logonDate?: null | number;
-  logoffDate?: null | number;
-  siggyScore?: null | number;
-  killsInLastMonth?: null | number;
+export interface Character extends serverTypes.CharacterJson {
   totalSp?: number;
+  activityScore?: number;
 }
-export interface Account {
-  main: Character;
-  alts: Character[];
-  aggregate?: Character;
+
+export interface Account extends serverTypes.AccountJson {
+  aggregate: Character;
 }

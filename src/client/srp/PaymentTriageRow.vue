@@ -96,7 +96,7 @@ export default defineComponent({
 
   props: {
     payment: { type: Object as PropType<Payment>, required: true },
-    payingCharacter: { type: Number, default: null },
+    payingCharacter: { type: Number as PropType<number | null>, default: null },
   },
 
   data() {

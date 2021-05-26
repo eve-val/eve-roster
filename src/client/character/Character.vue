@@ -268,7 +268,7 @@ export default defineComponent({
     },
 
     processSkillsData(skills: Skill[]) {
-      let map = {};
+      let map: Map<number, Skill> = {};
       for (let skill of skills) {
         map[skill.id] = skill;
         skill.queuedLevel = null;

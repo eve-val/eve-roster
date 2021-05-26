@@ -25,7 +25,7 @@
 <script lang="ts">
 import _ from "underscore";
 
-import { Column } from "./types";
+import { Column } from "./rosterColumns";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

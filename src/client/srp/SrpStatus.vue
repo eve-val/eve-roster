@@ -280,7 +280,7 @@ export default defineComponent({
           .observe(
             ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
           )
-          .then((response: AxiosResponse) => {
+          .then((response: AxiosResponse<{ id: number; name: string }>) => {
             this.saveStatus = "inactive";
             this.srp.payout = payout;
             this.srp.status = verdict;
@@ -359,7 +359,13 @@ export default defineComponent({
   ),
 });
 
-const INELIGIBLE_STATUSES = [
+interface Status {
+  status: string;
+  reason: string | null;
+  label: string;
+}
+
+const INELIGIBLE_STATUSES: Status[] = [
   {
     status: "ineligible",
     reason: "not_covered",
@@ -412,7 +418,7 @@ const INELIGIBLE_STATUSES = [
   },
 ];
 
-const UNSETTABLE_STATUSES = [
+const UNSETTABLE_STATUSES: Status[] = [
   {
     status: "ineligible",
     reason: "outside_jurisdiction",
@@ -425,7 +431,7 @@ const UNSETTABLE_STATUSES = [
   },
 ];
 
-const ALL_STATUSES = [
+const MAIN_STATUSES: Status[] = [
   {
     status: "approved",
     reason: null,
@@ -441,7 +447,12 @@ const ALL_STATUSES = [
     reason: null,
     label: "Pending",
   },
-].concat(INELIGIBLE_STATUSES, UNSETTABLE_STATUSES);
+];
+
+const ALL_STATUSES: Status[] = MAIN_STATUSES.concat(
+  INELIGIBLE_STATUSES,
+  UNSETTABLE_STATUSES
+);
 
 function isValidInputPayout(inputPayout: number): boolean {
   return inputPayout >= 0;

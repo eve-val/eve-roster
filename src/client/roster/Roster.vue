@@ -135,13 +135,25 @@ function computeAggregateCharacter(account: Account): Character {
 
   for (let v of keys) {
     if (APPEND_ATTRS.includes(v)) {
-      aggregate[v] = aggProp(<AppendAttr>v, account.main, ...account.alts);
+      aggregate[<AppendAttr>v] = aggProp(
+        <AppendAttr>v,
+        account.main,
+        ...account.alts
+      );
     } else if (SUM_ATTRS.includes(v)) {
-      aggregate[v] = sumProp(<SumAttr>v, account.main, ...account.alts);
+      aggregate[<SumAttr>v] = sumProp(
+        <SumAttr>v,
+        account.main,
+        ...account.alts
+      );
     } else if (MAX_ATTRS.includes(v)) {
-      aggregate[v] = maxProp(<MaxAttr>v, account.main, ...account.alts);
+      aggregate[<MaxAttr>v] = maxProp(
+        <MaxAttr>v,
+        account.main,
+        ...account.alts
+      );
     } else {
-      aggregate[v] = account.main[v];
+      aggregate[<keyof Character>v] = account.main[<keyof Character>v];
     }
   }
   return aggregate;
