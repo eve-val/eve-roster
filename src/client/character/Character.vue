@@ -270,7 +270,7 @@ export default defineComponent({
     processSkillsData(skills: Skill[]) {
       let map: Map<number, Skill> = new Map<number, Skill>();
       for (let skill of skills) {
-        map[skill.id] = skill;
+        map.set(skill.id, skill);
         skill.queuedLevel = null;
       }
       this.skillsMap = map;
@@ -281,7 +281,7 @@ export default defineComponent({
     maybeInjectQueueDataIntoSkillsMap() {
       if (this.skillsMap != null && this.queue != null) {
         for (let queueItem of this.queue) {
-          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
+          this.skillsMap.get(queueItem.id).queuedLevel = queueItem.targetLevel;
         }
       }
     },

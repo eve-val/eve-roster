@@ -74,7 +74,6 @@ import { SimpleNumMap } from "../../util/simpleTypes";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { AxiosResponse } from "axios";
 import { Identity } from "../home";
 
 const UNDO_STATUSES = ["inactive", "saving", "error"] as const;

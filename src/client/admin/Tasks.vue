@@ -144,8 +144,8 @@ export default defineComponent({
     },
 
     onJobStarted(taskName: string) {
-      let task = _.findWhere(this.tasks, { name: taskName });
-      if (task == null) {
+      let task: Task | undefined = _.findWhere(this.tasks, { name: taskName });
+      if (!task) {
         console.error("Unknown task:", taskName);
         return;
       }
