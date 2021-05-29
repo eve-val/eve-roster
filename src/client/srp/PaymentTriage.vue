@@ -54,6 +54,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
 
+import { Payment } from "./types";
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
@@ -77,6 +78,12 @@ export default defineComponent({
       payingCharacter: null,
 
       approvedLiability: 0,
+    } as {
+      fetchPromise: null | Promise<AxiosResponse>;
+      suspectMoreToFetch: boolean;
+      payments: null | Payment[];
+      payingCharacter: null | number;
+      approvedLiability: number;
     };
   },
 

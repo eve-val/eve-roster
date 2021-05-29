@@ -56,7 +56,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import TaskSlab from "./TaskSlab.vue";
 import TaskLog from "./TaskLog.vue";
 
-import { Task, Job } from "./types";
+import { Task, Job, Log } from "./types";
 
 const POLL_FREQUENCY = 4000;
 
@@ -77,9 +77,13 @@ export default defineComponent({
 
   data: function () {
     return {
-      tasks: <Task[]>[],
+      tasks: [],
       taskLog: [],
       polling: false,
+    } as {
+      tasks: Task[];
+      taskLog: Log[];
+      polling: boolean;
     };
   },
 
@@ -103,16 +107,26 @@ export default defineComponent({
   mounted: function () {
     this.$refs.root_spinner
       .observe(
-        Promise.all([
+        Promise.all<
+          AxiosResponse<Task[]>,
+          AxiosResponse<Job[]>,
+          AxiosResponse<Log[]>
+        >([
           ajaxer.getAdminTasks(),
           ajaxer.getAdminJobs(),
           ajaxer.getAdminTaskLog(),
         ])
       )
-      .then(([tasks, jobs, logs]) => {
-        this.initializeTasks(tasks.data, jobs.data);
-        this.taskLog = logs.data;
-      });
+      .then(
+        ([tasks, jobs, logs]: [
+          tasks: AxiosResponse<Task[]>,
+          jobs: AxiosResponse<Job[]>,
+          logs: AxiosResponse<Log[]>
+        ]) => {
+          this.initializeTasks(tasks.data, jobs.data);
+          this.taskLog = logs.data;
+        }
+      );
   },
 
   methods: {
@@ -156,7 +170,7 @@ export default defineComponent({
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs().then((response: AxiosResponse) => {
+        ajaxer.getAdminJobs().then((response: AxiosResponse<Job[]>) => {
           this.applyJobs(response.data);
           if (this.areAnyActiveJobs) {
             setTimeout(poll, POLL_FREQUENCY);
@@ -224,7 +238,7 @@ export default defineComponent({
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog().then((response: AxiosResponse) => {
+      ajaxer.getAdminTaskLog().then((response: AxiosResponse<Log[]>) => {
         this.taskLog = response.data;
       });
     },

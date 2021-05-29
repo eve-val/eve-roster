@@ -79,7 +79,7 @@ export default defineComponent({
 
             return _.reduce(
               sourceColumns,
-              (accum: string[], sourceCol: string) =>
+              (accum: boolean, sourceCol: string) =>
                 accum && providedColumns.includes(sourceCol),
               true
             );
