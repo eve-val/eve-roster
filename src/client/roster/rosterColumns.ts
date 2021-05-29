@@ -16,7 +16,7 @@ interface CharacterColumn extends RenderColumn {
 interface AccountColumn extends RenderColumn {
   account?: true;
   key: keyof Omit<Account, "main">;
-  metaKey?: keyof Omit<Account, "main" | "alts">;
+  metaKey?: keyof Omit<Account, "main" | "alts" | "aggregate">;
 }
 export type Column = CharacterColumn | AccountColumn;
 

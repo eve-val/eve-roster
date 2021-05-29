@@ -94,6 +94,8 @@ export default defineComponent({
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     payment: { type: Object as PropType<Payment>, required: true },
     payingCharacter: { type: Number as PropType<number | null>, default: null },
@@ -113,72 +115,67 @@ export default defineComponent({
 
   mounted() {},
 
-  methods: Object.assign(
-    {
-      onCopyReasonClick() {
-        this.$refs.reasonInput.select();
-        try {
-          document.execCommand("copy");
-        } catch (err) {
-          console.log("Error while copying", err);
-        }
-      },
-
-      onCopyPayoutClick() {
-        this.$refs.payoutInput.select();
-        try {
-          document.execCommand("copy");
-        } catch (err) {
-          console.log("Error while copying", err);
-        }
-        ajaxer.postOpenInformationWindow(
-          this.payingCharacter,
-          this.payment.recipient
-        );
-      },
-
-      onSaveClick() {
-        if (this.saveStatus == "saving" || this.payingCharacter == null) {
-          return;
-        }
-        this.saveStatus = "saving";
-        this.$refs.saveSpinner
-          .observe(
-            ajaxer.putSrpPaymentStatus(
-              this.payment.id,
-              true,
-              this.payingCharacter
-            )
-          )
-          .then(() => {
-            this.saveStatus = "inactive";
-            this.paid = true;
-          })
-          .catch(() => {
-            this.saveStatus = "error";
-          });
-      },
-
-      onUndoClick() {
-        if (this.undoStatus == "saving") {
-          return;
-        }
-        this.undoStatus = "saving";
-        this.$refs.undoSpinner
-          .observe(
-            ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined)
-          )
-          .then(() => {
-            this.undoStatus = "inactive";
-            this.paid = false;
-          })
-          .catch(() => {
-            this.undoStatus = "error";
-          });
-      },
+  methods: {
+    onCopyReasonClick() {
+      this.$refs.reasonInput.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.log("Error while copying", err);
+      }
     },
-    NameCacheMixin
-  ),
+
+    onCopyPayoutClick() {
+      this.$refs.payoutInput.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.log("Error while copying", err);
+      }
+      ajaxer.postOpenInformationWindow(
+        this.payingCharacter,
+        this.payment.recipient
+      );
+    },
+
+    onSaveClick() {
+      if (this.saveStatus == "saving" || this.payingCharacter == null) {
+        return;
+      }
+      this.saveStatus = "saving";
+      this.$refs.saveSpinner
+        .observe(
+          ajaxer.putSrpPaymentStatus(
+            this.payment.id,
+            true,
+            this.payingCharacter
+          )
+        )
+        .then(() => {
+          this.saveStatus = "inactive";
+          this.paid = true;
+        })
+        .catch(() => {
+          this.saveStatus = "error";
+        });
+    },
+
+    onUndoClick() {
+      if (this.undoStatus == "saving") {
+        return;
+      }
+      this.undoStatus = "saving";
+      this.$refs.undoSpinner
+        .observe(ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined))
+        .then(() => {
+          this.undoStatus = "inactive";
+          this.paid = false;
+        })
+        .catch(() => {
+          this.undoStatus = "error";
+        });
+    },
+  },
 });
 </script>
 

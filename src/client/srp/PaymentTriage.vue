@@ -65,6 +65,8 @@ export default defineComponent({
     PaymentTriageRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
   },
@@ -108,38 +110,35 @@ export default defineComponent({
   mounted() {
     this.fetchNextResults();
 
-    ajaxer.getSrpApprovedLiability().then((response: AxiosResponse) => {
+    ajaxer.getSrpApprovedLiability().then((response: AxiosResponse<number>) => {
       this.approvedLiability = response.data.approvedLiability;
     });
   },
 
-  methods: Object.assign(
-    {
-      fetchNextResults() {
-        this.fetchPromise = ajaxer.getSrpPaymentHistory({
-          paid: false,
-          order: "asc",
-          orderBy: "id",
-          startingAfter: this.finalId,
-          account: this.forAccount,
-          limit: RESULTS_PER_FETCH,
-        });
+  methods: {
+    fetchNextResults() {
+      this.fetchPromise = ajaxer.getSrpPaymentHistory({
+        paid: false,
+        order: "asc",
+        orderBy: "id",
+        startingAfter: this.finalId,
+        account: this.forAccount,
+        limit: RESULTS_PER_FETCH,
+      });
 
-        this.fetchPromise.then((response: AxiosResponse) => {
-          this.addNames(response.data.names);
+      this.fetchPromise.then((response: AxiosResponse) => {
+        this.addNames(response.data.names);
 
-          this.payments = this.payments || [];
-          for (let payment of response.data.payments) {
-            this.payments.push(payment);
-          }
+        this.payments = this.payments || [];
+        for (let payment of response.data.payments) {
+          this.payments.push(payment);
+        }
 
-          this.suspectMoreToFetch =
-            response.data.payments.length == RESULTS_PER_FETCH;
-        });
-      },
+        this.suspectMoreToFetch =
+          response.data.payments.length == RESULTS_PER_FETCH;
+      });
     },
-    NameCacheMixin
-  ),
+  },
 });
 </script>
 

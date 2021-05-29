@@ -53,6 +53,8 @@ export default defineComponent({
     EveImage,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     corp: { type: Object, required: true },
   },
@@ -62,8 +64,6 @@ export default defineComponent({
   },
 
   computed: {},
-
-  methods: Object.assign({}, NameCacheMixin),
 });
 </script>
 

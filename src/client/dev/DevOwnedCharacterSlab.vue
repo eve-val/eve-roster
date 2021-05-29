@@ -126,7 +126,7 @@
 <script lang="ts">
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
-
+import { Character } from "../shared/types";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -171,7 +171,7 @@ function errorPromise() {
   });
 }
 
-function characterBasic(skillQueue) {
+function characterBasic(skillQueue): Character {
   return {
     id: 95773199,
     name: "Brienne Lesqagar",
@@ -183,20 +183,20 @@ function characterBasic(skillQueue) {
   };
 }
 
-function characterOpsec() {
+function characterOpsec(): Character {
   let character = characterBasic();
   character.opsec = true;
   character.corpStatus = "external";
   return character;
 }
 
-function characterBiomassed() {
+function characterBiomassed(): Character {
   let character = characterBasic();
   character.corpId = CORP_DOOMHEIM;
   return character;
 }
 
-function characterNeedsReauth(skillQueue) {
+function characterNeedsReauth(skillQueue): Character {
   let character = characterBasic(skillQueue);
   character.needsReauth = true;
   return character;

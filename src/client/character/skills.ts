@@ -40,6 +40,8 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   };
 }
 
+import { QueueEntryJson } from "../../route/api/character/skills";
+
 export interface Skill {
   id: number;
   group: string;
@@ -51,6 +53,10 @@ export interface SkillGroup {
   name: string;
   position: number;
   skills: Skill[];
+}
+
+export interface QueueEntry extends QueueEntryJson {
+  skill?: Skill;
 }
 
 /**

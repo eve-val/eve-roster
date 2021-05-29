@@ -40,6 +40,8 @@ export default defineComponent({
     BattleRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     battleId: { type: Number as PropType<number>, required: true },
@@ -57,25 +59,22 @@ export default defineComponent({
     this.fetchData();
   },
 
-  methods: Object.assign(
-    {
-      fetchData() {
-        this.battle = null;
-        this.$refs.spinner.observe(ajaxer.getBattle(this.battleId, true)).then(
-          (
-            response: AxiosResponse<{
-              battles: Battle[];
-              names: SimpleNumMap<string>;
-            }>
-          ) => {
-            this.addNames(response.data.names);
-            this.battle = response.data.battles[0];
-          }
-        );
-      },
+  methods: {
+    fetchData() {
+      this.battle = null;
+      this.$refs.spinner.observe(ajaxer.getBattle(this.battleId, true)).then(
+        (
+          response: AxiosResponse<{
+            battles: Battle[];
+            names: SimpleNumMap<string>;
+          }>
+        ) => {
+          this.addNames(response.data.names);
+          this.battle = response.data.battles[0];
+        }
+      );
     },
-    NameCacheMixin
-  ),
+  },
 });
 </script>
 

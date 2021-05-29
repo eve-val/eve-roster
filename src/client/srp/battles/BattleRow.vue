@@ -117,6 +117,8 @@ export default defineComponent({
     Tooltip,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     battle: { type: Object as PropType<Battle>, required: true },
     hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
@@ -135,22 +137,19 @@ export default defineComponent({
     },
   },
 
-  methods: Object.assign(
-    {
-      zkillHref(id: undefined | number, type: string): undefined | string {
-        if (id == undefined) {
-          return undefined;
-        } else {
-          return `https://zkillboard.com/${type}/${id}/`;
-        }
-      },
-
-      formatIskValue(value: number): string {
-        return `${formatNumber(value)} ISK`;
-      },
+  methods: {
+    zkillHref(id: undefined | number, type: string): undefined | string {
+      if (id == undefined) {
+        return undefined;
+      } else {
+        return `https://zkillboard.com/${type}/${id}/`;
+      }
     },
-    NameCacheMixin
-  ),
+
+    formatIskValue(value: number): string {
+      return `${formatNumber(value)} ISK`;
+    },
+  },
 });
 </script>
 

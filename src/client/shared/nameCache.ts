@@ -14,13 +14,15 @@ const nameCache = new Map<number, string>();
  */
 import { SimpleNumMap } from "../../util/simpleTypes";
 export const NameCacheMixin = {
-  addNames(names: SimpleNumMap<string>) {
-    for (const id in names) {
-      nameCache.set(parseInt(id), names[id]);
-    }
-  },
+  methods: {
+    addNames(names: SimpleNumMap<string>) {
+      for (const id in names) {
+        nameCache.set(parseInt(id), names[id]);
+      }
+    },
 
-  name(id: number) {
-    return nameCache.get(id) || "[Unknown entity]";
+    name(id: number) {
+      return nameCache.get(id) || "[Unknown entity]";
+    },
   },
 };

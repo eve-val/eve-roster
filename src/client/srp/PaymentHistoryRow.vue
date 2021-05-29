@@ -60,6 +60,8 @@ export default defineComponent({
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     payment: { type: Object as PropType<Payment>, required: true },
   },
@@ -69,8 +71,6 @@ export default defineComponent({
       return (this.payment.totalPayout / 1000000).toFixed(0);
     },
   },
-
-  methods: Object.assign({}, NameCacheMixin),
 });
 </script>
 

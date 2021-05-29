@@ -59,6 +59,8 @@ export default defineComponent({
     EveImage,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     iconId: { type: Number, required: false, default: null },
     iconType: {
@@ -92,14 +94,11 @@ export default defineComponent({
     },
   },
 
-  methods: Object.assign(
-    {
-      isExternalUrl(url: string): boolean {
-        return ABS_URL_PATTERN.test(url);
-      },
+  methods: {
+    isExternalUrl(url: string): boolean {
+      return ABS_URL_PATTERN.test(url);
     },
-    NameCacheMixin
-  ),
+  },
 });
 </script>
 

@@ -76,6 +76,8 @@ export default defineComponent({
     MemberCorpDetail,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
   },
@@ -106,8 +108,6 @@ export default defineComponent({
         this.loaded = true;
       });
   },
-
-  methods: Object.assign({}, NameCacheMixin),
 });
 </script>
 

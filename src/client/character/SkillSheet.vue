@@ -56,7 +56,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
-import { Skill, groupifySkills } from "./skills";
+import { Skill, SkillGroup, QueueEntry, groupifySkills } from "./skills";
 import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
@@ -64,7 +64,6 @@ import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
-
     SkillPips,
     QueueEntry,
   },
@@ -78,6 +77,9 @@ export default defineComponent({
     return {
       queue: null,
       skillGroups: null,
+    } as {
+      queue: null | QueueEntry[];
+      skillGroups: null | SkillGroup[];
     };
   },
 
@@ -127,7 +129,7 @@ export default defineComponent({
 
     processData(data: {
       skills: Skill[];
-      queue: undefined | { entries: { id: number; targetLevel: number } };
+      queue: undefined | { entries: QueueEntry[] };
     }) {
       let skillMap: SimpleNumMap<Skill> = new Map<number, Skill>();
       for (let skill of data.skills) {

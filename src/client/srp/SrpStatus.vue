@@ -131,6 +131,8 @@ export default defineComponent({
     LoadingSpinner,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     initialSrp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
@@ -222,7 +224,7 @@ export default defineComponent({
     },
 
     editable(): boolean {
-      return this.hasEditPriv && this.status != "paid";
+      return this.hasEditPriv && this.srp.status != "paid";
     },
 
     statusLink(): string | null {
@@ -268,95 +270,91 @@ export default defineComponent({
     }
   },
 
-  methods: Object.assign(
-    {
-      onSaveClick() {
-        const payout = this.displayPayoutToRawPayout(this.inputPayout);
-        const verdict = this.selectedVerdict.verdict;
-        const reason = this.selectedVerdict.reason;
+  methods: {
+    onSaveClick() {
+      const payout = this.displayPayoutToRawPayout(this.inputPayout);
+      const verdict = this.selectedVerdict.verdict;
+      const reason = this.selectedVerdict.reason;
 
-        this.saveStatus = "active";
-        this.$refs.saveSpinner
-          .observe(
-            ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
-          )
-          .then((response: AxiosResponse<{ id: number; name: string }>) => {
-            this.saveStatus = "inactive";
-            this.srp.payout = payout;
-            this.srp.status = verdict;
-            this.srp.reason = reason;
-            this.editing = false;
-            this.srp.renderingCharacter = response.data.id;
-            this.addNames({
-              [response.data.id]: response.data.name,
-            });
+      this.saveStatus = "active";
+      this.$refs.saveSpinner
+        .observe(
+          ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
+        )
+        .then((response: AxiosResponse<{ id: number; name: string }>) => {
+          this.saveStatus = "inactive";
+          this.srp.payout = payout;
+          this.srp.status = verdict;
+          this.srp.reason = reason;
+          this.editing = false;
+          this.srp.renderingCharacter = response.data.id;
+          this.addNames({
+            [response.data.id]: response.data.name,
+          });
+        })
+        .catch(() => {
+          this.saveStatus = "error";
+        });
+    },
+
+    onEditClick() {
+      if (this.srp.triage == null) {
+        if (this.fetchTriageStatus == "active") {
+          return;
+        }
+        this.fetchTriageStatus = "active";
+        this.$refs.editSpinner
+          .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
+          .then((response: AxiosResponse<{ triage: Triage }>) => {
+            this.fetchTriageStatus = "inactive";
+            this.srp.triage = response.data.triage;
+
+            if (this.srp.status == "pending") {
+              this.selectedVerdictKey = response.data.triage.suggestedOption;
+            } else if (this.srp.status == "approved") {
+              this.originalPayout = this.srp.payout;
+              this.selectedVerdictKey = "original_payout";
+            } else {
+              if (
+                _.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })
+              ) {
+                this.selectedVerdictKey = response.data.triage.suggestedOption;
+              } else {
+                // Otherwise it's ineligible; just use that as the key
+                this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+              }
+            }
+
+            this.editing = true;
           })
           .catch(() => {
-            this.saveStatus = "error";
+            this.fetchTriageStatus = "error";
           });
-      },
-
-      onEditClick() {
-        if (this.srp.triage == null) {
-          if (this.fetchTriageStatus == "active") {
-            return;
-          }
-          this.fetchTriageStatus = "active";
-          this.$refs.editSpinner
-            .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
-            .then((response: AxiosResponse<{ triage: Triage }>) => {
-              this.fetchTriageStatus = "inactive";
-              this.srp.triage = response.data.triage;
-
-              if (this.srp.status == "pending") {
-                this.selectedVerdictKey = response.data.triage.suggestedOption;
-              } else if (this.srp.status == "approved") {
-                this.originalPayout = this.srp.payout;
-                this.selectedVerdictKey = "original_payout";
-              } else {
-                if (
-                  _.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })
-                ) {
-                  this.selectedVerdictKey =
-                    response.data.triage.suggestedOption;
-                } else {
-                  // Otherwise it's ineligible; just use that as the key
-                  this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
-                }
-              }
-
-              this.editing = true;
-            })
-            .catch(() => {
-              this.fetchTriageStatus = "error";
-            });
-        } else {
-          this.editing = true;
-        }
-      },
-
-      updateInputPayout(value: number) {
-        this.inputPayout = this.rawPayoutToDisplayPayout(value);
-      },
-
-      rawPayoutToDisplayPayout(rawPayout: number): number {
-        return Math.round(rawPayout / 1000000);
-      },
-
-      displayPayoutToRawPayout(displayPayout: number): number {
-        return displayPayout * 1000000;
-      },
-
-      getStatusLabel(srp: Srp): string {
-        let entry = _.findWhere(ALL_STATUSES, {
-          status: srp.status,
-          reason: srp.reason,
-        });
-        return entry?.label || "Unknown status";
-      },
+      } else {
+        this.editing = true;
+      }
     },
-    NameCacheMixin
-  ),
+
+    updateInputPayout(value: number) {
+      this.inputPayout = this.rawPayoutToDisplayPayout(value);
+    },
+
+    rawPayoutToDisplayPayout(rawPayout: number): number {
+      return Math.round(rawPayout / 1000000);
+    },
+
+    displayPayoutToRawPayout(displayPayout: number): number {
+      return displayPayout * 1000000;
+    },
+
+    getStatusLabel(srp: Srp): string {
+      let entry = _.findWhere(ALL_STATUSES, {
+        status: srp.status,
+        reason: srp.reason,
+      });
+      return entry?.label || "Unknown status";
+    },
+  },
 });
 
 interface Status {

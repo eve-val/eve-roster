@@ -54,6 +54,8 @@ export default defineComponent({
     PaymentHistoryRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     forAccount: {
@@ -98,40 +100,37 @@ export default defineComponent({
     this.fetchNextResults();
   },
 
-  methods: Object.assign(
-    {
-      fetchNextResults() {
-        this.fetchPromise = ajaxer.getSrpPaymentHistory({
-          paid: this.forAccount ? true : undefined,
-          order: "desc",
-          orderBy: "modified",
-          startingAfter: this.finalTimestamp,
-          account: this.forAccount,
-          limit: this.resultsPerFetch,
-        });
+  methods: {
+    fetchNextResults() {
+      this.fetchPromise = ajaxer.getSrpPaymentHistory({
+        paid: this.forAccount ? true : undefined,
+        order: "desc",
+        orderBy: "modified",
+        startingAfter: this.finalTimestamp,
+        account: this.forAccount,
+        limit: this.resultsPerFetch,
+      });
 
-        this.fetchPromise.then(
-          (
-            response: AxiosResponse<{
-              names: SimpleNumMap<string>;
-              payments: Payment[];
-            }>
-          ) => {
-            this.addNames(response.data.names);
+      this.fetchPromise.then(
+        (
+          response: AxiosResponse<{
+            names: SimpleNumMap<string>;
+            payments: Payment[];
+          }>
+        ) => {
+          this.addNames(response.data.names);
 
-            this.payments = this.payments || [];
-            for (let payment of response.data.payments) {
-              this.payments.push(payment);
-            }
-
-            this.suspectMoreToFetch =
-              response.data.payments.length == this.resultsPerFetch;
+          this.payments = this.payments || [];
+          for (let payment of response.data.payments) {
+            this.payments.push(payment);
           }
-        );
-      },
+
+          this.suspectMoreToFetch =
+            response.data.payments.length == this.resultsPerFetch;
+        }
+      );
     },
-    NameCacheMixin
-  ),
+  },
 });
 </script>
 

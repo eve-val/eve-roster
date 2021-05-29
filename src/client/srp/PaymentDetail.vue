@@ -90,6 +90,8 @@ export default defineComponent({
     LossRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     srpId: { type: Number as PropType<number>, required: true },
@@ -127,45 +129,42 @@ export default defineComponent({
     this.fetchData();
   },
 
-  methods: Object.assign(
-    {
-      fetchData() {
-        this.payment = null;
-        this.losses = null;
-        this.$refs.spinner.observe(ajaxer.getSrpPayment(this.srpId)).then(
-          (
-            response: AxiosResponse<{
-              names: SimpleNumMap<string>;
-              payment: Payment;
-              losses: Loss[];
-            }>
-          ) => {
-            this.addNames(response.data.names);
-            this.payment = response.data.payment;
-            this.losses = response.data.losses;
-          }
-        );
-      },
-
-      onUndoClick() {
-        if (this.undoStatus == "saving") {
-          return;
+  methods: {
+    fetchData() {
+      this.payment = null;
+      this.losses = null;
+      this.$refs.spinner.observe(ajaxer.getSrpPayment(this.srpId)).then(
+        (
+          response: AxiosResponse<{
+            names: SimpleNumMap<string>;
+            payment: Payment;
+            losses: Loss[];
+          }>
+        ) => {
+          this.addNames(response.data.names);
+          this.payment = response.data.payment;
+          this.losses = response.data.losses;
         }
-        this.undoStatus = "saving";
-        this.$refs.undoSpinner
-          .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-          .then((_response: AxiosResponse<{}>) => {
-            this.undoStatus = "inactive";
-            this.payment.paid = false;
-            this.fetchData();
-          })
-          .catch(() => {
-            this.undoStatus = "error";
-          });
-      },
+      );
     },
-    NameCacheMixin
-  ),
+
+    onUndoClick() {
+      if (this.undoStatus == "saving") {
+        return;
+      }
+      this.undoStatus = "saving";
+      this.$refs.undoSpinner
+        .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
+        .then((_response: AxiosResponse<{}>) => {
+          this.undoStatus = "inactive";
+          this.payment.paid = false;
+          this.fetchData();
+        })
+        .catch(() => {
+          this.undoStatus = "error";
+        });
+    },
+  },
 });
 </script>
 

@@ -89,6 +89,8 @@ export default defineComponent({
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     srp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
@@ -148,26 +150,23 @@ export default defineComponent({
     },
   },
 
-  methods: Object.assign(
-    {
-      onRelatedHover() {
-        this.$emit("related-hover", this.srp.relatedKillmail.id);
-      },
-
-      onRelatedUnhover() {
-        this.$emit("related-unhover", this.srp.relatedKillmail.id);
-      },
-
-      zkillHref(id: number, type: string): string | undefined {
-        if (id == undefined) {
-          return undefined;
-        } else {
-          return `https://zkillboard.com/${type}/${id}/`;
-        }
-      },
+  methods: {
+    onRelatedHover() {
+      this.$emit("related-hover", this.srp.relatedKillmail.id);
     },
-    NameCacheMixin
-  ),
+
+    onRelatedUnhover() {
+      this.$emit("related-unhover", this.srp.relatedKillmail.id);
+    },
+
+    zkillHref(id: number, type: string): string | undefined {
+      if (id == undefined) {
+        return undefined;
+      } else {
+        return `https://zkillboard.com/${type}/${id}/`;
+      }
+    },
+  },
 });
 </script>
 

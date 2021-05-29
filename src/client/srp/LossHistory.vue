@@ -54,6 +54,8 @@ export default defineComponent({
     MoreButton,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     forAccount: {
@@ -111,46 +113,43 @@ export default defineComponent({
     this.reset();
   },
 
-  methods: Object.assign(
-    {
-      reset() {
-        this.rows = null;
-        this.fetchPromise = null;
-        this.suspectMoreToFetch = true;
-        this.fetchNextResults();
-      },
-
-      fetchNextResults() {
-        this.fetchPromise = ajaxer.getRecentSrpLosses({
-          pending: this.triageMode,
-          order: this.triageMode ? "asc" : "desc",
-          fromKillmail: this.finalKillmail,
-          account: this.forAccount,
-          limit: this.resultsPerFetch,
-          includeTriage: this.triageMode,
-        });
-
-        this.fetchPromise.then((response: Resp) => {
-          this.addNames(response.data.names);
-          this.rows = this.rows || [];
-          for (let srp of response.data.srps) {
-            this.rows.push(srp);
-          }
-          this.suspectMoreToFetch =
-            response.data.srps.length == this.resultsPerFetch;
-        });
-      },
-
-      onRelatedHover(killmailId: number) {
-        this.relatedKillmail = killmailId;
-      },
-
-      onRelatedUnhover(_killmailId: number) {
-        this.relatedKillmail = null;
-      },
+  methods: {
+    reset() {
+      this.rows = null;
+      this.fetchPromise = null;
+      this.suspectMoreToFetch = true;
+      this.fetchNextResults();
     },
-    NameCacheMixin
-  ),
+
+    fetchNextResults() {
+      this.fetchPromise = ajaxer.getRecentSrpLosses({
+        pending: this.triageMode,
+        order: this.triageMode ? "asc" : "desc",
+        fromKillmail: this.finalKillmail,
+        account: this.forAccount,
+        limit: this.resultsPerFetch,
+        includeTriage: this.triageMode,
+      });
+
+      this.fetchPromise.then((response: Resp) => {
+        this.addNames(response.data.names);
+        this.rows = this.rows || [];
+        for (let srp of response.data.srps) {
+          this.rows.push(srp);
+        }
+        this.suspectMoreToFetch =
+          response.data.srps.length == this.resultsPerFetch;
+      });
+    },
+
+    onRelatedHover(killmailId: number) {
+      this.relatedKillmail = killmailId;
+    },
+
+    onRelatedUnhover(_killmailId: number) {
+      this.relatedKillmail = null;
+    },
+  },
 });
 </script>
 
