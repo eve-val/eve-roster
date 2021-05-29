@@ -9,22 +9,16 @@ interface RenderColumn {
 }
 
 interface CharacterColumn extends RenderColumn {
+  account?: undefined;
   key: keyof Character;
   metaKey?: keyof Character;
-  account?: false;
 }
 interface AccountColumn extends RenderColumn {
+  account?: true;
   key: keyof Omit<Account, "main">;
   metaKey?: keyof Omit<Account, "main" | "alts">;
-  account: true;
 }
 export type Column = CharacterColumn | AccountColumn;
-
-interface CharacterColumn extends RenderColumn {
-  key: keyof Character | keyof Account;
-  metaKey?: keyof Character | keyof Account;
-  account?: boolean;
-}
 
 const columns: Column[] = [
   { label: "", key: "alertMessage", width: 35, margin: 0, derivedFrom: [] },
