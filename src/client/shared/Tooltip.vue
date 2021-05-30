@@ -82,12 +82,14 @@ export default defineComponent({
   data: function () {
     return {
       hovering: false,
+    } as {
+      hovering: boolean;
     };
   },
 
   computed: {
     horizontalGravity(): HorizontalGravity {
-      let hgrav = splitGravString(this.gravity)[0];
+      let hgrav = splitGravString(this.gravity)[0] || "center";
       if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(hgrav)) {
         hgrav = "center";
       }
@@ -326,7 +328,7 @@ export default defineComponent({
   },
 });
 
-function splitGravString(str: string): readonly string[] {
+function splitGravString(str: string): string[] {
   return str.trim().split(/\s+/);
 }
 </script>

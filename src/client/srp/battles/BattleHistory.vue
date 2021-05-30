@@ -70,12 +70,10 @@ export default defineComponent({
       suspectMoreToFetch: true,
     } as {
       battles: Battle[] | null;
-      fetchPromise: Promise<Response>;
+      fetchPromise: Promise<Response> | null;
       suspectMoreToFetch: boolean;
     };
   },
-
-  computed: {},
 
   watch: {
     triageMode(_value: boolean) {

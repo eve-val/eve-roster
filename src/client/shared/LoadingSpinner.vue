@@ -111,7 +111,7 @@ const STATE_VALUES = ["hidden", "spinning", "error", "warning"] as const;
 type StateValue = typeof STATE_VALUES[number];
 
 import { defineComponent, PropType } from "vue";
-const Spinner = defineComponent({
+export default defineComponent({
   components: {
     Tooltip,
   },
@@ -341,9 +341,6 @@ function hasResponseMessage(
 ): e is { response: AxiosResponse<{ message: string }> } {
   return typeof e.response !== undefined && typeof e.response.data === "string";
 }
-
-export type SpinnerRef = InstanceType<typeof Spinner>;
-export default Spinner;
 </script>
 
 <style scoped>

@@ -45,7 +45,6 @@
 </template>
 
 <script lang="ts">
-import Promise from "bluebird";
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";

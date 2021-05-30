@@ -58,7 +58,7 @@ import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 import AdminWrapper from "./AdminWrapper.vue";
-import LoadingSpinner, { SpinnerRef } from "../shared/LoadingSpinner.vue";
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import MemberCorpDetail from "./overview/MemberCorpDetail.vue";
 
 import { Identity } from "../home";
@@ -68,7 +68,7 @@ import {
   CorpSection,
 } from "../../route/api/admin/roster/syncStatus_GET";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -80,6 +80,14 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup() {
+    const spinner = ref<typeof LoadingSpinner>();
+    const observe = <T>(p: Promise<T>): Promise<T> => {
+      return spinner.value?.observe<T>(p);
+    };
+    return { spinner, observe };
   },
 
   data: function () {
@@ -97,16 +105,15 @@ export default defineComponent({
   computed: {},
 
   mounted: function () {
-    const spinner: SpinnerRef = this.$refs.spinner;
-    spinner
-      .observe<Output>(ajaxer.getAdminRosterSyncStatus())
-      .then((response: AxiosResponse<Output>) => {
+    this.observe<AxiosResponse<Output>>(ajaxer.getAdminRosterSyncStatus()).then(
+      (response: AxiosResponse<Output>) => {
         this.addNames(response.data.names);
         const groups = _.groupBy(response.data.corporations, "type");
         this.primaryCorps = groups["full"];
         this.affiliatedCorps = groups["affiliated"];
         this.loaded = true;
-      });
+      }
+    );
   },
 });
 </script>
