@@ -104,8 +104,8 @@ export default defineComponent({
   setup: () => {
     const undoSpinner = ref<InstanceType<typeof LoadingSpinner>>();
     const saveSpinner = ref<InstanceType<typeof LoadingSpinner>>();
-    const payoutInput = ref<InstanceType<typeof HTMLInputElement>>();
-    const reasonInput = ref<InstanceType<typeof HTMLInputElement>>();
+    const payoutInput = ref<HTMLInputElement>();
+    const reasonInput = ref<HTMLInputElement>();
     return { undoSpinner, saveSpinner, payoutInput, reasonInput };
   },
 

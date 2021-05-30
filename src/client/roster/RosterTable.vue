@@ -45,13 +45,13 @@ export default defineComponent({
   },
 
   computed: {
-    sortColumn: function (): Column | null {
+    sortColumn: function (): Column {
       for (let col of this.columns) {
         if (col.key == this.sort.key) {
           return col;
         }
       }
-      return null;
+      return this.columns[0];
     },
 
     sortedRows: function (): Account[] {
@@ -97,7 +97,7 @@ export default defineComponent({
 function getSortVal(
   column: Column,
   character: Character,
-  account: Account
+  account: Account | null
 ): number | string | null | undefined {
   if (column.account) {
     return account && account[column.key];
@@ -106,8 +106,8 @@ function getSortVal(
   }
 }
 
-function generalPurposeCompare(a: any, b: any, reverse: boolean) {
-  let cmp;
+function generalPurposeCompare(a: any, b: any, reverse: boolean): number {
+  let cmp = 0;
 
   if (a == null && b != null) {
     cmp = -1;

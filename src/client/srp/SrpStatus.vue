@@ -155,9 +155,10 @@ export default defineComponent({
       selectedVerdictKey: this.initialSrp.triage
         ? this.initialSrp.triage.suggestedOption
         : "custom",
+      // todo: function is inaccessible from data()
       inputPayout: this.rawPayoutToDisplayPayout(this.initialSrp.payout),
-      saveStatus: "inactive", // inactive | saving | error
-      fetchTriageStatus: "inactive", // inactive | active | error,
+      saveStatus: "inactive",
+      fetchTriageStatus: "inactive",
       originalPayout: null,
     } as {
       srp: Srp;
@@ -278,6 +279,9 @@ export default defineComponent({
 
   methods: {
     onSaveClick() {
+      if (!this.selectedVerdict) {
+        return;
+      }
       const payout = this.displayPayoutToRawPayout(this.inputPayout);
       const verdict = this.selectedVerdict.verdict;
       const reason = this.selectedVerdict.reason;

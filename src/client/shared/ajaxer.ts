@@ -174,7 +174,7 @@ export default {
   putSrpLossVerdict(
     killmail: number,
     verdict: string,
-    reason: string,
+    reason: string | null,
     payout: number
   ) {
     return axios.put(`/api/srp/loss/${killmail}`, {

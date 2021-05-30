@@ -33,7 +33,7 @@ export type Triage = {
 
 export type Srp = {
   status: string;
-  reason: string;
+  reason: string | null;
   killmail: number;
   relatedKillmail: {
     id: number;
