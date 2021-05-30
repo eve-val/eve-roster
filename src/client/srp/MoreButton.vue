@@ -32,7 +32,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 const STATUSES = ["inactive", "active", "error"] as const;
 type Status = typeof STATUSES[number];
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -52,6 +52,11 @@ export default defineComponent({
   },
 
   emits: ["fetch-requested"],
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
+  },
 
   data() {
     return {
@@ -73,7 +78,7 @@ export default defineComponent({
 
   methods: {
     observe<T>(promise: Promise<T> | null) {
-      this.$refs.spinner.observe(promise);
+      this.spinner.value?.observe(promise);
       if (promise != null) {
         this.status = "active";
         this.promise

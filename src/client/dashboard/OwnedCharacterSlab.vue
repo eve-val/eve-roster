@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="menuItems.length > 0" class="menu">
-        <div class="menu-arrow" @mousedown="$refs.menu.toggle()" />
+        <div class="menu-arrow" @mousedown="menu.value?.toggle()" />
         <drop-menu
           ref="menu"
           class="menu-body"
@@ -108,7 +108,7 @@ type MenuItem = {
   tag: string;
 };
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     CharacterSlabFrame,
@@ -128,6 +128,12 @@ export default defineComponent({
   },
 
   emits: ["requireRefresh"],
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    const menu = ref<InstanceType<typeof DropMenu>>();
+    return { spinner, menu };
+  },
 
   data: function () {
     return {};
@@ -255,13 +261,11 @@ export default defineComponent({
 
   methods: {
     onMouseOut() {
-      if (this.$refs.menu) {
-        this.$refs.menu.hide();
-      }
+      this.menu.value?.hide();
     },
 
     onMenuItemClick(menuItem: MenuItem) {
-      this.$refs.menu.hide();
+      this.menu.value?.hide();
       switch (menuItem.tag) {
         case "designate-main":
           this.designateAsMain();
@@ -276,8 +280,8 @@ export default defineComponent({
     },
 
     designateAsMain() {
-      this.$refs.spinner
-        .observe(
+      this.spinner.value
+        ?.observe(
           ajaxer.putAccountMainCharacter(this.accountId, this.character.id)
         )
         .then(() => {
@@ -286,8 +290,8 @@ export default defineComponent({
     },
 
     toggleOpsec() {
-      this.$refs.spinner
-        .observe(
+      this.spinner.value
+        ?.observe(
           ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)
         )
         .then(() => {
@@ -296,8 +300,8 @@ export default defineComponent({
     },
 
     markDeleted() {
-      this.$refs.spinner
-        .observe(ajaxer.deleteBiomassedCharacter(this.character.id))
+      this.spinner.value
+        ?.observe(ajaxer.deleteBiomassedCharacter(this.character.id))
         .then(() => {
           this.$emit("requireRefresh", this.character.id);
         });

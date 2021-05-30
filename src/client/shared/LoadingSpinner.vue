@@ -48,17 +48,21 @@
  *
  * <pre>
  * {@code
+ *   setup: () => {
+ *     const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+ *     return { spinner };
+ *   },
  *   mount() {
- *     this.$refs.spinner.observe(this.getSomeData())
+ *     this.spinner.value?.observe(this.getSomeData())
  *     .then(data => {
  *       this.foo = data.foo;
  *       this.bar = data.bar;
  *     });
- *   }
+ *   },
  * }
  * </pre>
  *
- * Notice that we are accessing the spinner via a ref (`this.$refs.spinner`).
+ * Notice that we are accessing the spinner via a ref (`this.spinner.value`).
  * You will need to specify a ref name in your markup:
  *
  * <pre>
@@ -76,7 +80,7 @@
  * <pre>
  * {@code
  *   mount() {
- *     this.$refs.spinner.observe(
+ *     this.spinner.value?.observe(
  *         this.getSomeData(),
  *         data => {
  *           if (data.warning) {

@@ -87,7 +87,7 @@ import { Payment } from "./types";
 const STATUSES = ["inactive", "saving", "error"];
 type Status = typeof STATUSES[number];
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -99,6 +99,14 @@ export default defineComponent({
   props: {
     payment: { type: Object as PropType<Payment>, required: true },
     payingCharacter: { type: Number as PropType<number | null>, default: null },
+  },
+
+  setup: () => {
+    const undoSpinner = ref<InstanceType<typeof LoadingSpinner>>();
+    const saveSpinner = ref<InstanceType<typeof LoadingSpinner>>();
+    const payoutInput = ref<InstanceType<typeof HTMLInputElement>>();
+    const reasonInput = ref<InstanceType<typeof HTMLInputElement>>();
+    return { undoSpinner, saveSpinner, payoutInput, reasonInput };
   },
 
   data() {
@@ -117,7 +125,7 @@ export default defineComponent({
 
   methods: {
     onCopyReasonClick() {
-      this.$refs.reasonInput.select();
+      this.reasonInput.value?.select();
       try {
         document.execCommand("copy");
       } catch (err) {
@@ -126,7 +134,7 @@ export default defineComponent({
     },
 
     onCopyPayoutClick() {
-      this.$refs.payoutInput.select();
+      this.payoutInput.value?.select();
       try {
         document.execCommand("copy");
       } catch (err) {
@@ -146,8 +154,8 @@ export default defineComponent({
         return;
       }
       this.saveStatus = "saving";
-      this.$refs.saveSpinner
-        .observe(
+      this.saveSpinner.value
+        ?.observe(
           ajaxer.putSrpPaymentStatus(
             this.payment.id,
             true,
@@ -168,8 +176,8 @@ export default defineComponent({
         return;
       }
       this.undoStatus = "saving";
-      this.$refs.undoSpinner
-        .observe(ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined))
+      this.undoSpinner.value
+        ?.observe(ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined))
         .then(() => {
           this.undoStatus = "inactive";
           this.paid = false;

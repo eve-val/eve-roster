@@ -62,8 +62,6 @@ export default defineComponent({
   data() {
     return {};
   },
-
-  computed: {},
 });
 </script>
 

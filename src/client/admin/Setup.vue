@@ -42,7 +42,7 @@ const JSON_COMMENT_PATTERN = /\s*\/\/[^\n]*\n?/g;
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -52,6 +52,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data() {
@@ -65,8 +70,8 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$refs.spinner
-      .observe(ajaxer.getAdminSetup())
+    this.spinner.value
+      ?.observe(ajaxer.getAdminSetup())
       .then((response: AxiosResponse<string>) => {
         this.setupJson = JSON.stringify(response.data, null, 2);
       });
@@ -79,8 +84,8 @@ export default defineComponent({
       }
       this.savingSetup = true;
 
-      this.$refs.spinner
-        .observe<{}>(
+      this.spinner.value
+        ?.observe<{}>(
           Promise.resolve()
             .then(() => {
               let cleanedJson = this.setupJson.replace(

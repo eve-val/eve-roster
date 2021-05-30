@@ -7,7 +7,7 @@
       </div>
 
       <loading-spinner
-        ref="root_spinner"
+        ref="spinner"
         class="root-spinner"
         display="block"
         size="34px"
@@ -61,7 +61,7 @@ const POLL_FREQUENCY = 4000;
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -72,6 +72,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -104,8 +109,8 @@ export default defineComponent({
   },
 
   mounted: function () {
-    this.$refs.root_spinner
-      .observe(
+    this.spinner.value
+      ?.observe(
         Promise.all<
           AxiosResponse<Task[]>,
           AxiosResponse<Job[]>,

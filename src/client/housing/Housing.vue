@@ -51,7 +51,7 @@ const UNASSIGNED_KEY = "__unassigned__";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -61,6 +61,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const dragChip = ref<InstanceType<typeof MemberChip>>();
+    return { dragChip };
   },
 
   data() {
@@ -198,8 +203,8 @@ export default defineComponent({
     },
 
     positionDragChip: (x, y) => {
-      this.$refs.dragChip.$el.style.left = x + "px";
-      this.$refs.dragChip.$el.style.top = y + "px";
+      this.dragChip.value?.$el.style.left = x + "px";
+      this.dragChip.value?.$el.style.top = y + "px";
     },
 
     findCharacter: (name) => {

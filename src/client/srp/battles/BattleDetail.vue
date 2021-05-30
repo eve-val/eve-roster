@@ -32,7 +32,7 @@ import { SimpleNumMap } from "../../../util/simpleTypes";
 
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppPage,
@@ -45,6 +45,11 @@ export default defineComponent({
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     battleId: { type: Number as PropType<number>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data() {
@@ -62,7 +67,7 @@ export default defineComponent({
   methods: {
     fetchData() {
       this.battle = null;
-      this.$refs.spinner.observe(ajaxer.getBattle(this.battleId, true)).then(
+      this.spinner.value?.observe(ajaxer.getBattle(this.battleId, true)).then(
         (
           response: AxiosResponse<{
             battles: Battle[];

@@ -7,7 +7,7 @@ declare module "*.jpg" {
   export default url;
 }
 declare module "*.vue" {
-  import { ComponentOptions } from "vue";
-  const component: ComponentOptions;
+  import type { DefineComponent } from "vue";
+  const component: DefineComponent<{}, {}, any>;
   export default component;
 }

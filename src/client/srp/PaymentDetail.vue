@@ -81,7 +81,7 @@ type UndoStatus = typeof UNDO_STATUSES[number];
 
 import { AxiosResponse } from "axios";
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppPage,
@@ -95,6 +95,12 @@ export default defineComponent({
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     srpId: { type: Number as PropType<number>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    const undoSpinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner, undoSpinner };
   },
 
   data() {
@@ -133,7 +139,7 @@ export default defineComponent({
     fetchData() {
       this.payment = null;
       this.losses = null;
-      this.$refs.spinner.observe(ajaxer.getSrpPayment(this.srpId)).then(
+      this.spinner.value?.observe(ajaxer.getSrpPayment(this.srpId)).then(
         (
           response: AxiosResponse<{
             names: SimpleNumMap<string>;
@@ -153,8 +159,8 @@ export default defineComponent({
         return;
       }
       this.undoStatus = "saving";
-      this.$refs.undoSpinner
-        .observe<AxiosResponse<{}>>(
+      this.undoSpinner.value
+        ?.observe<AxiosResponse<{}>>(
           ajaxer.putSrpPaymentStatus(this.srpId, false, undefined)
         )
         .then((_response: AxiosResponse<{}>) => {

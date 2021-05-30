@@ -42,7 +42,7 @@ import SearchBox from "./SearchBox.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -53,6 +53,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -68,8 +73,8 @@ export default defineComponent({
   },
 
   mounted: function () {
-    this.$refs.spinner
-      .observe(ajaxer.getRoster())
+    this.spinner.value
+      ?.observe(ajaxer.getRoster())
       .then(
         (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
           let providedColumns: string[] = response.data.columns;

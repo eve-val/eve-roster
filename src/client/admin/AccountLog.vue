@@ -58,7 +58,7 @@ import Tooltip from "../shared/Tooltip.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -70,6 +70,11 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
+  },
+
   data() {
     return {
       rows: null,
@@ -77,8 +82,8 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$refs.spinner
-      .observe(ajaxer.getAdminAccountLog())
+    this.spinner.value
+      ?.observe(ajaxer.getAdminAccountLog())
       .then((response: AxiosResponse) => {
         let rows = response.data.rows;
         this.rows = rows;

@@ -21,7 +21,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     ShipsWrapper,
@@ -33,6 +33,11 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
+  },
+
   data: function () {
     return {
       ships: [],
@@ -42,8 +47,8 @@ export default defineComponent({
   },
 
   mounted: function () {
-    this.$refs.spinner
-      .observe(ajaxer.getAllBorrowedShips())
+    this.spinner.value
+      ?.observe(ajaxer.getAllBorrowedShips())
       .then((response: AxiosResponse<Ship[]>) => {
         this.ships = response.data;
       });

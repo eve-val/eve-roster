@@ -132,21 +132,38 @@
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
+  setup: () => {
+    const inlinePending = ref<InstanceType<typeof LoadingSpinner>>();
+    const blockPending = ref<InstanceType<typeof LoadingSpinner>>();
+    const inlineError = ref<InstanceType<typeof LoadingSpinner>>();
+    const blockError = ref<InstanceType<typeof LoadingSpinner>>();
+    const inlineResolved = ref<InstanceType<typeof LoadingSpinner>>();
+    const blockResolved = ref<InstanceType<typeof LoadingSpinner>>();
+    return {
+      inlinePending,
+      blockPending,
+      inlineError,
+      blockError,
+      inlineResolved,
+      blockResolved,
+    };
+  },
+
   mounted() {
-    this.$refs.inlinePending.observe(pendingPromise());
-    this.$refs.blockPending.observe(pendingPromise());
+    this.inlinePending.value?.observe(pendingPromise());
+    this.blockPending.value?.observe(pendingPromise());
 
-    this.$refs.inlineError.observe(errorPromise());
-    this.$refs.blockError.observe(errorPromise());
+    this.inlineError.value?.observe(errorPromise());
+    this.blockError.value?.observe(errorPromise());
 
-    this.$refs.inlineResolved.observe(resolvedPromise());
-    this.$refs.blockResolved.observe(resolvedPromise());
+    this.inlineResolved.value?.observe(resolvedPromise());
+    this.blockResolved.value?.observe(resolvedPromise());
   },
 });
 

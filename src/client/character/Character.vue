@@ -136,7 +136,7 @@ import { Identity } from "../home";
 import { Character, Account } from "../shared/types";
 
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -149,6 +149,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -243,8 +248,8 @@ export default defineComponent({
       if (!this.characterId) {
         return;
       }
-      this.$refs.spinner
-        .observe(ajaxer.getCharacter(this.characterId))
+      this.spinner.value
+        ?.observe(ajaxer.getCharacter(this.characterId))
         .then((response: AxiosResponse) => {
           this.character = response.data.character;
           this.account = response.data.account;

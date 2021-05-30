@@ -125,7 +125,7 @@ type RequestStatus = typeof REQUEST_STATUSES[number];
 
 import { VerdictOption, Srp, Triage } from "./types";
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -137,6 +137,12 @@ export default defineComponent({
     initialSrp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
     startInEditMode: { type: Boolean as PropType<boolean>, required: true },
+  },
+
+  setup: () => {
+    const editSpinner = ref<InstanceType<typeof LoadingSpinner>>();
+    const saveSpinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { editSpinner, saveSpinner };
   },
 
   data() {
@@ -277,8 +283,8 @@ export default defineComponent({
       const reason = this.selectedVerdict.reason;
 
       this.saveStatus = "active";
-      this.$refs.saveSpinner
-        .observe(
+      this.saveSpinner.value
+        ?.observe(
           ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
         )
         .then((response: AxiosResponse<{ id: number; name: string }>) => {
@@ -303,8 +309,8 @@ export default defineComponent({
           return;
         }
         this.fetchTriageStatus = "active";
-        this.$refs.editSpinner
-          .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
+        this.editSpinner.value
+          ?.observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
           .then((response: AxiosResponse<{ triage: Triage }>) => {
             this.fetchTriageStatus = "inactive";
             this.srp.triage = response.data.triage;

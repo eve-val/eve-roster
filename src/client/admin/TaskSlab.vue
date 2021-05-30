@@ -20,7 +20,7 @@
         </div>
         <div v-if="!task.job" class="run-block">
           <loading-spinner
-            ref="runSpinner"
+            ref="spinner"
             class="run-spinner"
             display="inline"
             default-state="hidden"
@@ -43,7 +43,7 @@ import ajaxer from "../shared/ajaxer";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { Task } from "./types";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -54,6 +54,11 @@ export default defineComponent({
   },
 
   emits: ["jobStarted"],
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
+  },
 
   data: () =>
     ({
@@ -106,8 +111,8 @@ export default defineComponent({
     },
 
     awaitRunResult(promise: Promise<any>) {
-      promise = this.$refs.runSpinner
-        .observe(Promise.resolve(promise))
+      promise = this.spinner.value
+        ?.observe(Promise.resolve(promise))
         .then(() => {
           this.$emit("jobStarted", this.task.name);
         })

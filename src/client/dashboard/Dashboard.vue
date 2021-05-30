@@ -63,7 +63,7 @@ import { Identity } from "../home";
 import { AxiosResponse } from "axios";
 import { Output, CharacterJson } from "../../route/api/dashboard";
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -74,6 +74,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -106,8 +111,8 @@ export default defineComponent({
       this.mainCharacter = null;
       this.access = null;
 
-      this.$refs.spinner
-        .observe(ajaxer.getDashboard())
+      this.spinner.value
+        ?.observe(ajaxer.getDashboard())
         .then((response: AxiosResponse<Output>) => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
@@ -118,7 +123,7 @@ export default defineComponent({
 
           this.sortCharacters();
 
-          return this.$refs.spinner.observe(
+          return this.spinner.value?.observe(
             ajaxer.getFreshSkillQueueSummaries()
           );
         })

@@ -33,9 +33,9 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$refs.runPending.awaitRunResult(pendingPromise());
-    this.$refs.runError.awaitRunResult(errorPromise());
-    this.$refs.runResolved.awaitRunResult(resolvedPromise());
+    this.runPending.value?.awaitRunResult(pendingPromise());
+    this.runError.value?.awaitRunResult(errorPromise());
+    this.runResolved.value?.awaitRunResult(resolvedPromise());
   },
 
   methods: {

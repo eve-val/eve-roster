@@ -82,12 +82,9 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup() {
-    const spinner = ref<typeof LoadingSpinner>();
-    const observe = <T>(p: Promise<T>): Promise<T> => {
-      return spinner.value?.observe<T>(p);
-    };
-    return { spinner, observe };
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -102,18 +99,16 @@ export default defineComponent({
     };
   },
 
-  computed: {},
-
   mounted: function () {
-    this.observe<AxiosResponse<Output>>(ajaxer.getAdminRosterSyncStatus()).then(
-      (response: AxiosResponse<Output>) => {
+    this.spinner.value
+      ?.observe(ajaxer.getAdminRosterSyncStatus())
+      .then((response: AxiosResponse<Output>) => {
         this.addNames(response.data.names);
         const groups = _.groupBy(response.data.corporations, "type");
         this.primaryCorps = groups["full"];
         this.affiliatedCorps = groups["affiliated"];
         this.loaded = true;
-      }
-    );
+      });
   },
 });
 </script>

@@ -60,7 +60,7 @@ import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
 import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -71,6 +71,11 @@ export default defineComponent({
   props: {
     characterId: { type: Number, required: true },
     access: { type: Object as PropType<SimpleMap<number>>, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: () => {
@@ -109,7 +114,7 @@ export default defineComponent({
   methods: {
     fetchData() {
       if (this.canReadSkills) {
-        this.$refs.spinner.observe(
+        this.spinner.value?.observe(
           ajaxer.getSkills(this.characterId),
           (
             response: AxiosResponse<{

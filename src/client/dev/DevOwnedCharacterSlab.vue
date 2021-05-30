@@ -127,10 +127,16 @@
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 import { Character } from "../shared/types";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     OwnedCharacterSlab,
+  },
+
+  setup: () => {
+    const actionPendingSlab = ref<InstanceType<typeof OwnedCharacterSlab>>();
+    const actionFailedSlab = ref<InstanceType<typeof OwnedCharacterSlab>>();
+    return { actionPendingSlab, actionFailedSlab };
   },
 
   data() {
@@ -154,8 +160,8 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$refs.actionPendingSlab.$refs.spinner.observe(pendingPromise());
-    this.$refs.actionFailedSlab.$refs.spinner.observe(errorPromise());
+    this.actionPendingSlab.value?.spinner.value?.observe(pendingPromise());
+    this.actionFailedSlab.value?.spinner.value?.observe(errorPromise());
   },
 });
 

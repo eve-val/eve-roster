@@ -57,10 +57,15 @@ import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 const STATUSES = ["active", "inactive", "error"] as const;
 type Status = typeof STATUSES[number];
 import { AxiosResponse } from "axios";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data() {
@@ -122,7 +127,7 @@ export default defineComponent({
       if (trackSrp && startInput != "") {
         timestamp = Date.parse(startInput);
         if (isNaN(timestamp)) {
-          this.$refs.spinner.observe(
+          this.spinner.value?.observe(
             Promise.resolve().then(() => {
               throw new Error(`Invalid date format.`);
             })
@@ -135,8 +140,8 @@ export default defineComponent({
       }
 
       this.requestStatus = "active";
-      this.$refs.spinner
-        .observe(ajaxer.putAdminSrpJurisdiction(timestamp))
+      this.spinner.value
+        ?.observe(ajaxer.putAdminSrpJurisdiction(timestamp))
         .then(() => {
           this.savedState.trackSrp = trackSrp;
           this.savedState.startInput = startInput;

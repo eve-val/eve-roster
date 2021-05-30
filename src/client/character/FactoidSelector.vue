@@ -22,7 +22,7 @@
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -32,6 +32,11 @@ export default defineComponent({
     options: { type: Array, required: true },
     initialValue: { type: String, required: false, default: "" },
     submitHandler: { type: Function, required: true },
+  },
+
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
   },
 
   data: function () {
@@ -44,7 +49,7 @@ export default defineComponent({
 
   watch: {
     selectedValue: function (value) {
-      this.$refs.spinner.observe(this.submitHandler(value || null));
+      this.spinner.value?.observe(this.submitHandler(value || null));
     },
   },
 });

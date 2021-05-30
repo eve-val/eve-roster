@@ -47,7 +47,7 @@ import ajaxer from "../shared/ajaxer";
 import CharacterSlabFrame from "./CharacterSlabFrame.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     CharacterSlabFrame,
@@ -62,14 +62,21 @@ export default defineComponent({
 
   emits: ["requireRefresh"],
 
+  setup: () => {
+    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
+    return { spinner };
+  },
+
   data: function () {
     return { transferCharacterPromise: null };
   },
 
   methods: {
     transferCharacter() {
-      this.$refs.spinner
-        .observe(ajaxer.postCharacterTransfer(this.accountId, this.characterId))
+      this.spinner.value
+        ?.observe(
+          ajaxer.postCharacterTransfer(this.accountId, this.characterId)
+        )
         .then(() => {
           this.$emit("requireRefresh", this.characterId);
           this.transferCharacterPromise = null;
@@ -77,8 +84,8 @@ export default defineComponent({
     },
 
     cancelTransfer() {
-      this.$refs.spinner
-        .observe(
+      this.spinner.value
+        ?.observe(
           ajaxer.deleteCharacterTransfer(this.accountId, this.characterId)
         )
         .then(() => {
