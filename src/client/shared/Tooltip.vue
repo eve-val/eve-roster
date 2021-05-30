@@ -101,7 +101,7 @@ export default defineComponent({
       if (!(<readonly string[]>VERTICAL_GRAVITIES).includes(vgrav)) {
         vgrav = "center";
       }
-      if (this.horizontalGravity() == "center" && vgrav == "center") {
+      if (this.horizontalGravity == "center" && vgrav == "center") {
         vgrav = "bottom";
       }
 
@@ -111,7 +111,7 @@ export default defineComponent({
     flexContainerStyle() {
       let style: CssStyleObject = {};
 
-      switch (this.horizontalGravity()) {
+      switch (this.horizontalGravity) {
         case "left":
           style["flex-direction"] = "row-reverse";
           // style['justify-content'] = 'flex-end';
@@ -121,7 +121,7 @@ export default defineComponent({
           // style['justify-content'] = 'flex-start';
           break;
         case "center":
-          switch (this.verticalGravity()) {
+          switch (this.verticalGravity) {
             case "top":
               style["flex-direction"] = "column-reverse";
               break;
@@ -138,9 +138,9 @@ export default defineComponent({
     nosizeContainerStyle() {
       let style: CssStyleObject = {};
 
-      if (this.horizontalGravity() == "center") {
+      if (this.horizontalGravity == "center") {
         style["align-items"] = "center";
-        switch (this.verticalGravity()) {
+        switch (this.verticalGravity) {
           case "top":
             style["flex-direction"] = "column";
             break;
@@ -148,14 +148,14 @@ export default defineComponent({
             style["flex-direction"] = "column-reverse";
             break;
         }
-        switch (this.verticalGravity()) {
+        switch (this.verticalGravity) {
           case "top":
             break;
           case "bottom":
             break;
         }
       } else {
-        switch (this.horizontalGravity()) {
+        switch (this.horizontalGravity) {
           case "left":
             style["flex-direction"] = "row";
             break;
@@ -163,7 +163,7 @@ export default defineComponent({
             style["flex-direction"] = "row-reverse";
             break;
         }
-        switch (this.verticalGravity()) {
+        switch (this.verticalGravity) {
           case "top":
             style["align-items"] = "flex-end";
             break;
@@ -182,7 +182,7 @@ export default defineComponent({
     spacerStyle() {
       let style: CssStyleObject = {};
       let marginStr = MARGIN_TO_TARGET + "px";
-      switch (this.triangleDirection()) {
+      switch (this.triangleDirection) {
         case "left":
         case "right":
           style["width"] = marginStr;
@@ -198,10 +198,15 @@ export default defineComponent({
     },
 
     triangleStyle() {
-      let style = this.getTriangleStyle(ARROW_FILL, ARROW_BASE, ARROW_RISE);
-
-      if (this.horizontalGravity() != "center") {
-        switch (this.verticalGravity()) {
+      let style = getTriangleStyle(
+        ARROW_FILL,
+        ARROW_BASE,
+        ARROW_RISE,
+        this.horizontalGravity,
+        this.verticalGravity
+      );
+      if (this.horizontalGravity != "center") {
+        switch (this.verticalGravity) {
           case "top":
             style["top"] = `${ARROW_BASE / 2}px`;
             break;
@@ -215,18 +220,20 @@ export default defineComponent({
     },
 
     insetTriangleStyle() {
-      let style = this.getTriangleStyle(
+      let style = getTriangleStyle(
         ARROW_INSET_FILL,
         ARROW_BASE,
-        ARROW_RISE
+        ARROW_RISE,
+        this.horizontalGravity,
+        this.verticalGravity
       );
 
-      if (this.horizontalGravity() == "center") {
+      if (this.horizontalGravity == "center") {
         style["left"] = `-${ARROW_BASE / 2}px`;
-        style[this.verticalGravity()] = `-${ARROW_RISE + 2}px`;
+        style[this.verticalGravity] = `-${ARROW_RISE + 2}px`;
       } else {
         style["top"] = `-${ARROW_BASE / 2}px`;
-        style[this.horizontalGravity()] = `-${ARROW_RISE + 2}px`;
+        style[this.horizontalGravity] = `-${ARROW_RISE + 2}px`;
       }
 
       return style;
@@ -235,7 +242,7 @@ export default defineComponent({
     messageMaxSizerStyle() {
       let style: CssStyleObject = {};
 
-      switch (this.horizontalGravity()) {
+      switch (this.horizontalGravity) {
         case "left":
           style["text-align"] = "right";
           break;
@@ -253,8 +260,8 @@ export default defineComponent({
     messageContainerStyle() {
       let style: CssStyleObject = {};
 
-      if (this.horizontalGravity() != "center") {
-        switch (this.verticalGravity()) {
+      if (this.horizontalGravity != "center") {
+        switch (this.verticalGravity) {
           case "top":
             style.top = "13px";
             break;
@@ -270,9 +277,9 @@ export default defineComponent({
     },
 
     triangleDirection() {
-      switch (this.horizontalGravity()) {
+      switch (this.horizontalGravity) {
         case "center":
-          switch (this.verticalGravity()) {
+          switch (this.verticalGravity) {
             case "top":
               return "down";
             case "bottom":
@@ -287,46 +294,46 @@ export default defineComponent({
       return null;
     },
   },
-
-  methods: {
-    getTriangleStyle: function (
-      color: string,
-      base: number,
-      rise: number
-    ): CssStyleObject {
-      let style: CssStyleObject = {};
-
-      const solidBorder = `${rise}px solid ${color}`;
-      const transBorder = `${base / 2}px solid transparent`;
-
-      if (this.horizontalGravity() == "center") {
-        style["border-left"] = transBorder;
-        style["border-right"] = transBorder;
-        switch (this.verticalGravity()) {
-          case "top":
-            style["border-top"] = solidBorder;
-            break;
-          case "bottom":
-            style["border-bottom"] = solidBorder;
-            break;
-        }
-      } else {
-        style["border-top"] = transBorder;
-        style["border-bottom"] = transBorder;
-        switch (this.horizontalGravity()) {
-          case "left":
-            style["border-left"] = solidBorder;
-            break;
-          case "right":
-            style["border-right"] = solidBorder;
-            break;
-        }
-      }
-
-      return style;
-    },
-  },
 });
+
+function getTriangleStyle(
+  color: string,
+  base: number,
+  rise: number,
+  horizontalGravity: HorizontalGravity,
+  verticalGravity: VerticalGravity
+) {
+  let style: CssStyleObject = {};
+
+  const solidBorder = `${rise}px solid ${color}`;
+  const transBorder = `${base / 2}px solid transparent`;
+
+  if (horizontalGravity == "center") {
+    style["border-left"] = transBorder;
+    style["border-right"] = transBorder;
+    switch (verticalGravity) {
+      case "top":
+        style["border-top"] = solidBorder;
+        break;
+      case "bottom":
+        style["border-bottom"] = solidBorder;
+        break;
+    }
+  } else {
+    style["border-top"] = transBorder;
+    style["border-bottom"] = transBorder;
+    switch (horizontalGravity) {
+      case "left":
+        style["border-left"] = solidBorder;
+        break;
+      case "right":
+        style["border-right"] = solidBorder;
+        break;
+    }
+  }
+
+  return style;
+}
 
 function splitGravString(str: string): string[] {
   return str.trim().split(/\s+/);
