@@ -111,6 +111,9 @@ export default defineComponent({
 
 const APPEND_ATTRS = ["alertMessage"] as const;
 type AppendAttr = typeof APPEND_ATTRS[number];
+function isAppend(v: string): v is AppendAttr {
+  return (<readonly string[]>APPEND_ATTRS).includes(v);
+}
 const SUM_ATTRS = [
   "killsInLastMonth",
   "killValueInLastMonth",
@@ -120,8 +123,14 @@ const SUM_ATTRS = [
   "activityScore",
 ] as const;
 type SumAttr = typeof SUM_ATTRS[number];
+function isSum(v: string): v is SumAttr {
+  return (<readonly string[]>SUM_ATTRS).includes(v);
+}
 const MAX_ATTRS = ["lastSeen", "alertLevel"] as const;
 type MaxAttr = typeof MAX_ATTRS[number];
+function isMax(v: string): v is MaxAttr {
+  return (<readonly string[]>MAX_ATTRS).includes(v);
+}
 
 function injectDerivedData(data: Account[]): Account[] {
   for (let account of data) {
@@ -141,24 +150,12 @@ function computeAggregateCharacter(account: Account): Character {
   }
 
   for (let v of keys) {
-    if (APPEND_ATTRS.includes(v)) {
-      aggregate[<AppendAttr>v] = aggProp(
-        <AppendAttr>v,
-        account.main,
-        ...account.alts
-      );
-    } else if (SUM_ATTRS.includes(v)) {
-      aggregate[<SumAttr>v] = sumProp(
-        <SumAttr>v,
-        account.main,
-        ...account.alts
-      );
-    } else if (MAX_ATTRS.includes(v)) {
-      aggregate[<MaxAttr>v] = maxProp(
-        <MaxAttr>v,
-        account.main,
-        ...account.alts
-      );
+    if (isAppend(v)) {
+      aggregate[v] = aggProp(v, account.main, ...account.alts);
+    } else if (isSum(v)) {
+      aggregate[v] = sumProp(v, account.main, ...account.alts);
+    } else if (isMax(v)) {
+      aggregate[v] = maxProp(v, account.main, ...account.alts);
     } else {
       aggregate[<keyof Character>v] = account.main[<keyof Character>v];
     }

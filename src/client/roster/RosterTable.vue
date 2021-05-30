@@ -47,7 +47,7 @@ export default defineComponent({
   computed: {
     sortColumn: function (): Column {
       for (let col of this.columns) {
-        if (col.key == this.sort.key) {
+        if (col.key == this.sort.key && col.sortable) {
           return col;
         }
       }
@@ -98,7 +98,7 @@ function getSortVal(
   column: Column,
   character: Character,
   account: Account | null
-): number | string | null | undefined {
+): number | string | boolean | null | undefined {
   if (column.account) {
     return account && account[column.key];
   } else {

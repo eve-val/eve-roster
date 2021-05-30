@@ -89,13 +89,13 @@ import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
-import { Column } from "./rosterColumns";
+import { AccountColumn, CharacterColumn, Column } from "./rosterColumns";
 import { Account, Character } from "./types";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon] as const;
 
-type Value = string | number | null | undefined;
+type Value = string | number | boolean | null | undefined;
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -254,10 +254,10 @@ export default defineComponent({
             if (!this.isMain) {
               return "″"; // ditto symbol
             } else {
-              return <Value>this.account[col.key];
+              return <Value>this.account[(<AccountColumn>col).key];
             }
           } else {
-            return this.character[col.key];
+            return this.character[(<CharacterColumn>col).key];
           }
       }
     },
