@@ -126,12 +126,12 @@ import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
-import { SimpleMap } from "../../util/simpleTypes";
+import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { first } from "../../util/collections";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
-import { Skill, groupifySkills } from "./skills";
+import { Skill } from "./skills";
 
 import { Identity } from "../home";
 import { Output, Character, Account } from "../../route/api/character";
@@ -174,14 +174,13 @@ export default defineComponent({
       timezones: string[] | undefined;
       citadels: string[] | undefined;
       corporationName: string | null;
-      skillsMap: Map<number, Skill> | null;
+      skillsMap: SimpleNumMap<Skill> | null;
       queue: { id: number; targetLevel: number }[] | null;
     };
   },
 
   computed: {
     characterId: function (): number {
-      // TODO: take first index of [] if array.
       return parseInt(first(this.$route.params.id));
     },
 
@@ -280,33 +279,32 @@ export default defineComponent({
     },
 
     processSkillsData(skills: Skill[]) {
-      let map: Map<number, Skill> = new Map<number, Skill>();
+      let map: SimpleNumMap<Skill> = {};
       for (let skill of skills) {
-        map.set(skill.id, skill);
-        skill.queuedLevel = null;
+        map[skill.id] = skill;
+        skill.queuedLevel = undefined;
       }
       this.skillsMap = map;
-      this.skillGroups = groupifySkills(skills);
       this.maybeInjectQueueDataIntoSkillsMap();
     },
 
     maybeInjectQueueDataIntoSkillsMap() {
       if (this.skillsMap != null && this.queue != null) {
         for (let queueItem of this.queue) {
-          this.skillsMap.get(queueItem.id).queuedLevel = queueItem.targetLevel;
+          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
         }
       }
     },
 
     submitTimezone(timezone: string) {
-      if (this.account == null) {
+      if (this.account?.id == null) {
         return;
       }
       return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
     },
 
     submitHousing(citadelName: string) {
-      if (this.account == null) {
+      if (this.account?.id == null) {
         return;
       }
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);

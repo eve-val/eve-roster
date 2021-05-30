@@ -203,21 +203,7 @@ function maxProp(prop: MaxAttr, ...chars: Character[]): number | null {
 
 function injectDerivedProps(account: Account) {
   for (let character of [account.main, ...account.alts]) {
-    let lastSeen = getLastSeen(character);
-    if (lastSeen != null) {
-      character.lastSeen = lastSeen;
-    }
     character.activityScore = getActivity(character);
-  }
-}
-
-function getLastSeen(character: Character): null | number {
-  if (character.logonDate == null || character.logoffDate == null) {
-    return null;
-  } else if (character.logonDate > character.logoffDate) {
-    return Math.floor(Date.now() / 1000);
-  } else {
-    return character.logoffDate;
   }
 }
 
