@@ -35,10 +35,6 @@ export default defineComponent({
     return { runPending, runError, runResolved };
   },
 
-  data() {
-    return {};
-  },
-
   mounted() {
     this.runPending.value?.awaitRunResult(pendingPromise());
     this.runError.value?.awaitRunResult(errorPromise());

@@ -14,13 +14,7 @@ import { defineComponent } from "vue";
 import { hasValue } from "../shared/htmlUtil";
 
 export default defineComponent({
-  props: {},
-
   emits: ["change"],
-
-  data: function () {
-    return {};
-  },
 
   methods: {
     onSearchBoxInput: function (ev: Event) {

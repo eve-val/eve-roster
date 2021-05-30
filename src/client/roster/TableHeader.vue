@@ -29,8 +29,6 @@ import { Column } from "./rosterColumns";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
-  components: {},
-
   props: {
     columns: { type: Array as PropType<Column[]>, required: true },
     sortKey: { type: String, required: true },
@@ -38,10 +36,6 @@ export default defineComponent({
   },
 
   emits: ["selectSortKey"],
-
-  data: function () {
-    return {};
-  },
 
   computed: {
     arrowClasses: function (): string[] {

@@ -30,8 +30,6 @@ const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
 import { defineComponent } from "vue";
 export default defineComponent({
-  components: {},
-
   props: {
     linkClass: { type: String, required: false, default: "" },
     path: { type: String, required: false, default: "" },

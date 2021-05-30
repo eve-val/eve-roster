@@ -58,10 +58,6 @@ export default defineComponent({
   props: {
     corp: { type: Object, required: true },
   },
-
-  data() {
-    return {};
-  },
 });
 </script>
 

@@ -51,9 +51,6 @@ export default defineComponent({
     rows: { type: Array as PropType<Log[]>, required: true },
   },
 
-  data: function () {
-    return {};
-  },
   methods: {
     displayDate: function (value: number): string {
       if (value != null) {

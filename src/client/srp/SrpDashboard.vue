@@ -40,8 +40,6 @@ export default defineComponent({
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
   },
-
-  methods: {},
 });
 </script>
 

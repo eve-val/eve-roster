@@ -41,17 +41,11 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data() {
-    return {};
-  },
-
   computed: {
     canWriteSrp(): boolean {
       return this.identity.access["srp"] == 2;
     },
   },
-
-  methods: {},
 });
 </script>
 

@@ -138,10 +138,6 @@ export default defineComponent({
     return { spinner, menu };
   },
 
-  data: function () {
-    return {};
-  },
-
   computed: {
     biomassed(): boolean {
       return this.character.corpId == CORP_DOOMHEIM;

@@ -118,10 +118,6 @@ export default defineComponent({
 
   emits: ["toggleExpanded"],
 
-  data: function () {
-    return {};
-  },
-
   computed: {
     displayVals: function (): Value[] {
       let labels: Value[] = [];
