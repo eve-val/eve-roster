@@ -130,7 +130,7 @@ function injectDerivedData(data: Account[]): Account[] {
 }
 
 function computeAggregateCharacter(account: Account): Character {
-  let aggregate: Character;
+  let aggregate: Character = {};
 
   // Calculate key set as union of keys in main and all alts
   let keys = Object.keys(account.main);

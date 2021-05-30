@@ -126,7 +126,8 @@
 <script lang="ts">
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
-import { Character } from "../shared/types";
+import { CharacterJson } from "../../route/api/dashboard";
+import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
 import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
@@ -177,7 +178,7 @@ function errorPromise() {
   });
 }
 
-function characterBasic(skillQueue): Character {
+function characterBasic(skillQueue: SkillQueueSummary): CharacterJson {
   return {
     id: 95773199,
     name: "Brienne Lesqagar",
@@ -185,32 +186,32 @@ function characterBasic(skillQueue): Character {
     opsec: false,
     corpStatus: "primary",
     skillQueue: skillQueue || sampleSkillQueue(),
-    corp: 123456,
+    corpId: 123456,
   };
 }
 
-function characterOpsec(skillQueue): Character {
+function characterOpsec(skillQueue: SkillQueueSummary): CharacterJson {
   let character = characterBasic(skillQueue);
   character.opsec = true;
   character.corpStatus = "external";
   return character;
 }
 
-function characterBiomassed(): Character {
+function characterBiomassed(): CharacterJson {
   let character = characterBasic(emptySkillQueue());
   character.corpId = CORP_DOOMHEIM;
   return character;
 }
 
-function characterNeedsReauth(skillQueue): Character {
+function characterNeedsReauth(skillQueue: SkillQueueSummary): CharacterJson {
   let character = characterBasic(skillQueue);
   character.needsReauth = true;
   return character;
 }
 
-function sampleSkillQueue() {
+function sampleSkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "active",
     skillInTraining: {
       name: "Repair Systems V",
@@ -224,9 +225,9 @@ function sampleSkillQueue() {
   };
 }
 
-function emptySkillQueue() {
+function emptySkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "empty",
     skillInTraining: null,
     queue: {
@@ -236,9 +237,9 @@ function emptySkillQueue() {
   };
 }
 
-function pausedSkillQueue() {
+function pausedSkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "paused",
     skillInTraining: {
       name: "Gallente Frigate V",
@@ -252,15 +253,15 @@ function pausedSkillQueue() {
   };
 }
 
-function unfreshSkillQueue() {
+function unfreshSkillQueue(): SkillQueueSummary {
   let queue = sampleSkillQueue();
-  queue.dataStatus = "bad_credentials";
+  queue.warning = "bad_credentials";
   return queue;
 }
 
-function warningSkillQueue() {
+function warningSkillQueue(): SkillQueueSummary {
   let queue = sampleSkillQueue();
-  queue.dataStatus = "cached";
+  queue.dataFreshness = "cached";
   queue.warning = "bad_credentials";
 
   return queue;

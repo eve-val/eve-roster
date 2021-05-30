@@ -102,13 +102,16 @@ type Icon = {
 
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
+import { SimpleMap } from "../../util/simpleTypes";
+import { CharacterJson } from "../../route/api/dashboard";
+import { Skill, Queue } from "../../domain/skills/skillQueueSummary";
+
 type MenuItem = {
-  key: string;
   label: string;
   tag: string;
 };
 
-import { defineComponent, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     CharacterSlabFrame,
@@ -120,11 +123,11 @@ export default defineComponent({
 
   props: {
     accountId: { type: Number, required: true },
-    character: { type: Object, required: true },
+    character: { type: Object as PropType<CharacterJson>, required: true },
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
-    access: { type: Object, required: true },
+    access: { type: Object as PropType<SimpleMap<number>>, required: true },
   },
 
   emits: ["requireRefresh"],
@@ -144,16 +147,19 @@ export default defineComponent({
       return this.character.corpId == CORP_DOOMHEIM;
     },
 
-    skillInTraining() {
+    skillInTraining(): Skill | null {
       return this.character.skillQueue.skillInTraining;
     },
 
-    queue() {
+    queue(): Queue {
       return this.character.skillQueue.queue;
     },
 
     trainingLabel(): string {
-      if (this.character.skillQueue.queueStatus == "empty") {
+      if (
+        this.character.skillQueue.queueStatus == "empty" ||
+        !this.skillInTraining
+      ) {
         return "Skill queue empty";
       } else if (this.character.skillQueue.queueStatus == "paused") {
         return "Skill queue paused";
@@ -166,11 +172,11 @@ export default defineComponent({
       switch (this.character.skillQueue.queueStatus) {
         case "active":
           return (
-            `${this.queue().timeRemaining} in queue` +
-            ` (${this.queue().count} skills)`
+            `${this.queue.timeRemaining} in queue` +
+            ` (${this.queue.count} skills)`
           );
         case "paused":
-          return `${this.queue().count} skills in queue`;
+          return `${this.queue.count} skills in queue`;
         case "empty":
         default:
           return "";
@@ -178,7 +184,10 @@ export default defineComponent({
     },
 
     progressTrackWidth(): string {
-      if (this.character.skillQueue.queueStatus != "active") {
+      if (
+        !this.skillInTraining ||
+        this.character.skillQueue.queueStatus != "active"
+      ) {
         return "0";
       } else {
         return this.skillInTraining.progress * 100 + "%";
@@ -309,7 +318,7 @@ export default defineComponent({
   },
 });
 
-function getQueueWarningLabel(warning: string) {
+function getQueueWarningLabel(warning: string): string {
   let generalWarning = "Skill queue may be out of date.";
 
   switch (warning) {

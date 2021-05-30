@@ -110,9 +110,11 @@ export default defineComponent({
   mounted() {
     this.fetchNextResults();
 
-    ajaxer.getSrpApprovedLiability().then((response: AxiosResponse<number>) => {
-      this.approvedLiability = response.data.approvedLiability;
-    });
+    ajaxer
+      .getSrpApprovedLiability()
+      .then((response: AxiosResponse<{ approvedLiability: number }>) => {
+        this.approvedLiability = response.data.approvedLiability;
+      });
   },
 
   methods: {

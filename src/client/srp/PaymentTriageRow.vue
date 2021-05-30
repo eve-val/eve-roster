@@ -125,7 +125,7 @@ export default defineComponent({
 
   methods: {
     onCopyReasonClick() {
-      this.reasonInput.value?.select();
+      this.reasonInput?.select();
       try {
         document.execCommand("copy");
       } catch (err) {
@@ -134,7 +134,7 @@ export default defineComponent({
     },
 
     onCopyPayoutClick() {
-      this.payoutInput.value?.select();
+      this.payoutInput?.select();
       try {
         document.execCommand("copy");
       } catch (err) {

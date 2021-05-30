@@ -53,6 +53,9 @@ type Matches = {
   alt: boolean;
 };
 
+import { Column } from "./rosterColumns";
+import { Account } from "../shared/types";
+
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -60,8 +63,8 @@ export default defineComponent({
   },
 
   props: {
-    columns: { type: Array, required: true },
-    account: { type: Object, required: true },
+    columns: { type: Array as PropType<Column[]>, required: true },
+    account: { type: Object as PropType<Account>, required: true },
     filter: { type: String as PropType<string>, required: false, default: "" },
   },
 
