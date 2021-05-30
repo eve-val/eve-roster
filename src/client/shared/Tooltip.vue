@@ -57,7 +57,7 @@ export default defineComponent({
       type: String as PropType<string>,
       required: false,
       default: "center bottom",
-      validator: function (value: string): boolean {
+      validator: (value: string) => {
         let pieces = splitGravString(value);
         if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(pieces[0])) {
           return false;
