@@ -1,4 +1,4 @@
-import { Character, Account } from "../shared/types";
+import { Character, Account } from "./types";
 
 interface RenderColumn {
   label: string;

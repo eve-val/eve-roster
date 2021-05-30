@@ -60,6 +60,7 @@ import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
 import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
+import { Payload } from "../../route/api/character/skills";
 import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
@@ -83,7 +84,7 @@ export default defineComponent({
       queue: null,
       skillGroups: null,
     } as {
-      queue: null | QueueItem[];
+      queue: null | { entries: QueueItem[] };
       skillGroups: null | SkillGroup[];
     };
   },
@@ -116,26 +117,18 @@ export default defineComponent({
       if (this.canReadSkills) {
         this.spinner.value?.observe(
           ajaxer.getSkills(this.characterId),
-          (
-            response: AxiosResponse<{
-              warning?: string;
-              entries: { id: number; targetLevel: number };
-            }>
-          ) => {
+          (response: AxiosResponse<Payload>) => {
             this.processData(response.data);
             if (response.data.warning) {
               return { state: "warning", message: response.data.warning };
             }
-            // TODO: write return value.
+            return {};
           }
         );
       }
     },
 
-    processData(data: {
-      skills: Skill[];
-      queue: undefined | { entries: QueueItem[] };
-    }) {
+    processData(data: Payload) {
       let skillMap: SimpleNumMap<Skill> = {};
       for (let skill of data.skills) {
         skillMap[skill.id] = skill;

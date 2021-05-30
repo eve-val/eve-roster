@@ -40,22 +40,18 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   };
 }
 
-import { QueueEntryJson } from "../../route/api/character/skills";
+import * as api from "../../route/api/character/skills";
 
-export interface Skill {
-  id: number;
-  group: string;
-  name: string;
+export interface Skill extends api.Skill {
   queuedLevel?: number;
 }
-
 export interface SkillGroup {
   name: string;
   position: number;
   skills: Skill[];
 }
 
-export interface QueueItem extends QueueEntryJson {
+export interface QueueItem extends api.QueueEntryJson {
   skill?: Skill;
 }
 

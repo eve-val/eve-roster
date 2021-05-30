@@ -21,7 +21,7 @@ import AccountRow from "./AccountRow.vue";
 import TableHeader from "./TableHeader.vue";
 
 import { Column } from "./rosterColumns";
-import { Account, Character } from "../shared/types";
+import { Account, Character } from "./types";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {

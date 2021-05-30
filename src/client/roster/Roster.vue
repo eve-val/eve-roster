@@ -33,7 +33,7 @@ import _ from "underscore";
 import ajaxer from "../shared/ajaxer";
 
 import rosterColumns, { Column } from "./rosterColumns";
-import { Character, Account } from "../shared/types";
+import { Character, Account } from "./types";
 
 import AppHeader from "../shared/AppHeader.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";

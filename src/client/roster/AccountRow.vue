@@ -54,7 +54,7 @@ type Matches = {
 };
 
 import { Column } from "./rosterColumns";
-import { Account } from "../shared/types";
+import { Account } from "./types";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

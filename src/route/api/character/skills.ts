@@ -17,14 +17,16 @@ import {
 import * as time from "../../../util/time";
 import { defaultSkillName } from "../../../domain/skills/defaultSkillName";
 
+export interface Skill {
+  id: number;
+  name: string;
+  group: number | null;
+  level: number;
+  sp: number;
+}
+
 export interface Payload {
-  skills: {
-    id: number;
-    name: string;
-    group: number | null;
-    level: number;
-    sp: number;
-  }[];
+  skills: Skill[];
   // Only present if account can read this character's skill queue
   queue?: {
     entries: QueueEntryJson[];

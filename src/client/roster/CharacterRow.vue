@@ -90,7 +90,7 @@ import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
 import { Column } from "./rosterColumns";
-import { Account, Character } from "../shared/types";
+import { Account, Character } from "./types";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
 const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon] as const;

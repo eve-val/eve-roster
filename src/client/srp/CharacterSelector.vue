@@ -42,7 +42,7 @@ import _ from "underscore";
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
-import { Character } from "../shared/types";
+import { CharacterDescription } from "../../route/api/account/characters_GET";
 
 import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
@@ -63,16 +63,16 @@ export default defineComponent({
       characters: [],
       selectedId: this.modelValue,
     } as {
-      characters: Character[];
+      characters: CharacterDescription[];
       selectedId: number;
     };
   },
 
   computed: {
-    selectedCharacter(): Character | undefined {
+    selectedCharacter(): CharacterDescription | undefined {
       return _.findWhere(this.characters, { id: this.selectedId });
     },
-    validCharacters(): Character[] {
+    validCharacters(): CharacterDescription[] {
       return this.characters.filter(this.isValidCharacter);
     },
   },
@@ -88,7 +88,7 @@ export default defineComponent({
   mounted() {
     ajaxer
       .getAccountCharacters(this.accountId)
-      .then((response: AxiosResponse) => {
+      .then((response: AxiosResponse<CharacterDescription[]>) => {
         this.characters = response.data;
 
         for (let character of this.characters) {
@@ -101,7 +101,7 @@ export default defineComponent({
   },
 
   methods: {
-    isValidCharacter(character: Character): boolean {
+    isValidCharacter(character: CharacterDescription): boolean {
       return character.accessTokenValid && character.membership == "full";
     },
   },
