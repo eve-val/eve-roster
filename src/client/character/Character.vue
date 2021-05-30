@@ -134,7 +134,7 @@ import SkillSheet from "./SkillSheet.vue";
 import { Skill, groupifySkills } from "./skills";
 
 import { Identity } from "../home";
-import { Character, Account } from "../shared/types";
+import { Output, Character, Account } from "../../route/api/character";
 
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType, ref } from "vue";
@@ -171,8 +171,8 @@ export default defineComponent({
       character: Character | null;
       account: Account | null;
       access: SimpleMap<number> | null;
-      timezones: string[];
-      citadels: string[];
+      timezones: string[] | undefined;
+      citadels: string[] | undefined;
       corporationName: string | null;
       skillsMap: Map<number, Skill> | null;
       queue: { id: number; targetLevel: number }[] | null;
@@ -198,6 +198,9 @@ export default defineComponent({
     },
 
     timezoneOptions: function (): { value: string; label: string }[] {
+      if (this.timezones == undefined) {
+        return [];
+      }
       return this.timezones.map((timezone: string) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
@@ -208,6 +211,9 @@ export default defineComponent({
     },
 
     citadelOptions: function (): { label: string; value: string }[] {
+      if (this.citadels == undefined) {
+        return [];
+      }
       return this.citadels.map((citadel: string) => ({
         label: citadel,
         value: citadel,
@@ -251,7 +257,7 @@ export default defineComponent({
       }
       this.spinner.value
         ?.observe(ajaxer.getCharacter(this.characterId))
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<Output>) => {
           this.character = response.data.character;
           this.account = response.data.account;
           this.access = response.data.access;
@@ -266,7 +272,7 @@ export default defineComponent({
     },
 
     formatSp() {
-      if (this.character.totalSp) {
+      if (this.character?.totalSp) {
         return formatNumber(this.character.totalSp);
       } else {
         return "-";
@@ -293,10 +299,16 @@ export default defineComponent({
     },
 
     submitTimezone(timezone: string) {
+      if (this.account == null) {
+        return;
+      }
       return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
     },
 
     submitHousing(citadelName: string) {
+      if (this.account == null) {
+        return;
+      }
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
   },

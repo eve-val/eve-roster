@@ -8,32 +8,34 @@ import { idParam } from "../../util/express/paramVerifier";
 import { NotFoundError } from "../../error/NotFoundError";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 import { TIMEZONE_LABELS } from "../../domain/roster/timezoneLabels";
+import { SimpleMap } from "../../util/simpleTypes";
 
 const logger = buildLoggerFromFilename(__filename);
 
-interface Output {
-  character: {
-    name: string;
-    corporationId: number;
-    titles: string[];
-    totalSp: number;
-  };
-  account: {
-    id: number | null;
-    groups: string[];
-    activeTimezone?: string | null;
-    citadelName?: string | null;
-    main?: CharacterRef;
-    alts?: CharacterRef[];
-  };
-  access: {
-    [key: string]: number;
-  };
+export interface Character {
+  name: string;
+  corporationId: number;
+  titles: string[];
+  totalSp: number;
+}
+export interface Account {
+  id: number | null;
+  groups: string[];
+  activeTimezone?: string | null;
+  citadelName?: string | null;
+  main?: CharacterRef;
+  alts?: CharacterRef[];
+}
+
+export interface Output {
+  character: Character;
+  account: Account;
+  access: SimpleMap<number>;
   timezones?: string[];
   citadels?: string[];
 }
 
-interface CharacterRef {
+export interface CharacterRef {
   id: number;
   name: string;
 }

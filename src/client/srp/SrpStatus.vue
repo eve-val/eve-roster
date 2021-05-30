@@ -63,7 +63,7 @@ triage options weren't initially provided, fetches them from the server.
           class="row-link"
           :to="`/srp/payment/${srp.reimbursement}`"
         >
-          {{ rawPayoutToDisplayPayout(srp.payout) }}
+          {{ displayPayout }}
           <span style="color: #8b8b8b">M</span>
         </router-link>
         <template v-else> &mdash; </template>
@@ -156,7 +156,7 @@ export default defineComponent({
         ? this.initialSrp.triage.suggestedOption
         : "custom",
       // todo: function is inaccessible from data()
-      inputPayout: this.rawPayoutToDisplayPayout(this.initialSrp.payout),
+      inputPayout: rawPayoutToDisplayPayout(this.initialSrp.payout),
       saveStatus: "inactive",
       fetchTriageStatus: "inactive",
       originalPayout: null,
@@ -164,7 +164,7 @@ export default defineComponent({
       srp: Srp;
       editing: boolean;
       selectedVerdictKey: string;
-      inputPayout: number;
+      inputPayout: number | null;
       saveStatus: RequestStatus;
       fetchTriageStatus: RequestStatus;
       originalPayout: number | null;
@@ -172,6 +172,10 @@ export default defineComponent({
   },
 
   computed: {
+    displayPayout(): number {
+      return rawPayoutToDisplayPayout(this.srp.payout);
+    },
+
     selectedVerdict(): VerdictOption | undefined {
       return _.findWhere(this.verdictOptions, { key: this.selectedVerdictKey });
     },
@@ -282,7 +286,7 @@ export default defineComponent({
       if (!this.selectedVerdict) {
         return;
       }
-      const payout = this.displayPayoutToRawPayout(this.inputPayout);
+      const payout = displayPayoutToRawPayout(this.inputPayout);
       const verdict = this.selectedVerdict.verdict;
       const reason = this.selectedVerdict.reason;
 
@@ -346,15 +350,7 @@ export default defineComponent({
     },
 
     updateInputPayout(value: number) {
-      this.inputPayout = this.rawPayoutToDisplayPayout(value);
-    },
-
-    rawPayoutToDisplayPayout(rawPayout: number): number {
-      return Math.round(rawPayout / 1000000);
-    },
-
-    displayPayoutToRawPayout(displayPayout: number): number {
-      return displayPayout * 1000000;
+      this.inputPayout = rawPayoutToDisplayPayout(value);
     },
 
     getStatusLabel(srp: Srp): string {
@@ -366,6 +362,20 @@ export default defineComponent({
     },
   },
 });
+
+function rawPayoutToDisplayPayout(rawPayout: number | null): number {
+  if (rawPayout == null) {
+    return 0;
+  }
+  return Math.round(rawPayout / 1000000);
+}
+
+function displayPayoutToRawPayout(displayPayout: number | null): number {
+  if (displayPayout == null) {
+    return 0;
+  }
+  return displayPayout * 1000000;
+}
 
 interface Status {
   status: string;
@@ -462,8 +472,8 @@ const ALL_STATUSES: Status[] = MAIN_STATUSES.concat(
   UNSETTABLE_STATUSES
 );
 
-function isValidInputPayout(inputPayout: number): boolean {
-  return inputPayout >= 0;
+function isValidInputPayout(inputPayout: number | null): boolean {
+  return inputPayout != null && inputPayout >= 0;
 }
 </script>
 
