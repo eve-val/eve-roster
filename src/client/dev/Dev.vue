@@ -38,6 +38,8 @@ import DevLoadingSpinner from "./DevLoadingSpinner.vue";
 import DevOwnedCharacterSlab from "./DevOwnedCharacterSlab.vue";
 import DevTaskSlab from "./DevTaskSlab.vue";
 
+import { first } from "../../util/collections";
+
 import { Identity } from "../home";
 
 interface Section {
@@ -84,7 +86,9 @@ export default defineComponent({
 
   computed: {
     currentSection(): Section | undefined {
-      return _.findWhere(this.sections, { path: this.$route.params.section });
+      return _.findWhere(this.sections, {
+        path: first(this.$route.params.section),
+      });
     },
   },
 });

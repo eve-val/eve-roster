@@ -127,6 +127,7 @@ import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
 import { SimpleMap } from "../../util/simpleTypes";
+import { first } from "../../util/collections";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
@@ -181,7 +182,7 @@ export default defineComponent({
   computed: {
     characterId: function (): number {
       // TODO: take first index of [] if array.
-      return parseInt(this.$route.params.id);
+      return parseInt(first(this.$route.params.id));
     },
 
     canWriteSrp: function (): boolean {

@@ -39,3 +39,11 @@ export function addAll<T>(set: Set<T>, entries: Iterable<T>) {
     set.add(e);
   }
 }
+
+/** Returns the verbatim value, or the first value from an array. */
+export function first<T>(input: T | T[]): T {
+  if (Array.isArray(input)) {
+    return input[0];
+  }
+  return input;
+}
