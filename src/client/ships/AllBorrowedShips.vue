@@ -46,7 +46,7 @@ export default defineComponent({
     };
   },
 
-  mounted: function () {
+  mounted() {
     this.spinner.value
       ?.observe(ajaxer.getAllBorrowedShips())
       .then((response: AxiosResponse<Ship[]>) => {

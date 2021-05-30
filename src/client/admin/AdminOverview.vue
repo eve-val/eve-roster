@@ -99,7 +99,7 @@ export default defineComponent({
     };
   },
 
-  mounted: function () {
+  mounted() {
     this.spinner.value
       ?.observe(ajaxer.getAdminRosterSyncStatus())
       .then((response: AxiosResponse<Output>) => {

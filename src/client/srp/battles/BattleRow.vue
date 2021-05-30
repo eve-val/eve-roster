@@ -125,8 +125,6 @@ export default defineComponent({
     startInEditMode: { type: Boolean as PropType<boolean>, required: true },
   },
 
-  data() {},
-
   computed: {
     battleLosses(): number {
       let sum = 0;

@@ -72,7 +72,7 @@ export default defineComponent({
     };
   },
 
-  mounted: function () {
+  mounted() {
     this.spinner.value
       ?.observe(ajaxer.getRoster())
       .then(
@@ -97,13 +97,15 @@ export default defineComponent({
   },
 
   methods: {
-    onSearchStringChange: _.debounce((str: string) => {
-      if (str.length == 0) {
-        this.searchString = null;
-      } else if (str.length >= 3) {
-        this.searchString = str;
-      }
-    }, 100),
+    onSearchStringChange(str: string) {
+      _.debounce(() => {
+        if (str.length == 0) {
+          this.searchString = null;
+        } else if (str.length >= 3) {
+          this.searchString = str;
+        }
+      }, 100)();
+    },
   },
 });
 
@@ -130,7 +132,7 @@ function injectDerivedData(data: Account[]): Account[] {
 }
 
 function computeAggregateCharacter(account: Account): Character {
-  let aggregate: Character = {};
+  let aggregate = <Character>{}; // keys to be filled in below.
 
   // Calculate key set as union of keys in main and all alts
   let keys = Object.keys(account.main);
@@ -177,28 +179,28 @@ function aggProp(prop: AppendAttr, ...chars: Character[]): string {
   return text;
 }
 
-function sumProp(prop: SumAttr, ...chars: Character[]): null | number {
+function sumProp(prop: SumAttr, ...chars: Character[]): undefined | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
-    if (char[prop] != null) {
+    if (char[prop] != undefined && char[prop] != null) {
       sum += char[prop];
       sawNotNull = true;
     }
   }
-  return sawNotNull ? sum : null;
+  return sawNotNull ? sum : undefined;
 }
 
-function maxProp(prop: MaxAttr, ...chars: Character[]): number | null {
+function maxProp(prop: MaxAttr, ...chars: Character[]): number | undefined {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {
-    if (char[prop] != null) {
+    if (char[prop] != undefined && char[prop] != null) {
       best = Math.max(char[prop], best);
       sawNotNull = true;
     }
   }
-  return sawNotNull ? best : null;
+  return sawNotNull ? best : undefined;
 }
 
 function injectDerivedProps(account: Account) {

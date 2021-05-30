@@ -121,8 +121,6 @@ export default defineComponent({
     };
   },
 
-  mounted() {},
-
   methods: {
     onCopyReasonClick() {
       this.reasonInput?.select();

@@ -108,7 +108,7 @@ export default defineComponent({
     },
   },
 
-  mounted: function () {
+  mounted() {
     this.spinner.value
       ?.observe(
         Promise.all<

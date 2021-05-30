@@ -245,7 +245,7 @@ export default defineComponent({
     },
   },
 
-  mounted: function () {
+  mounted() {
     this.fetchData();
   },
 
