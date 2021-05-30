@@ -45,7 +45,7 @@ export default defineComponent({
       default: Promise.resolve(),
     },
     hideButton: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: false,
     },

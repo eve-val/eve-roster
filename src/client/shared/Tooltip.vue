@@ -43,7 +43,7 @@ const ARROW_FILL = "#3e3e3e";
 const ARROW_INSET_FILL = "#202020";
 
 import { CssStyleObject } from "./types";
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     /**
@@ -54,7 +54,7 @@ export default defineComponent({
      * Vertical options: `top`, `center`, `bottom`
      */
     gravity: {
-      type: String as PropType<string>,
+      type: String,
       required: false,
       default: "center bottom",
       validator: (value: string) => {
@@ -73,7 +73,7 @@ export default defineComponent({
     },
 
     inline: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: true,
     },

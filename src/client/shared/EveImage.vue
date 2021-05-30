@@ -17,7 +17,7 @@ import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     id: {
-      type: Number as PropType<number>,
+      type: Number,
       required: false,
       default: null,
     },
@@ -28,7 +28,7 @@ export default defineComponent({
         !value || (<readonly string[]>SUPPORTED_TYPES).includes(value),
     },
     size: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true,
     },
   },

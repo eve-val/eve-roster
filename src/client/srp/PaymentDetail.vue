@@ -94,7 +94,7 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    srpId: { type: Number as PropType<number>, required: true },
+    srpId: { type: Number, required: true },
   },
 
   setup: () => {

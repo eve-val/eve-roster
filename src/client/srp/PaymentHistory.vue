@@ -64,7 +64,7 @@ export default defineComponent({
       default: undefined,
     },
     compactMode: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: false,
     },

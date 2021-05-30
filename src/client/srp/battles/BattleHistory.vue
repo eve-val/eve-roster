@@ -57,7 +57,7 @@ export default defineComponent({
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
     triageMode: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: false,
     },

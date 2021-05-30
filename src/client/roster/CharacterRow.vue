@@ -107,13 +107,13 @@ export default defineComponent({
   props: {
     character: { type: Object as PropType<Character>, required: true },
     columns: { type: Array as PropType<Column[]>, required: true },
-    isMain: { type: Boolean as PropType<boolean>, required: true },
+    isMain: { type: Boolean, required: true },
     account: {
       type: Object as PropType<Account>,
       required: false,
       default: null,
     },
-    filter: { type: String as PropType<string>, required: false, default: "" },
+    filter: { type: String, required: false, default: "" },
   },
 
   emits: ["toggleExpanded"],

@@ -44,7 +44,7 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
-    battleId: { type: Number as PropType<number>, required: true },
+    battleId: { type: Number, required: true },
   },
 
   setup: () => {

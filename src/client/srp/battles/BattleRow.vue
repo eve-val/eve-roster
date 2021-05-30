@@ -121,8 +121,8 @@ export default defineComponent({
 
   props: {
     battle: { type: Object as PropType<Battle>, required: true },
-    hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
-    startInEditMode: { type: Boolean as PropType<boolean>, required: true },
+    hasEditPriv: { type: Boolean, required: true },
+    startInEditMode: { type: Boolean, required: true },
   },
 
   computed: {

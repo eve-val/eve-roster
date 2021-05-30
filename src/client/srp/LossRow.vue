@@ -93,10 +93,10 @@ export default defineComponent({
 
   props: {
     srp: { type: Object as PropType<Srp>, required: true },
-    hasEditPriv: { type: Boolean as PropType<boolean>, required: true },
-    startInEditMode: { type: Boolean as PropType<boolean>, required: true },
+    hasEditPriv: { type: Boolean, required: true },
+    startInEditMode: { type: Boolean, required: true },
     highlightAsRelated: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: false,
     },

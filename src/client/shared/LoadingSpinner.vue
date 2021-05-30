@@ -167,7 +167,7 @@ export default defineComponent({
 
     /** Displayed if state is 'error' or 'warning'. */
     adversityMessage: {
-      type: String as PropType<string>,
+      type: String,
       required: false,
       default: "",
     },
@@ -177,7 +177,7 @@ export default defineComponent({
      * 'error'/'warning' and `display` is 'inline'.
      */
     tooltipGravity: {
-      type: String as PropType<string>,
+      type: String,
       required: false,
       default: "right",
     },
@@ -188,7 +188,7 @@ export default defineComponent({
      * "There was an error while <actionLabel>."
      */
     actionLabel: {
-      type: String as PropType<string>,
+      type: String,
       required: false,
       default: "",
     },
@@ -199,7 +199,7 @@ export default defineComponent({
      * be rejected with the original error. Default: true.
      */
     rethrowError: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: true,
     },

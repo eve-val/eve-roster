@@ -40,7 +40,7 @@ import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     showMainCharacter: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: false,
       default: false,
     },
