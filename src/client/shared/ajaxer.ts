@@ -201,7 +201,7 @@ export default {
   putSrpPaymentStatus(
     srp: number,
     paid: boolean,
-    payingCharacter: number
+    payingCharacter: number | undefined
   ): Promise<AxiosResponse<{}>> {
     return axios.put<{}>(`/api/srp/payment/${srp}`, {
       paid: paid,

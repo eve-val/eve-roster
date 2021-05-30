@@ -110,7 +110,7 @@ export default defineComponent({
       undoStatus: "inactive",
     } as {
       payment: Payment | null;
-      losses: Loss[] | null;
+      losses: Loss[];
       undoStatus: UndoStatus;
     };
   },
@@ -138,7 +138,7 @@ export default defineComponent({
   methods: {
     fetchData() {
       this.payment = null;
-      this.losses = null;
+      this.losses = [];
       this.spinner.value?.observe(ajaxer.getSrpPayment(this.srpId)).then(
         (
           response: AxiosResponse<{
@@ -163,7 +163,9 @@ export default defineComponent({
         ?.observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
         .then((_response: AxiosResponse<{}>) => {
           this.undoStatus = "inactive";
-          this.payment.paid = false;
+          if (this.payment != null) {
+            this.payment.paid = false;
+          }
           this.fetchData();
         })
         .catch(() => {
