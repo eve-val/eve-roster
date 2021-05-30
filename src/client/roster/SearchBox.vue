@@ -11,6 +11,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { hasValue } from "../shared/htmlUtil";
+
 export default defineComponent({
   props: {},
 
@@ -35,14 +37,6 @@ export default defineComponent({
     },
   },
 });
-
-interface IEventTargetValue extends HTMLElement {
-  value: string;
-}
-
-function hasValue(t: EventTarget | null): t is IEventTargetValue {
-  return typeof t?.value === "string";
-}
 </script>
 
 <style scoped>

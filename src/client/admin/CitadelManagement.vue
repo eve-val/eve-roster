@@ -51,6 +51,7 @@
 import ajaxer from "../shared/ajaxer";
 import AdminWrapper from "./AdminWrapper.vue";
 
+import { hasValue, hasBlur } from "../shared/htmlUtil";
 import { Identity } from "../home";
 
 const CITADEL_TYPES = [
@@ -154,38 +155,52 @@ export default defineComponent({
       });
     },
 
-    addLogic(event: Event) {
+    addLogic(event: KeyboardEvent) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
-        event.target.blur();
-        if (event.target.value) {
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
+        if (hasValue(event.target) && event.target.value) {
           this.addCitadel();
         }
       } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.value = "";
-        event.target.blur();
+        if (hasValue(event.target)) {
+          event.target.value = "";
+        }
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       }
     },
 
-    editLogic(oldName: string, event: Event) {
+    editLogic(oldName: string, event: KeyboardEvent) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
-        event.target.blur();
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.value = oldName;
-        event.target.blur();
+        if (hasValue(event.target)) {
+          event.target.value = oldName;
+        }
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       }
     },
 
-    validate(id: number, name: string, event: Event) {
+    validate(id: number, name: string, event: KeyboardEvent) {
       this.editLogic(name, event);
-      let newName = event.target.value;
-      if (newName !== name) {
-        this.renameCitadel(id, newName);
+      if (hasValue(event.target)) {
+        let newName = event.target.value;
+        if (newName !== name) {
+          this.renameCitadel(id, newName);
+        }
       }
     },
   },
