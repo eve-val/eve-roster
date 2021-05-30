@@ -132,6 +132,9 @@ export default defineComponent({
       } catch (err) {
         console.log("Error while copying", err);
       }
+      if (this.payingCharacter == null) {
+        return;
+      }
       ajaxer.postOpenInformationWindow(
         this.payingCharacter,
         this.payment.recipient

@@ -3,6 +3,7 @@ export type Loss = {
   killmail: number;
 };
 export type Payment = {
+  id: number;
   paid: boolean;
   payer: number;
   recipient: number;

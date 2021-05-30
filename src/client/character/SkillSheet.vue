@@ -56,7 +56,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
-import { Skill, SkillGroup, QueueEntry, groupifySkills } from "./skills";
+import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
 import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
@@ -78,7 +78,7 @@ export default defineComponent({
       queue: null,
       skillGroups: null,
     } as {
-      queue: null | QueueEntry[];
+      queue: null | QueueItem[];
       skillGroups: null | SkillGroup[];
     };
   },
@@ -129,11 +129,11 @@ export default defineComponent({
 
     processData(data: {
       skills: Skill[];
-      queue: undefined | { entries: QueueEntry[] };
+      queue: undefined | { entries: QueueItem[] };
     }) {
-      let skillMap: SimpleNumMap<Skill> = new Map<number, Skill>();
+      let skillMap: SimpleNumMap<Skill> = {};
       for (let skill of data.skills) {
-        skillMap.set(skill.id, skill);
+        skillMap[skill.id] = skill;
         skill.queuedLevel = null;
       }
       this.skillGroups = groupifySkills(data.skills);
@@ -141,7 +141,7 @@ export default defineComponent({
       if (data.queue != undefined) {
         this.queue = data.queue;
         for (let qe of data.queue.entries) {
-          let skill = skillMap.get(qe.id);
+          let skill = skillMap[qe.id];
           skill.queuedLevel = qe.targetLevel;
           qe.skill = skill;
         }

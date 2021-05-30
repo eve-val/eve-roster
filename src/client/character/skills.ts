@@ -55,7 +55,7 @@ export interface SkillGroup {
   skills: Skill[];
 }
 
-export interface QueueEntry extends QueueEntryJson {
+export interface QueueItem extends QueueEntryJson {
   skill?: Skill;
 }
 
