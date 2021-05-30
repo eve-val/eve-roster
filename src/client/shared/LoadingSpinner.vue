@@ -280,7 +280,7 @@ const Spinner = defineComponent({
 
       return promise
         .then((payload: T) => {
-          let newState = "hidden";
+          let newState: StateValue = "hidden";
 
           this.stateFromPromise = "hidden";
 

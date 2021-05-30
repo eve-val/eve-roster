@@ -11,7 +11,7 @@ export interface Task {
   name: string;
   displayName: string;
   description: string;
-  isSynthetic: boolean;
+  isSynthetic?: boolean;
   job: Job | null;
 }
 

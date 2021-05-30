@@ -41,7 +41,7 @@ import { AxiosResponse } from "axios";
 import { SimpleNumMap } from "../../../util/simpleTypes";
 
 type Response = AxiosResponse<{
-  name: SimpleNumMap<string>;
+  names: SimpleNumMap<string>;
   battles: Battle[];
 }>;
 
@@ -69,7 +69,7 @@ export default defineComponent({
       fetchPromise: null,
       suspectMoreToFetch: true,
     } as {
-      battles: Battle[];
+      battles: Battle[] | null;
       fetchPromise: Promise<Response>;
       suspectMoreToFetch: boolean;
     };

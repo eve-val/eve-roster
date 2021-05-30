@@ -12,6 +12,7 @@ export type Payment = {
   totalPayout: number;
 };
 export type Battle = {
+  id: number;
   teams: {
     totalLosses: number;
   }[];

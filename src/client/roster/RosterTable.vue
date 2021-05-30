@@ -54,8 +54,8 @@ export default defineComponent({
       return null;
     },
 
-    sortedRows: function () {
-      const copy = [...this.rows];
+    sortedRows: function (): Account[] {
+      const copy: Account[] = [...this.rows];
       // Sort accounts
       copy.sort((a: Account, b: Account) => {
         return generalPurposeCompare(
@@ -83,7 +83,7 @@ export default defineComponent({
   },
 
   methods: {
-    onSelectSortKey: function (key) {
+    onSelectSortKey: function (key: string) {
       if (key == this.sort.key) {
         this.sort.reverse = !this.sort.reverse;
       } else {
