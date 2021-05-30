@@ -160,9 +160,7 @@ export default defineComponent({
       }
       this.undoStatus = "saving";
       this.undoSpinner.value
-        ?.observe<AxiosResponse<{}>>(
-          ajaxer.putSrpPaymentStatus(this.srpId, false, undefined)
-        )
+        ?.observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
         .then((_response: AxiosResponse<{}>) => {
           this.undoStatus = "inactive";
           this.payment.paid = false;

@@ -22,10 +22,17 @@ import TaskSlab from "../admin/TaskSlab.vue";
 
 import { Task, Job } from "../admin/types";
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     TaskSlab,
+  },
+
+  setup: () => {
+    const runPending = ref<InstanceType<typeof TaskSlab>>();
+    const runError = ref<InstanceType<typeof TaskSlab>>();
+    const runResolved = ref<InstanceType<typeof TaskSlab>>();
+    return { runPending, runError, runResolved };
   },
 
   data() {

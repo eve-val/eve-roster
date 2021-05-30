@@ -141,8 +141,8 @@ export default defineComponent({
 
   data() {
     return {
-      characterBasic: characterBasic(),
-      characterOpsecAlt: characterOpsec(),
+      characterBasic: characterBasic(sampleSkillQueue()),
+      characterOpsecAlt: characterOpsec(sampleSkillQueue()),
       characterEsiFailure: characterBasic(warningSkillQueue()),
       characterBiomassed: characterBiomassed(),
       characterNeedsReauth: characterNeedsReauth(warningSkillQueue()),
@@ -189,15 +189,15 @@ function characterBasic(skillQueue): Character {
   };
 }
 
-function characterOpsec(): Character {
-  let character = characterBasic();
+function characterOpsec(skillQueue): Character {
+  let character = characterBasic(skillQueue);
   character.opsec = true;
   character.corpStatus = "external";
   return character;
 }
 
 function characterBiomassed(): Character {
-  let character = characterBasic();
+  let character = characterBasic(emptySkillQueue());
   character.corpId = CORP_DOOMHEIM;
   return character;
 }

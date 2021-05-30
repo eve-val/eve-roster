@@ -85,7 +85,7 @@ export default defineComponent({
       this.savingSetup = true;
 
       this.spinner.value
-        ?.observe<{}>(
+        ?.observe(
           Promise.resolve()
             .then(() => {
               let cleanedJson = this.setupJson.replace(
