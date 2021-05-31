@@ -68,7 +68,7 @@ export default defineComponent({
     filter: { type: String, required: false, default: "" },
   },
 
-  data: function () {
+  data() {
     return {
       clickExpanded: false,
       absHeight: 0,

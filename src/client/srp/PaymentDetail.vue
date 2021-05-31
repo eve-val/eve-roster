@@ -9,7 +9,7 @@ losses, etc.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">SRP #{{ srpId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
 
     <template v-if="payment != null">
       <div class="section-title">Status</div>
@@ -34,9 +34,9 @@ losses, etc.
 
           <a v-if="canEditSrp" class="undo-link" @click="onUndoClick"> Undo </a>
           <loading-spinner
-            ref="undoSpinner"
             display="inline"
             default-state="hidden"
+            :promise="undoPromise"
           />
         </div>
       </div>
@@ -81,7 +81,7 @@ type UndoStatus = typeof UNDO_STATUSES[number];
 
 import { AxiosResponse } from "axios";
 
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppPage,
@@ -97,21 +97,19 @@ export default defineComponent({
     srpId: { type: Number, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    const undoSpinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner, undoSpinner };
-  },
-
   data() {
     return {
       payment: null,
       losses: [],
       undoStatus: "inactive",
+      promise: null,
+      undoPromise: null,
     } as {
       payment: Payment | null;
       losses: Loss[];
       undoStatus: UndoStatus;
+      promise: Promise<any> | null;
+      undoPromise: Promise<any> | null;
     };
   },
 
@@ -139,7 +137,9 @@ export default defineComponent({
     fetchData() {
       this.payment = null;
       this.losses = [];
-      this.spinner.value?.observe(ajaxer.getSrpPayment(this.srpId)).then(
+      const promise = ajaxer.getSrpPayment(this.srpId);
+      this.promise = promise;
+      promise.then(
         (
           response: AxiosResponse<{
             names: SimpleNumMap<string>;
@@ -159,8 +159,13 @@ export default defineComponent({
         return;
       }
       this.undoStatus = "saving";
-      this.undoSpinner.value
-        ?.observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
+      const undoPromise = ajaxer.putSrpPaymentStatus(
+        this.srpId,
+        false,
+        undefined
+      );
+      this.undoPromise = undoPromise;
+      undoPromise
         .then((_response: AxiosResponse<{}>) => {
           this.undoStatus = "inactive";
           if (this.payment != null) {

@@ -5,7 +5,11 @@
       <div class="table-cnt">
         <div class="title-row">
           <div class="title">Roster</div>
-          <loading-spinner ref="spinner" class="loading-spinner" size="33px" />
+          <loading-spinner
+            :promise="promise"
+            class="loading-spinner"
+            size="33px"
+          />
           <div class="title-spacer" />
           <search-box
             v-if="tableRows != null"
@@ -42,7 +46,7 @@ import SearchBox from "./SearchBox.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -55,45 +59,42 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: function () {
+  data() {
     return {
       displayColumns: null,
       tableRows: null,
       searchString: null,
+      promise: null,
     } as {
       displayColumns: null | Column[];
       tableRows: null | Account[];
       searchString: null | string;
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(ajaxer.getRoster())
-      .then(
-        (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
-          let providedColumns: string[] = response.data.columns;
+    const promise = ajaxer.getRoster();
+    this.promise = promise;
+    promise.then(
+      (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
+        let providedColumns: string[] = response.data.columns;
 
-          this.displayColumns = rosterColumns.filter((col: Column) => {
-            let sourceColumns: string[] = col.derivedFrom || [col.key];
+        this.displayColumns = rosterColumns.filter((col: Column) => {
+          let sourceColumns: string[] = col.derivedFrom || [col.key];
 
-            return _.reduce(
-              sourceColumns,
-              (accum: boolean, sourceCol: string) =>
-                accum && providedColumns.includes(sourceCol),
-              true
-            );
-          });
+          return _.reduce(
+            sourceColumns,
+            (accum: boolean, sourceCol: string) =>
+              accum && providedColumns.includes(sourceCol),
+            true
+          );
+        });
 
-          let rows = injectDerivedData(response.data.rows);
-          this.tableRows = rows;
-        }
-      );
+        let rows = injectDerivedData(response.data.rows);
+        this.tableRows = rows;
+      }
+    );
   },
 
   methods: {

@@ -47,7 +47,7 @@ export default defineComponent({
     ships: { type: Array as PropType<Ship[]>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       sortOrder: [
         "mainCharacterName",

@@ -1,7 +1,7 @@
 <template>
   <ships-wrapper title="All borrowed corp ships" :identity="identity">
     <loading-spinner
-      ref="spinner"
+      :promise="promise"
       class="main-spinner"
       default-state="hidden"
       size="34px"
@@ -21,7 +21,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     ShipsWrapper,
@@ -33,25 +33,22 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: function () {
+  data() {
     return {
       ships: [],
+      promise: null,
     } as {
       ships: Ship[];
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(ajaxer.getAllBorrowedShips())
-      .then((response: AxiosResponse<Ship[]>) => {
-        this.ships = response.data;
-      });
+    const promise = ajaxer.getAllBorrowedShips();
+    this.promise = promise;
+    promise.then((response: AxiosResponse<Ship[]>) => {
+      this.ships = response.data;
+    });
   },
 });
 </script>

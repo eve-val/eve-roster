@@ -78,7 +78,7 @@
 
     <div class="entry-title">Action pending</div>
     <owned-character-slab
-      ref="actionPendingSlab"
+      :promise="actionPendingSlab"
       :account-id="0"
       :character="characterBasic"
       :is-main="false"
@@ -89,7 +89,7 @@
 
     <div class="entry-title">Action failed</div>
     <owned-character-slab
-      ref="actionFailedSlab"
+      :promise="actionFailedSlab"
       :account-id="0"
       :character="characterBasic"
       :is-main="false"
@@ -128,20 +128,17 @@ import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 import { CharacterJson } from "../../route/api/dashboard";
 import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     OwnedCharacterSlab,
   },
 
-  setup: () => {
-    const actionPendingSlab = ref<InstanceType<typeof OwnedCharacterSlab>>();
-    const actionFailedSlab = ref<InstanceType<typeof OwnedCharacterSlab>>();
-    return { actionPendingSlab, actionFailedSlab };
-  },
-
   data() {
     return {
+      actionPendingSlab: pendingPromise(),
+      actionFailedSlab: errorPromise(),
+
       characterBasic: characterBasic(sampleSkillQueue()),
       characterOpsecAlt: characterOpsec(sampleSkillQueue()),
       characterEsiFailure: characterBasic(warningSkillQueue()),
@@ -158,11 +155,6 @@ export default defineComponent({
 
       loginParams: "foo=bar&baz=pizza",
     };
-  },
-
-  mounted() {
-    this.actionPendingSlab.value?.spinner.value?.observe(pendingPromise());
-    this.actionFailedSlab.value?.spinner.value?.observe(errorPromise());
   },
 });
 

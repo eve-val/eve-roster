@@ -31,7 +31,7 @@ export default defineComponent({
 
   emits: ["chipDrag"],
 
-  data: function () {
+  data() {
     return {
       visible: true,
     };

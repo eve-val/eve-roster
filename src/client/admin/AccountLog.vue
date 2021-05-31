@@ -43,7 +43,7 @@
       </div>
       <div class="length-reminder">Showing most recent 200 records</div>
     </div>
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
   </admin-wrapper>
 </template>
 
@@ -58,7 +58,7 @@ import Tooltip from "../shared/Tooltip.vue";
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -70,24 +70,23 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
   data() {
     return {
       rows: null,
+      promise: null,
+    } as {
+      rows: any[] | null;
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(ajaxer.getAdminAccountLog())
-      .then((response: AxiosResponse) => {
-        let rows = response.data.rows;
-        this.rows = rows;
-      });
+    const promise = ajaxer.getAdminAccountLog();
+    this.promise = promise;
+    promise.then((response: AxiosResponse) => {
+      let rows = response.data.rows;
+      this.rows = rows;
+    });
   },
 
   methods: {

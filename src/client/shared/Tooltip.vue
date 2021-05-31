@@ -79,7 +79,7 @@ export default defineComponent({
     },
   },
 
-  data: function () {
+  data() {
     return {
       hovering: false,
     } as {

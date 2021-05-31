@@ -18,7 +18,7 @@ export default defineComponent({
     rootStyle: { type: Object, required: false, default: null },
   },
 
-  data: function () {
+  data() {
     return {
       shown: false,
       prevMouseDownTimestamp: <number | null>null,

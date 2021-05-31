@@ -63,11 +63,11 @@
         </drop-menu>
       </div>
       <loading-spinner
-        ref="spinner"
         class="working-spinner"
         default-state="hidden"
         size="13px"
         tooltip-gravity="left"
+        :promise="promise"
       />
     </div>
     <template #sub-slab-hanger>
@@ -133,9 +133,16 @@ export default defineComponent({
   emits: ["requireRefresh"],
 
   setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
     const menu = ref<InstanceType<typeof DropMenu>>();
-    return { spinner, menu };
+    return { menu };
+  },
+
+  data() {
+    return {
+      promise: null,
+    } as {
+      promise: Promise<any> | null;
+    };
   },
 
   computed: {
@@ -285,31 +292,33 @@ export default defineComponent({
     },
 
     designateAsMain() {
-      this.spinner.value
-        ?.observe(
-          ajaxer.putAccountMainCharacter(this.accountId, this.character.id)
-        )
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.putAccountMainCharacter(
+        this.accountId,
+        this.character.id
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
 
     toggleOpsec() {
-      this.spinner.value
-        ?.observe(
-          ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)
-        )
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.putCharacterIsOpsec(
+        this.character.id,
+        !this.character.opsec
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
 
     markDeleted() {
-      this.spinner.value
-        ?.observe(ajaxer.deleteBiomassedCharacter(this.character.id))
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.deleteBiomassedCharacter(this.character.id);
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
   },
 });

@@ -5,7 +5,7 @@
       <div class="title">
         Dashboard
         <loading-spinner
-          ref="spinner"
+          :promise="promise"
           class="main-spinner"
           default-state="hidden"
         />
@@ -63,7 +63,7 @@ import { Identity } from "../home";
 import { AxiosResponse } from "axios";
 import { Output, CharacterJson } from "../../route/api/dashboard";
 
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -76,12 +76,7 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: function () {
+  data() {
     return {
       accountId: null,
       characters: [],
@@ -89,6 +84,7 @@ export default defineComponent({
       loginParams: null,
       mainCharacter: null,
       access: null,
+      promise: null,
     } as {
       accountId: null | number;
       characters: CharacterJson[];
@@ -96,6 +92,7 @@ export default defineComponent({
       loginParams: Object | null;
       mainCharacter: number | null;
       access: { designateMain: number; isMember: boolean } | null;
+      promise: Promise<any> | null;
     };
   },
 
@@ -111,8 +108,9 @@ export default defineComponent({
       this.mainCharacter = null;
       this.access = null;
 
-      this.spinner.value
-        ?.observe(ajaxer.getDashboard())
+      const promise = ajaxer.getDashboard();
+      this.promise = promise;
+      promise
         .then((response: AxiosResponse<Output>) => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
@@ -123,9 +121,9 @@ export default defineComponent({
 
           this.sortCharacters();
 
-          return this.spinner.value?.observe(
-            ajaxer.getFreshSkillQueueSummaries()
-          );
+          const promise = ajaxer.getFreshSkillQueueSummaries();
+          this.promise = promise;
+          return promise;
         })
         .then((response: AxiosResponse) => {
           let freshSummaries = response.data;

@@ -147,7 +147,7 @@ export default defineComponent({
     },
   },
 
-  data: function () {
+  data() {
     return {
       stateFromPromise: null,
       messageFromPromise: null,
@@ -232,6 +232,8 @@ export default defineComponent({
             message = e;
           } else if (hasResponseMessage(e) && e.response.data.message) {
             message = e.response.data.message;
+          } else if (hasResponseWarning(e) && e.response.data.warning) {
+            message = e.response.data.warning;
           } else if (isError(e) && e.message) {
             message = e.message;
           } else {
@@ -253,6 +255,13 @@ function hasResponseMessage(
   e: any
 ): e is { response: AxiosResponse<{ message: string }> } {
   return typeof e.response !== undefined && typeof e.response.data === "string";
+}
+function hasResponseWarning(
+  e: any
+): e is { response: AxiosResponse<{ warning: string }> } {
+  return (
+    typeof e.response !== undefined && typeof e.response.warning === "string"
+  );
 }
 </script>
 

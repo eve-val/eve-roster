@@ -85,7 +85,7 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       loaded: false,
       primaryCorps: [],

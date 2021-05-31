@@ -35,7 +35,7 @@ export default defineComponent({
     filter: { type: String, required: false, default: "" },
   },
 
-  data: function () {
+  data() {
     return {
       sort: {
         key: "name",

@@ -8,7 +8,7 @@
           {{ character.name }}
         </template>
         <loading-spinner
-          ref="spinner"
+          :promise="promise"
           display="block"
           default-state="hidden"
           size="34px"
@@ -137,7 +137,7 @@ import { Identity } from "../home";
 import { Output, Character, Account } from "../../route/api/character";
 
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -152,12 +152,7 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: function () {
+  data() {
     return {
       character: null,
       account: null,
@@ -167,6 +162,7 @@ export default defineComponent({
       corporationName: null,
       skillsMap: null,
       queue: null,
+      promise: null,
     } as {
       character: Character | null;
       account: Account | null;
@@ -176,6 +172,7 @@ export default defineComponent({
       corporationName: string | null;
       skillsMap: SimpleNumMap<Skill> | null;
       queue: { id: number; targetLevel: number }[] | null;
+      promise: Promise<any> | null;
     };
   },
 
@@ -254,20 +251,20 @@ export default defineComponent({
       if (!this.characterId) {
         return;
       }
-      this.spinner.value
-        ?.observe(ajaxer.getCharacter(this.characterId))
-        .then((response: AxiosResponse<Output>) => {
-          this.character = response.data.character;
-          this.account = response.data.account;
-          this.access = response.data.access;
-          if (response.data.citadels) {
-            response.data.citadels.sort((a: string, b: string) =>
-              a.localeCompare(b)
-            );
-          }
-          this.citadels = response.data.citadels;
-          this.timezones = response.data.timezones;
-        });
+      const promise = ajaxer.getCharacter(this.characterId);
+      this.promise = promise;
+      promise.then((response: AxiosResponse<Output>) => {
+        this.character = response.data.character;
+        this.account = response.data.account;
+        this.access = response.data.access;
+        if (response.data.citadels) {
+          response.data.citadels.sort((a: string, b: string) =>
+            a.localeCompare(b)
+          );
+        }
+        this.citadels = response.data.citadels;
+        this.timezones = response.data.timezones;
+      });
     },
 
     formatSp() {

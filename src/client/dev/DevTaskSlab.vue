@@ -11,9 +11,9 @@
     <task-slab class="tb" :task="taskShortName(jobLowProgress())" />
     <task-slab class="tb" :task="taskShortName(jobHighProgress())" />
 
-    <task-slab ref="runPending" class="tb" :task="taskShortName(null)" />
-    <task-slab ref="runError" class="tb" :task="taskShortName(null)" />
-    <task-slab ref="runResolved" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runPending" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runError" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runResolved" class="tb" :task="taskShortName(null)" />
   </div>
 </template>
 
@@ -22,23 +22,18 @@ import TaskSlab from "../admin/TaskSlab.vue";
 
 import { Task, Job } from "../admin/types";
 
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     TaskSlab,
   },
 
-  setup: () => {
-    const runPending = ref<InstanceType<typeof TaskSlab>>();
-    const runError = ref<InstanceType<typeof TaskSlab>>();
-    const runResolved = ref<InstanceType<typeof TaskSlab>>();
-    return { runPending, runError, runResolved };
-  },
-
-  mounted() {
-    this.runPending.value?.awaitRunResult(pendingPromise());
-    this.runError.value?.awaitRunResult(errorPromise());
-    this.runResolved.value?.awaitRunResult(resolvedPromise());
+  data() {
+    return {
+      runPending: pendingPromise(),
+      runError: errorPromise(),
+      runResolved: resolvedPromise(),
+    };
   },
 
   methods: {

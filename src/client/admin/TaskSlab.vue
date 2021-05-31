@@ -20,14 +20,14 @@
         </div>
         <div v-if="!task.job" class="run-block">
           <loading-spinner
-            ref="spinner"
+            :promise="promise"
             class="run-spinner"
             display="inline"
             default-state="hidden"
           />
           <button
             class="roster-btn run-btn"
-            :disabled="runPromise != null"
+            :disabled="promise != null"
             @click="onRunClick"
           >
             Run
@@ -43,7 +43,7 @@ import ajaxer from "../shared/ajaxer";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { Task } from "./types";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -55,17 +55,13 @@ export default defineComponent({
 
   emits: ["jobStarted"],
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: () =>
-    ({
-      runPromise: null,
+  data() {
+    return {
+      promise: null,
     } as {
-      runPromise: Promise<any> | null;
-    }),
+      promise: Promise<any> | null;
+    };
+  },
 
   computed: {
     rootStyle(): { backgroundColor: string } {
@@ -103,25 +99,25 @@ export default defineComponent({
     },
   },
 
-  methods: {
-    onRunClick() {
-      if (this.runPromise == null) {
-        this.awaitRunResult(ajaxer.putAdminTask(this.task.name));
+  watch: {
+    promise: function () {
+      const promise = this.promise;
+      if (promise == null) {
+        return;
       }
-    },
-
-    awaitRunResult(promise: Promise<any>) {
-      promise = this.spinner.value
-        ?.observe(Promise.resolve(promise))
+      promise
         .then(() => {
           this.$emit("jobStarted", this.task.name);
         })
         .finally(() => {
-          if (this.runPromise == promise) {
-            this.runPromise = null;
-          }
+          this.promise = null;
         });
-      this.runPromise = promise;
+    },
+  },
+
+  methods: {
+    onRunClick() {
+      this.promise = ajaxer.putAdminTask(this.task.name);
     },
   },
 });

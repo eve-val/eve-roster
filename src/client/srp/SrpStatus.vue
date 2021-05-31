@@ -85,11 +85,11 @@ triage options weren't initially provided, fetches them from the server.
           {{ isApprovalSelected ? "Approve" : "Ignore" }}
         </span>
         <loading-spinner
-          ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="savePromise"
         />
       </a>
       <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
@@ -101,11 +101,11 @@ triage options weren't initially provided, fetches them from the server.
           Edit
         </a>
         <loading-spinner
-          ref="editSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="editPromise"
         />
       </div>
     </div>
@@ -125,7 +125,7 @@ type RequestStatus = typeof REQUEST_STATUSES[number];
 
 import { VerdictOption, Srp, Triage } from "./types";
 
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -137,12 +137,6 @@ export default defineComponent({
     initialSrp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
-  },
-
-  setup: () => {
-    const editSpinner = ref<InstanceType<typeof LoadingSpinner>>();
-    const saveSpinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { editSpinner, saveSpinner };
   },
 
   data() {
@@ -160,6 +154,8 @@ export default defineComponent({
       saveStatus: "inactive",
       fetchTriageStatus: "inactive",
       originalPayout: null,
+      savePromise: null,
+      editPromise: null,
     } as {
       srp: Srp;
       editing: boolean;
@@ -168,6 +164,8 @@ export default defineComponent({
       saveStatus: RequestStatus;
       fetchTriageStatus: RequestStatus;
       originalPayout: number | null;
+      savePromise: Promise<any> | null;
+      editPromise: Promise<any> | null;
     };
   },
 
@@ -291,10 +289,14 @@ export default defineComponent({
       const reason = this.selectedVerdict.reason;
 
       this.saveStatus = "active";
-      this.saveSpinner.value
-        ?.observe(
-          ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
-        )
+      const savePromise = ajaxer.putSrpLossVerdict(
+        this.srp.killmail,
+        verdict,
+        reason,
+        payout
+      );
+      this.savePromise = savePromise;
+      savePromise
         .then((response: AxiosResponse<{ id: number; name: string }>) => {
           this.saveStatus = "inactive";
           this.srp.payout = payout;
@@ -317,8 +319,9 @@ export default defineComponent({
           return;
         }
         this.fetchTriageStatus = "active";
-        this.editSpinner.value
-          ?.observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
+        const editPromise = ajaxer.getSrpLossTriageOptions(this.srp.killmail);
+        this.editPromise = editPromise;
+        editPromise
           .then((response: AxiosResponse<{ triage: Triage }>) => {
             this.fetchTriageStatus = "inactive";
             this.srp.triage = response.data.triage;

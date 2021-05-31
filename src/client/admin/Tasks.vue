@@ -7,7 +7,7 @@
       </div>
 
       <loading-spinner
-        ref="spinner"
+        :promise="promise"
         class="root-spinner"
         display="block"
         size="34px"
@@ -61,7 +61,7 @@ const POLL_FREQUENCY = 4000;
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -74,20 +74,17 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: function () {
+  data() {
     return {
       tasks: [],
       taskLog: [],
       polling: false,
+      promise: null,
     } as {
       tasks: Task[];
       taskLog: Log[];
       polling: boolean;
+      promise: Promise<any> | null;
     };
   },
 
@@ -109,28 +106,26 @@ export default defineComponent({
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(
-        Promise.all<
-          AxiosResponse<Task[]>,
-          AxiosResponse<Job[]>,
-          AxiosResponse<Log[]>
-        >([
-          ajaxer.getAdminTasks(),
-          ajaxer.getAdminJobs(),
-          ajaxer.getAdminTaskLog(),
-        ])
-      )
-      .then(
-        ([tasks, jobs, logs]: [
-          tasks: AxiosResponse<Task[]>,
-          jobs: AxiosResponse<Job[]>,
-          logs: AxiosResponse<Log[]>
-        ]) => {
-          this.initializeTasks(tasks.data, jobs.data);
-          this.taskLog = logs.data;
-        }
-      );
+    const promise = Promise.all<
+      AxiosResponse<Task[]>,
+      AxiosResponse<Job[]>,
+      AxiosResponse<Log[]>
+    >([
+      ajaxer.getAdminTasks(),
+      ajaxer.getAdminJobs(),
+      ajaxer.getAdminTaskLog(),
+    ]);
+    this.promise = promise;
+    promise.then(
+      ([tasks, jobs, logs]: [
+        tasks: AxiosResponse<Task[]>,
+        jobs: AxiosResponse<Job[]>,
+        logs: AxiosResponse<Log[]>
+      ]) => {
+        this.initializeTasks(tasks.data, jobs.data);
+        this.taskLog = logs.data;
+      }
+    );
   },
 
   methods: {

@@ -8,7 +8,7 @@ Page for displaying details about a specific battle.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">Battle #{{ battleId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
 
     <battle-row
       v-if="battle != null"
@@ -32,7 +32,7 @@ import { SimpleNumMap } from "../../../util/simpleTypes";
 
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppPage,
@@ -47,16 +47,13 @@ export default defineComponent({
     battleId: { type: Number, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
   data() {
     return {
       battle: null,
+      promise: null,
     } as {
       battle: Battle | null;
+      promise: Promise<any> | null;
     };
   },
 
@@ -67,7 +64,9 @@ export default defineComponent({
   methods: {
     fetchData() {
       this.battle = null;
-      this.spinner.value?.observe(ajaxer.getBattle(this.battleId, true)).then(
+      const promise = ajaxer.getBattle(this.battleId, true);
+      this.promise = promise;
+      promise.then(
         (
           response: AxiosResponse<{
             battles: Battle[];

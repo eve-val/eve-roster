@@ -33,7 +33,7 @@ SRP tracking starts, if it does at all.
       :style="{ visibility: dirtyChanges ? 'visible' : 'hidden' }"
     >
       <loading-spinner
-        ref="spinner"
+        :promise="promise"
         class="spinner"
         display="inline"
         size="30px"
@@ -57,15 +57,10 @@ import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 const STATUSES = ["active", "inactive", "error"] as const;
 type Status = typeof STATUSES[number];
 import { AxiosResponse } from "axios";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
-  },
-
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
   },
 
   data() {
@@ -78,6 +73,7 @@ export default defineComponent({
         startInput: timestampToDateStr(Date.now()),
       },
       requestStatus: "inactive",
+      promise: null,
     } as {
       loaded: boolean;
       trackSrp: boolean;
@@ -87,6 +83,7 @@ export default defineComponent({
         startInput: string;
       };
       requestStatus: Status;
+      promise: Promise<any> | null;
     };
   },
 
@@ -127,11 +124,9 @@ export default defineComponent({
       if (trackSrp && startInput != "") {
         timestamp = Date.parse(startInput);
         if (isNaN(timestamp)) {
-          this.spinner.value?.observe(
-            Promise.resolve().then(() => {
-              throw new Error(`Invalid date format.`);
-            })
-          );
+          this.promise = Promise.resolve().then(() => {
+            throw new Error(`Invalid date format.`);
+          });
           return;
         }
       }
@@ -140,8 +135,9 @@ export default defineComponent({
       }
 
       this.requestStatus = "active";
-      this.spinner.value
-        ?.observe(ajaxer.putAdminSrpJurisdiction(timestamp))
+      const promise = ajaxer.putAdminSrpJurisdiction(timestamp);
+      this.promise = promise;
+      promise
         .then(() => {
           this.savedState.trackSrp = trackSrp;
           this.savedState.startInput = startInput;

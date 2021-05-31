@@ -1,7 +1,7 @@
 <template>
   <div class="skills-container">
     <template v-if="canReadSkills">
-      <loading-spinner ref="spinner" display="block" size="30px" />
+      <loading-spinner :promise="promise" display="block" size="30px" />
 
       <template v-if="queue != null">
         <div class="section-title">Training queue</div>
@@ -61,7 +61,7 @@ import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
 import { AxiosResponse } from "axios";
 
 import { Payload } from "../../route/api/character/skills";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -74,18 +74,15 @@ export default defineComponent({
     access: { type: Object as PropType<SimpleMap<number>>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
-  data: () => {
+  data() {
     return {
       queue: null,
       skillGroups: null,
+      promise: null,
     } as {
       queue: null | { entries: QueueItem[] };
       skillGroups: null | SkillGroup[];
+      promise: Promise<any> | null;
     };
   },
 
@@ -115,16 +112,11 @@ export default defineComponent({
   methods: {
     fetchData() {
       if (this.canReadSkills) {
-        this.spinner.value?.observe(
-          ajaxer.getSkills(this.characterId),
-          (response: AxiosResponse<Payload>) => {
-            this.processData(response.data);
-            if (response.data.warning) {
-              return { state: "warning", message: response.data.warning };
-            }
-            return {};
-          }
-        );
+        const promise = ajaxer.getSkills(this.characterId);
+        this.promise = promise;
+        promise.then((response: AxiosResponse<Payload>) => {
+          this.processData(response.data);
+        });
       }
     },
 

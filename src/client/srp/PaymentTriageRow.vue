@@ -52,11 +52,11 @@ the reimbursement as paid.
       <a v-if="!paid" class="paid-btn" @click="onSaveClick">
         <template v-if="saveStatus == 'inactive'">Paid</template>
         <loading-spinner
-          ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="savePromise"
         />
       </a>
       <div v-else class="undo-cnt">
@@ -64,11 +64,11 @@ the reimbursement as paid.
           Undo
         </a>
         <loading-spinner
-          ref="undoSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="undoPromise"
         />
       </div>
     </div>
@@ -102,11 +102,9 @@ export default defineComponent({
   },
 
   setup: () => {
-    const undoSpinner = ref<InstanceType<typeof LoadingSpinner>>();
-    const saveSpinner = ref<InstanceType<typeof LoadingSpinner>>();
     const payoutInput = ref<HTMLInputElement>();
     const reasonInput = ref<HTMLInputElement>();
-    return { undoSpinner, saveSpinner, payoutInput, reasonInput };
+    return { payoutInput, reasonInput };
   },
 
   data() {
@@ -114,10 +112,14 @@ export default defineComponent({
       paid: false,
       saveStatus: "inactive",
       undoStatus: "inactive",
+      savePromise: null,
+      undoPromise: null,
     } as {
       paid: boolean;
       saveStatus: Status;
       undoStatus: Status;
+      savePromise: Promise<any> | null;
+      undoPromise: Promise<any> | null;
     };
   },
 
@@ -152,16 +154,14 @@ export default defineComponent({
         return;
       }
       this.saveStatus = "saving";
-      this.saveSpinner.value
-        ?.observe(
-          ajaxer.putSrpPaymentStatus(
-            this.payment.id,
-            true,
-            this.payingCharacter
-          )
-        )
+      const savePromise = ajaxer.putSrpPaymentStatus(
+        this.payment.id,
+        true,
+        this.payingCharacter
+      );
+      this.savePromise = savePromise;
+      savePromise
         .then(() => {
-          this.saveStatus = "inactive";
           this.paid = true;
         })
         .catch(() => {
@@ -174,8 +174,13 @@ export default defineComponent({
         return;
       }
       this.undoStatus = "saving";
-      this.undoSpinner.value
-        ?.observe(ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined))
+      const undoPromise = ajaxer.putSrpPaymentStatus(
+        this.payment.id,
+        false,
+        undefined
+      );
+      this.undoPromise = undoPromise;
+      undoPromise
         .then(() => {
           this.undoStatus = "inactive";
           this.paid = false;

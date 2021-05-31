@@ -98,32 +98,32 @@
 
       <div>
         Inline pending
-        <loading-spinner ref="inlinePending" />
+        <loading-spinner :promise="inlinePending" />
       </div>
 
       <div>
         Block pending
-        <loading-spinner ref="blockPending" display="block" />
+        <loading-spinner :promise="blockPending" display="block" />
       </div>
 
       <div>
         Inline error
-        <loading-spinner ref="inlineError" />
+        <loading-spinner :promise="inlineError" />
       </div>
 
       <div>
         Block error
-        <loading-spinner ref="blockError" display="block" />
+        <loading-spinner :promise="blockError" display="block" />
       </div>
 
       <div>
         Inline resolved
-        <loading-spinner ref="inlineResolved" />
+        <loading-spinner :promise="inlineResolved" />
       </div>
 
       <div>
         Block resolved
-        <loading-spinner ref="blockResolved" display="block" />
+        <loading-spinner :promise="blockResolved" display="block" />
       </div>
     </div>
   </div>
@@ -132,38 +132,21 @@
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
-  setup: () => {
-    const inlinePending = ref<InstanceType<typeof LoadingSpinner>>();
-    const blockPending = ref<InstanceType<typeof LoadingSpinner>>();
-    const inlineError = ref<InstanceType<typeof LoadingSpinner>>();
-    const blockError = ref<InstanceType<typeof LoadingSpinner>>();
-    const inlineResolved = ref<InstanceType<typeof LoadingSpinner>>();
-    const blockResolved = ref<InstanceType<typeof LoadingSpinner>>();
+  data() {
     return {
-      inlinePending,
-      blockPending,
-      inlineError,
-      blockError,
-      inlineResolved,
-      blockResolved,
+      inlinePending: pendingPromise(),
+      blockPending: pendingPromise(),
+      inlineError: errorPromise(),
+      blockError: errorPromise(),
+      inlineResolved: resolvedPromise(),
+      blockResolved: resolvedPromise(),
     };
-  },
-
-  mounted() {
-    this.inlinePending.value?.observe(pendingPromise());
-    this.blockPending.value?.observe(pendingPromise());
-
-    this.inlineError.value?.observe(errorPromise());
-    this.blockError.value?.observe(errorPromise());
-
-    this.inlineResolved.value?.observe(resolvedPromise());
-    this.blockResolved.value?.observe(resolvedPromise());
   },
 });
 
