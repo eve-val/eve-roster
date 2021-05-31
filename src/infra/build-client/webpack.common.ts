@@ -167,6 +167,7 @@ export function commonConfig(
       hints: false,
     },
     optimization: {
+      minimize: true,
       minimizer: [
         new MiniCssExtractPlugin(),
         new CssMinimizerPlugin(),
