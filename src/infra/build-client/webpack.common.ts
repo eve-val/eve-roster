@@ -115,6 +115,8 @@ export function commonConfig(
       new webpack.DefinePlugin({
         DEVELOPMENT: JSON.stringify(mode == "development"),
         "process.env.NODE_ENV": JSON.stringify(mode),
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: true,
       }),
 
       new HtmlWebpackPlugin({
