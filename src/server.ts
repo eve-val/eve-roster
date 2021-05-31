@@ -10,7 +10,7 @@ import { tables } from "./db/tables";
 import { getPostgresKnex } from "./db/getPostgresKnex";
 
 import { NodeTracerProvider } from "@opentelemetry/node";
-import { SimpleSpanProcessor } from "@opentelemetry/tracing";
+import { BatchSpanProcessor } from "@opentelemetry/tracing";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
@@ -49,7 +49,7 @@ const collectorOptions = {
 
 const provider: NodeTracerProvider = new NodeTracerProvider();
 const exporter = new CollectorTraceExporter(collectorOptions);
-provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 provider.register();
 
 Graceful.on("exit", async () => {
