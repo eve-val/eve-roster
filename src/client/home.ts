@@ -114,13 +114,13 @@ const router = createRouter({
   routes: routes,
 });
 
-export type Identity = {
+export interface Identity {
   account: {
     id: number;
   };
   access: SimpleMap<number>;
   isMember: boolean;
-};
+}
 
 declare const $__IDENTITY: Identity;
 createApp(Home, {

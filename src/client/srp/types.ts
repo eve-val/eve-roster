@@ -1,8 +1,8 @@
-export type Loss = {
+export interface Loss {
   payout: number;
   killmail: number;
-};
-export type Payment = {
+}
+export interface Payment {
   id: number;
   paid: boolean;
   payer: number;
@@ -10,28 +10,28 @@ export type Payment = {
   modified: number;
   modifiedLabel: string;
   totalPayout: number;
-};
-export type Battle = {
+}
+export interface Battle {
   id: number;
   teams: {
     totalLosses: number;
   }[];
-};
+}
 
-export type VerdictOption = {
+export interface VerdictOption {
   key: string;
   label: string;
   verdict: string;
   payout: number;
   reason: string | null;
-};
+}
 
-export type Triage = {
+export interface Triage {
   suggestedOption: string;
   extraOptions: VerdictOption[];
-};
+}
 
-export type Srp = {
+export interface Srp {
   status: string;
   reason: string | null;
   killmail: number;
@@ -51,4 +51,4 @@ export type Srp = {
   payingCharacter: number | null;
   renderingCharacter: number | null;
   reimbursement: number | null;
-};
+}

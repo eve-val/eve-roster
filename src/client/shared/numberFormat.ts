@@ -1,4 +1,7 @@
-type Stop = { symbol: string; divisor: number };
+interface Stop {
+  symbol: string;
+  divisor: number;
+}
 
 const VALUE_STOPS: Stop[] = [
   { symbol: "", divisor: 1 },

@@ -94,11 +94,11 @@ import opsecIcon from "./res/hidden-icon.svg";
 import biomassedIcon from "./res/biomassed.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 
-type Icon = {
+interface Icon {
   key: string;
   src: string;
   label: string;
-};
+}
 
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
@@ -106,10 +106,10 @@ import { SimpleMap } from "../../util/simpleTypes";
 import { CharacterJson } from "../../route/api/dashboard";
 import { Skill, Queue } from "../../domain/skills/skillQueueSummary";
 
-type MenuItem = {
+interface MenuItem {
   label: string;
   tag: string;
-};
+}
 
 import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({

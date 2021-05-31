@@ -46,12 +46,12 @@
 import filter from "./filter";
 import CharacterRow from "./CharacterRow.vue";
 
-type Matches = {
+interface Matches {
   inactive: boolean;
   any: boolean;
   main: boolean;
   alt: boolean;
-};
+}
 
 import { Column } from "./rosterColumns";
 import { Account } from "./types";
