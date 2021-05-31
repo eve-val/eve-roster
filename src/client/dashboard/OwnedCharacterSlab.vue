@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="menuItems.length > 0" class="menu">
-        <div class="menu-arrow" @mousedown="menu.value?.toggle()" />
+        <div class="menu-arrow" @mousedown="menu.toggle()" />
         <drop-menu
           ref="menu"
           class="menu-body"
