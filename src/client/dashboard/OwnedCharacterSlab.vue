@@ -273,11 +273,11 @@ export default defineComponent({
 
   methods: {
     onMouseOut() {
-      this.menu.value?.hide();
+      this.menu?.value?.hide();
     },
 
     onMenuItemClick(menuItem: MenuItem) {
-      this.menu.value?.hide();
+      this.menu?.value?.hide();
       switch (menuItem.tag) {
         case "designate-main":
           this.designateAsMain();
