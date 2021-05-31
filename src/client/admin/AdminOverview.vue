@@ -16,13 +16,13 @@ Right now just shows the sync status of each member corporation.
       </div>
 
       <loading-spinner
-        ref="spinner"
         class="spinner"
         display="block"
         size="34px"
+        :promise="promise"
       />
 
-      <template v-if="loaded && primaryCorps.length > 0">
+      <template v-if="loaded && primaryCorps?.length > 0">
         <div class="section-heading">Primary corporations</div>
         <member-corp-detail
           v-for="corp in primaryCorps"
@@ -31,7 +31,7 @@ Right now just shows the sync status of each member corporation.
         />
       </template>
 
-      <template v-if="loaded && affiliatedCorps.length > 0">
+      <template v-if="loaded && affiliatedCorps?.length > 0">
         <div class="section-heading">Affiliate corporations</div>
         <member-corp-detail
           v-for="corp in affiliatedCorps"
@@ -40,7 +40,10 @@ Right now just shows the sync status of each member corporation.
         />
       </template>
 
-      <div v-if="loaded && primaryCorps.length == 0" class="setup-bother">
+      <div
+        v-if="(loaded && !primaryCorps) || primaryCorps.length == 0"
+        class="setup-bother"
+      >
         <img class="bother-icon" src="../shared-res/triangle-warning.svg" />
         <div>
           No corporations added yet. Configure them in
@@ -68,7 +71,7 @@ import {
   CorpSection,
 } from "../../route/api/admin/roster/syncStatus_GET";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -82,33 +85,30 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
   data: function () {
     return {
       loaded: false,
       primaryCorps: [],
       affiliatedCorps: [],
+      promise: null,
     } as {
       loaded: boolean;
       primaryCorps: CorpSection[];
       affiliatedCorps: CorpSection[];
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(ajaxer.getAdminRosterSyncStatus())
-      .then((response: AxiosResponse<Output>) => {
-        this.addNames(response.data.names);
-        const groups = _.groupBy(response.data.corporations, "type");
-        this.primaryCorps = groups["full"];
-        this.affiliatedCorps = groups["affiliated"];
-        this.loaded = true;
-      });
+    const promise = ajaxer.getAdminRosterSyncStatus();
+    this.promise = promise;
+    promise.then((response: AxiosResponse<Output>) => {
+      this.addNames(response.data.names);
+      const groups = _.groupBy(response.data.corporations, "type");
+      this.primaryCorps = groups["full"];
+      this.affiliatedCorps = groups["affiliated"];
+      this.loaded = true;
+    });
   },
 });
 </script>

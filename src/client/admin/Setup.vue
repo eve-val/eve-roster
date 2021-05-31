@@ -17,10 +17,10 @@
         Submit
       </button>
       <loading-spinner
-        ref="spinner"
         class="spinner"
         display="block"
         size="34px"
+        :promise="promise"
       />
     </div>
 
@@ -30,8 +30,6 @@
 </template>
 
 <script lang="ts">
-import Promise from "bluebird";
-
 import ajaxer from "../shared/ajaxer";
 
 import AdminWrapper from "./AdminWrapper.vue";
@@ -42,7 +40,7 @@ const JSON_COMMENT_PATTERN = /\s*\/\/[^\n]*\n?/g;
 
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdminWrapper,
@@ -54,27 +52,24 @@ export default defineComponent({
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  setup: () => {
-    const spinner = ref<InstanceType<typeof LoadingSpinner>>();
-    return { spinner };
-  },
-
   data() {
     return {
       setupJson: "",
       savingSetup: false,
+      promise: null,
     } as {
       setupJson: string;
       savingSetup: boolean;
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.spinner.value
-      ?.observe(ajaxer.getAdminSetup())
-      .then((response: AxiosResponse<string>) => {
-        this.setupJson = JSON.stringify(response.data, null, 2);
-      });
+    const promise = ajaxer.getAdminSetup();
+    this.promise = promise;
+    promise.then((response: AxiosResponse<string>) => {
+      this.setupJson = JSON.stringify(response.data, null, 2);
+    });
   },
 
   methods: {
@@ -84,23 +79,18 @@ export default defineComponent({
       }
       this.savingSetup = true;
 
-      this.spinner.value
-        ?.observe(
-          Promise.resolve()
-            .then(() => {
-              let cleanedJson = this.setupJson.replace(
-                JSON_COMMENT_PATTERN,
-                ""
-              );
-              return JSON.parse(cleanedJson);
-            })
-            .then((setupJson: string) => {
-              return ajaxer.putAdminSetup(setupJson);
-            })
-        )
-        .finally(() => {
-          this.savingSetup = false;
+      const promise = Promise.resolve()
+        .then(() => {
+          let cleanedJson = this.setupJson.replace(JSON_COMMENT_PATTERN, "");
+          return JSON.parse(cleanedJson);
+        })
+        .then((setupJson: string) => {
+          return ajaxer.putAdminSetup(setupJson);
         });
+      this.promise = promise;
+      promise.finally(() => {
+        this.savingSetup = false;
+      });
     },
   },
 });

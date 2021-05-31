@@ -127,7 +127,7 @@ export default {
   },
 
   getAdminSetup() {
-    return axios.get<{}>("/api/admin/setup");
+    return axios.get<string>("/api/admin/setup");
   },
 
   putAdminSetup(setupObj: string) {
