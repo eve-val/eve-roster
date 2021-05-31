@@ -132,6 +132,10 @@ function isMax(v: string): v is MaxAttr {
   return (<readonly string[]>MAX_ATTRS).includes(v);
 }
 
+function isCharacterKey(c: Character, key: string): key is keyof Character {
+  return key in c;
+}
+
 function injectDerivedData(data: Account[]): Account[] {
   let ret: Account[] = [];
   for (let acc of data) {
@@ -141,23 +145,40 @@ function injectDerivedData(data: Account[]): Account[] {
 }
 
 function computeAggregateCharacter(account: Account): Character {
-  let aggregate = <Character>{}; // keys to be filled in below.
+  let aggregate: Character = Object.assign({}, account.main);
 
   // Calculate key set as union of keys in main and all alts
-  let keys = Object.keys(account.main);
+  let keys = new Set<keyof Character>();
+  for (let key of Object.keys(account.main)) {
+    if (isCharacterKey(account.main, key)) {
+      keys.add(key);
+    }
+  }
   for (let alt of account.alts) {
-    keys.push(...Object.keys(alt));
+    for (let key of Object.keys(alt)) {
+      if (isCharacterKey(alt, key)) {
+        keys.add(key);
+      }
+    }
   }
 
   for (let v of keys) {
     if (isAppend(v)) {
       aggregate[v] = aggProp(v, account.main, ...account.alts);
     } else if (isSum(v)) {
-      aggregate[v] = sumProp(v, account.main, ...account.alts);
+      const sum = sumProp(v, account.main, ...account.alts);
+      if (sum != null) {
+        aggregate[v] = sum;
+      }
     } else if (isMax(v)) {
-      aggregate[v] = maxProp(v, account.main, ...account.alts);
-    } else {
-      aggregate[<keyof Character>v] = account.main[<keyof Character>v];
+      const max = maxProp(v, account.main, ...account.alts);
+      if (max != null) {
+        aggregate[v] = max;
+      }
+    } else if (isCharacterKey(account.main, v)) {
+      aggregate = Object.assign(aggregate, {
+        [v]: account.main[v],
+      });
     }
   }
   return aggregate;
@@ -176,7 +197,7 @@ function aggProp(prop: AppendAttr, ...chars: Character[]): string {
   return text;
 }
 
-function sumProp(prop: SumAttr, ...chars: Character[]): undefined | number {
+function sumProp(prop: SumAttr, ...chars: Character[]): null | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
@@ -186,10 +207,10 @@ function sumProp(prop: SumAttr, ...chars: Character[]): undefined | number {
       sawNotNull = true;
     }
   }
-  return sawNotNull ? sum : undefined;
+  return sawNotNull ? sum : null;
 }
 
-function maxProp(prop: MaxAttr, ...chars: Character[]): number | undefined {
+function maxProp(prop: MaxAttr, ...chars: Character[]): number | null {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {
@@ -199,7 +220,7 @@ function maxProp(prop: MaxAttr, ...chars: Character[]): number | undefined {
       sawNotNull = true;
     }
   }
-  return sawNotNull ? best : undefined;
+  return sawNotNull ? best : null;
 }
 
 function injectDerivedProps(account: Account): Account {

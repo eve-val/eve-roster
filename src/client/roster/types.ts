@@ -7,5 +7,7 @@ export interface Character extends serverTypes.CharacterJson {
 }
 
 export interface Account extends serverTypes.AccountJson {
+  main: Character;
+  alts: Character[];
   aggregate?: Character;
 }

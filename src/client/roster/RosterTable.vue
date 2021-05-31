@@ -20,7 +20,7 @@
 import AccountRow from "./AccountRow.vue";
 import TableHeader from "./TableHeader.vue";
 
-import { Column } from "./rosterColumns";
+import { isSortable, SortableColumn, Column } from "./rosterColumns";
 import { Account, Character } from "./types";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -30,7 +30,7 @@ export default defineComponent({
   },
 
   props: {
-    columns: { type: Array as PropType<Column[]>, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     rows: { type: Array as PropType<Account[]>, required: true },
     filter: { type: String, required: false, default: "" },
   },
@@ -45,13 +45,13 @@ export default defineComponent({
   },
 
   computed: {
-    sortColumn: function (): Column {
+    sortColumn: function (): SortableColumn {
       for (let col of this.columns) {
-        if (col.key == this.sort.key && col.sortable) {
+        if (col.key == this.sort.key && isSortable(col)) {
           return col;
         }
       }
-      return this.columns[0];
+      return <SortableColumn>this.columns[1];
     },
 
     sortedRows: function (): Account[] {
@@ -95,7 +95,7 @@ export default defineComponent({
 });
 
 function getSortVal(
-  column: Column,
+  column: SortableColumn,
   character: Character | undefined,
   account: Account | null
 ): number | string | boolean | null | undefined {

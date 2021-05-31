@@ -106,7 +106,7 @@ export default defineComponent({
 
   props: {
     character: { type: Object as PropType<Character>, required: true },
-    columns: { type: Array as PropType<Column[]>, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     isMain: { type: Boolean, required: true },
     account: {
       type: Object as PropType<Account>,

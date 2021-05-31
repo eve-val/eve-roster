@@ -30,7 +30,7 @@ import { Column } from "./rosterColumns";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
-    columns: { type: Array as PropType<Column[]>, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     sortKey: { type: String, required: true },
     reverseSort: { type: Boolean, required: true },
   },

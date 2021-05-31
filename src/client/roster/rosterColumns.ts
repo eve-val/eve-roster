@@ -6,22 +6,36 @@ interface RenderColumn {
   margin?: number;
   numeric?: boolean;
   derivedFrom?: string[];
-  sortable: boolean;
 }
 
 export interface CharacterColumn extends RenderColumn {
   account: false;
   key: keyof Character;
   metaKey?: keyof Character;
+  sortable: true;
 }
 export interface AccountColumn extends RenderColumn {
   account: true;
+  key: keyof Omit<Account, "main" | "alts" | "aggregate">;
+  metaKey?: keyof Omit<Account, "main" | "alts" | "aggregate">;
+  sortable: true;
+}
+
+export interface NonSortableAccountColumn extends RenderColumn {
+  account: true;
   key: keyof Omit<Account, "main" | "aggregate">;
   metaKey?: keyof Omit<Account, "main" | "alts" | "aggregate">;
+  sortable: false;
 }
-export type Column = CharacterColumn | AccountColumn;
 
-const columns: Column[] = [
+export function isSortable(col: Column): col is SortableColumn {
+  return col.sortable;
+}
+
+export type SortableColumn = CharacterColumn | AccountColumn;
+export type Column = SortableColumn | NonSortableAccountColumn;
+
+const columns: readonly Column[] = [
   {
     label: "",
     key: "alertMessage",
@@ -38,6 +52,7 @@ const columns: Column[] = [
     margin: 0,
     metaKey: "corporationName",
     account: false,
+    sortable: true,
   } as CharacterColumn,
   {
     label: "",
@@ -46,7 +61,7 @@ const columns: Column[] = [
     derivedFrom: [],
     account: true,
     sortable: false,
-  } as AccountColumn,
+  } as NonSortableAccountColumn,
 
   {
     label: "Citadel",
@@ -87,6 +102,6 @@ const columns: Column[] = [
     account: false,
     sortable: true,
   } as CharacterColumn,
-];
+] as const;
 
 export default columns;

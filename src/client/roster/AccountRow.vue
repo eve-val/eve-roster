@@ -63,7 +63,7 @@ export default defineComponent({
   },
 
   props: {
-    columns: { type: Array as PropType<Column[]>, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     account: { type: Object as PropType<Account>, required: true },
     filter: { type: String, required: false, default: "" },
   },
