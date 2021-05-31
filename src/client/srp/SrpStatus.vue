@@ -149,7 +149,6 @@ export default defineComponent({
       selectedVerdictKey: this.initialSrp.triage
         ? this.initialSrp.triage.suggestedOption
         : "custom",
-      // todo: function is inaccessible from data()
       inputPayout: rawPayoutToDisplayPayout(this.initialSrp.payout),
       saveStatus: "inactive",
       fetchTriageStatus: "inactive",
@@ -160,7 +159,7 @@ export default defineComponent({
       srp: Srp;
       editing: boolean;
       selectedVerdictKey: string;
-      inputPayout: number | null;
+      inputPayout: number;
       saveStatus: RequestStatus;
       fetchTriageStatus: RequestStatus;
       originalPayout: number | null;
@@ -187,7 +186,8 @@ export default defineComponent({
       return (
         this.saveStatus != "active" &&
         isValidInputPayout(this.inputPayout) &&
-        !this.isApprovalSelected
+        // require approved to have non-zero payout.
+        (!this.isApprovalSelected || this.inputPayout > 0)
       );
     },
 
@@ -313,6 +313,27 @@ export default defineComponent({
         });
     },
 
+    loadVerdictFromStatusAndTriage() {
+      if (this.srp.triage == null) {
+        // should never happen; only called from onEditClick which guards.
+        return;
+      }
+      if (this.srp.status == "pending") {
+        this.selectedVerdictKey = this.srp.triage.suggestedOption;
+      } else if (this.srp.status == "approved") {
+        this.originalPayout = this.srp.payout;
+        this.selectedVerdictKey = "original_payout";
+      } else {
+        if (_.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })) {
+          this.selectedVerdictKey = this.srp.triage.suggestedOption;
+        } else {
+          // Otherwise it's ineligible; just use that as the key
+          this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+        }
+      }
+      this.editing = true;
+    },
+
     onEditClick() {
       if (this.srp.triage == null) {
         if (this.fetchTriageStatus == "active") {
@@ -325,30 +346,13 @@ export default defineComponent({
           .then((response: AxiosResponse<{ triage: Triage }>) => {
             this.fetchTriageStatus = "inactive";
             this.srp.triage = response.data.triage;
-
-            if (this.srp.status == "pending") {
-              this.selectedVerdictKey = response.data.triage.suggestedOption;
-            } else if (this.srp.status == "approved") {
-              this.originalPayout = this.srp.payout;
-              this.selectedVerdictKey = "original_payout";
-            } else {
-              if (
-                _.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })
-              ) {
-                this.selectedVerdictKey = response.data.triage.suggestedOption;
-              } else {
-                // Otherwise it's ineligible; just use that as the key
-                this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
-              }
-            }
-
-            this.editing = true;
+            this.loadVerdictFromStatusAndTriage();
           })
           .catch(() => {
             this.fetchTriageStatus = "error";
           });
       } else {
-        this.editing = true;
+        this.loadVerdictFromStatusAndTriage();
       }
     },
 
@@ -357,9 +361,14 @@ export default defineComponent({
     },
 
     getStatusLabel(srp: Srp): string {
+      const nullReasonStatuses: readonly string[] = [
+        "approved",
+        "paid",
+        "pending",
+      ] as const;
       let entry = _.findWhere(ALL_STATUSES, {
         status: srp.status,
-        reason: srp.reason,
+        reason: nullReasonStatuses.includes(srp.status) ? null : srp.reason,
       });
       return entry?.label || "Unknown status";
     },

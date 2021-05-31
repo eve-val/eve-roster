@@ -162,6 +162,7 @@ export default defineComponent({
       this.savePromise = savePromise;
       savePromise
         .then(() => {
+          this.saveStatus = "inactive";
           this.paid = true;
         })
         .catch(() => {

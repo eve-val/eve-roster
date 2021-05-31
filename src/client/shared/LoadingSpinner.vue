@@ -264,13 +264,15 @@ function isError(e: any): e is Error {
 function hasResponseMessage(
   e: any
 ): e is { response: AxiosResponse<{ message: string }> } {
-  return typeof e.response !== undefined && typeof e.response.data === "string";
+  return (
+    typeof e.response !== undefined && typeof e.response?.data === "string"
+  );
 }
 function hasResponseWarning(
   e: any
 ): e is { response: AxiosResponse<{ warning: string }> } {
   return (
-    typeof e.response !== undefined && typeof e.response.warning === "string"
+    typeof e.response !== undefined && typeof e.response?.warning === "string"
   );
 }
 </script>
