@@ -210,6 +210,16 @@ export default defineComponent({
      * overridden by the `state` property.
      */
     promise(promise) {
+      this.observe(promise);
+    },
+  },
+
+  mounted() {
+    this.observe(this.promise);
+  },
+
+  methods: {
+    observe(promise: Promise<any> | null) {
       this.messageFromPromise = null;
       if (promise == null) {
         this.stateFromPromise = null;
