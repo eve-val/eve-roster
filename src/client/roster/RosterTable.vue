@@ -96,14 +96,18 @@ export default defineComponent({
 
 function getSortVal(
   column: Column,
-  character: Character,
+  character: Character | undefined,
   account: Account | null
 ): number | string | boolean | null | undefined {
   if (column.account) {
-    return account && account[column.key];
-  } else {
+    if (account == null) {
+      return null;
+    }
+    return account[column.key];
+  } else if (character != undefined) {
     return character[column.key];
   }
+  return undefined;
 }
 
 function generalPurposeCompare(a: any, b: any, reverse: boolean): number {

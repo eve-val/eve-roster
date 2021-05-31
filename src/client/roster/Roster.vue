@@ -133,11 +133,11 @@ function isMax(v: string): v is MaxAttr {
 }
 
 function injectDerivedData(data: Account[]): Account[] {
-  for (let account of data) {
-    injectDerivedProps(account);
-    account.aggregate = computeAggregateCharacter(account);
+  let ret: Account[] = [];
+  for (let acc of data) {
+    ret.push(injectDerivedProps(acc));
   }
-  return data;
+  return ret;
 }
 
 function computeAggregateCharacter(account: Account): Character {
@@ -180,8 +180,9 @@ function sumProp(prop: SumAttr, ...chars: Character[]): undefined | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
-    if (char[prop] != undefined && char[prop] != null) {
-      sum += char[prop];
+    const val = char[prop];
+    if (val != null) {
+      sum += val;
       sawNotNull = true;
     }
   }
@@ -192,18 +193,31 @@ function maxProp(prop: MaxAttr, ...chars: Character[]): number | undefined {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {
-    if (char[prop] != undefined && char[prop] != null) {
-      best = Math.max(char[prop], best);
+    const val = char[prop];
+    if (val != null) {
+      best = Math.max(val, best);
       sawNotNull = true;
     }
   }
   return sawNotNull ? best : undefined;
 }
 
-function injectDerivedProps(account: Account) {
-  for (let character of [account.main, ...account.alts]) {
-    character.activityScore = getActivity(character);
+function injectDerivedProps(account: Account): Account {
+  let ret: Account = Object.assign({}, account, {
+    aggregate: computeAggregateCharacter(account),
+  });
+  ret.main = Object.assign({}, account.main, {
+    activityScore: getActivity(account.main),
+  });
+  ret.alts = [];
+  for (let char of account.alts) {
+    ret.alts.push(
+      Object.assign({}, char, {
+        activityScore: getActivity(char),
+      })
+    );
   }
+  return ret;
 }
 
 function getActivity(character: Character): null | number {

@@ -130,15 +130,15 @@ export default defineComponent({
 
     processData(data: Payload) {
       let skillMap: SimpleNumMap<Skill> = {};
-      for (let skill of data.skills) {
+      for (let skill of <Skill[]>data.skills) {
         skillMap[skill.id] = skill;
-        skill.queuedLevel = null;
+        skill.queuedLevel = undefined;
       }
       this.skillGroups = groupifySkills(data.skills);
 
       if (data.queue != undefined) {
         this.queue = data.queue;
-        for (let qe of data.queue.entries) {
+        for (let qe of this.queue.entries) {
           let skill = skillMap[qe.id];
           skill.queuedLevel = qe.targetLevel;
           qe.skill = skill;
