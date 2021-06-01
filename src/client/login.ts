@@ -1,3 +1,5 @@
+require("./sentry");
+
 import "./css/login.css";
 
 import bg0 from "./res/background/0.jpg";

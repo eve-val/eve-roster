@@ -1,6 +1,12 @@
 // Causes stack traces to reference the original .ts files
 import "source-map-support/register";
 
+import * as Sentry from "@sentry/node";
+Sentry.init({
+  dsn: "https://63d54bc20d544dfa8d7eb6643a890c90@o770816.ingest.sentry.io/5795740",
+  tracesSampleRate: 1.0,
+});
+
 require("heapdump");
 
 import Graceful from "node-graceful";

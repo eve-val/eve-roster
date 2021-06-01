@@ -1,3 +1,6 @@
+import * as Sentry from "@sentry/browser";
+require("./sentry");
+
 import { createApp } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import "./css/home.css";
@@ -123,8 +126,11 @@ export interface Identity {
 }
 
 declare const $__IDENTITY: Identity;
-createApp(Home, {
-  identity: $__IDENTITY, // eslint-disable-line no-undef
-})
-  .use(router)
-  .mount("#app");
+const app = createApp(Home, { identity: $__IDENTITY }).use(router);
+
+app.config.errorHandler = (error, _, info) => {
+  Sentry.setTag("info", info);
+  Sentry.captureException(error);
+};
+
+app.mount("#app");

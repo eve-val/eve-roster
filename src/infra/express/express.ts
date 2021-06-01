@@ -1,6 +1,8 @@
 import Graceful from "node-graceful";
 Graceful.captureExceptions = true;
 
+import * as Sentry from "@sentry/node";
+
 import path = require("path");
 
 import express from "express";
@@ -39,9 +41,10 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   const app = express();
   app.locals.db = db;
 
+  // The request handler must be the first middleware on the app
+  app.use(Sentry.Handlers.requestHandler() as express.RequestHandler);
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-
   app.use(cookieParser(process.env.COOKIE_SECRET));
   app.use(
     cookieSession({
@@ -76,6 +79,9 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
 
   // Set up client serving and dev mode (if in dev mode)
   await setupClientServing(app);
+
+  // The error handler must be before any other error middleware and after all controllers
+  app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler);
 
   // Start the server
   const port = parseInt(process.env.PORT || "8081");
