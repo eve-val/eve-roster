@@ -15,19 +15,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AppHeader from "./AppHeader.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     contentWidth: { type: Number, required: false, default: 500 },
   },
-};
+});
 </script>
 
 <style scoped>

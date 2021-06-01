@@ -1,4 +1,4 @@
-const nameCache = new Map();
+const nameCache = new Map<number, string>();
 
 /**
  * Mixin for the `methods` object on Vue components. Gives the component access
@@ -12,14 +12,17 @@ const nameCache = new Map();
  * map, it should call addNames(). This allows any child components to
  * access the map without it being passed to them explicitly.
  */
+import { SimpleNumMap } from "../../util/simpleTypes";
 export const NameCacheMixin = {
-  addNames(names) {
-    for (let id in names) {
-      nameCache.set(parseInt(id), names[id]);
-    }
-  },
+  methods: {
+    addNames(names: SimpleNumMap<string>) {
+      for (const id in names) {
+        nameCache.set(parseInt(id), names[id]);
+      }
+    },
 
-  name(id) {
-    return nameCache.get(id) || "[Unknown entity]";
+    name(id: number) {
+      return nameCache.get(id) || "[Unknown entity]";
+    },
   },
 };

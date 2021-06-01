@@ -11,15 +11,19 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     rootStyle: { type: Object, required: false, default: null },
   },
 
-  data: function () {
+  data() {
     return {
       shown: false,
+      prevMouseDownTimestamp: <number | null>null,
+      globalListener: <EventListenerOrEventListenerObject | null>null,
+      destroyed: false,
     };
   },
 
@@ -46,7 +50,9 @@ export default {
   },
 
   unmounted() {
-    document.body.removeEventListener("mousedown", this.globalListener);
+    if (this.globalListener != null) {
+      document.body.removeEventListener("mousedown", this.globalListener);
+    }
     this.destroyed = true;
   },
 
@@ -63,19 +69,19 @@ export default {
       this.shown = !this.shown;
     },
 
-    onGlobalMouseDown(e) {
+    onGlobalMouseDown(e: Event) {
       // Close-enough heuristic to see whether we saw this event in the
       // onLocalMouseDown handler.
-      if (e.timeStamp != this.prevMousedownTimestamp) {
+      if (e.timeStamp != this.prevMouseDownTimestamp) {
         this.hide();
       }
     },
 
-    onLocalMouseDown(e) {
-      this.prevMousedownTimestamp = e.timeStamp;
+    onLocalMouseDown(e: Event) {
+      this.prevMouseDownTimestamp = e.timeStamp;
     },
   },
-};
+});
 </script>
 
 <style scoped>

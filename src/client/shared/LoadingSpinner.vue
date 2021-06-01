@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * Generic loading spinner
  *
@@ -45,74 +45,35 @@
  * In automatic mode, you must tell the spinner to observe a Promise. The
  * spinner will automatically hide itself when the Promise resolves, or display
  * an error message if the Promise rejects.
- *
- * <pre>
- * {@code
- *   mount() {
- *     this.$refs.spinner.observe(this.getSomeData())
- *     .then(data => {
- *       this.foo = data.foo;
- *       this.bar = data.bar;
- *     });
- *   }
- * }
- * </pre>
- *
- * Notice that we are accessing the spinner via a ref (`this.$refs.spinner`).
- * You will need to specify a ref name in your markup:
- *
- * <pre>
- * {@code
- *   <loading-spinner ref="spinner" />
- * }
- * </pre>
- *
- * Note: Refs are only available during `mount()` and later -- don't try to
- * access them in anything earlier, such as `create()`!
- *
- * If you would like to modify the appearance of a successful Promise (say, by
- * turning it into a warning or error), add an onSuccess handler:
- *
- * <pre>
- * {@code
- *   mount() {
- *     this.$refs.spinner.observe(
- *         this.getSomeData(),
- *         data => {
- *           if (data.warning) {
- *             return { state: 'warning', message: result.warning, };
- *           }
- *         })
- *     .then(data => {
- *       this.foo = data.foo;
- *       this.bar = data.bar;
- *     });
- *   }
- * }
- * </pre>
- *
- * Notice that `data` is passed to both the onSuccess handler and the chained
- * Promise handler. You can move all of your mode into `onSuccess` if you want;
- * up to you.
  */
 
-import contains from "underscore";
 import Tooltip from "./Tooltip.vue";
+
+import { AxiosResponse } from "axios";
 
 import inlineErrorIcon from "../shared-res/circle-error.svg";
 import inlineWarningIcon from "../shared-res/circle-warning.svg";
 import blockErrorIcon from "../shared-res/triangle-error.svg";
 import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
-const DISPLAY_VALUES = ["inline", "block"];
-const STATE_VALUES = ["hidden", "spinning", "error", "warning"];
+const DISPLAY_VALUES = ["inline", "block", "none"] as const;
+type DisplayValue = typeof DISPLAY_VALUES[number];
+const STATE_VALUES = ["hidden", "spinning", "error", "warning"] as const;
+type StateValue = typeof STATE_VALUES[number];
 
-export default {
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     Tooltip,
   },
 
   props: {
+    promise: {
+      type: Promise as PropType<Promise<any> | null>,
+      required: false,
+      default: null,
+    },
+
     /** Any CSS dimension, e.g. '12px'. */
     size: { type: String, required: false, default: "1.1em" },
 
@@ -125,10 +86,11 @@ export default {
      * 'block': Replace spinner with icon and error message.
      */
     display: {
-      type: String,
+      type: String as PropType<DisplayValue>,
       required: false,
       default: "inline",
-      validator: (value) => contains(DISPLAY_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>DISPLAY_VALUES).includes(value),
     },
 
     /**
@@ -137,10 +99,11 @@ export default {
      * instead of the spinner. This value overrides anything set by a promise.
      */
     state: {
-      type: String,
+      type: String as PropType<StateValue | null>,
       required: false,
       default: null,
-      validator: (value) => contains(STATE_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>STATE_VALUES).includes(value),
     },
 
     /**
@@ -148,10 +111,11 @@ export default {
      * See `state` for appropriate values. Default: 'spinning'.
      */
     defaultState: {
-      type: String,
+      type: String as PropType<StateValue>,
       required: false,
       default: "spinning",
-      validator: (value) => contains(STATE_VALUES, value),
+      validator: (value: string) =>
+        (<readonly string[]>STATE_VALUES).includes(value),
     },
 
     /** Displayed if state is 'error' or 'warning'. */
@@ -176,25 +140,25 @@ export default {
      * attempted. Displayed in the form
      * "There was an error while <actionLabel>."
      */
-    actionLabel: { type: String, required: false, default: "" },
-
-    /**
-     * In the case of a rejected promise, rethrow the error that caused the
-     * rejection. This will cause the promise returned by `observe()` to
-     * be rejected with the original error. Default: true.
-     */
-    rethrowError: { type: Boolean, required: false, default: true },
+    actionLabel: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
 
-  data: function () {
+  data() {
     return {
       stateFromPromise: null,
       messageFromPromise: null,
+    } as {
+      stateFromPromise: null | StateValue;
+      messageFromPromise: null | string;
     };
   },
 
   computed: {
-    derivedDisplay() {
+    derivedDisplay(): DisplayValue {
       if (this.derivedState == "hidden") {
         return "none";
       } else {
@@ -202,15 +166,15 @@ export default {
       }
     },
 
-    derivedState() {
+    derivedState(): StateValue {
       return this.state || this.stateFromPromise || this.defaultState;
     },
 
-    derivedMessage() {
+    derivedMessage(): string {
       return this.messageFromPromise || this.adversityMessage;
     },
 
-    errorIconSrc() {
+    errorIconSrc(): string | null {
       switch (this.display) {
         case "inline":
           switch (this.derivedState) {
@@ -234,7 +198,7 @@ export default {
     },
   },
 
-  methods: {
+  watch: {
     /**
      * If set, the state of the spinner will reflect the promise:
      * - Unresolved: 'spinning'
@@ -244,12 +208,18 @@ export default {
      * error's message.
      * This behavior overrides the `defaultState` property but can be
      * overridden by the `state` property.
-     *
-     * @param onSuccess A method that can be used to adjust the "result" of
-     *        the promise. Passed the payload from the promise. Should return
-     *        An object of the form `{ state: String, message?: String }`.
      */
-    observe(promise, onSuccess) {
+    promise(promise) {
+      this.observe(promise);
+    },
+  },
+
+  mounted() {
+    this.observe(this.promise);
+  },
+
+  methods: {
+    observe(promise: Promise<any> | null) {
       this.messageFromPromise = null;
       if (promise == null) {
         this.stateFromPromise = null;
@@ -257,57 +227,54 @@ export default {
       }
       this.stateFromPromise = "spinning";
 
-      return promise
-        .then((payload) => {
-          let newState = "hidden";
-
+      promise
+        .then(() => {
           this.stateFromPromise = "hidden";
-
-          let result = onSuccess && onSuccess(payload);
-          if (result) {
-            if (contains(STATE_VALUES, result.state)) {
-              newState = result.state;
-            } else if (result.state != null) {
-              console.warn("WARNING: Bad spinner state:", result.state);
-            }
-            if (
-              (newState == "error" || newState == "warning") &&
-              result.message
-            ) {
-              this.messageFromPromise = result.message;
-            }
-          }
-
-          this.stateFromPromise = newState;
-
-          // Pass data payload along to actual consumer.
-          return payload;
         })
-        .catch((e) => {
+        .catch((e: string | Error | AxiosResponse) => {
           this.stateFromPromise = "error";
 
           let preface =
             `There was an error while ` +
             `${this.actionLabel || "performing this action"}. `;
           let message;
-          if (typeof e == "string") {
+          if (isString(e)) {
             message = e;
-          } else if (e.response && e.response.data && e.response.data.message) {
+          } else if (hasResponseMessage(e) && e.response.data.message) {
             message = e.response.data.message;
-          } else if (e.message) {
+          } else if (hasResponseWarning(e) && e.response.data.warning) {
+            message = e.response.data.warning;
+          } else if (isError(e) && e.message) {
             message = e.message;
           } else {
             message = "";
           }
           this.messageFromPromise = preface + message;
-
-          if (this.rethrowError) {
-            throw e;
-          }
         });
     },
   },
-};
+});
+
+function isString(e: any): e is string {
+  return typeof e === "string";
+}
+function isError(e: any): e is Error {
+  return typeof e.message === "string";
+}
+function hasResponseMessage(
+  e: any
+): e is { response: AxiosResponse<{ message: string }> } {
+  return (
+    typeof e.response !== undefined && typeof e.response?.data === "string"
+  );
+}
+function hasResponseWarning(
+  e: any
+): e is { response: AxiosResponse<{ warning: string }> } {
+  return (
+    typeof e.response !== undefined && typeof e.response?.warning === "string"
+  );
+}
 </script>
 
 <style scoped>

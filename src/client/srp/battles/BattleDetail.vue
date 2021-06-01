@@ -8,7 +8,7 @@ Page for displaying details about a specific battle.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">Battle #{{ battleId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
 
     <battle-row
       v-if="battle != null"
@@ -19,7 +19,7 @@ Page for displaying details about a specific battle.
   </app-page>
 </template>
 
-<script>
+<script lang="ts">
 import AppPage from "../../shared/AppPage.vue";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 import BattleRow from "./BattleRow.vue";
@@ -27,21 +27,33 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-export default {
+import { Battle } from "../types";
+import { SimpleNumMap } from "../../../util/simpleTypes";
+
+import { Identity } from "../../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppPage,
     LoadingSpinner,
     BattleRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     battleId: { type: Number, required: true },
   },
 
   data() {
     return {
       battle: null,
+      promise: null,
+    } as {
+      battle: Battle | null;
+      promise: Promise<any> | null;
     };
   },
 
@@ -49,21 +61,25 @@ export default {
     this.fetchData();
   },
 
-  methods: Object.assign(
-    {
-      fetchData() {
-        this.battle = null;
-        this.$refs.spinner
-          .observe(ajaxer.getBattle(this.battleId, true))
-          .then((response) => {
-            this.addNames(response.data.names);
-            this.battle = response.data.battles[0];
-          });
-      },
+  methods: {
+    fetchData() {
+      this.battle = null;
+      const promise = ajaxer.getBattle(this.battleId, true);
+      this.promise = promise;
+      promise.then(
+        (
+          response: AxiosResponse<{
+            battles: Battle[];
+            names: SimpleNumMap<string>;
+          }>
+        ) => {
+          this.addNames(response.data.names);
+          this.battle = response.data.battles[0];
+        }
+      );
     },
-    NameCacheMixin
-  ),
-};
+  },
+});
 </script>
 
 <style scoped>

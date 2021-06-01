@@ -44,7 +44,7 @@ A table of PaymentTriageRow. Used when paying reimbursements to players.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import CharacterSelector from "./CharacterSelector.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentTriageRow from "./PaymentTriageRow.vue";
@@ -54,15 +54,21 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
 
-export default {
+import { Payment } from "./types";
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     CharacterSelector,
     MoreButton,
     PaymentTriageRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -74,11 +80,17 @@ export default {
       payingCharacter: null,
 
       approvedLiability: 0,
+    } as {
+      fetchPromise: null | Promise<AxiosResponse>;
+      suspectMoreToFetch: boolean;
+      payments: null | Payment[];
+      payingCharacter: null | number;
+      approvedLiability: number;
     };
   },
 
   computed: {
-    finalId() {
+    finalId(): number | undefined {
       if (!this.payments || this.payments.length == 0) {
         return undefined;
       } else {
@@ -86,7 +98,7 @@ export default {
       }
     },
 
-    approvedLiabilityDisplay() {
+    approvedLiabilityDisplay(): string {
       if (!this.approvedLiability) {
         return "0";
       } else {
@@ -98,39 +110,38 @@ export default {
   mounted() {
     this.fetchNextResults();
 
-    ajaxer.getSrpApprovedLiability().then((response) => {
-      this.approvedLiability = response.data.approvedLiability;
-    });
+    ajaxer
+      .getSrpApprovedLiability()
+      .then((response: AxiosResponse<{ approvedLiability: number }>) => {
+        this.approvedLiability = response.data.approvedLiability;
+      });
   },
 
-  methods: Object.assign(
-    {
-      fetchNextResults() {
-        this.fetchPromise = ajaxer.getSrpPaymentHistory({
-          paid: false,
-          order: "asc",
-          orderBy: "id",
-          startingAfter: this.finalId,
-          account: this.forAccount,
-          limit: RESULTS_PER_FETCH,
-        });
+  methods: {
+    fetchNextResults() {
+      this.fetchPromise = ajaxer.getSrpPaymentHistory({
+        paid: false,
+        order: "asc",
+        orderBy: "id",
+        startingAfter: this.finalId,
+        account: this.forAccount,
+        limit: RESULTS_PER_FETCH,
+      });
 
-        this.fetchPromise.then((response) => {
-          this.addNames(response.data.names);
+      this.fetchPromise.then((response: AxiosResponse) => {
+        this.addNames(response.data.names);
 
-          this.payments = this.payments || [];
-          for (let payment of response.data.payments) {
-            this.payments.push(payment);
-          }
+        this.payments = this.payments || [];
+        for (let payment of response.data.payments) {
+          this.payments.push(payment);
+        }
 
-          this.suspectMoreToFetch =
-            response.data.payments.length == RESULTS_PER_FETCH;
-        });
-      },
+        this.suspectMoreToFetch =
+          response.data.payments.length == RESULTS_PER_FETCH;
+      });
     },
-    NameCacheMixin
-  ),
-};
+  },
+});
 </script>
 
 <style scoped>

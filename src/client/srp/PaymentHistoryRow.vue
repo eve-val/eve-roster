@@ -47,28 +47,31 @@ A table row that represents a single SRP payment (either pending or paid).
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import SrpTriplet from "./SrpTriplet.vue";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Payment } from "./types";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    payment: { type: Object, required: true },
+    payment: { type: Object as PropType<Payment>, required: true },
   },
 
   computed: {
-    displayPayout() {
+    displayPayout(): string {
       return (this.payment.totalPayout / 1000000).toFixed(0);
     },
   },
-
-  methods: Object.assign({}, NameCacheMixin),
-};
+});
 </script>
 
 <style scoped>

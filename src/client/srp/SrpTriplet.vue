@@ -43,24 +43,31 @@ lines of text on the right. The text may be optionally wrapped in links.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AdaptiveLink from "./AdaptiveLink.vue";
 import EveImage from "../shared/EveImage.vue";
+import { AssetType } from "../shared/types";
 
 import { NameCacheMixin } from "../shared/nameCache";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default {
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdaptiveLink,
     EveImage,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     iconId: { type: Number, required: false, default: null },
-    /** One of the types listed in EveImage (Character, Corporation, etc). */
-    iconType: { type: String, required: false, default: "" },
+    iconType: {
+      type: String as PropType<AssetType | null>,
+      required: false,
+      default: null,
+    },
     topLine: { type: String, required: true },
     bottomLine: { type: String, required: false, default: "" },
     iconHref: { type: String, required: false, default: "" },
@@ -74,28 +81,25 @@ export default {
   },
 
   computed: {
-    effectiveIconHref() {
+    effectiveIconHref(): string {
       return this.iconHref || this.defaultHref;
     },
 
-    effectiveTopHref() {
+    effectiveTopHref(): string {
       return this.topHref || this.defaultHref;
     },
 
-    effectiveBotHref() {
+    effectiveBotHref(): string {
       return this.botHref || this.defaultHref;
     },
   },
 
-  methods: Object.assign(
-    {
-      isExternalUrl(url) {
-        return ABS_URL_PATTERN.test(url);
-      },
+  methods: {
+    isExternalUrl(url: string): boolean {
+      return ABS_URL_PATTERN.test(url);
     },
-    NameCacheMixin
-  ),
-};
+  },
+});
 </script>
 
 <style scoped>

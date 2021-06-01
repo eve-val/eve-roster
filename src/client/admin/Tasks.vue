@@ -7,7 +7,7 @@
       </div>
 
       <loading-spinner
-        ref="root_spinner"
+        :promise="promise"
         class="root-spinner"
         display="block"
         size="34px"
@@ -44,8 +44,7 @@
   </admin-wrapper>
 </template>
 
-<script>
-import Promise from "bluebird";
+<script lang="ts">
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
@@ -56,9 +55,14 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import TaskSlab from "./TaskSlab.vue";
 import TaskLog from "./TaskLog.vue";
 
+import { Task, Job, Log } from "./types";
+
 const POLL_FREQUENCY = 4000;
 
-export default {
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -67,23 +71,29 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
-      tasks: null,
+      tasks: [],
       taskLog: [],
       polling: false,
+      promise: null,
+    } as {
+      tasks: Task[];
+      taskLog: Log[];
+      polling: boolean;
+      promise: Promise<any> | null;
     };
   },
 
   computed: {
-    tasksWithJobs() {
-      return this.tasks.filter((t) => t.job != null);
+    tasksWithJobs(): Task[] {
+      return this.tasks.filter((t: Task) => t.job != null);
     },
-    tasksWithoutJobs() {
-      return this.tasks.filter((t) => t.job == null);
+    tasksWithoutJobs(): Task[] {
+      return this.tasks.filter((t: Task) => t.job == null);
     },
     areAnyActiveJobs() {
       for (let i = 0; i < this.tasks.length; i++) {
@@ -95,23 +105,31 @@ export default {
     },
   },
 
-  mounted: function () {
-    this.$refs.root_spinner
-      .observe(
-        Promise.all([
-          ajaxer.getAdminTasks(),
-          ajaxer.getAdminJobs(),
-          ajaxer.getAdminTaskLog(),
-        ])
-      )
-      .then(([tasks, jobs, logs]) => {
+  mounted() {
+    const promise = Promise.all<
+      AxiosResponse<Task[]>,
+      AxiosResponse<Job[]>,
+      AxiosResponse<Log[]>
+    >([
+      ajaxer.getAdminTasks(),
+      ajaxer.getAdminJobs(),
+      ajaxer.getAdminTaskLog(),
+    ]);
+    this.promise = promise;
+    promise.then(
+      ([tasks, jobs, logs]: [
+        tasks: AxiosResponse<Task[]>,
+        jobs: AxiosResponse<Job[]>,
+        logs: AxiosResponse<Log[]>
+      ]) => {
         this.initializeTasks(tasks.data, jobs.data);
         this.taskLog = logs.data;
-      });
+      }
+    );
   },
 
   methods: {
-    initializeTasks(tasks, jobs) {
+    initializeTasks(tasks: Task[], jobs: Job[]) {
       for (let task of tasks) {
         task.job = null;
         task.isSynthetic = false;
@@ -124,9 +142,9 @@ export default {
       }
     },
 
-    onJobStarted(taskName) {
-      let task = _.findWhere(this.tasks, { name: taskName });
-      if (task == null) {
+    onJobStarted(taskName: string) {
+      let task: Task | undefined = _.findWhere(this.tasks, { name: taskName });
+      if (!task) {
         console.error("Unknown task:", taskName);
         return;
       }
@@ -151,7 +169,7 @@ export default {
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs().then((response) => {
+        ajaxer.getAdminJobs().then((response: AxiosResponse<Job[]>) => {
           this.applyJobs(response.data);
           if (this.areAnyActiveJobs) {
             setTimeout(poll, POLL_FREQUENCY);
@@ -163,12 +181,12 @@ export default {
       poll();
     },
 
-    applyJobs(jobs) {
+    applyJobs(jobs: Job[]) {
       // Merge jobs into this.tasks
       let jobEnded = false;
       for (let i = 0; i < this.tasks.length; i++) {
         let task = this.tasks[i];
-        let job = _.findWhere(jobs, { task: task.name });
+        let job: Job | null = _.findWhere(jobs, { task: task.name }) || null;
         if (task.isSynthetic && job == null) {
           // snip the task
           this.tasks.splice(i, 1);
@@ -206,7 +224,7 @@ export default {
     },
 
     sortTasks() {
-      this.tasks.sort((a, b) => {
+      this.tasks.sort((a: Task, b: Task) => {
         let cmp = compareJobs(a, b);
         if (cmp == 0) {
           cmp = compareStartTimes(a, b);
@@ -219,14 +237,14 @@ export default {
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog().then((response) => {
+      ajaxer.getAdminTaskLog().then((response: AxiosResponse<Log[]>) => {
         this.taskLog = response.data;
       });
     },
   },
-};
+});
 
-function compareJobs(a, b) {
+function compareJobs(a: Task, b: Task): number {
   if (a.job != null && b.job == null) {
     return -1;
   } else if (b.job != null && a.job == null) {
@@ -236,17 +254,22 @@ function compareJobs(a, b) {
   }
 }
 
-function compareStartTimes(a, b) {
-  let startA = a.job && a.job.startTime;
-  let startB = b.job && b.job.startTime;
+function compareStartTimes(a: Task, b: Task): number {
+  const startA = a.job?.startTime;
+  const startB = b.job?.startTime;
 
-  let cmp = 0;
-  if (startA != null && startA < startB) {
-    cmp = -1;
-  } else if (startB != null && startB < startA) {
-    cmp = 1;
+  if (startA == null && startB == null) {
+    return 0;
+  } else if (startB == null) {
+    return -1;
+  } else if (startA == null) {
+    return 1;
+  } else if (startA < startB) {
+    return -1;
+  } else if (startB < startA) {
+    return 1;
   }
-  return cmp;
+  return 0;
 }
 </script>
 

@@ -98,56 +98,57 @@
 
       <div>
         Inline pending
-        <loading-spinner ref="inlinePending" />
+        <loading-spinner :promise="inlinePending" />
       </div>
 
       <div>
         Block pending
-        <loading-spinner ref="blockPending" display="block" />
+        <loading-spinner :promise="blockPending" display="block" />
       </div>
 
       <div>
         Inline error
-        <loading-spinner ref="inlineError" />
+        <loading-spinner :promise="inlineError" />
       </div>
 
       <div>
         Block error
-        <loading-spinner ref="blockError" display="block" />
+        <loading-spinner :promise="blockError" display="block" />
       </div>
 
       <div>
         Inline resolved
-        <loading-spinner ref="inlineResolved" />
+        <loading-spinner :promise="inlineResolved" />
       </div>
 
       <div>
         Block resolved
-        <loading-spinner ref="blockResolved" display="block" />
+        <loading-spinner :promise="blockResolved" display="block" />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
-  mounted() {
-    this.$refs.inlinePending.observe(pendingPromise());
-    this.$refs.blockPending.observe(pendingPromise());
-
-    this.$refs.inlineError.observe(errorPromise());
-    this.$refs.blockError.observe(errorPromise());
-
-    this.$refs.inlineResolved.observe(resolvedPromise());
-    this.$refs.blockResolved.observe(resolvedPromise());
+  data() {
+    return {
+      inlinePending: pendingPromise(),
+      blockPending: pendingPromise(),
+      inlineError: errorPromise(),
+      blockError: errorPromise(),
+      inlineResolved: resolvedPromise(),
+      blockResolved: resolvedPromise(),
+    };
   },
-};
+});
 
 function pendingPromise() {
   return new Promise(() => {});

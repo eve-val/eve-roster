@@ -40,30 +40,30 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import moment from "moment";
 
-export default {
+import { Log } from "./types";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   props: {
-    rows: { type: Array, required: true },
+    rows: { type: Array as PropType<Log[]>, required: true },
   },
 
-  data: function () {
-    return {};
-  },
   methods: {
-    displayDate: function (value) {
+    displayDate: function (value: number): string {
       if (value != null) {
         return moment(value).format("Y/MM/DD HH:mm:ss Z");
       }
       return "";
     },
 
-    displayDuration: function (value) {
+    displayDuration: function (value: number): string {
       return moment.duration(value).asSeconds().toFixed(1) + "s";
     },
   },
-};
+});
 </script>
 
 <style scoped>

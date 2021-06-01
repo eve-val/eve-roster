@@ -29,12 +29,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import SkillPips from "./SkillPips.vue";
 
 const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     SkillPips,
   },
@@ -45,11 +46,11 @@ export default {
   },
 
   methods: {
-    numeralize: function (value) {
+    numeralize: function (value: number) {
       return SKILL_LEVEL_LABELS[value];
     },
   },
-};
+});
 </script>
 
 <style scoped>

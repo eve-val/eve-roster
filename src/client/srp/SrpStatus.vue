@@ -63,7 +63,7 @@ triage options weren't initially provided, fetches them from the server.
           class="row-link"
           :to="`/srp/payment/${srp.reimbursement}`"
         >
-          {{ rawPayoutToDisplayPayout(srp.payout) }}
+          {{ displayPayout }}
           <span style="color: #8b8b8b">M</span>
         </router-link>
         <template v-else> &mdash; </template>
@@ -85,11 +85,11 @@ triage options weren't initially provided, fetches them from the server.
           {{ isApprovalSelected ? "Approve" : "Ignore" }}
         </span>
         <loading-spinner
-          ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="savePromise"
         />
       </a>
       <div v-else-if="editable && srp.status != 'paid'" class="edit-cnt">
@@ -101,32 +101,40 @@ triage options weren't initially provided, fetches them from the server.
           Edit
         </a>
         <loading-spinner
-          ref="editSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="editPromise"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-
+import { AxiosResponse } from "axios";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
+type RequestStatus = typeof REQUEST_STATUSES[number];
+
+import { VerdictOption, Srp, Triage } from "./types";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    initialSrp: { type: Object, required: true },
+    initialSrp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
@@ -141,32 +149,50 @@ export default {
       selectedVerdictKey: this.initialSrp.triage
         ? this.initialSrp.triage.suggestedOption
         : "custom",
-      inputPayout: this.rawPayoutToDisplayPayout(this.initialSrp.payout),
-      saveStatus: "inactive", // inactive | saving | error
-      fetchTriageStatus: "inactive", // inactive | active | error,
+      inputPayout: rawPayoutToDisplayPayout(this.initialSrp.payout),
+      saveStatus: "inactive",
+      fetchTriageStatus: "inactive",
       originalPayout: null,
+      savePromise: null,
+      editPromise: null,
+    } as {
+      srp: Srp;
+      editing: boolean;
+      selectedVerdictKey: string;
+      inputPayout: number;
+      saveStatus: RequestStatus;
+      fetchTriageStatus: RequestStatus;
+      originalPayout: number | null;
+      savePromise: Promise<any> | null;
+      editPromise: Promise<any> | null;
     };
   },
 
   computed: {
-    selectedVerdict() {
+    displayPayout(): number {
+      return rawPayoutToDisplayPayout(this.srp.payout);
+    },
+
+    selectedVerdict(): VerdictOption | undefined {
       return _.findWhere(this.verdictOptions, { key: this.selectedVerdictKey });
     },
 
-    isApprovalSelected() {
-      return this.selectedVerdict.verdict == "approved";
+    isApprovalSelected(): boolean {
+      const selected = this.selectedVerdict;
+      return selected ? selected.verdict == "approved" : false;
     },
 
-    isSaveButtonEnabled() {
+    isSaveButtonEnabled(): boolean {
       return (
-        this.saveStatus != "saving" &&
+        this.saveStatus != "active" &&
         isValidInputPayout(this.inputPayout) &&
-        (this.inputPayout > 0 || this.selectedVerdict.verdict != "approved")
+        // require approved to have non-zero payout.
+        (!this.isApprovalSelected || this.inputPayout > 0)
       );
     },
 
-    verdictOptions() {
-      let options = [];
+    verdictOptions(): VerdictOption[] {
+      let options: VerdictOption[] = [];
       if (this.srp.triage != null) {
         for (let option of this.srp.triage.extraOptions) {
           options.push({
@@ -206,11 +232,11 @@ export default {
       return options;
     },
 
-    editable() {
-      return this.hasEditPriv && this.status != "paid";
+    editable(): boolean {
+      return this.hasEditPriv && this.srp.status != "paid";
     },
 
-    statusLink() {
+    statusLink(): string | null {
       if (this.srp.status == "paid") {
         return `/srp/payment/${this.srp.reimbursement}`;
       } else {
@@ -218,7 +244,7 @@ export default {
       }
     },
 
-    renderingName() {
+    renderingName(): string | null {
       if (this.srp.renderingCharacter != null) {
         return this.name(this.srp.renderingCharacter);
       } else if (this.srp.status != "pending") {
@@ -228,7 +254,7 @@ export default {
       }
     },
 
-    renderingLink() {
+    renderingLink(): string | null {
       if (this.srp.status == "paid") {
         return `/character/${this.srp.payingCharacter}`;
       } else if (this.srp.renderingCharacter != null) {
@@ -240,109 +266,136 @@ export default {
   },
 
   watch: {
-    selectedVerdict(_newVerdict) {
-      this.updateInputPayout(this.selectedVerdict.payout);
+    selectedVerdict(newVerdict: VerdictOption) {
+      this.updateInputPayout(newVerdict.payout);
     },
   },
 
   mounted() {
     if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
+      if (this.selectedVerdict) {
+        this.updateInputPayout(this.selectedVerdict.payout);
+      }
     }
   },
 
-  methods: Object.assign(
-    {
-      onSaveClick(_e) {
-        const payout = this.displayPayoutToRawPayout(this.inputPayout);
-        const verdict = this.selectedVerdict.verdict;
-        const reason = this.selectedVerdict.reason;
+  methods: {
+    onSaveClick() {
+      if (!this.selectedVerdict) {
+        return;
+      }
+      const payout = displayPayoutToRawPayout(this.inputPayout);
+      const verdict = this.selectedVerdict.verdict;
+      const reason = this.selectedVerdict.reason;
 
-        this.saveStatus = "saving";
-        this.$refs.saveSpinner
-          .observe(
-            ajaxer.putSrpLossVerdict(this.srp.killmail, verdict, reason, payout)
-          )
-          .then((response) => {
-            this.saveStatus = "inactive";
-            this.srp.payout = payout;
-            this.srp.status = verdict;
-            this.srp.reason = reason;
-            this.editing = false;
-            this.srp.renderingCharacter = response.data.id;
-            this.addNames({
-              [response.data.id]: response.data.name,
-            });
-          })
-          .catch((_e) => {
-            this.saveStatus = "error";
+      this.saveStatus = "active";
+      const savePromise = ajaxer.putSrpLossVerdict(
+        this.srp.killmail,
+        verdict,
+        reason,
+        payout
+      );
+      this.savePromise = savePromise;
+      savePromise
+        .then((response: AxiosResponse<{ id: number; name: string }>) => {
+          this.saveStatus = "inactive";
+          this.srp.payout = payout;
+          this.srp.status = verdict;
+          this.srp.reason = reason;
+          this.editing = false;
+          this.srp.renderingCharacter = response.data.id;
+          this.addNames({
+            [response.data.id]: response.data.name,
           });
-      },
-
-      onEditClick(_e) {
-        if (this.srp.triage == null) {
-          if (this.fetchTriageStatus == "active") {
-            return;
-          }
-          this.fetchTriageStatus = "active";
-          this.$refs.editSpinner
-            .observe(ajaxer.getSrpLossTriageOptions(this.srp.killmail))
-            .then((response) => {
-              this.fetchTriageStatus = "inactive";
-              this.srp.triage = response.data.triage;
-
-              if (this.srp.status == "pending") {
-                this.selectedVerdictKey = response.data.triage.suggestedOption;
-              } else if (this.srp.status == "approved") {
-                this.originalPayout = this.srp.payout;
-                this.selectedVerdictKey = "original_payout";
-              } else {
-                if (
-                  _.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })
-                ) {
-                  this.selectedVerdictKey =
-                    response.data.triage.suggestedOption;
-                } else {
-                  // Otherwise it's ineligible; just use that as the key
-                  this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
-                }
-              }
-
-              this.editing = true;
-            })
-            .catch((_e) => {
-              this.fetchTriageStatus = "error";
-            });
-        } else {
-          this.editing = true;
-        }
-      },
-
-      updateInputPayout(value) {
-        this.inputPayout = this.rawPayoutToDisplayPayout(value);
-      },
-
-      rawPayoutToDisplayPayout(rawPayout) {
-        return Math.round(rawPayout / 1000000);
-      },
-
-      displayPayoutToRawPayout(displayPayout) {
-        return displayPayout * 1000000;
-      },
-
-      getStatusLabel(srp) {
-        let entry = _.findWhere(ALL_STATUSES, {
-          status: srp.status,
-          reason: srp.reason,
+        })
+        .catch(() => {
+          this.saveStatus = "error";
         });
-        return (entry && entry.label) || "Unknown status";
-      },
     },
-    NameCacheMixin
-  ),
-};
 
-const INELIGIBLE_STATUSES = [
+    loadVerdictFromStatusAndTriage() {
+      if (this.srp.triage == null) {
+        // should never happen; only called from onEditClick which guards.
+        return;
+      }
+      if (this.srp.status == "pending") {
+        this.selectedVerdictKey = this.srp.triage.suggestedOption;
+      } else if (this.srp.status == "approved") {
+        this.originalPayout = this.srp.payout;
+        this.selectedVerdictKey = "original_payout";
+      } else {
+        if (_.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })) {
+          this.selectedVerdictKey = this.srp.triage.suggestedOption;
+        } else {
+          // Otherwise it's ineligible; just use that as the key
+          this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
+        }
+      }
+      this.editing = true;
+    },
+
+    onEditClick() {
+      if (this.srp.triage == null) {
+        if (this.fetchTriageStatus == "active") {
+          return;
+        }
+        this.fetchTriageStatus = "active";
+        const editPromise = ajaxer.getSrpLossTriageOptions(this.srp.killmail);
+        this.editPromise = editPromise;
+        editPromise
+          .then((response: AxiosResponse<{ triage: Triage }>) => {
+            this.fetchTriageStatus = "inactive";
+            this.srp.triage = response.data.triage;
+            this.loadVerdictFromStatusAndTriage();
+          })
+          .catch(() => {
+            this.fetchTriageStatus = "error";
+          });
+      } else {
+        this.loadVerdictFromStatusAndTriage();
+      }
+    },
+
+    updateInputPayout(value: number) {
+      this.inputPayout = rawPayoutToDisplayPayout(value);
+    },
+
+    getStatusLabel(srp: Srp): string {
+      const nullReasonStatuses: readonly string[] = [
+        "approved",
+        "paid",
+        "pending",
+      ] as const;
+      let entry = _.findWhere(ALL_STATUSES, {
+        status: srp.status,
+        reason: nullReasonStatuses.includes(srp.status) ? null : srp.reason,
+      });
+      return entry?.label || "Unknown status";
+    },
+  },
+});
+
+function rawPayoutToDisplayPayout(rawPayout: number | null): number {
+  if (rawPayout == null) {
+    return 0;
+  }
+  return Math.round(rawPayout / 1000000);
+}
+
+function displayPayoutToRawPayout(displayPayout: number | null): number {
+  if (displayPayout == null) {
+    return 0;
+  }
+  return displayPayout * 1000000;
+}
+
+interface Status {
+  status: string;
+  reason: string | null;
+  label: string;
+}
+
+const INELIGIBLE_STATUSES: Status[] = [
   {
     status: "ineligible",
     reason: "not_covered",
@@ -395,7 +448,7 @@ const INELIGIBLE_STATUSES = [
   },
 ];
 
-const UNSETTABLE_STATUSES = [
+const UNSETTABLE_STATUSES: Status[] = [
   {
     status: "ineligible",
     reason: "outside_jurisdiction",
@@ -408,7 +461,7 @@ const UNSETTABLE_STATUSES = [
   },
 ];
 
-const ALL_STATUSES = [
+const MAIN_STATUSES: Status[] = [
   {
     status: "approved",
     reason: null,
@@ -424,10 +477,15 @@ const ALL_STATUSES = [
     reason: null,
     label: "Pending",
   },
-].concat(INELIGIBLE_STATUSES, UNSETTABLE_STATUSES);
+];
 
-function isValidInputPayout(inputPayout) {
-  return typeof inputPayout == "number" && inputPayout >= 0;
+const ALL_STATUSES: Status[] = MAIN_STATUSES.concat(
+  INELIGIBLE_STATUSES,
+  UNSETTABLE_STATUSES
+);
+
+function isValidInputPayout(inputPayout: number | null): boolean {
+  return inputPayout != null && inputPayout >= 0;
 }
 </script>
 

@@ -12,14 +12,14 @@
           <div>
             <button
               class="roster-btn confirm-deny-btn"
-              :disabled="transferCharacterPromise"
+              :disabled="promise"
               @click="transferCharacter"
             >
               Transfer character</button
             ><!--
         --><button
               class="roster-btn secondary confirm-deny-btn"
-              :disabled="transferCharacterPromise"
+              :disabled="promise"
               @click="cancelTransfer"
             >
               Cancel
@@ -29,7 +29,7 @@
       </div>
       <!-- end body -->
       <loading-spinner
-        ref="spinner"
+        :promise="promise"
         class="transfer-character-spinner"
         default-state="hidden"
         size="20px"
@@ -41,13 +41,14 @@
   </character-slab-frame>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import CharacterSlabFrame from "./CharacterSlabFrame.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     CharacterSlabFrame,
     LoadingSpinner,
@@ -61,32 +62,40 @@ export default {
 
   emits: ["requireRefresh"],
 
-  data: function () {
-    return { transferCharacterPromise: null };
+  data() {
+    return {
+      promise: null,
+    } as {
+      promise: Promise<any> | null;
+    };
   },
 
   methods: {
     transferCharacter() {
-      this.$refs.spinner
-        .observe(ajaxer.postCharacterTransfer(this.accountId, this.characterId))
-        .then(() => {
-          this.$emit("requireRefresh", this.characterId);
-          this.transferCharacterPromise = null;
-        });
+      const promise = ajaxer.postCharacterTransfer(
+        this.accountId,
+        this.characterId
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.characterId);
+        this.promise = null;
+      });
     },
 
     cancelTransfer() {
-      this.$refs.spinner
-        .observe(
-          ajaxer.deleteCharacterTransfer(this.accountId, this.characterId)
-        )
-        .then(() => {
-          this.$emit("requireRefresh", this.characterId);
-          this.transferCharacterPromise = null;
-        });
+      const promise = ajaxer.deleteCharacterTransfer(
+        this.accountId,
+        this.characterId
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.characterId);
+        this.promise = null;
+      });
     },
   },
-};
+});
 </script>
 
 <style scoped>

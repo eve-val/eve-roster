@@ -20,14 +20,14 @@
         </div>
         <div v-if="!task.job" class="run-block">
           <loading-spinner
-            ref="runSpinner"
+            :promise="promise"
             class="run-spinner"
             display="inline"
             default-state="hidden"
           />
           <button
             class="roster-btn run-btn"
-            :disabled="runPromise != null"
+            :disabled="promise != null"
             @click="onRunClick"
           >
             Run
@@ -38,29 +38,33 @@
   </div>
 </template>
 
-<script>
-import Promise from "bluebird";
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-
-export default {
+import { Task } from "./types";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    task: { type: Object, required: true },
+    task: { type: Object as PropType<Task>, required: true },
   },
 
   emits: ["jobStarted"],
 
-  data: () => ({
-    runPromise: null,
-  }),
+  data() {
+    return {
+      promise: null,
+    } as {
+      promise: Promise<any> | null;
+    };
+  },
 
   computed: {
-    rootStyle() {
+    rootStyle(): { backgroundColor: string } {
       let bgColor;
       if (this.task.job && this.task.job.progress != null) {
         bgColor = "#2e291e";
@@ -75,7 +79,7 @@ export default {
       };
     },
 
-    rootClasses() {
+    rootClasses(): string[] {
       let classes = [];
       if (this.task.job) {
         classes.push("chevron-background");
@@ -83,44 +87,40 @@ export default {
       return classes;
     },
 
-    progressBarStyle() {
-      let widthPerc = (this.task.job && this.task.job.progress) || 0;
+    progressBarStyle(): { width: string } {
+      let widthPerc = this.task.job?.progress || 0;
       return {
         width: widthPerc * 100 + "%",
       };
     },
 
-    middleText() {
-      if (this.task.job) {
-        return this.task.job.progressLabel;
-      } else {
-        return this.task.description;
+    middleText(): string {
+      return this.task.job?.progressLabel || this.task.description;
+    },
+  },
+
+  watch: {
+    promise: function () {
+      const promise = this.promise;
+      if (promise == null) {
+        return;
       }
+      promise
+        .then(() => {
+          this.$emit("jobStarted", this.task.name);
+        })
+        .finally(() => {
+          this.promise = null;
+        });
     },
   },
 
   methods: {
     onRunClick() {
-      if (this.runPromise == null) {
-        this.awaitRunResult(ajaxer.putAdminTask(this.task.name));
-      }
-    },
-
-    awaitRunResult(promise) {
-      promise = this.$refs.runSpinner
-        .observe(Promise.resolve(promise))
-        .then(() => {
-          this.$emit("jobStarted", this.task.name);
-        })
-        .finally(() => {
-          if (this.runPromise == promise) {
-            this.runPromise = null;
-          }
-        });
-      this.runPromise = promise;
+      this.promise = ajaxer.putAdminTask(this.task.name);
     },
   },
-};
+});
 </script>
 
 <style scoped>

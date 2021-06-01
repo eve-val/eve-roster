@@ -29,22 +29,38 @@ Battle reports are instances of BattleRow.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BattleRow from "./BattleRow.vue";
 import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
+import { Battle } from "../types";
+import { Identity } from "../../home";
+import { AxiosResponse } from "axios";
+import { SimpleNumMap } from "../../../util/simpleTypes";
 
-export default {
+type Response = AxiosResponse<{
+  names: SimpleNumMap<string>;
+  battles: Battle[];
+}>;
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     BattleRow,
     MoreButton,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    identity: { type: Object, required: true },
-    triageMode: { type: Boolean, required: false, default: false },
+    identity: { type: Object as PropType<Identity>, required: true },
+    triageMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -52,13 +68,15 @@ export default {
       battles: null,
       fetchPromise: null,
       suspectMoreToFetch: true,
+    } as {
+      battles: Battle[] | null;
+      fetchPromise: Promise<Response> | null;
+      suspectMoreToFetch: boolean;
     };
   },
 
-  computed: {},
-
   watch: {
-    triageMode(_value) {
+    triageMode(_value: boolean) {
       this.reset();
     },
   },
@@ -67,55 +85,52 @@ export default {
     this.reset();
   },
 
-  methods: Object.assign(
-    {
-      reset() {
-        this.battles = null;
-        this.fetchPromise = null;
-        this.suspectMoreToFetch = true;
-        this.fetchNextResults();
-      },
-
-      fetchNextResults() {
-        const sentinelId =
-          this.battles != null && this.battles.length > 0
-            ? this.battles[this.battles.length - 1].id
-            : null;
-        const resultOrder = this.triageMode ? "asc" : "desc";
-
-        this.fetchPromise = ajaxer.getBattles(
-          {
-            untriaged: this.triageMode,
-            orderBy: [{ key: "battle_id", order: resultOrder }],
-            limit: RESULTS_PER_FETCH,
-            bound:
-              sentinelId == null
-                ? undefined
-                : {
-                    col: "battle_id",
-                    cmp: resultOrder == "asc" ? ">" : "<",
-                    value: sentinelId,
-                  },
-          },
-          true
-        );
-
-        this.fetchPromise.then((response) => {
-          this.addNames(response.data.names);
-          if (this.battles == null) {
-            this.battles = [];
-          }
-          for (let battle of response.data.battles) {
-            this.battles.push(battle);
-          }
-          this.suspectMoreToFetch =
-            response.data.battles.length == RESULTS_PER_FETCH;
-        });
-      },
+  methods: {
+    reset() {
+      this.battles = null;
+      this.fetchPromise = null;
+      this.suspectMoreToFetch = true;
+      this.fetchNextResults();
     },
-    NameCacheMixin
-  ),
-};
+
+    fetchNextResults() {
+      const sentinelId =
+        this.battles != null && this.battles.length > 0
+          ? this.battles[this.battles.length - 1].id
+          : null;
+      const resultOrder = this.triageMode ? "asc" : "desc";
+
+      this.fetchPromise = ajaxer.getBattles(
+        {
+          untriaged: this.triageMode,
+          orderBy: [{ key: "battle_id", order: resultOrder }],
+          limit: RESULTS_PER_FETCH,
+          bound:
+            sentinelId == null
+              ? undefined
+              : {
+                  col: "battle_id",
+                  cmp: resultOrder == "asc" ? ">" : "<",
+                  value: sentinelId,
+                },
+        },
+        true
+      );
+
+      this.fetchPromise.then((response: Response) => {
+        this.addNames(response.data.names);
+        if (this.battles == null) {
+          this.battles = [];
+        }
+        for (let battle of response.data.battles) {
+          this.battles.push(battle);
+        }
+        this.suspectMoreToFetch =
+          response.data.battles.length == RESULTS_PER_FETCH;
+      });
+    },
+  },
+});
 
 const RESULTS_PER_FETCH = 30;
 </script>

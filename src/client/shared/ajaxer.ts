@@ -1,53 +1,54 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET";
 
 export default {
   getDashboard() {
     return axios.get("/api/dashboard");
   },
 
-  getCorporation(id) {
+  getCorporation(id: number) {
     return axios.get("/api/corporation/" + id);
   },
 
-  putAccountMainCharacter(accountId, characterId) {
+  putAccountMainCharacter(accountId: number, characterId: number) {
     return axios.put(`/api/account/${accountId}/mainCharacter`, {
       characterId: characterId,
     });
   },
 
-  putAccountHomeCitadel(accountId, citadelName) {
+  putAccountHomeCitadel(accountId: number, citadelName: string) {
     return axios.put("/api/account/" + accountId + "/homeCitadel", {
       citadelName: citadelName,
     });
   },
 
-  putAccountActiveTimezone(accountId, activeTimezone) {
+  putAccountActiveTimezone(accountId: number, activeTimezone: string) {
     return axios.put("/api/account/" + accountId + "/activeTimezone", {
       activeTimezone: activeTimezone,
     });
   },
 
-  getAccountCharacters(accountId) {
+  getAccountCharacters(accountId: number) {
     return axios.get(`/api/account/${accountId}/characters`);
   },
 
-  deleteBiomassedCharacter(characterId) {
+  deleteBiomassedCharacter(characterId: number) {
     return axios.delete("/api/character/" + characterId);
   },
 
-  putCharacterIsOpsec(characterId, isOpsec) {
+  putCharacterIsOpsec(characterId: number, isOpsec: boolean) {
     return axios.put(`/api/character/${characterId}`, {
       opsec: isOpsec,
     });
   },
 
-  postCharacterTransfer(accountId, characterId) {
+  postCharacterTransfer(accountId: number, characterId: number) {
     return axios.post(`/api/account/${accountId}/transfer`, {
       characterId: characterId,
     });
   },
 
-  deleteCharacterTransfer(accountId, characterId) {
+  deleteCharacterTransfer(accountId: number, characterId: number) {
     return axios.delete(`/api/account/${accountId}/transfer/${characterId}`);
   },
 
@@ -55,7 +56,7 @@ export default {
     return axios.get("/api/roster");
   },
 
-  getCharacter(id) {
+  getCharacter(id: number) {
     return axios.get("/api/character/" + id);
   },
 
@@ -63,7 +64,12 @@ export default {
     return axios.get("/api/citadels");
   },
 
-  postCitadel(name, type, allianceAccess, allianceOwned) {
+  postCitadel(
+    name: string,
+    type: string,
+    allianceAccess: boolean,
+    allianceOwned: boolean
+  ) {
     return axios.post("/api/admin/citadel", {
       name: name,
       type: type,
@@ -72,21 +78,21 @@ export default {
     });
   },
 
-  putCitadelName(citadelId, name) {
+  putCitadelName(citadelId: number, name: string) {
     return axios.put(`/api/admin/citadel/${citadelId}`, {
       name: name,
     });
   },
 
-  deleteCitadel(citadelId) {
+  deleteCitadel(citadelId: number) {
     return axios.delete(`/api/admin/citadel/${citadelId}`);
   },
 
-  getSkills(id) {
+  getSkills(id: number) {
     return axios.get("/api/character/" + id + "/skills");
   },
 
-  getSkillQueue(id) {
+  getSkillQueue(id: number) {
     return axios.get("/api/character/" + id + "/skillQueue");
   },
 
@@ -94,8 +100,8 @@ export default {
     return axios.get("/api/dashboard/queueSummary");
   },
 
-  getAdminRosterSyncStatus() {
-    return axios.get("/api/admin/roster/syncStatus");
+  getAdminRosterSyncStatus(): Promise<AxiosResponse<syncStatus_Output>> {
+    return axios.get<syncStatus_Output>("/api/admin/roster/syncStatus");
   },
 
   getAdminAccountLog() {
@@ -110,7 +116,7 @@ export default {
     return axios.get("/api/admin/tasks/job");
   },
 
-  putAdminTask(taskName) {
+  putAdminTask(taskName: string) {
     return axios.put("/api/admin/tasks/job", {
       task: taskName,
     });
@@ -121,10 +127,10 @@ export default {
   },
 
   getAdminSetup() {
-    return axios.get("/api/admin/setup");
+    return axios.get<string>("/api/admin/setup");
   },
 
-  putAdminSetup(setupObj) {
+  putAdminSetup(setupObj: string) {
     return axios.put("/api/admin/setup", setupObj);
   },
 
@@ -132,7 +138,7 @@ export default {
     return axios.get("/api/admin/srp/jurisdiction");
   },
 
-  putAdminSrpJurisdiction(start) {
+  putAdminSrpJurisdiction(start: number) {
     return axios.put("/api/admin/srp/jurisdiction", {
       start: start,
     });
@@ -142,7 +148,7 @@ export default {
     return axios.get("/api/srp/approvedLiability");
   },
 
-  getBattles(filter, includeSrp) {
+  getBattles(filter: Object, includeSrp: boolean) {
     return axios.get("/api/srp/battle", {
       params: {
         filter: filter != undefined ? JSON.stringify(filter) : undefined,
@@ -151,7 +157,7 @@ export default {
     });
   },
 
-  getBattle(id, includeSrp) {
+  getBattle(id: number, includeSrp: boolean) {
     return axios.get(`/api/srp/battle/${id}`, {
       params: {
         includeSrp: includeSrp,
@@ -159,13 +165,18 @@ export default {
     });
   },
 
-  getRecentSrpLosses(filter) {
+  getRecentSrpLosses(filter: Object) {
     return axios.get("/api/srp/loss", {
       params: filter,
     });
   },
 
-  putSrpLossVerdict(killmail, verdict, reason, payout) {
+  putSrpLossVerdict(
+    killmail: number,
+    verdict: string,
+    reason: string | null,
+    payout: number
+  ) {
     return axios.put(`/api/srp/loss/${killmail}`, {
       verdict: verdict,
       reason: reason,
@@ -173,22 +184,26 @@ export default {
     });
   },
 
-  getSrpLossTriageOptions(killmail) {
+  getSrpLossTriageOptions(killmail: number) {
     return axios.get(`/api/srp/loss/${killmail}/triage`);
   },
 
-  getSrpPaymentHistory(filter) {
+  getSrpPaymentHistory(filter: Object) {
     return axios.get("/api/srp/payment", {
       params: filter,
     });
   },
 
-  getSrpPayment(paymentId) {
+  getSrpPayment(paymentId: number) {
     return axios.get(`/api/srp/payment/${paymentId}`);
   },
 
-  putSrpPaymentStatus(srp, paid, payingCharacter) {
-    return axios.put(`/api/srp/payment/${srp}`, {
+  putSrpPaymentStatus(
+    srp: number,
+    paid: boolean,
+    payingCharacter: number | undefined
+  ): Promise<AxiosResponse<{}>> {
+    return axios.put<{}>(`/api/srp/payment/${srp}`, {
       paid: paid,
       payingCharacter: payingCharacter,
     });
@@ -202,7 +217,7 @@ export default {
     return axios.get("/api/ships/borrowedByMe");
   },
 
-  postOpenInformationWindow(character, targetId) {
+  postOpenInformationWindow(character: number, targetId: number) {
     return axios.post(`/api/control/openwindow/information`, {
       character: character,
       targetId: targetId,

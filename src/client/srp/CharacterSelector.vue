@@ -36,14 +36,17 @@ character is paying.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
+import { CharacterDescription } from "../../route/api/account/characters_GET";
 
-export default {
+import { AxiosResponse } from "axios";
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
   },
@@ -59,20 +62,23 @@ export default {
     return {
       characters: [],
       selectedId: this.modelValue,
+    } as {
+      characters: CharacterDescription[];
+      selectedId: number;
     };
   },
 
   computed: {
-    selectedCharacter() {
+    selectedCharacter(): CharacterDescription | undefined {
       return _.findWhere(this.characters, { id: this.selectedId });
     },
-    validCharacters() {
+    validCharacters(): CharacterDescription[] {
       return this.characters.filter(this.isValidCharacter);
     },
   },
 
   watch: {
-    selectedId(newValue) {
+    selectedId(newValue: number) {
       if (newValue != this.modelValue) {
         this.$emit("update:modelValue", newValue);
       }
@@ -80,24 +86,26 @@ export default {
   },
 
   mounted() {
-    ajaxer.getAccountCharacters(this.accountId).then((response) => {
-      this.characters = response.data;
+    ajaxer
+      .getAccountCharacters(this.accountId)
+      .then((response: AxiosResponse<CharacterDescription[]>) => {
+        this.characters = response.data;
 
-      for (let character of this.characters) {
-        if (this.isValidCharacter(character)) {
-          this.selectedId = character.id;
-          break;
+        for (let character of this.characters) {
+          if (this.isValidCharacter(character)) {
+            this.selectedId = character.id;
+            break;
+          }
         }
-      }
-    });
+      });
   },
 
   methods: {
-    isValidCharacter(character) {
+    isValidCharacter(character: CharacterDescription): boolean {
       return character.accessTokenValid && character.membership == "full";
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -39,11 +39,14 @@ shown. If not, results are ordered newest to oldest.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LossHistory from "./LossHistory.vue";
 import BattleHistory from "./battles/BattleHistory.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     BattleHistory,
     LossHistory,
@@ -51,7 +54,7 @@ export default {
 
   props: {
     forAccount: { type: Number, required: false, default: null },
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     triageMode: { type: Boolean, required: true },
   },
 
@@ -60,7 +63,7 @@ export default {
       mode: this.forAccount ? "losses" : "battles",
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -33,7 +33,7 @@ SRP tracking starts, if it does at all.
       :style="{ visibility: dirtyChanges ? 'visible' : 'hidden' }"
     >
       <loading-spinner
-        ref="spinner"
+        :promise="promise"
         class="spinner"
         display="inline"
         size="30px"
@@ -50,11 +50,15 @@ SRP tracking starts, if it does at all.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
-export default {
+const STATUSES = ["active", "inactive", "error"] as const;
+type Status = typeof STATUSES[number];
+import { AxiosResponse } from "axios";
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -69,11 +73,22 @@ export default {
         startInput: timestampToDateStr(Date.now()),
       },
       requestStatus: "inactive",
+      promise: null,
+    } as {
+      loaded: boolean;
+      trackSrp: boolean;
+      startInput: string;
+      savedState: {
+        trackSrp: boolean;
+        startInput: string;
+      };
+      requestStatus: Status;
+      promise: Promise<any> | null;
     };
   },
 
   computed: {
-    dirtyChanges() {
+    dirtyChanges(): boolean {
       return (
         this.trackSrp != this.savedState.trackSrp ||
         this.startInput != this.savedState.startInput
@@ -82,7 +97,7 @@ export default {
   },
 
   mounted() {
-    ajaxer.getAdminSrpJurisdiction().then((response) => {
+    ajaxer.getAdminSrpJurisdiction().then((response: AxiosResponse) => {
       this.loaded = true;
 
       const jurisdiction = response.data.srpJurisdiction;
@@ -101,7 +116,7 @@ export default {
   },
 
   methods: {
-    onSaveClick(_e) {
+    onSaveClick() {
       const trackSrp = this.trackSrp;
       const startInput = this.startInput;
 
@@ -109,32 +124,34 @@ export default {
       if (trackSrp && startInput != "") {
         timestamp = Date.parse(startInput);
         if (isNaN(timestamp)) {
-          this.$refs.spinner.observe(
-            Promise.resolve().then(() => {
-              throw new Error(`Invalid date format.`);
-            })
-          );
+          this.promise = Promise.resolve().then(() => {
+            throw new Error(`Invalid date format.`);
+          });
           return;
         }
       }
+      if (timestamp == null) {
+        return;
+      }
 
       this.requestStatus = "active";
-      this.$refs.spinner
-        .observe(ajaxer.putAdminSrpJurisdiction(timestamp))
+      const promise = ajaxer.putAdminSrpJurisdiction(timestamp);
+      this.promise = promise;
+      promise
         .then(() => {
           this.savedState.trackSrp = trackSrp;
           this.savedState.startInput = startInput;
           this.requestStatus = "inactive";
         })
-        .catch((e) => {
+        .catch((e: Error) => {
           this.requestStatus = "error";
           throw e;
         });
     },
   },
-};
+});
 
-function timestampToDateStr(timestamp) {
+function timestampToDateStr(timestamp: number) {
   const date = new Date(timestamp);
   return (
     date.getUTCFullYear() +

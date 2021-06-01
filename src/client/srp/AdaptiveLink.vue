@@ -25,23 +25,22 @@ Otherwise an anchor tag is used.
   </router-link>
 </template>
 
-<script>
+<script lang="ts">
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-export default {
-  components: {},
-
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     linkClass: { type: String, required: false, default: "" },
     path: { type: String, required: false, default: "" },
   },
 
   methods: {
-    isExternalUrl(path) {
+    isExternalUrl(path: string) {
       return ABS_URL_PATTERN.test(path);
     },
   },
-};
+});
 </script>
 
 <style scoped>

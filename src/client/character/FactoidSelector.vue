@@ -11,7 +11,7 @@
       </option>
     </select>
     <loading-spinner
-      ref="spinner"
+      :promise="promise"
       class="loading-spinner"
       default-state="hidden"
       size="16px"
@@ -19,10 +19,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
@@ -33,18 +34,23 @@ export default {
     submitHandler: { type: Function, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       selectedValue: this.initialValue,
+      promise: null,
+    } as {
+      selectedValue: string;
+      promise: Promise<any> | null;
     };
   },
 
   watch: {
     selectedValue: function (value) {
-      this.$refs.spinner.observe(this.submitHandler(value || null));
+      const promise = this.submitHandler(value || null);
+      this.promise = promise;
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@ A component that either looks like a "load more" button or a loading spinner.
 <template>
   <div class="_more-button">
     <loading-spinner
-      ref="spinner"
+      :promise="promise"
       class="spinner"
       display="block"
       size="34px"
@@ -26,65 +26,67 @@ A component that either looks like a "load more" button or a loading spinner.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-export default {
+const STATUSES = ["inactive", "active", "error"] as const;
+type Status = typeof STATUSES[number];
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    promise: { type: Promise, required: false, default: Promise.resolve() },
-    hideButton: { type: Boolean, required: false },
+    promise: {
+      type: Promise as PropType<Promise<any> | null>,
+      required: false,
+      default: null,
+    },
+    hideButton: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   emits: ["fetch-requested"],
 
   data() {
     return {
-      status: "inactive", // inactive | active | error
+      status: "inactive",
+    } as {
+      status: Status;
     };
   },
 
   watch: {
-    promise(value) {
-      this.observe(value);
-    },
-  },
-
-  mounted() {
-    this.observe(this.promise);
-  },
-
-  methods: {
-    observe(promise) {
-      this.$refs.spinner.observe(promise);
+    promise() {
+      const promise = this.promise;
       if (promise != null) {
         this.status = "active";
-        this.promise
+        promise
           .then(() => {
-            if (promise == this.promise) {
-              this.status = "inactive";
-            }
+            this.status = "inactive";
           })
-          .catch((_e) => {
-            if (promise == this.promise) {
-              this.status = "inactive";
-            }
+          .catch(() => {
+            this.status = "error";
           });
       } else {
         this.status = "inactive";
       }
     },
+  },
 
-    onButtonClick(_e) {
+  methods: {
+    onButtonClick() {
       if (this.status != "active") {
         this.$emit("fetch-requested");
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

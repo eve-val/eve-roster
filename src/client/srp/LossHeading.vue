@@ -14,14 +14,9 @@ Appropriately-spaced column labels for a table of LossRows.
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
-
-  props: {},
-
-  methods: {},
-};
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({});
 </script>
 
 <style scoped>

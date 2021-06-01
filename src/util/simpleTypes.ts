@@ -12,18 +12,9 @@ export type AsyncReturnType<T extends (...args: any[]) => PromiseLike<any>> =
   T extends (...args: any[]) => PromiseLike<infer R> ? R : T;
 
 export type BasicType = number | boolean | string | object;
-
-export type SimpleMap<T> = {
-  [key: string]: T;
-};
-
-export type SimpleNumMap<T> = {
-  [key: number]: T;
-};
-
-export type MixedObject = {
-  [key: string]: BasicType;
-};
+export type SimpleMap<T> = Record<string, T>;
+export type SimpleNumMap<T> = Record<number, T>;
+export type MixedObject = Record<string, BasicType>;
 
 /** Given a type T, extracts all keys K where T[K] extends PropType. */
 export type KeysOfType<T, PropType> = {

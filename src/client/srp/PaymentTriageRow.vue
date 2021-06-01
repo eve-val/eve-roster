@@ -52,11 +52,11 @@ the reimbursement as paid.
       <a v-if="!paid" class="paid-btn" @click="onSaveClick">
         <template v-if="saveStatus == 'inactive'">Paid</template>
         <loading-spinner
-          ref="saveSpinner"
           display="inline"
           size="30px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="savePromise"
         />
       </a>
       <div v-else class="undo-cnt">
@@ -64,112 +64,134 @@ the reimbursement as paid.
           Undo
         </a>
         <loading-spinner
-          ref="undoSpinner"
           display="inline"
           size="20px"
           default-state="hidden"
           tooltip-gravity="left center"
+          :promise="undoPromise"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Payment } from "./types";
+
+const STATUSES = ["inactive", "saving", "error"];
+type Status = typeof STATUSES[number];
+
+import { defineComponent, PropType, ref } from "vue";
+export default defineComponent({
   components: {
     LoadingSpinner,
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    payment: { type: Object, required: true },
-    payingCharacter: { type: Number, default: null },
+    payment: { type: Object as PropType<Payment>, required: true },
+    payingCharacter: { type: Number as PropType<number | null>, default: null },
+  },
+
+  setup: () => {
+    const payoutInput = ref<HTMLInputElement>();
+    const reasonInput = ref<HTMLInputElement>();
+    return { payoutInput, reasonInput };
   },
 
   data() {
     return {
       paid: false,
-      saveStatus: "inactive", // inactive | saving | error
-      undoStatus: "inactive", // inactive | saving | error
+      saveStatus: "inactive",
+      undoStatus: "inactive",
+      savePromise: null,
+      undoPromise: null,
+    } as {
+      paid: boolean;
+      saveStatus: Status;
+      undoStatus: Status;
+      savePromise: Promise<any> | null;
+      undoPromise: Promise<any> | null;
     };
   },
 
-  mounted() {},
-
-  methods: Object.assign(
-    {
-      onCopyReasonClick(_e) {
-        this.$refs.reasonInput.select();
-        try {
-          document.execCommand("copy");
-        } catch (err) {
-          console.log("Error while copying", err);
-        }
-      },
-
-      onCopyPayoutClick(_e) {
-        this.$refs.payoutInput.select();
-        try {
-          document.execCommand("copy");
-        } catch (err) {
-          console.log("Error while copying", err);
-        }
-        ajaxer.postOpenInformationWindow(
-          this.payingCharacter,
-          this.payment.recipient
-        );
-      },
-
-      onSaveClick(_e) {
-        if (this.saveStatus == "saving" || this.payingCharacter == null) {
-          return;
-        }
-        this.saveStatus = "saving";
-        this.$refs.saveSpinner
-          .observe(
-            ajaxer.putSrpPaymentStatus(
-              this.payment.id,
-              true,
-              this.payingCharacter
-            )
-          )
-          .then(() => {
-            this.saveStatus = "inactive";
-            this.paid = true;
-          })
-          .catch((_e) => {
-            this.saveStatus = "error";
-          });
-      },
-
-      onUndoClick(_e) {
-        if (this.undoStatus == "saving") {
-          return;
-        }
-        this.undoStatus = "saving";
-        this.$refs.undoSpinner
-          .observe(
-            ajaxer.putSrpPaymentStatus(this.payment.id, false, undefined)
-          )
-          .then(() => {
-            this.undoStatus = "inactive";
-            this.paid = false;
-          })
-          .catch((_e) => {
-            this.undoStatus = "error";
-          });
-      },
+  methods: {
+    onCopyReasonClick() {
+      this.reasonInput?.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.log("Error while copying", err);
+      }
     },
-    NameCacheMixin
-  ),
-};
+
+    onCopyPayoutClick() {
+      this.payoutInput?.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.log("Error while copying", err);
+      }
+      if (this.payingCharacter == null) {
+        return;
+      }
+      ajaxer.postOpenInformationWindow(
+        this.payingCharacter,
+        this.payment.recipient
+      );
+    },
+
+    onSaveClick() {
+      if (this.saveStatus == "saving" || this.payingCharacter == null) {
+        return;
+      }
+      this.saveStatus = "saving";
+      const savePromise = ajaxer.putSrpPaymentStatus(
+        this.payment.id,
+        true,
+        this.payingCharacter
+      );
+      this.savePromise = savePromise;
+      savePromise
+        .then(() => {
+          this.saveStatus = "inactive";
+          this.paid = true;
+        })
+        .catch(() => {
+          this.saveStatus = "error";
+        });
+    },
+
+    onUndoClick() {
+      if (this.undoStatus == "saving") {
+        return;
+      }
+      this.undoStatus = "saving";
+      const undoPromise = ajaxer.putSrpPaymentStatus(
+        this.payment.id,
+        false,
+        undefined
+      );
+      this.undoPromise = undoPromise;
+      undoPromise
+        .then(() => {
+          this.undoStatus = "inactive";
+          this.paid = false;
+        })
+        .catch(() => {
+          this.undoStatus = "error";
+        });
+    },
+  },
+});
 </script>
 
 <style scoped>

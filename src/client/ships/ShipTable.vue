@@ -32,14 +32,22 @@
   <div v-else class="empty-list">No borrowed corp ships found. Neat!</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Ship } from "./ships";
+type SortKey = keyof Omit<Ship, "id">;
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   props: {
-    showMainCharacter: { type: Boolean, required: false, default: false },
-    ships: { type: Array, required: true },
+    showMainCharacter: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    ships: { type: Array as PropType<Ship[]>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       sortOrder: [
         "mainCharacterName",
@@ -48,13 +56,15 @@ export default {
         "type",
         "name",
       ],
+    } as {
+      sortOrder: SortKey[];
     };
   },
 
   computed: {
-    sorted: function () {
-      const copy = [...this.ships];
-      copy.sort((a, b) => {
+    sorted: function (): Ship[] {
+      const copy: Ship[] = [...this.ships];
+      copy.sort((a: Ship, b: Ship) => {
         for (let prop of this.sortOrder) {
           let ap = a[prop];
           let bp = b[prop];
@@ -69,14 +79,14 @@ export default {
   },
 
   methods: {
-    setSort: function (column) {
+    setSort: function (column: SortKey) {
       const idx = this.sortOrder.indexOf(column);
       if (idx < 0) return;
       this.sortOrder.splice(idx, 1);
       this.sortOrder.unshift(column);
     },
   },
-};
+});
 </script>
 
 <style scoped>

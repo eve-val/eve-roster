@@ -78,7 +78,7 @@
 
     <div class="entry-title">Action pending</div>
     <owned-character-slab
-      ref="actionPendingSlab"
+      :promise="actionPendingSlab"
       :account-id="0"
       :character="characterBasic"
       :is-main="false"
@@ -89,7 +89,7 @@
 
     <div class="entry-title">Action failed</div>
     <owned-character-slab
-      ref="actionFailedSlab"
+      :promise="actionFailedSlab"
       :account-id="0"
       :character="characterBasic"
       :is-main="false"
@@ -123,19 +123,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
-
-export default {
+import { CharacterJson } from "../../route/api/dashboard";
+import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     OwnedCharacterSlab,
   },
 
   data() {
     return {
-      characterBasic: characterBasic(),
-      characterOpsecAlt: characterOpsec(),
+      actionPendingSlab: pendingPromise(),
+      actionFailedSlab: errorPromise(),
+
+      characterBasic: characterBasic(sampleSkillQueue()),
+      characterOpsecAlt: characterOpsec(sampleSkillQueue()),
       characterEsiFailure: characterBasic(warningSkillQueue()),
       characterBiomassed: characterBiomassed(),
       characterNeedsReauth: characterNeedsReauth(warningSkillQueue()),
@@ -151,12 +156,7 @@ export default {
       loginParams: "foo=bar&baz=pizza",
     };
   },
-
-  mounted() {
-    this.$refs.actionPendingSlab.$refs.spinner.observe(pendingPromise());
-    this.$refs.actionFailedSlab.$refs.spinner.observe(errorPromise());
-  },
-};
+});
 
 function pendingPromise() {
   return new Promise(() => {});
@@ -170,7 +170,7 @@ function errorPromise() {
   });
 }
 
-function characterBasic(skillQueue) {
+function characterBasic(skillQueue: SkillQueueSummary): CharacterJson {
   return {
     id: 95773199,
     name: "Brienne Lesqagar",
@@ -178,32 +178,32 @@ function characterBasic(skillQueue) {
     opsec: false,
     corpStatus: "primary",
     skillQueue: skillQueue || sampleSkillQueue(),
-    corp: 123456,
+    corpId: 123456,
   };
 }
 
-function characterOpsec() {
-  let character = characterBasic();
+function characterOpsec(skillQueue: SkillQueueSummary): CharacterJson {
+  let character = characterBasic(skillQueue);
   character.opsec = true;
   character.corpStatus = "external";
   return character;
 }
 
-function characterBiomassed() {
-  let character = characterBasic();
+function characterBiomassed(): CharacterJson {
+  let character = characterBasic(emptySkillQueue());
   character.corpId = CORP_DOOMHEIM;
   return character;
 }
 
-function characterNeedsReauth(skillQueue) {
+function characterNeedsReauth(skillQueue: SkillQueueSummary): CharacterJson {
   let character = characterBasic(skillQueue);
   character.needsReauth = true;
   return character;
 }
 
-function sampleSkillQueue() {
+function sampleSkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "active",
     skillInTraining: {
       name: "Repair Systems V",
@@ -217,9 +217,9 @@ function sampleSkillQueue() {
   };
 }
 
-function emptySkillQueue() {
+function emptySkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "empty",
     skillInTraining: null,
     queue: {
@@ -229,9 +229,9 @@ function emptySkillQueue() {
   };
 }
 
-function pausedSkillQueue() {
+function pausedSkillQueue(): SkillQueueSummary {
   return {
-    dataStatus: "fresh",
+    dataFreshness: "fresh",
     queueStatus: "paused",
     skillInTraining: {
       name: "Gallente Frigate V",
@@ -245,15 +245,15 @@ function pausedSkillQueue() {
   };
 }
 
-function unfreshSkillQueue() {
+function unfreshSkillQueue(): SkillQueueSummary {
   let queue = sampleSkillQueue();
-  queue.dataStatus = "bad_credentials";
+  queue.warning = "bad_credentials";
   return queue;
 }
 
-function warningSkillQueue() {
+function warningSkillQueue(): SkillQueueSummary {
   let queue = sampleSkillQueue();
-  queue.dataStatus = "cached";
+  queue.dataFreshness = "cached";
   queue.warning = "bad_credentials";
 
   return queue;

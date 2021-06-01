@@ -24,35 +24,38 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "./EveImage.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     EveImage,
   },
 
   props: {
     identity: {
-      type: Object,
+      type: Object as PropType<Identity>,
       required: true,
     },
   },
 
   computed: {
-    canReadRoster() {
+    canReadRoster(): boolean {
       return this.identity.access["roster"] >= 1;
     },
 
-    canAccessAdminConsole() {
+    canAccessAdminConsole(): boolean {
       return this.identity.access["adminConsole"] >= 1;
     },
 
-    canAccessDev() {
+    canAccessDev(): boolean {
       return process.env.NODE_ENV == "development";
     },
   },
-};
+});
 </script>
 
 <style scoped>

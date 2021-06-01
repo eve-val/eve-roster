@@ -1,5 +1,5 @@
 // TODO: Replace this with a data source that reads from the config file
-let constants = {
+const constants = {
   primaryCorporations: [
     98477920, // SAFE
   ],

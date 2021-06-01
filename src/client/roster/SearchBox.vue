@@ -9,27 +9,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {},
+<script lang="ts">
+import { defineComponent } from "vue";
+import { hasValue } from "../shared/htmlUtil";
 
+export default defineComponent({
   emits: ["change"],
 
-  data: function () {
-    return {};
-  },
-
   methods: {
-    onSearchBoxInput: function (ev) {
-      this.$emit("change", ev.target.value.trim());
+    onSearchBoxInput: function (ev: Event) {
+      if (hasValue(ev.target)) {
+        this.$emit("change", ev.target.value.trim());
+      }
     },
 
-    onSearchBoxEsc: function (ev) {
-      ev.target.value = "";
-      this.$emit("change", ev.target.value);
+    onSearchBoxEsc: function (ev: Event) {
+      if (hasValue(ev.target)) {
+        ev.target.value = "";
+        this.$emit("change", "");
+      }
     },
   },
-};
+});
 </script>
 
 <style scoped>

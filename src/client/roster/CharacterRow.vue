@@ -76,10 +76,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
+import { CssStyleObject } from "../shared/types";
 
 import EveImage from "../shared/EveImage.vue";
 import Tooltip from "../shared/Tooltip.vue";
@@ -88,40 +89,46 @@ import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
-// Indices must match levels in src/shared/rosterAlertLevels.js
-const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon];
+import { AccountColumn, CharacterColumn, Column } from "./rosterColumns";
+import { Account, Character } from "./types";
 
-export default {
+// Indices must match levels in src/shared/rosterAlertLevels.js
+const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon] as const;
+
+type Value = string | number | boolean | null | undefined;
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     Tooltip,
   },
 
   props: {
-    character: { type: Object, required: true },
-    columns: { type: Array, required: true },
+    character: { type: Object as PropType<Character>, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     isMain: { type: Boolean, required: true },
-    account: { type: Object, required: false, default: null },
+    account: {
+      type: Object as PropType<Account>,
+      required: false,
+      default: null,
+    },
     filter: { type: String, required: false, default: "" },
   },
 
   emits: ["toggleExpanded"],
 
-  data: function () {
-    return {};
-  },
-
   computed: {
-    displayVals: function () {
-      let labels = [];
+    displayVals: function (): Value[] {
+      let labels: Value[] = [];
       for (let col of this.columns) {
         labels.push(this.displayVal(col));
       }
       return labels;
     },
 
-    subsequentDisplayVals: function () {
-      let labels = [];
+    subsequentDisplayVals: function (): Value[] {
+      let labels: Value[] = [];
       this.columns.forEach((col, i) => {
         if (i >= 3) {
           labels.push(this.displayVal(col));
@@ -130,7 +137,7 @@ export default {
       return labels;
     },
 
-    alertIconSrc: function () {
+    alertIconSrc: function (): string | null {
       let level = 0;
       if (this.isMain) {
         level = Math.max(
@@ -144,7 +151,7 @@ export default {
       return MSG_ICONS[level];
     },
 
-    alertMessage: function () {
+    alertMessage: function (): string | null {
       let message;
       if (this.isMain) {
         // Must include any account message
@@ -160,12 +167,12 @@ export default {
       return message.length > 0 ? message : null;
     },
 
-    filterMatch: function () {
+    filterMatch: function (): string[] | null {
       let match = filter.match(this.character.name, this.filter);
       return match;
     },
 
-    inPrimaryCorp: function () {
+    inPrimaryCorp: function (): boolean {
       return (
         eveConstants.primaryCorporations.indexOf(
           this.character.corporationId
@@ -175,7 +182,7 @@ export default {
   },
 
   methods: {
-    cellStyle: function (idx) {
+    cellStyle: function (idx: number): CssStyleObject {
       let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
@@ -193,7 +200,7 @@ export default {
       };
     },
 
-    tooltipMessage: function (idx) {
+    tooltipMessage: function (idx: number): Value {
       let col = this.columns[idx];
       if (!col.metaKey) {
         // No tooltip to display
@@ -218,17 +225,17 @@ export default {
           col.metaKey == "lossValueInLastMonth"
         ) {
           // Special case to reformat numeric value to a friendly ISK string
-          metaValue = iskLabel(metaValue);
+          // type checked above.
+          metaValue = iskLabel(<number>metaValue);
         }
-
-        return metaValue;
+        return <string | number>metaValue;
       } else {
         // Meta data was not included in the server response
         return null;
       }
     },
 
-    displayVal: function (col) {
+    displayVal: function (col: Column): Value {
       switch (col.key) {
         case "alts":
           if (!this.isMain) {
@@ -243,15 +250,15 @@ export default {
             if (!this.isMain) {
               return "″"; // ditto symbol
             } else {
-              return this.account[col.key];
+              return <Value>this.account[(<AccountColumn>col).key];
             }
           } else {
-            return this.character[col.key];
+            return this.character[(<CharacterColumn>col).key];
           }
       }
     },
 
-    dashDefault: function (value) {
+    dashDefault: function (value: null | string | number): string | number {
       if (value == null) {
         return "-";
       } else {
@@ -259,10 +266,10 @@ export default {
       }
     },
 
-    cellAlignment(colIdx) {
+    cellAlignment(colIdx: number): string {
       let col = this.columns[colIdx];
       let align = "left";
-      if (col.key == "warning") {
+      if (col.key == "alertLevel") {
         align = "center";
       } else if (col.numeric) {
         align = "right";
@@ -270,13 +277,13 @@ export default {
       return align;
     },
   },
-};
+});
 
-function iskLabel(isk) {
+function iskLabel(isk: number): string {
   return formatNumber(isk) + " ISK";
 }
 
-function altsLabel(altsCount) {
+function altsLabel(altsCount: number): string {
   if (altsCount == 0) {
     return "";
   } else if (altsCount == 1) {

@@ -15,6 +15,9 @@
           <option value="Keepstar">Keepstar</option>
           <option value="Raitaru">Raitaru</option>
           <option value="Azbel">Azbel</option>
+          <option value="Sotiyo">Sotiyo</option>
+          <option value="Athanor">Athanor</option>
+          <option value="Tatara">Tatara</option>
         </select>
       </label>
       <label
@@ -44,35 +47,64 @@
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import AdminWrapper from "./AdminWrapper.vue";
 
-export default {
+import { hasValue, hasBlur } from "../shared/htmlUtil";
+import { Identity } from "../home";
+
+const CITADEL_TYPES = [
+  "Astrahus",
+  "Fortizar",
+  "Keepstar",
+  "Raitaru",
+  "Azbel",
+  "Sotiyo",
+  "Athanor",
+  "Tatara",
+];
+type CitadelType = typeof CITADEL_TYPES[number];
+
+interface Citadel {
+  id: number | null;
+  name: string;
+  type: CitadelType;
+  allianceAccess: boolean;
+  allianceOwned: boolean;
+}
+
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       citadels: [],
       newCitadel: {
+        id: null,
         name: "",
         type: "Astrahus",
         allianceAccess: true,
         allianceOwned: true,
       },
+    } as {
+      citadels: Citadel[];
+      newCitadel: Citadel;
     };
   },
 
   computed: {
-    sortedCitadels: function () {
+    sortedCitadels: function (): Citadel[] {
       let sortedCitadels = this.citadels.slice();
-      sortedCitadels.sort((a, b) => {
+      sortedCitadels.sort((a: Citadel, b: Citadel) => {
         return a.name.localeCompare(b.name);
       });
       return sortedCitadels;
@@ -85,23 +117,25 @@ export default {
 
   methods: {
     fetchData() {
-      this.citadelsPromise = ajaxer.getCitadels().then((response) => {
-        this.citadels = response.data.citadels;
-      });
+      ajaxer
+        .getCitadels()
+        .then((response: AxiosResponse<{ citadels: Citadel[] }>) => {
+          this.citadels = response.data.citadels;
+        });
     },
 
     addCitadel() {
       let c = this.newCitadel;
-      this.addPromise = ajaxer
+      ajaxer
         .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-        .then((response) => {
+        .then((response: AxiosResponse<Citadel>) => {
           this.citadels.push(response.data);
           this.newCitadel.name = "";
         });
     },
 
-    removeCitadel(id) {
-      this.deletePromise = ajaxer.deleteCitadel(id).then((_response) => {
+    removeCitadel(id: number) {
+      ajaxer.deleteCitadel(id).then((_response: AxiosResponse<{}>) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
             this.citadels.splice(i, 1);
@@ -111,9 +145,9 @@ export default {
       });
     },
 
-    renameCitadel(id, name) {
-      this.renamePromise = ajaxer.putCitadelName(id, name).then((_response) => {
-        this.citadels.map((citadel) => {
+    renameCitadel(id: number, name: string) {
+      ajaxer.putCitadelName(id, name).then((_response: AxiosResponse<{}>) => {
+        this.citadels.map((citadel: Citadel) => {
           if (citadel.id === id) {
             citadel.name = name;
           }
@@ -121,42 +155,56 @@ export default {
       });
     },
 
-    addLogic(event) {
+    addLogic(event: KeyboardEvent) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
-        event.target.blur();
-        if (event.target.value) {
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
+        if (hasValue(event.target) && event.target.value) {
           this.addCitadel();
         }
       } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.value = "";
-        event.target.blur();
+        if (hasValue(event.target)) {
+          event.target.value = "";
+        }
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       }
     },
 
-    editLogic(oldName, event) {
+    editLogic(oldName: string, event: KeyboardEvent) {
       // Check for editing finish
       if (event.which === /* Enter */ 13) {
         event.preventDefault();
-        event.target.blur();
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       } else if (event.which === /* Esc */ 27) {
         event.preventDefault();
-        event.target.value = oldName;
-        event.target.blur();
+        if (hasValue(event.target)) {
+          event.target.value = oldName;
+        }
+        if (hasBlur(event.target)) {
+          event.target.blur();
+        }
       }
     },
 
-    validate(id, name, event) {
+    validate(id: number, name: string, event: KeyboardEvent) {
       this.editLogic(name, event);
-      let newName = event.target.value;
-      if (newName !== name) {
-        this.renameCitadel(id, newName);
+      if (hasValue(event.target)) {
+        let newName = event.target.value;
+        if (newName !== name) {
+          this.renameCitadel(id, newName);
+        }
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

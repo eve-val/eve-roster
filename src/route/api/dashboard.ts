@@ -1,15 +1,13 @@
 import { dao } from "../../db/dao";
 import { NotFoundError } from "../../error/NotFoundError";
 import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
-import {
-  loadSummarizedQueue,
-  SkillQueueSummary,
-} from "../../domain/skills/skillQueueSummarizer";
+import { loadSummarizedQueue } from "../../domain/skills/skillQueueSummarizer";
+import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
 import { parallelize } from "../../util/asyncUtil";
 import * as ccpSso from "../../domain/sso/loginParams";
 import { canDesignateMain } from "../../domain/account/canDesignateMain";
 
-interface Output {
+export interface Output {
   accountId: number;
   characters: CharacterJson[];
   transfers: { character: number; name: string }[];
@@ -21,7 +19,7 @@ interface Output {
   };
 }
 
-interface CharacterJson {
+export interface CharacterJson {
   id: number;
   name: string;
   opsec: boolean;

@@ -30,9 +30,11 @@
   </div>
 </template>
 
-<script>
-const HORIZONTAL_GRAVITIES = ["left", "center", "right"];
-const VERTICAL_GRAVITIES = ["top", "center", "bottom"];
+<script lang="ts">
+const HORIZONTAL_GRAVITIES = ["left", "center", "right"] as const;
+type HorizontalGravity = typeof HORIZONTAL_GRAVITIES[number];
+const VERTICAL_GRAVITIES = ["top", "center", "bottom"] as const;
+type VerticalGravity = typeof VERTICAL_GRAVITIES[number];
 
 const MARGIN_TO_TARGET = 3;
 const ARROW_RISE = 7;
@@ -40,25 +42,30 @@ const ARROW_BASE = 14;
 const ARROW_FILL = "#3e3e3e";
 const ARROW_INSET_FILL = "#202020";
 
-export default {
+import { CssStyleObject } from "./types";
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     /**
      * Where the tooltip appears relative to the original object.
      * Format: `<horizontal> <vertical>`
      * e.g. `left center`
      * Horizontal options: `left`, `center`, `right`
-     * Vertical optioins: `top`, `center`, `bottom`
+     * Vertical options: `top`, `center`, `bottom`
      */
     gravity: {
       type: String,
       required: false,
       default: "center bottom",
-      validator: function (value) {
+      validator: (value: string) => {
         let pieces = splitGravString(value);
-        if (!HORIZONTAL_GRAVITIES.includes(pieces[0])) {
+        if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(pieces[0])) {
           return false;
         }
-        if (pieces[1] && !VERTICAL_GRAVITIES.includes(pieces[1])) {
+        if (
+          pieces[1] &&
+          !(<readonly string[]>VERTICAL_GRAVITIES).includes(pieces[1])
+        ) {
           return false;
         }
         return true;
@@ -72,35 +79,37 @@ export default {
     },
   },
 
-  data: function () {
+  data() {
     return {
       hovering: false,
+    } as {
+      hovering: boolean;
     };
   },
 
   computed: {
-    horizontalGravity() {
-      let hgrav = splitGravString(this.gravity)[0];
-      if (!HORIZONTAL_GRAVITIES.includes(hgrav)) {
+    horizontalGravity(): HorizontalGravity {
+      let hgrav = splitGravString(this.gravity)[0] || "center";
+      if (!(<readonly string[]>HORIZONTAL_GRAVITIES).includes(hgrav)) {
         hgrav = "center";
       }
-      return hgrav;
+      return <HorizontalGravity>hgrav;
     },
 
-    verticalGravity() {
+    verticalGravity(): VerticalGravity {
       let vgrav = splitGravString(this.gravity)[1] || "center";
-      if (!VERTICAL_GRAVITIES.includes(vgrav)) {
+      if (!(<readonly string[]>VERTICAL_GRAVITIES).includes(vgrav)) {
         vgrav = "center";
       }
       if (this.horizontalGravity == "center" && vgrav == "center") {
         vgrav = "bottom";
       }
 
-      return vgrav;
+      return <VerticalGravity>vgrav;
     },
 
     flexContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
       switch (this.horizontalGravity) {
         case "left":
@@ -127,7 +136,7 @@ export default {
     },
 
     nosizeContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
       if (this.horizontalGravity == "center") {
         style["align-items"] = "center";
@@ -171,7 +180,7 @@ export default {
     },
 
     spacerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
       let marginStr = MARGIN_TO_TARGET + "px";
       switch (this.triangleDirection) {
         case "left":
@@ -189,8 +198,13 @@ export default {
     },
 
     triangleStyle() {
-      let style = this.getTriangleStyle(ARROW_FILL, ARROW_BASE, ARROW_RISE);
-
+      let style = getTriangleStyle(
+        ARROW_FILL,
+        ARROW_BASE,
+        ARROW_RISE,
+        this.horizontalGravity,
+        this.verticalGravity
+      );
       if (this.horizontalGravity != "center") {
         switch (this.verticalGravity) {
           case "top":
@@ -206,10 +220,12 @@ export default {
     },
 
     insetTriangleStyle() {
-      let style = this.getTriangleStyle(
+      let style = getTriangleStyle(
         ARROW_INSET_FILL,
         ARROW_BASE,
-        ARROW_RISE
+        ARROW_RISE,
+        this.horizontalGravity,
+        this.verticalGravity
       );
 
       if (this.horizontalGravity == "center") {
@@ -224,7 +240,7 @@ export default {
     },
 
     messageMaxSizerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
       switch (this.horizontalGravity) {
         case "left":
@@ -242,7 +258,7 @@ export default {
     },
 
     messageContainerStyle() {
-      let style = {};
+      let style: CssStyleObject = {};
 
       if (this.horizontalGravity != "center") {
         switch (this.verticalGravity) {
@@ -278,44 +294,48 @@ export default {
       return null;
     },
   },
+});
 
-  methods: {
-    getTriangleStyle: function (color, base, rise) {
-      let style = {};
+function getTriangleStyle(
+  color: string,
+  base: number,
+  rise: number,
+  horizontalGravity: HorizontalGravity,
+  verticalGravity: VerticalGravity
+) {
+  let style: CssStyleObject = {};
 
-      const solidBorder = `${rise}px solid ${color}`;
-      const transBorder = `${base / 2}px solid transparent`;
+  const solidBorder = `${rise}px solid ${color}`;
+  const transBorder = `${base / 2}px solid transparent`;
 
-      if (this.horizontalGravity == "center") {
-        style["border-left"] = transBorder;
-        style["border-right"] = transBorder;
-        switch (this.verticalGravity) {
-          case "top":
-            style["border-top"] = solidBorder;
-            break;
-          case "bottom":
-            style["border-bottom"] = solidBorder;
-            break;
-        }
-      } else {
-        style["border-top"] = transBorder;
-        style["border-bottom"] = transBorder;
-        switch (this.horizontalGravity) {
-          case "left":
-            style["border-left"] = solidBorder;
-            break;
-          case "right":
-            style["border-right"] = solidBorder;
-            break;
-        }
-      }
+  if (horizontalGravity == "center") {
+    style["border-left"] = transBorder;
+    style["border-right"] = transBorder;
+    switch (verticalGravity) {
+      case "top":
+        style["border-top"] = solidBorder;
+        break;
+      case "bottom":
+        style["border-bottom"] = solidBorder;
+        break;
+    }
+  } else {
+    style["border-top"] = transBorder;
+    style["border-bottom"] = transBorder;
+    switch (horizontalGravity) {
+      case "left":
+        style["border-left"] = solidBorder;
+        break;
+      case "right":
+        style["border-right"] = solidBorder;
+        break;
+    }
+  }
 
-      return style;
-    },
-  },
-};
+  return style;
+}
 
-function splitGravString(str) {
+function splitGravString(str: string): string[] {
   return str.trim().split(/\s+/);
 }
 </script>

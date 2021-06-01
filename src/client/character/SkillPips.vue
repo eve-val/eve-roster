@@ -12,13 +12,14 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     trainedLevel: { type: Number, required: true },
     queuedLevel: { type: Number, required: true },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -18,24 +18,12 @@ const logger = buildLoggerFromFilename(__filename);
 
 const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 
-export type DataFreshness = "fresh" | "cached";
-export type QueueStatus = "empty" | "paused" | "active";
-export type WarningType = "bad_credentials" | "fetch_failure";
-
-export interface SkillQueueSummary {
-  dataFreshness: DataFreshness;
-  queueStatus: QueueStatus;
-  skillInTraining: null | {
-    name: string;
-    progress: number;
-    timeRemaining: string | null;
-  };
-  queue: {
-    count: number;
-    timeRemaining: string | null;
-  };
-  warning?: WarningType;
-}
+import {
+  DataFreshness,
+  QueueStatus,
+  WarningType,
+  SkillQueueSummary,
+} from "./skillQueueSummary";
 
 /**
  * Loads a character's skill queue and then generates summary text for it
@@ -45,7 +33,7 @@ export function loadSummarizedQueue(
   db: Tnex,
   characterId: number,
   freshness: DataFreshness
-) {
+): Promise<SkillQueueSummary> {
   return Promise.resolve()
     .then(() => {
       return loadQueue(db, characterId, freshness);

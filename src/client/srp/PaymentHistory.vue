@@ -35,23 +35,39 @@ Table of PaymentHistoryRows.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MoreButton from "./MoreButton.vue";
 import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Payment } from "./types";
+
+import { SimpleNumMap } from "../../util/simpleTypes";
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     MoreButton,
     PaymentHistoryRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    identity: { type: Object, required: true },
-    forAccount: { type: Number, required: false, default: undefined },
-    compactMode: { type: Boolean, required: false, default: false },
+    identity: { type: Object as PropType<Identity>, required: true },
+    forAccount: {
+      type: Number as PropType<number | undefined>,
+      required: false,
+      default: undefined,
+    },
+    compactMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -59,15 +75,19 @@ export default {
       payments: null,
       fetchPromise: null,
       suspectMoreToFetch: true,
+    } as {
+      payments: Payment[] | null;
+      fetchPromise: Promise<AxiosResponse> | null;
+      suspectMoreToFetch: boolean;
     };
   },
 
   computed: {
-    resultsPerFetch() {
+    resultsPerFetch(): number {
       return this.compactMode ? 3 : 30;
     },
 
-    finalTimestamp() {
+    finalTimestamp(): number | undefined {
       if (!this.payments || this.payments.length == 0) {
         return undefined;
       } else {
@@ -80,19 +100,24 @@ export default {
     this.fetchNextResults();
   },
 
-  methods: Object.assign(
-    {
-      fetchNextResults() {
-        this.fetchPromise = ajaxer.getSrpPaymentHistory({
-          paid: this.forAccount ? true : undefined,
-          order: "desc",
-          orderBy: "modified",
-          startingAfter: this.finalTimestamp,
-          account: this.forAccount,
-          limit: this.resultsPerFetch,
-        });
+  methods: {
+    fetchNextResults() {
+      this.fetchPromise = ajaxer.getSrpPaymentHistory({
+        paid: this.forAccount ? true : undefined,
+        order: "desc",
+        orderBy: "modified",
+        startingAfter: this.finalTimestamp,
+        account: this.forAccount,
+        limit: this.resultsPerFetch,
+      });
 
-        this.fetchPromise.then((response) => {
+      this.fetchPromise.then(
+        (
+          response: AxiosResponse<{
+            names: SimpleNumMap<string>;
+            payments: Payment[];
+          }>
+        ) => {
           this.addNames(response.data.names);
 
           this.payments = this.payments || [];
@@ -102,12 +127,11 @@ export default {
 
           this.suspectMoreToFetch =
             response.data.payments.length == this.resultsPerFetch;
-        });
-      },
+        }
+      );
     },
-    NameCacheMixin
-  ),
-};
+  },
+});
 </script>
 
 <style scoped>

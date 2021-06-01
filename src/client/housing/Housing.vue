@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 
@@ -49,7 +49,10 @@ import MemberChip from "./MemberChip.vue";
 
 const UNASSIGNED_KEY = "__unassigned__";
 
-export default {
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType, ref } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     CitadelRow,
@@ -57,7 +60,12 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup: () => {
+    const dragChip = ref<InstanceType<typeof MemberChip>>();
+    return { dragChip };
   },
 
   data() {
@@ -126,7 +134,7 @@ export default {
   created: function () {
     ajaxer
       .fetchRoster()
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         this.pilots = this.transformPilots(response.data);
       })
       .catch(function (err) {
@@ -135,7 +143,7 @@ export default {
   },
 
   methods: {
-    transformPilots: function (pilots) {
+    transformPilots: (pilots) => {
       for (let i = 0; i < pilots.length; i++) {
         let pilot = pilots[i];
         pilot.transactionInProgress = false;
@@ -143,7 +151,7 @@ export default {
       return pilots;
     },
 
-    onMouseMove: (ev) => {
+    onMouseMove: (ev: Event) => {
       if (this.draggedCharacter != null) {
         ev.preventDefault();
 
@@ -157,7 +165,7 @@ export default {
       }
     },
 
-    onMouseUp: (_ev) => {
+    onMouseUp: (_ev: Event) => {
       if (this.draggedCharacter != null) {
         if (this.hoverTarget != null) {
           let character = this.draggedCharacter;
@@ -195,8 +203,8 @@ export default {
     },
 
     positionDragChip: (x, y) => {
-      this.$refs.dragChip.$el.style.left = x + "px";
-      this.$refs.dragChip.$el.style.top = y + "px";
+      this.dragChip.value?.$el.style.left = x + "px";
+      this.dragChip.value?.$el.style.top = y + "px";
     },
 
     findCharacter: (name) => {
@@ -224,17 +232,17 @@ export default {
       });
     },
 
-    hover: (target) => {
+    hover: (target: Event) => {
       this.hoverTarget = target;
     },
 
-    unhover: (target) => {
+    unhover: (target: Event) => {
       if (target == this.hoverTarget) {
         this.hoverTarget = null;
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

@@ -43,11 +43,11 @@
       </div>
       <div class="length-reminder">Showing most recent 200 records</div>
     </div>
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
   </admin-wrapper>
 </template>
 
-<script>
+<script lang="ts">
 import moment from "moment";
 
 import ajaxer from "../shared/ajaxer";
@@ -56,7 +56,10 @@ import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
-export default {
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
@@ -64,31 +67,37 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
     return {
       rows: null,
+      promise: null,
+    } as {
+      rows: any[] | null;
+      promise: Promise<any> | null;
     };
   },
 
   mounted() {
-    this.$refs.spinner.observe(ajaxer.getAdminAccountLog()).then((response) => {
+    const promise = ajaxer.getAdminAccountLog();
+    this.promise = promise;
+    promise.then((response: AxiosResponse) => {
       let rows = response.data.rows;
       this.rows = rows;
     });
   },
 
   methods: {
-    prettyPrint: function (jsonStr) {
+    prettyPrint: function (jsonStr: string): string {
       return JSON.stringify(JSON.parse(jsonStr), null, 2);
     },
-    displayDate: function (value) {
+    displayDate: function (value: number): string {
       return moment(value).format("Y/MM/DD HH:mm:ss Z");
     },
   },
-};
+});
 </script>
 
 <style scoped>

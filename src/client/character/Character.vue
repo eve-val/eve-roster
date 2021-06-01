@@ -8,7 +8,7 @@
           {{ character.name }}
         </template>
         <loading-spinner
-          ref="spinner"
+          :promise="promise"
           display="block"
           default-state="hidden"
           size="34px"
@@ -120,18 +120,25 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
+import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
+import { first } from "../../util/collections";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
-import { groupifySkills } from "./skills";
+import { Skill } from "./skills";
 
-export default {
+import { Identity } from "../home";
+import { Output, Character, Account } from "../../route/api/character";
+
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     EveImage,
@@ -142,41 +149,55 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       character: null,
       account: null,
       access: null,
-      timezones: null,
-      citadels: null,
-
-      characterPromise: null,
+      timezones: [],
+      citadels: [],
       corporationName: null,
+      skillsMap: null,
+      queue: null,
+      promise: null,
+    } as {
+      character: Character | null;
+      account: Account | null;
+      access: SimpleMap<number> | null;
+      timezones: string[] | undefined;
+      citadels: string[] | undefined;
+      corporationName: string | null;
+      skillsMap: SimpleNumMap<Skill> | null;
+      queue: { id: number; targetLevel: number }[] | null;
+      promise: Promise<any> | null;
     };
   },
 
   computed: {
-    characterId: function () {
-      return parseInt(this.$route.params.id);
+    characterId: function (): number {
+      return parseInt(first(this.$route.params.id));
     },
 
-    canWriteSrp: function () {
+    canWriteSrp: function (): boolean {
       return this.identity.access["srp"] == 2;
     },
 
-    canWriteTimezone: function () {
+    canWriteTimezone: function (): boolean {
       return this.access != null && this.access["memberTimezone"] == 2;
     },
 
-    canWriteCitadel: function () {
+    canWriteCitadel: function (): boolean {
       return this.access != null && this.access["memberHousing"] == 2;
     },
 
-    timezoneOptions: function () {
-      return this.timezones.map((timezone) => {
+    timezoneOptions: function (): { value: string; label: string }[] {
+      if (this.timezones == undefined) {
+        return [];
+      }
+      return this.timezones.map((timezone: string) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
           value: timezone,
@@ -185,8 +206,11 @@ export default {
       });
     },
 
-    citadelOptions: function () {
-      return this.citadels.map((citadel) => ({
+    citadelOptions: function (): { label: string; value: string }[] {
+      if (this.citadels == undefined) {
+        return [];
+      }
+      return this.citadels.map((citadel: string) => ({
         label: citadel,
         value: citadel,
       }));
@@ -194,21 +218,20 @@ export default {
   },
 
   watch: {
-    characterId(_value) {
+    characterId(_value: number) {
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.character = null;
       this.corporationName = null;
-      this.characterPromise = null;
 
       this.fetchData();
     },
 
-    character(value) {
+    character(value: Character | null) {
       if (value && value.corporationId) {
         ajaxer
           .getCorporation(value.corporationId)
-          .then((response) => {
+          .then((response: AxiosResponse) => {
             this.corporationName = response.data.name;
           })
           .catch((e) => {
@@ -219,7 +242,7 @@ export default {
     },
   },
 
-  mounted: function () {
+  mounted() {
     this.fetchData();
   },
 
@@ -228,36 +251,37 @@ export default {
       if (!this.characterId) {
         return;
       }
-      this.$refs.spinner
-        .observe(ajaxer.getCharacter(this.characterId))
-        .then((response) => {
-          this.character = response.data.character;
-          this.account = response.data.account;
-          this.access = response.data.access;
-          if (response.data.citadels) {
-            response.data.citadels.sort((a, b) => a.localeCompare(b));
-          }
-          this.citadels = response.data.citadels;
-          this.timezones = response.data.timezones;
-        });
+      const promise = ajaxer.getCharacter(this.characterId);
+      this.promise = promise;
+      promise.then((response: AxiosResponse<Output>) => {
+        this.character = response.data.character;
+        this.account = response.data.account;
+        this.access = response.data.access;
+        if (response.data.citadels) {
+          response.data.citadels.sort((a: string, b: string) =>
+            a.localeCompare(b)
+          );
+        }
+        this.citadels = response.data.citadels;
+        this.timezones = response.data.timezones;
+      });
     },
 
     formatSp() {
-      if (this.character.totalSp) {
+      if (this.character?.totalSp) {
         return formatNumber(this.character.totalSp);
       } else {
         return "-";
       }
     },
 
-    processSkillsData(skills) {
-      let map = {};
+    processSkillsData(skills: Skill[]) {
+      let map: SimpleNumMap<Skill> = {};
       for (let skill of skills) {
         map[skill.id] = skill;
-        skill.queuedLevel = null;
+        skill.queuedLevel = undefined;
       }
-      this.skillMap = map;
-      this.skillGroups = groupifySkills(skills);
+      this.skillsMap = map;
       this.maybeInjectQueueDataIntoSkillsMap();
     },
 
@@ -269,17 +293,23 @@ export default {
       }
     },
 
-    submitTimezone(timezone) {
+    submitTimezone(timezone: string) {
+      if (this.account?.id == null) {
+        return;
+      }
       return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
     },
 
-    submitHousing(citadelName) {
+    submitHousing(citadelName: string) {
+      if (this.account?.id == null) {
+        return;
+      }
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },
   },
-};
+});
 
-const TIMEZONE_HINTS = {
+const TIMEZONE_HINTS: { [key: string]: string | null } = {
   "US West": "PT/MT",
   "US East": "CT/ET",
   "EU West": "WET/CET",

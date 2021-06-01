@@ -9,7 +9,7 @@ losses, etc.
   <app-page :identity="identity" :content-width="1100">
     <div class="title">SRP #{{ srpId }}</div>
 
-    <loading-spinner ref="spinner" display="block" size="34px" />
+    <loading-spinner :promise="promise" display="block" size="34px" />
 
     <template v-if="payment != null">
       <div class="section-title">Status</div>
@@ -34,9 +34,9 @@ losses, etc.
 
           <a v-if="canEditSrp" class="undo-link" @click="onUndoClick"> Undo </a>
           <loading-spinner
-            ref="undoSpinner"
             display="inline"
             default-state="hidden"
+            :promise="undoPromise"
           />
         </div>
       </div>
@@ -61,16 +61,28 @@ losses, etc.
   </app-page>
 </template>
 
-<script>
+<script lang="ts">
 import AppPage from "../shared/AppPage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 
+import { Loss, Payment } from "./types";
+
+import { SimpleNumMap } from "../../util/simpleTypes";
+
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { Identity } from "../home";
+
+const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
+type UndoStatus = typeof UNDO_STATUSES[number];
+
+import { AxiosResponse } from "axios";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppPage,
     LoadingSpinner,
@@ -78,8 +90,10 @@ export default {
     LossRow,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
     srpId: { type: Number, required: true },
   },
 
@@ -87,12 +101,20 @@ export default {
     return {
       payment: null,
       losses: [],
-      undoStatus: "inactive", // inactive | saving | error
+      undoStatus: "inactive",
+      promise: null,
+      undoPromise: null,
+    } as {
+      payment: Payment | null;
+      losses: Loss[];
+      undoStatus: UndoStatus;
+      promise: Promise<any> | null;
+      undoPromise: Promise<any> | null;
     };
   },
 
   computed: {
-    totalPayout() {
+    totalPayout(): string {
       let sum = 0;
       for (let loss of this.losses) {
         sum += loss.payout;
@@ -102,7 +124,7 @@ export default {
       });
     },
 
-    canEditSrp() {
+    canEditSrp(): boolean {
       return this.identity.access["srp"] == 2;
     },
   },
@@ -111,40 +133,52 @@ export default {
     this.fetchData();
   },
 
-  methods: Object.assign(
-    {
-      fetchData() {
-        this.payment = null;
-        this.losses = null;
-        this.$refs.spinner
-          .observe(ajaxer.getSrpPayment(this.srpId))
-          .then((response) => {
-            this.addNames(response.data.names);
-            this.payment = response.data.payment;
-            this.losses = response.data.losses;
-          });
-      },
-
-      onUndoClick(_e) {
-        if (this.undoStatus == "saving") {
-          return;
+  methods: {
+    fetchData() {
+      this.payment = null;
+      this.losses = [];
+      const promise = ajaxer.getSrpPayment(this.srpId);
+      this.promise = promise;
+      promise.then(
+        (
+          response: AxiosResponse<{
+            names: SimpleNumMap<string>;
+            payment: Payment;
+            losses: Loss[];
+          }>
+        ) => {
+          this.addNames(response.data.names);
+          this.payment = response.data.payment;
+          this.losses = response.data.losses;
         }
-        this.undoStatus = "saving";
-        this.$refs.undoSpinner
-          .observe(ajaxer.putSrpPaymentStatus(this.srpId, false, undefined))
-          .then((_response) => {
-            this.undoStatus = "inactive";
-            this.payment.paid = false;
-            this.fetchData();
-          })
-          .catch((_e) => {
-            this.undoStatus = "error";
-          });
-      },
+      );
     },
-    NameCacheMixin
-  ),
-};
+
+    onUndoClick() {
+      if (this.undoStatus == "saving") {
+        return;
+      }
+      this.undoStatus = "saving";
+      const undoPromise = ajaxer.putSrpPaymentStatus(
+        this.srpId,
+        false,
+        undefined
+      );
+      this.undoPromise = undoPromise;
+      undoPromise
+        .then((_response: AxiosResponse<{}>) => {
+          this.undoStatus = "inactive";
+          if (this.payment != null) {
+            this.payment.paid = false;
+          }
+          this.fetchData();
+        })
+        .catch(() => {
+          this.undoStatus = "error";
+        });
+    },
+  },
+});
 </script>
 
 <style scoped>

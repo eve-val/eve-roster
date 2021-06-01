@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
 import AppHeader from "../shared/AppHeader.vue";
@@ -38,7 +38,18 @@ import DevLoadingSpinner from "./DevLoadingSpinner.vue";
 import DevOwnedCharacterSlab from "./DevOwnedCharacterSlab.vue";
 import DevTaskSlab from "./DevTaskSlab.vue";
 
-export default {
+import { first } from "../../util/collections";
+
+import { Identity } from "../home";
+
+interface Section {
+  component: ComponentOptions;
+  label: string;
+  path: string;
+}
+
+import { defineComponent, PropType, ComponentOptions } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     DevLoadingSpinner,
@@ -46,7 +57,7 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
@@ -68,15 +79,19 @@ export default {
           path: "dev-task-slab",
         },
       ],
+    } as {
+      sections: Section[];
     };
   },
 
   computed: {
-    currentSection() {
-      return _.findWhere(this.sections, { path: this.$route.params.section });
+    currentSection(): Section | undefined {
+      return _.findWhere(this.sections, {
+        path: first(this.$route.params.section),
+      });
     },
   },
-};
+});
 </script>
 
 <style scoped>

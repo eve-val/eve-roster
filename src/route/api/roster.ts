@@ -16,24 +16,24 @@ import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
 const logger = buildLoggerFromFilename(__filename);
 
-interface Output {
+export interface Output {
   columns: string[];
   rows: AccountJson[];
 }
 
-interface Alertable {
+export interface Alertable {
   alertLevel?: number;
   alertMessage?: string;
 }
 
-interface AccountJson extends Alertable {
+export interface AccountJson extends Alertable {
   main: CharacterJson;
   alts: CharacterJson[];
   activeTimezone?: string | null;
   homeCitadel?: string | null;
 }
 
-interface CharacterJson extends Alertable {
+export interface CharacterJson extends Alertable {
   id: number;
   name: string;
   corporationId: number;

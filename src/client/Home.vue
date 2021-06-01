@@ -5,15 +5,18 @@
   <router-view v-if="!$route.meta.keepAlive" :identity="identity" />
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Identity } from "./home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   props: {
     identity: {
-      type: Object,
+      type: Object as PropType<Identity>,
       default: function () {
         return {};
       },
     },
   },
-};
+});
 </script>

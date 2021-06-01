@@ -24,22 +24,23 @@ Displays the user's recent losses and SRP payments.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LossHistory from "./LossHistory.vue";
 import PaymentHistory from "./PaymentHistory.vue";
 
-export default {
+import { Identity } from "../home";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     LossHistory,
     PaymentHistory,
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
-
-  methods: {},
-};
+});
 </script>
 
 <style scoped>

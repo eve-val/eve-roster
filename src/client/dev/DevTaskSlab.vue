@@ -11,32 +11,33 @@
     <task-slab class="tb" :task="taskShortName(jobLowProgress())" />
     <task-slab class="tb" :task="taskShortName(jobHighProgress())" />
 
-    <task-slab ref="runPending" class="tb" :task="taskShortName(null)" />
-    <task-slab ref="runError" class="tb" :task="taskShortName(null)" />
-    <task-slab ref="runResolved" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runPending" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runError" class="tb" :task="taskShortName(null)" />
+    <task-slab :promise="runResolved" class="tb" :task="taskShortName(null)" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import TaskSlab from "../admin/TaskSlab.vue";
 
-export default {
+import { Task, Job } from "../admin/types";
+
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     TaskSlab,
   },
 
   data() {
-    return {};
-  },
-
-  mounted() {
-    this.$refs.runPending.awaitRunResult(pendingPromise());
-    this.$refs.runError.awaitRunResult(errorPromise());
-    this.$refs.runResolved.awaitRunResult(resolvedPromise());
+    return {
+      runPending: pendingPromise(),
+      runError: errorPromise(),
+      runResolved: resolvedPromise(),
+    };
   },
 
   methods: {
-    taskSimple(job) {
+    taskSimple(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub engine cowling",
@@ -45,7 +46,7 @@ export default {
       };
     },
 
-    taskShortName(job) {
+    taskShortName(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Fix droids",
@@ -54,7 +55,7 @@ export default {
       };
     },
 
-    taskExtraLongText(job) {
+    taskExtraLongText(job: Job): Task {
       return {
         name: "scrib-cowling",
         displayName: "Scrub filthy engine cowling",
@@ -65,7 +66,7 @@ export default {
       };
     },
 
-    jobSimple() {
+    jobSimple(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -75,7 +76,7 @@ export default {
       };
     },
 
-    jobLabel() {
+    jobLabel(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -85,7 +86,7 @@ export default {
       };
     },
 
-    jobNoProgress() {
+    jobNoProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -95,7 +96,7 @@ export default {
       };
     },
 
-    jobLowProgress() {
+    jobLowProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -105,7 +106,7 @@ export default {
       };
     },
 
-    jobHighProgress() {
+    jobHighProgress(): Job {
       return {
         id: 1,
         task: "scrib-cowling",
@@ -115,13 +116,13 @@ export default {
       };
     },
   },
-};
+});
 
-function pendingPromise() {
+function pendingPromise(): Promise<void> {
   return new Promise(() => {});
 }
 
-function errorPromise() {
+function errorPromise(): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error("A terrible error has occurred."));
@@ -129,7 +130,7 @@ function errorPromise() {
   });
 }
 
-function resolvedPromise() {
+function resolvedPromise(): Promise<void> {
   return Promise.resolve();
 }
 </script>

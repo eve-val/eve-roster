@@ -5,7 +5,11 @@
       <div class="table-cnt">
         <div class="title-row">
           <div class="title">Roster</div>
-          <loading-spinner ref="spinner" class="loading-spinner" size="33px" />
+          <loading-spinner
+            :promise="promise"
+            class="loading-spinner"
+            size="33px"
+          />
           <div class="title-spacer" />
           <search-box
             v-if="tableRows != null"
@@ -28,18 +32,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 import ajaxer from "../shared/ajaxer";
 
-import rosterColumns from "./rosterColumns";
+import rosterColumns, { Column } from "./rosterColumns";
+import { Character, Account } from "./types";
 
 import AppHeader from "../shared/AppHeader.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import RosterTable from "./RosterTable.vue";
 import SearchBox from "./SearchBox.vue";
 
-export default {
+import { Identity } from "../home";
+import { AxiosResponse } from "axios";
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     AppHeader,
     LoadingSpinner,
@@ -48,92 +56,136 @@ export default {
   },
 
   props: {
-    identity: { type: Object, required: true },
+    identity: { type: Object as PropType<Identity>, required: true },
   },
 
-  data: function () {
+  data() {
     return {
       displayColumns: null,
       tableRows: null,
       searchString: null,
+      promise: null,
+    } as {
+      displayColumns: null | Column[];
+      tableRows: null | Account[];
+      searchString: null | string;
+      promise: Promise<any> | null;
     };
   },
 
-  mounted: function () {
-    this.$refs.spinner.observe(ajaxer.getRoster()).then((response) => {
-      let providedColumns = response.data.columns;
+  mounted() {
+    const promise = ajaxer.getRoster();
+    this.promise = promise;
+    promise.then(
+      (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
+        let providedColumns: string[] = response.data.columns;
 
-      this.displayColumns = rosterColumns.filter((col) => {
-        let sourceColumns = col.derivedFrom || [col.key];
+        this.displayColumns = rosterColumns.filter((col: Column) => {
+          let sourceColumns: string[] = col.derivedFrom || [col.key];
 
-        return _.reduce(
-          sourceColumns,
-          (accum, sourceCol) => accum && providedColumns.includes(sourceCol),
-          true
-        );
-      });
+          return _.reduce(
+            sourceColumns,
+            (accum: boolean, sourceCol: string) =>
+              accum && providedColumns.includes(sourceCol),
+            true
+          );
+        });
 
-      let rows = injectDerivedData(response.data.rows);
-      this.tableRows = rows;
-    });
+        let rows = injectDerivedData(response.data.rows);
+        this.tableRows = rows;
+      }
+    );
   },
 
   methods: {
-    onSearchStringChange: _.debounce(function (str) {
-      if (str.length == 0) {
-        this.searchString = null;
-      } else if (str.length >= 3) {
-        this.searchString = str;
-      }
-    }, 100),
+    onSearchStringChange(str: string) {
+      _.debounce(() => {
+        if (str.length == 0) {
+          this.searchString = null;
+        } else if (str.length >= 3) {
+          this.searchString = str;
+        }
+      }, 100)();
+    },
   },
-};
+});
 
-const APPEND_ATTRS = new Set(["alertMessage"]);
-
-const SUM_ATTRS = new Set([
+const APPEND_ATTRS = ["alertMessage"] as const;
+type AppendAttr = typeof APPEND_ATTRS[number];
+function isAppend(v: string): v is AppendAttr {
+  return (<readonly string[]>APPEND_ATTRS).includes(v);
+}
+const SUM_ATTRS = [
   "killsInLastMonth",
   "killValueInLastMonth",
   "lossesInLastMonth",
   "lossValueInLastMonth",
   "siggyScore",
   "activityScore",
-]);
-
-const MAX_ATTRS = new Set(["lastSeen", "alertLevel"]);
-
-function injectDerivedData(data) {
-  for (let account of data) {
-    injectDerivedProps(account);
-    account.aggregate = computeAggregateCharacter(account);
-  }
-  return data;
+] as const;
+type SumAttr = typeof SUM_ATTRS[number];
+function isSum(v: string): v is SumAttr {
+  return (<readonly string[]>SUM_ATTRS).includes(v);
+}
+const MAX_ATTRS = ["lastSeen", "alertLevel"] as const;
+type MaxAttr = typeof MAX_ATTRS[number];
+function isMax(v: string): v is MaxAttr {
+  return (<readonly string[]>MAX_ATTRS).includes(v);
 }
 
-function computeAggregateCharacter(account) {
-  let aggregate = {};
+function isCharacterKey(c: Character, key: string): key is keyof Character {
+  return key in c;
+}
+
+function injectDerivedData(data: Account[]): Account[] {
+  let ret: Account[] = [];
+  for (let acc of data) {
+    ret.push(injectDerivedProps(acc));
+  }
+  return ret;
+}
+
+function computeAggregateCharacter(account: Account): Character {
+  let aggregate: Character = Object.assign({}, account.main);
 
   // Calculate key set as union of keys in main and all alts
-  let keys = Object.keys(account.main);
+  let keys = new Set<keyof Character>();
+  for (let key of Object.keys(account.main)) {
+    if (isCharacterKey(account.main, key)) {
+      keys.add(key);
+    }
+  }
   for (let alt of account.alts) {
-    keys.push(...Object.keys(alt));
+    for (let key of Object.keys(alt)) {
+      if (isCharacterKey(alt, key)) {
+        keys.add(key);
+      }
+    }
   }
 
-  for (let v of new Set(keys)) {
-    if (APPEND_ATTRS.has(v)) {
+  for (let v of keys) {
+    if (isAppend(v)) {
       aggregate[v] = aggProp(v, account.main, ...account.alts);
-    } else if (SUM_ATTRS.has(v)) {
-      aggregate[v] = sumProp(v, account.main, ...account.alts);
-    } else if (MAX_ATTRS.has(v)) {
-      aggregate[v] = maxProp(v, account.main, ...account.alts);
-    } else {
-      aggregate[v] = account.main[v];
+    } else if (isSum(v)) {
+      const sum = sumProp(v, account.main, ...account.alts);
+      if (sum != null) {
+        aggregate[v] = sum;
+      }
+    } else if (isMax(v)) {
+      const max = maxProp(v, account.main, ...account.alts);
+      if (max != null) {
+        aggregate[v] = max;
+      }
+    } else if (isCharacterKey(account.main, v)) {
+      aggregate = Object.assign(aggregate, {
+        [v]: account.main[v],
+      });
     }
   }
   return aggregate;
 }
 
-function aggProp(prop, ...chars) {
+function aggProp(prop: AppendAttr, ...chars: Character[]): string {
   let text = "";
   for (let char of chars) {
     if (char[prop]) {
@@ -146,51 +198,51 @@ function aggProp(prop, ...chars) {
   return text;
 }
 
-function sumProp(prop, ...chars) {
+function sumProp(prop: SumAttr, ...chars: Character[]): null | number {
   let sawNotNull = false;
   let sum = 0;
   for (let char of chars) {
-    if (char[prop] != null) {
-      sum += char[prop];
+    const val = char[prop];
+    if (val != null) {
+      sum += val;
       sawNotNull = true;
     }
   }
   return sawNotNull ? sum : null;
 }
 
-function maxProp(prop, ...chars) {
+function maxProp(prop: MaxAttr, ...chars: Character[]): number | null {
   let sawNotNull = false;
   let best = 0;
   for (let char of chars) {
-    if (char[prop] != null) {
-      best = Math.max(char[prop], best);
+    const val = char[prop];
+    if (val != null) {
+      best = Math.max(val, best);
       sawNotNull = true;
     }
   }
   return sawNotNull ? best : null;
 }
 
-function injectDerivedProps(account) {
-  for (let character of [account.main, ...account.alts]) {
-    let lastSeen = getLastSeen(character);
-    if (lastSeen != null) {
-      character.lastSeen = lastSeen;
-    }
-    character.activityScore = getActivity(character);
+function injectDerivedProps(account: Account): Account {
+  let ret: Account = Object.assign({}, account, {
+    aggregate: computeAggregateCharacter(account),
+  });
+  ret.main = Object.assign({}, account.main, {
+    activityScore: getActivity(account.main),
+  });
+  ret.alts = [];
+  for (let char of account.alts) {
+    ret.alts.push(
+      Object.assign({}, char, {
+        activityScore: getActivity(char),
+      })
+    );
   }
+  return ret;
 }
 
-function getLastSeen(character) {
-  if (character.logonDate == null || character.logoffDate == null) {
-    return null;
-  } else if (character.logonDate > character.logoffDate) {
-    return Math.floor(Date.now() / 1000);
-  } else {
-    return character.logoffDate;
-  }
-}
-
-function getActivity(character) {
+function getActivity(character: Character): null | number {
   if (character.siggyScore == null || character.killsInLastMonth == null) {
     return null;
   } else {

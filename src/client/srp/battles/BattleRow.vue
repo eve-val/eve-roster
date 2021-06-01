@@ -98,7 +98,7 @@ May also contain triage UI if triageMode is enabled.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "../../shared/EveImage.vue";
 import SrpTriplet from "../SrpTriplet.vue";
 import SrpStatus from "../SrpStatus.vue";
@@ -106,7 +106,10 @@ import Tooltip from "../../shared/Tooltip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 
-export default {
+import { Battle } from "../types";
+
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     SrpStatus,
@@ -114,20 +117,16 @@ export default {
     Tooltip,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    battle: { type: Object, required: true },
+    battle: { type: Object as PropType<Battle>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
 
-  data() {
-    return {
-      status: "inactive", // inactive | active | error
-    };
-  },
-
   computed: {
-    battleLosses() {
+    battleLosses(): number {
       let sum = 0;
       for (let team of this.battle.teams) {
         sum += team.totalLosses;
@@ -136,23 +135,20 @@ export default {
     },
   },
 
-  methods: Object.assign(
-    {
-      zkillHref(id, type) {
-        if (id == undefined) {
-          return undefined;
-        } else {
-          return `https://zkillboard.com/${type}/${id}/`;
-        }
-      },
-
-      formatIskValue(value) {
-        return `${formatNumber(value)} ISK`;
-      },
+  methods: {
+    zkillHref(id: undefined | number, type: string): undefined | string {
+      if (id == undefined) {
+        return undefined;
+      } else {
+        return `https://zkillboard.com/${type}/${id}/`;
+      }
     },
-    NameCacheMixin
-  ),
-};
+
+    formatIskValue(value: number): string {
+      return `${formatNumber(value)} ISK`;
+    },
+  },
+});
 </script>
 
 <style scoped>

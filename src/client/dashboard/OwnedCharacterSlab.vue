@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="menuItems.length > 0" class="menu">
-        <div class="menu-arrow" @mousedown="$refs.menu.toggle()" />
+        <div class="menu-arrow" @mousedown="menu.toggle()" />
         <drop-menu
           ref="menu"
           class="menu-body"
@@ -63,11 +63,11 @@
         </drop-menu>
       </div>
       <loading-spinner
-        ref="spinner"
         class="working-spinner"
         default-state="hidden"
         size="13px"
         tooltip-gravity="left"
+        :promise="promise"
       />
     </div>
     <template #sub-slab-hanger>
@@ -80,7 +80,7 @@
   </character-slab-frame>
 </template>
 
-<script>
+<script lang="ts">
 import ajaxer from "../shared/ajaxer";
 
 import CharacterSlabFrame from "./CharacterSlabFrame.vue";
@@ -94,9 +94,25 @@ import opsecIcon from "./res/hidden-icon.svg";
 import biomassedIcon from "./res/biomassed.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 
+interface Icon {
+  key: string;
+  src: string;
+  label: string;
+}
+
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
-export default {
+import { SimpleMap } from "../../util/simpleTypes";
+import { CharacterJson } from "../../route/api/dashboard";
+import { Skill, Queue } from "../../domain/skills/skillQueueSummary";
+
+interface MenuItem {
+  label: string;
+  tag: string;
+}
+
+import { defineComponent, PropType, ref } from "vue";
+export default defineComponent({
   components: {
     CharacterSlabFrame,
     ReauthenticationPrompt,
@@ -107,34 +123,46 @@ export default {
 
   props: {
     accountId: { type: Number, required: true },
-    character: { type: Object, required: true },
+    character: { type: Object as PropType<CharacterJson>, required: true },
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
-    access: { type: Object, required: true },
+    access: { type: Object as PropType<SimpleMap<number>>, required: true },
   },
 
   emits: ["requireRefresh"],
 
-  data: function () {
-    return {};
+  setup: () => {
+    const menu = ref<InstanceType<typeof DropMenu>>();
+    return { menu };
+  },
+
+  data() {
+    return {
+      promise: null,
+    } as {
+      promise: Promise<any> | null;
+    };
   },
 
   computed: {
-    biomassed() {
+    biomassed(): boolean {
       return this.character.corpId == CORP_DOOMHEIM;
     },
 
-    skillInTraining() {
+    skillInTraining(): Skill | null {
       return this.character.skillQueue.skillInTraining;
     },
 
-    queue() {
+    queue(): Queue {
       return this.character.skillQueue.queue;
     },
 
-    trainingLabel() {
-      if (this.character.skillQueue.queueStatus == "empty") {
+    trainingLabel(): string {
+      if (
+        this.character.skillQueue.queueStatus == "empty" ||
+        !this.skillInTraining
+      ) {
         return "Skill queue empty";
       } else if (this.character.skillQueue.queueStatus == "paused") {
         return "Skill queue paused";
@@ -143,7 +171,7 @@ export default {
       }
     },
 
-    queueLabel() {
+    queueLabel(): string {
       switch (this.character.skillQueue.queueStatus) {
         case "active":
           return (
@@ -158,16 +186,19 @@ export default {
       }
     },
 
-    progressTrackWidth() {
-      if (this.character.skillQueue.queueStatus != "active") {
+    progressTrackWidth(): string {
+      if (
+        !this.skillInTraining ||
+        this.character.skillQueue.queueStatus != "active"
+      ) {
         return "0";
       } else {
         return this.skillInTraining.progress * 100 + "%";
       }
     },
 
-    statusIcons() {
-      let icons = [];
+    statusIcons(): Icon[] {
+      let icons: Icon[] = [];
 
       if (this.isMain && this.highlightMain) {
         icons.push({
@@ -197,7 +228,7 @@ export default {
         });
       }
 
-      let queueWarning = this.character.skillQueue.warning;
+      const queueWarning = this.character.skillQueue.warning;
       if (queueWarning) {
         icons.push({
           key: "esi-failure",
@@ -209,8 +240,8 @@ export default {
       return icons;
     },
 
-    menuItems() {
-      let items = [];
+    menuItems(): MenuItem[] {
+      let items: MenuItem[] = [];
       if (!this.isMain && this.access.designateMain == 2 && !this.biomassed) {
         items.push({
           tag: "designate-main",
@@ -241,14 +272,12 @@ export default {
   },
 
   methods: {
-    onMouseOut(_e) {
-      if (this.$refs.menu) {
-        this.$refs.menu.hide();
-      }
+    onMouseOut() {
+      this.menu?.value?.hide();
     },
 
-    onMenuItemClick(menuItem) {
-      this.$refs.menu.hide();
+    onMenuItemClick(menuItem: MenuItem) {
+      this.menu?.value?.hide();
       switch (menuItem.tag) {
         case "designate-main":
           this.designateAsMain();
@@ -263,36 +292,38 @@ export default {
     },
 
     designateAsMain() {
-      this.$refs.spinner
-        .observe(
-          ajaxer.putAccountMainCharacter(this.accountId, this.character.id)
-        )
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.putAccountMainCharacter(
+        this.accountId,
+        this.character.id
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
 
     toggleOpsec() {
-      this.$refs.spinner
-        .observe(
-          ajaxer.putCharacterIsOpsec(this.character.id, !this.character.opsec)
-        )
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.putCharacterIsOpsec(
+        this.character.id,
+        !this.character.opsec
+      );
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
 
     markDeleted() {
-      this.$refs.spinner
-        .observe(ajaxer.deleteBiomassedCharacter(this.character.id))
-        .then(() => {
-          this.$emit("requireRefresh", this.character.id);
-        });
+      const promise = ajaxer.deleteBiomassedCharacter(this.character.id);
+      this.promise = promise;
+      promise.then(() => {
+        this.$emit("requireRefresh", this.character.id);
+      });
     },
   },
-};
+});
 
-function getQueueWarningLabel(warning) {
+function getQueueWarningLabel(warning: string): string {
   let generalWarning = "Skill queue may be out of date.";
 
   switch (warning) {

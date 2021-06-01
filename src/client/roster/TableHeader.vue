@@ -22,31 +22,28 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _ from "underscore";
 
-export default {
-  components: {},
+import { Column } from "./rosterColumns";
 
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   props: {
-    columns: { type: Array, required: true },
+    columns: { type: Array as PropType<readonly Column[]>, required: true },
     sortKey: { type: String, required: true },
     reverseSort: { type: Boolean, required: true },
   },
 
   emits: ["selectSortKey"],
 
-  data: function () {
-    return {};
-  },
-
   computed: {
-    arrowClasses: function () {
+    arrowClasses: function (): string[] {
       let classes = [];
       if (this.reverseSort) {
         classes.push("reverse");
       }
-      let col = _.find(this.columns, (col) => col.key == this.sortKey);
+      let col = _.find(this.columns, (col: Column) => col.key == this.sortKey);
       let numeric = col != null && col.numeric;
       if (numeric) {
         classes.push("right");
@@ -56,7 +53,7 @@ export default {
       return classes;
     },
   },
-};
+});
 </script>
 
 <style scoped>

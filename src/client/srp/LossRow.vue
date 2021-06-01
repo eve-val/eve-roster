@@ -72,31 +72,40 @@ in most other places).
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EveImage from "../shared/EveImage.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
+import { Srp } from "./types";
+import { AssetType } from "../shared/types";
 import { NameCacheMixin } from "../shared/nameCache";
 
-export default {
+import { defineComponent, PropType } from "vue";
+export default defineComponent({
   components: {
     EveImage,
     SrpStatus,
     SrpTriplet,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
-    srp: { type: Object, required: true },
+    srp: { type: Object as PropType<Srp>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
-    highlightAsRelated: { type: Boolean, required: false, default: false },
+    highlightAsRelated: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   emits: ["related-hover", "related-unhover"],
 
   computed: {
-    victimIconType() {
+    victimIconType(): AssetType {
       if (this.srp.victim != undefined) {
         return "Character";
       } else {
@@ -104,7 +113,7 @@ export default {
       }
     },
 
-    victimHref() {
+    victimHref(): string | null {
       if (this.srp.victim != undefined) {
         return `/character/${this.srp.victim}`;
       } else {
@@ -112,7 +121,7 @@ export default {
       }
     },
 
-    executionerIconType() {
+    executionerIconType(): AssetType {
       if (this.srp.executioner.alliance) {
         return "Alliance";
       } else if (this.srp.executioner.corporation) {
@@ -122,7 +131,7 @@ export default {
       }
     },
 
-    executionerAffiliation() {
+    executionerAffiliation(): number {
       return (
         this.srp.executioner.alliance ||
         this.srp.executioner.corporation ||
@@ -130,7 +139,7 @@ export default {
       );
     },
 
-    executionerAffiliationType() {
+    executionerAffiliationType(): string {
       if (this.srp.executioner.alliance) {
         return "alliance";
       } else if (this.srp.executioner.corporation) {
@@ -141,33 +150,24 @@ export default {
     },
   },
 
-  mounted() {
-    if (this.editing) {
-      this.updateInputPayout(this.selectedVerdict.payout);
-    }
-  },
-
-  methods: Object.assign(
-    {
-      onRelatedHover(_e) {
-        this.$emit("related-hover", this.srp.relatedKillmail.id);
-      },
-
-      onRelatedUnhover(_e) {
-        this.$emit("related-unhover", this.srp.relatedKillmail.id);
-      },
-
-      zkillHref(id, type) {
-        if (id == undefined) {
-          return undefined;
-        } else {
-          return `https://zkillboard.com/${type}/${id}/`;
-        }
-      },
+  methods: {
+    onRelatedHover() {
+      this.$emit("related-hover", this.srp.relatedKillmail.id);
     },
-    NameCacheMixin
-  ),
-};
+
+    onRelatedUnhover() {
+      this.$emit("related-unhover", this.srp.relatedKillmail.id);
+    },
+
+    zkillHref(id: number, type: string): string | undefined {
+      if (id == undefined) {
+        return undefined;
+      } else {
+        return `https://zkillboard.com/${type}/${id}/`;
+      }
+    },
+  },
+});
 </script>
 
 <style scoped>

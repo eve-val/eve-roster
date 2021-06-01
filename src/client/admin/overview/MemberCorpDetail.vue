@@ -43,27 +43,22 @@ who the directors are and which of them we have tokens for.
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { NameCacheMixin } from "../../shared/nameCache";
 import EveImage from "../../shared/EveImage.vue";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   components: {
     EveImage,
   },
 
+  mixins: [NameCacheMixin],
+
   props: {
     corp: { type: Object, required: true },
   },
-
-  data() {
-    return {};
-  },
-
-  computed: {},
-
-  methods: Object.assign({}, NameCacheMixin),
-};
+});
 </script>
 
 <style scoped>
