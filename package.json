@@ -28,7 +28,7 @@
     "@opentelemetry/instrumentation-pg": "^0.20.0",
     "@opentelemetry/node": "^0.20.0",
     "@opentelemetry/tracing": "^0.20.0",
-    "@sentry/node": "^6.5.0",
+    "@sentry/node": "^6.5.1",
     "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
@@ -56,8 +56,8 @@
     "verror": "^1.10.0"
   },
   "devDependencies": {
-    "@sentry/browser": "^6.5.0",
-    "@sentry/tracing": "^6.5.0",
+    "@sentry/browser": "^6.5.1",
+    "@sentry/tracing": "^6.5.1",
     "@types/bluebird": "^3.5.35",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
