@@ -10,6 +10,7 @@
 # NPM-installed files
 /node_modules/
 /npm-debug.log
+/yarn-error.log
 
 # Webpack-generated files (deprecated -- moved to out/)
 /static/dist/
