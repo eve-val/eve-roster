@@ -12,7 +12,7 @@ import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { Task } from "../infra/taskrunner/Task";
 
-import { trace, context } from "@opentelemetry/api";
+import { trace, context, setSpan, getSpan } from "@opentelemetry/api";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
@@ -88,7 +88,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const promises = characterIds.map(async (characterId) => {
     const span = tracer.startSpan("updateCharacterNotifications");
     span.setAttribute("characterId", characterId);
-    await context.with(trace.setSpan(context.active(), span), async () => {
+    await context.with(setSpan(context.active(), span), async () => {
       try {
         await updateCharacter(db, characterId);
       } catch (e) {
@@ -118,7 +118,7 @@ async function executor(db: Tnex, job: JobLogger) {
     since,
     IMPORTANT_NOTIFICATION_TYPES
   );
-  const span = trace.getSpan(context.active());
+  const span = getSpan(context.active());
   for (const msg of deduped) {
     span?.addEvent("notification", await msg);
   }
