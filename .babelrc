@@ -1,3 +1,13 @@
 {
-  "presets": [["es2020", { "modules": false }]]
+  "presets": [
+    ["@babel/preset-typescript"],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": true
+        }
+      }
+    ]
+  ]
 }

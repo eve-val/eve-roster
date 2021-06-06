@@ -15,7 +15,9 @@
     "start": "node out/server/bin/witness/witness.js",
     "test": "yarn run jest && yarn run pretty-check && yarn run lint",
     "updatedb": "node out/server/bin/updatedb.js",
-    "watch-server": "tsc -w"
+    "watch-server": "tsc -w",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.3.2",
@@ -56,8 +58,14 @@
     "verror": "^1.10.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
     "@sentry/browser": "^6.5.1",
     "@sentry/tracing": "^6.5.1",
+    "@storybook/addon-storyshots": "^6.2.9",
+    "@storybook/builder-webpack5": "^6.2.9",
+    "@storybook/cli": "^6.2.9",
+    "@storybook/vue3": "^6.2.9",
     "@types/bluebird": "^3.5.35",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
