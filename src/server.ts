@@ -15,6 +15,9 @@ Graceful.captureExceptions = true;
 import { tables } from "./db/tables";
 import { getPostgresKnex } from "./db/getPostgresKnex";
 
+// import { DiagConsoleLogger, DiagLogLevel, diag } from "@opentelemetry/api";
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+
 import { NodeTracerProvider } from "@opentelemetry/node";
 import { BatchSpanProcessor } from "@opentelemetry/tracing";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
@@ -48,7 +51,7 @@ metadata.set("x-honeycomb-dataset", process.env["HONEYCOMB_DATASET"] || "");
 
 const collectorOptions = {
   serviceName: "roster",
-  url: "api.honeycomb.io:443",
+  url: "grpcs://api.honeycomb.io:443/",
   credentials: grpc.credentials.createSsl(),
   metadata,
 };
