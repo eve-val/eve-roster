@@ -20,22 +20,22 @@ workflows:
   build-and-test:
     jobs:
       - node/test:
-          version: 14.17.0
+          version: 14.17.2
           pkg-manager: yarn
           run-command: jest
           name: jest
       - node/test:
-          version: 14.17.0
+          version: 14.17.2
           pkg-manager: yarn
           run-command: pretty-check
           name: pretty-check
       - node/test:
-          version: 14.17.0
+          version: 14.17.2
           pkg-manager: yarn
           run-command: lint
           name: lint
       - node/test:
-          version: 14.17.0
+          version: 14.17.2
           pkg-manager: yarn
           run-command: build
           name: build
