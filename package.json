@@ -118,7 +118,7 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "webpack-contrib/webpack-hot-middleware#webpack5",
-    "webpack-merge": "^5.3.0"
+    "webpack-merge": "^5.8.0"
   },
   "jest": {
     "moduleFileExtensions": [
