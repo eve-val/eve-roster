@@ -11,7 +11,7 @@ import { JobImpl } from "./JobImpl";
 import { buildLoggerFromFilename } from "../logging/buildLogger";
 import { Task } from "./Task";
 
-import { trace, context, setSpan } from "@opentelemetry/api";
+import { trace, context } from "@opentelemetry/api";
 
 const logger = buildLoggerFromFilename(__filename);
 
@@ -94,7 +94,7 @@ export class Scheduler {
     let executorError: any = null;
 
     const span = tracer.startSpan(job.task.name);
-    context.with(setSpan(context.active(), span), async () => {
+    context.with(trace.setSpan(context.active(), span), async () => {
       dao.cron
         .startJob(this._db, job.task.name)
         .then((jobId) => {
