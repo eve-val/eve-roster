@@ -4,8 +4,8 @@ on:
   push:
     branches: [master]
     paths-ignore:
-      - 'package.json'
-      - 'yarn.lock'
+      - package.json
+      - yarn.lock
   pull_request:
     branches: [master]
   schedule:
