@@ -56,7 +56,7 @@
     "verror": "^1.10.0"
   },
   "devDependencies": {
-    "@sentry/browser": "^6.5.1",
+    "@sentry/browser": "^6.8.0",
     "@sentry/tracing": "^6.5.1",
     "@types/bluebird": "^3.5.35",
     "@types/body-parser": "^1.19.0",
