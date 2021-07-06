@@ -58,7 +58,7 @@
   "devDependencies": {
     "@sentry/browser": "^6.8.0",
     "@sentry/tracing": "^6.8.0",
-    "@types/bluebird": "^3.5.35",
+    "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cookie-session": "^2.0.42",
