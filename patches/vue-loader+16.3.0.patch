@@ -1,8 +1,8 @@
 diff --git a/node_modules/vue-loader/dist/index.d.ts b/node_modules/vue-loader/dist/index.d.ts
-index 4644621..eced453 100644
+index 16d88dd..2d0e357 100644
 --- a/node_modules/vue-loader/dist/index.d.ts
 +++ b/node_modules/vue-loader/dist/index.d.ts
-@@ -12,4 +12,4 @@ export interface VueLoaderOptions {
+@@ -13,4 +13,4 @@ export interface VueLoaderOptions {
      appendExtension?: boolean;
      isServerBuild?: boolean;
  }
