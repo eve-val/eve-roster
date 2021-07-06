@@ -50,6 +50,7 @@
     "serve-favicon": "^2.5.0",
     "source-map-support": "^0.5.19",
     "sqlite3": "^5.0.2",
+    "svgo": "^2.3.1",
     "tmp": "^0.2.1",
     "unbzip2-stream": "^1.4.3",
     "underscore": "^1.13.1",
@@ -119,6 +120,9 @@
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "webpack-contrib/webpack-hot-middleware#webpack5",
     "webpack-merge": "^5.8.0"
+  },
+  "resolutions": {
+    "lpad-align": "^3.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
