@@ -1160,10 +1160,10 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.2.3.tgz#ef65165aea2924c9359205bf748865b8881753c0"
   integrity sha512-PijRCG/K3s3w1We6ynUKdxEc5AcuuH3NBmMDP8uvKVp6X43UY7NQlTzczakXP3DJR0F4dfNQIGjU2cUeRYs2AA==
 
-"@types/progress-stream@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/progress-stream/-/progress-stream-2.0.1.tgz#80ecb36f6965f5355f11aa947abb06bc7b2662c2"
-  integrity sha512-NUmoYmspOZRXTEv9NreZ/IFLO4D/iPazNCfj7FKvp6zQ1/XszPw5x8L1PiuMijQZrI9vq16ZBnOJTXxmdtLxCw==
+"@types/progress-stream@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/progress-stream/-/progress-stream-2.0.2.tgz#443afb2c29cfde0e6240805364b7715bc5bd03a8"
+  integrity sha512-u9N40mYX/Nx/Pmt847+G2N72s5QL2jwgXrVKCIcxgOdMBdIzY+e/m3m1gQBNPmgvQQBO79EisLAcVJ/p0qKuvA==
   dependencies:
     "@types/node" "*"
 
