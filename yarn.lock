@@ -1123,10 +1123,17 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/pg-pool@2.0.2", "@types/pg-pool@^2.0.2":
+"@types/pg-pool@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/pg-pool/-/pg-pool-2.0.2.tgz#94e392860f6510da9a5063db9fa64c88ac553653"
   integrity sha512-gq/KYrmak6DaSP1UpctR72OrWYGlu7NE5iOKJJ7dAsZot4Ird5wfzRRQDU6Zj9iuPBAM/xycCyKwZdKR0jE1IQ==
+  dependencies:
+    "@types/pg" "*"
+
+"@types/pg-pool@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/pg-pool/-/pg-pool-2.0.3.tgz#3eb8df2933f617f219a53091ad4080c94ba1c959"
+  integrity sha512-fwK5WtG42Yb5RxAwxm3Cc2dJ39FlgcaNiXKvtTLAwtCn642X7dgel+w1+cLWwpSOFImR3YjsZtbkfjxbHtFAeg==
   dependencies:
     "@types/pg" "*"
 
