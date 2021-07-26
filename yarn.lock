@@ -5599,10 +5599,10 @@ klona@^2.0.4:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
-knex@^0.95.7:
-  version "0.95.7"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-0.95.7.tgz#9c55c60e3c63077013076b54b5b97376d5a70d41"
-  integrity sha512-J2X79td0NAcreTyWVmmHHretz5Ox705FHywddjkT3esTtmggphjcfDoaXym18xtsLdjzOvEb53WB/58lqcF14w==
+knex@^0.95.8:
+  version "0.95.8"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.95.8.tgz#aa464d0870eefc11f6dc8d017bd2b2c30748fdc2"
+  integrity sha512-fEeu8SWyJuW1NHLjnMA2ACEAsVuGuFxtNO5J8bcQdlybnkiNSWPXYX0LhKB17sgWl5UARJrsNpjVeT55ByP8gA==
   dependencies:
     colorette "1.2.1"
     commander "^7.1.0"
@@ -5613,7 +5613,7 @@ knex@^0.95.7:
     interpret "^2.2.0"
     lodash "^4.17.21"
     pg-connection-string "2.5.0"
-    rechoir "^0.7.0"
+    rechoir "0.7.0"
     resolve-from "^5.0.0"
     tarn "^3.0.1"
     tildify "2.0.0"
@@ -7525,7 +7525,7 @@ readable-stream@^3.0.0:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-rechoir@^0.7.0:
+rechoir@0.7.0, rechoir@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.7.0.tgz#32650fd52c21ab252aa5d65b19310441c7e03aca"
   integrity sha512-ADsDEH2bvbjltXEP+hTIAmeFekTFK0V2BTxMkok6qILyAJEXV0AFfoWcAq4yfll5VdIMd/RVXq0lR+wQi5ZU3Q==
