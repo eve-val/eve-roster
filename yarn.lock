@@ -567,6 +567,11 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api-metrics/-/api-metrics-0.23.0.tgz#5b0bae3cee1bab2993aebd44275788577761d1d4"
   integrity sha512-MGfH9aMnVktRTagYHvhksrk42vPDjTIz5N6Cxu31t6dgJa6iUYR6MemnOdphyLk73DUaqmR5s2Fn6jg0Xd9gqA==
 
+"@opentelemetry/api-metrics@0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api-metrics/-/api-metrics-0.24.0.tgz#54e3d6ef20fd9b489446cc3f102b48a212af04d7"
+  integrity sha512-hdpkMeVlRGTuMshD2ZFaDjA/U0cZTkxUkJFvS/4yOiWfw+kEASmGE+U0/i9lbdQKuCR7X1rXSjbcYumlHcMG+A==
+
 "@opentelemetry/api@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.0.1.tgz#03c72f548431da5820a0c8864d1401e348e7e79f"
@@ -645,6 +650,16 @@
   integrity sha512-1f6js0lIIPAWwR2EKPsUSowP2KloX+tv21QjWWp+BfFUcql+V6lh1RoNaxJWqFbe+BiZH7m+fD7UvJ2bWRQxdQ==
   dependencies:
     "@opentelemetry/api-metrics" "0.23.0"
+    require-in-the-middle "^5.0.3"
+    semver "^7.3.2"
+    shimmer "^1.2.1"
+
+"@opentelemetry/instrumentation@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/instrumentation/-/instrumentation-0.24.0.tgz#93e78c7f2570bfe1c57e1bb3664b59482cbb0366"
+  integrity sha512-Kn581LUJrVsuV6j8KjNpNWFecyrLoc3GRiTpXUl48LVtm9CCbdwNZGe3PRmWN1Mb/bmWr/tt3GHcuhyUxAsY0A==
+  dependencies:
+    "@opentelemetry/api-metrics" "0.24.0"
     require-in-the-middle "^5.0.3"
     semver "^7.3.2"
     shimmer "^1.2.1"
@@ -3357,10 +3372,10 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint@^7.31.0:
-  version "7.31.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.31.0.tgz#f972b539424bf2604907a970860732c5d99d3aca"
-  integrity sha512-vafgJpSh2ia8tnTkNUkwxGmnumgckLh5aAbLa1xRmIn9+owi8qBNGKL+B881kNKNTy7FFqTEkpNkUvmw0n6PkA==
+eslint@^7.32.0:
+  version "7.32.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
+  integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.3"
