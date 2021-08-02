@@ -27,7 +27,7 @@
     "@opentelemetry/instrumentation-http": "^0.23.0",
     "@opentelemetry/instrumentation-pg": "^0.23.0",
     "@opentelemetry/node": "^0.23.0",
-    "@opentelemetry/tracing": "^0.23.0",
+    "@opentelemetry/tracing": "^0.24.0",
     "@sentry/node": "^6.10.0",
     "axios": "^0.21.1",
     "bluebird": "^3.7.2",
