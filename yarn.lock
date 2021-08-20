@@ -6231,10 +6231,10 @@ node-addon-api@^3.0.0:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.2.0.tgz#7028b56a7eb572b73873aed731a7f9c9365f5ee4"
   integrity sha512-kcwSAWhPi4+QzAtsL2+2s/awvDo2GKLsvMCwNRxb5BUshteXU8U97NCyvQDsGKs/m0He9WcG4YWew/BnuLx++w==
 
-node-graceful@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/node-graceful/-/node-graceful-3.0.1.tgz#6070568e5b76c4018122fcb27e59bc9709c49937"
-  integrity sha512-V1jabqH6+P+XD/b5DKSMB4f/xWQpxgpSL+d850yQ09DIAWlo59Io5MNsJQD6TKjq3Gj6hC3uJ2GomDdmsL49xw==
+node-graceful@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/node-graceful/-/node-graceful-3.1.0.tgz#fab88c96ed1975b939a91bc5be48f0e1c10d0afe"
+  integrity sha512-fGH0ijsO5ZDDY405mP6bE0eNrHQhpjDrihhaviqprP1+aJEWy7bZtzXESp3ZAo6hBTtxOFe7RfSkcqFX001gJQ==
 
 node-gyp@3.x:
   version "3.8.0"
