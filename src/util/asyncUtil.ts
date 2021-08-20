@@ -1,4 +1,4 @@
-import pLimit = require("p-limit");
+import pLimit from "p-limit";
 
 /**
  * Calls `callback(item, index)` on each item in `list`. Returns a Promise
