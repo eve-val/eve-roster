@@ -32,6 +32,7 @@
  * ```
  */
 
+import { fileURLToPath } from "url";
 import { getPostgresKnex } from "../db/getPostgresKnex";
 
 // Directory is relative to project root
@@ -74,7 +75,7 @@ export function updateDb(revert: boolean): Promise<void> {
   }
 }
 
-if (require.main == module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   let revert = false;
   if (process.argv.length > 2) {
     // Check if any remaining arguments are --revert or --rollback
