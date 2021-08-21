@@ -17,6 +17,7 @@
     "updatedb": "node out/server/bin/updatedb.js",
     "watch-server": "tsc -w"
   },
+  "type": "module",
   "dependencies": {
     "@grpc/grpc-js": "^1.3.7",
     "@opentelemetry/api": "^1.0.2",
