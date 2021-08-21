@@ -1,9 +1,14 @@
-import * as path from "path";
 import moment from "moment";
 import { ProcessControl } from "./ProcessControl";
 import { RotatingFileLogWriter } from "./RotatingFileLogWriter";
 import { getRootPath } from "./getRootPath";
 import * as logger from "./logger";
+
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const CHILD_LOCATION = path.join(__dirname, "../../server.js");
 const MAX_LOG_LIFETIME = moment.duration(30, "days").asMilliseconds();
