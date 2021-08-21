@@ -3,7 +3,7 @@ Graceful.captureExceptions = true;
 
 import * as Sentry from "@sentry/node";
 
-import path = require("path");
+import path from "path";
 
 import express from "express";
 import bodyParser from "body-parser";

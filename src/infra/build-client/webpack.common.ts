@@ -3,20 +3,20 @@ import path from "path";
 import { ProjectPaths } from "./paths";
 
 import webpack from "webpack";
-import TerserPlugin = require("terser-webpack-plugin");
+import TerserPlugin from "terser-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+import * as MomentLocalesPlugin from "moment-locales-webpack-plugin";
 
 import { VueLoaderPlugin } from "vue-loader";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
 
-import MiniCssExtractPlugin = require("mini-css-extract-plugin");
-import CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-import CleanupMiniCssExtractPlugin = require("cleanup-mini-css-extract-plugin");
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import * as CleanupMiniCssExtractPlugin from "cleanup-mini-css-extract-plugin";
 
-import ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+import * as ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
 import { extendDefaultPlugins } from "svgo";
 
 export function commonConfig(

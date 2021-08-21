@@ -6,7 +6,7 @@
 
     "target": "es2020",
     // Export Node-style modules since this is running on Node
-    "module": "commonjs",
+    "module": "ES2020",
     // We're running on Node, so use this strategy.
     "moduleResolution": "node",
 
