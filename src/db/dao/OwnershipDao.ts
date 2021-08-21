@@ -1,4 +1,4 @@
-import { Tnex, val } from "../../db/tnex";
+import { Tnex, val } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import { account, character, ownership, pendingOwnership } from "../tables";
 import { updateGroupsForAccount } from "../../domain/account/accountGroups";

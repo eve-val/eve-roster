@@ -10,7 +10,7 @@ import {
   strEnum,
   float4,
   decimal,
-} from "../db/tnex";
+} from "../db/tnex/index";
 import {
   PrivilegeName,
   HullCategory,

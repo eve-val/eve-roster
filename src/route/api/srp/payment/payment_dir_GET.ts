@@ -1,9 +1,9 @@
-import moment = require("moment");
+import moment from "moment";
 
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex, ResultOrder } from "../../../../db/tnex";
+import { Tnex, ResultOrder } from "../../../../db/tnex/index";
 import { dao } from "../../../../db/dao";
 import {
   boolQuery,

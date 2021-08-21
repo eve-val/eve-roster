@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 const UNITS = [
   { tag: "d", count: 1 },

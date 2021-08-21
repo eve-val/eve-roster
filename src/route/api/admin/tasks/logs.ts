@@ -1,6 +1,6 @@
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import { dao } from "../../../../db/dao";
-import { Tnex } from "../../../../db/tnex";
+import { Tnex } from "../../../../db/tnex/index";
 
 export type Output = LogEntry[];
 

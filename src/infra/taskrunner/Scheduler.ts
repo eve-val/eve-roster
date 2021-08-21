@@ -1,8 +1,8 @@
-import _ = require("underscore");
+import _ from "underscore";
 
 import { inspect } from "util";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { checkNotNil } from "../../util/assert";
 

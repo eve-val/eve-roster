@@ -7,7 +7,7 @@ import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 import { fetchEveNames } from "../data-source/esi/names";
 import { dao } from "../db/dao";
 import { CharacterShipRow } from "../db/dao/CharacterShipDao";
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { AccessTokenError } from "../error/AccessTokenError";
 import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets";
 import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories";

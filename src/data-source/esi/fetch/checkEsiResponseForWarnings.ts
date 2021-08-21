@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 import { EsiEndpoint } from "../EsiEndpoint";
 import { AxiosResponse } from "axios";
 import { SimpleMap } from "../../../util/simpleTypes";

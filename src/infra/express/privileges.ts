@@ -1,5 +1,5 @@
 import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { PrivilegeName } from "../../db/dao/enums";
 import { ADMIN_GROUP, MEMBER_GROUP } from "../../domain/account/specialGroups";
 

@@ -6,7 +6,7 @@ import { EsiAsset } from "../data-source/esi/EsiAsset";
 import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi";
 import { dao } from "../db/dao";
 import { SdeType } from "../db/tables";
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { arrayToMap } from "../util/collections";
 import { TYPE_CATEGORY_SHIP } from "./constants/categories";
 

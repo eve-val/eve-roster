@@ -1,5 +1,5 @@
 import { Moment } from "moment";
-import moment = require("moment");
+import moment from "moment";
 
 const LOG_FILENAME_PATTERN = /^roster_logs_(\d{4}-\d{2}-\d{2}).txt$/;
 const INPUT_LOG_LINE_PATTERN = /^(\d+) ([EWIVD]) ?(.*)/;

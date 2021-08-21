@@ -1,5 +1,5 @@
-import moment = require("moment");
-import _ = require("underscore");
+import moment from "moment";
+import _ from "underscore";
 
 import { SrpLossRow } from "../../db/dao/SrpDao";
 import { nil } from "../../util/simpleTypes";

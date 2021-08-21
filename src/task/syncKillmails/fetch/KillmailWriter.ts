@@ -1,6 +1,6 @@
 import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable";
 import { Killmail } from "../../../db/tables";
-import { Tnex, UpdatePolicy } from "../../../db/tnex";
+import { Tnex, UpdatePolicy } from "../../../db/tnex/index";
 import { dao } from "../../../db/dao";
 
 /**

@@ -1,5 +1,5 @@
 import { Dao } from "../dao";
-import { Tnex, val } from "../../db/tnex";
+import { Tnex, val } from "../../db/tnex/index";
 import {
   characterLocation,
   CharacterLocation,

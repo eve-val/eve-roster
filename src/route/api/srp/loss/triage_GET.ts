@@ -1,7 +1,7 @@
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex";
+import { Tnex } from "../../../../db/tnex/index";
 import { dao } from "../../../../db/dao";
 import { NotFoundError } from "../../../../error/NotFoundError";
 import { idParam } from "../../../../util/express/paramVerifier";

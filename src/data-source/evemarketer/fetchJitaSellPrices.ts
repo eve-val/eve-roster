@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 import { inspect } from "util";
 
 import { ExpirationCache } from "../../util/ExpirationCache";

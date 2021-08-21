@@ -1,5 +1,5 @@
 import { Dao } from "../dao";
-import { Tnex, val, DEFAULT_NUM } from "../../db/tnex";
+import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
 import {
   account,
   accountGroup,

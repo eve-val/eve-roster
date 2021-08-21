@@ -2,9 +2,9 @@
  * System for scheduling tasks to be run. Tasks are run serially, i.e. only one
  * task can be run at a time. The rest wait in a queue until it's their turn.
  */
-import schedule = require("node-schedule");
+import schedule from "node-schedule";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { serialize } from "../../util/asyncUtil";
 import { buildLoggerFromFilename } from "../logging/buildLogger";

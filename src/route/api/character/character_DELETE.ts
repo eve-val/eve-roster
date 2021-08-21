@@ -1,4 +1,4 @@
-import _ = require("underscore");
+import _ from "underscore";
 
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
 import { dao } from "../../../db/dao";

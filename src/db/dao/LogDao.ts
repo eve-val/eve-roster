@@ -1,4 +1,4 @@
-import { Tnex, DEFAULT_NUM } from "../../db/tnex";
+import { Tnex, DEFAULT_NUM } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import { account, accountLog, character } from "../tables";
 

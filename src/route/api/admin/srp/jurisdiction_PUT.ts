@@ -5,7 +5,7 @@ import {
   nullable,
 } from "../../../../util/express/schemaVerifier";
 
-import { Tnex } from "../../../../db/tnex";
+import { Tnex } from "../../../../db/tnex/index";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
 import { dao } from "../../../../db/dao";

@@ -1,6 +1,6 @@
-import moment = require("moment");
+import moment from "moment";
 
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { dao } from "../db/dao";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { MemberCorporation } from "../db/tables";

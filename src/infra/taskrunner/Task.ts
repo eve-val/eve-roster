@@ -1,4 +1,4 @@
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { JobLogger } from "./Job";
 
 /**

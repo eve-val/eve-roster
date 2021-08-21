@@ -1,7 +1,7 @@
 import webpack from "webpack";
-import merge from "webpack-merge";
+import { merge } from "webpack-merge";
 import { getProjectPaths } from "./paths";
-import { commonConfig } from "./webpack.common";
+import { commonConfig } from "./webpack";
 
 const paths = getProjectPaths();
 

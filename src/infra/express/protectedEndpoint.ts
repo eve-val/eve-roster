@@ -15,7 +15,7 @@ import { NotLoggedInError } from "../../error/NotLoggedInError";
 import { UnauthorizedClientError } from "../../error/UnauthorizedClientError";
 import { UserVisibleError } from "../../error/UserVisibleError";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { AccountPrivileges } from "./privileges";
 import { getAccountPrivs, AccountSummary } from "./getAccountPrivs";
 import { SchemaVerificationError } from "../../util/express/schemaVerifier";

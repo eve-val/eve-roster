@@ -1,8 +1,8 @@
-import _ = require("underscore");
-import Bluebird = require("bluebird");
+import _ from "underscore";
+import Bluebird from "bluebird";
 
 import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups";
 import { serialize } from "../../util/asyncUtil";
 import { account } from "../../db/tables";

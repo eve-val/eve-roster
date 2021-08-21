@@ -1,5 +1,5 @@
 // Causes stack traces to reference the original .ts files
-import "source-map-support/register";
+require("source-map-support").install(); // eslint-disable-line @typescript-eslint/no-var-requires
 
 import * as Sentry from "@sentry/node";
 Sentry.init({
@@ -25,7 +25,7 @@ import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
-import grpc = require("@grpc/grpc-js");
+import grpc from "@grpc/grpc-js";
 
 const REQUIRED_VARS = [
   "COOKIE_SECRET",

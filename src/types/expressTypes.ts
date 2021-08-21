@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-namespace: "off" */
 
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 
 declare global {
   namespace Express {

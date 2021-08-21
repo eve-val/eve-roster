@@ -1,5 +1,5 @@
-import merge from "webpack-merge";
-import { commonConfig } from "./webpack.common";
+import { merge } from "webpack-merge";
+import { commonConfig } from "./webpack";
 import { getProjectPaths } from "./paths";
 import webpack from "webpack";
 

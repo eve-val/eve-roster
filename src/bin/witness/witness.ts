@@ -1,5 +1,5 @@
 import * as path from "path";
-import moment = require("moment");
+import moment from "moment";
 import { ProcessControl } from "./ProcessControl";
 import { RotatingFileLogWriter } from "./RotatingFileLogWriter";
 import { getRootPath } from "./getRootPath";

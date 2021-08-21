@@ -1,5 +1,5 @@
 import { EsiError, EsiErrorKind } from "./EsiError";
-import { VError } from "verror";
+import VError from "verror";
 import { inspect } from "util";
 
 export function isAnyEsiError(error: any): error is EsiError {
