@@ -4,7 +4,7 @@ import axios from "axios";
 import express from "express";
 
 import { dao } from "../db/dao";
-import { Tnex, UpdatePolicy } from "../db/tnex";
+import { Tnex, UpdatePolicy } from "../db/tnex/index";
 import { isAnyEsiError } from "../data-source/esi/error";
 
 import { UserVisibleError } from "../error/UserVisibleError";

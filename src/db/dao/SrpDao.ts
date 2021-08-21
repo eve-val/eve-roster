@@ -1,5 +1,5 @@
 import { Dao } from "../dao";
-import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex";
+import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex/index";
 import {
   killmail,
   Killmail,

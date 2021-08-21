@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import favicon from "serve-favicon";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { isDevelopment } from "../../util/config";
 import { LOGIN_PARAMS } from "../../domain/sso/loginParams";
 

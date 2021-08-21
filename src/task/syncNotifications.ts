@@ -6,7 +6,7 @@ import { EsiNotification } from "../data-source/esi/EsiNotification";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints";
 import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { AccessTokenError } from "../error/AccessTokenError";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { JobLogger } from "../infra/taskrunner/Job";

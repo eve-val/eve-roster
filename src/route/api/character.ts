@@ -1,6 +1,6 @@
 import _ from "underscore";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
 import { AccountPrivileges } from "../../infra/express/privileges";

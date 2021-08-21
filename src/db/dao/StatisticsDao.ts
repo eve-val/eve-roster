@@ -1,4 +1,4 @@
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import { MEMBER_GROUP } from "../../domain/account/specialGroups";
 

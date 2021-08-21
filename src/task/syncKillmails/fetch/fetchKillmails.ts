@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Tnex } from "../../../db/tnex";
+import { Tnex } from "../../../db/tnex/index";
 import { JobLogger } from "../../../infra/taskrunner/Job";
 import { ZKillmailStream } from "../../../data-source/zkillboard/ZKillmailStream";
 import { pipelinePr } from "../../../util/stream/pipeline";

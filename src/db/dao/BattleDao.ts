@@ -1,5 +1,5 @@
 import { Dao } from "../dao";
-import { Tnex, val, ResultOrder } from "../../db/tnex";
+import { Tnex, val, ResultOrder } from "../../db/tnex/index";
 import {
   killmail,
   killmailBattle,

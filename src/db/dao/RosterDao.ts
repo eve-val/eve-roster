@@ -1,6 +1,6 @@
 import _ from "underscore";
 
-import { Tnex, val } from "../../db/tnex";
+import { Tnex, val } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import * as t from "../tables";
 import { MEMBER_GROUP } from "../../domain/account/specialGroups";

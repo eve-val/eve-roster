@@ -2,7 +2,7 @@ import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import { number, verify } from "../../../../util/express/schemaVerifier";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex";
+import { Tnex } from "../../../../db/tnex/index";
 import { dao } from "../../../../db/dao";
 import { BadRequestError } from "../../../../error/BadRequestError";
 import { UnauthorizedClientError } from "../../../../error/UnauthorizedClientError";

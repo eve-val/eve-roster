@@ -1,5 +1,5 @@
 import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { Tnex } from "../../../db/tnex";
+import { Tnex } from "../../../db/tnex/index";
 import { TRIAGE_RULES } from "./rules";
 import { dao } from "../../../db/dao";
 import { TriageVerdict, TriageRule, isFuncRule } from "./TriageRule";

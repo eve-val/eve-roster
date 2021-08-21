@@ -1,4 +1,4 @@
-import { Tnex, val } from "../../db/tnex";
+import { Tnex, val } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import { accessToken, AccessToken } from "../tables";
 

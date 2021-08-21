@@ -5,7 +5,7 @@ import { Dao } from "../dao";
 import { EsiNotification } from "../../data-source/esi/EsiNotification";
 import { fetchEveNames } from "../../data-source/esi/names";
 import { characterNotification, characterNotificationUpdate } from "../tables";
-import { Tnex, val } from "../tnex";
+import { Tnex, val } from "../tnex/index";
 
 export default class CharacterNotificationDao {
   constructor(private _parent: Dao) {}

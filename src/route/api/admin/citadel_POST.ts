@@ -1,5 +1,5 @@
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { DEFAULT_NUM } from "../../../db/tnex";
+import { DEFAULT_NUM } from "../../../db/tnex/index";
 import { dao } from "../../../db/dao";
 import { verify, string, boolean } from "../../../util/express/schemaVerifier";
 

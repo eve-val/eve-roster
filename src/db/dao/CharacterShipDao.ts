@@ -7,7 +7,7 @@ import {
   ownership,
   sdeType,
 } from "../tables";
-import { Tnex, val } from "../tnex";
+import { Tnex, val } from "../tnex/index";
 
 export default class CharacterShipDao {
   constructor(private _parent: Dao) {}

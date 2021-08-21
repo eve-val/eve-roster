@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
 import { SrpLossJson } from "../srp/SrpLossJson";

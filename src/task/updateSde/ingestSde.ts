@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 
-import { Tnex, val, DEFAULT_NUM } from "../../db/tnex";
+import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
 import {
   sdeImport,
   sdeType,

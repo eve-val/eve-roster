@@ -1,5 +1,5 @@
 // Causes stack traces to reference the original .ts files
-import "source-map-support/register";
+require("source-map-support").install(); // eslint-disable-line @typescript-eslint/no-var-requires
 
 import * as Sentry from "@sentry/node";
 Sentry.init({

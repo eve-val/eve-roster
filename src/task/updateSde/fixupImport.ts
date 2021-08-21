@@ -1,4 +1,4 @@
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 
 /**
  * Repair or remove and inconsistencies in the imported SDE data, such as

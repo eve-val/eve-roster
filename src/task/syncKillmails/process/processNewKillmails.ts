@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Tnex } from "../../../db/tnex";
+import { Tnex } from "../../../db/tnex/index";
 import { BatchedObjectReadable } from "../../../util/stream/BatchedObjectReadable";
 import { dao } from "../../../db/dao";
 import { pipelinePr } from "../../../util/stream/pipeline";

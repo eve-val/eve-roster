@@ -2,7 +2,7 @@ import Bluebird from "bluebird";
 
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
 import { dao } from "../../../db/dao";
-import { Tnex } from "../../../db/tnex";
+import { Tnex } from "../../../db/tnex/index";
 import { MemberCorporation, GroupTitle } from "../../../db/tables";
 import { SimpleMap } from "../../../util/simpleTypes";
 import { censor } from "./_censor";

@@ -1,5 +1,5 @@
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { ResultOrder } from "../../../../db/tnex";
+import { ResultOrder } from "../../../../db/tnex/index";
 import { BattleColumn, BoundCmp } from "../../../../db/dao/BattleDao";
 import { dao } from "../../../../db/dao";
 import {

@@ -1,4 +1,4 @@
-import { VError, Info } from "verror";
+import VError, { Info } from "verror";
 
 export enum EsiErrorKind {
   CLIENT_ERROR = "esi:ClientError",

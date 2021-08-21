@@ -1,6 +1,6 @@
 import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable";
 import { ProcessedKillmail } from "./ProcessedKillmail";
-import { Tnex } from "../../../db/tnex";
+import { Tnex } from "../../../db/tnex/index";
 import { dao } from "../../../db/dao";
 import { LossRow } from "../../../domain/srp/triage/triageLosses";
 import { autoTriageLosses } from "../../../domain/srp/triage/autoTriageLosses";

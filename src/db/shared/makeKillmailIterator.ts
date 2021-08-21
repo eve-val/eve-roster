@@ -1,4 +1,4 @@
-import { Tnex, val } from "../tnex";
+import { Tnex, val } from "../tnex/index";
 import { Killmail, killmail } from "../tables";
 import { Select } from "../tnex/Select";
 import { StreamIterator } from "../../util/stream/BatchedObjectReadable";

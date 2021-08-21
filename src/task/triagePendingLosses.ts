@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { dao } from "../db/dao";
 import { SrpVerdictStatus } from "../db/dao/enums";

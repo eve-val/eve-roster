@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as tmp from "tmp";
 import moment from "moment";
 
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { acquireSde } from "./updateSde/acquireSde";
 import { ingestSde } from "./updateSde/ingestSde";

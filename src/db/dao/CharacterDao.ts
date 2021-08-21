@@ -1,7 +1,7 @@
 import _ from "underscore";
 
 import { Dao } from "../dao";
-import { Tnex, val, UpdateStrategy } from "../../db/tnex";
+import { Tnex, val, UpdateStrategy } from "../../db/tnex/index";
 import {
   accessToken,
   account,

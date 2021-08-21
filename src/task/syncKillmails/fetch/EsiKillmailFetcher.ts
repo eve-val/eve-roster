@@ -1,4 +1,4 @@
-import { VError } from "verror";
+import VError from "verror";
 import { OrderedParallelTransform } from "../../../util/stream/OrderedParallelTransform";
 import {
   ZKillmail,

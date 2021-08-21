@@ -2,7 +2,7 @@ import Bluebird from "bluebird";
 import moment from "moment";
 
 import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { updateSkills } from "../domain/skills/skills";
 import { AccessTokenError } from "../error/AccessTokenError";

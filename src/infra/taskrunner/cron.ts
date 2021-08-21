@@ -4,7 +4,7 @@
  */
 import schedule from "node-schedule";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { serialize } from "../../util/asyncUtil";
 import { buildLoggerFromFilename } from "../logging/buildLogger";

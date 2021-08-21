@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../../db/tnex";
+import { Tnex } from "../../../../db/tnex/index";
 import { AccountPrivileges } from "../../../../infra/express/privileges";
 import { idParam } from "../../../../util/express/paramVerifier";
 import { dao } from "../../../../db/dao";

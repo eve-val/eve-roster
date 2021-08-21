@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import {
   BasicRosterCharacter,
   OwnedRosterCharacter,

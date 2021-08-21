@@ -1,6 +1,6 @@
 import { Scheduler, TaskOptions } from "./Scheduler";
 import { Task } from "./Task";
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 
 /**
  * Global wrapper around a Scheduler instance.

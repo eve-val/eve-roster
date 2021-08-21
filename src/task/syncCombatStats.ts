@@ -3,7 +3,7 @@ import moment from "moment";
 import axios from "axios";
 
 import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex";
+import { Tnex } from "../db/tnex/index";
 import { serialize } from "../util/asyncUtil";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";

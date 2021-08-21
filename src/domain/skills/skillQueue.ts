@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { Tnex } from "../../db/tnex";
+import { Tnex } from "../../db/tnex/index";
 import { dao } from "../../db/dao";
 import { SkillQueueRow } from "../../db/dao/SkillQueueDao";
 import { getAccessToken } from "../../data-source/accessToken/accessToken";
