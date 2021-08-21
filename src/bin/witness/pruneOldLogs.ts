@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import moment = require("moment");
+import moment from "moment";
 import { asyncEach } from "./asyncEach";
 import { BasicCallback } from "../../util/stream/core";
 import { parseLogFilename } from "./protocol";

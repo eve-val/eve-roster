@@ -1,7 +1,7 @@
-import querystring = require("querystring");
+import querystring from "querystring";
 
 import axios from "axios";
-import express = require("express");
+import express from "express";
 
 import { dao } from "../db/dao";
 import { Tnex, UpdatePolicy } from "../db/tnex";

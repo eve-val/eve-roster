@@ -1,4 +1,4 @@
-import util = require("util");
+import util from "util";
 import { splitColumn } from "./core";
 
 export class Scoper {

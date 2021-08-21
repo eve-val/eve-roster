@@ -1,4 +1,4 @@
-import querystring = require("querystring");
+import querystring from "querystring";
 
 // Use DOKKU_PROXY_SSL_PORT (or similar values) because we need the external
 // port for the EVE SSO redirect URL, not the port in the Docker container

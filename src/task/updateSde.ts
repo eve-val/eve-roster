@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as tmp from "tmp";
-import moment = require("moment");
+import moment from "moment";
 
 import { Tnex } from "../db/tnex";
 import { JobLogger } from "../infra/taskrunner/Job";

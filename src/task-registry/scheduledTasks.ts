@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 import { syncCharacterLocations } from "../task/syncCharacterLocations";
 import { syncCombatStats } from "../task/syncCombatStats";

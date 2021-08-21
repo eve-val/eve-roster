@@ -1,5 +1,5 @@
-import Bluebird = require("bluebird");
-import moment = require("moment");
+import Bluebird from "bluebird";
+import moment from "moment";
 
 import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";

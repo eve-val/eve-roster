@@ -25,7 +25,7 @@ import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
-import grpc = require("@grpc/grpc-js");
+import grpc from "@grpc/grpc-js";
 
 const REQUIRED_VARS = [
   "COOKIE_SECRET",

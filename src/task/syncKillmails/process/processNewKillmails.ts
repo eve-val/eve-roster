@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 import { Tnex } from "../../../db/tnex";
 import { BatchedObjectReadable } from "../../../util/stream/BatchedObjectReadable";
 import { dao } from "../../../db/dao";

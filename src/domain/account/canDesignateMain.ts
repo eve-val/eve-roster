@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 const MODIFY_MAIN_WINDOW_DURATION = moment.duration(7, "days").asMilliseconds();
 

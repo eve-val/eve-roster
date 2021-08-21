@@ -1,4 +1,4 @@
-import Bluebird = require("bluebird");
+import Bluebird from "bluebird";
 
 import { Tnex, val } from "../../db/tnex";
 import { Dao } from "../dao";

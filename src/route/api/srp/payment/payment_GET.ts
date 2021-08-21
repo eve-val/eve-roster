@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
 import { Tnex } from "../../../../db/tnex";

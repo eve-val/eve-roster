@@ -1,4 +1,4 @@
-import Bluebird = require("bluebird");
+import Bluebird from "bluebird";
 
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
 import { dao } from "../../../db/dao";

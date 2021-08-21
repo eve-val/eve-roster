@@ -1,4 +1,4 @@
-import express = require("express");
+import express from "express";
 
 export function getSession(req: express.Request) {
   if (req.session == undefined) {

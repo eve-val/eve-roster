@@ -1,4 +1,4 @@
-import express = require("express");
+import express from "express";
 
 import account_activeTimezone_PUT from "./account/activeTimezone_PUT";
 import account_characters_GET from "./account/characters_GET";

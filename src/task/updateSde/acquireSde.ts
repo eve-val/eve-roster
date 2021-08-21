@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import axios from "axios";
-import progress = require("progress-stream");
+import progress from "progress-stream";
 
 import { JobLogger } from "../../infra/taskrunner/Job";
 
-const bz2 = require("unbzip2-stream"); // eslint-disable-line @typescript-eslint/no-var-requires
+import bz2 from "unbzip2-stream";
 
 const FUZZWORKS_DUMP_URL = "https://www.fuzzwork.co.uk/dump";
 const SQLITE_DUMP_URL = `${FUZZWORKS_DUMP_URL}/sqlite-latest.sqlite.bz2`;

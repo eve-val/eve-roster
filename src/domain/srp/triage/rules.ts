@@ -1,4 +1,4 @@
-import _ = require("underscore");
+import _ from "underscore";
 
 import { TemplateRule, FuncRule } from "./TriageRule";
 import { SrpVerdictStatus, SrpVerdictReason } from "../../../db/dao/enums";

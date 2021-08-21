@@ -1,5 +1,5 @@
-import moment = require("moment");
-import _ = require("underscore");
+import moment from "moment";
+import _ from "underscore";
 
 import { Dao } from "../dao";
 import { EsiNotification } from "../../data-source/esi/EsiNotification";

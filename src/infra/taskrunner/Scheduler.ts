@@ -1,4 +1,4 @@
-import _ = require("underscore");
+import _ from "underscore";
 
 import { inspect } from "util";
 

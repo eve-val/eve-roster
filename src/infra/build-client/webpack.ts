@@ -5,7 +5,7 @@ import { ProjectPaths } from "./paths";
 import webpack from "webpack";
 import TerserPlugin from "terser-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import * as MomentLocalesPlugin from "moment-locales-webpack-plugin";
+import MomentLocalesPlugin from "moment-locales-webpack-plugin";
 
 import { VueLoaderPlugin } from "vue-loader";
 
@@ -14,9 +14,9 @@ import HtmlWebpackPugPlugin from "html-webpack-pug-plugin";
 
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
-import * as CleanupMiniCssExtractPlugin from "cleanup-mini-css-extract-plugin";
+import CleanupMiniCssExtractPlugin from "cleanup-mini-css-extract-plugin";
 
-import * as ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
+import ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
 import { extendDefaultPlugins } from "svgo";
 
 export function commonConfig(

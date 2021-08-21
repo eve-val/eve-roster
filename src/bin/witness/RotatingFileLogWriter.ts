@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import moment = require("moment");
+import moment from "moment";
 import { Writable } from "stream";
 import { WriteStream } from "fs";
 import { BasicCallback } from "../../util/stream/core";

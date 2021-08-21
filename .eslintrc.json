@@ -9,7 +9,6 @@
   "plugins": [
     "@typescript-eslint",
     "jest",
-    "eslint-plugin-import",
     "eslint-plugin-vue",
     "eslint-plugin-prettier-vue"
   ],
@@ -31,7 +30,6 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "import/extensions": ["error", "always"],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "no-redeclare": "off",
     "no-dupe-class-members": "off"

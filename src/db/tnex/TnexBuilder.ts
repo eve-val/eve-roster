@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 
-import util = require("util");
+import util from "util";
 import { splitColumn } from "./core";
 import { Tnex } from "./Tnex";
 import { Scoper } from "./Scoper";

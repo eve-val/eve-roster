@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex";

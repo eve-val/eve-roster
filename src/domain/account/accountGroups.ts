@@ -1,5 +1,5 @@
-import _ = require("underscore");
-import Bluebird = require("bluebird");
+import _ from "underscore";
+import Bluebird from "bluebird";
 
 import { dao } from "../../db/dao";
 import { Tnex } from "../../db/tnex";

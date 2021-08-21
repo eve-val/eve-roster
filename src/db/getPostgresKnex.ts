@@ -1,4 +1,4 @@
-import pg = require("pg");
+import pg from "pg";
 import { knex, Knex } from "knex";
 
 // By default, pg returns columns of type "bigint" (20) as strings, not numbers,

@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 import { getAccessTokensFromRows } from "../data-source/accessToken/accessToken";
 import { dao } from "../db/dao";

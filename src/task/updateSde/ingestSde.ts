@@ -1,4 +1,4 @@
-import sqlite3 = require("sqlite3");
+import sqlite3 from "sqlite3";
 
 import { Tnex, val, DEFAULT_NUM } from "../../db/tnex";
 import {

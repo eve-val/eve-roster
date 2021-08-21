@@ -26,7 +26,13 @@
       "dom"
     ] /* Specify library files to be included in the compilation:  */,
     "allowJs": true /* Allow javascript files to be compiled. */,
-    "sourceMap": true /* Generates corresponding '.map' file. */
+    "sourceMap": true /* Generates corresponding '.map' file. */,
+    "plugins": [
+      {
+        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
+        "after": true
+      }
+    ]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "static", "out/**/*", "src/client"]

@@ -1,4 +1,4 @@
-import _ = require("underscore");
+import _ from "underscore";
 
 import { Dao } from "../dao";
 import { Tnex, val, UpdateStrategy } from "../../db/tnex";

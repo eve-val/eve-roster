@@ -1,4 +1,4 @@
-import _ = require("underscore");
+import _ from "underscore";
 import moment from "moment";
 import { getAccessToken } from "../data-source/accessToken/accessToken";
 import { isAnyEsiError } from "../data-source/esi/error";

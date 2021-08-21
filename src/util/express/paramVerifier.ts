@@ -1,4 +1,4 @@
-import express = require("express");
+import express from "express";
 
 import { BadRequestError } from "../../error/BadRequestError";
 import { MixedObject } from "../simpleTypes";
