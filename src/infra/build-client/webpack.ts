@@ -17,7 +17,6 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import CleanupMiniCssExtractPlugin from "cleanup-mini-css-extract-plugin";
 
 import ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
-import { extendDefaultPlugins } from "svgo";
 
 export function commonConfig(
   mode: "development" | "production",
@@ -149,12 +148,17 @@ export function commonConfig(
             [
               "svgo",
               {
-                plugins: extendDefaultPlugins([
+                plugins: [
                   {
-                    name: "removeViewBox",
-                    active: false,
+                    name: "preset-default",
+                    params: {
+                      overrides: {
+                        // disable plugins
+                        removeViewBox: false,
+                      },
+                    },
                   },
-                ]),
+                ],
               },
             ],
           ],
