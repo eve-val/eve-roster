@@ -7,10 +7,11 @@ import { JobLogger } from "../infra/taskrunner/Job";
 import { updateSkills } from "../domain/skills/skills";
 import { AccessTokenError } from "../error/AccessTokenError";
 import { isAnyEsiError } from "../data-source/esi/error";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export const syncSkills: Task = {
   name: "syncSkills",

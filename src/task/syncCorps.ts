@@ -11,12 +11,13 @@ import {
 import { UNKNOWN_CORPORATION_ID } from "../db/constants";
 import { CORP_DOOMHEIM } from "../shared/eveConstants";
 import { parallelize } from "../util/asyncUtil";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 import { ESI_CHARACTERS_$characterId } from "../data-source/esi/endpoints";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export const syncCorps: Task = {
   name: "syncCorps",

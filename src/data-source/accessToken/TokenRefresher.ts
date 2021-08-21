@@ -3,9 +3,10 @@ import axios from "axios";
 
 import { AccessToken } from "../../db/tables";
 import { AccessTokenErrorType } from "../../error/AccessTokenError";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 /**
  * Class for refreshing access tokens. Given a refresh token, returns a

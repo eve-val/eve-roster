@@ -19,10 +19,11 @@ import { Tnex } from "../../db/tnex/index";
 import { AccountPrivileges } from "./privileges";
 import { getAccountPrivs, AccountSummary } from "./getAccountPrivs";
 import { SchemaVerificationError } from "../../util/express/schemaVerifier";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 import { getSession, endSession } from "./session";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export type EndpointType = "json" | "html";
 

@@ -18,7 +18,7 @@ export function buildLogger(tag: string): Logger {
 
 /**
  * Same as buildLogger(), but automatically extracts the tag from the file's
- * filename. Example usage: <code>buildLoggerFromFilename(__filename);</code>.
+ * filename. Example usage: <code>buildLoggerFromFilename(fileURLToPath(import.meta.url));</code>.
  */
 export function buildLoggerFromFilename(filename: string): Logger {
   return new WitnessLogger(extractTagFromFilename(filename));

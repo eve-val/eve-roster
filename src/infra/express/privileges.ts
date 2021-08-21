@@ -4,9 +4,10 @@ import { PrivilegeName } from "../../db/dao/enums";
 import { ADMIN_GROUP, MEMBER_GROUP } from "../../domain/account/specialGroups";
 
 import { MissingPrivilegeError } from "../../error/MissingPrivilegeError";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 const debugStr = process.env.DEBUG_GROUPS;
 const debugGroups = checkDebugGroups(debugStr && JSON.parse(debugStr));

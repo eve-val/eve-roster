@@ -3,11 +3,12 @@
 import { EventEmitter } from "events";
 
 import { Job, JobStatus, JobResult, JobLogger } from "./Job";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../logging/buildLogger";
 import { LogLevel } from "../logging/Logger";
 import { Task } from "./Task";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly executionId: number;

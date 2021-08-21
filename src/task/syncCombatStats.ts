@@ -6,10 +6,11 @@ import { dao } from "../db/dao";
 import { Tnex } from "../db/tnex/index";
 import { serialize } from "../util/asyncUtil";
 import { JobLogger } from "../infra/taskrunner/Job";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { Task } from "../infra/taskrunner/Task";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export const syncCombatStats: Task = {
   name: "syncCombatStats",

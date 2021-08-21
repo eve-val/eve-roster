@@ -4,9 +4,10 @@ import { TRIAGE_RULES } from "./rules";
 import { dao } from "../../../db/dao";
 import { TriageVerdict, TriageRule, isFuncRule } from "./TriageRule";
 import { SdeType } from "../../../db/tables";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface LossRow {
   km_timestamp: number;

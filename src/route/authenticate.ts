@@ -15,11 +15,12 @@ import {
   ESI_CHARACTERS_$characterId,
 } from "../data-source/esi/endpoints";
 import { UNKNOWN_CORPORATION_ID } from "../db/constants";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { getSession } from "../infra/express/session";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 /**
  * Authenticates a character, creating an account if necessary.

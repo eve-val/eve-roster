@@ -11,9 +11,10 @@ import {
 } from "../tables";
 import { updateGroupsForAccount } from "../../domain/account/accountGroups";
 import { ADMIN_GROUP } from "../../domain/account/specialGroups";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface AccountDetailsRow {
   id: number;

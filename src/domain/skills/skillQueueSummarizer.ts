@@ -12,9 +12,10 @@ import {
   AccessTokenError,
   AccessTokenErrorType,
 } from "../../error/AccessTokenError";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 

@@ -11,6 +11,7 @@ import { Tnex } from "../db/tnex/index";
 import { AccessTokenError } from "../error/AccessTokenError";
 import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets";
 import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { JobLogger } from "../infra/taskrunner/Job";
 import { Task } from "../infra/taskrunner/Task";
@@ -24,7 +25,7 @@ const CORP_OWNED_SHIP_NAME_PREFIX = "SA ";
 
 const ASSET_SAFETY_LOCATION_ID = 2004;
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export const syncBorrowedShips: Task = {
   name: "syncBorrowedShips",

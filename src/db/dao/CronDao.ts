@@ -4,9 +4,10 @@ import moment from "moment";
 import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
 import { Dao } from "../dao";
 import { cronLog } from "../tables";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default class CronDao {
   constructor(private _parent: Dao) {}

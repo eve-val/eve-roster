@@ -8,12 +8,13 @@ import { checkNotNil } from "../../util/assert";
 
 import { Job, JobResult } from "./Job";
 import { JobImpl } from "./JobImpl";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../logging/buildLogger";
 import { Task } from "./Task";
 
 import { trace, context } from "@opentelemetry/api";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 const tracer = trace.getTracer("scheduler");
 

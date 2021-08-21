@@ -35,8 +35,9 @@ const REQUIRED_VARS = [
   "HONEYCOMB_DATASET",
 ];
 
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "./infra/logging/buildLogger";
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 for (const envVar of REQUIRED_VARS) {
   if (!(envVar in process.env)) {
