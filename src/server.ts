@@ -1,5 +1,6 @@
 // Causes stack traces to reference the original .ts files
-require("source-map-support").install(); // eslint-disable-line @typescript-eslint/no-var-requires
+import sourceMapSupport from "source-map-support";
+sourceMapSupport.install();
 
 import * as Sentry from "@sentry/node";
 Sentry.init({
@@ -7,7 +8,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-require("heapdump");
+import "heapdump";
 
 import Graceful from "node-graceful";
 Graceful.captureExceptions = true;
@@ -35,8 +36,9 @@ const REQUIRED_VARS = [
   "HONEYCOMB_DATASET",
 ];
 
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "./infra/logging/buildLogger";
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 for (const envVar of REQUIRED_VARS) {
   if (!(envVar in process.env)) {

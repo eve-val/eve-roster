@@ -1,6 +1,7 @@
 import { Tnex, val } from "../../db/tnex/index";
 import { sdeType, sdeTypeAttribute, sdeAttribute } from "../../db/tables";
 
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 import { TYPE_CATEGORY_SKILL } from "../constants/categories";
 import {
@@ -13,7 +14,7 @@ import {
   DGM_ATTR_SKILL_TIME_CONSTANT,
 } from "../constants/dogma";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface SdeSkill {
   readonly id: number;

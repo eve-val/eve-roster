@@ -5,9 +5,10 @@ import { ExpirationCache } from "../../util/ExpirationCache";
 import { fetchMarketStats } from "./fetchMarketStats";
 import { SYSTEM_JITA } from "../../eve/constants/mapSolarSystems";
 import { MarketStat } from "./MarketStat";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 const CACHE = new ExpirationCache<number, number>();
 const CACHE_DURATION = moment.duration(4, "hours").asMilliseconds();

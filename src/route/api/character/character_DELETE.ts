@@ -4,9 +4,10 @@ import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
 import { dao } from "../../../db/dao";
 import { BadRequestError } from "../../../error/BadRequestError";
 import { CORP_DOOMHEIM } from "../../../shared/eveConstants";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default jsonEndpoint((req, res, db, account, _privs): Promise<{}> => {
   const characterId = parseInt(req.params.id);

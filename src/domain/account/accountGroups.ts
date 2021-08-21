@@ -6,9 +6,10 @@ import { Tnex } from "../../db/tnex/index";
 import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups";
 import { serialize } from "../../util/asyncUtil";
 import { account } from "../../db/tables";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export function updateGroupsOnAllAccounts(db: Tnex) {
   return db

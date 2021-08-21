@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-require("./sentry");
+import "./sentry";
 
 import { createApp } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";

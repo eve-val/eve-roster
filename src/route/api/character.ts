@@ -6,11 +6,12 @@ import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
 import { AccountPrivileges } from "../../infra/express/privileges";
 import { idParam } from "../../util/express/paramVerifier";
 import { NotFoundError } from "../../error/NotFoundError";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 import { TIMEZONE_LABELS } from "../../domain/roster/timezoneLabels";
 import { SimpleMap } from "../../util/simpleTypes";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface Character {
   name: string;

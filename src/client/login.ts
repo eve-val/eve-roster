@@ -1,4 +1,4 @@
-require("./sentry");
+import "./sentry";
 
 import "./css/login.css";
 

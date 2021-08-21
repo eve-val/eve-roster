@@ -12,9 +12,10 @@ import { isAnyEsiError } from "../../data-source/esi/error";
 import * as alert from "../../shared/rosterAlertLevels";
 import { fetchEveNames } from "../../data-source/esi/names";
 import { SimpleMap } from "../../util/simpleTypes";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface Output {
   columns: string[];

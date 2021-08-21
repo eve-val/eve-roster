@@ -4,9 +4,10 @@ import { Tnex } from "../../../db/tnex/index";
 import { AccountPrivileges } from "../../../infra/express/privileges";
 
 import { BadRequestError } from "../../../error/BadRequestError";
+import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
 
-const logger = buildLoggerFromFilename(__filename);
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default jsonEndpoint((req, res, db, account, privs) => {
   const characterId = parseInt(req.params.id);
