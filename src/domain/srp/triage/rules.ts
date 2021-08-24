@@ -80,6 +80,11 @@ import {
   MKT_GROUP_TRIGLAVIAN_CRUISERS,
   MKT_GROUP_TRIGLAVIAN_BATTLESHIPS,
 } from "../../../eve/constants/marketGroups";
+import {
+  SYSTEM_AD001,
+  SYSTEM_AD200,
+} from "../../../eve/constants/mapSolarSystems";
+
 import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
 
 /**
@@ -180,6 +185,25 @@ const NPC_DEATH: TemplateRule = {
       autoCommit: "leader",
     },
   ],
+};
+
+const PROVING_GROUNDS_DEATH: FuncRule = {
+  filter: {},
+  discriminant: (killmail, _) => {
+    if (
+      killmail.solar_system_id >= SYSTEM_AD001 &&
+      killmail.solar_system_id <= SYSTEM_AD200
+    ) {
+      return [
+        {
+          status: SrpVerdictStatus.INELIGIBLE,
+          reason: SrpVerdictReason.NOT_COVERED,
+          autoCommit: "leader",
+        },
+      ];
+    }
+    return undefined;
+  },
 };
 
 const SOLO_DEATH: FuncRule = {
@@ -775,6 +799,7 @@ export const TRIAGE_RULES = [
   FIGHTERS,
   SHUTTLES,
   NPC_DEATH,
+  PROVING_GROUNDS_DEATH,
   SOLO_DEATH,
 
   // These and the pirate rules have to go before the T1 rules or the T1
