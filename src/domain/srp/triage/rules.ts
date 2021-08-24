@@ -32,6 +32,9 @@ import {
   GROUP_CAPSULE,
   GROUP_MOBILE_DEPOT,
   GROUP_MOBILE_TRACTOR_UNIT,
+  GROUP_MOBILE_CYNOSURAL_BEACON,
+  GROUP_MOBILE_OBSERVATORY,
+  GROUP_MOBILE_WARP_DISRUPTOR,
   GROUP_T1_CRUISER,
   GROUP_SUPPORT_FIGHTER,
   GROUP_LIGHT_FIGHTER,
@@ -39,6 +42,7 @@ import {
   GROUP_SHUTTLE,
 } from "../../../eve/constants/groups";
 import {
+  TYPE_DEFENDER_MISSILE,
   TYPE_GNOSIS,
   TYPE_HIGH_GRADE_TALONS,
   TYPE_LOW_GRADE_TALONS,
@@ -122,9 +126,31 @@ const ACCOUNT_IS_OPT_OUT: FuncRule = {
   },
 };
 
+const CORP_PROVIDED_SHIPS: FuncRule = {
+  filter: {},
+  discriminant: (killmail, _) => {
+    if (invMatchAny(killmail, [TYPE_DEFENDER_MISSILE])) {
+      return [
+        {
+          status: SrpVerdictStatus.INELIGIBLE,
+          reason: SrpVerdictReason.CORP_PROVIDED,
+          autoCommit: "leader",
+        },
+      ];
+    }
+    return undefined;
+  },
+};
+
 const DEPLOYABLES: TemplateRule = {
   filter: {
-    groupId: [GROUP_MOBILE_DEPOT, GROUP_MOBILE_TRACTOR_UNIT],
+    groupId: [
+      GROUP_MOBILE_DEPOT,
+      GROUP_MOBILE_TRACTOR_UNIT,
+      GROUP_MOBILE_CYNOSURAL_BEACON,
+      GROUP_MOBILE_OBSERVATORY,
+      GROUP_MOBILE_WARP_DISRUPTOR,
+    ],
   },
   verdicts: [
     {
@@ -446,9 +472,9 @@ const INTERDICTORS: TemplateRule = {
   },
   verdicts: [
     {
-      status: SrpVerdictStatus.INELIGIBLE,
-      reason: SrpVerdictReason.CORP_PROVIDED,
-      autoCommit: "leader",
+      status: SrpVerdictStatus.APPROVED,
+      label: "Interdictor",
+      payout: { kind: "Market", fallback: million(60) },
     },
   ],
 };
@@ -794,6 +820,7 @@ function invMatchAny(killmail: ZKillmail, items: number[]) {
 
 export const TRIAGE_RULES = [
   ACCOUNT_IS_OPT_OUT,
+  CORP_PROVIDED_SHIPS,
   DEPLOYABLES,
   T2_BATTLESHIPS,
   FIGHTERS,
