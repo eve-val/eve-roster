@@ -1,6 +1,8 @@
 export const TYPE_CAPSULE = 670;
 export const TYPE_CAPSULE_GENOLUTION = 33328;
 
+export const TYPE_DEFENDER_MISSILE = 32782;
+
 export const TYPE_GUARDIAN = 11987;
 
 export const TYPE_TENGU = 29984;
