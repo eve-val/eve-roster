@@ -125,7 +125,8 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
-    "lpad-align": "^3.0.0"
+    "lpad-align": "^3.0.0",
+    "node-gyp": "^8"
   },
   "jest": {
     "moduleFileExtensions": [
