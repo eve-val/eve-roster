@@ -19,8 +19,8 @@ import { getPostgresKnex } from "./db/getPostgresKnex";
 // import { DiagConsoleLogger, DiagLogLevel, diag } from "@opentelemetry/api";
 // diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-import { NodeTracerProvider } from "@opentelemetry/node";
-import { BatchSpanProcessor } from "@opentelemetry/tracing";
+import { NodeTracerProvider } from "@opentelemetry/sdk-trace-node";
+import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
