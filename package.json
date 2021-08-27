@@ -82,7 +82,7 @@
     "@types/verror": "^1.10.5",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-middleware": "^5.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.2",
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
