@@ -1278,10 +1278,12 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
-"@types/svgo@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-2.4.0.tgz#d0421e0f563cd4726fa8261066f16d399e665b2e"
-  integrity sha512-tkdgLUK9/7MYXOCjjDjhD09zRYpplCe0M1hhmYubBRrsD0EUdhOPtjzr/ObvNfXpd6vLqsrqzdODoI2v5RB2yA==
+"@types/svgo@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-2.4.1.tgz#ef97ae376a647337314303203857bd64e24e29fe"
+  integrity sha512-BdFmgCVdvroCQi21+6UGox++0mMZXjOS2rZ8okgjqikOfKWme/aBpPRc51AuhK/TojGoOMEPmA5x5KioqQvwew==
+  dependencies:
+    "@types/node" "*"
 
 "@types/terser-webpack-plugin@^5.0.3":
   version "5.0.3"
