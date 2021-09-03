@@ -29,7 +29,7 @@
     "@opentelemetry/instrumentation-pg": "^0.24.0",
     "@opentelemetry/sdk-trace-base": "^0.25.0",
     "@opentelemetry/sdk-trace-node": "^0.25.0",
-    "@sentry/node": "^6.11.0",
+    "@sentry/node": "^6.12.0",
     "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
@@ -56,8 +56,8 @@
     "verror": "^1.10.0"
   },
   "devDependencies": {
-    "@sentry/browser": "^6.11.0",
-    "@sentry/tracing": "^6.11.0",
+    "@sentry/browser": "^6.12.0",
+    "@sentry/tracing": "^6.12.0",
     "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.1",
     "@types/cookie-parser": "^1.4.2",
