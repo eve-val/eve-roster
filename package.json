@@ -47,7 +47,7 @@
     "progress-stream": "^2.0.0",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
-    "source-map-support": "^0.5.19",
+    "source-map-support": "^0.5.20",
     "sqlite3": "^5.0.2",
     "svgo": "^2.6.0",
     "tmp": "^0.2.1",
