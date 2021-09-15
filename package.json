@@ -30,7 +30,7 @@
     "@opentelemetry/sdk-trace-base": "^0.25.0",
     "@opentelemetry/sdk-trace-node": "^0.25.0",
     "@sentry/node": "^6.12.0",
-    "axios": "^0.21.3",
+    "axios": "^0.21.4",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
