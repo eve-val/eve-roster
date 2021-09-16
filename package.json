@@ -26,7 +26,7 @@
     "@opentelemetry/instrumentation": "^0.25.0",
     "@opentelemetry/instrumentation-express": "^0.24.0",
     "@opentelemetry/instrumentation-http": "^0.25.0",
-    "@opentelemetry/instrumentation-pg": "^0.24.0",
+    "@opentelemetry/instrumentation-pg": "^0.25.0",
     "@opentelemetry/sdk-trace-base": "^0.25.0",
     "@opentelemetry/sdk-trace-node": "^0.25.0",
     "@sentry/node": "^6.12.0",
