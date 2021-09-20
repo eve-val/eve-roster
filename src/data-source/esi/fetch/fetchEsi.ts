@@ -80,4 +80,4 @@ async function fetchEsiImpl<T extends EsiEndpoint>(
   return response;
 }
 
-const BASE_URL = "https://esi.evetech.net";
+export const BASE_URL = "https://esi.evetech.net";
