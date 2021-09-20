@@ -7,8 +7,8 @@ import { defineComponent } from "vue";
 import SwaggerUI from "swagger-ui";
 
 export default defineComponent({
-  mounted: function() {
-    const ui = SwaggerUI({
+  mounted: function () {
+    SwaggerUI({
       url: "https://esi.evetech.net/latest/swagger.json",
       dom_id: "#swagger-ui",
       layout: "BaseLayout",
@@ -18,4 +18,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@import "../../../node_modules/swagger-ui/dist/swagger-ui.css";
 </style>
