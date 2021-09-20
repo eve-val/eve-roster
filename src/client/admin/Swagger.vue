@@ -19,4 +19,5 @@ export default defineComponent({
 
 <style scoped>
 @import "../../../node_modules/swagger-ui/dist/swagger-ui.css";
+@import "../css/esi.css";
 </style>
