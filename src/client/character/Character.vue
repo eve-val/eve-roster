@@ -19,7 +19,7 @@
           <eve-image
             :id="characterId"
             type="Character"
-            :size="274"
+            :size="256"
             style="border: 1px solid #463830"
           />
           <div class="factoid-title">Corporation</div>
@@ -356,7 +356,6 @@ const TIMEZONE_HINTS: { [key: string]: string | null } = {
 
 .sidebar {
   flex: 0 0 auto;
-  width: 274px;
   padding-left: 30px;
   padding-right: 50px;
 }
