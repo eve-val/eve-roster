@@ -110,6 +110,8 @@
           <div v-for="title in character.titles" :key="title" class="factoid">
             {{ title }}
           </div>
+          <div v-if="character.titles.length == 0" class="factoid">-</div>
+
           <template v-if="canProxyApi">
             <div class="factoid-title">API Keys</div>
             <div class="factoid">

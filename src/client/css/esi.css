@@ -749,3 +749,14 @@ div.opblock-description div.markdown {
   line-height: 1.4em;
   padding: 5px 0 0;
 }
+
+.response {
+  display: none;
+}
+.response[data-code="200"] {
+  display: table-row;
+}
+
+.headers-wrapper {
+  display: none;
+}
