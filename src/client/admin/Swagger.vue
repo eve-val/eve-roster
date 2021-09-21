@@ -39,7 +39,7 @@ export default defineComponent({
         theme: "obsidian",
       },
       requestInterceptor: (req) => {
-        req.headers._csrf = this.csrf;
+        req.headers["x-csrf-token"] = this.csrf;
         return req;
       },
       onComplete: () => {
