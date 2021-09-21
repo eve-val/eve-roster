@@ -2025,9 +2025,9 @@ ansi-regex@^3.0.0:
   integrity sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
 
 ansi-regex@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
-  integrity sha512-bY6fj56OUQ0hU1KjFNDQuJFezqKdrAyFdIevADiqrWHwSlbmBNMHp5ak2f40Pm8JTFyM2mqxkG6ngkHO11f/lg==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.1.tgz#082cb2c89c9fe8659a311a53bd6a4dc5301db304"
+  integrity sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==
 
 ansi-styles@^2.2.1:
   version "2.2.1"
@@ -4199,12 +4199,12 @@ find-up@^4.0.0, find-up@^4.1.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-find-versions@^3.0.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/find-versions/-/find-versions-3.2.0.tgz#10297f98030a786829681690545ef659ed1d254e"
-  integrity sha512-P8WRou2S+oe222TOCHitLy8zj+SIsVJh52VP4lvXkaFVnOFFdoWv1H1Jjvel1aI6NCFOAaeAVm8qrI0odiLcww==
+find-versions@^3.0.0, find-versions@^5:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/find-versions/-/find-versions-5.0.0.tgz#3e088dbc5083162c86fb36dbd7b84d64b9ee1e45"
+  integrity sha512-Jid3bdamPSNTb7r28PItNl/wm8frLj7NgEztJXK8UftodFRlynojEvUo4dyr5ftgfqgGhCF6DWaiJVFbpX3uPA==
   dependencies:
-    semver-regex "^2.0.0"
+    semver-regex "^4.0.0"
 
 find-yarn-workspace-root@^2.0.0:
   version "2.0.0"
@@ -8442,10 +8442,10 @@ seek-bzip@^1.0.5:
   dependencies:
     commander "^2.8.1"
 
-semver-regex@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/semver-regex/-/semver-regex-2.0.0.tgz#a93c2c5844539a770233379107b38c7b4ac9d338"
-  integrity sha512-mUdIBBvdn0PLOeP3TEkMH7HHeUP3GjsXCwKarjv/kGmUFOYg1VqEemKhoQpWMu6X2I8kHeuVdGibLGkVK+/5Qw==
+semver-regex@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/semver-regex/-/semver-regex-4.0.1.tgz#b13d2ea2f7f2328f838edd99542796304a8e2dc6"
+  integrity sha512-cByCq+HYEpHMMx5oys/YqkUnUfVf4HHnG3a65rXZQgSVpnUSE68dD3FFowDL7q2KqUjxBTc3iDEJ7/qPsRXe1Q==
 
 semver-truncate@^1.1.2:
   version "1.1.2"
