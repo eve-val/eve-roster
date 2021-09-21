@@ -19,7 +19,7 @@
           <eve-image
             :id="characterId"
             type="Character"
-            :size="274"
+            :size="256"
             style="border: 1px solid #463830"
           />
           <div class="factoid-title">Corporation</div>
@@ -111,6 +111,15 @@
             {{ title }}
           </div>
           <div v-if="character.titles.length == 0" class="factoid">-</div>
+
+          <template v-if="canProxyApi">
+            <div class="factoid-title">API Keys</div>
+            <div class="factoid">
+              <router-link class="api-link" :to="'/admin/api/' + characterId">
+                Impersonate
+              </router-link>
+            </div>
+          </template>
         </div>
         <div class="content">
           <skill-sheet :character-id="characterId" :access="access" />
@@ -183,6 +192,10 @@ export default defineComponent({
 
     canWriteSrp: function (): boolean {
       return this.identity.access["srp"] == 2;
+    },
+
+    canProxyApi: function (): boolean {
+      return this.identity.access["api"] == 2;
     },
 
     canWriteTimezone: function (): boolean {
@@ -343,7 +356,6 @@ const TIMEZONE_HINTS: { [key: string]: string | null } = {
 
 .sidebar {
   flex: 0 0 auto;
-  width: 274px;
   padding-left: 30px;
   padding-right: 50px;
 }

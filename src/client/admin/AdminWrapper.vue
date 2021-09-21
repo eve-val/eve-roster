@@ -15,6 +15,9 @@
         <router-link class="sidebar-link" to="/admin/citadels">
           Citadels
         </router-link>
+        <router-link class="sidebar-link" to="/admin/api">
+          ESI Proxy
+        </router-link>
         <router-link class="sidebar-link" to="/admin/setup">
           Setup
         </router-link>

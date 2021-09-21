@@ -18,6 +18,8 @@ import { LOGIN_PARAMS } from "../../domain/sso/loginParams";
 import { default as route_api } from "../../route/api/api";
 import { default as route_home } from "../../route/home";
 import { default as route_authenticate } from "../../route/authenticate";
+import { default as route_swagger } from "../../route/esi/swagger";
+import { default as route_esi_proxy } from "../../route/esi/proxy";
 import { endSession } from "./session";
 import { checkNotNil } from "../../util/assert";
 import { getProjectPaths } from "../build-client/paths";
@@ -68,6 +70,9 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   });
 
   app.get("/authenticate", route_authenticate);
+
+  app.get("/esi/swagger.json", route_swagger);
+  app.all("/esi/proxy/*", route_esi_proxy);
 
   app.get("/logout", function (req, res) {
     endSession(req);
