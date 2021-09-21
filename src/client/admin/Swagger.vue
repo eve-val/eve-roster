@@ -9,7 +9,7 @@ import SwaggerUI from "swagger-ui";
 export default defineComponent({
   mounted: function () {
     SwaggerUI({
-      url: "https://esi.evetech.net/latest/swagger.json",
+      url: "/esi/swagger.json",
       dom_id: "#swagger-ui",
       layout: "BaseLayout",
     });

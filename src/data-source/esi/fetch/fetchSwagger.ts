@@ -1,4 +1,6 @@
-import axios, {AxiosResponse, AxiosRequestConfig} from "axios";
+import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+
+export const CHARACTER_HEADER = "X-Proxy-Character";
 
 export async function fetchSwagger(baseUrl: string): Promise<object> {
   const config: AxiosRequestConfig = {
@@ -10,16 +12,19 @@ export async function fetchSwagger(baseUrl: string): Promise<object> {
     },
   };
 
-  let response: AxiosResponse;
-  response = await axios(config);
+  const response: AxiosResponse = await axios(config);
   return response.data;
 }
 
-export async function getModifiedSwagger(baseUrl: string, host: string): Promise<object> {
-  let swagger: any;
-  swagger = await fetchSwagger(baseUrl);
+export async function getModifiedSwagger(
+  baseUrl: string,
+  host: string
+): Promise<object> {
+  const swagger: any = await fetchSwagger(baseUrl);
 
+  swagger["basePath"] = "/esi/proxy";
   swagger["host"] = host;
+  delete swagger["schemes"];
 
   // Replace securityDefinitions to specify API Key auth - we'll use the
   // character id we want to proxy for as the API "key" but rely on our
@@ -28,7 +33,7 @@ export async function getModifiedSwagger(baseUrl: string, host: string): Promise
     proxy: {
       type: "apiKey",
       in: "header",
-      name: "X-Proxy-Character",
+      name: CHARACTER_HEADER,
     },
   };
 
@@ -37,12 +42,10 @@ export async function getModifiedSwagger(baseUrl: string, host: string): Promise
   for (const path in swagger["paths"]) {
     for (const method in swagger["paths"][path]) {
       if ("security" in swagger["paths"][path][method]) {
-        swagger["paths"][path][method]["security"] = [
-          { proxy: [] },
-        ];
-      };
-    };
-  };
+        swagger["paths"][path][method]["security"] = [{ proxy: [] }];
+      }
+    }
+  }
 
   return swagger;
 }

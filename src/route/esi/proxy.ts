@@ -1,9 +1,10 @@
-import axios, { AxiosResponse, AxiosRequestConfig, Method } from "axios";
+import axios, { AxiosRequestConfig, Method } from "axios";
 import { MixedObject } from "../../util/simpleTypes";
 
 import { getAccessToken } from "../../data-source/accessToken/accessToken";
 import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
 
+import { CHARACTER_HEADER } from "../../data-source/esi/fetch/fetchSwagger";
 import { BASE_URL } from "../../data-source/esi/fetch/fetchEsi";
 
 export default jsonEndpoint(
@@ -12,11 +13,11 @@ export default jsonEndpoint(
     privs.requireRead("accountLogs", false);
 
     // read the character id from the header.
-    const targetCharacter = Number(req.headers.character_id);
+    const targetCharacter = Number(req.get(CHARACTER_HEADER));
     // read the URL path from our path, trimming our prefix.
     const prefix = req.route.path.slice(0, -2);
     const origPath = req.path;
-    const targetPath = BASE_URL + origPath.replace(prefix, "");
+    const targetPath = BASE_URL + "/latest" + origPath.replace(prefix, "");
 
     return Promise.resolve()
       .then(() => getAccessToken(db, targetCharacter))
