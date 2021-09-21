@@ -336,6 +336,7 @@ div#swagger-ui
   -webkit-box-flex: 0;
   display: flex;
   align-items: center;
+  box-sizing: inherit;
 }
 
 .swagger-ui .opblock-description-wrapper p,

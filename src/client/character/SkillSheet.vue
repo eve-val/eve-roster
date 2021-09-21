@@ -149,7 +149,7 @@ export default defineComponent({
   font-weight: 300;
 }
 
-.section-title:first-child {
+._loading-spinner + .section-title {
   margin-top: 0px;
 }
 
