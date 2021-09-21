@@ -356,6 +356,7 @@ const TIMEZONE_HINTS: { [key: string]: string | null } = {
 
 .sidebar {
   flex: 0 0 auto;
+  max-width: 300px;
   padding-left: 30px;
   padding-right: 50px;
 }
@@ -396,7 +397,7 @@ const TIMEZONE_HINTS: { [key: string]: string | null } = {
 .section-title {
   font-size: 20px;
   color: #a7a29c;
-  margin: 40px 0 20px 0;
+  margin: 0 0 20px 0;
   font-weight: 300;
 }
 </style>
