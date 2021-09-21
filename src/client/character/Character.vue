@@ -393,11 +393,4 @@ const TIMEZONE_HINTS: { [key: string]: string | null } = {
 .content {
   flex: 1 1 auto;
 }
-
-.section-title {
-  font-size: 20px;
-  color: #a7a29c;
-  margin: 0 0 20px 0;
-  font-weight: 300;
-}
 </style>
