@@ -6,6 +6,8 @@
 import { defineComponent } from "vue";
 import SwaggerUI from "swagger-ui";
 
+declare const $__CSRF: string;
+
 export default defineComponent({
   data() {
     return {
@@ -32,6 +34,10 @@ export default defineComponent({
       syntaxHighlight: {
         activate: true,
         theme: "obsidian",
+      },
+      requestInterceptor: (req) => {
+        req.headers._csrf = $__CSRF;
+        return req;
       },
       onComplete: () => {
         if (this.$route.params.id) {

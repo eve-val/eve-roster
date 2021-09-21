@@ -1,6 +1,17 @@
 import axios, { AxiosResponse } from "axios";
 import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET";
 
+export function configureCsrfInterceptor(token: string) {
+  axios.interceptors.request.use(
+    (req) => {
+      // TODO: if we do remote fetch, avoid leaking csrf token to other host.
+      req.headers._csrf = token;
+      return req;
+    },
+    (error) => Promise.reject(error)
+  );
+}
+
 export default {
   getDashboard() {
     return axios.get("/api/dashboard");
