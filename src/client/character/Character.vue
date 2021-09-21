@@ -110,7 +110,14 @@
           <div v-for="title in character.titles" :key="title" class="factoid">
             {{ title }}
           </div>
-          <div v-if="character.titles.length == 0" class="factoid">-</div>
+          <template v-if="canProxyApi">
+            <div class="factoid-title">API Keys</div>
+            <div class="factoid">
+              <router-link class="api-link" :to="'/admin/api/' + characterId">
+                Impersonate
+              </router-link>
+            </div>
+          </template>
         </div>
         <div class="content">
           <skill-sheet :character-id="characterId" :access="access" />
@@ -183,6 +190,10 @@ export default defineComponent({
 
     canWriteSrp: function (): boolean {
       return this.identity.access["srp"] == 2;
+    },
+
+    canProxyApi: function (): boolean {
+      return this.identity.access["api"] == 2;
     },
 
     canWriteTimezone: function (): boolean {

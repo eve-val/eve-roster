@@ -41,6 +41,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/admin/overview", component: AdminOverview },
   { path: "/admin/setup", component: AdminSetup },
   { path: "/admin/api", component: AdminApi },
+  { path: "/admin/api/:id", component: AdminApi },
   { path: "/admin/account-logs", component: AccountLog },
   { path: "/admin/tasks", component: Tasks },
   { path: "/admin/citadels", component: CitadelManagement },

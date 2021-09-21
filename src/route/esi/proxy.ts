@@ -10,18 +10,24 @@ import { BASE_URL } from "../../data-source/esi/fetch/fetchEsi";
 export default jsonEndpoint(
   (req, res, db, account, privs): Promise<MixedObject> => {
     // authenticate to make sure we're an admin.
-    privs.requireRead("accountLogs", false);
+    privs.requireRead("api", false);
 
     // read the character id from the header.
-    const targetCharacter = Number(req.get(CHARACTER_HEADER));
+    const targetCharacter = +(req.get(CHARACTER_HEADER) || "");
+
     // read the URL path from our path, trimming our prefix.
     const prefix = req.route.path.slice(0, -2);
     const origPath = req.path;
     const targetPath = BASE_URL + "/latest" + origPath.replace(prefix, "");
 
     return Promise.resolve()
-      .then(() => getAccessToken(db, targetCharacter))
-      .then((token) => {
+      .then(() => {
+        if (isNaN(targetCharacter) || targetCharacter <= 0) {
+          return null;
+        }
+        return getAccessToken(db, targetCharacter);
+      })
+      .then((token: string | null) => {
         // Reissue the request using the credentials.
         const config: AxiosRequestConfig = {
           url: targetPath,
@@ -43,7 +49,9 @@ export default jsonEndpoint(
           config.headers["Content-Type"] = "application/json";
           config.data = req.body;
         }
-        config.headers["Authorization"] = `Bearer ${token}`;
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        }
 
         return config;
       })

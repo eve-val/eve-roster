@@ -1,4 +1,5 @@
 export type PrivilegeName =
+  | "api"
   | "accountLogs"
   | "adminConsole"
   | "characterActivityStats"

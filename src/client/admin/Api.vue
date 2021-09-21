@@ -1,5 +1,5 @@
 <template>
-  <admin-wrapper title="API" :identity="identity">
+  <admin-wrapper title="ESI Proxy" :identity="identity">
     <swagger />
   </admin-wrapper>
 </template>

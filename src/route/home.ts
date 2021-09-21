@@ -6,7 +6,7 @@ export default htmlEndpoint(async (req, res, db, account, privs) => {
       id: account.id,
     },
     access: privs.dumpForFrontend(
-      ["roster", "adminConsole", "characterShips", "srp"],
+      ["roster", "adminConsole", "characterShips", "srp", "api"],
       false
     ),
     isMember: privs.isMember(),

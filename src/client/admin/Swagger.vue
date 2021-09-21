@@ -7,11 +7,37 @@ import { defineComponent } from "vue";
 import SwaggerUI from "swagger-ui";
 
 export default defineComponent({
+  data() {
+    return {
+      ui: null,
+    } as {
+      ui: null | SwaggerUI;
+    };
+  },
+
+  watch: {
+    $route(to, _from) {
+      if (to.params.id) {
+        this.ui?.preauthorizeApiKey("proxy", to.params.id);
+      }
+    },
+  },
+
   mounted: function () {
-    SwaggerUI({
+    this.ui = SwaggerUI({
       url: "/esi/swagger.json",
       dom_id: "#swagger-ui",
       layout: "BaseLayout",
+      tryItOutEnabled: true,
+      syntaxHighlight: {
+        activate: true,
+        theme: "obsidian",
+      },
+      onComplete: () => {
+        if (this.$route.params.id) {
+          this.ui?.preauthorizeApiKey("proxy", this.$route.params.id);
+        }
+      },
     });
   },
 });
