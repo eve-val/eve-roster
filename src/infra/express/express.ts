@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import favicon from "serve-favicon";
+import csrf from "csurf";
 
 import { Tnex } from "../../db/tnex/index";
 import { isDevelopment } from "../../util/config";
@@ -48,6 +49,8 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser(process.env.COOKIE_SECRET));
+  app.use(csrf({ cookie: true }) as express.RequestHandler);
+
   app.use(
     cookieSession({
       name: "session",

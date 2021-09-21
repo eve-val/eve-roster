@@ -16,6 +16,7 @@ export default htmlEndpoint(async (req, res, db, account, privs) => {
     template: "home",
     data: {
       identity: JSON.stringify(identity),
+      csrf: JSON.stringify(req.csrfToken()),
     },
   };
 });

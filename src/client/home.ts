@@ -29,6 +29,8 @@ import BattleDetail from "./srp/battles/BattleDetail.vue";
 import ShipsBorrowedByMe from "./ships/ShipsBorrowedByMe.vue";
 import AllBorrowedShips from "./ships/AllBorrowedShips.vue";
 
+import { configureCsrfInterceptor } from "./shared/ajaxer";
+
 import { SimpleMap } from "../util/simpleTypes";
 
 // Anything added here should also be in server.js:FRONTEND_ROUTES
@@ -129,8 +131,11 @@ export interface Identity {
 }
 
 declare const $__IDENTITY: Identity;
+declare const $__CSRF: string;
+configureCsrfInterceptor($__CSRF);
 const app = createApp(Home, { identity: $__IDENTITY }).use(router);
 
+app.provide("csrf", $__CSRF);
 app.config.errorHandler = (error, _, info) => {
   Sentry.setTag("info", info);
   Sentry.captureException(error);

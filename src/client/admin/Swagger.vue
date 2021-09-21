@@ -3,10 +3,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import SwaggerUI from "swagger-ui";
 
 export default defineComponent({
+  setup() {
+    const csrf = inject("csrf");
+    return { csrf };
+  },
+
   data() {
     return {
       ui: null,
@@ -32,6 +37,10 @@ export default defineComponent({
       syntaxHighlight: {
         activate: true,
         theme: "obsidian",
+      },
+      requestInterceptor: (req) => {
+        req.headers["x-csrf-token"] = this.csrf;
+        return req;
       },
       onComplete: () => {
         if (this.$route.params.id) {
