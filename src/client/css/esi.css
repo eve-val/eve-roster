@@ -750,7 +750,7 @@ div.opblock-description div.markdown {
   padding: 5px 0 0;
 }
 
-.response {
+.response[data-code] {
   display: none;
 }
 .response[data-code="200"] {
