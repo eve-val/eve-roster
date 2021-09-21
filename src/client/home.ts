@@ -135,7 +135,7 @@ declare const $__CSRF: string;
 configureCsrfInterceptor($__CSRF);
 const app = createApp(Home, { identity: $__IDENTITY }).use(router);
 
-app.config.globalProperties.csrf = $__CSRF;
+app.provide("csrf", $__CSRF);
 app.config.errorHandler = (error, _, info) => {
   Sentry.setTag("info", info);
   Sentry.captureException(error);
