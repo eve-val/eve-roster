@@ -36,6 +36,10 @@ export default jsonEndpoint(
             Accept: "application/json",
             "User-Agent": "SOUND Roster (roster.of-sound-mind.com)",
           },
+          validateStatus: function (_status) {
+            // Pass all statuses along to caller.
+            return true;
+          },
         };
         if (req.query) {
           const queryParams = {} as MixedObject;
