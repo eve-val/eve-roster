@@ -8,8 +8,10 @@
       <a
         class="reauth-btn roster-btn"
         :href="
-          'https://login.eveonline.com/oauth/authorize' +
-          '?state=addCharacter&' +
+          'https://login.eveonline.com/v2/oauth/authorize' +
+          '?state=addCharacter.' +
+          nonce +
+          '&' +
           loginParams
         "
         >Reauthorize</a
@@ -19,11 +21,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 export default defineComponent({
   props: {
     loginParams: { type: String, required: true },
     characterName: { type: String, required: true },
+  },
+
+  setup() {
+    const nonce = inject("nonce");
+    return { nonce };
   },
 });
 </script>

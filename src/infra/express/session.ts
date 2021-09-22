@@ -16,4 +16,5 @@ export function endSession(req: express.Request) {
 
 export interface Session {
   accountId?: number;
+  nonce?: string;
 }

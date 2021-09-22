@@ -11,10 +11,10 @@ html
           span.title-text Roster
         div.button-cnt
           a.auth-btn.login-link(
-            href=`https://login.eveonline.com/oauth/authorize?state=logIn&${loginParams}`
+            href=`https://login.eveonline.com/v2/oauth/authorize?state=logIn.${nonce}&${loginParams}`
           ) Log in
           a.auth-btn.create-link(
-            href=`https://login.eveonline.com/oauth/authorize?state=createAccount&${loginParams}`
+            href=`https://login.eveonline.com/v2/oauth/authorize?state=createAccount.${nonce}&${loginParams}`
           ) Register
         .footer
           | You will authenticate via

@@ -6,6 +6,8 @@ import { AccessTokenErrorType } from "../../error/AccessTokenError";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
+import { fetchAuthInfo } from "./jwt";
+
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 /**
@@ -55,11 +57,13 @@ export class TokenRefresher {
         row.accessToken_refreshToken
       );
 
+      const authInfo = await fetchAuthInfo(response.data.access_token);
+
       result.row = {
         accessToken_character: row.accessToken_character,
         accessToken_accessToken: response.data.access_token,
-        accessToken_accessTokenExpires:
-          Date.now() + 1000 * response.data.expires_in,
+        accessToken_accessTokenExpires: (authInfo.exp || 0) * 1000,
+        accessToken_refreshToken: response.data.refresh_token,
         accessToken_needsUpdate: false,
       };
     } catch (e) {
@@ -74,6 +78,7 @@ export class TokenRefresher {
             accessToken_character: row.accessToken_character,
             accessToken_accessToken: "",
             accessToken_accessTokenExpires: 0,
+            accessToken_refreshToken: "",
             accessToken_needsUpdate: true,
           };
         } else {
@@ -99,7 +104,7 @@ export class TokenRefresher {
 
   private _postRefreshRequest(refreshToken: string) {
     return axios.post<SsoTokenRefreshResponse>(
-      "https://login.eveonline.com/oauth/token",
+      "https://login.eveonline.com/v2/oauth/token",
       querystring.stringify({
         grant_type: "refresh_token",
         refresh_token: refreshToken,
@@ -123,6 +128,7 @@ const REQUEST_TIMEOUT = 10000;
 interface SsoTokenRefreshResponse {
   access_token: string;
   expires_in: number;
+  refresh_token: string;
 }
 
 export type RowToRefresh = Pick<
@@ -142,5 +148,6 @@ export type AccessTokenUpdate = Pick<
   | "accessToken_character"
   | "accessToken_accessToken"
   | "accessToken_accessTokenExpires"
+  | "accessToken_refreshToken"
   | "accessToken_needsUpdate"
 >;

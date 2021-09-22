@@ -36,8 +36,10 @@
           <a
             class="add-character-link"
             :href="
-              'https://login.eveonline.com/oauth/authorize' +
-              '?state=addCharacter&' +
+              'https://login.eveonline.com/v2/oauth/authorize' +
+              '?state=addCharacter.' +
+              nonce +
+              '&' +
               loginParams
             "
             >＋ Add a character</a
@@ -63,7 +65,7 @@ import { Identity } from "../home";
 import { AxiosResponse } from "axios";
 import { Output, CharacterJson } from "../../route/api/dashboard";
 
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, inject } from "vue";
 export default defineComponent({
   components: {
     AppHeader,
@@ -74,6 +76,11 @@ export default defineComponent({
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
+  },
+
+  setup() {
+    const nonce = inject("nonce");
+    return { nonce };
   },
 
   data() {

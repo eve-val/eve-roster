@@ -8,7 +8,7 @@ import { Tnex, UpdatePolicy } from "../db/tnex/index";
 import { isAnyEsiError } from "../data-source/esi/error";
 
 import { UserVisibleError } from "../error/UserVisibleError";
-import { enumQuery, stringQuery } from "../util/express/paramVerifier";
+import { stringQuery } from "../util/express/paramVerifier";
 import { BadRequestError } from "../error/BadRequestError";
 import {
   ESI_CHARACTERS_$characterId_ROLES,
@@ -19,6 +19,7 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { getSession } from "../infra/express/session";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+import { fetchAuthInfo } from "../data-source/accessToken/jwt";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -36,14 +37,30 @@ const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default async function (req: express.Request, res: express.Response) {
   try {
-    const authType = enumQuery<AuthType>(req, "state", AuthType);
+    const state = stringQuery(req, "state");
     const authCode = stringQuery(req, "code");
 
-    if (authType == undefined || authCode == undefined) {
-      throw new BadRequestError(`Missing either 'state' or 'code' queries.`);
+    let authType: undefined | AuthType;
+    let nonce: undefined | string;
+    if (state && typeof state == "string" && state.indexOf(".") != -1) {
+      const t = state.split(".")[0];
+      if (Object.values<string>(AuthType).includes(t)) {
+        authType = <AuthType>t;
+      }
+      nonce = state.split(".")[1];
     }
 
     const session = getSession(req);
+
+    if (
+      authType == undefined ||
+      authCode == undefined ||
+      nonce == undefined ||
+      nonce != session.nonce
+    ) {
+      throw new BadRequestError(`Invalid 'state' or 'code' queries.`);
+    }
+
     const accountId = await handleEndpoint(
       req.app.locals.db,
       session.accountId,
@@ -84,15 +101,16 @@ async function fetchCharInfo(authCode: string) {
   const tokens = await fetchAccessTokens(authCode);
   const authInfo = await fetchAuthInfo(tokens.access_token);
 
+  const charId = +authInfo.sub!.replace("CHARACTER:EVE:", "");
   const charInfo: CharacterInfo = {
-    id: authInfo.CharacterID,
-    ownerHash: authInfo.CharacterOwnerHash,
-    name: authInfo.CharacterName,
-    scopes: authInfo.Scopes,
+    id: charId,
+    ownerHash: authInfo.owner,
+    name: authInfo.name,
+    scopes: authInfo.scp || [],
 
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
-    accessTokenExpiresIn: tokens.expires_in,
+    accessTokenExpires: (authInfo.exp || 0) * 1000,
 
     corporationId: null,
     roles: null,
@@ -147,9 +165,9 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     db,
     charInfo.id,
     charInfo.refreshToken,
-    charInfo.scopes.trim().split(" "),
+    charInfo.scopes,
     charInfo.accessToken,
-    charInfo.accessTokenExpiresIn
+    charInfo.accessTokenExpires
   );
 }
 
@@ -249,32 +267,21 @@ async function authenticateChar(
 }
 
 async function fetchAccessTokens(authCode: string) {
-  const response = await axios.post<AccessTokenResponse>(
-    "https://login.eveonline.com/oauth/token",
-    querystring.stringify({
-      grant_type: "authorization_code",
-      code: authCode,
-    }),
-    {
-      headers: {
-        Authorization: "Basic " + SSO_AUTH_CODE,
-      },
-    }
-  );
-
-  return response.data;
-}
-
-async function fetchAuthInfo(accessToken: string) {
-  const response = await axios.get<AuthInfoResponse>(
-    "https://login.eveonline.com/oauth/verify",
-    {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    }
-  );
-  return response.data;
+  return axios
+    .post<AccessTokenResponse>(
+      "https://login.eveonline.com/v2/oauth/token",
+      querystring.stringify({
+        grant_type: "authorization_code",
+        code: authCode,
+      }),
+      {
+        headers: {
+          Authorization: "Basic " + SSO_AUTH_CODE,
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    )
+    .then((response) => response.data);
 }
 
 const SSO_AUTH_CODE = Buffer.from(
@@ -288,25 +295,15 @@ interface AccessTokenResponse {
   expires_in: number;
 }
 
-interface AuthInfoResponse {
-  CharacterID: number;
-  CharacterName: string;
-  ExpiresOn: string;
-  Scopes: string;
-  TokenType: string;
-  CharacterOwnerHash: string;
-  IntellectualProperty: string;
-}
-
 interface CharacterInfo {
   id: number;
   ownerHash: string;
   name: string;
-  scopes: string;
+  scopes: string[];
 
   accessToken: string;
   refreshToken: string;
-  accessTokenExpiresIn: number;
+  accessTokenExpires: number;
 
   corporationId: number | null;
   roles: string[] | null;

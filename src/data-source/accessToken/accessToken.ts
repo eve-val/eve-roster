@@ -11,7 +11,7 @@ import {
   AccessTokenUpdate,
 } from "./TokenRefresher";
 
-const TOKEN_EXPIRATION_FUDGE_MS = 3000; // 3 seconds
+const TOKEN_EXPIRATION_FUDGE_MS = 1000; // 1 second
 const tokenRefresher = new TokenRefresher();
 
 /**
