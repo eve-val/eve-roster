@@ -99,7 +99,7 @@ export class TokenRefresher {
 
   private _postRefreshRequest(refreshToken: string) {
     return axios.post<SsoTokenRefreshResponse>(
-      "https://login.eveonline.com/oauth/token",
+      "https://login.eveonline.com/v2/oauth/token",
       querystring.stringify({
         grant_type: "refresh_token",
         refresh_token: refreshToken,
