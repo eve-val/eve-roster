@@ -132,10 +132,12 @@ export interface Identity {
 
 declare const $__IDENTITY: Identity;
 declare const $__CSRF: string;
+declare const $__NONCE: string;
 configureCsrfInterceptor($__CSRF);
 const app = createApp(Home, { identity: $__IDENTITY }).use(router);
 
 app.provide("csrf", $__CSRF);
+app.provide("nonce", $__NONCE);
 app.config.errorHandler = (error, _, info) => {
   Sentry.setTag("info", info);
   Sentry.captureException(error);

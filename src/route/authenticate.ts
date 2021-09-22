@@ -270,21 +270,21 @@ async function authenticateChar(
 }
 
 async function fetchAccessTokens(authCode: string) {
-  const response = await axios.post<AccessTokenResponse>(
-    "https://login.eveonline.com/v2/oauth/token",
-    querystring.stringify({
-      grant_type: "authorization_code",
-      code: authCode,
-    }),
-    {
-      headers: {
-        Authorization: "Basic " + SSO_AUTH_CODE,
-        "content-type": "application/x-www-form-urlencoded",
-      },
-    }
-  );
-
-  return response.data;
+  return axios
+    .post<AccessTokenResponse>(
+      "https://login.eveonline.com/v2/oauth/token",
+      querystring.stringify({
+        grant_type: "authorization_code",
+        code: authCode,
+      }),
+      {
+        headers: {
+          Authorization: "Basic " + SSO_AUTH_CODE,
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    )
+    .then((response) => response.data);
 }
 
 async function fetchAuthInfo(
