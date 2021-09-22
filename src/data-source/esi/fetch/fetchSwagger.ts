@@ -40,13 +40,13 @@ export async function getModifiedSwagger(
   // Replace individual security blocks within each path to refer to the
   // new securityDefinitions type we set up.
   for (const path in swagger["paths"]) {
-    let shouldDelete: boolean = false;
+    let shouldDelete = false;
     for (const method in swagger["paths"][path]) {
       if ("security" in swagger["paths"][path][method]) {
         const security = swagger["paths"][path][method]["security"];
         if ("evesso" in security) {
-          for (const scope in security["evesso"]) {
-            if (scope.includes("esi-mail")) {
+          for (const index in security["evesso"]) {
+            if (security["evesso"][index].includes("esi-mail")) {
               shouldDelete = true;
             }
           }
