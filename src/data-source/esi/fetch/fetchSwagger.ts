@@ -44,10 +44,12 @@ export async function getModifiedSwagger(
     for (const method in swagger["paths"][path]) {
       if ("security" in swagger["paths"][path][method]) {
         const security = swagger["paths"][path][method]["security"];
-        if ("evesso" in security) {
-          for (const index in security["evesso"]) {
-            if (security["evesso"][index].includes("esi-mail")) {
-              shouldDelete = true;
+        for (const index in security) {
+          if ("evesso" in security[index]) {
+            for (const subindex in security[index]["evesso"]) {
+              if (security[index]["evesso"][subindex].includes("esi-mail")) {
+                shouldDelete = true;
+              }
             }
           }
         }
