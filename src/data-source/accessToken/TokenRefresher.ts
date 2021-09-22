@@ -60,6 +60,7 @@ export class TokenRefresher {
         accessToken_accessToken: response.data.access_token,
         accessToken_accessTokenExpires:
           Date.now() + 1000 * response.data.expires_in,
+        accessToken_refreshToken: response.data.refresh_token,
         accessToken_needsUpdate: false,
       };
     } catch (e) {
@@ -74,6 +75,7 @@ export class TokenRefresher {
             accessToken_character: row.accessToken_character,
             accessToken_accessToken: "",
             accessToken_accessTokenExpires: 0,
+            accessToken_refreshToken: "",
             accessToken_needsUpdate: true,
           };
         } else {
@@ -123,6 +125,7 @@ const REQUEST_TIMEOUT = 10000;
 interface SsoTokenRefreshResponse {
   access_token: string;
   expires_in: number;
+  refresh_token: string;
 }
 
 export type RowToRefresh = Pick<
@@ -142,5 +145,6 @@ export type AccessTokenUpdate = Pick<
   | "accessToken_character"
   | "accessToken_accessToken"
   | "accessToken_accessTokenExpires"
+  | "accessToken_refreshToken"
   | "accessToken_needsUpdate"
 >;

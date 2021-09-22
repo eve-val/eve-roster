@@ -38,6 +38,7 @@ export default class AccessTokenDao {
     rows: Pick<
       AccessToken,
       | "accessToken_character"
+      | "accessToken_refreshToken"
       | "accessToken_accessToken"
       | "accessToken_accessTokenExpires"
       | "accessToken_needsUpdate"
