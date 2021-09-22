@@ -56,6 +56,10 @@ export function htmlEndpoint<T extends object>(
   return async function (req, res) {
     try {
       const session = getSession(req);
+      if (session?.nonce === undefined) {
+        // Force logout of older sessions without nonces.
+        throw new NotLoggedInError();
+      }
       const accountPrivs = await getAccountPrivs(
         req.app.locals.db,
         session.accountId
