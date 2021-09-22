@@ -4,12 +4,15 @@ Graceful.captureExceptions = true;
 import * as Sentry from "@sentry/node";
 
 import path from "path";
+import querystring from "querystring";
 
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import favicon from "serve-favicon";
+
+import crypto from "crypto";
 import csrf from "csurf";
 
 import { Tnex } from "../../db/tnex/index";
@@ -21,7 +24,7 @@ import { default as route_home } from "../../route/home";
 import { default as route_authenticate } from "../../route/authenticate";
 import { default as route_swagger } from "../../route/esi/swagger";
 import { default as route_esi_proxy } from "../../route/esi/proxy";
-import { endSession } from "./session";
+import { getSession, endSession } from "./session";
 import { checkNotNil } from "../../util/assert";
 import { getProjectPaths } from "../build-client/paths";
 
@@ -67,8 +70,12 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   app.get(FRONTEND_ROUTES, route_home);
 
   app.get("/login", function (req, res) {
+    const nonce = crypto.randomBytes(16).toString("base64");
+    const session = getSession(req);
+    session.nonce = nonce;
     res.render("login", {
       loginParams: LOGIN_PARAMS,
+      nonce: querystring.escape(nonce),
     });
   });
 

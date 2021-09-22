@@ -5863,6 +5863,11 @@ jest@^27.2.0:
     import-local "^3.0.2"
     jest-cli "^27.2.0"
 
+jose@^3.17.0:
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-3.17.0.tgz#19a561edec33d0f663fff201c3cce4bba7b28d93"
+  integrity sha512-rLpCb/TOsk4/yjjIALNecWbBivA17a5nQk/d2BJAiBbjP0db57rgrh3W3s6BzGcc9jxOo6txFBWGbDHwYAFgdQ==
+
 js-file-download@^0.4.12:
   version "0.4.12"
   resolved "https://registry.yarnpkg.com/js-file-download/-/js-file-download-0.4.12.tgz#10c70ef362559a5b23cdbdc3bd6f399c3d91d821"

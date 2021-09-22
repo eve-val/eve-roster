@@ -108,7 +108,7 @@ function handleError(
   res: express.Response
 ) {
   if (isLoggableError(e)) {
-    const accountId = req.session && req.session.accountId;
+    const accountId = req.session?.accountId;
     logger.error(
       `ERROR while handling endpoint ${req.originalUrl}` +
         ` w/ accountId ${accountId}`,

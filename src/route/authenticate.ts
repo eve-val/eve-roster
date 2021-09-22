@@ -8,7 +8,7 @@ import { Tnex, UpdatePolicy } from "../db/tnex/index";
 import { isAnyEsiError } from "../data-source/esi/error";
 
 import { UserVisibleError } from "../error/UserVisibleError";
-import { enumQuery, stringQuery } from "../util/express/paramVerifier";
+import { stringQuery } from "../util/express/paramVerifier";
 import { BadRequestError } from "../error/BadRequestError";
 import {
   ESI_CHARACTERS_$characterId_ROLES,
@@ -19,6 +19,10 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { getSession } from "../infra/express/session";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+
+import { createRemoteJWKSet } from "jose/jwks/remote";
+import { jwtVerify } from "jose/jwt/verify";
+import { JWTPayload } from "jose/types";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -36,14 +40,30 @@ const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default async function (req: express.Request, res: express.Response) {
   try {
-    const authType = enumQuery<AuthType>(req, "state", AuthType);
+    const state = stringQuery(req, "state");
     const authCode = stringQuery(req, "code");
 
-    if (authType == undefined || authCode == undefined) {
-      throw new BadRequestError(`Missing either 'state' or 'code' queries.`);
+    let authType: undefined | AuthType;
+    let nonce: undefined | string;
+    if (state && state.indexOf(".") != -1) {
+      const t = state.split(".")[0];
+      if (Object.values<string>(AuthType).includes(t)) {
+        authType = <AuthType>t;
+      }
+      nonce = state.split(".")[1];
     }
 
     const session = getSession(req);
+
+    if (
+      authType == undefined ||
+      authCode == undefined ||
+      nonce == undefined ||
+      nonce != session.nonce
+    ) {
+      throw new BadRequestError(`Invalid 'state' or 'code' queries.`);
+    }
+
     const accountId = await handleEndpoint(
       req.app.locals.db,
       session.accountId,
@@ -84,15 +104,16 @@ async function fetchCharInfo(authCode: string) {
   const tokens = await fetchAccessTokens(authCode);
   const authInfo = await fetchAuthInfo(tokens.access_token);
 
+  const charId = +authInfo.sub!.replace("CHARACTER:EVE:", "");
   const charInfo: CharacterInfo = {
-    id: authInfo.CharacterID,
-    ownerHash: authInfo.CharacterOwnerHash,
-    name: authInfo.CharacterName,
-    scopes: authInfo.Scopes,
+    id: charId,
+    ownerHash: authInfo.owner,
+    name: authInfo.name,
+    scopes: authInfo.scp || [],
 
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
-    accessTokenExpiresIn: tokens.expires_in,
+    accessTokenExpiresIn: authInfo.exp || 0,
 
     corporationId: null,
     roles: null,
@@ -147,7 +168,7 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     db,
     charInfo.id,
     charInfo.refreshToken,
-    charInfo.scopes.trim().split(" "),
+    charInfo.scopes,
     charInfo.accessToken,
     charInfo.accessTokenExpiresIn
   );
@@ -250,7 +271,7 @@ async function authenticateChar(
 
 async function fetchAccessTokens(authCode: string) {
   const response = await axios.post<AccessTokenResponse>(
-    "https://login.eveonline.com/oauth/token",
+    "https://login.eveonline.com/v2/oauth/token",
     querystring.stringify({
       grant_type: "authorization_code",
       code: authCode,
@@ -258,6 +279,7 @@ async function fetchAccessTokens(authCode: string) {
     {
       headers: {
         Authorization: "Basic " + SSO_AUTH_CODE,
+        "content-type": "application/x-www-form-urlencoded",
       },
     }
   );
@@ -265,16 +287,17 @@ async function fetchAccessTokens(authCode: string) {
   return response.data;
 }
 
-async function fetchAuthInfo(accessToken: string) {
-  const response = await axios.get<AuthInfoResponse>(
-    "https://login.eveonline.com/oauth/verify",
+async function fetchAuthInfo(
+  accessToken: string
+): Promise<AuthInfoResponse & JWTPayload> {
+  const result = await jwtVerify(
+    accessToken,
+    createRemoteJWKSet(new URL("https://login.eveonline.com/oauth/jwks")),
     {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
+      issuer: "login.eveonline.com",
     }
   );
-  return response.data;
+  return <AuthInfoResponse & JWTPayload>result.payload;
 }
 
 const SSO_AUTH_CODE = Buffer.from(
@@ -289,20 +312,16 @@ interface AccessTokenResponse {
 }
 
 interface AuthInfoResponse {
-  CharacterID: number;
-  CharacterName: string;
-  ExpiresOn: string;
-  Scopes: string;
-  TokenType: string;
-  CharacterOwnerHash: string;
-  IntellectualProperty: string;
+  name: string;
+  owner: string;
+  scp: string[];
 }
 
 interface CharacterInfo {
   id: number;
   ownerHash: string;
   name: string;
-  scopes: string;
+  scopes: string[];
 
   accessToken: string;
   refreshToken: string;
