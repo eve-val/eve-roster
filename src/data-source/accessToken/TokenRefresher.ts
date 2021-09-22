@@ -6,6 +6,8 @@ import { AccessTokenErrorType } from "../../error/AccessTokenError";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
 
+import { fetchAuthInfo } from "./jwt";
+
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 /**
@@ -55,11 +57,12 @@ export class TokenRefresher {
         row.accessToken_refreshToken
       );
 
+      const authInfo = await fetchAuthInfo(response.data.access_token);
+
       result.row = {
         accessToken_character: row.accessToken_character,
         accessToken_accessToken: response.data.access_token,
-        accessToken_accessTokenExpires:
-          Date.now() + 1000 * response.data.expires_in,
+        accessToken_accessTokenExpires: (authInfo.exp || 0) * 1000,
         accessToken_refreshToken: response.data.refresh_token,
         accessToken_needsUpdate: false,
       };

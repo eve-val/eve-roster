@@ -19,10 +19,7 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
 import { getSession } from "../infra/express/session";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
-
-import { createRemoteJWKSet } from "jose/jwks/remote";
-import { jwtVerify } from "jose/jwt/verify";
-import { JWTPayload } from "jose/types";
+import { fetchAuthInfo } from "../data-source/accessToken/jwt";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -113,7 +110,7 @@ async function fetchCharInfo(authCode: string) {
 
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
-    accessTokenExpiresIn: authInfo.exp || 0,
+    accessTokenExpires: (authInfo.exp || 0) * 1000,
 
     corporationId: null,
     roles: null,
@@ -170,7 +167,7 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     charInfo.refreshToken,
     charInfo.scopes,
     charInfo.accessToken,
-    charInfo.accessTokenExpiresIn
+    charInfo.accessTokenExpires
   );
 }
 
@@ -287,19 +284,6 @@ async function fetchAccessTokens(authCode: string) {
     .then((response) => response.data);
 }
 
-async function fetchAuthInfo(
-  accessToken: string
-): Promise<AuthInfoResponse & JWTPayload> {
-  const result = await jwtVerify(
-    accessToken,
-    createRemoteJWKSet(new URL("https://login.eveonline.com/oauth/jwks")),
-    {
-      issuer: "login.eveonline.com",
-    }
-  );
-  return <AuthInfoResponse & JWTPayload>result.payload;
-}
-
 const SSO_AUTH_CODE = Buffer.from(
   process.env.SSO_CLIENT_ID + ":" + process.env.SSO_SECRET_KEY
 ).toString("base64");
@@ -311,12 +295,6 @@ interface AccessTokenResponse {
   expires_in: number;
 }
 
-interface AuthInfoResponse {
-  name: string;
-  owner: string;
-  scp: string[];
-}
-
 interface CharacterInfo {
   id: number;
   ownerHash: string;
@@ -325,7 +303,7 @@ interface CharacterInfo {
 
   accessToken: string;
   refreshToken: string;
-  accessTokenExpiresIn: number;
+  accessTokenExpires: number;
 
   corporationId: number | null;
   roles: string[] | null;

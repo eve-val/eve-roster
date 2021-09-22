@@ -74,7 +74,7 @@ export default class AccessTokenDao {
     refreshToken: string,
     scopes: string[],
     accessTokenVal: string,
-    expiresIn: number
+    accessTokenExpires: number
   ) {
     return db.upsert(
       accessToken,
@@ -82,7 +82,7 @@ export default class AccessTokenDao {
         accessToken_character: characterId,
         accessToken_refreshToken: refreshToken,
         accessToken_accessToken: accessTokenVal,
-        accessToken_accessTokenExpires: Date.now() + expiresIn * 1000,
+        accessToken_accessTokenExpires: accessTokenExpires,
         accessToken_needsUpdate: false,
         accessToken_scopes: scopes,
       },
