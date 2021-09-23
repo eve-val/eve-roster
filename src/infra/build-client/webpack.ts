@@ -168,6 +168,7 @@ export function commonConfig(
 
     stats: {
       modules: false,
+      errorDetails: true,
     },
     performance: {
       hints: false,

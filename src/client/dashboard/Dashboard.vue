@@ -96,7 +96,7 @@ export default defineComponent({
       accountId: null | number;
       characters: CharacterJson[];
       transfers: { character: number; name: string }[];
-      loginParams: Object | null;
+      loginParams: string | null;
       mainCharacter: number | null;
       access: { designateMain: number; isMember: boolean } | null;
       promise: Promise<any> | null;
