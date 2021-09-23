@@ -59,7 +59,7 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
       if (this._size >= this._maxSize) {
         try {
           await this._flushInternal();
-        } catch (e) {
+        } catch (e: any) {
           errorState = true;
           callback(e);
           break;
@@ -77,7 +77,7 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
     } else {
       this._flushInternal()
         .then(() => callback())
-        .catch((err) => callback(err));
+        .catch((err: any) => callback(err));
     }
   }
 

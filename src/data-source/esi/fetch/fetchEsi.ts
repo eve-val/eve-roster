@@ -52,6 +52,11 @@ async function fetchEsiImpl<T extends EsiEndpoint>(
     response = await axios(config);
   } catch (err) {
     let errKind = EsiErrorKind.GENERIC_ERROR;
+
+    if (!axios.isAxiosError(err)) {
+      throw err;
+    }
+
     const response: AxiosResponse | undefined = err.response;
     if (response) {
       if (response.status == 401 || response.status == 403) {

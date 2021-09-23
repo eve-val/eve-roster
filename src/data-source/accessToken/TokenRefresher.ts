@@ -67,6 +67,10 @@ export class TokenRefresher {
         accessToken_needsUpdate: false,
       };
     } catch (e) {
+      if (!axios.isAxiosError(e)) {
+        throw e;
+      }
+
       if (e.response) {
         if (e.response.status == 400) {
           logger.info(
@@ -87,7 +91,7 @@ export class TokenRefresher {
             `HTTP error while refreshing token for ` +
               `${row.accessToken_character}.`
           );
-          logger.error(e);
+          logger.error(e.message);
         }
       } else {
         result.errorType = AccessTokenErrorType.HTTP_FAILURE;
@@ -95,7 +99,7 @@ export class TokenRefresher {
           `Generic error while refreshing token for ` +
             `${row.accessToken_character}.`
         );
-        logger.error(e);
+        logger.error(e.message);
       }
     }
 

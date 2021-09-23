@@ -40,7 +40,7 @@ export abstract class OrderedParallelTransform<In, Out> extends Transform<
   ): void {
     try {
       this._transformInternal(chunk, callback);
-    } catch (err) {
+    } catch (err: any) {
       this._die(err);
     }
   }
@@ -75,7 +75,7 @@ export abstract class OrderedParallelTransform<In, Out> extends Transform<
           }
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         if (!this._errorState) {
           this._die(err);
         }

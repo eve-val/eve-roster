@@ -78,6 +78,9 @@ async function syncCorporation(
       updateSuccessful = true;
       break;
     } catch (e) {
+      if (!(e instanceof Error)) {
+        throw e;
+      }
       if (isAnyEsiError(e) || e instanceof AccessTokenError) {
         job.warn(`ESI error while syncing via director ${row.character_name}:`);
         job.warn(printError(e));

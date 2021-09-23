@@ -73,6 +73,9 @@ export function htmlEndpoint<T extends object>(
       );
       res.render(payload.template, payload.data);
     } catch (e) {
+      if (!(e instanceof Error)) {
+        throw e;
+      }
       handleError("html", e, req, res);
     }
   };
@@ -100,6 +103,9 @@ export function jsonEndpoint<T extends object>(
       res.type("json");
       res.send(JSON.stringify(payload, null, space));
     } catch (e) {
+      if (!(e instanceof Error)) {
+        throw e;
+      }
       handleError("json", e, req, res);
     }
   };
