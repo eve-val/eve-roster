@@ -86,7 +86,7 @@
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-middleware": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.2",
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "clean-webpack-plugin": "^4.0.0",
     "cleanup-mini-css-extract-plugin": "^1.1.0",
