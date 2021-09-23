@@ -62,6 +62,9 @@ export function commonConfig(
         {
           test: /\.vue$/,
           loader: "vue-loader",
+          options: {
+            enableTsInTemplate: false,
+          },
         },
 
         // SASS and CSS files from Vue Single File Components:
@@ -168,6 +171,7 @@ export function commonConfig(
 
     stats: {
       modules: false,
+      errorDetails: true,
     },
     performance: {
       hints: false,

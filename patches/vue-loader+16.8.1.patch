@@ -1,9 +1,9 @@
 diff --git a/node_modules/vue-loader/dist/index.d.ts b/node_modules/vue-loader/dist/index.d.ts
-index 5873999..e105ec5 100644
+index d8d1164..9075e9e 100644
 --- a/node_modules/vue-loader/dist/index.d.ts
 +++ b/node_modules/vue-loader/dist/index.d.ts
-@@ -14,4 +14,4 @@ export interface VueLoaderOptions {
-     appendExtension?: boolean;
+@@ -15,4 +15,4 @@ export interface VueLoaderOptions {
+     enableTsInTemplate?: boolean;
      isServerBuild?: boolean;
  }
 -export default function loader(this: webpack.loader.LoaderContext, source: string): string | void;
