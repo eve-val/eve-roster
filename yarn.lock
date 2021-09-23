@@ -5820,10 +5820,10 @@ jest@^27.2.0:
     import-local "^3.0.2"
     jest-cli "^27.2.0"
 
-jose@^3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-3.17.0.tgz#19a561edec33d0f663fff201c3cce4bba7b28d93"
-  integrity sha512-rLpCb/TOsk4/yjjIALNecWbBivA17a5nQk/d2BJAiBbjP0db57rgrh3W3s6BzGcc9jxOo6txFBWGbDHwYAFgdQ==
+jose@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-3.18.0.tgz#c73d04c33ed4e42f2517ef9ce23568c77e7d6b84"
+  integrity sha512-3IL+URD6RO687HAnYrIxcqQNPz0CO4Kpu+tKoljcQeI2tbTUHcEdlBXqFfhrg6rqkr+iZkpFm2xtjQqrPQW2hw==
 
 js-file-download@^0.4.12:
   version "0.4.12"
