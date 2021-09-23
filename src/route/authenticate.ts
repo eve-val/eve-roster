@@ -74,7 +74,9 @@ export default async function (req: express.Request, res: express.Response) {
     // TODO: Display this to the user in a prettier manner
     const message = e instanceof UserVisibleError ? e.message : "Server error";
     logger.error("Auth failure");
-    logger.error(e);
+    if (e instanceof Error) {
+      logger.error(e.message);
+    }
     res.status(500);
     res.send(message);
   }

@@ -73,6 +73,9 @@ async function syncKillmailsForAllCorps(
         jurisdiction
       );
     } catch (e) {
+      if (!(e instanceof Error)) {
+        throw e;
+      }
       job.error(
         `Error while syncing kills for corp ` +
           `${memberCorp.mcorp_corporationId}`,

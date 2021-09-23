@@ -41,7 +41,11 @@ export class RotatingFileLogWriter extends Writable {
     try {
       this._processChunk(chunk.toString("utf8"), callback);
     } catch (err) {
-      callback(err);
+      if (err instanceof Error) {
+        callback(err);
+      } else {
+        throw err;
+      }
     }
   }
 
@@ -58,7 +62,11 @@ export class RotatingFileLogWriter extends Writable {
         callback
       );
     } catch (err) {
-      callback(err);
+      if (err instanceof Error) {
+        callback(err);
+      } else {
+        throw err;
+      }
     }
   }
 

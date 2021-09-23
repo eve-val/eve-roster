@@ -63,6 +63,9 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
         });
       } catch (e) {
         failures++;
+        if (!(e instanceof Error)) {
+          throw e;
+        }
         const cause = VError.cause(e) as AxiosError | null;
         if (
           failures <= maxFailures &&

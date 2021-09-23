@@ -1,3 +1,4 @@
+import axios from "axios";
 import moment from "moment";
 import { inspect } from "util";
 
@@ -31,11 +32,14 @@ export async function fetchJitaSellPrices(ids: number[]) {
         useSystem: SYSTEM_JITA,
       });
     } catch (err) {
+      if (!axios.isAxiosError(err)) {
+        throw err;
+      }
       logger.warn(`Error while trying to retrieve market stats:`);
       logger.warn(`Url: ${err.config.url}`);
       logger.warn(`Params: ${inspect(err.config.params)}`);
-      logger.warn(`${err.response.status} ${err.response.statusText}`);
-      logger.warn(err.response.data);
+      logger.warn(`${err.response?.status} ${err.response?.statusText}`);
+      logger.warn(err.response?.data);
     }
     if (marketStats != undefined) {
       for (const stat of marketStats) {
