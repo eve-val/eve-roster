@@ -1,3 +1,5 @@
 # Ignore artifacts:
 coverage
 out
+.yarn/releases/*
+.yarn/plugins/*
