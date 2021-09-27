@@ -129,7 +129,7 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
-    "ansi-html": "mahdyar/ansi-html-community",
+    "ansi-html": "npm:ansi-html-community@^0.0.8",
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
     "node-gyp": "^8"
