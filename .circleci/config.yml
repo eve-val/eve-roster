@@ -2,6 +2,10 @@ version: 2.1
 orbs:
   node: circleci/node@4.4.0
   queue: eddiewebb/queue@1.5.0
+parameters:
+  node-version:
+    type: string
+    default: "16.10.0"
 jobs:
   deploy:
     docker:
@@ -20,25 +24,25 @@ workflows:
   build-and-test:
     jobs:
       - node/test:
-          version: 16.10.0
+          version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: jest
           cache-version: v3
           name: jest
       - node/test:
-          version: 16.10.0
+          version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: pretty-check
           cache-version: v3
           name: pretty-check
       - node/test:
-          version: 16.10.0
+          version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: lint
           cache-version: v3
           name: lint
       - node/test:
-          version: 16.10.0
+          version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: build
           cache-version: v3
