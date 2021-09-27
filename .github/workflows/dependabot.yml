@@ -34,7 +34,7 @@ jobs:
           git checkout HEAD -- package.json
           yarn install --no-immutable
           # deduplicate lockfile
-          yarn deduplicate
+          yarn dedupe
       - name: Config Git
         run: |
           # We use our own PAT for this, if you gonna use this, make sure to use the same secret name.
@@ -75,7 +75,7 @@ jobs:
           git checkout HEAD -- package.json
           yarn install --no-immutable
           # deduplicate lockfile
-          yarn deduplicate
+          yarn dedupe
       - name: Config Git
         run: |
           # We use our own PAT for this, if you gonna use this, make sure to use the same secret name.
