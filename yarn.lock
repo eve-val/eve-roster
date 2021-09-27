@@ -2670,12 +2670,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-ansi-html@mahdyar/ansi-html-community:
+"ansi-html@npm:ansi-html-community@^0.0.8":
   version: 0.0.8
-  resolution: "ansi-html@https://github.com/mahdyar/ansi-html-community.git#commit=92b2249ad30189c486d512fbf36374bb354d088f"
+  resolution: "ansi-html-community@npm:0.0.8"
   bin:
-    ansi-html: ./bin/ansi-html
-  checksum: b980b42124d77a11722279afa9117827358509a5d326c4aa2841ea400acb6dc9e117ef5401cbc24da91526c335bba04fda10b23f339a89ae134f0812e4d7963c
+    ansi-html: bin/ansi-html
+  checksum: 04c568e8348a636963f915e48eaa3e01218322e1169acafdd79c384f22e5558c003f79bbc480c1563865497482817c7eed025f0653ebc17642fededa5cb42089
   languageName: node
   linkType: hard
 
