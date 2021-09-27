@@ -21,27 +21,27 @@ workflows:
     jobs:
       - node/test:
           version: 16.10.0
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           run-command: jest
-          cache-version: v2
+          cache-version: v3
           name: jest
       - node/test:
           version: 16.10.0
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           run-command: pretty-check
-          cache-version: v2
+          cache-version: v3
           name: pretty-check
       - node/test:
           version: 16.10.0
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           run-command: lint
-          cache-version: v2
+          cache-version: v3
           name: lint
       - node/test:
           version: 16.10.0
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           run-command: build
-          cache-version: v2
+          cache-version: v3
           name: build
       - deploy:
           requires:
