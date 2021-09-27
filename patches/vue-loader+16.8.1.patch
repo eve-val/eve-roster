@@ -1,17 +1,17 @@
-diff --git a/node_modules/vue-loader/dist/index.d.ts b/node_modules/vue-loader/dist/index.d.ts
+diff --git a/dist/index.d.ts b/dist/index.d.ts
 index d8d1164..9075e9e 100644
---- a/node_modules/vue-loader/dist/index.d.ts
-+++ b/node_modules/vue-loader/dist/index.d.ts
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
 @@ -15,4 +15,4 @@ export interface VueLoaderOptions {
      enableTsInTemplate?: boolean;
      isServerBuild?: boolean;
  }
 -export default function loader(this: webpack.loader.LoaderContext, source: string): string | void;
 +export default function loader(this: webpack.LoaderContext<string>, source: string): string | void;
-diff --git a/node_modules/vue-loader/dist/plugin.d.ts b/node_modules/vue-loader/dist/plugin.d.ts
+diff --git a/dist/plugin.d.ts b/dist/plugin.d.ts
 index 6e03582..dcc32d4 100644
---- a/node_modules/vue-loader/dist/plugin.d.ts
-+++ b/node_modules/vue-loader/dist/plugin.d.ts
+--- a/dist/plugin.d.ts
++++ b/dist/plugin.d.ts
 @@ -1,5 +1,5 @@
  import webpack = require('webpack');
 -declare class VueLoaderPlugin implements webpack.Plugin {
