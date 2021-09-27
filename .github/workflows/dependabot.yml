@@ -32,7 +32,7 @@ jobs:
           git diff --name-only HEAD^ HEAD | grep -q 'package.json' || yarn up `git log -1 --pretty=%s | awk '{ print $2 }'`
           # restore package.json from the last commit
           git checkout HEAD -- package.json
-          yarn install
+          yarn --no-immutable install
           # deduplicate lockfile
           yarn deduplicate
       - name: Config Git
@@ -73,7 +73,7 @@ jobs:
           git diff --name-only HEAD^ HEAD | grep -q 'package.json' || yarn up `git log -1 --pretty=%s | awk '{ print $2 }'`
           # restore package.json from the last commit
           git checkout HEAD -- package.json
-          yarn install
+          yarn --no-immutable install
           # deduplicate lockfile
           yarn deduplicate
       - name: Config Git
