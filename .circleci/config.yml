@@ -23,21 +23,25 @@ workflows:
           version: 16.10.0
           pkg-manager: yarn
           run-command: jest
+          cache-version: v2
           name: jest
       - node/test:
           version: 16.10.0
           pkg-manager: yarn
           run-command: pretty-check
+          cache-version: v2
           name: pretty-check
       - node/test:
           version: 16.10.0
           pkg-manager: yarn
           run-command: lint
+          cache-version: v2
           name: lint
       - node/test:
           version: 16.10.0
           pkg-manager: yarn
           run-command: build
+          cache-version: v2
           name: build
       - deploy:
           requires:
