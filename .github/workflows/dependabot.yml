@@ -1,47 +1,10 @@
-# based on https://github.com/RecapTime/verify/blob/main/.github/workflows/dependabot.yml
-name: Fix borked Yarn lockfiles
-
-on:
-  push:
-    branches: [dependabot/npm_and_yarn/**]
-  issue_comment:
-    types: [created]
+### This workflow doesn't have access to secrets and has a read-only token
+name: Dependabot PR Check
+on: push
 
 jobs:
-  fix-on-push:
+  check-dependabot:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' && github.event_name == 'push'
-
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-          token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
-          persist-credentials: true
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "16"
-      - name: Autofix lockfile
-        run: |
-          # change directory
-          cd .`git log -1 --pretty=%s | awk '{ print $8 }'`
-          # restore yarn.lock from the previous commit
-          git checkout HEAD^ -- yarn.lock
-          # if package.json was not updated, upgrade the dependency
-          git diff --name-only HEAD^ HEAD | grep -q 'package.json' || yarn up `git log -1 --pretty=%s | awk '{ print $2 }'`
-          # restore package.json from the last commit
-          git checkout HEAD -- package.json
-          yarn install --no-immutable
-          # deduplicate lockfile
-          yarn dedupe
-      - name: Config Git
-        run: |
-          git config --global user.name 'Nobody In Local'
-          git config --global user.email 'june@of-sound-mind.com'
-      - name: Commit changes
-        run: |
-          cd .`git log -1 --pretty=%s | awk '{ print $8 }'`
-          git add yarn.lock
-          git commit -m "chore(dependabot): fix broken Yarn lockfile" -m "Related-Issue: https://github.com/dependabot/dependabot-core/issues/1297" --signoff
-          git push
+      - run: echo "PR created by Dependabot"
