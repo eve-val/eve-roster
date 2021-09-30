@@ -11,14 +11,13 @@ import { EsiNotification } from "./EsiNotification";
 
 export const ESI_CHARACTERS_$characterId = {
   method: FetchMethod.GET,
-  path: "/v4/characters/${characterId}/",
+  path: "/v5/characters/${characterId}/",
   pathVars: {} as {
     characterId: number;
   },
   access: Public.ACCESS,
   response: {} as {
     alliance_id?: number;
-    ancestry_id?: number;
     birthday: string;
     bloodline_id: number;
     corporation_id: number;
@@ -75,7 +74,7 @@ export const ESI_CHARACTERS_$characterId_ROLES = {
 
 export const ESI_CHARACTERS_$characterId_LOCATION = {
   method: FetchMethod.GET,
-  path: "/v1/characters/${characterId}/location/",
+  path: "/v2/characters/${characterId}/location/",
   pathVars: {} as {
     characterId: number;
   },
@@ -99,7 +98,7 @@ export const ESI_CHARACTERS_$characterId_NOTIFICATIONS = {
 
 export const ESI_CHARACTERS_$characterId_SHIP = {
   method: FetchMethod.GET,
-  path: "/v1/characters/${characterId}/ship/",
+  path: "/v2/characters/${characterId}/ship/",
   pathVars: {} as {
     characterId: number;
   },
@@ -220,7 +219,7 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES = {
 
 export const ESI_CORPORATIONS_$corporationId_ROLES = {
   method: FetchMethod.GET,
-  path: "/v1/corporations/${corporationId}/roles/",
+  path: "/v2/corporations/${corporationId}/roles/",
   pathVars: {} as {
     corporationId: number;
   },
@@ -234,7 +233,7 @@ export const ESI_CORPORATIONS_$corporationId_ROLES = {
 
 export const ESI_CORPORATIONS_$corporationId_MEMBERTRACKING = {
   method: FetchMethod.GET,
-  path: "/v1/corporations/${corporationId}/membertracking/",
+  path: "/v2/corporations/${corporationId}/membertracking/",
   pathVars: {} as {
     corporationId: number;
   },
