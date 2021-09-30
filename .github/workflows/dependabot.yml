@@ -46,7 +46,7 @@ jobs:
       - name: Commit changes
         run: |
           cd .`git log -1 --pretty=%s | awk '{ print $8 }'`
-          git add yarn.lock .yarn/cache
+          git add yarn.lock
           git commit -m "chore(dependabot): fix broken Yarn lockfile" -m "Related-Issue: https://github.com/dependabot/dependabot-core/issues/1297" --signoff
           git push
   fix-on-command-usage:
@@ -87,7 +87,7 @@ jobs:
       - name: Commit changes
         run: |
           cd .`git log -1 --pretty=%s | awk '{ print $8 }'`
-          git add yarn.lock .yarn/cache
+          git add yarn.lock
           git commit -m "chore(dependabot): fix broken Yarn lockfile" -m "Related-Issue: https://github.com/dependabot/dependabot-core/issues/1297" --signoff
           git push
       # TODO: Notify the user who trigger the command ONLY if fails.
