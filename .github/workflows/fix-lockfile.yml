@@ -32,7 +32,7 @@ jobs:
           git checkout HEAD -- package.json
           yarn install --no-immutable --mode=update-lockfile
           # deduplicate lockfile
-          yarn dedupe
+          yarn dedupe --mode=update-lockfile
       - name: Config Git
         run: |
           git config --global user.name 'Nobody In Local'
