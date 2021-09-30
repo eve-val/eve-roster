@@ -175,7 +175,7 @@ export const ESI_CORPORATIONS_$corporationId = {
 
 export const ESI_CORPORATIONS_$corporationId_MEMBERS = {
   method: FetchMethod.GET,
-  path: "/v3/corporations/${corporationId}/members",
+  path: "/v4/corporations/${corporationId}/members",
   pathVars: {} as {
     corporationId: number;
   },
@@ -185,7 +185,7 @@ export const ESI_CORPORATIONS_$corporationId_MEMBERS = {
 
 export const ESI_CORPORATIONS_$corporationId_TITLES = {
   method: FetchMethod.GET,
-  path: "/v1/corporations/${corporationId}/titles/",
+  path: "/v2/corporations/${corporationId}/titles/",
   pathVars: {} as {
     corporationId: number;
   },
