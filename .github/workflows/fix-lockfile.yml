@@ -17,6 +17,7 @@ jobs:
         with:
           fetch-depth: 2
           token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2.4.0
         with:
