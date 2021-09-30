@@ -17,15 +17,12 @@ jobs:
         with:
           fetch-depth: 2
           token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
-          persist-credentials: true
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2.4.0
         with:
           node-version: "16"
       - name: Autofix lockfile
         run: |
-          # change directory
-          cd .`git log -1 --pretty=%s | awk '{ print $8 }'`
           # restore yarn.lock from the previous commit
           git checkout HEAD^ -- yarn.lock
           # if package.json was not updated, upgrade the dependency
