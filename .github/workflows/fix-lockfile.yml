@@ -27,10 +27,10 @@ jobs:
           # restore yarn.lock from the previous commit
           git checkout HEAD^ -- yarn.lock
           # if package.json was not updated, upgrade the dependency
-          git diff --name-only HEAD^ HEAD | grep -q 'package.json' || yarn up `git log -1 --pretty=%s | awk '{ print $2 }'`
+          git diff --name-only HEAD^ HEAD | grep -q 'package.json' || yarn up --mode=update-lockfile `git log -1 --pretty=%s | awk '{ print $2 }'`
           # restore package.json from the last commit
           git checkout HEAD -- package.json
-          yarn install --no-immutable
+          yarn install --no-immutable --mode=update-lockfile
           # deduplicate lockfile
           yarn dedupe
       - name: Config Git
