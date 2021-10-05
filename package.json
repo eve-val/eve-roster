@@ -86,7 +86,7 @@
     "@types/verror": "^1.10.5",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-middleware": "^5.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
     "@vue/compiler-sfc": "^3.2.19",
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
