@@ -3740,15 +3740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "css-minimizer-webpack-plugin@npm:3.0.2"
+"css-minimizer-webpack-plugin@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "css-minimizer-webpack-plugin@npm:3.1.0"
   dependencies:
     cssnano: ^5.0.6
     jest-worker: ^27.0.2
     p-limit: ^3.0.2
     postcss: ^8.3.5
-    schema-utils: ^3.0.0
+    schema-utils: ^3.1.0
     serialize-javascript: ^6.0.0
     source-map: ^0.6.1
   peerDependencies:
@@ -3758,7 +3758,9 @@ __metadata:
       optional: true
     csso:
       optional: true
-  checksum: f4cacd46d4157d5005c9d3b5aa6bf60cd036ab10faae20cc1bdffb7153d2802473ef9f464d30098aad98f2205aee92b956c1f92c5da5a04f772ca9f17fd72dab
+    esbuild:
+      optional: true
+  checksum: d3c5aa3f838ab19a14809c9f09dd661ca1498f93203643d5014df3c58c3839dab9837fb18ab05743a9b6638f2257e801ec80105673ed715be64f6c4d42736e95
   languageName: node
   linkType: hard
 
@@ -4885,7 +4887,7 @@ __metadata:
     cookie-parser: ^1.4.5
     cookie-session: ^1.4.0
     css-loader: ^6.3.0
-    css-minimizer-webpack-plugin: ^3.0.2
+    css-minimizer-webpack-plugin: ^3.1.0
     csurf: ^1.11.0
     eslint: ^7.32.0
     eslint-config-prettier: ^8.3.0
