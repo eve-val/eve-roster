@@ -919,7 +919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:0.26.0":
+"@opentelemetry/instrumentation@npm:0.26.0, @opentelemetry/instrumentation@npm:^0.26.0":
   version: 0.26.0
   resolution: "@opentelemetry/instrumentation@npm:0.26.0"
   dependencies:
@@ -5000,7 +5000,7 @@ __metadata:
     "@opentelemetry/api": ^1.0.3
     "@opentelemetry/core": ^1.0.0
     "@opentelemetry/exporter-collector-grpc": ^0.25.0
-    "@opentelemetry/instrumentation": ^0.25.0
+    "@opentelemetry/instrumentation": ^0.26.0
     "@opentelemetry/instrumentation-express": ^0.25.0
     "@opentelemetry/instrumentation-http": ^0.26.0
     "@opentelemetry/instrumentation-pg": ^0.25.0
