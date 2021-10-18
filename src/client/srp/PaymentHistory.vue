@@ -42,7 +42,7 @@ import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-import { Payment } from "./types";
+import { Payment, Payments } from "./types";
 
 import { SimpleNumMap } from "../../util/simpleTypes";
 import { Identity } from "../home";
@@ -77,7 +77,7 @@ export default defineComponent({
       suspectMoreToFetch: true,
     } as {
       payments: Payment[] | null;
-      fetchPromise: Promise<AxiosResponse> | null;
+      fetchPromise: Promise<AxiosResponse<Payments>> | null;
       suspectMoreToFetch: boolean;
     };
   },
@@ -111,24 +111,17 @@ export default defineComponent({
         limit: this.resultsPerFetch,
       });
 
-      this.fetchPromise.then(
-        (
-          response: AxiosResponse<{
-            names: SimpleNumMap<string>;
-            payments: Payment[];
-          }>
-        ) => {
-          this.addNames(response.data.names);
+      this.fetchPromise.then((response) => {
+        this.addNames(response.data.names);
 
-          this.payments = this.payments || [];
-          for (let payment of response.data.payments) {
-            this.payments.push(payment);
-          }
-
-          this.suspectMoreToFetch =
-            response.data.payments.length == this.resultsPerFetch;
+        this.payments = this.payments || [];
+        for (let payment of response.data.payments) {
+          this.payments.push(payment);
         }
-      );
+
+        this.suspectMoreToFetch =
+          response.data.payments.length == this.resultsPerFetch;
+      });
     },
   },
 });

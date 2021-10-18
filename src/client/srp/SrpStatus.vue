@@ -116,7 +116,6 @@ triage options weren't initially provided, fetches them from the server.
 import _ from "underscore";
 
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-import { AxiosResponse } from "axios";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
@@ -297,7 +296,7 @@ export default defineComponent({
       );
       this.savePromise = savePromise;
       savePromise
-        .then((response: AxiosResponse<{ id: number; name: string }>) => {
+        .then((response) => {
           this.saveStatus = "inactive";
           this.srp.payout = payout;
           this.srp.status = verdict;
@@ -343,7 +342,7 @@ export default defineComponent({
         const editPromise = ajaxer.getSrpLossTriageOptions(this.srp.killmail);
         this.editPromise = editPromise;
         editPromise
-          .then((response: AxiosResponse<{ triage: Triage }>) => {
+          .then((response) => {
             this.fetchTriageStatus = "inactive";
             this.srp.triage = response.data.triage;
             this.loadVerdictFromStatusAndTriage();

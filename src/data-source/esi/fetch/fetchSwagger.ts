@@ -12,7 +12,7 @@ export async function fetchSwagger(baseUrl: string): Promise<object> {
     },
   };
 
-  const response: AxiosResponse = await axios(config);
+  const response = await axios.request<object>(config);
   return response.data;
 }
 

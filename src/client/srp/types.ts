@@ -1,6 +1,12 @@
+import { SimpleNumMap } from "../../util/simpleTypes";
+
 export interface Loss {
   payout: number;
   killmail: number;
+}
+export interface Losses {
+  srps: Loss[];
+  names: SimpleNumMap<string>;
 }
 export interface Payment {
   id: number;
@@ -10,6 +16,19 @@ export interface Payment {
   modified: number;
   modifiedLabel: string;
   totalPayout: number;
+}
+export interface Payments {
+  payments: Payment[];
+  names: SimpleNumMap<string>;
+}
+export interface Transaction {
+  names: SimpleNumMap<string>;
+  payment: Payment;
+  losses: Loss[];
+}
+export interface Battles {
+  names: SimpleNumMap<string>;
+  battles: Battle[];
 }
 export interface Battle {
   id: number;

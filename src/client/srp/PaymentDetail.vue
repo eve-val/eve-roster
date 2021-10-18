@@ -79,8 +79,6 @@ import { Identity } from "../home";
 const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
 type UndoStatus = typeof UNDO_STATUSES[number];
 
-import { AxiosResponse } from "axios";
-
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -139,19 +137,11 @@ export default defineComponent({
       this.losses = [];
       const promise = ajaxer.getSrpPayment(this.srpId);
       this.promise = promise;
-      promise.then(
-        (
-          response: AxiosResponse<{
-            names: SimpleNumMap<string>;
-            payment: Payment;
-            losses: Loss[];
-          }>
-        ) => {
-          this.addNames(response.data.names);
-          this.payment = response.data.payment;
-          this.losses = response.data.losses;
-        }
-      );
+      promise.then((response) => {
+        this.addNames(response.data.names);
+        this.payment = response.data.payment;
+        this.losses = response.data.losses;
+      });
     },
 
     onUndoClick() {
@@ -166,7 +156,7 @@ export default defineComponent({
       );
       this.undoPromise = undoPromise;
       undoPromise
-        .then((_response: AxiosResponse<{}>) => {
+        .then((_response) => {
           this.undoStatus = "inactive";
           if (this.payment != null) {
             this.payment.paid = false;

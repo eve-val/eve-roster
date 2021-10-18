@@ -22,3 +22,23 @@ export interface Log {
   start: number;
   end: number;
 }
+
+const CITADEL_TYPES = [
+  "Astrahus",
+  "Fortizar",
+  "Keepstar",
+  "Raitaru",
+  "Azbel",
+  "Sotiyo",
+  "Athanor",
+  "Tatara",
+];
+type CitadelType = typeof CITADEL_TYPES[number];
+
+export interface Citadel {
+  id: number | null;
+  name: string;
+  type: CitadelType;
+  allianceAccess: boolean;
+  allianceOwned: boolean;
+}

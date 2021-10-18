@@ -27,11 +27,10 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-import { Battle } from "../types";
+import { Battle, Battles } from "../types";
 import { SimpleNumMap } from "../../../util/simpleTypes";
 
 import { Identity } from "../../home";
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -66,17 +65,10 @@ export default defineComponent({
       this.battle = null;
       const promise = ajaxer.getBattle(this.battleId, true);
       this.promise = promise;
-      promise.then(
-        (
-          response: AxiosResponse<{
-            battles: Battle[];
-            names: SimpleNumMap<string>;
-          }>
-        ) => {
-          this.addNames(response.data.names);
-          this.battle = response.data.battles[0];
-        }
-      );
+      promise.then((response) => {
+        this.addNames(response.data.names);
+        this.battle = response.data.battles[0];
+      });
     },
   },
 });

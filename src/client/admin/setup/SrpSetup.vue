@@ -56,7 +56,6 @@ import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
 const STATUSES = ["active", "inactive", "error"] as const;
 type Status = typeof STATUSES[number];
-import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -97,7 +96,7 @@ export default defineComponent({
   },
 
   mounted() {
-    ajaxer.getAdminSrpJurisdiction().then((response: AxiosResponse) => {
+    ajaxer.getAdminSrpJurisdiction().then((response) => {
       this.loaded = true;
 
       const jurisdiction = response.data.srpJurisdiction;

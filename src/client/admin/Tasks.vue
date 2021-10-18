@@ -60,7 +60,6 @@ import { Task, Job, Log } from "./types";
 const POLL_FREQUENCY = 4000;
 
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -106,26 +105,16 @@ export default defineComponent({
   },
 
   mounted() {
-    const promise = Promise.all<
-      AxiosResponse<Task[]>,
-      AxiosResponse<Job[]>,
-      AxiosResponse<Log[]>
-    >([
+    const promise = Promise.all([
       ajaxer.getAdminTasks(),
       ajaxer.getAdminJobs(),
       ajaxer.getAdminTaskLog(),
     ]);
     this.promise = promise;
-    promise.then(
-      ([tasks, jobs, logs]: [
-        tasks: AxiosResponse<Task[]>,
-        jobs: AxiosResponse<Job[]>,
-        logs: AxiosResponse<Log[]>
-      ]) => {
-        this.initializeTasks(tasks.data, jobs.data);
-        this.taskLog = logs.data;
-      }
-    );
+    promise.then(([tasks, jobs, logs]) => {
+      this.initializeTasks(tasks.data, jobs.data);
+      this.taskLog = logs.data;
+    });
   },
 
   methods: {
@@ -169,7 +158,7 @@ export default defineComponent({
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs().then((response: AxiosResponse<Job[]>) => {
+        ajaxer.getAdminJobs().then((response) => {
           this.applyJobs(response.data);
           if (this.areAnyActiveJobs) {
             setTimeout(poll, POLL_FREQUENCY);
@@ -237,7 +226,7 @@ export default defineComponent({
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog().then((response: AxiosResponse<Log[]>) => {
+      ajaxer.getAdminTaskLog().then((response) => {
         this.taskLog = response.data;
       });
     },

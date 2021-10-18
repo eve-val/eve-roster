@@ -39,7 +39,7 @@ export async function fetchJitaSellPrices(ids: number[]) {
       logger.warn(`Url: ${err.config.url}`);
       logger.warn(`Params: ${inspect(err.config.params)}`);
       logger.warn(`${err.response?.status} ${err.response?.statusText}`);
-      logger.warn(err.response?.data);
+      logger.warn(`${err.response?.data}`);
     }
     if (marketStats != undefined) {
       for (const stat of marketStats) {

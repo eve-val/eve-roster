@@ -49,6 +49,7 @@
 
 <script lang="ts">
 import moment from "moment";
+import { AxiosResponse } from "axios";
 
 import ajaxer from "../shared/ajaxer";
 
@@ -57,7 +58,6 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import Tooltip from "../shared/Tooltip.vue";
 
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -76,14 +76,14 @@ export default defineComponent({
       promise: null,
     } as {
       rows: any[] | null;
-      promise: Promise<any> | null;
+      promise: Promise<AxiosResponse> | null;
     };
   },
 
   mounted() {
     const promise = ajaxer.getAdminAccountLog();
     this.promise = promise;
-    promise.then((response: AxiosResponse) => {
+    promise.then((response) => {
       let rows = response.data.rows;
       this.rows = rows;
     });

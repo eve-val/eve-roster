@@ -51,30 +51,11 @@
 import ajaxer from "../shared/ajaxer";
 import AdminWrapper from "./AdminWrapper.vue";
 
+import { Citadel } from "./types";
+
 import { hasValue, hasBlur } from "../shared/htmlUtil";
 import { Identity } from "../home";
 
-const CITADEL_TYPES = [
-  "Astrahus",
-  "Fortizar",
-  "Keepstar",
-  "Raitaru",
-  "Azbel",
-  "Sotiyo",
-  "Athanor",
-  "Tatara",
-];
-type CitadelType = typeof CITADEL_TYPES[number];
-
-interface Citadel {
-  id: number | null;
-  name: string;
-  type: CitadelType;
-  allianceAccess: boolean;
-  allianceOwned: boolean;
-}
-
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -117,25 +98,23 @@ export default defineComponent({
 
   methods: {
     fetchData() {
-      ajaxer
-        .getCitadels()
-        .then((response: AxiosResponse<{ citadels: Citadel[] }>) => {
-          this.citadels = response.data.citadels;
-        });
+      ajaxer.getCitadels().then((response) => {
+        this.citadels = response.data.citadels;
+      });
     },
 
     addCitadel() {
       let c = this.newCitadel;
       ajaxer
         .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-        .then((response: AxiosResponse<Citadel>) => {
+        .then((response) => {
           this.citadels.push(response.data);
           this.newCitadel.name = "";
         });
     },
 
     removeCitadel(id: number) {
-      ajaxer.deleteCitadel(id).then((_response: AxiosResponse<{}>) => {
+      ajaxer.deleteCitadel(id).then((_response) => {
         for (let i = 0; i < this.citadels.length; i++) {
           if (this.citadels[i].id === id) {
             this.citadels.splice(i, 1);
@@ -146,7 +125,7 @@ export default defineComponent({
     },
 
     renameCitadel(id: number, name: string) {
-      ajaxer.putCitadelName(id, name).then((_response: AxiosResponse<{}>) => {
+      ajaxer.putCitadelName(id, name).then((_response) => {
         this.citadels.map((citadel: Citadel) => {
           if (citadel.id === id) {
             citadel.name = name;

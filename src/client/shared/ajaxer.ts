@@ -1,11 +1,19 @@
 import axios, { AxiosResponse } from "axios";
 import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET";
+import { Output as dashboard_Output } from "../../route/api/dashboard";
+import { Output as character_Output } from "../../route/api/character";
+import { Triage, Battles, Losses, Transaction, Payments } from "../srp/types";
+import { Task, Job, Log, Citadel } from "../admin/types";
+import { Account } from "../roster/types";
+import { CharacterDescription } from "../../route/api/account/characters_GET";
+import { Payload as skills_Payload } from "../../route/api/character/skills";
+import { Ship } from "../ships/ships";
 
 export function configureCsrfInterceptor(token: string) {
   axios.interceptors.request.use(
     (req) => {
       // TODO: if we do remote fetch, avoid leaking csrf token to other host.
-      req.headers["x-csrf-token"] = token;
+      req.headers!["x-csrf-token"] = token;
       return req;
     },
     (error) => Promise.reject(error)
@@ -14,11 +22,11 @@ export function configureCsrfInterceptor(token: string) {
 
 export default {
   getDashboard() {
-    return axios.get("/api/dashboard");
+    return axios.get<dashboard_Output>("/api/dashboard");
   },
 
   getCorporation(id: number) {
-    return axios.get("/api/corporation/" + id);
+    return axios.get<{ name: string }>("/api/corporation/" + id);
   },
 
   putAccountMainCharacter(accountId: number, characterId: number) {
@@ -40,7 +48,9 @@ export default {
   },
 
   getAccountCharacters(accountId: number) {
-    return axios.get(`/api/account/${accountId}/characters`);
+    return axios.get<CharacterDescription[]>(
+      `/api/account/${accountId}/characters`
+    );
   },
 
   deleteBiomassedCharacter(characterId: number) {
@@ -64,15 +74,15 @@ export default {
   },
 
   getRoster() {
-    return axios.get("/api/roster");
+    return axios.get<{ columns: string[]; rows: Account[] }>("/api/roster");
   },
 
   getCharacter(id: number) {
-    return axios.get("/api/character/" + id);
+    return axios.get<character_Output>("/api/character/" + id);
   },
 
   getCitadels() {
-    return axios.get("/api/citadels");
+    return axios.get<{ citadels: Citadel[] }>("/api/citadels");
   },
 
   postCitadel(
@@ -81,7 +91,7 @@ export default {
     allianceAccess: boolean,
     allianceOwned: boolean
   ) {
-    return axios.post("/api/admin/citadel", {
+    return axios.post<Citadel>("/api/admin/citadel", {
       name: name,
       type: type,
       allianceAccess: allianceAccess,
@@ -90,25 +100,25 @@ export default {
   },
 
   putCitadelName(citadelId: number, name: string) {
-    return axios.put(`/api/admin/citadel/${citadelId}`, {
+    return axios.put<{}>(`/api/admin/citadel/${citadelId}`, {
       name: name,
     });
   },
 
   deleteCitadel(citadelId: number) {
-    return axios.delete(`/api/admin/citadel/${citadelId}`);
+    return axios.delete<{}>(`/api/admin/citadel/${citadelId}`);
   },
 
   getSkills(id: number) {
-    return axios.get("/api/character/" + id + "/skills");
+    return axios.get<skills_Payload>("/api/character/" + id + "/skills");
   },
 
   getSkillQueue(id: number) {
-    return axios.get("/api/character/" + id + "/skillQueue");
+    return axios.get<any>("/api/character/" + id + "/skillQueue");
   },
 
   getFreshSkillQueueSummaries() {
-    return axios.get("/api/dashboard/queueSummary");
+    return axios.get<any>("/api/dashboard/queueSummary");
   },
 
   getAdminRosterSyncStatus(): Promise<AxiosResponse<syncStatus_Output>> {
@@ -116,15 +126,15 @@ export default {
   },
 
   getAdminAccountLog() {
-    return axios.get("/api/admin/accountLog");
+    return axios.get<{ rows: any[] }>("/api/admin/accountLog");
   },
 
   getAdminTasks() {
-    return axios.get("/api/admin/tasks/task");
+    return axios.get<Task[]>("/api/admin/tasks/task");
   },
 
   getAdminJobs() {
-    return axios.get("/api/admin/tasks/job");
+    return axios.get<Job[]>("/api/admin/tasks/job");
   },
 
   putAdminTask(taskName: string) {
@@ -134,7 +144,7 @@ export default {
   },
 
   getAdminTaskLog() {
-    return axios.get("/api/admin/tasks/logs");
+    return axios.get<Log[]>("/api/admin/tasks/logs");
   },
 
   getAdminSetup() {
@@ -146,7 +156,9 @@ export default {
   },
 
   getAdminSrpJurisdiction() {
-    return axios.get("/api/admin/srp/jurisdiction");
+    return axios.get<{ srpJurisdiction: { start?: number } }>(
+      "/api/admin/srp/jurisdiction"
+    );
   },
 
   putAdminSrpJurisdiction(start: number) {
@@ -156,11 +168,13 @@ export default {
   },
 
   getSrpApprovedLiability() {
-    return axios.get("/api/srp/approvedLiability");
+    return axios.get<{ approvedLiability: number }>(
+      "/api/srp/approvedLiability"
+    );
   },
 
   getBattles(filter: Object, includeSrp: boolean) {
-    return axios.get("/api/srp/battle", {
+    return axios.get<Battles>("/api/srp/battle", {
       params: {
         filter: filter != undefined ? JSON.stringify(filter) : undefined,
         includeSrp: includeSrp,
@@ -169,7 +183,7 @@ export default {
   },
 
   getBattle(id: number, includeSrp: boolean) {
-    return axios.get(`/api/srp/battle/${id}`, {
+    return axios.get<Battles>(`/api/srp/battle/${id}`, {
       params: {
         includeSrp: includeSrp,
       },
@@ -177,7 +191,7 @@ export default {
   },
 
   getRecentSrpLosses(filter: Object) {
-    return axios.get("/api/srp/loss", {
+    return axios.get<Losses>("/api/srp/loss", {
       params: filter,
     });
   },
@@ -188,25 +202,28 @@ export default {
     reason: string | null,
     payout: number
   ) {
-    return axios.put(`/api/srp/loss/${killmail}`, {
-      verdict: verdict,
-      reason: reason,
-      payout: payout,
-    });
+    return axios.put<{ id: number; name: string }>(
+      `/api/srp/loss/${killmail}`,
+      {
+        verdict: verdict,
+        reason: reason,
+        payout: payout,
+      }
+    );
   },
 
   getSrpLossTriageOptions(killmail: number) {
-    return axios.get(`/api/srp/loss/${killmail}/triage`);
+    return axios.get<{ triage: Triage }>(`/api/srp/loss/${killmail}/triage`);
   },
 
   getSrpPaymentHistory(filter: Object) {
-    return axios.get("/api/srp/payment", {
+    return axios.get<Payments>("/api/srp/payment", {
       params: filter,
     });
   },
 
   getSrpPayment(paymentId: number) {
-    return axios.get(`/api/srp/payment/${paymentId}`);
+    return axios.get<Transaction>(`/api/srp/payment/${paymentId}`);
   },
 
   putSrpPaymentStatus(
@@ -221,11 +238,11 @@ export default {
   },
 
   getAllBorrowedShips() {
-    return axios.get("/api/ships/borrowed");
+    return axios.get<Ship[]>("/api/ships/borrowed");
   },
 
   getShipsBorrowedByMe() {
-    return axios.get("/api/ships/borrowedByMe");
+    return axios.get<Ship[]>("/api/ships/borrowedByMe");
   },
 
   postOpenInformationWindow(character: number, targetId: number) {

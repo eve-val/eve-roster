@@ -38,12 +38,7 @@ import { NameCacheMixin } from "../../shared/nameCache";
 import { Battle } from "../types";
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
-import { SimpleNumMap } from "../../../util/simpleTypes";
-
-type Response = AxiosResponse<{
-  names: SimpleNumMap<string>;
-  battles: Battle[];
-}>;
+import { Battles } from "../types";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -70,7 +65,7 @@ export default defineComponent({
       suspectMoreToFetch: true,
     } as {
       battles: Battle[] | null;
-      fetchPromise: Promise<Response> | null;
+      fetchPromise: Promise<AxiosResponse<Battles>> | null;
       suspectMoreToFetch: boolean;
     };
   },
@@ -117,7 +112,7 @@ export default defineComponent({
         true
       );
 
-      this.fetchPromise.then((response: Response) => {
+      this.fetchPromise.then((response) => {
         this.addNames(response.data.names);
         if (this.battles == null) {
           this.battles = [];

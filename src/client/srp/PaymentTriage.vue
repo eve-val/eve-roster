@@ -53,10 +53,10 @@ import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 const RESULTS_PER_FETCH = 30;
-
-import { Payment } from "./types";
-import { Identity } from "../home";
 import { AxiosResponse } from "axios";
+
+import { Payment, Payments } from "./types";
+import { Identity } from "../home";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -81,7 +81,7 @@ export default defineComponent({
 
       approvedLiability: 0,
     } as {
-      fetchPromise: null | Promise<AxiosResponse>;
+      fetchPromise: null | Promise<AxiosResponse<Payments>>;
       suspectMoreToFetch: boolean;
       payments: null | Payment[];
       payingCharacter: null | number;
@@ -110,11 +110,9 @@ export default defineComponent({
   mounted() {
     this.fetchNextResults();
 
-    ajaxer
-      .getSrpApprovedLiability()
-      .then((response: AxiosResponse<{ approvedLiability: number }>) => {
-        this.approvedLiability = response.data.approvedLiability;
-      });
+    ajaxer.getSrpApprovedLiability().then((response) => {
+      this.approvedLiability = response.data.approvedLiability;
+    });
   },
 
   methods: {
@@ -128,7 +126,7 @@ export default defineComponent({
         limit: RESULTS_PER_FETCH,
       });
 
-      this.fetchPromise.then((response: AxiosResponse) => {
+      this.fetchPromise.then((response) => {
         this.addNames(response.data.names);
 
         this.payments = this.payments || [];
