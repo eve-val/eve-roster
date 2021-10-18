@@ -3098,16 +3098,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^6.0.3":
-  version: 6.0.3
-  resolution: "buffer@npm:6.0.3"
-  dependencies:
-    base64-js: ^1.3.1
-    ieee754: ^1.2.1
-  checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
-  languageName: node
-  linkType: hard
-
 "bytes@npm:3.1.0":
   version: 3.1.0
   resolution: "bytes@npm:3.1.0"
@@ -5017,7 +5007,7 @@ __metadata:
     source-map-support: ^0.5.20
     sqlite3: ^5.0.2
     svgo: ^2.7.0
-    swagger-ui: ^4.0.0-rc.3
+    swagger-ui: ^4.0.0-rc.4
     terser-webpack-plugin: ^5.2.4
     tmp: ^0.2.1
     ts-jest: ^27.0.7
@@ -10247,13 +10237,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"querystring-browser@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "querystring-browser@npm:1.0.4"
-  checksum: dfdbf78a2a86cc22ee8481af2f2b7f8c81ed8d052f0a45c4189e5d16dc67728a04b2e27b67cd6bf9d56743b44985158da11077de4fcc4ef4e341281f0568a5da
-  languageName: node
-  linkType: hard
-
 "querystring@npm:0.2.0":
   version: 0.2.0
   resolution: "querystring@npm:0.2.0"
@@ -11638,13 +11621,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.16.1":
-  version: 3.16.1
-  resolution: "swagger-client@npm:3.16.1"
+"swagger-client@npm:^3.17.0":
+  version: 3.17.0
+  resolution: "swagger-client@npm:3.17.0"
   dependencies:
     "@babel/runtime-corejs3": ^7.11.2
     btoa: ^1.2.1
-    buffer: ^6.0.3
     cookie: ~0.4.1
     cross-fetch: ^3.1.4
     deep-extend: ~0.6.0
@@ -11654,16 +11636,15 @@ fsevents@^2.3.2:
     js-yaml: ^4.1.0
     lodash: ^4.17.21
     qs: ^6.9.4
-    querystring-browser: ^1.0.4
     traverse: ~0.6.6
     url: ~0.11.0
-  checksum: f66ad71d5345b16d65a982b2defb769b84542ef463fb8c1dff8be16860079e5cc41a62577375da98b41723ff7512e1f453b2c17139f96921f7ba48321422d680
+  checksum: 51862ee48be189f7e6fae6edf2c86f298cffcc65652720311ef945e5d2d18f2fa4aa5d2b8ff5bb201e121dba00463d87d128717771c18cc9500c95263f669c53
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.0.0-rc.3":
-  version: 4.0.0-rc.3
-  resolution: "swagger-ui@npm:4.0.0-rc.3"
+"swagger-ui@npm:^4.0.0-rc.4":
+  version: 4.0.0-rc.4
+  resolution: "swagger-ui@npm:4.0.0-rc.4"
   dependencies:
     "@babel/runtime-corejs3": ^7.14.7
     "@braintree/sanitize-url": ^5.0.2
@@ -11695,12 +11676,12 @@ fsevents@^2.3.2:
     reselect: ^4.0.0
     serialize-error: ^8.1.0
     sha.js: ^2.4.11
-    swagger-client: ^3.16.1
+    swagger-client: ^3.17.0
     url-parse: ^1.5.3
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: 4beace61b514fc3532e58f4558fbe4aca9f6c2cabcc1a06dfeaa48ec43666685674f1e788bb401f3b92bdcd47f621ac906704d16d04a6ed003937bcf2d1c2a93
+  checksum: e9beb146ed640a593d5e992fc8a0909ac5bb75ad9814705f4965f7ba2ab6c548afcb935f09e52267cd0a5e9d2e9e2503a45991c5dd746b2d9315ffe3fd58c32f
   languageName: node
   linkType: hard
 
