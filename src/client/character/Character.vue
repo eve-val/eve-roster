@@ -143,9 +143,8 @@ import SkillSheet from "./SkillSheet.vue";
 import { Skill } from "./skills";
 
 import { Identity } from "../home";
-import { Output, Character, Account } from "../../route/api/character";
+import { Character, Account } from "../../route/api/character";
 
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -244,7 +243,7 @@ export default defineComponent({
       if (value && value.corporationId) {
         ajaxer
           .getCorporation(value.corporationId)
-          .then((response: AxiosResponse) => {
+          .then((response) => {
             this.corporationName = response.data.name;
           })
           .catch((e) => {
@@ -266,7 +265,7 @@ export default defineComponent({
       }
       const promise = ajaxer.getCharacter(this.characterId);
       this.promise = promise;
-      promise.then((response: AxiosResponse<Output>) => {
+      promise.then((response) => {
         this.character = response.data.character;
         this.account = response.data.account;
         this.access = response.data.access;

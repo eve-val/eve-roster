@@ -54,6 +54,7 @@
 import _ from "underscore";
 
 import ajaxer from "../shared/ajaxer";
+import { AxiosResponse } from "axios";
 
 import AppHeader from "../shared/AppHeader.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
@@ -62,8 +63,7 @@ import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
-import { Output, CharacterJson } from "../../route/api/dashboard";
+import { CharacterJson } from "../../route/api/dashboard";
 
 import { defineComponent, PropType, inject } from "vue";
 export default defineComponent({
@@ -99,7 +99,7 @@ export default defineComponent({
       loginParams: string | null;
       mainCharacter: number | null;
       access: { designateMain: number; isMember: boolean } | null;
-      promise: Promise<any> | null;
+      promise: Promise<AxiosResponse> | null;
     };
   },
 
@@ -118,7 +118,7 @@ export default defineComponent({
       const promise = ajaxer.getDashboard();
       this.promise = promise;
       promise
-        .then((response: AxiosResponse<Output>) => {
+        .then((response) => {
           this.accountId = response.data.accountId;
           this.characters = response.data.characters;
           this.transfers = response.data.transfers;
@@ -132,7 +132,7 @@ export default defineComponent({
           this.promise = promise;
           return promise;
         })
-        .then((response: AxiosResponse) => {
+        .then((response) => {
           let freshSummaries = response.data;
           for (let character of this.characters) {
             let updatedEntry = _.findWhere(freshSummaries, {

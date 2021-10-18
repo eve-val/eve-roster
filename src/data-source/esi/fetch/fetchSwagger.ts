@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 export const CHARACTER_HEADER = "X-Proxy-Character";
 
@@ -12,7 +12,7 @@ export async function fetchSwagger(baseUrl: string): Promise<object> {
     },
   };
 
-  const response: AxiosResponse = await axios(config);
+  const response = await axios.request<object>(config);
   return response.data;
 }
 

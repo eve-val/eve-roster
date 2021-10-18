@@ -45,7 +45,6 @@ import RosterTable from "./RosterTable.vue";
 import SearchBox from "./SearchBox.vue";
 
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -76,25 +75,23 @@ export default defineComponent({
   mounted() {
     const promise = ajaxer.getRoster();
     this.promise = promise;
-    promise.then(
-      (response: AxiosResponse<{ columns: string[]; rows: Account[] }>) => {
-        let providedColumns: string[] = response.data.columns;
+    promise.then((response) => {
+      let providedColumns: string[] = response.data.columns;
 
-        this.displayColumns = rosterColumns.filter((col: Column) => {
-          let sourceColumns: string[] = col.derivedFrom || [col.key];
+      this.displayColumns = rosterColumns.filter((col: Column) => {
+        let sourceColumns: string[] = col.derivedFrom || [col.key];
 
-          return _.reduce(
-            sourceColumns,
-            (accum: boolean, sourceCol: string) =>
-              accum && providedColumns.includes(sourceCol),
-            true
-          );
-        });
+        return _.reduce(
+          sourceColumns,
+          (accum: boolean, sourceCol: string) =>
+            accum && providedColumns.includes(sourceCol),
+          true
+        );
+      });
 
-        let rows = injectDerivedData(response.data.rows);
-        this.tableRows = rows;
-      }
-    );
+      let rows = injectDerivedData(response.data.rows);
+      this.tableRows = rows;
+    });
   },
 
   methods: {

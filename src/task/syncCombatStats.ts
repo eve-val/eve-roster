@@ -182,15 +182,15 @@ function fetchMailsPage(
     `https://zkillboard.com/api/${kind}/characterID/${characterId}` +
     `/year/${year}/month/${month}/page/${page}/zkbOnly/`;
   return Promise.resolve(
-    axios.get(url, {
+    axios.get<ZkillIncident[] | ZkillErr>(url, {
       headers: {
         "User-Agent": process.env.USER_AGENT || "Sound Roster App",
         "Accept-Encoding": "gzip",
       },
     })
   ).then((response) => {
-    if (!response.data || response.data.error) {
-      const errorMessage = response.data && response.data.error;
+    if (!response.data || "error" in response.data) {
+      const errorMessage = response.data?.error;
       throw new Error(
         `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`
       );
@@ -208,4 +208,8 @@ interface ZkillIncident {
     points: number;
     npc: boolean;
   };
+}
+
+interface ZkillErr {
+  error: string;
 }

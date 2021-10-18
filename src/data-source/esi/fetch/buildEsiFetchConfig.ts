@@ -31,12 +31,12 @@ export function buildEsiFetchConfig<T extends EsiEndpoint>(
   }
 
   if (params._body != undefined) {
-    config.headers["Content-Type"] = "application/json";
+    config.headers!["Content-Type"] = "application/json";
     config.data = params._body;
   }
 
   if (params._token != undefined) {
-    config.headers["Authorization"] = `Bearer ${params._token}`;
+    config.headers!["Authorization"] = `Bearer ${params._token}`;
   }
 
   return config;

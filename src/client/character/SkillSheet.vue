@@ -58,7 +58,6 @@ import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
 import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
 import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
-import { AxiosResponse } from "axios";
 
 import { Payload } from "../../route/api/character/skills";
 import { defineComponent, PropType } from "vue";
@@ -114,7 +113,7 @@ export default defineComponent({
       if (this.canReadSkills) {
         const promise = ajaxer.getSkills(this.characterId);
         this.promise = promise;
-        promise.then((response: AxiosResponse<Payload>) => {
+        promise.then((response) => {
           this.processData(response.data);
         });
       }

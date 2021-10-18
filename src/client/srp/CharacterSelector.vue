@@ -44,7 +44,6 @@ import EveImage from "../shared/EveImage.vue";
 import ajaxer from "../shared/ajaxer";
 import { CharacterDescription } from "../../route/api/account/characters_GET";
 
-import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
@@ -86,18 +85,16 @@ export default defineComponent({
   },
 
   mounted() {
-    ajaxer
-      .getAccountCharacters(this.accountId)
-      .then((response: AxiosResponse<CharacterDescription[]>) => {
-        this.characters = response.data;
+    ajaxer.getAccountCharacters(this.accountId).then((response) => {
+      this.characters = response.data;
 
-        for (let character of this.characters) {
-          if (this.isValidCharacter(character)) {
-            this.selectedId = character.id;
-            break;
-          }
+      for (let character of this.characters) {
+        if (this.isValidCharacter(character)) {
+          this.selectedId = character.id;
+          break;
         }
-      });
+      }
+    });
   },
 
   methods: {

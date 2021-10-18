@@ -50,16 +50,16 @@ export default jsonEndpoint(
         }
 
         if (req.body != undefined) {
-          config.headers["Content-Type"] = "application/json";
+          config.headers!["Content-Type"] = "application/json";
           config.data = req.body;
         }
         if (token) {
-          config.headers["Authorization"] = `Bearer ${token}`;
+          config.headers!["Authorization"] = `Bearer ${token}`;
         }
 
         return config;
       })
-      .then((config) => axios(config))
+      .then((config) => axios.request<MixedObject>(config))
       .then((fetchResponse) => {
         res.status(fetchResponse.status);
         return fetchResponse.data;

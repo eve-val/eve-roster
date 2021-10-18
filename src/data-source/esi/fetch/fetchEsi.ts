@@ -37,19 +37,19 @@ export async function fetchEsiEx<T extends EsiEndpoint>(
   const response = await fetchEsiImpl(endpoint, params);
   return {
     data: response.data,
-    pageCount: response.headers["x-pages"] || 1,
+    pageCount: parseInt(response.headers?.["x-pages"]) || 1,
   };
 }
 
 async function fetchEsiImpl<T extends EsiEndpoint>(
   endpoint: T,
   params: EsiEndpointParams<T>
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<T["response"]>> {
   const config = buildEsiFetchConfig(BASE_URL, endpoint, params);
 
-  let response: AxiosResponse;
+  let response: AxiosResponse<T["response"]>;
   try {
-    response = await axios(config);
+    response = await axios.request<T["response"]>(config);
   } catch (err) {
     let errKind = EsiErrorKind.GENERIC_ERROR;
 

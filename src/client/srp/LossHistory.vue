@@ -40,12 +40,10 @@ import MoreButton from "./MoreButton.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
-import { Loss } from "./types";
-import { SimpleNumMap } from "../../util/simpleTypes";
+import { Loss, Losses } from "./types";
+import { AxiosResponse } from "axios";
 
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
-type Resp = AxiosResponse<{ srps: Loss[]; names: SimpleNumMap<string> }>;
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -83,7 +81,7 @@ export default defineComponent({
       relatedKillmail: null,
     } as {
       rows: null | Loss[];
-      fetchPromise: null | Promise<Resp>;
+      fetchPromise: null | Promise<AxiosResponse<Losses>>;
       suspectMoreToFetch: boolean;
       relatedKillmail: null | number;
     };
@@ -131,7 +129,7 @@ export default defineComponent({
         includeTriage: this.triageMode,
       });
 
-      this.fetchPromise.then((response: Resp) => {
+      this.fetchPromise.then((response) => {
         this.addNames(response.data.names);
         this.rows = this.rows || [];
         for (let srp of response.data.srps) {
