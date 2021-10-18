@@ -27,8 +27,7 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-import { Battle, Battles } from "../types";
-import { SimpleNumMap } from "../../../util/simpleTypes";
+import { Battle } from "../types";
 
 import { Identity } from "../../home";
 import { defineComponent, PropType } from "vue";

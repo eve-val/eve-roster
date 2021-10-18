@@ -44,7 +44,6 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 import { Payment, Payments } from "./types";
 
-import { SimpleNumMap } from "../../util/simpleTypes";
 import { Identity } from "../home";
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";

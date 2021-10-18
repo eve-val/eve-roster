@@ -122,7 +122,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
 type RequestStatus = typeof REQUEST_STATUSES[number];
 
-import { VerdictOption, Srp, Triage } from "./types";
+import { VerdictOption, Srp } from "./types";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

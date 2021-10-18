@@ -143,7 +143,7 @@ import SkillSheet from "./SkillSheet.vue";
 import { Skill } from "./skills";
 
 import { Identity } from "../home";
-import { Output, Character, Account } from "../../route/api/character";
+import { Character, Account } from "../../route/api/character";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

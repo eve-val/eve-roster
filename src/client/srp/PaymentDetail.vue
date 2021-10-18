@@ -69,8 +69,6 @@ import LossRow from "./LossRow.vue";
 
 import { Loss, Payment } from "./types";
 
-import { SimpleNumMap } from "../../util/simpleTypes";
-
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 

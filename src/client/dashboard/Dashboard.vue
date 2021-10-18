@@ -63,7 +63,7 @@ import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
 import { Identity } from "../home";
-import { Output, CharacterJson } from "../../route/api/dashboard";
+import { CharacterJson } from "../../route/api/dashboard";
 
 import { defineComponent, PropType, inject } from "vue";
 export default defineComponent({

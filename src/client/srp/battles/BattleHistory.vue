@@ -35,10 +35,9 @@ import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
-import { Battle } from "../types";
+import { Battle, Battles } from "../types";
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
-import { Battles } from "../types";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
