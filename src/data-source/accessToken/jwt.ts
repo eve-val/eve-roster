@@ -1,6 +1,4 @@
-import { createRemoteJWKSet } from "jose/jwks/remote";
-import { jwtVerify } from "jose/jwt/verify";
-import { JWTPayload } from "jose/types";
+import { createRemoteJWKSet, jwtVerify, JWTPayload } from "jose";
 
 export async function fetchAuthInfo(
   accessToken: string
