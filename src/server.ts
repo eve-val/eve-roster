@@ -26,7 +26,7 @@ import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
-import grpc from "@grpc/grpc-js";
+import { Metadata, ChannelCredentials } from "@grpc/grpc-js";
 
 const REQUIRED_VARS = [
   "COOKIE_SECRET",
@@ -47,14 +47,14 @@ for (const envVar of REQUIRED_VARS) {
   }
 }
 
-const metadata = new grpc.Metadata();
+const metadata = new Metadata();
 metadata.set("x-honeycomb-team", process.env["HONEYCOMB_API_KEY"] || "");
 metadata.set("x-honeycomb-dataset", process.env["HONEYCOMB_DATASET"] || "");
 
 const collectorOptions = {
   serviceName: "roster",
   url: "grpcs://api.honeycomb.io:443/",
-  credentials: grpc.credentials.createSsl(),
+  credentials: ChannelCredentials.createSsl(),
   metadata,
 };
 
