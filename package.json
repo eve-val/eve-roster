@@ -132,6 +132,7 @@
   },
   "resolutions": {
     "ansi-html": "npm:ansi-html-community@^0.0.8",
+    "browserslist": "^4.17.5",
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
     "node-gyp": "^8",
@@ -156,6 +157,6 @@
     }
   },
   "engines": {
-    "node": "16.11.1"
+    "node": "16.12.0"
   }
 }
