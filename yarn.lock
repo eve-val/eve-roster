@@ -906,17 +906,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-pg@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@opentelemetry/instrumentation-pg@npm:0.25.0"
+"@opentelemetry/instrumentation-pg@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "@opentelemetry/instrumentation-pg@npm:0.26.0"
   dependencies:
-    "@opentelemetry/instrumentation": ^0.25.0
-    "@opentelemetry/semantic-conventions": ^0.25.0
+    "@opentelemetry/instrumentation": ^0.26.0
+    "@opentelemetry/semantic-conventions": ^1.0.0
     "@types/pg": 8.6.1
     "@types/pg-pool": 2.0.3
   peerDependencies:
     "@opentelemetry/api": ^1.0.2
-  checksum: 4359a6e0648a63b27423c93bcc6654a979b800f91ac9cb228dd388f19910279e01e2ca3f1e2fc265dc9da7431112f82322993aaef47995561c45ede081abf506
+  checksum: d75be4a44a7cb5d4a483c7915029670fb9fde890939a9cce0301982dce091355f6589f38125357479f840aa4fece6df7b28190359403d56dd231dbb942195024
   languageName: node
   linkType: hard
 
@@ -1059,7 +1059,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:1.0.0":
+"@opentelemetry/semantic-conventions@npm:1.0.0, @opentelemetry/semantic-conventions@npm:^1.0.0":
   version: 1.0.0
   resolution: "@opentelemetry/semantic-conventions@npm:1.0.0"
   checksum: 1fc7a5cbabd49ebfaf83413dcadd742a483efb8d95532aef3522b332abf32cc5c4602ec87ea5d9fc0bcfeea4e88e4993d2e996bf050fdfae3d19d1fa91ddae8a
@@ -3210,14 +3210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.0":
-  version: 1.0.30001228
-  resolution: "caniuse-lite@npm:1.0.30001228"
-  checksum: d7ea2234d3ad1841dab6cd0b6ee16e89958f5893ef2e024a7447d6f889f496e40b6dafe000f391b8d4f0c0ef08671dbb5969fd66e6f74d402994865ce5705a53
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001271":
+"caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001271":
   version: 1.0.30001271
   resolution: "caniuse-lite@npm:1.0.30001271"
   checksum: 0271e234e17c588fa203a34523f90c5a21ab62f41a2c3acabe96f0251593ac92f192cadd7a3dcbcf49bb28de4f57ca274d775c75700c3f38e9c42028d3becb0f
@@ -4927,7 +4920,7 @@ __metadata:
     "@opentelemetry/instrumentation": ^0.26.0
     "@opentelemetry/instrumentation-express": ^0.25.0
     "@opentelemetry/instrumentation-http": ^0.26.0
-    "@opentelemetry/instrumentation-pg": ^0.25.0
+    "@opentelemetry/instrumentation-pg": ^0.26.0
     "@opentelemetry/sdk-trace-base": ^1.0.0
     "@opentelemetry/sdk-trace-node": ^1.0.0
     "@sentry/browser": ^6.13.3
