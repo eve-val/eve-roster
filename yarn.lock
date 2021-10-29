@@ -934,20 +934,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@opentelemetry/instrumentation@npm:0.25.0"
-  dependencies:
-    "@opentelemetry/api-metrics": 0.25.0
-    require-in-the-middle: ^5.0.3
-    semver: ^7.3.2
-    shimmer: ^1.2.1
-  peerDependencies:
-    "@opentelemetry/api": ^1.0.2
-  checksum: 0c6eea0cce4317a6329c718c363b3f25ba8e8109f83ccfc5106e12546a7c10218b0005a771b44be2867fbdc56229e639ea75eb18a66fdbc1fbb74edc9fb9d282
-  languageName: node
-  linkType: hard
-
 "@opentelemetry/propagator-b3@npm:1.0.0":
   version: 1.0.0
   resolution: "@opentelemetry/propagator-b3@npm:1.0.0"
@@ -1052,7 +1038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:0.25.0, @opentelemetry/semantic-conventions@npm:^0.25.0":
+"@opentelemetry/semantic-conventions@npm:0.25.0":
   version: 0.25.0
   resolution: "@opentelemetry/semantic-conventions@npm:0.25.0"
   checksum: 0771e3298ed67f87d466e3eeac17fb3363cd7759b0b306b42d296464ef40c5f00e351535bc5eab0b678f3c60cb256309d6c4779b586beaf5edf99300d1e0ab45
@@ -3477,14 +3463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorette@npm:1.2.1":
-  version: 1.2.1
-  resolution: "colorette@npm:1.2.1"
-  checksum: 06e2fcdb9e2a2c527ac84509a56eadf481cde1768933eb612808f3bb3a9d9872c06b4a9f95e4d0f7befeef8b38307f79b88242d9ea52470d1125520b8116de08
-  languageName: node
-  linkType: hard
-
-"colorette@npm:^2.0.10, colorette@npm:^2.0.14":
+"colorette@npm:2.0.16, colorette@npm:^2.0.10, colorette@npm:^2.0.14":
   version: 2.0.16
   resolution: "colorette@npm:2.0.16"
   checksum: cd55596a3a2d1071c1a28eee7fd8a5387593ff1bd10a3e8d0a6221499311fe34a9f2b9272d77c391e0e003dcdc8934fb2f8d106e7ef1f7516f8060c901d41a27
@@ -4984,7 +4963,7 @@ __metadata:
     jest: ^27.3.1
     jose: ^4.1.2
     json-loader: ^0.5.7
-    knex: ^0.95.11
+    knex: ^0.95.12
     mini-css-extract-plugin: ^2.4.3
     moment: ^2.29.1
     moment-locales-webpack-plugin: ^1.2.0
@@ -7706,11 +7685,11 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"knex@npm:^0.95.11":
-  version: 0.95.11
-  resolution: "knex@npm:0.95.11"
+"knex@npm:^0.95.12":
+  version: 0.95.12
+  resolution: "knex@npm:0.95.12"
   dependencies:
-    colorette: 1.2.1
+    colorette: 2.0.16
     commander: ^7.1.0
     debug: 4.3.2
     escalade: ^3.1.1
@@ -7730,13 +7709,15 @@ fsevents@^2.3.2:
       optional: true
     pg:
       optional: true
+    pg-native:
+      optional: true
     sqlite3:
       optional: true
     tedious:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: a0a4451dad286e1bdec17380514e402d4b27130edb19775f4a41d5789e14811b4aaa52c0a359655cb7710aa456daa035df764d1086440e1756c2a2c4e71186b3
+  checksum: 6896544260e0cd8fc4af4c0877cda99db80b42d8d2ae578a35b2ea8380179026f8bbac51024ceed996c96c261dd3d1441ae21d995386b35685a967b600598665
   languageName: node
   linkType: hard
 
