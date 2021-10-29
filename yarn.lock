@@ -4982,7 +4982,7 @@ __metadata:
     imagemin-pngquant: ^9.0.2
     imagemin-svgo: ^9.0.0
     jest: ^27.3.1
-    jose: ^4.1.1
+    jose: ^4.1.2
     json-loader: ^0.5.7
     knex: ^0.95.11
     mini-css-extract-plugin: ^2.4.3
@@ -7446,10 +7446,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "jose@npm:4.1.1"
-  checksum: c7f92ba78ba64e1020faac6eb34be52fe9620dcce8af109ff986285fc8fa5d624b290d92f0fb72972c0ad879d19ab08cc6ac185e058a6f4e62d6bafb49ad487c
+"jose@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "jose@npm:4.1.2"
+  checksum: 398a65477c2a1c6abbdf67c8b14a869fcc211d8dc65cb35eb28e7a16d2beceec7ce2cb7dbf23fa9c1438d9fb88ac14b8d8baf9e33f5066260d0768333fc06bc8
   languageName: node
   linkType: hard
 
