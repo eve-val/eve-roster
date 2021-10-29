@@ -822,7 +822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:0.25.0, @opentelemetry/core@npm:^0.25.0":
+"@opentelemetry/core@npm:0.25.0":
   version: 0.25.0
   resolution: "@opentelemetry/core@npm:0.25.0"
   dependencies:
@@ -878,17 +878,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-express@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@opentelemetry/instrumentation-express@npm:0.25.0"
+"@opentelemetry/instrumentation-express@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "@opentelemetry/instrumentation-express@npm:0.26.0"
   dependencies:
-    "@opentelemetry/core": ^0.25.0
-    "@opentelemetry/instrumentation": ^0.25.0
-    "@opentelemetry/semantic-conventions": ^0.25.0
+    "@opentelemetry/core": ^1.0.0
+    "@opentelemetry/instrumentation": ^0.26.0
+    "@opentelemetry/semantic-conventions": ^1.0.0
     "@types/express": 4.17.13
   peerDependencies:
     "@opentelemetry/api": ^1.0.2
-  checksum: 8a6b00c0b50d9bad900802e469435525831668bc1adf34997ad298625c7a1565e6a51695bf39a2f9de86edeba4720c46b70ece0b9cc2a3c8229e3bfd9dbdd005
+  checksum: eae5c070ab37c4e46b6480da16c8702261773efac6aa1aa9eb5fb7e6f44c913b4168e1ba5b9f6d3367d15ffcb55c5f2ce8365e6b4fb21c41a458906f4637cb61
   languageName: node
   linkType: hard
 
@@ -4918,7 +4918,7 @@ __metadata:
     "@opentelemetry/core": ^1.0.0
     "@opentelemetry/exporter-collector-grpc": ^0.25.0
     "@opentelemetry/instrumentation": ^0.26.0
-    "@opentelemetry/instrumentation-express": ^0.25.0
+    "@opentelemetry/instrumentation-express": ^0.26.0
     "@opentelemetry/instrumentation-http": ^0.26.0
     "@opentelemetry/instrumentation-pg": ^0.26.0
     "@opentelemetry/sdk-trace-base": ^1.0.0
