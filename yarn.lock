@@ -187,7 +187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-validator-identifier@npm:^7.14.5, @babel/helper-validator-identifier@npm:^7.14.9":
+"@babel/helper-validator-identifier@npm:^7.14.5, @babel/helper-validator-identifier@npm:^7.14.9, @babel/helper-validator-identifier@npm:^7.15.7":
   version: 7.15.7
   resolution: "@babel/helper-validator-identifier@npm:7.15.7"
   checksum: f041c28c531d1add5cc345b25d5df3c29c62bce3205b4d4a93dcd164ccf630350acba252d374fad8f5d8ea526995a215829f27183ba7ce7ce141843bf23068a6
@@ -422,13 +422,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.15.4, @babel/types@npm:^7.15.6, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.6.1, @babel/types@npm:^7.8.3, @babel/types@npm:^7.9.6":
-  version: 7.15.6
-  resolution: "@babel/types@npm:7.15.6"
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.15.4, @babel/types@npm:^7.16.0, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.6.1, @babel/types@npm:^7.8.3, @babel/types@npm:^7.9.6":
+  version: 7.16.0
+  resolution: "@babel/types@npm:7.16.0"
   dependencies:
-    "@babel/helper-validator-identifier": ^7.14.9
+    "@babel/helper-validator-identifier": ^7.15.7
     to-fast-properties: ^2.0.0
-  checksum: 37f497dde10d238b5eb184efab83b415a86611e3d73dc0434de0cfb851b20ee606a3b7e1525e5b2d522fac1248d0345fea0468006f246262511b80cd3ed2419f
+  checksum: 5b483da5c6e6f2394fba7ee1da8787a0c9cddd33491271c4da702e49e6faf95ce41d7c8bf9a4ee47f2ef06bdb35096f4d0f6ae4b5bea35ebefe16309d22344b7
   languageName: node
   linkType: hard
 
@@ -4891,7 +4891,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eve-roster@workspace:."
   dependencies:
-    "@babel/types": ^7.15.6
+    "@babel/types": ^7.16.0
     "@grpc/grpc-js": ^1.4.2
     "@opentelemetry/api": ^1.0.3
     "@opentelemetry/core": ^1.0.0
