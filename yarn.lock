@@ -2014,6 +2014,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-core@npm:3.2.21":
+  version: 3.2.21
+  resolution: "@vue/compiler-core@npm:3.2.21"
+  dependencies:
+    "@babel/parser": ^7.15.0
+    "@vue/shared": 3.2.21
+    estree-walker: ^2.0.2
+    source-map: ^0.6.1
+  checksum: 8fa2e02cfec836c6b5259a954beafaf558e0fdf6402feeb26a51fb2c7e06e512a24a59f19b6b4f972f1b587019fe156ff1a517bb1e6dd772925681396ed6d13c
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-dom@npm:3.2.20":
   version: 3.2.20
   resolution: "@vue/compiler-dom@npm:3.2.20"
@@ -2024,7 +2036,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.20, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.20":
+"@vue/compiler-dom@npm:3.2.21":
+  version: 3.2.21
+  resolution: "@vue/compiler-dom@npm:3.2.21"
+  dependencies:
+    "@vue/compiler-core": 3.2.21
+    "@vue/shared": 3.2.21
+  checksum: 7f0c71605d3b480cc1aa129c45ab0d34726fffa8e2095405b064a5a147ab3fb8198152c12afb2cdc836bdbb4e34ab9619fe0015c5e8f74d56b51f565ca57e742
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-sfc@npm:3.2.20":
   version: 3.2.20
   resolution: "@vue/compiler-sfc@npm:3.2.20"
   dependencies:
@@ -2042,6 +2064,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.21":
+  version: 3.2.21
+  resolution: "@vue/compiler-sfc@npm:3.2.21"
+  dependencies:
+    "@babel/parser": ^7.15.0
+    "@vue/compiler-core": 3.2.21
+    "@vue/compiler-dom": 3.2.21
+    "@vue/compiler-ssr": 3.2.21
+    "@vue/ref-transform": 3.2.21
+    "@vue/shared": 3.2.21
+    estree-walker: ^2.0.2
+    magic-string: ^0.25.7
+    postcss: ^8.1.10
+    source-map: ^0.6.1
+  checksum: b55f576330acec96f50325aff439be41dcf47f0e7ed8717f39111ddaef1aeeb58f9b0550e28580967e88226384f59ccacfbd20ad1ea7ed4f6f0b7e524be76324
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-ssr@npm:3.2.20":
   version: 3.2.20
   resolution: "@vue/compiler-ssr@npm:3.2.20"
@@ -2049,6 +2089,16 @@ __metadata:
     "@vue/compiler-dom": 3.2.20
     "@vue/shared": 3.2.20
   checksum: 01861c9222e11ca1a458006645d3fb55f539899566bdc85ccc464347fbeb75b8b27a876d328c53a317559bb0d7d9ad42230cebd150fa9937da62a7bf2c38527f
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-ssr@npm:3.2.21":
+  version: 3.2.21
+  resolution: "@vue/compiler-ssr@npm:3.2.21"
+  dependencies:
+    "@vue/compiler-dom": 3.2.21
+    "@vue/shared": 3.2.21
+  checksum: 9e7c1133ef8a05c94c28494e45c0ef16c0a5e88c1bc015c9555446d9eba759d0b33688772988afb196411b7e4dd9d45bacc1ac0c08078a9f392bc59dcb56314e
   languageName: node
   linkType: hard
 
@@ -2078,6 +2128,19 @@ __metadata:
     estree-walker: ^2.0.2
     magic-string: ^0.25.7
   checksum: f2dd004ace6cb2b47411a9285391a88b53e62f83355255ad7e68d8ee9f889a035383e89bd3fbcd0637812653b547618b4aed8baa8c9613ac71022f34d290d9f8
+  languageName: node
+  linkType: hard
+
+"@vue/ref-transform@npm:3.2.21":
+  version: 3.2.21
+  resolution: "@vue/ref-transform@npm:3.2.21"
+  dependencies:
+    "@babel/parser": ^7.15.0
+    "@vue/compiler-core": 3.2.21
+    "@vue/shared": 3.2.21
+    estree-walker: ^2.0.2
+    magic-string: ^0.25.7
+  checksum: d73605e845d95aea0e07dbefa4cbc7e3746b322c32dd0f10e55a3a5151d4fa1406318dc863b9544037f7ccdf3bf8ddc53c4c776e62f13a5e32fdad39ed2eb6d3
   languageName: node
   linkType: hard
 
@@ -2118,6 +2181,13 @@ __metadata:
   version: 3.2.20
   resolution: "@vue/shared@npm:3.2.20"
   checksum: da6e59a40622b5be5300c51d83e0a9d8ae1f67315dbec86cfc809b89f8620c09a3c6222cae5d80df0fb986f92afc1b6345db4e7a9b1a079f5783d27a839fea7d
+  languageName: node
+  linkType: hard
+
+"@vue/shared@npm:3.2.21":
+  version: 3.2.21
+  resolution: "@vue/shared@npm:3.2.21"
+  checksum: 78d3f08b8bb168437a2a66a416de8a3f91e4a15f0fc9def297bc11b6b15c8978005a56c310ebbc7af8f9fdae6b6929f2c291301a099e17ab1a4e43edf68a6f67
   languageName: node
   linkType: hard
 
@@ -4932,7 +5002,7 @@ __metadata:
     "@types/webpack-dev-middleware": ^5.0.2
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
-    "@vue/compiler-sfc": ^3.2.20
+    "@vue/compiler-sfc": ^3.2.21
     "@zoltu/typescript-transformer-append-js-extension": ^1.0.1
     axios: ^0.24.0
     bluebird: ^3.7.2
