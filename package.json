@@ -115,7 +115,7 @@
     "prettier": "^2.4.1",
     "request": "^2.88.2",
     "swagger-ui": "^4.1.0",
-    "terser-webpack-plugin": "^5.2.4",
+    "terser-webpack-plugin": "^5.2.5",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "ttypescript": "^1.5.12",
