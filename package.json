@@ -30,7 +30,7 @@
     "@opentelemetry/instrumentation-pg": "^0.26.0",
     "@opentelemetry/sdk-trace-base": "^1.0.0",
     "@opentelemetry/sdk-trace-node": "^1.0.0",
-    "@sentry/node": "^6.13.3",
+    "@sentry/node": "^6.14.1",
     "axios": "^0.24.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
