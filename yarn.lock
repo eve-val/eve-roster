@@ -4319,7 +4319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^2.2.9":
+"dompurify@npm:=2.3.3":
   version: 2.3.3
   resolution: "dompurify@npm:2.3.3"
   checksum: 947e3661681bd183aae1cd08f991b14c6aa41fd188f6c801c5e916c2dc4575bbefbaa121ed06dbe0cb0f595545527d588a44b53bfc35d1cbb898c214dc0d7930
@@ -4980,7 +4980,7 @@ __metadata:
     source-map-support: ^0.5.20
     sqlite3: ^5.0.2
     svgo: ^2.8.0
-    swagger-ui: ^4.0.0-rc.4
+    swagger-ui: ^4.1.0
     terser-webpack-plugin: ^5.2.4
     tmp: ^0.2.1
     ts-jest: ^27.0.7
@@ -11613,9 +11613,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.0.0-rc.4":
-  version: 4.0.0-rc.4
-  resolution: "swagger-ui@npm:4.0.0-rc.4"
+"swagger-ui@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "swagger-ui@npm:4.1.0"
   dependencies:
     "@babel/runtime-corejs3": ^7.14.7
     "@braintree/sanitize-url": ^5.0.2
@@ -11623,7 +11623,7 @@ fsevents@^2.3.2:
     classnames: ^2.3.1
     css.escape: 1.5.1
     deep-extend: 0.6.0
-    dompurify: ^2.2.9
+    dompurify: =2.3.3
     ieee754: ^1.2.1
     immutable: ^3.x.x
     js-file-download: ^0.4.12
@@ -11652,7 +11652,7 @@ fsevents@^2.3.2:
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: e9beb146ed640a593d5e992fc8a0909ac5bb75ad9814705f4965f7ba2ab6c548afcb935f09e52267cd0a5e9d2e9e2503a45991c5dd746b2d9315ffe3fd58c32f
+  checksum: 89038348629d0d0f2175bbb7f1407880fc80c25f30649fd90abefe67d2c1b1864d1b2f80fc10ec728b7f8dc98ee437c809d8f31a4151a52915d3644c26ffaee5
   languageName: node
   linkType: hard
 
