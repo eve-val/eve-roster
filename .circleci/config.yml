@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.4.0
-  queue: eddiewebb/queue@1.5.0
+  node: circleci/node@4.7.0
+  queue: eddiewebb/queue@1.6.1
 parameters:
   node-version:
     type: string
@@ -16,7 +16,8 @@ jobs:
       - run:
           name: SSH key for of-sound-mind.com
           command: ssh-keyscan of-sound-mind.com >> ~/.ssh/known_hosts
-      - queue/until_front_of_line
+      - queue/until_front_of_line:
+          block-workflow: true
       - run:
           name: Deploy to dokku staging using preconfigured ssh key and server-side command
           command: ssh dokku@of-sound-mind.com
