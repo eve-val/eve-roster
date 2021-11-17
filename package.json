@@ -136,7 +136,7 @@
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
     "node-gyp": "^8",
-    "vue-loader": "patch:vue-loader@^16.8.1#./patches/vue-loader+16.8.1.patch"
+    "vue-loader": "patch:vue-loader@^16.8.3#./patches/vue-loader+16.8.3.patch"
   },
   "jest": {
     "moduleFileExtensions": [
