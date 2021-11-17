@@ -12456,29 +12456,29 @@ typescript@^4.4.4:
   languageName: node
   linkType: hard
 
-vue-loader@^16.8.1:
-  version: 16.8.1
-  resolution: "vue-loader@npm:16.8.1"
+vue-loader@^16.8.3:
+  version: 16.8.3
+  resolution: "vue-loader@npm:16.8.3"
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: c518db8b0b1eb99641f6d79ae552ba3638bd1d922ae83e399a69c0fb55f869caa1dac30995f777813c3a7487bbc425aa502b00728db8344b1c1cf7f95c4618c8
+  checksum: 7c0566847b09bd1d0b8b1bd146274eb53c775668388b10a6fcd0968b41353c85018c24bc91f7ed31c20a5d5fcdc50f08149c4656663500075576b06e546ca976
   languageName: node
   linkType: hard
 
-"vue-loader@patch:vue-loader@^16.8.1#./patches/vue-loader+16.8.1.patch::locator=eve-roster%40workspace%3A.":
-  version: 16.8.1
-  resolution: "vue-loader@patch:vue-loader@npm%3A16.8.1#./patches/vue-loader+16.8.1.patch::version=16.8.1&hash=e829b4&locator=eve-roster%40workspace%3A."
+"vue-loader@patch:vue-loader@^16.8.3#./patches/vue-loader+16.8.3.patch::locator=eve-roster%40workspace%3A.":
+  version: 16.8.3
+  resolution: "vue-loader@patch:vue-loader@npm%3A16.8.3#./patches/vue-loader+16.8.3.patch::version=16.8.3&hash=e829b4&locator=eve-roster%40workspace%3A."
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 1aa88b01425213df9c16eab36e80b272d3ed72c8a65908d9a256ac0f5b4dd349192b11c77bdd4bb2e516d95d5e104ea7448d784aa492386ed2eb3c165a88a643
+  checksum: fb2d2646aff540f91a581dba1ae28bc71b946792d68fc4d8476e3f6a060a3462beaa7564f3750429ad05a02a4ce1a16741b2e7720458fd0e7673a2a3e87ee4c5
   languageName: node
   linkType: hard
 
