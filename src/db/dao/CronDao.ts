@@ -42,7 +42,7 @@ export default class CronDao {
         cronLog_end: Date.now(),
         cronLog_result: result,
       })
-      .where("cronLog_id", val(jobId))
+      .where("cronLog_id", "=", jobId)
       .run();
   }
 
