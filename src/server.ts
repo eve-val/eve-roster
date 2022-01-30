@@ -25,7 +25,7 @@ import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
-import { CollectorTraceExporter } from "@opentelemetry/exporter-collector-grpc";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 import { Metadata, ChannelCredentials } from "@grpc/grpc-js";
 
 const REQUIRED_VARS = [
@@ -59,7 +59,7 @@ const collectorOptions = {
 };
 
 const provider: NodeTracerProvider = new NodeTracerProvider();
-const exporter = new CollectorTraceExporter(collectorOptions);
+const exporter = new OTLPTraceExporter(collectorOptions);
 provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 provider.register();
 
