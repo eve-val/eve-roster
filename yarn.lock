@@ -3493,17 +3493,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^7.0.0, commander@npm:^7.1.0, commander@npm:^7.2.0":
+"commander@npm:^7.0.0, commander@npm:^7.2.0":
   version: 7.2.0
   resolution: "commander@npm:7.2.0"
   checksum: 53501cbeee61d5157546c0bef0fedb6cdfc763a882136284bed9a07225f09a14b82d2a84e7637edfd1a679fb35ed9502fd58ef1d091e6287f60d790147f68ddc
   languageName: node
   linkType: hard
 
-"commander@npm:^8.1.0":
-  version: 8.2.0
-  resolution: "commander@npm:8.2.0"
-  checksum: e868805bc266777f7a9c8a740e15b9e02b8148d8251f577ea9b9ef373ac0bdeb77b9b60cfc033592c9e1affea89993be08c13c623f0c619f9bf152c0e4d12cb0
+"commander@npm:^8.1.0, commander@npm:^8.3.0":
+  version: 8.3.0
+  resolution: "commander@npm:8.3.0"
+  checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
   languageName: node
   linkType: hard
 
@@ -4015,15 +4015,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:4.3.2, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1":
-  version: 4.3.2
-  resolution: "debug@npm:4.3.2"
+"debug@npm:4, debug@npm:4.3.3, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1":
+  version: 4.3.3
+  resolution: "debug@npm:4.3.3"
   dependencies:
     ms: 2.1.2
   peerDependenciesMeta:
     supports-color:
       optional: true
-  checksum: 820ea160e267e23c953c9ed87e7ad93494d8cda2f7349af5e7e3bb236d23707ee3022f477d5a7d2ee86ef2bf7d60aa9ab22d1f58080d7deb9dccd073585e1e43
+  checksum: 14472d56fe4a94dbcfaa6dbed2dd3849f1d72ba78104a1a328047bb564643ca49df0224c3a17fa63533fd11dd3d4c8636cd861191232a2c6735af00cc2d4de16
   languageName: node
   linkType: hard
 
@@ -4964,7 +4964,7 @@ __metadata:
     jest: ^27.3.1
     jose: ^4.3.6
     json-loader: ^0.5.7
-    knex: ^0.95.13
+    knex: ^1.0.1
     mini-css-extract-plugin: ^2.4.4
     moment: ^2.29.1
     moment-locales-webpack-plugin: ^1.2.0
@@ -5723,10 +5723,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"getopts@npm:2.2.5":
-  version: 2.2.5
-  resolution: "getopts@npm:2.2.5"
-  checksum: f8b21793e6c548fbc4f2ecfd8a51a74aba71fa118638fbdf00200207b8a8d44e21709611366d0c3366602b7ae29ae27fbe599f6ad6a55f7a2e451ca581af923f
+"getopts@npm:2.3.0":
+  version: 2.3.0
+  resolution: "getopts@npm:2.3.0"
+  checksum: bbb5fcef8d4a8582cf4499ea3fc492d95322df2184e65d550ddacede04871e7ba33194c7abd06a6c5d540de3b70112a16f988787e236e1c66b89521032b398ce
   languageName: node
   linkType: hard
 
@@ -7686,24 +7686,28 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"knex@npm:^0.95.13":
-  version: 0.95.13
-  resolution: "knex@npm:0.95.13"
+"knex@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "knex@npm:1.0.1"
   dependencies:
     colorette: 2.0.16
-    commander: ^7.1.0
-    debug: 4.3.2
+    commander: ^8.3.0
+    debug: 4.3.3
     escalade: ^3.1.1
     esm: ^3.2.25
-    getopts: 2.2.5
+    getopts: 2.3.0
     interpret: ^2.2.0
     lodash: ^4.17.21
     pg-connection-string: 2.5.0
-    rechoir: 0.7.0
+    rechoir: ^0.8.0
     resolve-from: ^5.0.0
-    tarn: ^3.0.1
+    tarn: ^3.0.2
     tildify: 2.0.0
   peerDependenciesMeta:
+    "@vscode/sqlite3":
+      optional: true
+    better-sqlite3:
+      optional: true
     mysql:
       optional: true
     mysql2:
@@ -7718,7 +7722,7 @@ fsevents@^2.3.2:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: 5d5dce81d35659028a24842ee873e885878da3ba445a7c2df2aa58e2cfa4ac9c157e5cb5fa8898a3d6e13aa87618f13323064021b5d5b7f57e1f9cab6c498235
+  checksum: e89a1f8266757891e7e8bf10ee1655879237299182a68a806579f3e5f31148b88958762608fafbecb6fbc6aee2acb84924fc4d53e4fd59bf0ca622076e420b6f
   languageName: node
   linkType: hard
 
@@ -10473,12 +10477,21 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"rechoir@npm:0.7.0, rechoir@npm:^0.7.0":
+"rechoir@npm:^0.7.0":
   version: 0.7.0
   resolution: "rechoir@npm:0.7.0"
   dependencies:
     resolve: ^1.9.0
   checksum: 15f55f55e06c175d98df85d503b139982378e7ca34e157439125e5a6f25a5cbd9cfe2aa2d1052e2c1edf89d7d22dc020c911fc968702c84f669a16a12a1ec7ac
+  languageName: node
+  linkType: hard
+
+"rechoir@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "rechoir@npm:0.8.0"
+  dependencies:
+    resolve: ^1.20.0
+  checksum: ad3caed8afdefbc33fbc30e6d22b86c35b3d51c2005546f4e79bcc03c074df804b3640ad18945e6bef9ed12caedc035655ec1082f64a5e94c849ff939dc0a788
   languageName: node
   linkType: hard
 
@@ -11728,10 +11741,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"tarn@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "tarn@npm:3.0.1"
-  checksum: c7347ce8c4dfd8017495d7d334d9d930dfdeb5bf67c6b4d0f5c040557457b9c5502d40f67c7f766d00b49e7a8a602d0341047b38c6864fefe66373a74d06f098
+"tarn@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "tarn@npm:3.0.2"
+  checksum: 27a69658f02504979c5b02e500522e78ec12ef893b90cb00fdef794f9d847a92ed78f6c0ad12e82b8919519bded6a8d6d0000442cd0c6d6ea83cd9b7297729af
   languageName: node
   linkType: hard
 
