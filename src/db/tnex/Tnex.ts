@@ -110,13 +110,19 @@ export class Tnex {
     returning?: string | string[]
   ) {
     const tableName = this._registry.getTableName(table);
+    const retKeys = this._prepReturningKeys(returning);
     return this._knex(tableName)
-      .insert(
-        this._prepRowForInsert(row, table),
-        this._prepReturningKeys(returning) as any
-      )
+      .insert(this._prepRowForInsert(row, table), retKeys)
       .then((rows) => {
-        return rows[0];
+        const ret = retKeys.map((k) => rows[0][k]);
+        switch (typeof returning) {
+          case "object":
+            return ret;
+          case "string":
+            return ret[0];
+          default:
+            return;
+        }
       });
   }
 
@@ -135,10 +141,19 @@ export class Tnex {
       return Promise.resolve([]);
     }
     const tableName = this._registry.getTableName(table);
-    return this._knex(tableName).insert(
-      rows.map((row) => this._prepRowForInsert(row, table)),
-      this._prepReturningKeys(returning) as any
-    );
+    const retKeys = this._prepReturningKeys(returning);
+    return this._knex(tableName)
+      .insert(
+        rows.map((row) => this._prepRowForInsert(row, table)),
+        retKeys
+      )
+      .then((results) => {
+        if (returning === undefined) {
+          return;
+        }
+        // No multiple return values from insertAll, only singular.
+        return results.map((row) => retKeys.map((k) => row[k])[0]);
+      });
   }
 
   public update<T extends object>(table: T, values: Partial<T>): Update<T, {}> {
@@ -432,9 +447,9 @@ export class Tnex {
   private _prepReturningKeys(returning: undefined | string | string[]) {
     // TODO: Throw exception if returning is not supported by current DB.
     if (returning == undefined) {
-      return returning;
+      return [];
     } else if (typeof returning == "string") {
-      return this._registry.stripPrefix(returning);
+      return [this._registry.stripPrefix(returning)];
     } else {
       return returning.map((col) => this._registry.stripPrefix(col));
     }
