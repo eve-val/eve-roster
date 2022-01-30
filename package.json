@@ -102,7 +102,7 @@
     "eslint-plugin-vue": "^7.20.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "html-webpack-pug-plugin": "^3.0.0",
+    "html-webpack-pug-plugin": "^4.0.0",
     "image-minimizer-webpack-plugin": "^2.2.0",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-mozjpeg": "^9.0.0",
