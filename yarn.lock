@@ -1249,24 +1249,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-minimizer-webpack-plugin@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@types/css-minimizer-webpack-plugin@npm:3.0.2"
+"@types/css-minimizer-webpack-plugin@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@types/css-minimizer-webpack-plugin@npm:3.2.1"
   dependencies:
-    "@types/cssnano": "*"
-    postcss: ^8.2.9
-    tapable: ^2.2.0
-    webpack: ^5.37.0
-  checksum: 15072b0e604a9fd713288e0c071ef45ce18c6d41605c5a9c265a0c022e14a78eb027bea4a870d0b81758cdbd0f5972dff113a994e92b66ffff1b638e1cc87cfd
-  languageName: node
-  linkType: hard
-
-"@types/cssnano@npm:*":
-  version: 4.0.0
-  resolution: "@types/cssnano@npm:4.0.0"
-  dependencies:
-    postcss: 5 - 7
-  checksum: 94f1e42fd6dbe7413b7feb58024a563819e4e868d6e0d6810160b61b2483201ede05ba944f9d6e72ba6a760d43f925e8feda01501eb3a6a789666dc6bd7d8ddb
+    css-minimizer-webpack-plugin: "*"
+  checksum: e3ecdeb94a39e1dd97653210cf8f18052f7818adb95926ac8c50266668ff2f89fae515c27fa5f5035322aa7b6ae004d31711d000244c70b3d243e567321058d8
   languageName: node
   linkType: hard
 
@@ -3116,7 +3104,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^2.0.0, chalk@npm:^2.4.2":
+"chalk@npm:^2.0.0":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
   dependencies:
@@ -3650,7 +3638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:^3.4.1":
+"css-minimizer-webpack-plugin@npm:*, css-minimizer-webpack-plugin@npm:^3.4.1":
   version: 3.4.1
   resolution: "css-minimizer-webpack-plugin@npm:3.4.1"
   dependencies:
@@ -4720,7 +4708,7 @@ __metadata:
     "@types/body-parser": ^1.19.1
     "@types/cookie-parser": ^1.4.2
     "@types/cookie-session": ^2.0.43
-    "@types/css-minimizer-webpack-plugin": ^3.0.2
+    "@types/css-minimizer-webpack-plugin": ^3.2.1
     "@types/csurf": ^1.11.2
     "@types/express": ^4.17.13
     "@types/heapdump": ^0.3.1
@@ -9479,18 +9467,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"postcss@npm:5 - 7":
-  version: 7.0.36
-  resolution: "postcss@npm:7.0.36"
-  dependencies:
-    chalk: ^2.4.2
-    source-map: ^0.6.1
-    supports-color: ^6.1.0
-  checksum: 4cfc0989b9ad5d0e8971af80d87f9c5beac5c84cb89ff22ad69852edf73c0a2fa348e7e0a135b5897bf893edad0fe86c428769050431ad9b532f072ff530828d
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.1.10, postcss@npm:^8.2.15, postcss@npm:^8.2.9, postcss@npm:^8.3.5":
+"postcss@npm:^8.1.10, postcss@npm:^8.2.15, postcss@npm:^8.3.5":
   version: 8.3.7
   resolution: "postcss@npm:8.3.7"
   dependencies:
@@ -11283,15 +11260,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "supports-color@npm:6.1.0"
-  dependencies:
-    has-flag: ^3.0.0
-  checksum: 74358f9535c83ee113fbaac354b11e808060f6e7d8722082ee43af3578469134e89d00026dce2a6b93ce4e5b89d0e9a10f638b2b9f64c7838c2fb2883a47b3d5
-  languageName: node
-  linkType: hard
-
 "supports-color@npm:^7.0.0, supports-color@npm:^7.1.0":
   version: 7.2.0
   resolution: "supports-color@npm:7.2.0"
@@ -12392,7 +12360,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.37.0, webpack@npm:^5.37.1, webpack@npm:^5.38.1":
+"webpack@npm:^5, webpack@npm:^5.37.1, webpack@npm:^5.38.1":
   version: 5.38.1
   resolution: "webpack@npm:5.38.1"
   dependencies:
