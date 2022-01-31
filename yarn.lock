@@ -1678,14 +1678,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-dev-middleware@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@types/webpack-dev-middleware@npm:5.0.2"
+"@types/webpack-dev-middleware@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@types/webpack-dev-middleware@npm:5.3.0"
   dependencies:
-    "@types/connect": "*"
-    tapable: ^2.1.1
-    webpack: ^5.38.1
-  checksum: fd7ff7608362a1bd01ca7f89d1f3308d21519e4271a16f672e7801b087618c9fda10a102db61a8f5fda1253d580bfc227d574feb10ee0d87d24288f19bd846a9
+    webpack-dev-middleware: "*"
+  checksum: 58609c1c34ead0552fe18576c0d6f411b7988030ec3517c07ca9938b4f37f962756b75bb9a694d1315b39134d05e2092b2e3c59ab76ff0715c5484e38602d0c4
   languageName: node
   linkType: hard
 
@@ -4728,7 +4726,7 @@ __metadata:
     "@types/underscore": ^1.11.4
     "@types/verror": ^1.10.5
     "@types/webpack": ^5.28.0
-    "@types/webpack-dev-middleware": ^5.0.2
+    "@types/webpack-dev-middleware": ^5.3.0
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     "@vue/compiler-sfc": ^3.2.29
@@ -12382,7 +12380,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webpack-dev-middleware@npm:^5.3.0":
+"webpack-dev-middleware@npm:*, webpack-dev-middleware@npm:^5.3.0":
   version: 5.3.0
   resolution: "webpack-dev-middleware@npm:5.3.0"
   dependencies:
@@ -12429,7 +12427,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.37.1, webpack@npm:^5.38.1":
+"webpack@npm:^5, webpack@npm:^5.37.1":
   version: 5.38.1
   resolution: "webpack@npm:5.38.1"
   dependencies:
