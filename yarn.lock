@@ -4816,7 +4816,7 @@ __metadata:
     ttypescript: ^1.5.12
     typescript: ^4.4.4
     unbzip2-stream: ^1.4.3
-    underscore: ^1.13.1
+    underscore: ^1.13.2
     verror: ^1.10.1
     vue: ^3.2.29
     vue-loader: ^16.8.3
@@ -11991,10 +11991,10 @@ typescript@^4.4.4:
   languageName: node
   linkType: hard
 
-"underscore@npm:^1.13.1":
-  version: 1.13.1
-  resolution: "underscore@npm:1.13.1"
-  checksum: 69bb4e6dd92c387ad322dd5b105f496fa64896d92ff1eea987610920d452667a12bca0938def4c4d60acd12da62410540fd268e7ca4f2480d89324498382fcac
+"underscore@npm:^1.13.2":
+  version: 1.13.2
+  resolution: "underscore@npm:1.13.2"
+  checksum: 6ab156c845ccc757fd01d8b9eb28be18ba89ac68993370dd7397a66a95b124f2ba26947fd53e687c084d334429914fc3dd1620d5123b6e0a7cf112cdcf4e859f
   languageName: node
   linkType: hard
 
