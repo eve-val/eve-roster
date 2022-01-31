@@ -1669,10 +1669,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/underscore@npm:^1.11.3":
-  version: 1.11.3
-  resolution: "@types/underscore@npm:1.11.3"
-  checksum: 113084a0e2f20837f70d1735ad16318f7a4320bf9804198023d8af4eb66a910b6beb5fba142f4a372982da145449a2c99de1477e335ef8807563468ae1936170
+"@types/underscore@npm:^1.11.4":
+  version: 1.11.4
+  resolution: "@types/underscore@npm:1.11.4"
+  checksum: db9f8486bc851b732259e51f42d62aad1ae2158be5724612dc125ece5f5d61c51447f9dea28284c2a0f79cb95e788d01cb5ce97709880019213e69fab0dd1696
   languageName: node
   linkType: hard
 
@@ -4735,7 +4735,7 @@ __metadata:
     "@types/svgo": ^2.6.0
     "@types/swagger-ui": ^3.52.0
     "@types/tmp": ^0.2.2
-    "@types/underscore": ^1.11.3
+    "@types/underscore": ^1.11.4
     "@types/verror": ^1.10.5
     "@types/webpack": ^5.28.0
     "@types/webpack-dev-middleware": ^5.0.2
