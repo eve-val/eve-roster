@@ -3,3 +3,4 @@ coverage
 out
 .yarn/releases/*
 .yarn/plugins/*
+.pnp.*

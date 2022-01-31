@@ -203,7 +203,7 @@ export function commonConfig(
       // extension (e.g. "./foo" vs. "./foo.ts");
       extensions: [".tsx", ".ts", ".js", ".json"],
       alias: {
-        'vue': '@vue/runtime-dom',
+        vue: "@vue/runtime-dom",
       },
     },
   };
