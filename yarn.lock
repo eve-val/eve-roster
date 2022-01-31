@@ -3542,7 +3542,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron-parser@npm:^3.1.0":
+"cron-parser@npm:^3.5.0":
   version: 3.5.0
   resolution: "cron-parser@npm:3.5.0"
   dependencies:
@@ -4780,7 +4780,7 @@ __metadata:
     moment: ^2.29.1
     moment-locales-webpack-plugin: ^1.2.0
     node-graceful: ^3.1.0
-    node-schedule: ^2.0.0
+    node-schedule: ^2.1.0
     p-limit: ^4.0.0
     pg: ^8.7.1
     prettier: ^2.4.1
@@ -8352,14 +8352,14 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"node-schedule@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "node-schedule@npm:2.0.0"
+"node-schedule@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "node-schedule@npm:2.1.0"
   dependencies:
-    cron-parser: ^3.1.0
+    cron-parser: ^3.5.0
     long-timeout: 0.1.1
     sorted-array-functions: ^1.3.0
-  checksum: a93b042a3fbef6b4970c4e1b587212df38a81e8e9c2c3eada611864ddc3be1e99e372037680daae4d4933733154dcd77ff024b4024a67eaeed7058fdb5716e72
+  checksum: e457e76e633ed551e384ab2404628f0980bd3263057665dd3166a72b0eaca093cd57e42e144f9241b913383c1c58c633d3c782580009cbd51b1b9e2623193d52
   languageName: node
   linkType: hard
 
