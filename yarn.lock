@@ -457,13 +457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.3.7, @grpc/grpc-js@npm:^1.4.4":
-  version: 1.4.4
-  resolution: "@grpc/grpc-js@npm:1.4.4"
+"@grpc/grpc-js@npm:^1.3.7, @grpc/grpc-js@npm:^1.5.3":
+  version: 1.5.3
+  resolution: "@grpc/grpc-js@npm:1.5.3"
   dependencies:
     "@grpc/proto-loader": ^0.6.4
     "@types/node": ">=12.12.47"
-  checksum: f9be710ceff8e14865718dbead97c85f3457889ae01c4d94f1338bb19dfe19c92549046b3ea2f0df31360363c39322031dfff0189df5798e7b8452016afcce6e
+  checksum: 19d75ac09eaf8d850320dc25fdf3c560ad7d1c3c17cfb2aa656c2c929879c4e4b73be3b9ca277b84a73bc3e6fde865148e91a13def7f92faa0f8fe97b0e8ac18
   languageName: node
   linkType: hard
 
@@ -1485,10 +1485,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.9.6":
-  version: 16.9.6
-  resolution: "@types/node@npm:16.9.6"
-  checksum: 1c11ff4b58af87ddade05784e90bb5a2fe01f461ce489fdb1428d89e709695a26b0dcbac0520305911f5e4017561416747e544f1b9ec36649ccbfad6ffff4a0a
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.21":
+  version: 16.11.21
+  resolution: "@types/node@npm:16.11.21"
+  checksum: 75b679dc6375cf09bc14a2d1b344be6f3fd8ea50f212b0d60970dc9e175cef45e44c284c716eb9e766ffa52d0c83b689adb3d1911b6dd8649c560b8f77442a22
   languageName: node
   linkType: hard
 
@@ -1669,10 +1669,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/underscore@npm:^1.11.3":
-  version: 1.11.3
-  resolution: "@types/underscore@npm:1.11.3"
-  checksum: 113084a0e2f20837f70d1735ad16318f7a4320bf9804198023d8af4eb66a910b6beb5fba142f4a372982da145449a2c99de1477e335ef8807563468ae1936170
+"@types/underscore@npm:^1.11.4":
+  version: 1.11.4
+  resolution: "@types/underscore@npm:1.11.4"
+  checksum: db9f8486bc851b732259e51f42d62aad1ae2158be5724612dc125ece5f5d61c51447f9dea28284c2a0f79cb95e788d01cb5ce97709880019213e69fab0dd1696
   languageName: node
   linkType: hard
 
@@ -1911,7 +1911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.29, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.21":
+"@vue/compiler-sfc@npm:3.2.29, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.29":
   version: 3.2.29
   resolution: "@vue/compiler-sfc@npm:3.2.29"
   dependencies:
@@ -1978,7 +1978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.29, @vue/runtime-dom@npm:^3.2.21":
+"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.29, @vue/runtime-dom@npm:^3.2.29":
   version: 3.2.29
   resolution: "@vue/runtime-dom@npm:3.2.29"
   dependencies:
@@ -2617,12 +2617,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.24.0":
-  version: 0.24.0
-  resolution: "axios@npm:0.24.0"
+"axios@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "axios@npm:0.25.0"
   dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 468cf496c08a6aadfb7e699bebdac02851e3043d4e7d282350804ea8900e30d368daa6e3cd4ab83b8ddb5a3b1e17a5a21ada13fc9cebd27b74828f47a4236316
+    follow-redirects: ^1.14.7
+  checksum: 2a8a3787c05f2a0c9c3878f49782357e2a9f38945b93018fb0c4fd788171c43dceefbb577988628e09fea53952744d1ecebde234b561f1e703aa43e0a598a3ad
   languageName: node
   linkType: hard
 
@@ -3650,26 +3650,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "css-minimizer-webpack-plugin@npm:3.1.2"
+"css-minimizer-webpack-plugin@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "css-minimizer-webpack-plugin@npm:3.4.1"
   dependencies:
     cssnano: ^5.0.6
     jest-worker: ^27.0.2
     postcss: ^8.3.5
-    schema-utils: ^3.1.0
+    schema-utils: ^4.0.0
     serialize-javascript: ^6.0.0
     source-map: ^0.6.1
   peerDependencies:
     webpack: ^5.0.0
   peerDependenciesMeta:
+    "@parcel/css":
+      optional: true
     clean-css:
       optional: true
     csso:
       optional: true
     esbuild:
       optional: true
-  checksum: 4a72fe764da2fbec23ccff281e59c44e11bdea214cec75120facd6882d26b976ee15284c80f1b8507a8164d0e5c4cbd0b0a858e6cb58a09b7e3bead400cbcce8
+  checksum: 065c6c1eadb7c99267db5d04d6f3909e9968b73c4cb79ab9e4502a5fbf1a3d564cfe6f8e0bff8e4ab00d4ed233e9c3c76a4ebe0ee89150b3d9ecb064ddf1e5e9
   languageName: node
   linkType: hard
 
@@ -4701,7 +4703,7 @@ __metadata:
   resolution: "eve-roster@workspace:."
   dependencies:
     "@babel/types": ^7.16.0
-    "@grpc/grpc-js": ^1.4.4
+    "@grpc/grpc-js": ^1.5.3
     "@opentelemetry/api": ^1.1.0
     "@opentelemetry/core": ^1.0.1
     "@opentelemetry/exporter-trace-otlp-grpc": ^0.27.0
@@ -4724,7 +4726,7 @@ __metadata:
     "@types/heapdump": ^0.3.1
     "@types/jest": ^27.4.0
     "@types/mini-css-extract-plugin": ^2.5.1
-    "@types/node": ^16.9.6
+    "@types/node": ^16.11.21
     "@types/node-schedule": ^1.3.2
     "@types/pg": ^8.6.1
     "@types/pg-pool": ^2.0.3
@@ -4735,16 +4737,16 @@ __metadata:
     "@types/svgo": ^2.6.0
     "@types/swagger-ui": ^3.52.0
     "@types/tmp": ^0.2.2
-    "@types/underscore": ^1.11.3
+    "@types/underscore": ^1.11.4
     "@types/verror": ^1.10.5
     "@types/webpack": ^5.28.0
     "@types/webpack-dev-middleware": ^5.0.2
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
-    "@vue/compiler-sfc": ^3.2.21
-    "@vue/runtime-dom": ^3.2.21
+    "@vue/compiler-sfc": ^3.2.29
+    "@vue/runtime-dom": ^3.2.29
     "@zoltu/typescript-transformer-append-js-extension": ^1.0.1
-    axios: ^0.24.0
+    axios: ^0.25.0
     bluebird: ^3.7.2
     body-parser: ^1.19.0
     clean-webpack-plugin: ^4.0.0
@@ -4752,7 +4754,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cookie-session: ^1.4.0
     css-loader: ^6.5.1
-    css-minimizer-webpack-plugin: ^3.1.2
+    css-minimizer-webpack-plugin: ^3.4.1
     csurf: ^1.11.0
     eslint: ^7.32.0
     eslint-config-prettier: ^8.3.0
@@ -4790,18 +4792,18 @@ __metadata:
     sqlite3: ^5.0.2
     svgo: ^2.8.0
     swagger-ui: ^4.1.3
-    terser-webpack-plugin: ^5.2.5
+    terser-webpack-plugin: ^5.3.0
     tmp: ^0.2.1
     ts-jest: ^27.1.3
     ts-loader: ^9.2.6
     ttypescript: ^1.5.13
-    typescript: ^4.4.4
+    typescript: ^4.5.5
     unbzip2-stream: ^1.4.3
     underscore: ^1.13.2
     verror: ^1.10.1
     vue: ^3.2.29
     vue-eslint-parser: ^7.11.0
-    vue-loader: ^16.8.3
+    vue-loader: ^17.0.0
     vue-router: ^4.0.12
     vue-style-loader: ^4.1.3
     webpack: ^5.37.1
@@ -5247,13 +5249,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.4":
-  version: 1.14.4
-  resolution: "follow-redirects@npm:1.14.4"
+"follow-redirects@npm:^1.14.7":
+  version: 1.14.7
+  resolution: "follow-redirects@npm:1.14.7"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: d4ce74cf5c6f363168b97e706b914eb9ffb6bf4d4c6d8f8330b93088d9b90e566611ddbcf0e42c8ed5fd17598dfeda1d19230d3e9d6d6c6b4d1c10ec3a0b99be
+  checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
   languageName: node
   linkType: hard
 
@@ -7176,7 +7178,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"jest-worker@npm:^27.0.2, jest-worker@npm:^27.0.6, jest-worker@npm:^27.4.6":
+"jest-worker@npm:^27.0.2, jest-worker@npm:^27.4.1, jest-worker@npm:^27.4.6":
   version: 27.4.6
   resolution: "jest-worker@npm:27.4.6"
   dependencies:
@@ -10558,7 +10560,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.0, schema-utils@npm:^3.1.1":
+"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.1":
   version: 3.1.1
   resolution: "schema-utils@npm:3.1.1"
   dependencies:
@@ -11505,11 +11507,11 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:^5.1.1, terser-webpack-plugin@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "terser-webpack-plugin@npm:5.2.5"
+"terser-webpack-plugin@npm:^5.1.1, terser-webpack-plugin@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "terser-webpack-plugin@npm:5.3.0"
   dependencies:
-    jest-worker: ^27.0.6
+    jest-worker: ^27.4.1
     schema-utils: ^3.1.1
     serialize-javascript: ^6.0.0
     source-map: ^0.6.1
@@ -11523,7 +11525,7 @@ fsevents@^2.3.2:
       optional: true
     uglify-js:
       optional: true
-  checksum: 2a9616466becf2e968bfc0f585678581b5c83a9dd96723c49329b11a8ccc1aaa41701877fbad2b0ce570364fde58c558fb6e7e053171512624e644b99b2f83af
+  checksum: f6735b8bb2604e8ca8b78d21f610fb2488866db72bb38e8d7c32aab97ea81fa0a19cabed074a431ff3dd9510d6efd505fc6930cdd8c1d3faa71c1bf7da4c7469
   languageName: node
   linkType: hard
 
@@ -11928,23 +11930,23 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-typescript@^4.4.4:
-  version: 4.4.4
-  resolution: "typescript@npm:4.4.4"
+"typescript@npm:^4.5.5":
+  version: 4.5.5
+  resolution: "typescript@npm:4.5.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 89ecb8436bb48ef5594d49289f5f89103071716b6e4844278f4fb3362856e31203e187a9c76d205c3f0b674d221a058fd28310dbcbcf5d95e9a57229bb5203f1
+  checksum: 506f4c919dc8aeaafa92068c997f1d213b9df4d9756d0fae1a1e7ab66b585ab3498050e236113a1c9e57ee08c21ec6814ca7a7f61378c058d79af50a4b1f5a5e
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
-  version: 4.4.4
-  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=142761"
+"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+  version: 4.5.5
+  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=142761"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3d1b04449662193544b81d055479d03b4c5dca95f1a82f8922596f089d894c9fefbe16639d1d9dfe26a7054419645530cef44001bc17aed1fe1eb3c237e9b3c7
+  checksum: 858c61fa63f7274ca4aaaffeced854d550bf416cff6e558c4884041b3311fb662f476f167cf5c9f8680c607239797e26a2ee0bcc6467fbc05bfcb218e1c6c671
   languageName: node
   linkType: hard
 
@@ -12185,29 +12187,29 @@ typescript@^4.4.4:
   languageName: node
   linkType: hard
 
-vue-loader@^16.8.3:
-  version: 16.8.3
-  resolution: "vue-loader@npm:16.8.3"
+"vue-loader@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "vue-loader@npm:17.0.0"
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 7c0566847b09bd1d0b8b1bd146274eb53c775668388b10a6fcd0968b41353c85018c24bc91f7ed31c20a5d5fcdc50f08149c4656663500075576b06e546ca976
+  checksum: a6eb675f07357a7d7181b78549e342c444b4e28896f84444506f940c14bdd7833276f50d645efcdc742ba987218745f965361921f99012fecf184e0aae67a4a0
   languageName: node
   linkType: hard
 
-"vue-loader@patch:vue-loader@^16.8.3#./patches/vue-loader+16.8.3.patch::locator=eve-roster%40workspace%3A.":
-  version: 16.8.3
-  resolution: "vue-loader@patch:vue-loader@npm%3A16.8.3#./patches/vue-loader+16.8.3.patch::version=16.8.3&hash=293414&locator=eve-roster%40workspace%3A."
+"vue-loader@patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch::locator=eve-roster%40workspace%3A.":
+  version: 17.0.0
+  resolution: "vue-loader@patch:vue-loader@npm%3A17.0.0#./patches/vue-loader+17.0.0.patch::version=17.0.0&hash=293414&locator=eve-roster%40workspace%3A."
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 9a8c189561f58b588f4374087a5910769bfddf5664bacaafc4be472bedd4ae1ed1b3082a2b2dfc7d92d7c3dd3cd3199f5826909f560cce9ccf78e9c21c4f8632
+  checksum: cfb495fc26cb168b839db5a6cee88879969251924c92d8176bce31b02055f8280cdc6059103a1b56395c05df8e1b1dbfc374fec7670b712dafa9b43572c8f917
   languageName: node
   linkType: hard
 
