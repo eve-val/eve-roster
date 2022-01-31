@@ -27,7 +27,7 @@ workflows:
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
-          run-command: jest
+          run-command: jest -i
           cache-version: v3
           name: jest
       - node/test:
