@@ -161,5 +161,6 @@
   },
   "volta": {
     "node": "16.13.2"
-  }
+  },
+  "packageManager": "yarn@3.2.0-rc.13"
 }
