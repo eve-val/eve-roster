@@ -12427,7 +12427,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.37.1, webpack@npm:^5.38.1":
+"webpack@npm:^5, webpack@npm:^5.37.1":
   version: 5.38.1
   resolution: "webpack@npm:5.38.1"
   dependencies:
