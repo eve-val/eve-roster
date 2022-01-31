@@ -3650,26 +3650,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "css-minimizer-webpack-plugin@npm:3.1.2"
+"css-minimizer-webpack-plugin@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "css-minimizer-webpack-plugin@npm:3.4.1"
   dependencies:
     cssnano: ^5.0.6
     jest-worker: ^27.0.2
     postcss: ^8.3.5
-    schema-utils: ^3.1.0
+    schema-utils: ^4.0.0
     serialize-javascript: ^6.0.0
     source-map: ^0.6.1
   peerDependencies:
     webpack: ^5.0.0
   peerDependenciesMeta:
+    "@parcel/css":
+      optional: true
     clean-css:
       optional: true
     csso:
       optional: true
     esbuild:
       optional: true
-  checksum: 4a72fe764da2fbec23ccff281e59c44e11bdea214cec75120facd6882d26b976ee15284c80f1b8507a8164d0e5c4cbd0b0a858e6cb58a09b7e3bead400cbcce8
+  checksum: 065c6c1eadb7c99267db5d04d6f3909e9968b73c4cb79ab9e4502a5fbf1a3d564cfe6f8e0bff8e4ab00d4ed233e9c3c76a4ebe0ee89150b3d9ecb064ddf1e5e9
   languageName: node
   linkType: hard
 
@@ -4752,7 +4754,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cookie-session: ^1.4.0
     css-loader: ^6.5.1
-    css-minimizer-webpack-plugin: ^3.1.2
+    css-minimizer-webpack-plugin: ^3.4.1
     csurf: ^1.11.0
     eslint: ^7.32.0
     eslint-config-prettier: ^8.3.0
@@ -10558,7 +10560,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.0, schema-utils@npm:^3.1.1":
+"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.1":
   version: 3.1.1
   resolution: "schema-utils@npm:3.1.1"
   dependencies:
