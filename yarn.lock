@@ -1645,12 +1645,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sqlite3@npm:^3.1.7":
-  version: 3.1.7
-  resolution: "@types/sqlite3@npm:3.1.7"
+"@types/sqlite3@npm:^3.1.8":
+  version: 3.1.8
+  resolution: "@types/sqlite3@npm:3.1.8"
   dependencies:
     "@types/node": "*"
-  checksum: cbe0257434a88a32820e6613e17b2adc5a0e74f155fb080bc0d9078c53b458fcf13fbd6c80d472ef9058af35cc5e13a8edd1c81e540e61fb48e821c8ee83d829
+  checksum: 5f68d93a04e6d99fb0cd3275fc37392ed74ba2fe3cc3a147383a939ff6bc624a98fedecfee814b416358285f85c793ce61be0b1d5f924681232ad24c3a2c56f2
   languageName: node
   linkType: hard
 
@@ -4776,7 +4776,7 @@ __metadata:
     "@types/progress-stream": ^2.0.2
     "@types/serve-favicon": ^2.5.3
     "@types/source-map-support": ^0.5.4
-    "@types/sqlite3": ^3.1.7
+    "@types/sqlite3": ^3.1.8
     "@types/svgo": ^2.6.0
     "@types/swagger-ui": ^3.52.0
     "@types/tmp": ^0.2.3
