@@ -164,5 +164,8 @@
   "volta": {
     "node": "16.13.2"
   },
+  "cacheDirectories": [
+    ".yarn/cache"
+  ],
   "packageManager": "yarn@3.2.0-rc.13"
 }
