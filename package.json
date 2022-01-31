@@ -37,7 +37,7 @@
     "cookie-parser": "^1.4.6",
     "cookie-session": "^1.4.0",
     "csurf": "^1.11.0",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "heapdump": "^0.3.15",
     "jose": "^4.4.0",
     "knex": "^1.0.1",
