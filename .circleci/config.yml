@@ -5,7 +5,7 @@ orbs:
 parameters:
   node-version:
     type: string
-    default: "16.13.0"
+    default: "16.13.2"
 jobs:
   deploy:
     docker:
@@ -27,7 +27,7 @@ workflows:
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
-          run-command: jest
+          run-command: jest -i
           cache-version: v3
           name: jest
       - node/test:
