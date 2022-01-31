@@ -89,6 +89,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "@vue/compiler-sfc": "^3.2.21",
+    "@vue/runtime-dom": "^3.2.21",
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "clean-webpack-plugin": "^4.0.0",
     "cleanup-mini-css-extract-plugin": "^1.1.0",

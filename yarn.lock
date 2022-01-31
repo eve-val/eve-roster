@@ -1459,7 +1459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/long@npm:^4.0.1":
+"@types/long@npm:*, @types/long@npm:^4.0.1":
   version: 4.0.1
   resolution: "@types/long@npm:4.0.1"
   checksum: ff9653c33f5000d0f131fd98a950a0343e2e33107dd067a97ac4a3b9678e1a2e39ea44772ad920f54ef6e8f107f76bc92c2584ba905a0dc4253282a4101166d0
@@ -1998,7 +1998,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:3.2.29":
+"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.29, @vue/runtime-dom@npm:^3.2.21":
   version: 3.2.29
   resolution: "@vue/runtime-dom@npm:3.2.29"
   dependencies:
@@ -4771,6 +4771,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     "@vue/compiler-sfc": ^3.2.21
+    "@vue/runtime-dom": ^3.2.21
     "@zoltu/typescript-transformer-append-js-extension": ^1.0.1
     axios: ^0.24.0
     bluebird: ^3.7.2

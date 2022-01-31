@@ -5,6 +5,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import SwaggerUI from "swagger-ui";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   setup() {
@@ -43,8 +44,8 @@ export default defineComponent({
         return req;
       },
       onComplete: () => {
-        if (this.$route.params.id) {
-          this.ui?.preauthorizeApiKey("proxy", this.$route.params.id);
+        if (useRoute().params.id) {
+          this.ui?.preauthorizeApiKey("proxy", useRoute().params.id);
         }
       },
     });
@@ -53,6 +54,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import "../../../node_modules/swagger-ui/dist/swagger-ui.css";
+@import "swagger-ui/dist/swagger-ui.css";
 @import "../css/esi.css";
 </style>

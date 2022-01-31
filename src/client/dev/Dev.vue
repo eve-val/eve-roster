@@ -49,6 +49,8 @@ interface Section {
 }
 
 import { defineComponent, PropType, ComponentOptions } from "vue";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     AppHeader,
@@ -87,7 +89,7 @@ export default defineComponent({
   computed: {
     currentSection(): Section | undefined {
       return _.findWhere(this.sections, {
-        path: first(this.$route.params.section),
+        path: first(useRoute().params.section),
       });
     },
   },

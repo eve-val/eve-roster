@@ -146,6 +146,8 @@ import { Identity } from "../home";
 import { Character, Account } from "../../route/api/character";
 
 import { defineComponent, PropType } from "vue";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     AppHeader,
@@ -186,7 +188,7 @@ export default defineComponent({
 
   computed: {
     characterId: function (): number {
-      return parseInt(first(this.$route.params.id));
+      return parseInt(first(useRoute().params.id));
     },
 
     canWriteSrp: function (): boolean {
