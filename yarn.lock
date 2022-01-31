@@ -2164,7 +2164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.29, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.21":
+"@vue/compiler-sfc@npm:3.2.29, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.29":
   version: 3.2.29
   resolution: "@vue/compiler-sfc@npm:3.2.29"
   dependencies:
@@ -2231,7 +2231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.29, @vue/runtime-dom@npm:^3.2.21":
+"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.29, @vue/runtime-dom@npm:^3.2.29":
   version: 3.2.29
   resolution: "@vue/runtime-dom@npm:3.2.29"
   dependencies:
@@ -5010,8 +5010,8 @@ __metadata:
     "@types/webpack-dev-middleware": ^5.0.2
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
-    "@vue/compiler-sfc": ^3.2.21
-    "@vue/runtime-dom": ^3.2.21
+    "@vue/compiler-sfc": ^3.2.29
+    "@vue/runtime-dom": ^3.2.29
     "@zoltu/typescript-transformer-append-js-extension": ^1.0.1
     axios: ^0.24.0
     bluebird: ^3.7.2
@@ -5070,7 +5070,7 @@ __metadata:
     verror: ^1.10.1
     vue: ^3.2.29
     vue-eslint-parser: ^7.11.0
-    vue-loader: ^16.8.3
+    vue-loader: ^17.0.0
     vue-router: ^4.0.12
     vue-style-loader: ^4.1.3
     webpack: ^5.37.1
@@ -12517,29 +12517,29 @@ typescript@^4.4.4:
   languageName: node
   linkType: hard
 
-vue-loader@^16.8.3:
-  version: 16.8.3
-  resolution: "vue-loader@npm:16.8.3"
+"vue-loader@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "vue-loader@npm:17.0.0"
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 7c0566847b09bd1d0b8b1bd146274eb53c775668388b10a6fcd0968b41353c85018c24bc91f7ed31c20a5d5fcdc50f08149c4656663500075576b06e546ca976
+  checksum: a6eb675f07357a7d7181b78549e342c444b4e28896f84444506f940c14bdd7833276f50d645efcdc742ba987218745f965361921f99012fecf184e0aae67a4a0
   languageName: node
   linkType: hard
 
-"vue-loader@patch:vue-loader@^16.8.3#./patches/vue-loader+16.8.3.patch::locator=eve-roster%40workspace%3A.":
-  version: 16.8.3
-  resolution: "vue-loader@patch:vue-loader@npm%3A16.8.3#./patches/vue-loader+16.8.3.patch::version=16.8.3&hash=293414&locator=eve-roster%40workspace%3A."
+"vue-loader@patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch::locator=eve-roster%40workspace%3A.":
+  version: 17.0.0
+  resolution: "vue-loader@patch:vue-loader@npm%3A17.0.0#./patches/vue-loader+17.0.0.patch::version=17.0.0&hash=293414&locator=eve-roster%40workspace%3A."
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
     loader-utils: ^2.0.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 9a8c189561f58b588f4374087a5910769bfddf5664bacaafc4be472bedd4ae1ed1b3082a2b2dfc7d92d7c3dd3cd3199f5826909f560cce9ccf78e9c21c4f8632
+  checksum: cfb495fc26cb168b839db5a6cee88879969251924c92d8176bce31b02055f8280cdc6059103a1b56395c05df8e1b1dbfc374fec7670b712dafa9b43572c8f917
   languageName: node
   linkType: hard
 
