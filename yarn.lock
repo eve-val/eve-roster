@@ -1246,13 +1246,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-session@npm:^2.0.43":
-  version: 2.0.43
-  resolution: "@types/cookie-session@npm:2.0.43"
+"@types/cookie-session@npm:^2.0.44":
+  version: 2.0.44
+  resolution: "@types/cookie-session@npm:2.0.44"
   dependencies:
     "@types/express": "*"
     "@types/keygrip": "*"
-  checksum: 7dc2451aba20ca6e92575b0a2fe009ee759034e11702048bb71038d71a6d4ddf241fd39164cd4452548a29cdb7a1a4bdf9a90775ac8d68953ce7cf51f43623c8
+  checksum: b67906616ce1b87cfd79eabb7ba0635207a230f12afe49d15f316cec644a6b7ebcdd917a24ab34de05dbf69a4c2c5144c0864b4c5f93b0958337d2ac603245ff
   languageName: node
   linkType: hard
 
@@ -4728,7 +4728,7 @@ __metadata:
     "@types/bluebird": ^3.5.36
     "@types/body-parser": ^1.19.1
     "@types/cookie-parser": ^1.4.2
-    "@types/cookie-session": ^2.0.43
+    "@types/cookie-session": ^2.0.44
     "@types/css-minimizer-webpack-plugin": ^3.2.1
     "@types/csurf": ^1.11.2
     "@types/express": ^4.17.13
@@ -5710,14 +5710,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.10, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6":
-  version: 4.2.8
-  resolution: "graceful-fs@npm:4.2.8"
-  checksum: 5d224c8969ad0581d551dfabdb06882706b31af2561bd5e2034b4097e67cc27d05232849b8643866585fd0a41c7af152950f8776f4dd5579e9853733f31461c6
-  languageName: node
-  linkType: hard
-
-"graceful-fs@npm:^4.2.8":
+"graceful-fs@npm:^4.1.10, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.8":
   version: 4.2.9
   resolution: "graceful-fs@npm:4.2.9"
   checksum: 68ea4e07ff2c041ada184f9278b830375f8e0b75154e3f080af6b70f66172fabb4108d19b3863a96b53fc068a310b9b6493d86d1291acc5f3861eb4b79d26ad6
