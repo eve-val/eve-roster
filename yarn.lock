@@ -4835,7 +4835,7 @@ __metadata:
     source-map-support: ^0.5.21
     sqlite3: ^5.0.2
     svgo: ^2.8.0
-    swagger-ui: ^4.1.3
+    swagger-ui: ^4.4.1
     terser-webpack-plugin: ^5.3.0
     tmp: ^0.2.1
     ts-jest: ^27.1.3
@@ -11464,9 +11464,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.1.3":
-  version: 4.4.0
-  resolution: "swagger-ui@npm:4.4.0"
+"swagger-ui@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "swagger-ui@npm:4.4.1"
   dependencies:
     "@babel/runtime-corejs3": ^7.16.8
     "@braintree/sanitize-url": ^5.0.2
@@ -11502,7 +11502,7 @@ fsevents@^2.3.2:
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: 8ffcb4acb8f31629fdfa6fa1115fc469a14156832bd86ac0c1a0a349ac38a8f5f0d8061a6372d15c818a7d0bcb28f80b4f4e6128403a2d8cc75937429952a35d
+  checksum: f5418d7b4442fed1171099d57af9bfe1f8024cc4b831850e89a38bcaec2def6c9d9be43c384558aa99ffcb93bbab92e56e229a9341e00d9ddc5d17d4b1be8d95
   languageName: node
   linkType: hard
 
