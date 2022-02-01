@@ -13,9 +13,9 @@
     "build-server": "ttsc",
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "pretty-check": "prettier --check .",
-    "start": "node out/server/bin/witness/witness.js",
+    "start": "yarn node out/server/bin/witness/witness.js",
     "test": "yarn run jest -i && yarn run pretty-check && yarn run lint",
-    "updatedb": "node out/server/bin/updatedb.js",
+    "updatedb": "yarn node out/server/bin/updatedb.js",
     "watch-server": "tsc -w"
   },
   "type": "module",
