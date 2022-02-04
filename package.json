@@ -137,8 +137,11 @@
   "resolutions": {
     "ansi-html": "npm:ansi-html-community@^0.0.8",
     "find-versions": "^5",
+    "json-schema": "^0.4.0",
     "lpad-align": "^3.0.0",
     "node-gyp": "^8",
+    "prismjs": "^1.26.0",
+    "strip-ansi": "^6.0.1",
     "vue-loader": "patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch"
   },
   "jest": {
