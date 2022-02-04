@@ -4852,7 +4852,7 @@ __metadata:
     vue-style-loader: ^4.1.3
     webpack: ^5.37.1
     webpack-cli: ^4.9.2
-    webpack-dev-middleware: ^5.3.0
+    webpack-dev-middleware: ^5.3.1
     webpack-hot-middleware: "webpack-contrib/webpack-hot-middleware#webpack5"
     webpack-merge: ^5.8.0
   languageName: unknown
@@ -7928,12 +7928,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"memfs@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "memfs@npm:3.2.2"
+"memfs@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "memfs@npm:3.4.1"
   dependencies:
     fs-monkey: 1.0.3
-  checksum: b50f91aafda967c440a38e793bbe70cd04e4f155a38316468b90b7a2256328cebe87e0665ff81057cf72110f9017cbfd1e1a9c66df1ebce3cbf39ec3620220d9
+  checksum: 6d2f49d447d1be24ff9c747618933784eeb059189bc6a0d77b7a51c7daf06e2d3a74674a2e2ff1520e2c312bf91e719ed37144cf05087379b3ba0aef0b6aa062
   languageName: node
   linkType: hard
 
@@ -12475,18 +12475,18 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webpack-dev-middleware@npm:*, webpack-dev-middleware@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "webpack-dev-middleware@npm:5.3.0"
+"webpack-dev-middleware@npm:*, webpack-dev-middleware@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "webpack-dev-middleware@npm:5.3.1"
   dependencies:
     colorette: ^2.0.10
-    memfs: ^3.2.2
+    memfs: ^3.4.1
     mime-types: ^2.1.31
     range-parser: ^1.2.1
     schema-utils: ^4.0.0
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
-  checksum: 01f9e11583bb682cd5ab5a1b9d6dc99545f777513c4c15aa67d10f5d057fc3d0c6f9365e02c07792d3c9b17bd47a16c8185e66eb66e9de74d8ccf561e75085e7
+  checksum: 32e36b5893dde4107e5bb758afdc7fc61fd238a62635cb2964ed6b61e363793275a40870479daeae3fa3b87678c1311f44ba7492f6ebf30fe9360f2aab30bae1
   languageName: node
   linkType: hard
 
