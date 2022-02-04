@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import favicon from "serve-favicon";
 
+import rateLimit from "express-rate-limit";
 import crypto from "crypto";
 import csrf from "csurf";
 
@@ -90,6 +91,13 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
   });
 
   // Manually include the API routes defined in api/
+  const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+  app.use("/api", limiter);
   app.use("/api", route_api);
 
   // Set up client serving and dev mode (if in dev mode)
