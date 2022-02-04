@@ -4785,7 +4785,7 @@ __metadata:
     source-map-support: ^0.5.21
     sqlite3: ^5.0.2
     svgo: ^2.8.0
-    swagger-ui: ^4.4.1
+    swagger-ui: ^4.5.0
     terser-webpack-plugin: ^5.3.1
     tmp: ^0.2.1
     ts-jest: ^27.1.3
@@ -11367,9 +11367,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.18.3":
-  version: 3.18.3
-  resolution: "swagger-client@npm:3.18.3"
+"swagger-client@npm:^3.18.4":
+  version: 3.18.4
+  resolution: "swagger-client@npm:3.18.4"
   dependencies:
     "@babel/runtime-corejs3": ^7.11.2
     btoa: ^1.2.1
@@ -11385,13 +11385,13 @@ fsevents@^2.3.2:
     qs: ^6.10.2
     traverse: ~0.6.6
     url: ~0.11.0
-  checksum: d7953a708b56255e5a4394659b7c1214a146ca81beec0f075e27724378caa07b6e8a5e09198fdb975e4fa0b3f795eb2b2a432d34710459f36cc825aa4d80b202
+  checksum: 919e64fc638ead6c2aec8171f984697801386f2e0a32c9c1afa1888bcbd92294f85e7d4af0b4e5ae5b7040c0c9e332d57864f0ff0cd42bf05bdc55e2d5251e7c
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "swagger-ui@npm:4.4.1"
+"swagger-ui@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "swagger-ui@npm:4.5.0"
   dependencies:
     "@babel/runtime-corejs3": ^7.16.8
     "@braintree/sanitize-url": ^5.0.2
@@ -11422,12 +11422,12 @@ fsevents@^2.3.2:
     reselect: ^4.1.5
     serialize-error: ^8.1.0
     sha.js: ^2.4.11
-    swagger-client: ^3.18.3
+    swagger-client: ^3.18.4
     url-parse: ^1.5.3
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: f5418d7b4442fed1171099d57af9bfe1f8024cc4b831850e89a38bcaec2def6c9d9be43c384558aa99ffcb93bbab92e56e229a9341e00d9ddc5d17d4b1be8d95
+  checksum: 882583a700b8e97f614978e7d4d8d6966f9791215da0b5909ee5627b55b0ebdd4bccdcb526280bae347957c4a19372ca2ccf9c3d00a3d04a78c6a687c9fbcbef
   languageName: node
   linkType: hard
 
