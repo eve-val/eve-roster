@@ -21,7 +21,7 @@
             :key="task.name"
             class="task-block"
             :task="task"
-            @jobStarted="onJobStarted"
+            @job-started="onJobStarted"
           />
           <div
             v-if="areAnyActiveJobs"
@@ -33,7 +33,7 @@
             :key="task.name"
             class="task-block"
             :task="task"
-            @jobStarted="onJobStarted"
+            @job-started="onJobStarted"
           />
         </transition-group>
 

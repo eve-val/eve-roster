@@ -1,18 +1,18 @@
 <template>
   <admin-wrapper title="ESI Proxy" :identity="identity">
-    <swagger />
+    <swagger-pane />
   </admin-wrapper>
 </template>
 
 <script lang="ts">
 import AdminWrapper from "./AdminWrapper.vue";
-import Swagger from "./Swagger.vue";
+import SwaggerPane from "./SwaggerPane.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {
     AdminWrapper,
-    Swagger,
+    SwaggerPane,
   },
 });
 </script>

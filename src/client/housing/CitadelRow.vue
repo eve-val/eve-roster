@@ -5,7 +5,7 @@
       <member-chip
         :key="character.characterId"
         :character="character"
-        @chipDrag="$emit('chipDrag', ...arguments)"
+        @chip-drag="$emit('chip-drag', ...arguments)"
       />
     </div>
   </div>
@@ -24,7 +24,7 @@ export default defineComponent({
     row: { type: Object, required: true },
   },
 
-  emits: ["hover", "unhover", "chipDrag"],
+  emits: ["hover", "unhover", "chip-drag"],
 });
 </script>
 

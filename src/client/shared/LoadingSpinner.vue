@@ -7,7 +7,7 @@
         src="./res/LoadingSpinner-spinner.svg"
         :style="{ width: size, height: size }"
       />
-      <tooltip
+      <tool-tip
         v-if="derivedState != 'spinning' && display == 'inline'"
         :gravity="tooltipGravity || 'center top'"
         style="vertical-align: text-bottom"
@@ -22,7 +22,7 @@
         <template #message>
           <span v-if="derivedMessage">{{ derivedMessage }}</span>
         </template>
-      </tooltip>
+      </tool-tip>
 
       <div
         v-if="derivedState != 'spinning' && display == 'block'"
@@ -47,7 +47,7 @@
  * an error message if the Promise rejects.
  */
 
-import Tooltip from "./Tooltip.vue";
+import ToolTip from "./ToolTip.vue";
 
 import { AxiosResponse } from "axios";
 
@@ -64,7 +64,7 @@ type StateValue = typeof STATE_VALUES[number];
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
-    Tooltip,
+    ToolTip,
   },
 
   props: {

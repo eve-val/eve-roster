@@ -4,7 +4,7 @@ import "./sentry";
 import { createApp } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import "./css/home.css";
-import Home from "./Home.vue";
+import HomePage from "./HomePage.vue";
 
 import Dashboard from "./dashboard/Dashboard.vue";
 import Character from "./character/Character.vue";
@@ -134,7 +134,7 @@ declare const $__IDENTITY: Identity;
 declare const $__CSRF: string;
 declare const $__NONCE: string;
 configureCsrfInterceptor($__CSRF);
-const app = createApp(Home, { identity: $__IDENTITY }).use(router);
+const app = createApp(HomePage, { identity: $__IDENTITY }).use(router);
 
 app.provide("csrf", $__CSRF);
 app.provide("nonce", $__NONCE);

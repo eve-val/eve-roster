@@ -30,14 +30,14 @@
             {{ row.relatedCharacterName }}
           </div>
           <div class="data">
-            <tooltip v-if="row.data" gravity="right bottom" :inline="false">
+            <tool-tip v-if="row.data" gravity="right bottom" :inline="false">
               <template #default>
                 <div class="cell">{ ... }</div>
               </template>
               <template #message>
                 <pre style="margin: 0">{{ prettyPrint(row.data) }}</pre>
               </template>
-            </tooltip>
+            </tool-tip>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@ import ajaxer from "../shared/ajaxer";
 
 import AdminWrapper from "./AdminWrapper.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-import Tooltip from "../shared/Tooltip.vue";
+import ToolTip from "../shared/ToolTip.vue";
 
 import { Identity } from "../home";
 import { defineComponent, PropType } from "vue";
@@ -63,7 +63,7 @@ export default defineComponent({
   components: {
     AdminWrapper,
     LoadingSpinner,
-    Tooltip,
+    ToolTip,
   },
 
   props: {

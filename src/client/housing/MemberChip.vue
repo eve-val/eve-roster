@@ -29,7 +29,7 @@ export default defineComponent({
     character: { type: Object, required: true },
   },
 
-  emits: ["chipDrag"],
+  emits: ["chip-drag"],
 
   data() {
     return {
@@ -45,7 +45,7 @@ export default defineComponent({
     onMouseDown: function (ev) {
       var bounds = this.$el.getBoundingClientRect();
       this.$emit(
-        "chipDrag",
+        "chip-drag",
         this,
         this.character.name,
         this.character.homeCitadel,

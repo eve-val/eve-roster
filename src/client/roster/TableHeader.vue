@@ -10,7 +10,7 @@
         'margin-left':
           column.margin != undefined ? column.margin + 'px' : undefined,
       }"
-      @mousedown="$emit('selectSortKey', column.key)"
+      @mousedown="$emit('select-sort-key', column.key)"
     >
       <img
         v-if="column.key == sortKey"
@@ -35,7 +35,7 @@ export default defineComponent({
     reverseSort: { type: Boolean, required: true },
   },
 
-  emits: ["selectSortKey"],
+  emits: ["select-sort-key"],
 
   computed: {
     arrowClasses: function (): string[] {
