@@ -53,7 +53,7 @@ export default defineComponent({
     task: { type: Object as PropType<Task>, required: true },
   },
 
-  emits: ["jobStarted"],
+  emits: ["job-started"],
 
   data() {
     return {
@@ -107,7 +107,7 @@ export default defineComponent({
       }
       promise
         .then(() => {
-          this.$emit("jobStarted", this.task.name);
+          this.$emit("job-started", this.task.name);
         })
         .finally(() => {
           this.promise = null;

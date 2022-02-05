@@ -18,7 +18,7 @@
           :character-id="transfer.character"
           :account-id="accountId"
           :name="transfer.name"
-          @requireRefresh="onRequireRefresh"
+          @require-refresh="onRequireRefresh"
         />
         <owned-character-slab
           v-for="character in characters"
@@ -30,7 +30,7 @@
           :is-main="character.id == mainCharacter"
           :highlight-main="characters.length > 1"
           :access="access"
-          @requireRefresh="onRequireRefresh"
+          @require-refresh="onRequireRefresh"
         />
         <div v-if="loginParams" class="add-character">
           <a

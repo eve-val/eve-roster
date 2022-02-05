@@ -6,7 +6,7 @@
           <router-link class="name" :to="'/character/' + character.id">
             {{ character.name }} </router-link
           ><!--
-     --><tooltip
+     --><tool-tip
             v-for="icon in statusIcons"
             :key="icon.key"
             class="status-icon"
@@ -21,7 +21,7 @@
                 {{ icon.label }}
               </div>
             </template>
-          </tooltip>
+          </tool-tip>
         </div>
         <div class="training-summary">
           <div class="training-track">
@@ -87,7 +87,7 @@ import CharacterSlabFrame from "./CharacterSlabFrame.vue";
 import ReauthenticationPrompt from "./ReauthenticationPrompt.vue";
 import DropMenu from "../shared/DropMenu.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
-import Tooltip from "../shared/Tooltip.vue";
+import ToolTip from "../shared/ToolTip.vue";
 
 import mainIcon from "./res/main-star.svg";
 import opsecIcon from "./res/hidden-icon.svg";
@@ -118,7 +118,7 @@ export default defineComponent({
     ReauthenticationPrompt,
     DropMenu,
     LoadingSpinner,
-    Tooltip,
+    ToolTip,
   },
 
   props: {

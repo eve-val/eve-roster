@@ -42,7 +42,7 @@ May also contain triage UI if triageMode is enabled.
           :key="member.id"
           class="participant"
         >
-          <tooltip gravity="center top">
+          <tool-tip gravity="center top">
             <template #default>
               <a
                 class="killmail-link"
@@ -70,7 +70,7 @@ May also contain triage UI if triageMode is enabled.
                 :bottom-line="name(member.shipId)"
               />
             </template>
-          </tooltip>
+          </tool-tip>
           <div v-if="member.loss" class="death-scrim" />
         </div>
       </div>
@@ -102,7 +102,7 @@ May also contain triage UI if triageMode is enabled.
 import EveImage from "../../shared/EveImage.vue";
 import SrpTriplet from "../SrpTriplet.vue";
 import SrpStatus from "../SrpStatus.vue";
-import Tooltip from "../../shared/Tooltip.vue";
+import ToolTip from "../../shared/ToolTip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 
@@ -114,7 +114,7 @@ export default defineComponent({
     EveImage,
     SrpStatus,
     SrpTriplet,
-    Tooltip,
+    ToolTip,
   },
 
   mixins: [NameCacheMixin],

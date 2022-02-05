@@ -13,7 +13,7 @@
             v-for="citadel in citadels"
             :key="citadel.name"
             :row="citadel"
-            @chipDrag="chipDrag"
+            @chip-drag="chipDrag"
             @hover="hover"
             @unhover="unhover"
           />
@@ -23,7 +23,7 @@
         <h3>Unassigned</h3>
         <citadel-row
           :row="unassignedPilots2"
-          @chipDrag="chipDrag"
+          @chip-drag="chipDrag"
           @hover="hover"
           @unhover="unhover"
         />
@@ -35,7 +35,7 @@
       :character="draggedCharacter"
       class="dragged-chip"
       style="transform: translate3d(0, 0, 0)"
-      @chipDrag="chipDrag"
+      @chip-drag="chipDrag"
     />
   </div>
 </template>

@@ -4,7 +4,7 @@
       :columns="columns"
       :sort-key="sort.key"
       :reverse-sort="sort.reverse"
-      @selectSortKey="onSelectSortKey"
+      @select-sort-key="onSelectSortKey"
     />
     <account-row
       v-for="row in sortedRows"

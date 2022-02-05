@@ -10,7 +10,7 @@
       :style="{
         background: expanded ? '#353331' : undefined,
       }"
-      @toggleExpanded="clickExpanded = !clickExpanded"
+      @toggle-expanded="clickExpanded = !clickExpanded"
     />
     <transition
       name="alts-expand"

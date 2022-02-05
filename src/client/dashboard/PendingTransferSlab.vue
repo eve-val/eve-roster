@@ -60,7 +60,7 @@ export default defineComponent({
     name: { type: String, required: true },
   },
 
-  emits: ["requireRefresh"],
+  emits: ["require-refresh"],
 
   data() {
     return {
@@ -78,7 +78,7 @@ export default defineComponent({
       );
       this.promise = promise;
       promise.then(() => {
-        this.$emit("requireRefresh", this.characterId);
+        this.$emit("require-refresh", this.characterId);
         this.promise = null;
       });
     },
@@ -90,7 +90,7 @@ export default defineComponent({
       );
       this.promise = promise;
       promise.then(() => {
-        this.$emit("requireRefresh", this.characterId);
+        this.$emit("require-refresh", this.characterId);
         this.promise = null;
       });
     },

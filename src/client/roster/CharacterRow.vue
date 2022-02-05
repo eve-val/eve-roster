@@ -2,14 +2,14 @@
   <div class="_character-row">
     <div class="horiz-aligner">
       <div class="alert col" :style="cellStyle(0)">
-        <tooltip v-if="alertMessage != null" gravity="right" :inline="false">
+        <tool-tip v-if="alertMessage != null" gravity="right" :inline="false">
           <template #default>
             <img class="alert-icon" :src="alertIconSrc" />
           </template>
           <template #message>
             <span>{{ alertMessage }}</span>
           </template>
-        </tooltip>
+        </tool-tip>
       </div>
 
       <div class="name col" :style="cellStyle(1)">
@@ -26,7 +26,7 @@
             {{ displayVals[1] }}
           </template>
         </router-link>
-        <tooltip v-if="!inPrimaryCorp" gravity="right" :inline="true">
+        <tool-tip v-if="!inPrimaryCorp" gravity="right" :inline="true">
           <template #default>
             <eve-image
               :id="character.corporationId"
@@ -38,13 +38,13 @@
           <template #message>
             <span>{{ character.corporationName }}</span>
           </template>
-        </tooltip>
+        </tool-tip>
       </div>
 
       <div
         class="alts col"
         :style="cellStyle(2)"
-        @mousedown="$emit('toggleExpanded')"
+        @mousedown="$emit('toggle-expanded')"
       >
         {{ displayVals[2] }}
       </div>
@@ -58,7 +58,7 @@
         <template v-if="!tooltipMessage(i + 3)">
           <span class="col-text">{{ dashDefault(dv) }}</span>
         </template>
-        <tooltip v-else gravity="right" :inline="true">
+        <tool-tip v-else gravity="right" :inline="true">
           <template #default>
             <span
               class="col-text"
@@ -70,7 +70,7 @@
           <template #message>
             <span>{{ tooltipMessage(i + 3) }}</span>
           </template>
-        </tooltip>
+        </tool-tip>
       </div>
     </div>
   </div>
@@ -83,7 +83,7 @@ import { formatNumber } from "../shared/numberFormat";
 import { CssStyleObject } from "../shared/types";
 
 import EveImage from "../shared/EveImage.vue";
-import Tooltip from "../shared/Tooltip.vue";
+import ToolTip from "../shared/ToolTip.vue";
 
 import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
@@ -101,7 +101,7 @@ import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,
-    Tooltip,
+    ToolTip,
   },
 
   props: {
@@ -116,7 +116,7 @@ export default defineComponent({
     filter: { type: String, required: false, default: "" },
   },
 
-  emits: ["toggleExpanded"],
+  emits: ["toggle-expanded"],
 
   computed: {
     displayVals: function (): Value[] {

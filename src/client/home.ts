@@ -4,21 +4,21 @@ import "./sentry";
 import { createApp } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import "./css/home.css";
-import Home from "./Home.vue";
+import HomePage from "./HomePage.vue";
 
-import Dashboard from "./dashboard/Dashboard.vue";
-import Character from "./character/Character.vue";
-import Roster from "./roster/Roster.vue";
+import CharacterDashboard from "./dashboard/CharacterDashboard.vue";
+import CharacterSheet from "./character/CharacterSheet.vue";
+import RosterList from "./roster/RosterList.vue";
 
 import AdminOverview from "./admin/AdminOverview.vue";
 import AccountLog from "./admin/AccountLog.vue";
-import AdminApi from "./admin/Api.vue";
-import AdminSetup from "./admin/Setup.vue";
-import Tasks from "./admin/Tasks.vue";
+import ApiAudit from "./admin/ApiAudit.vue";
+import AdminSetup from "./admin/AdminSetup.vue";
+import TaskControl from "./admin/TaskControl.vue";
 import CitadelManagement from "./admin/CitadelManagement.vue";
-import Dev from "./dev/Dev.vue";
+import DevPreview from "./dev/DevPreview.vue";
 
-import Srp from "./srp/Srp.vue";
+import ShipReplacement from "./srp/ShipReplacement.vue";
 import SrpDashboard from "./srp/SrpDashboard.vue";
 import CombatHistory from "./srp/CombatHistory.vue";
 import PaymentHistory from "./srp/PaymentHistory.vue";
@@ -36,21 +36,25 @@ import { SimpleMap } from "../util/simpleTypes";
 // Anything added here should also be in server.js:FRONTEND_ROUTES
 // TODO(aiiane): make server.js just read it directly from here
 const routes: RouteRecordRaw[] = [
-  { path: "/", component: Dashboard, meta: { keepAlive: false } },
-  { path: "/roster", component: Roster, meta: { keepAlive: true } },
-  { path: "/character/:id", component: Character, meta: { keepAlive: false } },
+  { path: "/", component: CharacterDashboard, meta: { keepAlive: false } },
+  { path: "/roster", component: RosterList, meta: { keepAlive: true } },
+  {
+    path: "/character/:id",
+    component: CharacterSheet,
+    meta: { keepAlive: false },
+  },
   { path: "/admin", redirect: "/admin/account-logs" },
   { path: "/admin/overview", component: AdminOverview },
   { path: "/admin/setup", component: AdminSetup },
-  { path: "/admin/api", component: AdminApi },
-  { path: "/admin/api/:id", component: AdminApi },
+  { path: "/admin/api", component: ApiAudit },
+  { path: "/admin/api/:id", component: ApiAudit },
   { path: "/admin/account-logs", component: AccountLog },
-  { path: "/admin/tasks", component: Tasks },
+  { path: "/admin/tasks", component: TaskControl },
   { path: "/admin/citadels", component: CitadelManagement },
 
   {
     path: "/srp",
-    component: Srp,
+    component: ShipReplacement,
     children: [
       {
         path: "",
@@ -112,8 +116,8 @@ const routes: RouteRecordRaw[] = [
 ];
 if (process.env.NODE_ENV == "development") {
   routes.push(
-    { path: "/dev/", component: Dev },
-    { path: "/dev/:section", component: Dev }
+    { path: "/dev/", component: DevPreview },
+    { path: "/dev/:section", component: DevPreview }
   );
 }
 
@@ -134,7 +138,7 @@ declare const $__IDENTITY: Identity;
 declare const $__CSRF: string;
 declare const $__NONCE: string;
 configureCsrfInterceptor($__CSRF);
-const app = createApp(Home, { identity: $__IDENTITY }).use(router);
+const app = createApp(HomePage, { identity: $__IDENTITY }).use(router);
 
 app.provide("csrf", $__CSRF);
 app.provide("nonce", $__NONCE);
