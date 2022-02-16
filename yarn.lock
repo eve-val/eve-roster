@@ -1871,7 +1871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.31, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.29":
+"@vue/compiler-sfc@npm:3.2.31, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.31":
   version: 3.2.31
   resolution: "@vue/compiler-sfc@npm:3.2.31"
   dependencies:
@@ -1938,7 +1938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.31, @vue/runtime-dom@npm:^3.2.29":
+"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.31, @vue/runtime-dom@npm:^3.2.31":
   version: 3.2.31
   resolution: "@vue/runtime-dom@npm:3.2.31"
   dependencies:
@@ -4660,8 +4660,8 @@ __metadata:
     "@types/webpack-dev-middleware": ^5.3.0
     "@typescript-eslint/eslint-plugin": ^5.10.2
     "@typescript-eslint/parser": ^5.10.2
-    "@vue/compiler-sfc": ^3.2.29
-    "@vue/runtime-dom": ^3.2.29
+    "@vue/compiler-sfc": ^3.2.31
+    "@vue/runtime-dom": ^3.2.31
     "@zoltu/typescript-transformer-append-js-extension": ^1.0.1
     axios: ^0.25.0
     bluebird: ^3.7.2
