@@ -4717,7 +4717,7 @@ __metadata:
     source-map-support: ^0.5.21
     sqlite3: ^5.0.2
     svgo: ^2.8.0
-    swagger-ui: ^4.5.0
+    swagger-ui: ^4.5.1
     terser-webpack-plugin: ^5.3.1
     tmp: ^0.2.1
     ts-jest: ^27.1.3
@@ -11299,9 +11299,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "swagger-ui@npm:4.5.0"
+"swagger-ui@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "swagger-ui@npm:4.5.1"
   dependencies:
     "@babel/runtime-corejs3": ^7.16.8
     "@braintree/sanitize-url": ^5.0.2
@@ -11333,11 +11333,11 @@ fsevents@^2.3.2:
     serialize-error: ^8.1.0
     sha.js: ^2.4.11
     swagger-client: ^3.18.4
-    url-parse: ^1.5.3
+    url-parse: ^1.5.6
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: 882583a700b8e97f614978e7d4d8d6966f9791215da0b5909ee5627b55b0ebdd4bccdcb526280bae347957c4a19372ca2ccf9c3d00a3d04a78c6a687c9fbcbef
+  checksum: 137a1ce9c7dd94ff5205866c8d8d5dbd45330cb705e5fe5e31009e27b00151c683b43b70285edaee854d37ed1b1284545dc2dd06a7515b62f1e5263ba4a73c5f
   languageName: node
   linkType: hard
 
@@ -11978,13 +11978,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"url-parse@npm:^1.5.3":
-  version: 1.5.3
-  resolution: "url-parse@npm:1.5.3"
+"url-parse@npm:^1.5.6":
+  version: 1.5.9
+  resolution: "url-parse@npm:1.5.9"
   dependencies:
     querystringify: ^2.1.1
     requires-port: ^1.0.0
-  checksum: c6b32fff835e43f3b1b4150239f459744f0ab1a908841dbfecbfc79bf67f4d6c8d9af1841d0c6d814d45bfa08525cc29312a0bef31db7aa894306b3db07e4ee0
+  checksum: 27bb2bec4736bb89837bc0359bd6f9f7698888b09f3b40fa9c9ce2c3971150b4a529a3ede3dcd639a2e89681b8a894e9166972d886d2c0e94b4fb32a8db7573a
   languageName: node
   linkType: hard
 
