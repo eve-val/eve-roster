@@ -4687,7 +4687,7 @@ __metadata:
     eslint-plugin-prettier-vue: ^3.1.0
     eslint-plugin-vue: ^8.4.1
     express: ^4.17.3
-    express-rate-limit: ^6.2.1
+    express-rate-limit: ^6.3.0
     file-loader: ^6.2.0
     heapdump: ^0.3.15
     html-webpack-plugin: ^5.5.0
@@ -4856,12 +4856,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-rate-limit@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "express-rate-limit@npm:6.2.1"
+"express-rate-limit@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "express-rate-limit@npm:6.3.0"
   peerDependencies:
     express: ^4
-  checksum: 4d07e535c162c22c11d761a14496854ecdd5ddfd809e67ef37906cb4c65b3c22b6f4743b46b356456b7df09f7975aba35dfc6ddde08fee95693546077a49e152
+  checksum: c5ab0a16cc87b317aaef27d6a270ea93513bf5e3ad5041e55ddd1d91bd2e2888030cdcf95b54fba4852a22b76ef23fa83d1787d7b7fcb0627fd0a6731ea7cf01
   languageName: node
   linkType: hard
 
