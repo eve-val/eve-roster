@@ -4825,7 +4825,7 @@ __metadata:
     underscore: ^1.13.2
     verror: ^1.10.1
     vue: ^3.2.31
-    vue-eslint-parser: ^8.2.0
+    vue-eslint-parser: ^8.3.0
     vue-loader: ^17.0.0
     vue-router: ^4.0.12
     vue-style-loader: ^4.1.3
@@ -12203,9 +12203,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"vue-eslint-parser@npm:^8.0.1, vue-eslint-parser@npm:^8.2.0":
-  version: 8.2.0
-  resolution: "vue-eslint-parser@npm:8.2.0"
+"vue-eslint-parser@npm:^8.0.1, vue-eslint-parser@npm:^8.3.0":
+  version: 8.3.0
+  resolution: "vue-eslint-parser@npm:8.3.0"
   dependencies:
     debug: ^4.3.2
     eslint-scope: ^7.0.0
@@ -12216,7 +12216,7 @@ fsevents@^2.3.2:
     semver: ^7.3.5
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: 3a5bebd39cd576a07c188b47212255e023153ec151f4ea4d389c9374bf59847eb46d639ff33ee236ee89e3b9c437faf2dc97e4349246179738f86931fb66274a
+  checksum: 8cc751e9fc2bfba93664ad8945732ab1c97791f9123e703de8669b65670d1e01906d80436bf4932d7ee6fa6174ed4545e8abb059206c88f4bd71957ca6cf7ba8
   languageName: node
   linkType: hard
 
