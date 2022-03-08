@@ -40,7 +40,7 @@
     "express": "^4.17.3",
     "express-rate-limit": "^6.3.0",
     "heapdump": "^0.3.15",
-    "jose": "^4.5.0",
+    "jose": "^4.6.0",
     "knex": "^1.0.3",
     "moment": "^2.29.1",
     "node-graceful": "^3.1.0",
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.17.0",
-    "@sentry/browser": "^6.17.9",
+    "@sentry/browser": "^6.18.1",
     "@sentry/tracing": "^6.17.9",
     "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.2",
