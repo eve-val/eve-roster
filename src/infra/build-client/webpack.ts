@@ -18,6 +18,9 @@ import CleanupMiniCssExtractPlugin from "cleanup-mini-css-extract-plugin";
 
 import ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
 
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 export function commonConfig(
   mode: "development" | "production",
   paths: ProjectPaths
@@ -207,6 +210,13 @@ export function commonConfig(
       extensions: [".tsx", ".ts", ".js", ".json"],
       alias: {
         vue: "@vue/runtime-dom",
+      },
+      fallback: {
+        buffer: require.resolve("buffer"),
+        events: require.resolve("events"),
+        fs: false,
+        stream: require.resolve("stream-browserify"),
+        url: require.resolve("url"),
       },
     },
   };
