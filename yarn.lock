@@ -2546,21 +2546,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autolinker@npm:*":
+"autolinker@npm:*, autolinker@npm:^3.11.0":
   version: 3.15.0
   resolution: "autolinker@npm:3.15.0"
   dependencies:
     tslib: ^2.3.0
   checksum: 2fce8f3ceaae48bf392762e226038026675a045e1de166f383004fd67705d3392e40bee51bc5dabdb5671d340ccc50668a8d09cc52039eb67f04055e19fc097e
-  languageName: node
-  linkType: hard
-
-"autolinker@npm:^3.11.0":
-  version: 3.14.3
-  resolution: "autolinker@npm:3.14.3"
-  dependencies:
-    tslib: ^1.9.3
-  checksum: 4a2bce8d7a77cfb8386ce10b4fb0f8267256af3dbc216c016ba4b970bfd1c9afcd70c2a17f3bc8f81c3de414f8690dbee71eb767519f07f3d6c03c15a9264260
   languageName: node
   linkType: hard
 
@@ -4736,7 +4727,7 @@ __metadata:
     jest: ^27.5.1
     jose: ^4.6.0
     json-loader: ^0.5.7
-    knex: ^1.0.3
+    knex: ^1.0.4
     mini-css-extract-plugin: ^2.6.0
     moment: ^2.29.1
     moment-locales-webpack-plugin: ^1.2.0
@@ -5304,23 +5295,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formdata-node@npm:*":
+"formdata-node@npm:*, formdata-node@npm:^4.0.0":
   version: 4.3.2
   resolution: "formdata-node@npm:4.3.2"
   dependencies:
     node-domexception: 1.0.0
     web-streams-polyfill: 4.0.0-beta.1
   checksum: e1d7aae7d579775b813ddc8ea4511fee613552715e81b36afb188d3a65b3d4df2ef69017106079ba52d9ab1e3367fea0206862d8ae64c02008ababdb341d2c3d
-  languageName: node
-  linkType: hard
-
-"formdata-node@npm:^4.0.0":
-  version: 4.2.1
-  resolution: "formdata-node@npm:4.2.1"
-  dependencies:
-    node-domexception: 1.0.0
-    web-streams-polyfill: 4.0.0-beta.1
-  checksum: 259385c36045f782902da3f7edee165fafa5d5ac04f2ea0df172e4be76478c499c7da07eac77703977148300f3f51afa1f27d19a2e3d3f8b0370b9867738403b
   languageName: node
   linkType: hard
 
@@ -7496,9 +7477,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"knex@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "knex@npm:1.0.3"
+"knex@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "knex@npm:1.0.4"
   dependencies:
     colorette: 2.0.16
     commander: ^8.3.0
@@ -7530,7 +7511,7 @@ fsevents@^2.3.2:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: 351bdb6f9a420c3b087dd7208029b99fe4e279eedcc2a4bf8f99b8ee45185425f0dbeb0c52853bb4b1cee458f61d0802ee7945929d13ba6e9c35becf01e53f2d
+  checksum: 7490763d92ff366732803a8bf721f88cd48ddab7794d2fd63a325996dcfc95d2cec7924d20c73cc45a7ba74d881531b6afdf6c5916c7e4673839a91f69603566
   languageName: node
   linkType: hard
 
@@ -11808,14 +11789,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3":
-  version: 2.2.0
-  resolution: "tslib@npm:2.2.0"
-  checksum: a48c9639f7496fa701ea8ffe0561070fcb44c104a59632f7f845c0af00825c99b6373575ec59b2b5cdbfd7505875086dbe5dc83312304d8979f22ce571218ca3
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.3.0":
+"tslib@npm:^2.0.3, tslib@npm:^2.3.0":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
