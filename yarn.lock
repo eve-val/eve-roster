@@ -782,7 +782,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:1.0.1, @opentelemetry/core@npm:^1.0.0, @opentelemetry/core@npm:^1.0.1":
+"@opentelemetry/core@npm:1.0.1":
   version: 1.0.1
   resolution: "@opentelemetry/core@npm:1.0.1"
   dependencies:
@@ -790,6 +790,17 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.1.0"
   checksum: d99342acd08538b6c2b1ff0f073e187f7eb66ab6106819ece1060066eb3da6fd074f90b1764bdec99ec44412e1a6272b746e0114a469398d4c67fe2bedc63840
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/core@npm:^1.0.0, @opentelemetry/core@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@opentelemetry/core@npm:1.1.0"
+  dependencies:
+    "@opentelemetry/semantic-conventions": 1.1.0
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.2.0"
+  checksum: 024fae35fcdd1b720793c52ff4a6c4ef394cc3c8a7363ea88d4046450e32cf840e2ceda7330238f97be106901af04b85be0094f421058a3d1e81e20f47a17941
   languageName: node
   linkType: hard
 
@@ -941,10 +952,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:1.0.1, @opentelemetry/semantic-conventions@npm:^1.0.0":
+"@opentelemetry/semantic-conventions@npm:1.0.1":
   version: 1.0.1
   resolution: "@opentelemetry/semantic-conventions@npm:1.0.1"
   checksum: c17dd6494185587b92eb2147114e280c29ecdc1cec081adc4cf02919c04ed63ed0d96a6a1247b8147536b985ec376804327be5b7aca868aa3890d428ac2c6cc7
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:1.1.0, @opentelemetry/semantic-conventions@npm:^1.0.0":
+  version: 1.1.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.1.0"
+  checksum: 162de520d61c4de9846f092ff7e8f44e369d57202165d1f61bcc6cb177a7e2b46ebed2b11d5bbc4a95161ce0b21202f7046d063de75b3139046b2642092c168e
   languageName: node
   linkType: hard
 
@@ -4651,7 +4669,7 @@ __metadata:
     "@babel/types": ^7.17.0
     "@grpc/grpc-js": ^1.5.7
     "@opentelemetry/api": ^1.1.0
-    "@opentelemetry/core": ^1.0.1
+    "@opentelemetry/core": ^1.1.0
     "@opentelemetry/exporter-trace-otlp-grpc": ^0.27.0
     "@opentelemetry/instrumentation": ^0.27.0
     "@opentelemetry/instrumentation-express": ^0.28.0
