@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.17.0",
-    "@sentry/browser": "^6.18.2",
+    "@sentry/browser": "^6.19.2",
     "@sentry/tracing": "^6.18.2",
     "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.2",
@@ -101,7 +101,7 @@
     "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-jest": "^26.1.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-vue": "^8.5.0",
