@@ -1701,12 +1701,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/svgo@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@types/svgo@npm:2.6.2"
+"@types/svgo@npm:^2.6.3":
+  version: 2.6.3
+  resolution: "@types/svgo@npm:2.6.3"
   dependencies:
     "@types/node": "*"
-  checksum: e1eb4be176f83510a88e5688309713be0ef89c7e99cf6b451799a19467535501f159bbd35eba731be150dbbea42c67e0b52315c38434bc063a645324a90e8438
+  checksum: d72714e565790f247be23065d071b1733021e1dc80358d1ca68a42362ca31d96b42aeeb3799b8e960a44a14cee658093344e6e14f36d0827903307cbeb78db0a
   languageName: node
   linkType: hard
 
@@ -4770,7 +4770,7 @@ __metadata:
     "@types/serve-favicon": ^2.5.3
     "@types/source-map-support": ^0.5.4
     "@types/sqlite3": ^3.1.8
-    "@types/svgo": ^2.6.2
+    "@types/svgo": ^2.6.3
     "@types/swagger-ui": ^3.52.0
     "@types/tmp": ^0.2.3
     "@types/underscore": ^1.11.4
