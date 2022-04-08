@@ -20,7 +20,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@grpc/grpc-js": "^1.5.9",
+    "@grpc/grpc-js": "^1.6.2",
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/core": "^1.1.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.27.0",
