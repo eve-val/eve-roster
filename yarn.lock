@@ -3431,10 +3431,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^8.1.0, commander@npm:^8.3.0":
+"commander@npm:^8.1.0":
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "commander@npm:9.1.0"
+  checksum: 1428319b6b90600a813c28fe1e413996d1be99bf01afe9ebc4a9fc6f8077ff3e75f11809b2d2f85bd9b13d7cb592154278e9bbfdb16dc5843cef97bcba6a9cfd
   languageName: node
   linkType: hard
 
@@ -3936,7 +3943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:4.3.3, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2":
+"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2":
   version: 4.3.3
   resolution: "debug@npm:4.3.3"
   dependencies:
@@ -3945,6 +3952,18 @@ __metadata:
     supports-color:
       optional: true
   checksum: 14472d56fe4a94dbcfaa6dbed2dd3849f1d72ba78104a1a328047bb564643ca49df0224c3a17fa63533fd11dd3d4c8636cd861191232a2c6735af00cc2d4de16
+  languageName: node
+  linkType: hard
+
+"debug@npm:4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
   languageName: node
   linkType: hard
 
@@ -4815,7 +4834,7 @@ __metadata:
     jest: ^27.5.1
     jose: ^4.6.0
     json-loader: ^0.5.7
-    knex: ^1.0.4
+    knex: ^1.0.5
     mini-css-extract-plugin: ^2.6.0
     moment: ^2.29.2
     moment-locales-webpack-plugin: ^1.2.0
@@ -4838,7 +4857,7 @@ __metadata:
     ts-jest: ^27.1.3
     ts-loader: ^9.2.8
     ttypescript: ^1.5.13
-    typescript: ^4.5.5
+    typescript: ^4.6.3
     unbzip2-stream: ^1.4.3
     underscore: ^1.13.2
     url: ^0.11.0
@@ -7558,15 +7577,16 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"knex@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "knex@npm:1.0.4"
+"knex@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "knex@npm:1.0.5"
   dependencies:
     colorette: 2.0.16
-    commander: ^8.3.0
-    debug: 4.3.3
+    commander: ^9.1.0
+    debug: 4.3.4
     escalade: ^3.1.1
     esm: ^3.2.25
+    get-package-type: ^0.1.0
     getopts: 2.3.0
     interpret: ^2.2.0
     lodash: ^4.17.21
@@ -7592,7 +7612,7 @@ fsevents@^2.3.2:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: 7490763d92ff366732803a8bf721f88cd48ddab7794d2fd63a325996dcfc95d2cec7924d20c73cc45a7ba74d881531b6afdf6c5916c7e4673839a91f69603566
+  checksum: ca51c7a14eaf30b1f8c6d19712bc766c597d32cc3c8baff2e3ed824c7db23a13db169ab80e8194972d23697c8e79d36f151274c8f879f9dc8eff66783b4e92fc
   languageName: node
   linkType: hard
 
@@ -12012,23 +12032,23 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.5":
-  version: 4.5.5
-  resolution: "typescript@npm:4.5.5"
+"typescript@npm:^4.6.3":
+  version: 4.6.3
+  resolution: "typescript@npm:4.6.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 506f4c919dc8aeaafa92068c997f1d213b9df4d9756d0fae1a1e7ab66b585ab3498050e236113a1c9e57ee08c21ec6814ca7a7f61378c058d79af50a4b1f5a5e
+  checksum: 255bb26c8cb846ca689dd1c3a56587af4f69055907aa2c154796ea28ee0dea871535b1c78f85a6212c77f2657843a269c3a742d09d81495b97b914bf7920415b
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
-  version: 4.5.5
-  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=bda367"
+"typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>":
+  version: 4.6.3
+  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 858c61fa63f7274ca4aaaffeced854d550bf416cff6e558c4884041b3311fb662f476f167cf5c9f8680c607239797e26a2ee0bcc6467fbc05bfcb218e1c6c671
+  checksum: 6bf45caf847062420592e711bc9c28bf5f9a9a7fa8245343b81493e4ededae33f1774009d1234d911422d1646a2c839f44e1a23ecb111b40a60ac2ea4c1482a8
   languageName: node
   linkType: hard
 
