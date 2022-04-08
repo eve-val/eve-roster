@@ -410,10 +410,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braintree/sanitize-url@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@braintree/sanitize-url@npm:5.0.2"
-  checksum: c033f9a0e6dd6fbd4022df2d3916a278510f759971b1e8ab278b3ce1123a3816d5fdd9d84c5c9fbcd6c94c05f8421c4c669f110c8db67eaf58f3018825af514e
+"@braintree/sanitize-url@npm:=6.0.0":
+  version: 6.0.0
+  resolution: "@braintree/sanitize-url@npm:6.0.0"
+  checksum: 409ce7709dc1a0c67bc887d20af1becd4145d5c62cc5124b1c4c1f3ea2a8d69b0ee9f582d446469c6f5294b56442b99048cbbba6861dd5c834d4e019b95e1f40
   languageName: node
   linkType: hard
 
@@ -4832,7 +4832,7 @@ __metadata:
     sqlite3: ^5.0.2
     stream-browserify: ^3.0.0
     svgo: ^2.8.0
-    swagger-ui: ^4.6.2
+    swagger-ui: ^4.10.3
     terser-webpack-plugin: ^5.3.1
     tmp: ^0.2.1
     ts-jest: ^27.1.3
@@ -11444,12 +11444,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.6.2":
-  version: 4.6.2
-  resolution: "swagger-ui@npm:4.6.2"
+"swagger-ui@npm:^4.10.3":
+  version: 4.10.3
+  resolution: "swagger-ui@npm:4.10.3"
   dependencies:
     "@babel/runtime-corejs3": ^7.16.8
-    "@braintree/sanitize-url": ^5.0.2
+    "@braintree/sanitize-url": =6.0.0
     base64-js: ^1.5.1
     classnames: ^2.3.1
     css.escape: 1.5.1
@@ -11483,7 +11483,7 @@ fsevents@^2.3.2:
     xml: =1.0.1
     xml-but-prettier: ^1.0.1
     zenscroll: ^4.0.2
-  checksum: 02545521ecd8954fbf3b26d9a931e92ab6730d59b920cbb575521e924f0d9a3c24a32f515f1d417548b85f6c0dd6073d0243a5e58e89b2e79f3b78edd1121dc5
+  checksum: 6abaed8303fb472d5b54d1a925e1ad4cd508a3b6747f35f9ad5a0045a2e8076b400aca6954e7b2b9409f2f567c046884d56136e47d216f0d47d962c079a8e652
   languageName: node
   linkType: hard
 
