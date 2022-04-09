@@ -5,7 +5,9 @@ export async function fetchAuthInfo(
 ): Promise<AuthInfoResponse & JWTPayload> {
   const result = await jwtVerify(
     accessToken,
-    createRemoteJWKSet(new URL("https://login.eveonline.com/oauth/jwks")),
+    createRemoteJWKSet(new URL("https://login.eveonline.com/oauth/jwks"), {
+      cooldownDuration: 24 * 60 * 60 * 1000,
+    }),
     {
       issuer: "login.eveonline.com",
     }
