@@ -40,7 +40,7 @@
     "express": "^4.17.3",
     "express-rate-limit": "^6.3.0",
     "heapdump": "^0.3.15",
-    "jose": "^4.6.0",
+    "jose": "^4.6.1",
     "knex": "^1.0.5",
     "moment": "^2.29.2",
     "node-graceful": "^3.1.0",
