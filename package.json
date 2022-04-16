@@ -22,7 +22,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.6.5",
     "@opentelemetry/api": "^1.1.0",
-    "@opentelemetry/core": "^1.1.0",
+    "@opentelemetry/core": "^1.1.1",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.27.0",
     "@opentelemetry/instrumentation": "^0.27.0",
     "@opentelemetry/instrumentation-express": "^0.28.0",
@@ -91,8 +91,8 @@
     "@types/webpack-dev-middleware": "^5.3.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
-    "@vue/compiler-sfc": "^3.2.31",
-    "@vue/runtime-dom": "^3.2.31",
+    "@vue/compiler-sfc": "^3.2.33",
+    "@vue/runtime-dom": "^3.2.33",
     "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "buffer": "^6.0.3",
     "clean-webpack-plugin": "^4.0.0",
@@ -141,13 +141,13 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
-    "ansi-html": "npm:ansi-html-community@^0.0.8",
+    "ansi-html": "^0.0.9",
     "find-versions": "^5",
     "json-schema": "^0.4.0",
     "lpad-align": "^3.0.0",
     "minimist": "^1.2.6",
     "node-gyp": "^8",
-    "prismjs": "^1.26.0",
+    "prismjs": "^1.27.0",
     "strip-ansi": "^6.0.1",
     "vue-loader": "patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch"
   },
