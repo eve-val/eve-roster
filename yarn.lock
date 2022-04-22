@@ -448,13 +448,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.3.7, @grpc/grpc-js@npm:^1.6.5":
-  version: 1.6.5
-  resolution: "@grpc/grpc-js@npm:1.6.5"
+"@grpc/grpc-js@npm:^1.3.7, @grpc/grpc-js@npm:^1.6.7":
+  version: 1.6.7
+  resolution: "@grpc/grpc-js@npm:1.6.7"
   dependencies:
     "@grpc/proto-loader": ^0.6.4
     "@types/node": ">=12.12.47"
-  checksum: e36e67de05db8a295a26ecf9ef6837528027f053d6d002c068bf1ec73ed953e139b7311b9d9ef3f3d1a808aab907ed327a9f23ac1ecce793029adb810ec2fe72
+  checksum: 2668b08c2eec433970561384b22cf81443106835077ff1d8b7989cb5519fb7d2284c7a46b6ae94968f3b488ffbd9326ba9b4fbe4971a185d3b89eb0ee99e4fcd
   languageName: node
   linkType: hard
 
@@ -4771,7 +4771,7 @@ __metadata:
   resolution: "eve-roster@workspace:."
   dependencies:
     "@babel/types": ^7.17.0
-    "@grpc/grpc-js": ^1.6.5
+    "@grpc/grpc-js": ^1.6.7
     "@opentelemetry/api": ^1.1.0
     "@opentelemetry/core": ^1.1.1
     "@opentelemetry/exporter-trace-otlp-grpc": ^0.27.0
