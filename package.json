@@ -38,7 +38,7 @@
     "cookie-session": "^2.0.0",
     "csurf": "^1.11.0",
     "express": "^4.17.3",
-    "express-rate-limit": "^6.3.0",
+    "express-rate-limit": "^6.4.0",
     "heapdump": "^0.3.15",
     "jose": "^4.7.0",
     "knex": "^2.0.0",
