@@ -1,9 +1,9 @@
 import moment from "moment";
 
-import { Tnex } from "../db/tnex/index";
-import { dao } from "../db/dao";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { Task } from "../infra/taskrunner/Task";
+import { Tnex } from "../db/tnex/index.js";
+import { dao } from "../db/dao.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 export const truncateCharacterLocations: Task = {
   name: "truncateCharacterLocations",

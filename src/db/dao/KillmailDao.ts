@@ -1,5 +1,5 @@
-import { Dao } from "../dao";
-import { Tnex, val, UpdateStrategy } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, val, UpdateStrategy } from "../../db/tnex/index.js";
 import {
   killmail,
   Killmail,
@@ -7,9 +7,9 @@ import {
   account,
   memberCorporation,
   ownership,
-} from "../tables";
-import { makeKillmailIterator } from "../shared/makeKillmailIterator";
-import { StreamIterator } from "../../util/stream/BatchedObjectReadable";
+} from "../tables.js";
+import { makeKillmailIterator } from "../shared/makeKillmailIterator.js";
+import { StreamIterator } from "../../util/stream/BatchedObjectReadable.js";
 
 export default class KillmailDao {
   constructor(private _dao: Dao) {}

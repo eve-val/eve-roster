@@ -1,6 +1,6 @@
 import { merge } from "webpack-merge";
-import { commonConfig } from "./webpack";
-import { getProjectPaths } from "./paths";
+import { commonConfig } from "./webpack.js";
+import { getProjectPaths } from "./paths.js";
 import webpack from "webpack";
 
 const paths = getProjectPaths();

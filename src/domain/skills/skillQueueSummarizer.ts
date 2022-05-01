@@ -1,19 +1,19 @@
-import * as time from "../../util/time";
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao";
+import * as time from "../../util/time.js";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao.js";
 import {
   updateSkillQueue,
   getTrainingProgress,
   isQueueEntryCompleted,
-} from "./skillQueue";
-import { isAnyEsiError } from "../../data-source/esi/error";
+} from "./skillQueue.js";
+import { isAnyEsiError } from "../../data-source/esi/error.js";
 import {
   AccessTokenError,
   AccessTokenErrorType,
-} from "../../error/AccessTokenError";
+} from "../../error/AccessTokenError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -24,7 +24,7 @@ import {
   QueueStatus,
   WarningType,
   SkillQueueSummary,
-} from "./skillQueueSummary";
+} from "./skillQueueSummary.js";
 
 /**
  * Loads a character's skill queue and then generates summary text for it

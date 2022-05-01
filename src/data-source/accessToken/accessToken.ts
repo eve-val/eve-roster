@@ -1,15 +1,15 @@
-import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex/index";
-import { AccessToken } from "../../db/tables";
+import { dao } from "../../db/dao.js";
+import { Tnex } from "../../db/tnex/index.js";
+import { AccessToken } from "../../db/tables.js";
 import {
   AccessTokenError,
   AccessTokenErrorType,
-} from "../../error/AccessTokenError";
+} from "../../error/AccessTokenError.js";
 import {
   RefreshResult,
   TokenRefresher,
   AccessTokenUpdate,
-} from "./TokenRefresher";
+} from "./TokenRefresher.js";
 
 const TOKEN_EXPIRATION_FUDGE_MS = 1000; // 1 second
 const tokenRefresher = new TokenRefresher();

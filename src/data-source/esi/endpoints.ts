@@ -1,7 +1,7 @@
-import { EsiAsset } from "./EsiAsset";
-import { FetchMethod, Private, Public } from "./EsiEndpoint";
-import { EsiKillmail } from "./EsiKillmail";
-import { EsiNotification } from "./EsiNotification";
+import { EsiAsset } from "./EsiAsset.js";
+import { FetchMethod, Private, Public } from "./EsiEndpoint.js";
+import { EsiKillmail } from "./EsiKillmail.js";
+import { EsiNotification } from "./EsiNotification.js";
 
 /**
  * Supported endpoints in the ESI API

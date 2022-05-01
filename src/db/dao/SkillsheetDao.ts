@@ -1,6 +1,6 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { skillsheet, Skillsheet, sdeType } from "../tables";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { skillsheet, Skillsheet, sdeType } from "../tables.js";
 
 export interface SkillsheetEntry {
   skillsheet_skill: number;

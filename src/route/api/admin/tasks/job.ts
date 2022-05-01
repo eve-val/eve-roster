@@ -1,5 +1,5 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import * as taskRunner from "../../../../infra/taskrunner/taskRunner";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import * as taskRunner from "../../../../infra/taskrunner/taskRunner.js";
 
 export type Output = JobJson[];
 

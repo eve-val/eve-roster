@@ -1,6 +1,6 @@
-import { Readable } from "../../util/stream/Readable";
-import { ZKillDescriptor } from "./ZKillmail";
-import { fetchZKillResultPage } from "./fetchZKillResultPage";
+import { Readable } from "../../util/stream/Readable.js";
+import { ZKillDescriptor } from "./ZKillmail.js";
+import { fetchZKillResultPage } from "./fetchZKillResultPage.js";
 
 /**
  * Readable stream representing a query for a ZKillboard API.

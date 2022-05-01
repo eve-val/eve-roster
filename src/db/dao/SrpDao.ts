@@ -1,5 +1,5 @@
-import { Dao } from "../dao";
-import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex/index.js";
 import {
   killmail,
   Killmail,
@@ -13,11 +13,11 @@ import {
   Account,
   killmailBattle,
   KillmailBattle,
-} from "../tables";
-import { SrpVerdictStatus, SrpVerdictReason } from "./enums";
-import { val, Comparison } from "../tnex/core";
-import { Nullable } from "../../util/simpleTypes";
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
+} from "../tables.js";
+import { SrpVerdictStatus, SrpVerdictReason } from "./enums.js";
+import { val, Comparison } from "../tnex/core.js";
+import { Nullable } from "../../util/simpleTypes.js";
+import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
 
 export interface SrpLossFilter {
   status?: SrpVerdictStatus;

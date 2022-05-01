@@ -1,9 +1,9 @@
 import _ from "underscore";
 
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import * as t from "../tables";
-import { MEMBER_GROUP } from "../../domain/account/specialGroups";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import * as t from "../tables.js";
+import { MEMBER_GROUP } from "../../domain/account/specialGroups.js";
 
 export interface BasicRosterCharacter {
   character_id: number;

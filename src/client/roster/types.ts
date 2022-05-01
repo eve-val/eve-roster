@@ -1,4 +1,4 @@
-import * as serverTypes from "../../route/api/roster";
+import * as serverTypes from "../../route/api/roster.js";
 
 export interface Character extends serverTypes.CharacterJson {
   totalSp?: number;

@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from "axios";
-import { EsiEndpoint } from "../EsiEndpoint";
-import { EsiError, EsiErrorKind } from "../EsiError";
-import { buildEsiFetchConfig } from "./buildEsiFetchConfig";
-import { checkEsiResponseForWarnings } from "./checkEsiResponseForWarnings";
-import { EsiEndpointParams } from "./EsiEndpointParams";
+import { default as axios, AxiosResponse } from "axios";
+import { EsiEndpoint } from "../EsiEndpoint.js";
+import { EsiError, EsiErrorKind } from "../EsiError.js";
+import { buildEsiFetchConfig } from "./buildEsiFetchConfig.js";
+import { checkEsiResponseForWarnings } from "./checkEsiResponseForWarnings.js";
+import { EsiEndpointParams } from "./EsiEndpointParams.js";
 
 /**
  * Loads a particular ESI endpoint.

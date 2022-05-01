@@ -1,6 +1,6 @@
-import { Tnex } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { MEMBER_GROUP } from "../../domain/account/specialGroups";
+import { Tnex } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { MEMBER_GROUP } from "../../domain/account/specialGroups.js";
 
 export interface SkillRequirement {
   skill: number;

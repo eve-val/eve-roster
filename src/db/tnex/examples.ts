@@ -1,8 +1,8 @@
 /*eslint-disable @typescript-eslint/no-unused-vars*/
 /*eslint-disable no-unused-vars*/
 
-import { val, integer, varchar } from ".";
-import { Tnex } from "./Tnex";
+import { val, integer, varchar } from "./index.js";
+import { Tnex } from "./Tnex.js";
 
 // Step 1: Define our table schemas
 // Each table should be represented by a singleton class. You'll need to create

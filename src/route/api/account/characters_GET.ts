@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../db/tnex/index";
-import { AccountSummary } from "../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../infra/express/privileges";
-import { idParam } from "../../../util/express/paramVerifier";
-import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError";
-import { dao } from "../../../db/dao";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { AccountSummary } from "../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../infra/express/privileges.js";
+import { idParam } from "../../../util/express/paramVerifier.js";
+import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError.js";
+import { dao } from "../../../db/dao.js";
 
 export type Output = CharacterDescription[];
 

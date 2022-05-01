@@ -1,4 +1,4 @@
-import { ArrayQueue } from "./collection/ArrayQueue";
+import { ArrayQueue } from "./collection/ArrayQueue.js";
 
 /**
  * Provides a way to rate-limit access to a resource.

@@ -1,21 +1,21 @@
 import moment from "moment";
-import { getAccessToken } from "../data-source/accessToken/accessToken";
-import { ESI_UNIVERSE_STRUCTURES_$structureId } from "../data-source/esi/endpoints";
-import { isAnyEsiError } from "../data-source/esi/error";
-import { EsiErrorKind } from "../data-source/esi/EsiError";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
-import { fetchEveNames } from "../data-source/esi/names";
-import { dao } from "../db/dao";
-import { CharacterShipRow } from "../db/dao/CharacterShipDao";
-import { Tnex } from "../db/tnex/index";
-import { AccessTokenError } from "../error/AccessTokenError";
-import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets";
-import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories";
+import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { ESI_UNIVERSE_STRUCTURES_$structureId } from "../data-source/esi/endpoints.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
+import { EsiErrorKind } from "../data-source/esi/EsiError.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
+import { fetchEveNames } from "../data-source/esi/names.js";
+import { dao } from "../db/dao.js";
+import { CharacterShipRow } from "../db/dao/CharacterShipDao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { AccessTokenError } from "../error/AccessTokenError.js";
+import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets.js";
+import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { Task } from "../infra/taskrunner/Task";
-import { arrayToMap } from "../util/collections";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { Task } from "../infra/taskrunner/Task.js";
+import { arrayToMap } from "../util/collections.js";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.

@@ -1,10 +1,14 @@
 import moment from "moment";
 import _ from "underscore";
 
-import { SrpLossRow } from "../../db/dao/SrpDao";
-import { nil } from "../../util/simpleTypes";
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
-import { SrpLossJson, UnifiedSrpLossStatus, AttackerJson } from "./SrpLossJson";
+import { SrpLossRow } from "../../db/dao/SrpDao.js";
+import { nil } from "../../util/simpleTypes.js";
+import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
+import {
+  SrpLossJson,
+  UnifiedSrpLossStatus,
+  AttackerJson,
+} from "./SrpLossJson.js";
 
 /**
  * Shared logic for dumping the representation of an SRPable loss to JSON.

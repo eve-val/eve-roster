@@ -1,4 +1,4 @@
-import { ExtendableError } from "./ExtendableError";
+import { ExtendableError } from "./ExtendableError.js";
 
 export class NotFoundError extends ExtendableError {
   constructor() {

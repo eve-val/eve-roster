@@ -1,5 +1,5 @@
-import { Tnex } from "../../db/tnex/index";
-import { JobLogger } from "./Job";
+import { Tnex } from "../../db/tnex/index.js";
+import { JobLogger } from "./Job.js";
 
 /**
  * A piece of background work that the server can perform.

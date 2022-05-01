@@ -1,15 +1,15 @@
 import _ from "underscore";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
-import { AccountPrivileges } from "../../infra/express/privileges";
-import { idParam } from "../../util/express/paramVerifier";
-import { NotFoundError } from "../../error/NotFoundError";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
+import { AccountPrivileges } from "../../infra/express/privileges.js";
+import { idParam } from "../../util/express/paramVerifier.js";
+import { NotFoundError } from "../../error/NotFoundError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
-import { TIMEZONE_LABELS } from "../../domain/roster/timezoneLabels";
-import { SimpleMap } from "../../util/simpleTypes";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { TIMEZONE_LABELS } from "../../domain/roster/timezoneLabels.js";
+import { SimpleMap } from "../../util/simpleTypes.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

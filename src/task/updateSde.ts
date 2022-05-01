@@ -2,11 +2,11 @@ import * as fs from "fs";
 import * as tmp from "tmp";
 import moment from "moment";
 
-import { Tnex } from "../db/tnex/index";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { acquireSde } from "./updateSde/acquireSde";
-import { ingestSde } from "./updateSde/ingestSde";
-import { Task } from "../infra/taskrunner/Task";
+import { Tnex } from "../db/tnex/index.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { acquireSde } from "./updateSde/acquireSde.js";
+import { ingestSde } from "./updateSde/ingestSde.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 /**
  * Downloads the EVE static data export (SDE) and imports the parts that we

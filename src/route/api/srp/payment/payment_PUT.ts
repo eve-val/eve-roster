@@ -1,17 +1,17 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
 import {
   number,
   verify,
   boolean,
   optional,
-} from "../../../../util/express/schemaVerifier";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
-import { BadRequestError } from "../../../../error/BadRequestError";
-import { NotFoundError } from "../../../../error/NotFoundError";
-import { idParam } from "../../../../util/express/paramVerifier";
+} from "../../../../util/express/schemaVerifier.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
+import { BadRequestError } from "../../../../error/BadRequestError.js";
+import { NotFoundError } from "../../../../error/NotFoundError.js";
+import { idParam } from "../../../../util/express/paramVerifier.js";
 
 export class Input {
   paid = boolean();

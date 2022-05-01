@@ -1,21 +1,21 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../../db/tnex/Tnex";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { dao } from "../../../../db/dao";
-import { SrpVerdictStatus } from "../../../../db/dao/enums";
-import { SimpleNumMap, nil } from "../../../../util/simpleTypes";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { Tnex } from "../../../../db/tnex/Tnex.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { dao } from "../../../../db/dao.js";
+import { SrpVerdictStatus } from "../../../../db/dao/enums.js";
+import { SimpleNumMap, nil } from "../../../../util/simpleTypes.js";
 import {
   boolQuery,
   intQuery,
   enumQuery,
-} from "../../../../util/express/paramVerifier";
-import { fetchEveNames } from "../../../../data-source/esi/names";
-import { srpLossToJson } from "../../../../domain/srp/srpLossToJson";
-import { SrpLossFilter } from "../../../../db/dao/SrpDao";
-import { ResultOrder } from "../../../../db/tnex/index";
-import { SrpLossJson } from "../../../../domain/srp/SrpLossJson";
-import { triageLosses } from "../../../../domain/srp/triage/triageLosses";
-import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson";
+} from "../../../../util/express/paramVerifier.js";
+import { fetchEveNames } from "../../../../data-source/esi/names.js";
+import { srpLossToJson } from "../../../../domain/srp/srpLossToJson.js";
+import { SrpLossFilter } from "../../../../db/dao/SrpDao.js";
+import { ResultOrder } from "../../../../db/tnex/index.js";
+import { SrpLossJson } from "../../../../domain/srp/SrpLossJson.js";
+import { triageLosses } from "../../../../domain/srp/triage/triageLosses.js";
+import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson.js";
 
 export interface Output {
   srps: SrpLossJson[];

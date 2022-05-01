@@ -1,7 +1,7 @@
-import { Logger, LogLevel } from "./Logger";
-import * as protocol from "../../bin/witness/protocol";
-import { printError } from "../../data-source/esi/error";
-import { nil } from "../../util/simpleTypes";
+import { Logger, LogLevel } from "./Logger.js";
+import * as protocol from "../../bin/witness/protocol.js";
+import { printError } from "../../data-source/esi/error.js";
+import { nil } from "../../util/simpleTypes.js";
 
 export class WitnessLogger implements Logger {
   private _tag: string | nil;

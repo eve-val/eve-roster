@@ -1,17 +1,17 @@
 import moment from "moment";
 
-import { syncCharacterLocations } from "../task/syncCharacterLocations";
-import { syncCombatStats } from "../task/syncCombatStats";
-import { syncKillmails } from "../task/syncKillmails";
-import { syncRoster } from "../task/syncRoster";
-import { syncSkills } from "../task/syncSkills";
-import { syncCorps } from "../task/syncCorps";
-import { truncateCronLog } from "../task/truncateCronLog";
-import { truncateCharacterLocations } from "../task/truncateCharacterLocations";
-import { triagePendingLosses } from "../task/triagePendingLosses";
-import { TaskSchedule } from "../infra/taskrunner/cron";
-import { syncBorrowedShips } from "../task/syncBorrowedShips";
-import { syncNotifications } from "../task/syncNotifications";
+import { syncCharacterLocations } from "../task/syncCharacterLocations.js";
+import { syncCombatStats } from "../task/syncCombatStats.js";
+import { syncKillmails } from "../task/syncKillmails.js";
+import { syncRoster } from "../task/syncRoster.js";
+import { syncSkills } from "../task/syncSkills.js";
+import { syncCorps } from "../task/syncCorps.js";
+import { truncateCronLog } from "../task/truncateCronLog.js";
+import { truncateCharacterLocations } from "../task/truncateCharacterLocations.js";
+import { triagePendingLosses } from "../task/triagePendingLosses.js";
+import { TaskSchedule } from "../infra/taskrunner/cron.js";
+import { syncBorrowedShips } from "../task/syncBorrowedShips.js";
+import { syncNotifications } from "../task/syncNotifications.js";
 
 /**
  * Schedules for periodically running certain tasks.

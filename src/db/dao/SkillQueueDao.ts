@@ -1,7 +1,7 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { characterSkillQueue, sdeType } from "../tables";
-import { defaultSkillName } from "../../domain/skills/defaultSkillName";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { characterSkillQueue, sdeType } from "../tables.js";
+import { defaultSkillName } from "../../domain/skills/defaultSkillName.js";
 
 class SkillQueueDao {
   constructor(private _parent: Dao) {}

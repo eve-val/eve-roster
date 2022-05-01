@@ -1,19 +1,19 @@
 import _ from "underscore";
 
-import { Task } from "../infra/taskrunner/Task";
+import { Task } from "../infra/taskrunner/Task.js";
 
-import { syncCharacterLocations } from "../task/syncCharacterLocations";
-import { syncCombatStats } from "../task/syncCombatStats";
-import { syncKillmails } from "../task/syncKillmails";
-import { syncRoster } from "../task/syncRoster";
-import { syncBorrowedShips } from "../task/syncBorrowedShips";
-import { syncNotifications } from "../task/syncNotifications";
-import { syncSkills } from "../task/syncSkills";
-import { syncCorps } from "../task/syncCorps";
-import { truncateCronLog } from "../task/truncateCronLog";
-import { truncateCharacterLocations } from "../task/truncateCharacterLocations";
-import { updateSde } from "../task/updateSde";
-import { triagePendingLosses } from "../task/triagePendingLosses";
+import { syncCharacterLocations } from "../task/syncCharacterLocations.js";
+import { syncCombatStats } from "../task/syncCombatStats.js";
+import { syncKillmails } from "../task/syncKillmails.js";
+import { syncRoster } from "../task/syncRoster.js";
+import { syncBorrowedShips } from "../task/syncBorrowedShips.js";
+import { syncNotifications } from "../task/syncNotifications.js";
+import { syncSkills } from "../task/syncSkills.js";
+import { syncCorps } from "../task/syncCorps.js";
+import { truncateCronLog } from "../task/truncateCronLog.js";
+import { truncateCharacterLocations } from "../task/truncateCharacterLocations.js";
+import { updateSde } from "../task/updateSde.js";
+import { triagePendingLosses } from "../task/triagePendingLosses.js";
 
 /**
  * List of tasks that can be manually invoked from the admin UI.

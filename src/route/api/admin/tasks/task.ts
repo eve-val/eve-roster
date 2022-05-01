@@ -1,5 +1,5 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { getRunnableTasks } from "../../../../task-registry/runnableTasks";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { getRunnableTasks } from "../../../../task-registry/runnableTasks.js";
 
 export type Output = {
   name: string;

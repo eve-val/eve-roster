@@ -1,5 +1,5 @@
-import axios from "axios";
-import { MarketStat } from "./MarketStat";
+import { default as axios } from "axios";
+import { MarketStat } from "./MarketStat.js";
 
 const BASE_URL = `https://api.evemarketer.com/ec`;
 

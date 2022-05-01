@@ -1,11 +1,11 @@
 import moment from "moment";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { SkillQueueRow } from "../../db/dao/SkillQueueDao";
-import { getAccessToken } from "../../data-source/accessToken/accessToken";
-import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from "../../data-source/esi/endpoints";
-import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { SkillQueueRow } from "../../db/dao/SkillQueueDao.js";
+import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from "../../data-source/esi/endpoints.js";
+import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
 
 /**
  * Fetches fresh skill queue data from ESI and stores it in the DB. Returns a

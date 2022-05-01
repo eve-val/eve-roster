@@ -2,15 +2,15 @@ import _ from "underscore";
 
 import { inspect } from "util";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { checkNotNil } from "../../util/assert";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { checkNotNil } from "../../util/assert.js";
 
-import { Job, JobResult } from "./Job";
-import { JobImpl } from "./JobImpl";
+import { Job, JobResult } from "./Job.js";
+import { JobImpl } from "./JobImpl.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../logging/buildLogger";
-import { Task } from "./Task";
+import { buildLoggerFromFilename } from "../logging/buildLogger.js";
+import { Task } from "./Task.js";
 
 import { trace, context } from "@opentelemetry/api";
 

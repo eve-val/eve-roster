@@ -1,28 +1,28 @@
 import moment from "moment";
 
-import { Tnex, val, UpdatePolicy } from "../db/tnex/index";
-import { character, Character, MemberCorporation } from "../db/tables";
-import { getAccessToken } from "../data-source/accessToken/accessToken";
-import { dao } from "../db/dao";
-import { arrayToMap, refine } from "../util/collections";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { fetchEveNames } from "../data-source/esi/names";
-import { UNKNOWN_CORPORATION_ID } from "../db/constants";
+import { Tnex, val, UpdatePolicy } from "../db/tnex/index.js";
+import { character, Character, MemberCorporation } from "../db/tables.js";
+import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { dao } from "../db/dao.js";
+import { arrayToMap, refine } from "../util/collections.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { fetchEveNames } from "../data-source/esi/names.js";
+import { UNKNOWN_CORPORATION_ID } from "../db/constants.js";
 import {
   ESI_CORPORATIONS_$corporationId_MEMBERS,
   ESI_CORPORATIONS_$corporationId_TITLES,
   ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES,
   ESI_CORPORATIONS_$corporationId_ROLES,
   ESI_CORPORATIONS_$corporationId_MEMBERTRACKING,
-} from "../data-source/esi/endpoints";
-import { isAnyEsiError, printError } from "../data-source/esi/error";
-import { hasRosterScopes } from "../domain/roster/hasRosterScopes";
-import { AccessTokenError } from "../error/AccessTokenError";
-import { AsyncReturnType } from "../util/simpleTypes";
-import { updateGroupsOnAllAccounts } from "../domain/account/accountGroups";
-import { LogLevel } from "../infra/logging/Logger";
-import { Task } from "../infra/taskrunner/Task";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+} from "../data-source/esi/endpoints.js";
+import { isAnyEsiError, printError } from "../data-source/esi/error.js";
+import { hasRosterScopes } from "../domain/roster/hasRosterScopes.js";
+import { AccessTokenError } from "../error/AccessTokenError.js";
+import { AsyncReturnType } from "../util/simpleTypes.js";
+import { updateGroupsOnAllAccounts } from "../domain/account/accountGroups.js";
+import { LogLevel } from "../infra/logging/Logger.js";
+import { Task } from "../infra/taskrunner/Task.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 
 /**
  * Updates the member list of each member corporation.

@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { TIMEZONE_LABELS } from "../../../domain/roster/timezoneLabels";
-import { verify, string } from "../../../util/express/schemaVerifier";
-import { idParam } from "../../../util/express/paramVerifier";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { TIMEZONE_LABELS } from "../../../domain/roster/timezoneLabels.js";
+import { verify, string } from "../../../util/express/schemaVerifier.js";
+import { idParam } from "../../../util/express/paramVerifier.js";
 
-import { BadRequestError } from "../../../error/BadRequestError";
+import { BadRequestError } from "../../../error/BadRequestError.js";
 
 export class Input {
   activeTimezone = string();

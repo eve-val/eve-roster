@@ -1,4 +1,4 @@
-import { ArrayQueue } from "../../../src/util/collection/ArrayQueue";
+import { ArrayQueue } from "../../../src/util/collection/ArrayQueue.js";
 
 test("Basic contents", () => {
   const queue = new ArrayQueue<number>();

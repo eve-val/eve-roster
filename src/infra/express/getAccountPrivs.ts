@@ -7,12 +7,12 @@
  * @param accountId
  * @returns {Promise}
  */
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { getPrivileges } from "./privileges";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { getPrivileges } from "./privileges.js";
 
-import { NoSuchAccountError } from "../../error/NoSuchAccountError";
-import { NotLoggedInError } from "../../error/NotLoggedInError";
+import { NoSuchAccountError } from "../../error/NoSuchAccountError.js";
+import { NotLoggedInError } from "../../error/NotLoggedInError.js";
 
 export interface AccountSummary {
   id: number;

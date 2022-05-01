@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
-import { Query } from "./Query";
-import { Scoper } from "./Scoper";
+import { Query } from "./Query.js";
+import { Scoper } from "./Scoper.js";
 
 /**
  * Represents an update query in Tnex.

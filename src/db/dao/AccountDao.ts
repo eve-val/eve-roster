@@ -1,5 +1,5 @@
-import { Dao } from "../dao";
-import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index.js";
 import {
   account,
   accountGroup,
@@ -8,11 +8,11 @@ import {
   groupExplicit,
   pendingOwnership,
   ownership,
-} from "../tables";
-import { updateGroupsForAccount } from "../../domain/account/accountGroups";
-import { ADMIN_GROUP } from "../../domain/account/specialGroups";
+} from "../tables.js";
+import { updateGroupsForAccount } from "../../domain/account/accountGroups.js";
+import { ADMIN_GROUP } from "../../domain/account/specialGroups.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

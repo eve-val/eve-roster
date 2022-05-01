@@ -1,7 +1,7 @@
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail";
-import { Battle, Killmail } from "../../db/tables";
-import { Participant } from "./BattleData";
-import { Transform, TransformCallback } from "../../util/stream/Transform";
+import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
+import { Battle, Killmail } from "../../db/tables.js";
+import { Participant } from "./BattleData.js";
+import { Transform, TransformCallback } from "../../util/stream/Transform.js";
 
 /**
  * Transform stream that accepts a stream of killmails and outputs a stream of

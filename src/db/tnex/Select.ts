@@ -1,10 +1,10 @@
 import { Knex } from "knex";
 
-import { Comparison, Link, Nullable, StringKeyOf } from "./core";
-import { Scoper } from "./Scoper";
-import { Query } from "./Query";
-import { RenamedJoin } from "./RenamedJoin";
-import { checkNotNil } from "../../util/assert";
+import { Comparison, Link, Nullable, StringKeyOf } from "./core.js";
+import { Scoper } from "./Scoper.js";
+import { Query } from "./Query.js";
+import { RenamedJoin } from "./RenamedJoin.js";
+import { checkNotNil } from "../../util/assert.js";
 
 interface ColumnSelect {
   column: string;

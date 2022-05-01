@@ -1,11 +1,11 @@
 import Bluebird from "bluebird";
 import moment from "moment";
 
-import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { cronLog } from "../tables";
+import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { cronLog } from "../tables.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

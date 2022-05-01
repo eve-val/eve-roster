@@ -1,4 +1,4 @@
-import Graceful from "node-graceful";
+import { default as Graceful } from "node-graceful";
 Graceful.captureExceptions = true;
 
 import * as Sentry from "@sentry/node";
@@ -16,18 +16,18 @@ import rateLimit from "express-rate-limit";
 import crypto from "crypto";
 import csrf from "csurf";
 
-import { Tnex } from "../../db/tnex/index";
-import { isDevelopment } from "../../util/config";
-import { LOGIN_PARAMS } from "../../domain/sso/loginParams";
+import { Tnex } from "../../db/tnex/index.js";
+import { isDevelopment } from "../../util/config.js";
+import { LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
 
-import { default as route_api } from "../../route/api/api";
-import { default as route_home } from "../../route/home";
-import { default as route_authenticate } from "../../route/authenticate";
-import { default as route_swagger } from "../../route/esi/swagger";
-import { default as route_esi_proxy } from "../../route/esi/proxy";
-import { getSession, endSession } from "./session";
-import { checkNotNil } from "../../util/assert";
-import { getProjectPaths } from "../build-client/paths";
+import { default as route_api } from "../../route/api/api.js";
+import { default as route_home } from "../../route/home.js";
+import { default as route_authenticate } from "../../route/authenticate.js";
+import { default as route_swagger } from "../../route/esi/swagger.js";
+import { default as route_esi_proxy } from "../../route/esi/proxy.js";
+import { getSession, endSession } from "./session.js";
+import { checkNotNil } from "../../util/assert.js";
+import { getProjectPaths } from "../build-client/paths.js";
 
 const FRONTEND_ROUTES = [
   "/",
@@ -124,8 +124,8 @@ async function setupClientServing(app: express.Application) {
 
   if (isDevelopment()) {
     const clientConfig = isDevelopment()
-      ? (await import("../build-client/webpack.dev")).default
-      : (await import("../build-client/webpack.prod")).default;
+      ? (await import("../build-client/webpack.dev.js")).default
+      : (await import("../build-client/webpack.prod.js")).default;
     const webpack = (await import("webpack")).default;
     const webpackDevMiddleware = (await import("webpack-dev-middleware"))
       .default;

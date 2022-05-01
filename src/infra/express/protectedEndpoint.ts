@@ -8,20 +8,20 @@
  */
 import express from "express";
 
-import { BadRequestError } from "../../error/BadRequestError";
-import { NotFoundError } from "../../error/NotFoundError";
-import { NoSuchAccountError } from "../../error/NoSuchAccountError";
-import { NotLoggedInError } from "../../error/NotLoggedInError";
-import { UnauthorizedClientError } from "../../error/UnauthorizedClientError";
-import { UserVisibleError } from "../../error/UserVisibleError";
+import { BadRequestError } from "../../error/BadRequestError.js";
+import { NotFoundError } from "../../error/NotFoundError.js";
+import { NoSuchAccountError } from "../../error/NoSuchAccountError.js";
+import { NotLoggedInError } from "../../error/NotLoggedInError.js";
+import { UnauthorizedClientError } from "../../error/UnauthorizedClientError.js";
+import { UserVisibleError } from "../../error/UserVisibleError.js";
 
-import { Tnex } from "../../db/tnex/index";
-import { AccountPrivileges } from "./privileges";
-import { getAccountPrivs, AccountSummary } from "./getAccountPrivs";
-import { SchemaVerificationError } from "../../util/express/schemaVerifier";
+import { Tnex } from "../../db/tnex/index.js";
+import { AccountPrivileges } from "./privileges.js";
+import { getAccountPrivs, AccountSummary } from "./getAccountPrivs.js";
+import { SchemaVerificationError } from "../../util/express/schemaVerifier.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
-import { getSession, endSession } from "./session";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { getSession, endSession } from "./session.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

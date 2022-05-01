@@ -1,14 +1,14 @@
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
 
-import { getAccessToken } from "../../data-source/accessToken/accessToken";
-import { updateSkillQueue, isQueueEntryCompleted } from "./skillQueue";
-import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao";
-import { SimpleNumMap } from "../../util/simpleTypes";
-import { skillLevelToSp } from "../../eve/skillLevelToSp";
-import * as sde from "../../eve/sde";
-import { ESI_CHARACTERS_$characterId_SKILLS } from "../../data-source/esi/endpoints";
-import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi";
+import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { updateSkillQueue, isQueueEntryCompleted } from "./skillQueue.js";
+import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao.js";
+import { SimpleNumMap } from "../../util/simpleTypes.js";
+import { skillLevelToSp } from "../../eve/skillLevelToSp.js";
+import * as sde from "../../eve/sde.js";
+import { ESI_CHARACTERS_$characterId_SKILLS } from "../../data-source/esi/endpoints.js";
+import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
 
 /** Throws AccessTokenError and ESI failure errors. */
 export function updateSkills(db: Tnex, characterId: number) {

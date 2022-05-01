@@ -1,11 +1,11 @@
-import axios, { AxiosRequestConfig, Method } from "axios";
-import { MixedObject } from "../../util/simpleTypes";
+import { default as axios, AxiosRequestConfig, Method } from "axios";
+import { MixedObject } from "../../util/simpleTypes.js";
 
-import { getAccessToken } from "../../data-source/accessToken/accessToken";
-import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
+import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
 
-import { CHARACTER_HEADER } from "../../data-source/esi/fetch/fetchSwagger";
-import { BASE_URL } from "../../data-source/esi/fetch/fetchEsi";
+import { CHARACTER_HEADER } from "../../data-source/esi/fetch/fetchSwagger.js";
+import { BASE_URL } from "../../data-source/esi/fetch/fetchEsi.js";
 
 export default jsonEndpoint(
   (req, res, db, account, privs): Promise<MixedObject> => {

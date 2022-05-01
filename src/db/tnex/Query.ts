@@ -1,6 +1,6 @@
 import { Knex } from "knex";
-import { Scoper } from "./Scoper";
-import { FilterableQuery } from "./FilterableQuery";
+import { Scoper } from "./Scoper.js";
+import { FilterableQuery } from "./FilterableQuery.js";
 
 // TODO: Change this to an interface and just have all the subclasses implement
 // that interface

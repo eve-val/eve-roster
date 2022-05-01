@@ -1,13 +1,13 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
-import { NotFoundError } from "../../../../error/NotFoundError";
-import { idParam } from "../../../../util/express/paramVerifier";
-import { SrpTriageJson } from "../../../../domain/srp/SrpLossJson";
-import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson";
-import { triageLosses } from "../../../../domain/srp/triage/triageLosses";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
+import { NotFoundError } from "../../../../error/NotFoundError.js";
+import { idParam } from "../../../../util/express/paramVerifier.js";
+import { SrpTriageJson } from "../../../../domain/srp/SrpLossJson.js";
+import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson.js";
+import { triageLosses } from "../../../../domain/srp/triage/triageLosses.js";
 
 export interface Output {
   triage: SrpTriageJson | null;

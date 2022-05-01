@@ -1,4 +1,4 @@
-import { KeysOfType, nil } from "./simpleTypes";
+import { KeysOfType, nil } from "./simpleTypes.js";
 
 /**
  * Sorts an array of objects by one or more properites of those objects.

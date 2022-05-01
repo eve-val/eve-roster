@@ -1,11 +1,11 @@
-import { dao } from "../../db/dao";
-import { NotFoundError } from "../../error/NotFoundError";
-import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
-import { loadSummarizedQueue } from "../../domain/skills/skillQueueSummarizer";
-import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
-import { parallelize } from "../../util/asyncUtil";
-import * as ccpSso from "../../domain/sso/loginParams";
-import { canDesignateMain } from "../../domain/account/canDesignateMain";
+import { dao } from "../../db/dao.js";
+import { NotFoundError } from "../../error/NotFoundError.js";
+import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
+import { loadSummarizedQueue } from "../../domain/skills/skillQueueSummarizer.js";
+import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary.js";
+import { parallelize } from "../../util/asyncUtil.js";
+import * as ccpSso from "../../domain/sso/loginParams.js";
+import { canDesignateMain } from "../../domain/account/canDesignateMain.js";
 
 export interface Output {
   accountId: number;

@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import axios from "axios";
+import { default as axios } from "axios";
 import progress from "progress-stream";
 
-import { JobLogger } from "../../infra/taskrunner/Job";
+import { JobLogger } from "../../infra/taskrunner/Job.js";
 
 import bz2 from "unbzip2-stream";
 

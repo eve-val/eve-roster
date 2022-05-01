@@ -10,15 +10,15 @@ import {
   strEnum,
   float4,
   decimal,
-} from "../db/tnex/index";
+} from "../db/tnex/index.js";
 import {
   PrivilegeName,
   HullCategory,
   SrpVerdictStatus,
   SrpVerdictReason,
-} from "./dao/enums";
-import { ZKillmail } from "../data-source/zkillboard/ZKillmail";
-import { BattleData } from "../domain/battle/BattleData";
+} from "./dao/enums.js";
+import { ZKillmail } from "../data-source/zkillboard/ZKillmail.js";
+import { BattleData } from "../domain/battle/BattleData.js";
 
 export const tables = new TnexBuilder();
 

@@ -1,13 +1,13 @@
 import moment from "moment";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { BatchedObjectReadable } from "../../util/stream/BatchedObjectReadable";
-import { BattleCreator } from "./BattleCreator";
-import { BattleWriter } from "./BattleWriter";
-import { battle } from "../../db/tables";
-import { Logger } from "../../infra/logging/Logger";
-import { pipelinePr } from "../../util/stream/pipeline";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { BatchedObjectReadable } from "../../util/stream/BatchedObjectReadable.js";
+import { BattleCreator } from "./BattleCreator.js";
+import { BattleWriter } from "./BattleWriter.js";
+import { battle } from "../../db/tables.js";
+import { Logger } from "../../infra/logging/Logger.js";
+import { pipelinePr } from "../../util/stream/pipeline.js";
 
 /**
  * Iterates through any killmails that aren't associated with battle reports

@@ -1,7 +1,7 @@
 import _ from "underscore";
 
-import { TemplateRule, FuncRule } from "./TriageRule";
-import { SrpVerdictStatus, SrpVerdictReason } from "../../../db/dao/enums";
+import { TemplateRule, FuncRule } from "./TriageRule.js";
+import { SrpVerdictStatus, SrpVerdictReason } from "../../../db/dao/enums.js";
 import {
   GROUP_T1_INDUSTRIAL,
   GROUP_T1_FRIGATE,
@@ -40,7 +40,7 @@ import {
   GROUP_LIGHT_FIGHTER,
   GROUP_HEAVY_FIGHTER,
   GROUP_SHUTTLE,
-} from "../../../eve/constants/groups";
+} from "../../../eve/constants/groups.js";
 import {
   TYPE_DEFENDER_MISSILE,
   TYPE_GNOSIS,
@@ -70,7 +70,7 @@ import {
   TYPE_LOW_GRADE_SLAVES,
   TYPE_MID_GRADE_SLAVES,
   TYPE_HIGH_GRADE_SLAVES,
-} from "../../../eve/constants/types";
+} from "../../../eve/constants/types.js";
 import {
   MKT_GROUP_PIRATE_CRUISERS,
   MKT_GROUP_NAVY_FRIGATES,
@@ -83,13 +83,13 @@ import {
   MKT_GROUP_TRIGLAVIAN_FRIGATES,
   MKT_GROUP_TRIGLAVIAN_CRUISERS,
   MKT_GROUP_TRIGLAVIAN_BATTLESHIPS,
-} from "../../../eve/constants/marketGroups";
+} from "../../../eve/constants/marketGroups.js";
 import {
   SYSTEM_AD001,
   SYSTEM_AD200,
-} from "../../../eve/constants/mapSolarSystems";
+} from "../../../eve/constants/mapSolarSystems.js";
 
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
 
 /**
  * SOUND-specific implementation of SRP rules. See the TRIAGE_RULES export

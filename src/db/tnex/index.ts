@@ -1,7 +1,7 @@
-export { TnexBuilder } from "./TnexBuilder";
+export { TnexBuilder } from "./TnexBuilder.js";
 
-export { val, ResultOrder } from "./core";
-export { Tnex, UpdatePolicy, UpdateStrategy } from "./Tnex";
+export { val, ResultOrder } from "./core.js";
+export { Tnex, UpdatePolicy, UpdateStrategy } from "./Tnex.js";
 export {
   nullable,
   boolean,
@@ -14,9 +14,9 @@ export {
   decimal,
   jsonb,
   strEnum,
-} from "./definers";
+} from "./definers.js";
 
-export { DEFAULT_NUM, DEFAULT_STR, DEFAULT_BOOL } from "./Tnex";
+export { DEFAULT_NUM, DEFAULT_STR, DEFAULT_BOOL } from "./Tnex.js";
 
 export function toNum(bool: boolean) {
   return bool ? 1 : 0;

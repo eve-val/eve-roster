@@ -1,8 +1,8 @@
 import moment from "moment";
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { Killmail } from "../../../db/tables";
-import { HullCategory } from "../../../db/dao/enums";
-import { isCapsule } from "../../../eve/util/isCapsule";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { Killmail } from "../../../db/tables.js";
+import { HullCategory } from "../../../db/dao/enums.js";
+import { isCapsule } from "../../../eve/util/isCapsule.js";
 
 /**
  * Converts a ZKillmail to a row in the killmail table.

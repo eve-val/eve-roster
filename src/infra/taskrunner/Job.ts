@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import { Logger } from "../logging/Logger";
-import { Task } from "./Task";
+import { Logger } from "../logging/Logger.js";
+import { Task } from "./Task.js";
 
 export type JobResult = "pending" | "success" | "partial" | "failure";
 export type JobStatus = "queued" | "running" | "finished";

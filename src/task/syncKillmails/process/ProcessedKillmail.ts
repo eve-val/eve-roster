@@ -1,5 +1,5 @@
-import { UnprocessedKillmailRow } from "../../../db/dao/KillmailDao";
-import { Killmail } from "../../../db/tables";
+import { UnprocessedKillmailRow } from "../../../db/dao/KillmailDao.js";
+import { Killmail } from "../../../db/tables.js";
 
 /** Represents a killmail that's moving through the processing pipeline. */
 export interface ProcessedKillmail {

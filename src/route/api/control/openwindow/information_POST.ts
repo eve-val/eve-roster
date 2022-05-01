@@ -1,14 +1,14 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { number, verify } from "../../../../util/express/schemaVerifier";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
-import { BadRequestError } from "../../../../error/BadRequestError";
-import { UnauthorizedClientError } from "../../../../error/UnauthorizedClientError";
-import { getAccessToken } from "../../../../data-source/accessToken/accessToken";
-import { fetchEsi } from "../../../../data-source/esi/fetch/fetchEsi";
-import { ESI_UI_OPENWINDOW_INFORMATION } from "../../../../data-source/esi/endpoints";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { number, verify } from "../../../../util/express/schemaVerifier.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
+import { BadRequestError } from "../../../../error/BadRequestError.js";
+import { UnauthorizedClientError } from "../../../../error/UnauthorizedClientError.js";
+import { getAccessToken } from "../../../../data-source/accessToken/accessToken.js";
+import { fetchEsi } from "../../../../data-source/esi/fetch/fetchEsi.js";
+import { ESI_UI_OPENWINDOW_INFORMATION } from "../../../../data-source/esi/endpoints.js";
 
 export class Input {
   character = number();

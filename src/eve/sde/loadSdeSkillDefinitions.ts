@@ -1,9 +1,9 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { sdeType, sdeTypeAttribute, sdeAttribute } from "../../db/tables";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { sdeType, sdeTypeAttribute, sdeAttribute } from "../../db/tables.js";
 
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
-import { TYPE_CATEGORY_SKILL } from "../constants/categories";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { TYPE_CATEGORY_SKILL } from "../constants/categories.js";
 import {
   DGM_ATTR_REQUIRED_SKILL_1,
   DGM_ATTR_REQUIRED_SKILL_2,
@@ -12,7 +12,7 @@ import {
   DGM_ATTR_REQUIRED_SKILL_2_LEVEL,
   DGM_ATTR_REQUIRED_SKILL_3_LEVEL,
   DGM_ATTR_SKILL_TIME_CONSTANT,
-} from "../constants/dogma";
+} from "../constants/dogma.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

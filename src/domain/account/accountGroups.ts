@@ -1,13 +1,13 @@
 import _ from "underscore";
 import Bluebird from "bluebird";
 
-import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex/index";
-import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups";
-import { serialize } from "../../util/asyncUtil";
-import { account } from "../../db/tables";
+import { dao } from "../../db/dao.js";
+import { Tnex } from "../../db/tnex/index.js";
+import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups.js";
+import { serialize } from "../../util/asyncUtil.js";
+import { account } from "../../db/tables.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

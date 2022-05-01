@@ -1,23 +1,23 @@
 import sqlite3 from "sqlite3";
 
-import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index";
+import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index.js";
 import {
   sdeImport,
   sdeType,
   sdeAttribute,
   sdeTypeAttribute,
-} from "../../db/tables";
+} from "../../db/tables.js";
 
-import { JobLogger } from "../../infra/taskrunner/Job";
-import { checkNotNil } from "../../util/assert";
-import { normalizeSearchStr } from "../../eve/sde/normalizeSearchStr";
-import { computeMd5 } from "./computeMd5";
-import { fixupImport } from "./fixupImport";
-import { verifyImport } from "./verifyImport";
+import { JobLogger } from "../../infra/taskrunner/Job.js";
+import { checkNotNil } from "../../util/assert.js";
+import { normalizeSearchStr } from "../../eve/sde/normalizeSearchStr.js";
+import { computeMd5 } from "./computeMd5.js";
+import { fixupImport } from "./fixupImport.js";
+import { verifyImport } from "./verifyImport.js";
 import {
   TYPE_CAPSULE,
   TYPE_CAPSULE_GENOLUTION,
-} from "../../eve/constants/types";
+} from "../../eve/constants/types.js";
 
 const IMPORTER_VERSION = 0;
 const IMPORT_LABEL = "Importing new SDE data...";

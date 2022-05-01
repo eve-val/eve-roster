@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import * as sde from "../../../eve/sde";
-import { BadRequestError } from "../../../error/BadRequestError";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import * as sde from "../../../eve/sde.js";
+import { BadRequestError } from "../../../error/BadRequestError.js";
 
-import { SkillRequirement } from "../../../db/dao/StatisticsDao";
-import { stringQuery } from "../../../util/express/paramVerifier";
+import { SkillRequirement } from "../../../db/dao/StatisticsDao.js";
+import { stringQuery } from "../../../util/express/paramVerifier.js";
 
 export interface Output {
   query: string[];

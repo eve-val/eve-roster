@@ -1,8 +1,8 @@
 /* global NodeJS */
 
-import { WriteStream } from "./Writable";
-import { ReadStream } from "./Readable";
-import { ReadWriteStream } from "./Duplex";
+import { WriteStream } from "./Writable.js";
+import { ReadStream } from "./Readable.js";
+import { ReadWriteStream } from "./Duplex.js";
 
 export function pipeline<T1, Last extends WriteStream<T1>>(
   stream1: ReadStream<T1>,

@@ -1,11 +1,11 @@
 import moment from "moment";
 
-import { Tnex } from "../db/tnex/index";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { dao } from "../db/dao";
-import { SrpVerdictStatus } from "../db/dao/enums";
-import { autoTriageLosses } from "../domain/srp/triage/autoTriageLosses";
-import { Task } from "../infra/taskrunner/Task";
+import { Tnex } from "../db/tnex/index.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { dao } from "../db/dao.js";
+import { SrpVerdictStatus } from "../db/dao/enums.js";
+import { autoTriageLosses } from "../domain/srp/triage/autoTriageLosses.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 /**
  * Manually runs the SRP autotriage rules on all losses that are still marked

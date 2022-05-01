@@ -1,6 +1,6 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { citadel, Citadel } from "../tables";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { citadel, Citadel } from "../tables.js";
 
 export default class CitadelDao {
   constructor(private _parent: Dao) {}

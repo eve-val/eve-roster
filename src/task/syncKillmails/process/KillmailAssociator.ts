@@ -1,9 +1,12 @@
-import { Transform, TransformCallback } from "../../../util/stream/Transform";
-import { UnprocessedKillmailRow } from "../../../db/dao/KillmailDao";
-import { ArrayQueue } from "../../../util/collection/ArrayQueue";
-import { HullCategory } from "../../../db/dao/enums";
-import { BasicCallback } from "../../../util/stream/core";
-import { ProcessedKillmail } from "./ProcessedKillmail";
+import {
+  Transform,
+  TransformCallback,
+} from "../../../util/stream/Transform.js";
+import { UnprocessedKillmailRow } from "../../../db/dao/KillmailDao.js";
+import { ArrayQueue } from "../../../util/collection/ArrayQueue.js";
+import { HullCategory } from "../../../db/dao/enums.js";
+import { BasicCallback } from "../../../util/stream/core.js";
+import { ProcessedKillmail } from "./ProcessedKillmail.js";
 
 /**
  * Associates capsule losses with the ship they came from (if any).

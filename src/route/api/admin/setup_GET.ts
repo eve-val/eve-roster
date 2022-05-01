@@ -1,12 +1,12 @@
 import Bluebird from "bluebird";
 
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { Tnex } from "../../../db/tnex/index";
-import { MemberCorporation, GroupTitle } from "../../../db/tables";
-import { SimpleMap } from "../../../util/simpleTypes";
-import { censor } from "./_censor";
-import { Input as Output } from "./setup_PUT";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { MemberCorporation, GroupTitle } from "../../../db/tables.js";
+import { SimpleMap } from "../../../util/simpleTypes.js";
+import { censor } from "./_censor.js";
+import { Input as Output } from "./setup_PUT.js";
 
 type CorporationConfig = Output["corporations"][0];
 

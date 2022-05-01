@@ -1,7 +1,7 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { ResultOrder } from "../../../../db/tnex/index";
-import { BattleColumn, BoundCmp } from "../../../../db/dao/BattleDao";
-import { dao } from "../../../../db/dao";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { ResultOrder } from "../../../../db/tnex/index.js";
+import { BattleColumn, BoundCmp } from "../../../../db/dao/BattleDao.js";
+import { dao } from "../../../../db/dao.js";
 import {
   optional,
   array,
@@ -10,12 +10,15 @@ import {
   boolean,
   object,
   verify,
-} from "../../../../util/express/schemaVerifier";
-import { jsonQuery, boolQuery } from "../../../../util/express/paramVerifier";
+} from "../../../../util/express/schemaVerifier.js";
+import {
+  jsonQuery,
+  boolQuery,
+} from "../../../../util/express/paramVerifier.js";
 import {
   BattleOutput,
   battlesToJson,
-} from "../../../../domain/battle/battlesToJson";
+} from "../../../../domain/battle/battlesToJson.js";
 
 const FILTER_SCHEMA = {
   id: optional(number()),

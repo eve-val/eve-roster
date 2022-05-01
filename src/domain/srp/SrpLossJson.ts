@@ -1,4 +1,4 @@
-import { SrpVerdictStatus, SrpVerdictReason } from "../../db/dao/enums";
+import { SrpVerdictStatus, SrpVerdictReason } from "../../db/dao/enums.js";
 
 /**
  * JSON format for corp ship losses. Combines killmail information with SRP

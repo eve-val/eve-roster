@@ -1,5 +1,5 @@
-import { dao } from "../../db/dao";
-import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
+import { dao } from "../../db/dao.js";
+import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
 
 interface Output {
   citadels: CitadelJson[];

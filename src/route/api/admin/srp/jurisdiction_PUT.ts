@@ -1,14 +1,14 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
 import {
   verify,
   number,
   nullable,
-} from "../../../../util/express/schemaVerifier";
+} from "../../../../util/express/schemaVerifier.js";
 
-import { Tnex } from "../../../../db/tnex/index";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { dao } from "../../../../db/dao";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { dao } from "../../../../db/dao.js";
 
 export class Input {
   start = nullable(number());

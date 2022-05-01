@@ -1,11 +1,11 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { Tnex } from "../../../db/tnex/index";
-import { AccountPrivileges } from "../../../infra/express/privileges";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { AccountPrivileges } from "../../../infra/express/privileges.js";
 
-import { BadRequestError } from "../../../error/BadRequestError";
+import { BadRequestError } from "../../../error/BadRequestError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

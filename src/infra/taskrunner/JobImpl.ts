@@ -2,11 +2,11 @@
 
 import { EventEmitter } from "events";
 
-import { Job, JobStatus, JobResult, JobLogger } from "./Job";
+import { Job, JobStatus, JobResult, JobLogger } from "./Job.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../logging/buildLogger";
-import { LogLevel } from "../logging/Logger";
-import { Task } from "./Task";
+import { buildLoggerFromFilename } from "../logging/buildLogger.js";
+import { LogLevel } from "../logging/Logger.js";
+import { Task } from "./Task.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

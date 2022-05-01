@@ -1,6 +1,6 @@
-import { Dao } from "../dao";
-import { Tnex } from "../tnex/Tnex";
-import { SdeType, sdeType } from "../tables";
+import { Dao } from "../dao.js";
+import { Tnex } from "../tnex/Tnex.js";
+import { SdeType, sdeType } from "../tables.js";
 
 export default class SdeDao {
   constructor(private _dao: Dao) {}

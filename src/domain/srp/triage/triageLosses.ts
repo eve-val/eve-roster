@@ -1,11 +1,11 @@
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { Tnex } from "../../../db/tnex/index";
-import { TRIAGE_RULES } from "./rules";
-import { dao } from "../../../db/dao";
-import { TriageVerdict, TriageRule, isFuncRule } from "./TriageRule";
-import { SdeType } from "../../../db/tables";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { TRIAGE_RULES } from "./rules.js";
+import { dao } from "../../../db/dao.js";
+import { TriageVerdict, TriageRule, isFuncRule } from "./TriageRule.js";
+import { SdeType } from "../../../db/tables.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

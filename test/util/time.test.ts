@@ -1,4 +1,4 @@
-import * as time from "../../src/util/time";
+import * as time from "../../src/util/time.js";
 
 test("shortDurationString: output specificity = days", () => {
   expect(

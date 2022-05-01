@@ -2,17 +2,17 @@ import { inspect } from "util";
 
 import { Knex } from "knex";
 
-import { SimpleObj, val, StringKeyOf } from "./core";
-import { Scoper } from "./Scoper";
-import { Select } from "./Select";
-import { Query } from "./Query";
-import { RenamedJoin } from "./RenamedJoin";
-import { Update } from "./Update";
+import { SimpleObj, val, StringKeyOf } from "./core.js";
+import { Scoper } from "./Scoper.js";
+import { Select } from "./Select.js";
+import { Query } from "./Query.js";
+import { RenamedJoin } from "./RenamedJoin.js";
+import { Update } from "./Update.js";
 import {
   getColumnDescriptors,
   ColumnDescriptor,
   DataType,
-} from "./ColumnDescriptor";
+} from "./ColumnDescriptor.js";
 
 const USE_DEFAULT = {};
 

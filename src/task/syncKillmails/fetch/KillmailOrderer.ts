@@ -1,10 +1,13 @@
-import { Transform, TransformCallback } from "../../../util/stream/Transform";
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { Killmail } from "../../../db/tables";
-import { ArrayQueue } from "../../../util/collection/ArrayQueue";
-import { killmailToRow } from "./killmailToRow";
-import { BasicCallback } from "../../../util/stream/core";
-import { JobLogger } from "../../../infra/taskrunner/Job";
+import {
+  Transform,
+  TransformCallback,
+} from "../../../util/stream/Transform.js";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { Killmail } from "../../../db/tables.js";
+import { ArrayQueue } from "../../../util/collection/ArrayQueue.js";
+import { killmailToRow } from "./killmailToRow.js";
+import { BasicCallback } from "../../../util/stream/core.js";
+import { JobLogger } from "../../../infra/taskrunner/Job.js";
 
 /**
  * Given a stream of killmails whose timestamps are *mostly* in descending

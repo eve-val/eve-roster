@@ -1,10 +1,10 @@
-import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable";
-import { ProcessedKillmail } from "./ProcessedKillmail";
-import { Tnex } from "../../../db/tnex/index";
-import { dao } from "../../../db/dao";
-import { LossRow } from "../../../domain/srp/triage/triageLosses";
-import { autoTriageLosses } from "../../../domain/srp/triage/autoTriageLosses";
-import { Killmail } from "../../../db/tables";
+import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable.js";
+import { ProcessedKillmail } from "./ProcessedKillmail.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { dao } from "../../../db/dao.js";
+import { LossRow } from "../../../domain/srp/triage/triageLosses.js";
+import { autoTriageLosses } from "../../../domain/srp/triage/autoTriageLosses.js";
+import { Killmail } from "../../../db/tables.js";
 
 /**
  * Marks rows as processed, updates relatedLoss (if necessary), creates SRP

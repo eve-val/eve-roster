@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { verify, string } from "../../../../util/express/schemaVerifier";
-import { JobJson } from "./job";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { verify, string } from "../../../../util/express/schemaVerifier.js";
+import { JobJson } from "./job.js";
 
-import { BadRequestError } from "../../../../error/BadRequestError";
-import { findRunnableTaskWithName } from "../../../../task-registry/runnableTasks";
-import * as taskRunner from "../../../../infra/taskrunner/taskRunner";
+import { BadRequestError } from "../../../../error/BadRequestError.js";
+import { findRunnableTaskWithName } from "../../../../task-registry/runnableTasks.js";
+import * as taskRunner from "../../../../infra/taskrunner/taskRunner.js";
 
 export class Input {
   task = string();

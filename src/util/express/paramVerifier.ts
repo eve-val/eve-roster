@@ -1,7 +1,7 @@
 import express from "express";
 
-import { BadRequestError } from "../../error/BadRequestError";
-import { MixedObject } from "../simpleTypes";
+import { BadRequestError } from "../../error/BadRequestError.js";
+import { MixedObject } from "../simpleTypes.js";
 
 const POSITIVE_INTEGER_PATTERN = /^\d+$/;
 

@@ -1,15 +1,15 @@
 import _ from "underscore";
 
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
 import {
   accountGroup,
   groupExplicit,
   groupPriv,
   groupTitle,
   privilege,
-} from "../tables";
-import { MEMBER_GROUP } from "../../domain/account/specialGroups";
+} from "../tables.js";
+import { MEMBER_GROUP } from "../../domain/account/specialGroups.js";
 
 export default class GroupsDao {
   constructor(private _parent: Dao) {}

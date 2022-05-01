@@ -1,14 +1,14 @@
-import { Dao } from "../dao";
-import { Tnex, val, ResultOrder } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, val, ResultOrder } from "../../db/tnex/index.js";
 import {
   killmail,
   killmailBattle,
   battle,
   Battle,
   srpVerdict,
-} from "../tables";
-import { SrpVerdictStatus } from "./enums";
-import { makeKillmailIterator } from "../shared/makeKillmailIterator";
+} from "../tables.js";
+import { SrpVerdictStatus } from "./enums.js";
+import { makeKillmailIterator } from "../shared/makeKillmailIterator.js";
 
 export default class BattleDao {
   constructor(private _dao: Dao) {}

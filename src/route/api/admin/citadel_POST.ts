@@ -1,7 +1,11 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { DEFAULT_NUM } from "../../../db/tnex/index";
-import { dao } from "../../../db/dao";
-import { verify, string, boolean } from "../../../util/express/schemaVerifier";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { DEFAULT_NUM } from "../../../db/tnex/index.js";
+import { dao } from "../../../db/dao.js";
+import {
+  verify,
+  string,
+  boolean,
+} from "../../../util/express/schemaVerifier.js";
 
 export class Input {
   name = string();

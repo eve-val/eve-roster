@@ -1,5 +1,5 @@
-import { Link } from "./core";
-import { Scoper } from "./Scoper";
+import { Link } from "./core.js";
+import { Scoper } from "./Scoper.js";
 
 export class RenamedJoin<T extends object, U> {
   public readonly table: T;

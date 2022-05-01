@@ -1,7 +1,7 @@
-import { Tnex, val } from "../tnex/index";
-import { Killmail, killmail } from "../tables";
-import { Select } from "../tnex/Select";
-import { StreamIterator } from "../../util/stream/BatchedObjectReadable";
+import { Tnex, val } from "../tnex/index.js";
+import { Killmail, killmail } from "../tables.js";
+import { Select } from "../tnex/Select.js";
+import { StreamIterator } from "../../util/stream/BatchedObjectReadable.js";
 
 // TODO: Make this properly generic once
 // https://github.com/Microsoft/TypeScript/issues/24560 is fixed
