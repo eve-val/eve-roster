@@ -224,7 +224,7 @@ export class Tnex {
         const val = row[col.prefixedName];
         if (val === undefined) {
           throw new Error(
-            `Column ${col.prefixedName} is undefined in row` +
+            `Column ${String(col.prefixedName)} is undefined in row` +
               ` ${inspect(row)}.`
           );
         }

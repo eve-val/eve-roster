@@ -20,7 +20,7 @@ export class RenamedJoin<T extends object, U> {
 
     if (prefix != this.tableAlias) {
       throw new Error(
-        `Alias "${alias}" for column "${column}" must be` +
+        `Alias "${alias}" for column "${String(column)}" must be` +
           ` prefixed with "${this.tableAlias}".`
       );
     }
