@@ -141,7 +141,6 @@
   "resolutions": {
     "ansi-html": "^0.0.9",
     "find-versions": "^5",
-    "jose": "patch:jose@^4.8.0#./patches/jose+4.8.0.patch",
     "json-schema": "^0.4.0",
     "lpad-align": "^3.0.0",
     "minimist": "^1.2.6",

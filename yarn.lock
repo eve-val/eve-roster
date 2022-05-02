@@ -7321,17 +7321,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.8.0":
-  version: 4.8.0
-  resolution: "jose@npm:4.8.0"
-  checksum: beafeb84e67b818085ed89ceac696d072efa96bc944e6bf328356dab788a9c08bcd0d4bfed12589b4d7da84c025214e2297b7da5d009eb282ce29dd443deab5f
-  languageName: node
-  linkType: hard
-
-"jose@patch:jose@^4.8.0#./patches/jose+4.8.0.patch::locator=eve-roster%40workspace%3A.":
-  version: 4.8.0
-  resolution: "jose@patch:jose@npm%3A4.8.0#./patches/jose+4.8.0.patch::version=4.8.0&hash=9915ac&locator=eve-roster%40workspace%3A."
-  checksum: 62f514b824844900687fed4b901da398d36b95c4d03797165ad17a347c4c2dc9a75b1456e2664ad28e16954071d6d8b8b0dbc9c54edeba32c217b1ab508400bc
+"jose@npm:^4.8.1":
+  version: 4.8.1
+  resolution: "jose@npm:4.8.1"
+  checksum: 1b1359f8e4986d2c406aed8668c346edc9ef5c270bc59f0b3819ec27f5acfae5ffa1af84ed3a0ee067ca982fbb26780d87ec1bb31fb35e5c7e540d98d32d9ea5
   languageName: node
   linkType: hard
 
