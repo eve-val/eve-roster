@@ -1224,15 +1224,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/axios@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "@types/axios@npm:0.14.0"
-  dependencies:
-    axios: "npm:*"
-  checksum: 111f1677b03939e101ca633d610af4f7a45111c52337aac6c90776ef55c5c6e1ea2d0c8702b8c5cbc432a905006c47777e20faf669fb3d5d7834c56eb05f9e51
-  languageName: node
-  linkType: hard
-
 "@types/babel__core@npm:^7.0.0, @types/babel__core@npm:^7.1.14":
   version: 7.1.16
   resolution: "@types/babel__core@npm:7.1.16"
@@ -1368,15 +1359,6 @@ __metadata:
   version: 3.0.0
   resolution: "@types/events@npm:3.0.0"
   checksum: 5bfdde8bc87b1103cb90f2c988ebf9e1f77031df7e61c8db8718a87abbf7db9f8a56390d20932d8e86185fbc6e40543acbd24d440f238e39537998f8aabe3a6a
-  languageName: node
-  linkType: hard
-
-"@types/express-rate-limit@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@types/express-rate-limit@npm:6.0.0"
-  dependencies:
-    express-rate-limit: "npm:*"
-  checksum: 9f746ffe54a9b1a117e40e4df6a1ad92a29b4c70f47c06343642521d39dc45836ab7d370cff9a4f2f5de7196b7d8b9614bbec416e31fee32653058bd38607649
   languageName: node
   linkType: hard
 
@@ -2670,7 +2652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:*, axios@npm:^0.27.2":
+"axios@npm:^0.27.2":
   version: 0.27.2
   resolution: "axios@npm:0.27.2"
   dependencies:
@@ -4782,7 +4764,6 @@ __metadata:
     "@sentry/browser": "npm:^6.19.7"
     "@sentry/node": "npm:^6.19.7"
     "@sentry/tracing": "npm:^6.19.7"
-    "@types/axios": "npm:^0.14.0"
     "@types/bluebird": "npm:^3.5.36"
     "@types/body-parser": "npm:^1.19.2"
     "@types/cookie-parser": "npm:^1.4.3"
@@ -4791,7 +4772,6 @@ __metadata:
     "@types/csurf": "npm:^1.11.2"
     "@types/events": "npm:^3"
     "@types/express": "npm:^4.17.13"
-    "@types/express-rate-limit": "npm:^6.0.0"
     "@types/heapdump": "npm:^0.3.1"
     "@types/imagemin": "npm:^8"
     "@types/jest": "npm:^27.4.1"
@@ -5004,7 +4984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-rate-limit@npm:*, express-rate-limit@npm:^6.4.0":
+"express-rate-limit@npm:^6.4.0":
   version: 6.4.0
   resolution: "express-rate-limit@npm:6.4.0"
   peerDependencies:
