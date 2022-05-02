@@ -5,7 +5,7 @@
   "description": "EVE Roster",
   "author": "SOUND IT",
   "scripts": {
-    "build": "yarn run build-server && yarn run build-client",
+    "build": "yarn run build-server && yarn run vtsc && yarn run build-client",
     "build:dev": "yarn run build-server && yarn run build-client:dev",
     "build-client": "webpack --config out/server/infra/build-client/webpack.prod.js",
     "build-client:dev": "webpack --config out/server/infra/build-client/webpack.dev.js",
@@ -14,6 +14,7 @@
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "pretty-check": "prettier --check .",
     "start": "yarn node out/server/bin/witness/witness.js",
+    "vtsc": "vue-tsc --noEmit",
     "test": "yarn run jest -i && yarn run pretty-check && yarn run lint",
     "updatedb": "yarn node out/server/bin/updatedb.js",
     "watch-server": "tsc -w"
@@ -132,6 +133,7 @@
     "vue-loader": "^17.0.0",
     "vue-router": "^4.0.14",
     "vue-style-loader": "^4.1.3",
+    "vue-tsc": "^0.34.11",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-middleware": "^5.3.1",
