@@ -1,4 +1,4 @@
-import { Readable } from "./Readable";
+import { Readable } from "./Readable.js";
 
 /**
  * Given an asynchronous 'iterator' that returns an array of objects,

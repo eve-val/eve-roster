@@ -1,56 +1,56 @@
 import express from "express";
 
-import account_activeTimezone_PUT from "./account/activeTimezone_PUT";
-import account_characters_GET from "./account/characters_GET";
-import account_homeCitadel_PUT from "./account/homeCitadel_PUT";
-import account_mainCharacter_PUT from "./account/mainCharacter_PUT";
-import account_transfer_DELETE from "./account/transfer_DELETE";
-import account_transfer_POST from "./account/transfer_POST";
+import account_activeTimezone_PUT from "./account/activeTimezone_PUT.js";
+import account_characters_GET from "./account/characters_GET.js";
+import account_homeCitadel_PUT from "./account/homeCitadel_PUT.js";
+import account_mainCharacter_PUT from "./account/mainCharacter_PUT.js";
+import account_transfer_DELETE from "./account/transfer_DELETE.js";
+import account_transfer_POST from "./account/transfer_POST.js";
 
-import admin_accountLog from "./admin/accountLog";
-import admin_citadel_DELETE from "./admin/citadel_DELETE";
-import admin_citadel_POST from "./admin/citadel_POST";
-import admin_citadel_PUT from "./admin/citadel_PUT";
-import admin_roster_syncStatus_GET from "./admin/roster/syncStatus_GET";
-import admin_setup_GET from "./admin/setup_GET";
-import admin_setup_PUT from "./admin/setup_PUT";
-import admin_srp_jurisdiction_GET from "./admin/srp/jurisdiction_GET";
-import admin_srp_jurisdiction_PUT from "./admin/srp/jurisdiction_PUT";
-import admin_tasks_job_PUT from "./admin/tasks/job_PUT";
-import admin_tasks_job from "./admin/tasks/job";
-import admin_tasks_logs from "./admin/tasks/logs";
-import admin_tasks_task from "./admin/tasks/task";
+import admin_accountLog from "./admin/accountLog.js";
+import admin_citadel_DELETE from "./admin/citadel_DELETE.js";
+import admin_citadel_POST from "./admin/citadel_POST.js";
+import admin_citadel_PUT from "./admin/citadel_PUT.js";
+import admin_roster_syncStatus_GET from "./admin/roster/syncStatus_GET.js";
+import admin_setup_GET from "./admin/setup_GET.js";
+import admin_setup_PUT from "./admin/setup_PUT.js";
+import admin_srp_jurisdiction_GET from "./admin/srp/jurisdiction_GET.js";
+import admin_srp_jurisdiction_PUT from "./admin/srp/jurisdiction_PUT.js";
+import admin_tasks_job_PUT from "./admin/tasks/job_PUT.js";
+import admin_tasks_job from "./admin/tasks/job.js";
+import admin_tasks_logs from "./admin/tasks/logs.js";
+import admin_tasks_task from "./admin/tasks/task.js";
 
-import character from "./character";
-import character_character_PUT from "./character/character_PUT";
-import character_character_DELETE from "./character/character_DELETE";
-import character_skills from "./character/skills";
+import character from "./character.js";
+import character_character_PUT from "./character/character_PUT.js";
+import character_character_DELETE from "./character/character_DELETE.js";
+import character_skills from "./character/skills.js";
 
-import control_openwindow_information_POST from "./control/openwindow/information_POST";
+import control_openwindow_information_POST from "./control/openwindow/information_POST.js";
 
-import dashboard from "./dashboard";
-import dashboard_queueSummary from "./dashboard/queueSummary";
+import dashboard from "./dashboard.js";
+import dashboard_queueSummary from "./dashboard/queueSummary.js";
 
-import killmail_GET from "./killmail/killmail_GET";
+import killmail_GET from "./killmail/killmail_GET.js";
 
-import ships_borrowedByMe from "./ships/borrowedByMe";
-import ships_borrowed from "./ships/borrowed";
+import ships_borrowedByMe from "./ships/borrowedByMe.js";
+import ships_borrowed from "./ships/borrowed.js";
 
-import srp_approvedLiability_GET from "./srp/approvedLiability_GET";
-import srp_battle_dir_GET from "./srp/battle/battle_dir_GET";
-import srp_battle_GET from "./srp/battle/battle_GET";
-import srp_loss_dir_GET from "./srp/loss/loss_dir_GET";
-import srp_loss_PUT from "./srp/loss/loss_PUT";
-import srp_loss_triage_GET from "./srp/loss/triage_GET";
-import srp_payment_dir_GET from "./srp/payment/payment_dir_GET";
-import srp_payment_GET from "./srp/payment/payment_GET";
-import srp_payment_PUT from "./srp/payment/payment_PUT";
+import srp_approvedLiability_GET from "./srp/approvedLiability_GET.js";
+import srp_battle_dir_GET from "./srp/battle/battle_dir_GET.js";
+import srp_battle_GET from "./srp/battle/battle_GET.js";
+import srp_loss_dir_GET from "./srp/loss/loss_dir_GET.js";
+import srp_loss_PUT from "./srp/loss/loss_PUT.js";
+import srp_loss_triage_GET from "./srp/loss/triage_GET.js";
+import srp_payment_dir_GET from "./srp/payment/payment_dir_GET.js";
+import srp_payment_GET from "./srp/payment/payment_GET.js";
+import srp_payment_PUT from "./srp/payment/payment_PUT.js";
 
-import statistics_skills from "./statistics/skills";
+import statistics_skills from "./statistics/skills.js";
 
-import roster from "./roster";
-import citadels from "./citadels";
-import corporation from "./corporation";
+import roster from "./roster.js";
+import citadels from "./citadels.js";
+import corporation from "./corporation.js";
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import { EsiEndpoint, Private } from "../EsiEndpoint";
+import { EsiEndpoint, Private } from "../EsiEndpoint.js";
 
 /**
  * Given an ESI endpoint, assembles a unified "params" type object for use in

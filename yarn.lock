@@ -2236,13 +2236,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zoltu/typescript-transformer-append-js-extension@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@zoltu/typescript-transformer-append-js-extension@npm:1.0.1"
-  checksum: 049ec347f8989e97830b2c206bfca48ce1b44b007fc2aa11609b15f9af4b8fafb7ed5833c9ea268810c8aaddf5475b6428bbc1b0cdac91f3cabdef9d34598007
-  languageName: node
-  linkType: hard
-
 "abab@npm:^2.0.3, abab@npm:^2.0.5":
   version: 2.0.5
   resolution: "abab@npm:2.0.5"
@@ -4802,7 +4795,6 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.21.0"
     "@vue/compiler-sfc": "npm:^3.2.33"
     "@vue/runtime-dom": "npm:^3.2.33"
-    "@zoltu/typescript-transformer-append-js-extension": "npm:^1.0.1"
     axios: "npm:^0.27.2"
     bluebird: "npm:^3.7.2"
     body-parser: "npm:^1.20.0"
@@ -4854,11 +4846,10 @@ __metadata:
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^2.8.0"
     swagger-ui: "npm:^4.10.3"
-    terser-webpack-plugin: "npm:^5.3.1"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^27.1.4"
+    ts-jest-resolver: "npm:^2.0.0"
     ts-loader: "npm:^9.2.9"
-    ttypescript: "npm:^1.5.13"
     typescript: "npm:4.7.0-beta"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.3"
@@ -7141,7 +7132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-resolve@npm:^27.5.1":
+"jest-resolve@npm:^27.2.5, jest-resolve@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-resolve@npm:27.5.1"
   dependencies:
@@ -7334,6 +7325,13 @@ __metadata:
   version: 4.8.0
   resolution: "jose@npm:4.8.0"
   checksum: beafeb84e67b818085ed89ceac696d072efa96bc944e6bf328356dab788a9c08bcd0d4bfed12589b4d7da84c025214e2297b7da5d009eb282ce29dd443deab5f
+  languageName: node
+  linkType: hard
+
+"jose@patch:jose@^4.8.0#./patches/jose+4.8.0.patch::locator=eve-roster%40workspace%3A.":
+  version: 4.8.0
+  resolution: "jose@patch:jose@npm%3A4.8.0#./patches/jose+4.8.0.patch::version=4.8.0&hash=9915ac&locator=eve-roster%40workspace%3A."
+  checksum: 62f514b824844900687fed4b901da398d36b95c4d03797165ad17a347c4c2dc9a75b1456e2664ad28e16954071d6d8b8b0dbc9c54edeba32c217b1ab508400bc
   languageName: node
   linkType: hard
 
@@ -7726,6 +7724,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: aab58997bcad5ab91908498bbe8ce4b78e8e5025a944f9a8b6a1f11bd2afba4dae55c61dfdcefadadd6cd04efb0c998109e14c633f4aa1f8b4541e4d252c69ea
+  languageName: node
+  linkType: hard
+
+"lodash.sortby@npm:^4.7.0":
+  version: 4.7.0
+  resolution: "lodash.sortby@npm:4.7.0"
+  checksum: 533eff6eecb504d3fdfe33e994bf89dd1ed377172b6b82b2690b60e0edd80befa5ad1a4089c2714c564c6f239406d40caac328e3daa16a33fa359263ec501a4e
   languageName: node
   linkType: hard
 
@@ -10393,7 +10398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:>=1.9.0, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.15.1, resolve@npm:^1.20.0, resolve@npm:^1.9.0":
+"resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.15.1, resolve@npm:^1.20.0, resolve@npm:^1.9.0":
   version: 1.20.0
   resolution: "resolve@npm:1.20.0"
   dependencies:
@@ -10403,7 +10408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@npm%3A>=1.9.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.12.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.15.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.9.0#optional!builtin<compat/resolve>":
+"resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.12.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.15.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.9.0#optional!builtin<compat/resolve>":
   version: 1.20.0
   resolution: "resolve@patch:resolve@npm%3A1.20.0#optional!builtin<compat/resolve>::version=1.20.0&hash=07638b"
   dependencies:
@@ -10875,7 +10880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.20, source-map-support@npm:^0.5.21, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.19":
+"source-map-support@npm:^0.5.20, source-map-support@npm:^0.5.21, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.20":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:
@@ -10899,10 +10904,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.7.3, source-map@npm:~0.7.2":
+"source-map@npm:^0.7.3":
   version: 0.7.3
   resolution: "source-map@npm:0.7.3"
   checksum: 5a00dce8ee0de43b5218608798422304d30f86ee551d8896b638606ceea90712323af12c52b6728e72214be8548c5c4bf230dca85bbbd03756b038b91c992d3e
+  languageName: node
+  linkType: hard
+
+"source-map@npm:~0.8.0-beta.0":
+  version: 0.8.0-beta.0
+  resolution: "source-map@npm:0.8.0-beta.0"
+  dependencies:
+    whatwg-url: "npm:^7.0.0"
+  checksum: 4bc71864ed618ad3a75194fee233aff938dd1716010e34ca8c33e3216a5977ebf56ae6cd1102f72be1a9a7388d25c55865f7710ba30ea5255e8713f38eae89b3
   languageName: node
   linkType: hard
 
@@ -11432,7 +11446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:^5.1.3, terser-webpack-plugin@npm:^5.3.1":
+"terser-webpack-plugin@npm:^5.1.3":
   version: 5.3.1
   resolution: "terser-webpack-plugin@npm:5.3.1"
   dependencies:
@@ -11455,15 +11469,16 @@ __metadata:
   linkType: hard
 
 "terser@npm:^5.7.2":
-  version: 5.7.2
-  resolution: "terser@npm:5.7.2"
+  version: 5.13.1
+  resolution: "terser@npm:5.13.1"
   dependencies:
+    acorn: "npm:^8.5.0"
     commander: "npm:^2.20.0"
-    source-map: "npm:~0.7.2"
-    source-map-support: "npm:~0.5.19"
+    source-map: "npm:~0.8.0-beta.0"
+    source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 1d42c0c67c057f118e0bb7ea8359bb0033af9b516ba18e0d2d76b583cade03c9fdfa9f867770415d6a0ed2ed22d790b660ab48880b400bf0c078ad3f1246b451
+  checksum: 81aee1ff4329585a4b45de152044aac3ac0040316242471bbfbb8c271858efc14a178322d30a0d6988175ba617f26d8a952019c2cdee67a9ac67e235ba881510
   languageName: node
   linkType: hard
 
@@ -11628,6 +11643,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tr46@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "tr46@npm:1.0.1"
+  dependencies:
+    punycode: "npm:^2.1.0"
+  checksum: 077551401b0752fb141ba39d6c287b3783d32ac5a054a0e991b084c888e47789857f2957199840c1f1529deb9c6b9cbd53ab836f3bfcad41411f430e8685ddd8
+  languageName: node
+  linkType: hard
+
 "tr46@npm:^2.0.2":
   version: 2.0.2
   resolution: "tr46@npm:2.0.2"
@@ -11664,6 +11688,15 @@ __metadata:
   dependencies:
     escape-string-regexp: "npm:^1.0.2"
   checksum: d414c7b21e95da3f53c084f2783b30220e8bf93dde7019b4bcfc2e53e0d26f79c90765b8c354332ee128c180e914747057450106ac507387a7519027e2b3d518
+  languageName: node
+  linkType: hard
+
+"ts-jest-resolver@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "ts-jest-resolver@npm:2.0.0"
+  dependencies:
+    jest-resolve: "npm:^27.2.5"
+  checksum: d73624e1d746ac9649affdaf129093e8ec7a6e52b6bb25030cfd729f5fc7b1303fc516262b9f7abf2438207b11dc3a52f4039e50882624f460615ba3be5e08d7
   languageName: node
   linkType: hard
 
@@ -11744,21 +11777,6 @@ __metadata:
   peerDependencies:
     typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
   checksum: 723459d516fe94cd9f798436e9424357200f0cccd2804c3240dbe3d2f51fd85207110a756bb46ae0b0b6bd9420083a048e2b3d44a6534224cc34e5821d8aba7f
-  languageName: node
-  linkType: hard
-
-"ttypescript@npm:^1.5.13":
-  version: 1.5.13
-  resolution: "ttypescript@npm:1.5.13"
-  dependencies:
-    resolve: "npm:>=1.9.0"
-  peerDependencies:
-    ts-node: ">=8.0.2"
-    typescript: ">=3.2.2"
-  bin:
-    ttsc: bin/tsc
-    ttsserver: bin/tsserver
-  checksum: fee8c3ef7fe2006e016ffc6cdac90dea9c85f71b0fd4e25c4a74d18a234b98cd71c82508daa4dc3612d527b0d1f9c49780226a290463908c1d3a8c08bc85c785
   languageName: node
   linkType: hard
 
@@ -12232,6 +12250,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webidl-conversions@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "webidl-conversions@npm:4.0.2"
+  checksum: 68c1adc8200c122eeb9cd3ccb6407e929dab3108210a249ce485ac71acbe8d943cf97fe03687fe350295be467de1c0538d4ee0e0818267a941f1fbcdb0d8f765
+  languageName: node
+  linkType: hard
+
 "webidl-conversions@npm:^5.0.0":
   version: 5.0.0
   resolution: "webidl-conversions@npm:5.0.0"
@@ -12383,6 +12408,17 @@ __metadata:
     tr46: "npm:~0.0.3"
     webidl-conversions: "npm:^3.0.0"
   checksum: bd0cc6b75b84b3d032e30712e2f40eefbc07ecd14f093e87b2f81bb68bce10a3961e8eb646a7a8cc9c2352548fb501eeff668c8b2595fd7c6ea91d1406ce11ee
+  languageName: node
+  linkType: hard
+
+"whatwg-url@npm:^7.0.0":
+  version: 7.1.0
+  resolution: "whatwg-url@npm:7.1.0"
+  dependencies:
+    lodash.sortby: "npm:^4.7.0"
+    tr46: "npm:^1.0.1"
+    webidl-conversions: "npm:^4.0.2"
+  checksum: 81485960495654692080d29ba6c311765eed40d8ea2227dc1a22609302d9091992255aabf6c17529a23efe3afae0527dd24f350895e25fbd2906225b1f389cbd
   languageName: node
   linkType: hard
 

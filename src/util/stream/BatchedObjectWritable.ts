@@ -1,5 +1,5 @@
-import { Writable } from "./Writable";
-import { BasicCallback } from "./core";
+import { Writable } from "./Writable.js";
+import { BasicCallback } from "./core.js";
 
 /**
  * Abstract writable stream that batches writes in order to improve performance.

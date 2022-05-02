@@ -1,15 +1,15 @@
 import Bluebird from "bluebird";
 import moment from "moment";
 
-import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex/index";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { updateSkills } from "../domain/skills/skills";
-import { AccessTokenError } from "../error/AccessTokenError";
-import { isAnyEsiError } from "../data-source/esi/error";
+import { dao } from "../db/dao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { updateSkills } from "../domain/skills/skills.js";
+import { AccessTokenError } from "../error/AccessTokenError.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { Task } from "../infra/taskrunner/Task";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

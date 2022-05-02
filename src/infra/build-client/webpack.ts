@@ -1,9 +1,8 @@
 import path from "path";
 
-import { ProjectPaths } from "./paths";
+import { ProjectPaths } from "./paths.js";
 
 import webpack from "webpack";
-import TerserPlugin from "terser-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import MomentLocalesPlugin from "moment-locales-webpack-plugin";
 
@@ -184,11 +183,7 @@ export function commonConfig(
     },
     optimization: {
       minimize: true,
-      minimizer: [
-        new MiniCssExtractPlugin(),
-        new CssMinimizerPlugin(),
-        new TerserPlugin(),
-      ],
+      minimizer: [new MiniCssExtractPlugin(), new CssMinimizerPlugin(), "..."],
       moduleIds: "deterministic",
       runtimeChunk: "single",
       splitChunks: {

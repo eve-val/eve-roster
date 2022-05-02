@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import { default as axios, AxiosRequestConfig } from "axios";
 
 export const CHARACTER_HEADER = "X-Proxy-Character";
 

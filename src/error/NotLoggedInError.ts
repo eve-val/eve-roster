@@ -1,4 +1,4 @@
-import { UnauthorizedClientError } from "./UnauthorizedClientError";
+import { UnauthorizedClientError } from "./UnauthorizedClientError.js";
 
 export class NotLoggedInError extends UnauthorizedClientError {
   constructor() {

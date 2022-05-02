@@ -1,8 +1,8 @@
-import { EsiEndpoint } from "../EsiEndpoint";
+import { EsiEndpoint } from "../EsiEndpoint.js";
 import { AxiosRequestConfig } from "axios";
-import { MixedObject } from "../../../util/simpleTypes";
+import { MixedObject } from "../../../util/simpleTypes.js";
 import { inspect } from "util";
-import { EsiEndpointParams } from "./EsiEndpointParams";
+import { EsiEndpointParams } from "./EsiEndpointParams.js";
 
 export function buildEsiFetchConfig<T extends EsiEndpoint>(
   baseUrl: string,

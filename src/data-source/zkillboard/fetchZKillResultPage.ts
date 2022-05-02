@@ -1,7 +1,7 @@
 import * as util from "util";
-import axios from "axios";
-import { ZKillDescriptor } from "./ZKillmail";
-import { RateLimiter } from "../../util/RateLimiter";
+import { default as axios } from "axios";
+import { ZKillDescriptor } from "./ZKillmail.js";
+import { RateLimiter } from "../../util/RateLimiter.js";
 
 /**
  * Fetches a specific page of a specific ZKill URL.

@@ -1,8 +1,8 @@
 /* global NodeJS */
 
 import { EventEmitter } from "events";
-import { BasicCallback } from "./core";
-import { WriteStream } from "./Writable";
+import { BasicCallback } from "./core.js";
+import { WriteStream } from "./Writable.js";
 
 export interface Readable<T> extends ReadStream<T> {}
 export class Readable<T> {

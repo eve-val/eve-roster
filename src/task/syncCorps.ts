@@ -1,21 +1,21 @@
 import moment from "moment";
 
-import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex/index";
-import { JobLogger } from "../infra/taskrunner/Job";
+import { dao } from "../db/dao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
 import {
   isAnyEsiError,
   isMissingCharError,
   isRetryableError,
-} from "../data-source/esi/error";
-import { UNKNOWN_CORPORATION_ID } from "../db/constants";
-import { CORP_DOOMHEIM } from "../shared/eveConstants";
-import { parallelize } from "../util/asyncUtil";
+} from "../data-source/esi/error.js";
+import { UNKNOWN_CORPORATION_ID } from "../db/constants.js";
+import { CORP_DOOMHEIM } from "../shared/eveConstants.js";
+import { parallelize } from "../util/asyncUtil.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { Task } from "../infra/taskrunner/Task";
-import { ESI_CHARACTERS_$characterId } from "../data-source/esi/endpoints";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { Task } from "../infra/taskrunner/Task.js";
+import { ESI_CHARACTERS_$characterId } from "../data-source/esi/endpoints.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

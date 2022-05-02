@@ -1,7 +1,7 @@
-import { fetchHullMarketValues, resolvePayout } from "./payout";
-import { SrpTriageJson, VerdictOptionJson } from "../SrpLossJson";
-import { SrpVerdictStatus } from "../../../db/dao/enums";
-import { TriagedLoss } from "./triageLosses";
+import { fetchHullMarketValues, resolvePayout } from "./payout.js";
+import { SrpTriageJson, VerdictOptionJson } from "../SrpLossJson.js";
+import { SrpVerdictStatus } from "../../../db/dao/enums.js";
+import { TriagedLoss } from "./triageLosses.js";
 
 /**
  * Converts the output for triageLosses() to the triage format in SrpLossJson.

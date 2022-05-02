@@ -1,8 +1,8 @@
-import { Tnex } from "../../../db/tnex/index";
-import { LossRow, triageLosses, TriagedLoss } from "./triageLosses";
-import { fetchHullMarketValues, resolvePayout } from "./payout";
-import { SrpVerdictReason, SrpVerdictStatus } from "../../../db/dao/enums";
-import { dao } from "../../../db/dao";
+import { Tnex } from "../../../db/tnex/index.js";
+import { LossRow, triageLosses, TriagedLoss } from "./triageLosses.js";
+import { fetchHullMarketValues, resolvePayout } from "./payout.js";
+import { SrpVerdictReason, SrpVerdictStatus } from "../../../db/dao/enums.js";
+import { dao } from "../../../db/dao.js";
 
 /**
  * Given a list of losses, applies triage rules to each one and commits and

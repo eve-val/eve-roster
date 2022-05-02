@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { MemberCorporation, GroupTitle } from "../../../db/tables";
-import { Tnex, DEFAULT_NUM } from "../../../db/tnex/index";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { MemberCorporation, GroupTitle } from "../../../db/tables.js";
+import { Tnex, DEFAULT_NUM } from "../../../db/tnex/index.js";
 
-import { UserVisibleError } from "../../../error/UserVisibleError";
-import { isCensored } from "./_censor";
+import { UserVisibleError } from "../../../error/UserVisibleError.js";
+import { isCensored } from "./_censor.js";
 
 import {
   verify,
@@ -15,11 +15,11 @@ import {
   array,
   object,
   simpleMap,
-} from "../../../util/express/schemaVerifier";
-import { AccountSummary } from "../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../infra/express/privileges";
-import { fetchEsi } from "../../../data-source/esi/fetch/fetchEsi";
-import { ESI_CORPORATIONS_$corporationId } from "../../../data-source/esi/endpoints";
+} from "../../../util/express/schemaVerifier.js";
+import { AccountSummary } from "../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../infra/express/privileges.js";
+import { fetchEsi } from "../../../data-source/esi/fetch/fetchEsi.js";
+import { ESI_CORPORATIONS_$corporationId } from "../../../data-source/esi/endpoints.js";
 
 export class Input {
   corporations = array({

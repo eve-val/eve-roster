@@ -1,4 +1,4 @@
-import { ExtendableError } from "./ExtendableError";
+import { ExtendableError } from "./ExtendableError.js";
 
 export const enum AccessTokenErrorType {
   TOKEN_MISSING,

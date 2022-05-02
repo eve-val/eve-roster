@@ -1,7 +1,7 @@
-import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable";
-import { Killmail } from "../../../db/tables";
-import { Tnex, UpdatePolicy } from "../../../db/tnex/index";
-import { dao } from "../../../db/dao";
+import { BatchedObjectWritable } from "../../../util/stream/BatchedObjectWritable.js";
+import { Killmail } from "../../../db/tables.js";
+import { Tnex, UpdatePolicy } from "../../../db/tnex/index.js";
+import { dao } from "../../../db/dao.js";
 
 /**
  * Simple batched DB writer for Killmails. Uses UPSERT rather than INSERT.

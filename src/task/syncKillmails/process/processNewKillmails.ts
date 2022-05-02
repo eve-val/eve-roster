@@ -1,11 +1,11 @@
 import moment from "moment";
-import { Tnex } from "../../../db/tnex/index";
-import { BatchedObjectReadable } from "../../../util/stream/BatchedObjectReadable";
-import { dao } from "../../../db/dao";
-import { pipelinePr } from "../../../util/stream/pipeline";
-import { KillmailAssociator } from "./KillmailAssociator";
-import { KillmailProcessor } from "./KillmailProcessor";
-import { JobLogger } from "../../../infra/taskrunner/Job";
+import { Tnex } from "../../../db/tnex/index.js";
+import { BatchedObjectReadable } from "../../../util/stream/BatchedObjectReadable.js";
+import { dao } from "../../../db/dao.js";
+import { pipelinePr } from "../../../util/stream/pipeline.js";
+import { KillmailAssociator } from "./KillmailAssociator.js";
+import { KillmailProcessor } from "./KillmailProcessor.js";
+import { JobLogger } from "../../../infra/taskrunner/Job.js";
 
 /**
  * Processes any killmails whose "processed" column is false

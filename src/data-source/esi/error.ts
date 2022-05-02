@@ -1,4 +1,4 @@
-import { EsiError, EsiErrorKind } from "./EsiError";
+import { EsiError, EsiErrorKind } from "./EsiError.js";
 import VError from "verror";
 import { inspect } from "util";
 

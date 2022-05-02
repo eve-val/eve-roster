@@ -1,17 +1,17 @@
 import Bluebird from "bluebird";
 
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
 import {
   config,
   groupTitle,
   GroupTitle,
   memberCorporation,
   MemberCorporation,
-} from "../tables";
-import { serialize } from "../../util/asyncUtil";
-import { UserVisibleError } from "../../error/UserVisibleError";
-import { Nullable } from "../../util/simpleTypes";
+} from "../tables.js";
+import { serialize } from "../../util/asyncUtil.js";
+import { UserVisibleError } from "../../error/UserVisibleError.js";
+import { Nullable } from "../../util/simpleTypes.js";
 
 export interface ConfigEntries {
   siggyUsername: string;

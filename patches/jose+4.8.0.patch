@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index a378992d2bcb1cbf4f2f8ada1895994c015cdae4..a79238da092341ebb50581e665f793eb95f404df 100644
+--- a/package.json
++++ b/package.json
+@@ -55,6 +55,7 @@
+   "sideEffects": false,
+   "exports": {
+     ".": {
++      "types": "./dist/types/index.d.ts",
+       "browser": "./dist/browser/index.js",
+       "worker": "./dist/browser/index.js",
+       "import": "./dist/node/esm/index.js",

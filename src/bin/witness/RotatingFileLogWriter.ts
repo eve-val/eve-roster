@@ -3,17 +3,17 @@ import * as path from "path";
 import moment from "moment";
 import { Writable } from "stream";
 import { WriteStream } from "fs";
-import { BasicCallback } from "../../util/stream/core";
+import { BasicCallback } from "../../util/stream/core.js";
 import { Moment } from "moment";
-import { asyncEach } from "./asyncEach";
-import { pruneOldLogs } from "./pruneOldLogs";
-import * as logger from "./logger";
+import { asyncEach } from "./asyncEach.js";
+import { pruneOldLogs } from "./pruneOldLogs.js";
+import * as logger from "./logger.js";
 import {
   formatLogFilename,
   getLogFormatSpecifier,
   formatOutputLine,
   parseInputLine,
-} from "./protocol";
+} from "./protocol.js";
 
 /**
  * Writes log output to a text file.

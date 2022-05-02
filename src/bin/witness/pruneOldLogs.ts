@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 import moment from "moment";
-import { asyncEach } from "./asyncEach";
-import { BasicCallback } from "../../util/stream/core";
-import { parseLogFilename } from "./protocol";
-import * as logger from "./logger";
+import { asyncEach } from "./asyncEach.js";
+import { BasicCallback } from "../../util/stream/core.js";
+import { parseLogFilename } from "./protocol.js";
+import * as logger from "./logger.js";
 
 /**
  * Deletes any log files older than MAX_LOG_LIFETIME.

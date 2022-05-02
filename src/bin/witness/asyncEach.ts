@@ -1,4 +1,4 @@
-import { BasicCallback } from "../../util/stream/core";
+import { BasicCallback } from "../../util/stream/core.js";
 
 /**
  * Array iteration for callback-based async execution.

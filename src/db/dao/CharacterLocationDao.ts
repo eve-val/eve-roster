@@ -1,12 +1,12 @@
-import { Dao } from "../dao";
-import { Tnex, val } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, val } from "../../db/tnex/index.js";
 import {
   characterLocation,
   CharacterLocation,
   memberCorporation,
   character,
   accessToken,
-} from "../tables";
+} from "../tables.js";
 
 export default class LocationDao {
   constructor(private _parent: Dao) {}

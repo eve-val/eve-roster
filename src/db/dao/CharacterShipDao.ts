@@ -1,4 +1,4 @@
-import { Dao } from "../dao";
+import { Dao } from "../dao.js";
 import {
   account,
   character,
@@ -6,8 +6,8 @@ import {
   characterShipUpdate,
   ownership,
   sdeType,
-} from "../tables";
-import { Tnex, val } from "../tnex/index";
+} from "../tables.js";
+import { Tnex, val } from "../tnex/index.js";
 
 export default class CharacterShipDao {
   constructor(private _parent: Dao) {}

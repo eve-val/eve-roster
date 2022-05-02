@@ -1,6 +1,6 @@
-import { dao } from "../../../db/dao";
-import { BorrowedShipOutputRow } from "../../../db/dao/CharacterShipDao";
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
+import { dao } from "../../../db/dao.js";
+import { BorrowedShipOutputRow } from "../../../db/dao/CharacterShipDao.js";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
 
 export default jsonEndpoint(
   (req, res, db, account, privs): Promise<BorrowedShipOutputRow[]> => {

@@ -2,7 +2,7 @@
 
 import * as child_process from "child_process";
 import { ChildProcess } from "child_process";
-import * as logger from "./logger";
+import * as logger from "./logger.js";
 
 /**
  * Manages the lifecycle of the child and parent processes.

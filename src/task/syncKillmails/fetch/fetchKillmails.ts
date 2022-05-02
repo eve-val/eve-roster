@@ -1,12 +1,12 @@
 import moment from "moment";
-import { Tnex } from "../../../db/tnex/index";
-import { JobLogger } from "../../../infra/taskrunner/Job";
-import { ZKillmailStream } from "../../../data-source/zkillboard/ZKillmailStream";
-import { pipelinePr } from "../../../util/stream/pipeline";
-import { formatZKillTimeArgument } from "../../../data-source/zkillboard/formatZKillTimeArgument";
-import { EsiKillmailFetcher } from "./EsiKillmailFetcher";
-import { KillmailOrderer } from "./KillmailOrderer";
-import { KillmailWriter } from "./KillmailWriter";
+import { Tnex } from "../../../db/tnex/index.js";
+import { JobLogger } from "../../../infra/taskrunner/Job.js";
+import { ZKillmailStream } from "../../../data-source/zkillboard/ZKillmailStream.js";
+import { pipelinePr } from "../../../util/stream/pipeline.js";
+import { formatZKillTimeArgument } from "../../../data-source/zkillboard/formatZKillTimeArgument.js";
+import { EsiKillmailFetcher } from "./EsiKillmailFetcher.js";
+import { KillmailOrderer } from "./KillmailOrderer.js";
+import { KillmailWriter } from "./KillmailWriter.js";
 
 /**
  * Fetches all killmails for a corporation whose timestamps are within the

@@ -1,10 +1,10 @@
 import { Knex } from "knex";
 
 import util from "util";
-import { splitColumn } from "./core";
-import { Tnex } from "./Tnex";
-import { Scoper } from "./Scoper";
-import { ColumnDescriptorImpl } from "./ColumnDescriptor";
+import { splitColumn } from "./core.js";
+import { Tnex } from "./Tnex.js";
+import { Scoper } from "./Scoper.js";
+import { ColumnDescriptorImpl } from "./ColumnDescriptor.js";
 
 export class TnexBuilder {
   private _separator: string;

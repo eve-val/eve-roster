@@ -1,8 +1,8 @@
 /* global NodeJS */
 
-import { WritableOptions } from "./Writable";
-import { ReadStream, ReadableOptions } from "./Readable";
-import { BasicCallback } from "./core";
+import { WritableOptions } from "./Writable.js";
+import { ReadStream, ReadableOptions } from "./Readable.js";
+import { BasicCallback } from "./core.js";
 
 export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
 export class Duplex<In, Out> {

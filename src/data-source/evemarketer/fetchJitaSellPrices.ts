@@ -1,13 +1,13 @@
-import axios from "axios";
+import { default as axios } from "axios";
 import moment from "moment";
 import { inspect } from "util";
 
-import { ExpirationCache } from "../../util/ExpirationCache";
-import { fetchMarketStats } from "./fetchMarketStats";
-import { SYSTEM_JITA } from "../../eve/constants/mapSolarSystems";
-import { MarketStat } from "./MarketStat";
+import { ExpirationCache } from "../../util/ExpirationCache.js";
+import { fetchMarketStats } from "./fetchMarketStats.js";
+import { SYSTEM_JITA } from "../../eve/constants/mapSolarSystems.js";
+import { MarketStat } from "./MarketStat.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

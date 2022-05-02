@@ -1,19 +1,22 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
 import {
   number,
   verify,
   nullable,
   stringEnum,
-} from "../../../../util/express/schemaVerifier";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
-import { BadRequestError } from "../../../../error/BadRequestError";
-import { SrpVerdictStatus, SrpVerdictReason } from "../../../../db/dao/enums";
-import { NotFoundError } from "../../../../error/NotFoundError";
-import { idParam } from "../../../../util/express/paramVerifier";
-import { UserVisibleError } from "../../../../error/UserVisibleError";
+} from "../../../../util/express/schemaVerifier.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
+import { BadRequestError } from "../../../../error/BadRequestError.js";
+import {
+  SrpVerdictStatus,
+  SrpVerdictReason,
+} from "../../../../db/dao/enums.js";
+import { NotFoundError } from "../../../../error/NotFoundError.js";
+import { idParam } from "../../../../util/express/paramVerifier.js";
+import { UserVisibleError } from "../../../../error/UserVisibleError.js";
 
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);

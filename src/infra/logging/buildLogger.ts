@@ -1,5 +1,5 @@
-import { Logger } from "./Logger";
-import { WitnessLogger } from "./WitnessLogger";
+import { Logger } from "./Logger.js";
+import { WitnessLogger } from "./WitnessLogger.js";
 
 /**
  * Creates an object that can be used to log messages to persistent logs.

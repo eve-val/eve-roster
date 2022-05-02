@@ -1,6 +1,6 @@
-import { Tnex, DEFAULT_NUM } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { account, accountLog, character } from "../tables";
+import { Tnex, DEFAULT_NUM } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { account, accountLog, character } from "../tables.js";
 
 export type LoggableEvent =
   | "CREATE_ACCOUNT"

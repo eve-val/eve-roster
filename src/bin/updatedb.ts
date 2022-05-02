@@ -33,7 +33,7 @@
  */
 
 import { fileURLToPath } from "url";
-import { getPostgresKnex } from "../db/getPostgresKnex";
+import { getPostgresKnex } from "../db/getPostgresKnex.js";
 
 // Directory is relative to project root
 const MIGRATE_CONFIG = {
@@ -45,7 +45,7 @@ const knex = getPostgresKnex();
 export function updateDb(revert: boolean): Promise<void> {
   if (revert) {
     console.log("Reverting schema changes...");
-    return knex.migrate.rollback(MIGRATE_CONFIG).then((reverts) => {
+    return knex!.migrate.rollback(MIGRATE_CONFIG).then((reverts) => {
       const batch = reverts[0];
       const scripts = reverts[1];
       if (scripts.length > 0) {
@@ -60,7 +60,7 @@ export function updateDb(revert: boolean): Promise<void> {
   } else {
     // Proceed with an update to latest schema
     console.log("Updating...");
-    return knex.migrate.latest(MIGRATE_CONFIG).then((updates) => {
+    return knex!.migrate.latest(MIGRATE_CONFIG).then((updates) => {
       const batch = updates[0];
       const scripts = updates[1];
       if (scripts.length > 0) {

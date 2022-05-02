@@ -1,7 +1,7 @@
 import _ from "underscore";
 
-import { Dao } from "../dao";
-import { Tnex, val, UpdateStrategy } from "../../db/tnex/index";
+import { Dao } from "../dao.js";
+import { Tnex, val, UpdateStrategy } from "../../db/tnex/index.js";
 import {
   accessToken,
   account,
@@ -11,7 +11,7 @@ import {
   memberCorporation,
   ownership,
   skillsheet,
-} from "../tables";
+} from "../tables.js";
 
 export default class CharacterDao {
   constructor(private _parent: Dao) {}

@@ -1,7 +1,7 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { account, character, ownership, pendingOwnership } from "../tables";
-import { updateGroupsForAccount } from "../../domain/account/accountGroups";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { account, character, ownership, pendingOwnership } from "../tables.js";
+import { updateGroupsForAccount } from "../../domain/account/accountGroups.js";
 
 export default class OwnershipDao {
   constructor(private _dao: Dao) {}

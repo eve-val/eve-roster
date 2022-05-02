@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
 
-import { parallelize } from "../../../util/asyncUtil";
-import { loadSummarizedQueue } from "../../../domain/skills/skillQueueSummarizer";
+import { parallelize } from "../../../util/asyncUtil.js";
+import { loadSummarizedQueue } from "../../../domain/skills/skillQueueSummarizer.js";
 
-import { SkillQueueSummary } from "../../../domain/skills/skillQueueSummary";
+import { SkillQueueSummary } from "../../../domain/skills/skillQueueSummary.js";
 
 export type Payload = {
   id: number;

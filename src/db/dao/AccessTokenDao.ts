@@ -1,6 +1,6 @@
-import { Tnex, val } from "../../db/tnex/index";
-import { Dao } from "../dao";
-import { accessToken, AccessToken } from "../tables";
+import { Tnex, val } from "../../db/tnex/index.js";
+import { Dao } from "../dao.js";
+import { accessToken, AccessToken } from "../tables.js";
 
 export default class AccessTokenDao {
   constructor(private _parent: Dao) {}

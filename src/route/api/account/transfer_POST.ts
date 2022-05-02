@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { idParam } from "../../../util/express/paramVerifier";
-import { verify, number } from "../../../util/express/schemaVerifier";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { idParam } from "../../../util/express/paramVerifier.js";
+import { verify, number } from "../../../util/express/schemaVerifier.js";
 
-import { BadRequestError } from "../../../error/BadRequestError";
-import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError";
+import { BadRequestError } from "../../../error/BadRequestError.js";
+import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError.js";
 
 export class Input {
   characterId = number();

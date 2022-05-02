@@ -1,8 +1,8 @@
 import moment from "moment";
-import { EsiEndpoint } from "../EsiEndpoint";
+import { EsiEndpoint } from "../EsiEndpoint.js";
 import { AxiosResponse } from "axios";
-import { SimpleMap } from "../../../util/simpleTypes";
-import { buildLogger } from "../../../infra/logging/buildLogger";
+import { SimpleMap } from "../../../util/simpleTypes.js";
+import { buildLogger } from "../../../infra/logging/buildLogger.js";
 
 const logger = buildLogger("esi");
 

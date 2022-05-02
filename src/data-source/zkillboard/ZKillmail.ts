@@ -1,4 +1,4 @@
-import { EsiKillmail } from "../esi/EsiKillmail";
+import { EsiKillmail } from "../esi/EsiKillmail.js";
 
 /**
  * Meta-object created by joining the output of ZKill and ESI. This used to be

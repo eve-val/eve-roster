@@ -1,10 +1,10 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { dao } from "../../../../db/dao";
-import { boolQuery, idParam } from "../../../../util/express/paramVerifier";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../../db/dao.js";
+import { boolQuery, idParam } from "../../../../util/express/paramVerifier.js";
 import {
   BattleOutput,
   battlesToJson,
-} from "../../../../domain/battle/battlesToJson";
+} from "../../../../domain/battle/battlesToJson.js";
 
 export default jsonEndpoint(
   async (req, res, db, _account, _privs): Promise<BattleOutput> => {

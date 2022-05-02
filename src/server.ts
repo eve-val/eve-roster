@@ -10,11 +10,11 @@ Sentry.init({
 
 import "heapdump";
 
-import Graceful from "node-graceful";
+import { default as Graceful } from "node-graceful";
 Graceful.captureExceptions = true;
 
-import { tables } from "./db/tables";
-import { getPostgresKnex } from "./db/getPostgresKnex";
+import { tables } from "./db/tables.js";
+import { getPostgresKnex } from "./db/getPostgresKnex.js";
 
 // import { DiagConsoleLogger, DiagLogLevel, diag } from "@opentelemetry/api";
 // diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
@@ -37,7 +37,7 @@ const REQUIRED_VARS = [
 ];
 
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "./infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "./infra/logging/buildLogger.js";
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 for (const envVar of REQUIRED_VARS) {
@@ -76,10 +76,10 @@ registerInstrumentations({
   ],
 });
 
-import * as express from "./infra/express/express";
-import * as cron from "./infra/taskrunner/cron";
-import * as taskRunner from "./infra/taskrunner/taskRunner";
-import * as sde from "./eve/sde";
+import * as express from "./infra/express/express.js";
+import * as cron from "./infra/taskrunner/cron.js";
+import * as taskRunner from "./infra/taskrunner/taskRunner.js";
+import * as sde from "./eve/sde.js";
 
 // Crash the process in the face of an unhandled promise rejection
 process.on("unhandledRejection", (err) => {
@@ -98,7 +98,7 @@ main().catch((e) => {
 });
 
 async function main() {
-  const db = tables.build(getPostgresKnex());
+  const db = tables.build(getPostgresKnex()!);
 
   await sde.loadStaticData(db, false);
 

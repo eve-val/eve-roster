@@ -1,8 +1,8 @@
 import moment from "moment";
-import { ProcessControl } from "./ProcessControl";
-import { RotatingFileLogWriter } from "./RotatingFileLogWriter";
-import { getRootPath } from "./getRootPath";
-import * as logger from "./logger";
+import { ProcessControl } from "./ProcessControl.js";
+import { RotatingFileLogWriter } from "./RotatingFileLogWriter.js";
+import { getRootPath } from "./getRootPath.js";
+import * as logger from "./logger.js";
 
 import path from "path";
 import { fileURLToPath } from "url";

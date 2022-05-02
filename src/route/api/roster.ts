@@ -1,19 +1,19 @@
 import moment from "moment";
 
-import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex/index";
+import { dao } from "../../db/dao.js";
+import { Tnex } from "../../db/tnex/index.js";
 import {
   BasicRosterCharacter,
   OwnedRosterCharacter,
-} from "../../db/dao/RosterDao";
-import { AccountPrivileges } from "../../infra/express/privileges";
-import { jsonEndpoint } from "../../infra/express/protectedEndpoint";
-import { isAnyEsiError } from "../../data-source/esi/error";
-import * as alert from "../../shared/rosterAlertLevels";
-import { fetchEveNames } from "../../data-source/esi/names";
-import { SimpleMap } from "../../util/simpleTypes";
+} from "../../db/dao/RosterDao.js";
+import { AccountPrivileges } from "../../infra/express/privileges.js";
+import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
+import { isAnyEsiError } from "../../data-source/esi/error.js";
+import * as alert from "../../shared/rosterAlertLevels.js";
+import { fetchEveNames } from "../../data-source/esi/names.js";
+import { SimpleMap } from "../../util/simpleTypes.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

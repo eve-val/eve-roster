@@ -1,13 +1,19 @@
-import axios, { AxiosResponse } from "axios";
-import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET";
-import { Output as dashboard_Output } from "../../route/api/dashboard";
-import { Output as character_Output } from "../../route/api/character";
-import { Triage, Battles, Losses, Transaction, Payments } from "../srp/types";
-import { Task, Job, Log, Citadel } from "../admin/types";
-import { Account } from "../roster/types";
-import { CharacterDescription } from "../../route/api/account/characters_GET";
-import { Payload as skills_Payload } from "../../route/api/character/skills";
-import { Ship } from "../ships/ships";
+import { default as axios, AxiosResponse } from "axios";
+import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET.js";
+import { Output as dashboard_Output } from "../../route/api/dashboard.js";
+import { Output as character_Output } from "../../route/api/character.js";
+import {
+  Triage,
+  Battles,
+  Losses,
+  Transaction,
+  Payments,
+} from "../srp/types.js";
+import { Task, Job, Log, Citadel } from "../admin/types.js";
+import { Account } from "../roster/types.js";
+import { CharacterDescription } from "../../route/api/account/characters_GET.js";
+import { Payload as skills_Payload } from "../../route/api/character/skills.js";
+import { Ship } from "../ships/ships.js";
 
 export function configureCsrfInterceptor(token: string) {
   axios.interceptors.request.use(

@@ -3,7 +3,7 @@ import {
   cmpNumberProp,
   cmpStringProp,
   cmpNullProp,
-} from "../../src/util/sortBy";
+} from "../../src/util/sortBy.js";
 
 test("Null sort - simple", () => {
   expect(

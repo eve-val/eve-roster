@@ -1,6 +1,6 @@
-import { Transform, TransformCallback } from "./Transform";
-import { BasicCallback } from "./core";
-import { ArrayQueue } from "../collection/ArrayQueue";
+import { Transform, TransformCallback } from "./Transform.js";
+import { BasicCallback } from "./core.js";
+import { ArrayQueue } from "../collection/ArrayQueue.js";
 
 /**
  * Transform stream that can process multiple entities at once.

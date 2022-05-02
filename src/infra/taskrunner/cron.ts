@@ -4,14 +4,14 @@
  */
 import schedule from "node-schedule";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { serialize } from "../../util/asyncUtil";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { serialize } from "../../util/asyncUtil.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../logging/buildLogger";
-import { Task } from "./Task";
-import * as taskRunner from "./taskRunner";
-import { SCHEDULED_TASKS } from "../../task-registry/scheduledTasks";
+import { buildLoggerFromFilename } from "../logging/buildLogger.js";
+import { Task } from "./Task.js";
+import * as taskRunner from "./taskRunner.js";
+import { SCHEDULED_TASKS } from "../../task-registry/scheduledTasks.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

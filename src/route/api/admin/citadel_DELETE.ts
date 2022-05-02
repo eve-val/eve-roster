@@ -1,6 +1,6 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { BadRequestError } from "../../../error/BadRequestError";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { BadRequestError } from "../../../error/BadRequestError.js";
 
 export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
   const citadelId = parseInt(req.params.id);

@@ -1,17 +1,17 @@
 import moment from "moment";
 
-import { getAccessTokensFromRows } from "../data-source/accessToken/accessToken";
-import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex/index";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { CharacterLocation } from "../db/tables";
-import { Task } from "../infra/taskrunner/Task";
+import { getAccessTokensFromRows } from "../data-source/accessToken/accessToken.js";
+import { dao } from "../db/dao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { CharacterLocation } from "../db/tables.js";
+import { Task } from "../infra/taskrunner/Task.js";
 import {
   ESI_CHARACTERS_$characterId_LOCATION,
   ESI_CHARACTERS_$characterId_SHIP,
-} from "../data-source/esi/endpoints";
-import { isAnyEsiError } from "../data-source/esi/error";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
+} from "../data-source/esi/endpoints.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 
 export const syncCharacterLocations: Task = {
   name: "syncCharacterLocations",

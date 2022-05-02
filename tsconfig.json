@@ -6,9 +6,9 @@
 
     "target": "es2020",
     // Export Node-style modules since this is running on Node
-    "module": "es2020",
+    "module": "nodenext",
     // We're running on Node, so use this strategy.
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
 
     // Various strictness guarantees when compiling
     "strict": true,
@@ -26,13 +26,7 @@
       "dom"
     ] /* Specify library files to be included in the compilation:  */,
     "allowJs": true /* Allow javascript files to be compiled. */,
-    "sourceMap": true /* Generates corresponding '.map' file. */,
-    "plugins": [
-      {
-        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
-        "after": true
-      }
-    ]
+    "sourceMap": true /* Generates corresponding '.map' file. */
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "static", "out/**/*", "src/client"]

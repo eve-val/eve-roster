@@ -40,7 +40,7 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   };
 }
 
-import * as api from "../../route/api/character/skills";
+import * as api from "../../route/api/character/skills.js";
 
 export interface Skill extends api.Skill {
   queuedLevel?: number;

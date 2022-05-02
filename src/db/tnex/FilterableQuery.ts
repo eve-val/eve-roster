@@ -5,8 +5,8 @@ import {
   ValueWrapper,
   StringKeyOf,
   DeepPartial,
-} from "./core";
-import { Scoper } from "./Scoper";
+} from "./core.js";
+import { Scoper } from "./Scoper.js";
 
 /**
  * Base class for things that can specify WHERE clauses.

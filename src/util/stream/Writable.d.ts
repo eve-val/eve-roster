@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import { ReadStream } from "./Readable";
-import { BasicCallback } from "./core";
+import { ReadStream } from "./Readable.js";
+import { BasicCallback } from "./core.js";
 
 export interface Writable<T> extends WriteStream<T> {}
 export class Writable<T> {

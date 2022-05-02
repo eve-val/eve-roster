@@ -1,8 +1,8 @@
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../../db/tnex/index";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { dao } from "../../../../db/dao";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { dao } from "../../../../db/dao.js";
 
 export interface Output {
   srpJurisdiction: { start: number } | null;

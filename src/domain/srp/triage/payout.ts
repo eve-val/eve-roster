@@ -1,8 +1,8 @@
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { ApprovedVerdict, MarketPayout } from "./TriageRule";
-import { fetchJitaSellPrices } from "../../../data-source/evemarketer/fetchJitaSellPrices";
-import { SrpVerdictStatus } from "../../../db/dao/enums";
-import { TriagedLoss } from "./triageLosses";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { ApprovedVerdict, MarketPayout } from "./TriageRule.js";
+import { fetchJitaSellPrices } from "../../../data-source/evemarketer/fetchJitaSellPrices.js";
+import { SrpVerdictStatus } from "../../../db/dao/enums.js";
+import { TriagedLoss } from "./triageLosses.js";
 
 /**
  * Given a list of triaged losses, looks up any relevant market prices. Used

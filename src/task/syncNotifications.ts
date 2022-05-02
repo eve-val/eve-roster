@@ -1,17 +1,17 @@
 import _ from "underscore";
 import moment from "moment";
-import { getAccessToken } from "../data-source/accessToken/accessToken";
-import { isAnyEsiError } from "../data-source/esi/error";
-import { EsiNotification } from "../data-source/esi/EsiNotification";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
-import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints";
-import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex/index";
-import { AccessTokenError } from "../error/AccessTokenError";
+import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
+import { EsiNotification } from "../data-source/esi/EsiNotification.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
+import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints.js";
+import { dao } from "../db/dao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { AccessTokenError } from "../error/AccessTokenError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { JobLogger } from "../infra/taskrunner/Job";
-import { Task } from "../infra/taskrunner/Task";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 import { trace, context } from "@opentelemetry/api";
 

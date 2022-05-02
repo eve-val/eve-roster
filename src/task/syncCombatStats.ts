@@ -1,14 +1,14 @@
 import Bluebird from "bluebird";
 import moment from "moment";
-import axios from "axios";
+import { default as axios } from "axios";
 
-import { dao } from "../db/dao";
-import { Tnex } from "../db/tnex/index";
-import { serialize } from "../util/asyncUtil";
-import { JobLogger } from "../infra/taskrunner/Job";
+import { dao } from "../db/dao.js";
+import { Tnex } from "../db/tnex/index.js";
+import { serialize } from "../util/asyncUtil.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { Task } from "../infra/taskrunner/Task";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { Task } from "../infra/taskrunner/Task.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

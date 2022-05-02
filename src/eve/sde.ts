@@ -1,13 +1,13 @@
-import { Tnex } from "../db/tnex/index";
+import { Tnex } from "../db/tnex/index.js";
 import {
   loadSdeSkillDefinitions,
   SdeSkill,
-} from "./sde/loadSdeSkillDefinitions";
-import { defaultSkillName } from "../domain/skills/defaultSkillName";
+} from "./sde/loadSdeSkillDefinitions.js";
+import { defaultSkillName } from "../domain/skills/defaultSkillName.js";
 
 let skillDefinitions = new Map<number, SdeSkill>();
 
-export { SdeSkill } from "./sde/loadSdeSkillDefinitions";
+export { SdeSkill } from "./sde/loadSdeSkillDefinitions.js";
 
 export async function loadStaticData(db: Tnex, strictMode: boolean) {
   const _skillDefinitions = await loadSdeSkillDefinitions(db, strictMode);

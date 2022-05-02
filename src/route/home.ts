@@ -1,6 +1,6 @@
 import querystring from "querystring";
-import { htmlEndpoint } from "../infra/express/protectedEndpoint";
-import { getSession } from "../infra/express/session";
+import { htmlEndpoint } from "../infra/express/protectedEndpoint.js";
+import { getSession } from "../infra/express/session.js";
 
 export default htmlEndpoint(async (req, res, db, account, privs) => {
   const identity = {

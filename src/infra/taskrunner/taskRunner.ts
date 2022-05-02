@@ -1,6 +1,6 @@
-import { Scheduler, TaskOptions } from "./Scheduler";
-import { Task } from "./Task";
-import { Tnex } from "../../db/tnex/index";
+import { Scheduler, TaskOptions } from "./Scheduler.js";
+import { Task } from "./Task.js";
+import { Tnex } from "../../db/tnex/index.js";
 
 /**
  * Global wrapper around a Scheduler instance.

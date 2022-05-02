@@ -1,8 +1,8 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { verify, string } from "../../../util/express/schemaVerifier";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { verify, string } from "../../../util/express/schemaVerifier.js";
 
-import { BadRequestError } from "../../../error/BadRequestError";
+import { BadRequestError } from "../../../error/BadRequestError.js";
 
 export class PartialCitadelJson {
   name = string();

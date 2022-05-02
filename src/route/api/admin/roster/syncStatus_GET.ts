@@ -1,13 +1,13 @@
 import _ from "underscore";
 
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { SimpleNumMap } from "../../../../util/simpleTypes";
-import { fetchEveNames } from "../../../../data-source/esi/names";
-import { hasRosterScopes } from "../../../../domain/roster/hasRosterScopes";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { Tnex } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { SimpleNumMap } from "../../../../util/simpleTypes.js";
+import { fetchEveNames } from "../../../../data-source/esi/names.js";
+import { hasRosterScopes } from "../../../../domain/roster/hasRosterScopes.js";
 
 export interface Output {
   corporations: CorpSection[];

@@ -1,8 +1,8 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { idParam } from "../../../util/express/paramVerifier";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { idParam } from "../../../util/express/paramVerifier.js";
 
-import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError";
+import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError.js";
 
 export default jsonEndpoint((req, res, db, account, _privs): Promise<{}> => {
   const targetAccountId = idParam(req, "id");

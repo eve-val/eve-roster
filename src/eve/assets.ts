@@ -1,14 +1,14 @@
 import {
   ESI_CHARACTERS_$characterId_ASSETS,
   ESI_CHARACTERS_$characterId_ASSETS_NAMES,
-} from "../data-source/esi/endpoints";
-import { EsiAsset } from "../data-source/esi/EsiAsset";
-import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi";
-import { dao } from "../db/dao";
-import { SdeType } from "../db/tables";
-import { Tnex } from "../db/tnex/index";
-import { arrayToMap } from "../util/collections";
-import { TYPE_CATEGORY_SHIP } from "./constants/categories";
+} from "../data-source/esi/endpoints.js";
+import { EsiAsset } from "../data-source/esi/EsiAsset.js";
+import { fetchEsi, fetchEsiEx } from "../data-source/esi/fetch/fetchEsi.js";
+import { dao } from "../db/dao.js";
+import { SdeType } from "../db/tables.js";
+import { Tnex } from "../db/tnex/index.js";
+import { arrayToMap } from "../util/collections.js";
+import { TYPE_CATEGORY_SHIP } from "./constants/categories.js";
 
 const MAX_ASSET_PAGES_TO_FETCH = 50;
 

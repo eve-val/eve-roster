@@ -1,11 +1,14 @@
-import { dao } from "../../db/dao";
-import { Tnex } from "../../db/tnex/index";
-import { PrivilegeName } from "../../db/dao/enums";
-import { ADMIN_GROUP, MEMBER_GROUP } from "../../domain/account/specialGroups";
+import { dao } from "../../db/dao.js";
+import { Tnex } from "../../db/tnex/index.js";
+import { PrivilegeName } from "../../db/dao/enums.js";
+import {
+  ADMIN_GROUP,
+  MEMBER_GROUP,
+} from "../../domain/account/specialGroups.js";
 
-import { MissingPrivilegeError } from "../../error/MissingPrivilegeError";
+import { MissingPrivilegeError } from "../../error/MissingPrivilegeError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

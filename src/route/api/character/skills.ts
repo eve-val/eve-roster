@@ -1,21 +1,21 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { dao } from "../../../db/dao";
-import { Tnex } from "../../../db/tnex/index";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { dao } from "../../../db/dao.js";
+import { Tnex } from "../../../db/tnex/index.js";
 
-import { isAnyEsiError } from "../../../data-source/esi/error";
-import { updateSkills } from "../../../domain/skills/skills";
+import { isAnyEsiError } from "../../../data-source/esi/error.js";
+import { updateSkills } from "../../../domain/skills/skills.js";
 import {
   getTrainingProgress,
   isQueueEntryCompleted,
-} from "../../../domain/skills/skillQueue";
-import { SkillsheetEntry } from "../../../db/dao/SkillsheetDao";
-import { NamedSkillQueueRow } from "../../../db/dao/SkillQueueDao";
+} from "../../../domain/skills/skillQueue.js";
+import { SkillsheetEntry } from "../../../db/dao/SkillsheetDao.js";
+import { NamedSkillQueueRow } from "../../../db/dao/SkillQueueDao.js";
 import {
   AccessTokenError,
   AccessTokenErrorType,
-} from "../../../error/AccessTokenError";
-import * as time from "../../../util/time";
-import { defaultSkillName } from "../../../domain/skills/defaultSkillName";
+} from "../../../error/AccessTokenError.js";
+import * as time from "../../../util/time.js";
+import { defaultSkillName } from "../../../domain/skills/defaultSkillName.js";
 
 export interface Skill {
   id: number;

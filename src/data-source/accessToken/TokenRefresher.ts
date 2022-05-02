@@ -1,12 +1,12 @@
 import * as querystring from "querystring";
-import axios from "axios";
+import { default as axios } from "axios";
 
-import { AccessToken } from "../../db/tables";
-import { AccessTokenErrorType } from "../../error/AccessTokenError";
+import { AccessToken } from "../../db/tables.js";
+import { AccessTokenErrorType } from "../../error/AccessTokenError.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
-import { fetchAuthInfo } from "./jwt";
+import { fetchAuthInfo } from "./jwt.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

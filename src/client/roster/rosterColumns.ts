@@ -1,4 +1,4 @@
-import { Character, Account } from "./types";
+import { Character, Account } from "./types.js";
 
 interface RenderColumn {
   label: string;

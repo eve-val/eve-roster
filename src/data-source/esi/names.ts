@@ -1,10 +1,10 @@
-import { SimpleNumMap, nil } from "../../util/simpleTypes";
-import { isAnyEsiError, printError } from "./error";
-import { UNKNOWN_CORPORATION_ID } from "../../db/constants";
+import { SimpleNumMap, nil } from "../../util/simpleTypes.js";
+import { isAnyEsiError, printError } from "./error.js";
+import { UNKNOWN_CORPORATION_ID } from "../../db/constants.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger";
-import { ESI_UNIVERSE_NAMES } from "./endpoints";
-import { fetchEsi } from "./fetch/fetchEsi";
+import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { ESI_UNIVERSE_NAMES } from "./endpoints.js";
+import { fetchEsi } from "./fetch/fetchEsi.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

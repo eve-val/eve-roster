@@ -1,19 +1,19 @@
 import moment from "moment";
 
-import { Tnex } from "../../db/tnex/index";
-import { dao } from "../../db/dao";
-import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes";
-import { SrpLossJson } from "../srp/SrpLossJson";
-import { Participant } from "./BattleData";
-import { arrayToMap, addAll } from "../../util/collections";
+import { Tnex } from "../../db/tnex/index.js";
+import { dao } from "../../db/dao.js";
+import { SimpleNumMap, nil, AsyncReturnType } from "../../util/simpleTypes.js";
+import { SrpLossJson } from "../srp/SrpLossJson.js";
+import { Participant } from "./BattleData.js";
+import { arrayToMap, addAll } from "../../util/collections.js";
 import { pluck } from "underscore";
-import { srpLossToJson } from "../srp/srpLossToJson";
-import { triageLosses } from "../srp/triage/triageLosses";
-import { triagedLossesToSuggestionJson } from "../srp/triage/triagedLossesToSuggestionJson";
-import { fetchEveNames } from "../../data-source/esi/names";
-import { Battle, MemberCorporation } from "../../db/tables";
-import { sortBy, cmpNumberProp } from "../../util/sortBy";
-import { isCapsule } from "../../eve/util/isCapsule";
+import { srpLossToJson } from "../srp/srpLossToJson.js";
+import { triageLosses } from "../srp/triage/triageLosses.js";
+import { triagedLossesToSuggestionJson } from "../srp/triage/triagedLossesToSuggestionJson.js";
+import { fetchEveNames } from "../../data-source/esi/names.js";
+import { Battle, MemberCorporation } from "../../db/tables.js";
+import { sortBy, cmpNumberProp } from "../../util/sortBy.js";
+import { isCapsule } from "../../eve/util/isCapsule.js";
 
 /**
  * Given a list of results from dao.battle.listBattles(), converts them into

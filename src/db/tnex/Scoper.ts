@@ -1,5 +1,5 @@
 import util from "util";
-import { splitColumn } from "./core";
+import { splitColumn } from "./core.js";
 
 export class Scoper {
   private _separator: string;

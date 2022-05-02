@@ -1,18 +1,18 @@
 import moment from "moment";
 
-import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint";
-import { AccountSummary } from "../../../../infra/express/getAccountPrivs";
-import { AccountPrivileges } from "../../../../infra/express/privileges";
-import { Tnex, ResultOrder } from "../../../../db/tnex/index";
-import { dao } from "../../../../db/dao";
+import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
+import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
+import { AccountPrivileges } from "../../../../infra/express/privileges.js";
+import { Tnex, ResultOrder } from "../../../../db/tnex/index.js";
+import { dao } from "../../../../db/dao.js";
 import {
   boolQuery,
   intQuery,
   enumQuery,
-} from "../../../../util/express/paramVerifier";
-import { nil, SimpleNumMap } from "../../../../util/simpleTypes";
-import { fetchEveNames } from "../../../../data-source/esi/names";
-import { SrpReimbursementFilter } from "../../../../db/dao/SrpDao";
+} from "../../../../util/express/paramVerifier.js";
+import { nil, SimpleNumMap } from "../../../../util/simpleTypes.js";
+import { fetchEveNames } from "../../../../data-source/esi/names.js";
+import { SrpReimbursementFilter } from "../../../../db/dao/SrpDao.js";
 
 export interface Output {
   payments: PaymentJson[];

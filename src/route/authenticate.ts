@@ -1,25 +1,25 @@
 import querystring from "querystring";
 
-import axios from "axios";
+import { default as axios } from "axios";
 import express from "express";
 
-import { dao } from "../db/dao";
-import { Tnex, UpdatePolicy } from "../db/tnex/index";
-import { isAnyEsiError } from "../data-source/esi/error";
+import { dao } from "../db/dao.js";
+import { Tnex, UpdatePolicy } from "../db/tnex/index.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
 
-import { UserVisibleError } from "../error/UserVisibleError";
-import { stringQuery } from "../util/express/paramVerifier";
-import { BadRequestError } from "../error/BadRequestError";
+import { UserVisibleError } from "../error/UserVisibleError.js";
+import { stringQuery } from "../util/express/paramVerifier.js";
+import { BadRequestError } from "../error/BadRequestError.js";
 import {
   ESI_CHARACTERS_$characterId_ROLES,
   ESI_CHARACTERS_$characterId,
-} from "../data-source/esi/endpoints";
-import { UNKNOWN_CORPORATION_ID } from "../db/constants";
+} from "../data-source/esi/endpoints.js";
+import { UNKNOWN_CORPORATION_ID } from "../db/constants.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../infra/logging/buildLogger";
-import { getSession } from "../infra/express/session";
-import { fetchEsi } from "../data-source/esi/fetch/fetchEsi";
-import { fetchAuthInfo } from "../data-source/accessToken/jwt";
+import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
+import { getSession } from "../infra/express/session.js";
+import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
+import { fetchAuthInfo } from "../data-source/accessToken/jwt.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 

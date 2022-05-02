@@ -12,7 +12,7 @@ const nameCache = new Map<number, string>();
  * map, it should call addNames(). This allows any child components to
  * access the map without it being passed to them explicitly.
  */
-import { SimpleNumMap } from "../../util/simpleTypes";
+import { SimpleNumMap } from "../../util/simpleTypes.js";
 export const NameCacheMixin = {
   methods: {
     addNames(names: SimpleNumMap<string>) {

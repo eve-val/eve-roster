@@ -1,12 +1,12 @@
-import { jsonEndpoint } from "../../../infra/express/protectedEndpoint";
-import { Tnex } from "../../../db/tnex/index";
-import { AccountPrivileges } from "../../../infra/express/privileges";
-import { idParam } from "../../../util/express/paramVerifier";
-import { dao } from "../../../db/dao";
-import { NotFoundError } from "../../../error/NotFoundError";
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail";
-import { SimpleNumMap, nil } from "../../../util/simpleTypes";
-import { fetchEveNames } from "../../../data-source/esi/names";
+import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
+import { Tnex } from "../../../db/tnex/index.js";
+import { AccountPrivileges } from "../../../infra/express/privileges.js";
+import { idParam } from "../../../util/express/paramVerifier.js";
+import { dao } from "../../../db/dao.js";
+import { NotFoundError } from "../../../error/NotFoundError.js";
+import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { SimpleNumMap, nil } from "../../../util/simpleTypes.js";
+import { fetchEveNames } from "../../../data-source/esi/names.js";
 
 export interface Output {
   killmail: ZKillmail;

@@ -1,14 +1,14 @@
 import VError from "verror";
-import { OrderedParallelTransform } from "../../../util/stream/OrderedParallelTransform";
+import { OrderedParallelTransform } from "../../../util/stream/OrderedParallelTransform.js";
 import {
   ZKillmail,
   ZKillDescriptor,
-} from "../../../data-source/zkillboard/ZKillmail";
-import { ESI_KILLMAILS_$killmailId_$killmailHash } from "../../../data-source/esi/endpoints";
-import { EsiKillmail } from "../../../data-source/esi/EsiKillmail";
+} from "../../../data-source/zkillboard/ZKillmail.js";
+import { ESI_KILLMAILS_$killmailId_$killmailHash } from "../../../data-source/esi/endpoints.js";
+import { EsiKillmail } from "../../../data-source/esi/EsiKillmail.js";
 import { AxiosError } from "axios";
-import { Logger } from "../../../infra/logging/Logger";
-import { fetchEsi } from "../../../data-source/esi/fetch/fetchEsi";
+import { Logger } from "../../../infra/logging/Logger.js";
+import { fetchEsi } from "../../../data-source/esi/fetch/fetchEsi.js";
 
 /**
  * Given a stream of ZKillDesciptors, fetches the associated EsiKillmail and
