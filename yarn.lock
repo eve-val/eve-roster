@@ -1550,10 +1550,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.33":
-  version: 16.11.33
-  resolution: "@types/node@npm:16.11.33"
-  checksum: d8af3332f2ecda0bbf56eaab438e8dd029f75d6e3f0c62875a91b67a34cc226c1306218e0c10469f9aa1c7c4ef51201375177e3ed910f224e94c357c86a76e87
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.34":
+  version: 16.11.34
+  resolution: "@types/node@npm:16.11.34"
+  checksum: 663cf1904d751e819a8772e540a41887bd433285f9df52c4a7336980e7ce4790fb42e1731f6c29675d5783101995e848e994fe08e08763354bff73a5be4ca0ae
   languageName: node
   linkType: hard
 
@@ -4776,7 +4776,7 @@ __metadata:
     "@types/imagemin": "npm:^8"
     "@types/jest": "npm:^27.5.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
-    "@types/node": "npm:^16.11.33"
+    "@types/node": "npm:^16.11.34"
     "@types/node-schedule": "npm:^2.1.0"
     "@types/pg": "npm:^8.6.4"
     "@types/pg-pool": "npm:^2.0.3"
