@@ -4850,7 +4850,7 @@ __metadata:
     ts-jest: "npm:^27.1.4"
     ts-jest-resolver: "npm:^2.0.0"
     ts-loader: "npm:^9.3.0"
-    typescript: "npm:4.7.0-beta"
+    typescript: "npm:4.7.1-rc"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.3"
     url: "npm:^0.11.0"
@@ -11875,23 +11875,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.0-beta":
-  version: 4.7.0-beta
-  resolution: "typescript@npm:4.7.0-beta"
+"typescript@npm:4.7.1-rc":
+  version: 4.7.1-rc
+  resolution: "typescript@npm:4.7.1-rc"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: cebef22a4aadc1e44110dbd156d88583e1eb658fe42be2a25c63aa945596c8e6ba26f7542d1cb64471a85d9cbb2b38cbb362592ff985ab077443f9574121914e
+  checksum: 9758c7886a6ded9a37dfd14a9aa46a5ac1fc3fbc9eb3c1a61fa8b5c1a47163a9f894f6c19d2c7f58975c4a1495e8d9fcc8772a81be6b13bc50edd8a4256112d7
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.7.0-beta#optional!builtin<compat/typescript>":
-  version: 4.7.0-beta
-  resolution: "typescript@patch:typescript@npm%3A4.7.0-beta#optional!builtin<compat/typescript>::version=4.7.0-beta&hash=7ad353"
+"typescript@patch:typescript@npm%3A4.7.1-rc#optional!builtin<compat/typescript>":
+  version: 4.7.1-rc
+  resolution: "typescript@patch:typescript@npm%3A4.7.1-rc#optional!builtin<compat/typescript>::version=4.7.1-rc&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 8c1dfb967ca11421585d0dbb92aea95a02b234fefecc6f65361bcbfd7fe44cce3657fc47eeca7572c1b83dc344fec53ffcf546f49836a28d40a311b231c36043
+  checksum: 1a2ae2613271b29a69e5fd2d785abe7383e0e25f0066798d01081e8ce601d270dc52112d44760a2dbb60a1547cd0657afcb68878081cd590263345faf1f142f2
   languageName: node
   linkType: hard
 
