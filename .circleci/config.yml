@@ -42,12 +42,14 @@ workflows:
           run-command: lint
           cache-version: v4
           name: lint
+          resource_class: large
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: build
           cache-version: v4
           name: build
+          resource_class: large
       - deploy:
           requires:
             - jest
