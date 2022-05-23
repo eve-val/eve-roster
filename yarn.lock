@@ -4891,7 +4891,7 @@ __metadata:
     svgo: "npm:^2.8.0"
     swagger-ui: "npm:^4.11.1"
     tmp: "npm:^0.2.1"
-    ts-jest: "npm:^27.1.4"
+    ts-jest: "npm:^28.0.2"
     ts-jest-resolver: "npm:^2.0.0"
     ts-loader: "npm:^9.3.0"
     typescript: "npm:4.7.1-rc"
@@ -7256,7 +7256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-util@npm:^27.0.0, jest-util@npm:^27.5.1":
+"jest-util@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-util@npm:27.5.1"
   dependencies:
@@ -7270,7 +7270,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-util@npm:^28.1.0":
+"jest-util@npm:^28.0.0, jest-util@npm:^28.1.0":
   version: 28.1.0
   resolution: "jest-util@npm:28.1.0"
   dependencies:
@@ -11606,24 +11606,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^27.1.4":
-  version: 27.1.4
-  resolution: "ts-jest@npm:27.1.4"
+"ts-jest@npm:^28.0.2":
+  version: 28.0.2
+  resolution: "ts-jest@npm:28.0.2"
   dependencies:
     bs-logger: "npm:0.x"
     fast-json-stable-stringify: "npm:2.x"
-    jest-util: "npm:^27.0.0"
+    jest-util: "npm:^28.0.0"
     json5: "npm:2.x"
     lodash.memoize: "npm:4.x"
     make-error: "npm:1.x"
     semver: "npm:7.x"
-    yargs-parser: "npm:20.x"
+    yargs-parser: "npm:^20.x"
   peerDependencies:
     "@babel/core": ">=7.0.0-beta.0 <8"
     "@types/jest": ^27.0.0
-    babel-jest: ">=27.0.0 <28"
-    jest: ^27.0.0
-    typescript: ">=3.8 <5.0"
+    babel-jest: ^28.0.0
+    jest: ^28.0.0
+    typescript: ">=4.3"
   peerDependenciesMeta:
     "@babel/core":
       optional: true
@@ -11635,7 +11635,7 @@ __metadata:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: 7f2b44c127eabfc13a0405d71036b63db430a4ff60e40995b21e3b59a55f153ac6fa5f7af2b87f89a78ac9079343ed434c0863ede3ee77332a066dd29b77b9a4
+  checksum: 67c78ccd425a0fc756f47f377793b42a2c16442c6eebbf56c83711dbde7929b4bbff675b2aad72a050e457ab4cbc23ecc5df8d2e659cb9a1d6daf83748568bc1
   languageName: node
   linkType: hard
 
@@ -12384,7 +12384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:20.x, yargs-parser@npm:^20.2.2, yargs-parser@npm:^20.2.3":
+"yargs-parser@npm:^20.2.2, yargs-parser@npm:^20.2.3, yargs-parser@npm:^20.x":
   version: 20.2.9
   resolution: "yargs-parser@npm:20.2.9"
   checksum: fd739a429b7cde755b8e9d28520619fb8adb94c686b2d75d3c93a6ec199fbc8bf120af6d2be144f8d3075f3d675b09893f8894a362548107aa90bb97ad662c7a
