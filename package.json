@@ -103,7 +103,7 @@
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
-    "eslint-plugin-vue": "^9.0.0",
+    "eslint-plugin-vue": "^9.0.1",
     "events": "^3.3.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
