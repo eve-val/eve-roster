@@ -22,13 +22,13 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",
     "@opentelemetry/api": "^1.1.0",
-    "@opentelemetry/core": "^1.1.1",
+    "@opentelemetry/core": "^1.2.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.28.0",
     "@opentelemetry/instrumentation": "^0.28.0",
-    "@opentelemetry/instrumentation-express": "^0.28.0",
-    "@opentelemetry/instrumentation-http": "^0.27.0",
-    "@opentelemetry/instrumentation-pg": "^0.28.0",
-    "@opentelemetry/sdk-trace-base": "^1.1.1",
+    "@opentelemetry/instrumentation-express": "^0.29.0",
+    "@opentelemetry/instrumentation-http": "^0.28.0",
+    "@opentelemetry/instrumentation-pg": "^0.29.0",
+    "@opentelemetry/sdk-trace-base": "^1.2.0",
     "@opentelemetry/sdk-trace-node": "^1.2.0",
     "@sentry/node": "^6.19.7",
     "axios": "^0.27.2",
@@ -174,5 +174,5 @@
   "volta": {
     "node": "16.15"
   },
-  "packageManager": "yarn@4.0.0-rc.5"
+  "packageManager": "yarn@4.0.0-rc.6"
 }
