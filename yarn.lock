@@ -441,14 +441,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gar/promisify@npm:^1.0.1":
-  version: 1.1.2
-  resolution: "@gar/promisify@npm:1.1.2"
-  checksum: aa6792cfe42659321bfffa8ea42c623b0bcaed96e735a48b226417a220a1e18df0c1284d1e69bfdc263948ed926e9509843951de8d6d1b11078ba693a8b95b0f
-  languageName: node
-  linkType: hard
-
-"@gar/promisify@npm:^1.1.3":
+"@gar/promisify@npm:^1.0.1, @gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
   checksum: 3fadc40481a783ddb90397f5759f92650b57465f7a4a778056bd24b47060595012e9181a55ae547d57a893d37d9776abe9e368f1f6918e37225eb6a83f9a75f8
@@ -924,7 +917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:1.2.0, @opentelemetry/core@npm:^1.0.0, @opentelemetry/core@npm:^1.2.0":
+"@opentelemetry/core@npm:1.2.0":
   version: 1.2.0
   resolution: "@opentelemetry/core@npm:1.2.0"
   dependencies:
@@ -932,6 +925,17 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.2.0"
   checksum: d9a20599e5f9a02b432933acaad3461a7f2d14b4d9a192ee8c835ec17be7fc7bc5f68319930637bcada13eaa7fb5bc3f0e1c0b76b47fb9db02911b7e4f37bb7e
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/core@npm:^1.0.0, @opentelemetry/core@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@opentelemetry/core@npm:1.3.0"
+  dependencies:
+    "@opentelemetry/semantic-conventions": "npm:1.3.0"
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.2.0"
+  checksum: bd85629642940c9fa8d92044fa349cd349a37f8656f886e56e3e5a4c7058ae5da9910fa4365330a53f3fce4f4c73b1a16e2b453275344fbcc77632534fa7bb2e
   languageName: node
   linkType: hard
 
@@ -1110,10 +1114,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:1.2.0, @opentelemetry/semantic-conventions@npm:^1.0.0":
+"@opentelemetry/semantic-conventions@npm:1.2.0":
   version: 1.2.0
   resolution: "@opentelemetry/semantic-conventions@npm:1.2.0"
   checksum: ace2675cd386ef8a5f51dba46aae612bf6b881f1c1c9995e5e6c81bed73b0afda5db744a9c755682ceac9728fcf321177d8b4f94569c0e8341c80e4017845acc
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:1.3.0, @opentelemetry/semantic-conventions@npm:^1.0.0":
+  version: 1.3.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.3.0"
+  checksum: 5209e4650a05d28c9d2d6e2d700694a230d3e50759f202bb383c18da306d2eb5d6a2bbb08e97249941a4ce9b8a2e25c2bf5ad3f32df6996fd0e39bcf4a4078e7
   languageName: node
   linkType: hard
 
@@ -2419,18 +2430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"agentkeepalive@npm:^4.1.3":
-  version: 4.1.4
-  resolution: "agentkeepalive@npm:4.1.4"
-  dependencies:
-    debug: "npm:^4.1.0"
-    depd: "npm:^1.1.2"
-    humanize-ms: "npm:^1.2.1"
-  checksum: c9bb9b8537c540a5bdf25f5e9fa0ef924339ec013761b3272395ea1791f9adee3e6eb6fc8cfe006fe4fb90fc638186a1e1900eb808b07af23cb92707d3d2258f
-  languageName: node
-  linkType: hard
-
-"agentkeepalive@npm:^4.2.1":
+"agentkeepalive@npm:^4.1.3, agentkeepalive@npm:^4.2.1":
   version: 4.2.1
   resolution: "agentkeepalive@npm:4.2.1"
   dependencies:
@@ -4777,7 +4777,7 @@ __metadata:
     "@babel/types": "npm:^7.18.0"
     "@grpc/grpc-js": "npm:^1.6.7"
     "@opentelemetry/api": "npm:^1.1.0"
-    "@opentelemetry/core": "npm:^1.2.0"
+    "@opentelemetry/core": "npm:^1.3.0"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.28.0"
     "@opentelemetry/instrumentation": "npm:^0.28.0"
     "@opentelemetry/instrumentation-express": "npm:^0.29.0"
@@ -6456,16 +6456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.2.0":
-  version: 2.8.1
-  resolution: "is-core-module@npm:2.8.1"
-  dependencies:
-    has: "npm:^1.0.3"
-  checksum: 003c0336aa71e7fad300bfdf20debaf1a9d39e06a3406b63841756208937c66d40ec624d7d3c3a2e4975f480e045177e4c26571b241f17f0a06efa374cab5a17
-  languageName: node
-  linkType: hard
-
-"is-core-module@npm:^2.5.0":
+"is-core-module@npm:^2.2.0, is-core-module@npm:^2.5.0":
   version: 2.9.0
   resolution: "is-core-module@npm:2.9.0"
   dependencies:
@@ -8228,16 +8219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^3.0.0, minipass@npm:^3.1.0, minipass@npm:^3.1.1, minipass@npm:^3.1.3":
-  version: 3.1.3
-  resolution: "minipass@npm:3.1.3"
-  dependencies:
-    yallist: "npm:^4.0.0"
-  checksum: 3065ffed7fe5cafd79517dd9540e3772cc056a4ade2268798ad57177f20261c7931e47fccc6d3a1860a736059a6f0382a2c62094fba8b0e7712d843f7ea24806
-  languageName: node
-  linkType: hard
-
-"minipass@npm:^3.1.6":
+"minipass@npm:^3.0.0, minipass@npm:^3.1.0, minipass@npm:^3.1.1, minipass@npm:^3.1.3, minipass@npm:^3.1.6":
   version: 3.1.6
   resolution: "minipass@npm:3.1.6"
   dependencies:
