@@ -9777,8 +9777,8 @@ __metadata:
   linkType: hard
 
 "protobufjs@npm:^6.10.0":
-  version: 6.11.2
-  resolution: "protobufjs@npm:6.11.2"
+  version: 6.11.3
+  resolution: "protobufjs@npm:6.11.3"
   dependencies:
     "@protobufjs/aspromise": "npm:^1.1.2"
     "@protobufjs/base64": "npm:^1.1.2"
@@ -9796,7 +9796,7 @@ __metadata:
   bin:
     pbjs: bin/pbjs
     pbts: bin/pbts
-  checksum: b9aebaa664484e9d92b35696af8690a9702ea80c0bff4441268fae55d7eed25c286dcf59db4bbfcb1f8a6e127e8677797e94d9c0ae38723fc5ce3a84dab214e7
+  checksum: 5a7a343bc1f4029022433690e9a1734a89a80fc441b580ddc8486262417b7755bddafd637a88c0f8105e594e361a02218508df67caf1ac9c18bbca82e6ab60ee
   languageName: node
   linkType: hard
 
@@ -10655,9 +10655,9 @@ __metadata:
   linkType: hard
 
 "semver-regex@npm:^4.0.0":
-  version: 4.0.1
-  resolution: "semver-regex@npm:4.0.1"
-  checksum: da4e224ba78d08fc17c59f0f7e84b8119216da15bca49492e6e9148e065de5519d94e4ade2788694415e40eacf6320d2435b5886809f80a4358c6ab881b419d2
+  version: 4.0.3
+  resolution: "semver-regex@npm:4.0.3"
+  checksum: 066d6e875b299e5196d68539ac0c076c5221dceab5069e0bae95187fdbeaea8309da7a592db1968425a8992b8480d13aeb1bfe5b21a8f8130927bab1fbf088f1
   languageName: node
   linkType: hard
 
