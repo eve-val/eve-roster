@@ -4932,7 +4932,7 @@ __metadata:
     ts-loader: "npm:^9.3.0"
     typescript: "npm:4.7.3"
     unbzip2-stream: "npm:^1.4.3"
-    underscore: "npm:^1.13.3"
+    underscore: "npm:^1.13.4"
     url: "npm:^0.11.0"
     verror: "npm:^1.10.1"
     vue: "npm:^3.2.36"
@@ -11934,10 +11934,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"underscore@npm:^1.13.3":
-  version: 1.13.3
-  resolution: "underscore@npm:1.13.3"
-  checksum: faf6d969c4c9df139bb0145f185e90dad9130286ffa8d127ac3ae30a0fd8aea7aef557fcce955fbb3c3437f7c01b0efa5530647af974b6d198fdc49225a24fbb
+"underscore@npm:^1.13.4":
+  version: 1.13.4
+  resolution: "underscore@npm:1.13.4"
+  checksum: 0992fcad980aa7d264610fe4d810c4c2cf229a44447516d5fef7c725bbc6ff7f9af07992e49794482e36bb16c18926acc7d51ce15793c35b7e9d4cf2ba813b72
   languageName: node
   linkType: hard
 
