@@ -1612,13 +1612,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^28.1.0":
-  version: 28.1.0
-  resolution: "@types/jest@npm:28.1.0"
+"@types/jest@npm:^28.1.1":
+  version: 28.1.1
+  resolution: "@types/jest@npm:28.1.1"
   dependencies:
     jest-matcher-utils: "npm:^27.0.0"
     pretty-format: "npm:^27.0.0"
-  checksum: 6cd071ab663d838954401e2621b4d120e88dad6ff0229077ea9889db13109be91eda8bf831a16d4c757cc7643d64c1cab10278f39470ee7b58332a5b119144f1
+  checksum: f6b9625a7669dc53164a805f0b788bc2cf9f3ab35e38d2d445b4b642127e0f2d54c50ada2370409caf088001f98ceaf1571bac62cf3c13551e0a65ecd175c0c2
   languageName: node
   linkType: hard
 
@@ -4809,7 +4809,7 @@ __metadata:
     "@types/express": "npm:^4.17.13"
     "@types/heapdump": "npm:^0.3.1"
     "@types/imagemin": "npm:^8"
-    "@types/jest": "npm:^28.1.0"
+    "@types/jest": "npm:^28.1.1"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^16.11.36"
     "@types/node-schedule": "npm:^2.1.0"
