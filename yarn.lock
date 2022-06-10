@@ -2106,7 +2106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.36":
+"@vue/compiler-sfc@npm:3.2.36, @vue/compiler-sfc@npm:^3.0.0":
   version: 3.2.36
   resolution: "@vue/compiler-sfc@npm:3.2.36"
   dependencies:
@@ -2124,7 +2124,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.37":
+"@vue/compiler-sfc@npm:^3.2.37":
   version: 3.2.37
   resolution: "@vue/compiler-sfc@npm:3.2.37"
   dependencies:
@@ -4620,8 +4620,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-jest@npm:^26.5.1":
-  version: 26.5.3
-  resolution: "eslint-plugin-jest@npm:26.5.3"
+  version: 26.5.1
+  resolution: "eslint-plugin-jest@npm:26.5.1"
   dependencies:
     "@typescript-eslint/utils": "npm:^5.10.0"
   peerDependencies:
@@ -4632,7 +4632,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: e5c86ee6cca718c40a555c15a1afb489e64de75dcd2dea2081c452fcaea8376868b3233330e4f5d5f4204ed9766114abf4ebfc481b06a2c412cb715bb6cdb282
+  checksum: e28de96b5f629e4634d22f92676c4531df37fcae59f389313c06ec22e4c9514c1d0aef71d5183011b64ec7e275bbb1abcfaf3bf41b42eabd3196723fae13a815
   languageName: node
   linkType: hard
 
