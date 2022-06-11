@@ -1146,7 +1146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-trace-base@npm:1.3.1, @opentelemetry/sdk-trace-base@npm:^1.3.0":
+"@opentelemetry/sdk-trace-base@npm:1.3.1, @opentelemetry/sdk-trace-base@npm:^1.3.1":
   version: 1.3.1
   resolution: "@opentelemetry/sdk-trace-base@npm:1.3.1"
   dependencies:
@@ -4838,7 +4838,7 @@ __metadata:
     "@opentelemetry/instrumentation-express": "npm:^0.29.0"
     "@opentelemetry/instrumentation-http": "npm:^0.28.0"
     "@opentelemetry/instrumentation-pg": "npm:^0.29.0"
-    "@opentelemetry/sdk-trace-base": "npm:^1.3.0"
+    "@opentelemetry/sdk-trace-base": "npm:^1.3.1"
     "@opentelemetry/sdk-trace-node": "npm:^1.3.1"
     "@sentry/browser": "npm:^7.0.0"
     "@sentry/node": "npm:^7.0.0"
