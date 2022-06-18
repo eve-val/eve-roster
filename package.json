@@ -74,7 +74,7 @@
     "@types/imagemin": "^8",
     "@types/jest": "^28.1.1",
     "@types/mini-css-extract-plugin": "^2.5.1",
-    "@types/node": "^18.0.0",
+    "@types/node": "^16.11.39",
     "@types/node-schedule": "^2.1.0",
     "@types/pg": "^8.6.4",
     "@types/pg-pool": "^2.0.3",
