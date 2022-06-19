@@ -2,12 +2,12 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths-ignore:
       - package.json
       - yarn.lock
   pull_request:
-    branches: [master]
+    branches: [main]
   schedule:
     - cron: "44 13 * * 5"
 
