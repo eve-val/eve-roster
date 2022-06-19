@@ -117,7 +117,7 @@
     "imagemin-svgo": "^9.0.0",
     "jest": "^28.1.1",
     "json-loader": "^0.5.7",
-    "mini-css-extract-plugin": "^2.6.0",
+    "mini-css-extract-plugin": "^2.6.1",
     "moment-locales-webpack-plugin": "^1.2.0",
     "prettier": "^2.6.2",
     "request": "^2.88.2",
