@@ -4936,7 +4936,7 @@ __metadata:
     node-schedule: "npm:^2.1.0"
     p-limit: "npm:^4.0.0"
     pg: "npm:^8.7.3"
-    prettier: "npm:^2.6.2"
+    prettier: "npm:^2.7.1"
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.2"
     request: "npm:^2.88.2"
@@ -9685,12 +9685,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "prettier@npm:2.6.2"
+"prettier@npm:^2.6.2, prettier@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "prettier@npm:2.7.1"
   bin:
     prettier: bin-prettier.js
-  checksum: ca32544e761860cb04d4fdc84e5772972ef727b0ed802f543bf6a47b1794599048e082e4085a5a3688d2caa2f7ce6331f21c6c2cd7f3d97cddaf2625a4ed3458
+  checksum: d2cd7adc83b4f3eb86ab665fa76c58fb3c60c879b37e6d858f71a9d97d2091d4c8a7fe92ad6a1dfa211832025e3660635df9c5e27b3ef79c99d431923bdf933b
   languageName: node
   linkType: hard
 
