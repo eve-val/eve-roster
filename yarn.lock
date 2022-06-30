@@ -4612,15 +4612,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier-vue@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "eslint-plugin-prettier-vue@npm:4.1.0"
+"eslint-plugin-prettier-vue@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "eslint-plugin-prettier-vue@npm:4.2.0"
   dependencies:
     "@vue/compiler-sfc": "npm:^3.2.37"
     chalk: "npm:^4.0.0"
-    prettier: "npm:^2.6.2"
+    prettier: "npm:^2.7.1"
     prettier-linter-helpers: "npm:^1.0.0"
-  checksum: 37151ed1f3bec3ab889e14cc0994ae5c2c9c1cca64be352f054324568468beee791f46a7db8dfa9664426bfb0f1d6eabed5a38faf91cff32de2f01794d068b90
+  checksum: 76e0925c3e2c39789bd79930fdf47632e8b516cda0af993341fab204a8a4cbf570901a8cc09c3ba1c9761c42d079fff1b74b3ff551bf76794b9354e02176b61f
   languageName: node
   linkType: hard
 
@@ -4909,7 +4909,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.5.0"
     eslint-plugin-jest: "npm:^26.5.3"
     eslint-plugin-prettier: "npm:^4.1.0"
-    eslint-plugin-prettier-vue: "npm:^4.1.0"
+    eslint-plugin-prettier-vue: "npm:^4.2.0"
     eslint-plugin-vue: "npm:^9.1.1"
     esprint: "npm:^3.6.0"
     events: "npm:^3.3.0"
@@ -9685,7 +9685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.6.2, prettier@npm:^2.7.1":
+"prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
   bin:
