@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@babel/types": "^7.18.8",
-    "@sentry/browser": "^7.5.0",
-    "@sentry/tracing": "^7.5.0",
+    "@sentry/browser": "^7.7.0",
+    "@sentry/tracing": "^7.7.0",
     "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-parser": "^1.4.3",
@@ -171,5 +171,5 @@
   "volta": {
     "node": "16.15"
   },
-  "packageManager": "yarn@4.0.0-rc.11"
+  "packageManager": "yarn@4.0.0-rc.13"
 }
