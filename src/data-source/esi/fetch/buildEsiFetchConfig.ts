@@ -20,6 +20,7 @@ export function buildEsiFetchConfig<T extends EsiEndpoint>(
       Accept: "application/json",
       "User-Agent": "SOUND Roster (roster.of-sound-mind.com)",
     },
+    timeout: 10000,
   };
 
   if (endpoint.query) {
