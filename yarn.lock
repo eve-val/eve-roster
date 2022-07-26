@@ -1916,10 +1916,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/verror@npm:^1.10.5":
-  version: 1.10.5
-  resolution: "@types/verror@npm:1.10.5"
-  checksum: 6819fe1d54a6ad4b42ef08a6788b77ede15e90dda981e0bfec95c1496c918272bfe188365c572e37681ec3e4c1056e9be06c1098e81a8ef9fc4104b957cfada0
+"@types/verror@npm:^1.10.6":
+  version: 1.10.6
+  resolution: "@types/verror@npm:1.10.6"
+  checksum: adc946fa8386dd951d893cc41820922179919e53d6b9415dbf2b40fbfdaa877df126d637502aa761871b39130ccd8e25b5b97199084776616270facc91e3bf47
   languageName: node
   linkType: hard
 
@@ -4955,7 +4955,7 @@ __metadata:
     "@types/swagger-ui": "npm:^3.52.0"
     "@types/tmp": "npm:^0.2.3"
     "@types/underscore": "npm:^1.11.4"
-    "@types/verror": "npm:^1.10.5"
+    "@types/verror": "npm:^1.10.6"
     "@types/webpack": "npm:^5.28.0"
     "@types/webpack-dev-middleware": "npm:^5.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.6"
