@@ -3572,10 +3572,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorette@npm:2.0.16, colorette@npm:^2.0.10, colorette@npm:^2.0.14":
-  version: 2.0.16
-  resolution: "colorette@npm:2.0.16"
-  checksum: 68ff163b8954e35676cf7b3176ef44df6a9c3d61d714b580dcc86b99b52e5530d23d6a32b8ff6e11aca4d2d373dd9af063ead6bc10cae40bc1d1c56de269f106
+"colorette@npm:2.0.19, colorette@npm:^2.0.10, colorette@npm:^2.0.14":
+  version: 2.0.19
+  resolution: "colorette@npm:2.0.19"
+  checksum: f887e4f7608a1a37037f0b9f7da4d1608e2e1ac0126b87c4c143ff0348bc586173b86fde37f71f1b7742cd1c04285d0cb3cbeab391935886c86a162f4f2b5b87
   languageName: node
   linkType: hard
 
@@ -4951,7 +4951,7 @@ __metadata:
     jest: "npm:^28.1.3"
     jose: "npm:^4.8.3"
     json-loader: "npm:^0.5.7"
-    knex: "npm:^2.1.0"
+    knex: "npm:^2.2.0"
     mini-css-extract-plugin: "npm:^2.6.1"
     moment: "npm:^2.29.4"
     moment-locales-webpack-plugin: "npm:^1.2.0"
@@ -7698,11 +7698,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "knex@npm:2.1.0"
+"knex@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "knex@npm:2.2.0"
   dependencies:
-    colorette: "npm:2.0.16"
+    colorette: "npm:2.0.19"
     commander: "npm:^9.1.0"
     debug: "npm:4.3.4"
     escalade: "npm:^3.1.1"
@@ -7733,7 +7733,7 @@ __metadata:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: 650228db15f3b648c60358e7ab3e65903a1260d04aa90c0c89c4c40a10d4a6ccd86e119df796b3c3066942e2a35f2b3df45e1d03bf0baba1879b43ab1f86022d
+  checksum: eff5161ece2f26c9b02c92c637c25f418d037350c1f869aa26430cf093a6cfb5a6c7618185b99753f0ce30defb6cbac9ca840b2169f06c10afb6d4323d278755
   languageName: node
   linkType: hard
 
