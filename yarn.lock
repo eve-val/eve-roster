@@ -2816,13 +2816,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
+"axios@npm:^1.0.0-alpha.1":
+  version: 1.0.0-alpha.1
+  resolution: "axios@npm:1.0.0-alpha.1"
   dependencies:
-    follow-redirects: "npm:^1.14.9"
+    follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
-  checksum: 4cd898afe90caaf05307fc5a0da4c61012493b6bfd4937fff9774455c01d368db583b17c4737e73853f149b32e615487930b491661682a1f69a1973b1f533bb7
+    proxy-from-env: "npm:^1.1.0"
+  checksum: c8b66546bb1f9c0c39290b7a635ed6683023515e4c2a792f3c6117b0bbadbb5228eae724b9216dd7f455034192bea3e8e0a9264bfebfc3959bdf181df1e4c61c
   languageName: node
   linkType: hard
 
@@ -4932,7 +4933,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.31.0"
     "@vue/compiler-sfc": "npm:^3.2.37"
     "@vue/runtime-dom": "npm:^3.2.37"
-    axios: "npm:^0.27.2"
+    axios: "npm:^1.0.0-alpha.1"
     bluebird: "npm:^3.7.2"
     body-parser: "npm:^1.20.0"
     buffer: "npm:^6.0.3"
@@ -5496,13 +5497,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9":
-  version: 1.14.9
-  resolution: "follow-redirects@npm:1.14.9"
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: 2f097580a2340a67d1f721c1b9f9d8410833b91a358cf14a2e48c5c47a449312765bda52e3c1ccd5f846b85d1d9fab1069e075d4f3ef53f8d1b4b5b69eab7945
+  checksum: 1f3e06bfb5c5351456e4fdb9197aa09158452d6400a06240a80204708b7a68f1bb47d6e94127112844136f66ad3283f9c92fa3c5c76aa96db8bd44214ea922b8
   languageName: node
   linkType: hard
 
@@ -9927,6 +9928,13 @@ __metadata:
     forwarded: "npm:0.2.0"
     ipaddr.js: "npm:1.9.1"
   checksum: c03f00d8f882b97636262d0ae7da0c502325474ea215f21b4f0664ad8f40f49d2071b52c18257d011338be3db21ca65a6e8cbc0d95fb23efc00516ce9ee37c27
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: 0bba2ef7c8374b384e94e4477764e53df66fcdfa7d19e2c4a063cb39eea979c139ce13981970223665422e72b7d149609a927046e2e40ab340b84d91af082591
   languageName: node
   linkType: hard
 

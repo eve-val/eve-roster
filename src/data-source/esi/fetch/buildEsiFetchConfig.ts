@@ -18,7 +18,6 @@ export function buildEsiFetchConfig<T extends EsiEndpoint>(
       // According to CCP, this Accept header is not necessary, but the cURL
       // example sets it, so ¯\_(ツ)_/¯
       Accept: "application/json",
-      "User-Agent": "SOUND Roster (roster.of-sound-mind.com)",
     },
     timeout: 30000,
   };

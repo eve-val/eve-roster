@@ -21,7 +21,6 @@ export async function fetchZKillResultPage(url: string, page: number) {
     // TODO: Add a timeout so we don't queue these forever
     await axios.get<ResultResponse>(`${fullUrl}page/${page}/`, {
       headers: {
-        "User-Agent": process.env.USER_AGENT || "Sound Roster App",
         "Accept-Encoding": "gzip",
       },
     });

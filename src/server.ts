@@ -80,6 +80,16 @@ import * as express from "./infra/express/express.js";
 import * as cron from "./infra/taskrunner/cron.js";
 import * as taskRunner from "./infra/taskrunner/taskRunner.js";
 import * as sde from "./eve/sde.js";
+import { default as axios } from "axios";
+import { Agent } from "https";
+
+axios.defaults.headers["User-Agent"] =
+  process.env.USER_AGENT || "SOUND Roster (roster.of-sound-mind.com)";
+axios.defaults.httpsAgent = new Agent({
+  keepAlive: true,
+  maxVersion: "TLSv1.3",
+  minVersion: "TLSv1.2",
+});
 
 // Crash the process in the face of an unhandled promise rejection
 process.on("unhandledRejection", (err) => {
