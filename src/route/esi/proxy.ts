@@ -34,7 +34,6 @@ export default jsonEndpoint(
           method: <Method>req.method,
           headers: {
             Accept: "application/json",
-            "User-Agent": "SOUND Roster (roster.of-sound-mind.com)",
           },
           validateStatus: function (_status) {
             // Pass all statuses along to caller.

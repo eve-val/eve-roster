@@ -184,7 +184,6 @@ function fetchMailsPage(
   return Promise.resolve(
     axios.get<ZkillIncident[] | ZkillErr>(url, {
       headers: {
-        "User-Agent": process.env.USER_AGENT || "Sound Roster App",
         "Accept-Encoding": "gzip",
       },
     })

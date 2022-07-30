@@ -8,7 +8,6 @@ export async function fetchSwagger(baseUrl: string): Promise<object> {
     method: "GET",
     headers: {
       Accept: "application/json",
-      "User-Agent": "SOUND Roster (roster.of-sound-mind.com)",
     },
   };
 
