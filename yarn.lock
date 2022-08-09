@@ -345,13 +345,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.11.2, @babel/runtime-corejs3@npm:^7.16.8":
-  version: 7.16.8
-  resolution: "@babel/runtime-corejs3@npm:7.16.8"
+"@babel/runtime-corejs3@npm:^7.11.2, @babel/runtime-corejs3@npm:^7.18.9":
+  version: 7.18.9
+  resolution: "@babel/runtime-corejs3@npm:7.18.9"
   dependencies:
     core-js-pure: "npm:^3.20.2"
     regenerator-runtime: "npm:^0.13.4"
-  checksum: 1f0a2fcb18b338866fff2beae630dab703d216ea26381c39acb4883f4756982b51335e546b65efa1d3bc6837e95202ec854c973e1350710bd5e6c8de1e3967c8
+  checksum: b96adfec9aab1f4ea3ee7caa7ab4c879a27338fe4633d7ad32a75b2c956583b5580185e4e57219c360c4294582b8d01635ed886cf26ad94bc8869f19afc7a8df
   languageName: node
   linkType: hard
 
@@ -4372,10 +4372,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:=2.3.3":
-  version: 2.3.3
-  resolution: "dompurify@npm:2.3.3"
-  checksum: ee62d67e5b776a8532d279eb57645b2401341e56610106eed653b66b09d65746299943b884f7621ad338baa249acf2434e75b2c05422d4b71fffbc68853b164c
+"dompurify@npm:=2.3.10":
+  version: 2.3.10
+  resolution: "dompurify@npm:2.3.10"
+  checksum: 0d6a24d10db220a2533797ea7ebbafd0f187b614f97f6249742467d2faf8264a448b0396ce5d772d4b1565310ead43b7dbe4e5ac10f8bdb71c18dc5ffe74751d
   languageName: node
   linkType: hard
 
@@ -4995,7 +4995,7 @@ __metadata:
     sqlite3: "npm:^5.0.11"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^2.8.0"
-    swagger-ui: "npm:^4.13.0"
+    swagger-ui: "npm:^4.13.2"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^28.0.7"
     ts-jest-resolver: "npm:^2.0.0"
@@ -10268,15 +10268,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-debounce-input@npm:=3.2.4":
-  version: 3.2.4
-  resolution: "react-debounce-input@npm:3.2.4"
+"react-debounce-input@npm:=3.3.0":
+  version: 3.3.0
+  resolution: "react-debounce-input@npm:3.3.0"
   dependencies:
     lodash.debounce: "npm:^4"
-    prop-types: "npm:^15.7.2"
+    prop-types: "npm:^15.8.1"
   peerDependencies:
-    react: ^15.3.0 || ^16.0.0 || ^17.0.0
-  checksum: 2bf559f881a6cdf85ea03d2b171cb3e57643f21dade21bb01050cf34024f01226810ceb4741fc65d2ee57fd7ceb37533d9b17bb8f9104806a2ffe11f5eac6998
+    react: ^15.3.0 || 16 || 17 || 18
+  checksum: e535a71431b141d39e90ce011971fd940c3da21e77fabd6550fdc5385cd399cf823c44b93b1c086e91c2fbd4c7e5c4a98920b3f58da15cf10ca9c6bebed5f247
   languageName: node
   linkType: hard
 
@@ -11591,17 +11591,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.13.0":
-  version: 4.13.0
-  resolution: "swagger-ui@npm:4.13.0"
+"swagger-ui@npm:^4.13.2":
+  version: 4.13.2
+  resolution: "swagger-ui@npm:4.13.2"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.16.8"
+    "@babel/runtime-corejs3": "npm:^7.18.9"
     "@braintree/sanitize-url": "npm:=6.0.0"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.3.1"
     css.escape: "npm:1.5.1"
     deep-extend: "npm:0.6.0"
-    dompurify: "npm:=2.3.3"
+    dompurify: "npm:=2.3.10"
     ieee754: "npm:^1.2.1"
     immutable: "npm:^3.x.x"
     js-file-download: "npm:^0.4.12"
@@ -11612,7 +11612,7 @@ __metadata:
     randombytes: "npm:^2.1.0"
     react: "npm:=17.0.2"
     react-copy-to-clipboard: "npm:5.0.4"
-    react-debounce-input: "npm:=3.2.4"
+    react-debounce-input: "npm:=3.3.0"
     react-dom: "npm:=17.0.2"
     react-immutable-proptypes: "npm:2.2.0"
     react-immutable-pure-component: "npm:^2.2.0"
@@ -11630,7 +11630,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: b67d53b3baa8c4c187e6b99aa39cf0a2065c2498c281da1e154708db64289db4dc3d2e6d06cace946092121c15e613ce5c1a8a7968505cc0bae6859bdb125732
+  checksum: 500259fce44aefe15840ffbfe80f55e26b55b5a2e00dfc975979f26af1cb358a416ba9d172fef753c15e0c059c9110aa0dde87ddafaf2af424a664be7257a06f
   languageName: node
   linkType: hard
 
