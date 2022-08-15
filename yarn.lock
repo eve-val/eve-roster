@@ -5005,7 +5005,7 @@ __metadata:
     svgo: "npm:^2.8.0"
     swagger-ui: "npm:^4.13.2"
     tmp: "npm:^0.2.1"
-    ts-jest: "npm:^28.0.7"
+    ts-jest: "npm:^28.0.8"
     ts-jest-resolver: "npm:^2.0.0"
     ts-loader: "npm:^9.3.1"
     typescript: "npm:^4.7.4"
@@ -11932,9 +11932,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^28.0.7":
-  version: 28.0.7
-  resolution: "ts-jest@npm:28.0.7"
+"ts-jest@npm:^28.0.8":
+  version: 28.0.8
+  resolution: "ts-jest@npm:28.0.8"
   dependencies:
     bs-logger: "npm:0.x"
     fast-json-stable-stringify: "npm:2.x"
@@ -11961,7 +11961,7 @@ __metadata:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: dc5a074b1364380308a9ea9d2e91c7a8b134f23378e0cc6ab4ee21e77cee1d17e14acd1cd23a828e08992c5db2c86c0c3b94e1633842612872d18bc9656724b8
+  checksum: 2e005f7c1227b4a2a01888fc55fb4ca833c6279261fb919fd1a8df5cc0ea4411ef3f3870db7479319efa2dee2916943098bdfde8ec4fef6aba3dfcac55be08a2
   languageName: node
   linkType: hard
 
