@@ -5000,7 +5000,7 @@ __metadata:
     node-graceful: "npm:^3.1.0"
     node-schedule: "npm:^2.1.0"
     p-limit: "npm:^4.0.0"
-    pg: "npm:^8.7.3"
+    pg: "npm:^8.8.0"
     prettier: "npm:^2.7.1"
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.2"
@@ -9264,12 +9264,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.5.1":
-  version: 3.5.1
-  resolution: "pg-pool@npm:3.5.1"
+"pg-pool@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "pg-pool@npm:3.5.2"
   peerDependencies:
     pg: ">=8.0"
-  checksum: 9ab445815168c3e7955ca8d1caa3458cf062dce5fd820792dfa61a72b329f6565a3c299bebbe5ca578d7d31c871b7b136825fdcde5c4660bdb152beb173771fa
+  checksum: 6fd6f417451b7a6ea288ad276316652dd72822cb99ab3a0555eeb9a6d178d334c0ac83a90fd51393685b3a81502186dd0cfb96be0a3ae3c0668f1453f603038b
   languageName: node
   linkType: hard
 
@@ -9293,23 +9293,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.7.3":
-  version: 8.7.3
-  resolution: "pg@npm:8.7.3"
+"pg@npm:^8.8.0":
+  version: 8.8.0
+  resolution: "pg@npm:8.8.0"
   dependencies:
     buffer-writer: "npm:2.0.0"
     packet-reader: "npm:1.0.0"
     pg-connection-string: "npm:^2.5.0"
-    pg-pool: "npm:^3.5.1"
+    pg-pool: "npm:^3.5.2"
     pg-protocol: "npm:^1.5.0"
     pg-types: "npm:^2.1.0"
     pgpass: "npm:1.x"
   peerDependencies:
-    pg-native: ">=2.0.0"
+    pg-native: ">=3.0.1"
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 71cbd82cbd87ba0dbcc0d8f197a2a277fa22913ca1850a4e7456de19d8806c2cc03b2ad27241512d49f25d0d6250e2e71396abe715e5549c2ee4d5548ad49dcf
+  checksum: af391038edd2e97b80a8354c7a76cb35f30f51e7ebbf55ffcd452d7ff5291bd9a5f47fbbb73238c3116875556b15387068f0e7390ab0690f11936804b58c86c3
   languageName: node
   linkType: hard
 
