@@ -172,5 +172,5 @@
   "volta": {
     "node": "16.17"
   },
-  "packageManager": "yarn@4.0.0-rc.15"
+  "packageManager": "yarn@4.0.0-rc.18"
 }
