@@ -142,7 +142,6 @@
   "resolutions": {
     "ansi-html": "^0.0.9",
     "find-versions": "^5",
-    "knex": "patch:knex@^2.2.0#./patches/knex+2.2.0.patch",
     "lpad-align": "^3.0.0",
     "strip-ansi": "^6.0.1",
     "vue-loader": "patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch"
