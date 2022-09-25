@@ -33,13 +33,13 @@ workflows:
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
-          run-command: pretty-check
+          run-command: ci-pretty-check
           cache-version: v4
           name: pretty-check
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
-          run-command: lint
+          run-command: ci-lint
           cache-version: v4
           name: lint
       - node/test:
