@@ -4666,6 +4666,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"envalid@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "envalid@npm:7.3.1"
+  dependencies:
+    tslib: "npm:2.3.1"
+  checksum: 4a644a5cba500cd6b9b8384946f2c7efe722d8950d56e35018817832f223ddd77749a5164c480f5b11dddca1e2f369c73b0a19b617cb6cf8a001e59e247c5aef
+  languageName: node
+  linkType: hard
+
 "envinfo@npm:^7.7.3":
   version: 7.8.1
   resolution: "envinfo@npm:7.8.1"
@@ -5074,6 +5083,7 @@ __metadata:
     css-loader: "npm:^6.7.1"
     css-minimizer-webpack-plugin: "npm:^4.0.0"
     csurf: "npm:^1.11.0"
+    envalid: "npm:^7.3.1"
     eslint: "npm:^8.23.0"
     eslint-config-prettier: "npm:^8.5.0"
     eslint-plugin-jest: "npm:^27.0.4"
@@ -12265,17 +12275,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.3.1, tslib@npm:^2.0.3, tslib@npm:^2.3.0":
+  version: 2.3.1
+  resolution: "tslib@npm:2.3.1"
+  checksum: 78b00432027abb82405d5986a091fa593c6ef6589d0104d20ecdcaf24f2b02be428d9a38e7cd5304e5d64544cddb83210e326dac4fea9b2b83128a869c825d19
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 441af59dc42ad4ae57140e62cb362369620c6076845c2c2b0ecc863c1d719ce24fdbc301e9053433fef43075e061bf84b702318ff1204b496a5bba10baf9eb9f
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.0.3, tslib@npm:^2.3.0":
-  version: 2.3.1
-  resolution: "tslib@npm:2.3.1"
-  checksum: 78b00432027abb82405d5986a091fa593c6ef6589d0104d20ecdcaf24f2b02be428d9a38e7cd5304e5d64544cddb83210e326dac4fea9b2b83128a869c825d19
   languageName: node
   linkType: hard
 

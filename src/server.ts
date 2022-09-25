@@ -2,6 +2,10 @@
 import sourceMapSupport from "source-map-support";
 sourceMapSupport.install();
 
+import { initEnv } from "./infra/init/Env.js";
+
+const env = initEnv();
+
 import * as Sentry from "@sentry/node";
 Sentry.init({
   dsn: "https://63d54bc20d544dfa8d7eb6643a890c90@o770816.ingest.sentry.io/5795740",
@@ -28,28 +32,13 @@ import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 import { Metadata, ChannelCredentials } from "@grpc/grpc-js";
 
-const REQUIRED_VARS = [
-  "COOKIE_SECRET",
-  "SSO_CLIENT_ID",
-  "SSO_SECRET_KEY",
-  "HONEYCOMB_API_KEY",
-  "HONEYCOMB_DATASET",
-];
-
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "./infra/logging/buildLogger.js";
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
-for (const envVar of REQUIRED_VARS) {
-  if (!(envVar in process.env)) {
-    logger.error(`Missing config param ${envVar} (check your .env file).`);
-    process.exit(2);
-  }
-}
-
 const metadata = new Metadata();
-metadata.set("x-honeycomb-team", process.env["HONEYCOMB_API_KEY"] || "");
-metadata.set("x-honeycomb-dataset", process.env["HONEYCOMB_DATASET"] || "");
+metadata.set("x-honeycomb-team", env.HONEYCOMB_API_KEY);
+metadata.set("x-honeycomb-dataset", env.HONEYCOMB_DATASET);
 
 const collectorOptions = {
   serviceName: "roster",
