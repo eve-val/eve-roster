@@ -19,10 +19,10 @@ export function initEnv() {
     HOSTNAME: str({ devDefault: "localhost" }),
     PORT: int({ devDefault: 8081 }),
 
-    DOKKU_NGINX_PORT: int({ devDefault: undefined }),
-    DOKKU_PROXY_PORT: int({ devDefault: undefined }),
-    DOKKU_NGINX_SSL_PORT: int({ devDefault: undefined }),
-    DOKKU_PROXY_SSL_PORT: int({ devDefault: undefined }),
+    DOKKU_NGINX_PORT: int({ default: undefined }),
+    DOKKU_PROXY_PORT: int({ default: undefined }),
+    DOKKU_NGINX_SSL_PORT: int({ default: undefined }),
+    DOKKU_PROXY_SSL_PORT: int({ default: undefined }),
 
     HONEYCOMB_API_KEY: str({ devDefault: "" }),
     HONEYCOMB_DATASET: str({ devDefault: "" }),
