@@ -24,18 +24,18 @@ export function initEnv() {
     DOKKU_NGINX_SSL_PORT: int({ devDefault: undefined }),
     DOKKU_PROXY_SSL_PORT: int({ devDefault: undefined }),
 
-    HONEYCOMB_API_KEY: str({ devDefault: '' }),
-    HONEYCOMB_DATASET: str({ devDefault: '' }),
+    HONEYCOMB_API_KEY: str({ devDefault: "" }),
+    HONEYCOMB_DATASET: str({ devDefault: "" }),
 
     // Debugging flags
     DEBUG_GROUPS: jsonDebugGroups({ default: undefined }),
     DEBUG_DISABLE_CRON: bool({ default: false }),
   });
-};
+}
 
 export type Env = ReturnType<typeof initEnv>;
 
-const int = makeValidator(input => {
+const int = makeValidator((input) => {
   const value = parseInt(input);
   if (isNaN(value)) {
     throw new Error(`Not a valid number`);
@@ -43,7 +43,7 @@ const int = makeValidator(input => {
   return value;
 });
 
-const jsonDebugGroups = makeValidator(input => {
+const jsonDebugGroups = makeValidator((input) => {
   const value = JSON.parse(input);
 
   if (!(value instanceof Array)) {

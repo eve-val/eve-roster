@@ -1,84 +1,28 @@
-// Causes stack traces to reference the original .ts files
+/**
+ * The root file of the server.
+ *
+ * Unusually, this file contains multiple import blocks. This structure allows
+ * us time to get monitoring initialized before doing anything else (as even
+ * importing code can cause side-effects that we might want to monitor).
+ */
+
 import sourceMapSupport from "source-map-support";
+import { initEnv } from "./infra/init/Env.js";
+import { initMonitoring } from "./infra/init/initMonitoring.js";
+
+// Causes stack traces to reference the original .ts files
 sourceMapSupport.install();
 
-import { initEnv } from "./infra/init/Env.js";
-
 const env = initEnv();
+initMonitoring(env);
 
-import * as Sentry from "@sentry/node";
-Sentry.init({
-  dsn: "https://63d54bc20d544dfa8d7eb6643a890c90@o770816.ingest.sentry.io/5795740",
-  tracesSampleRate: 1.0,
-});
-
+import { buildLogger } from "./infra/logging/buildLogger.js";
+import { initServer } from "./infra/init/initServer.js";
+// Adds support for taking heapdumps when the process receives the USR2 signal
+// See https://github.com/eve-val/eve-roster/wiki/Grabbing-a-heap-dump
 import "heapdump";
 
-import { default as Graceful } from "node-graceful";
-Graceful.captureExceptions = true;
-
-import { tables } from "./db/tables.js";
-import { getPostgresKnex } from "./db/getPostgresKnex.js";
-
-// import { DiagConsoleLogger, DiagLogLevel, diag } from "@opentelemetry/api";
-// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
-
-import { NodeTracerProvider } from "@opentelemetry/sdk-trace-node";
-import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
-import { registerInstrumentations } from "@opentelemetry/instrumentation";
-import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
-import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
-import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
-import { Metadata, ChannelCredentials } from "@grpc/grpc-js";
-
-import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "./infra/logging/buildLogger.js";
-const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
-
-const metadata = new Metadata();
-metadata.set("x-honeycomb-team", env.HONEYCOMB_API_KEY);
-metadata.set("x-honeycomb-dataset", env.HONEYCOMB_DATASET);
-
-const collectorOptions = {
-  serviceName: "roster",
-  url: "grpcs://api.honeycomb.io:443/",
-  credentials: ChannelCredentials.createSsl(),
-  metadata,
-};
-
-const provider: NodeTracerProvider = new NodeTracerProvider();
-const exporter = new OTLPTraceExporter(collectorOptions);
-provider.addSpanProcessor(new BatchSpanProcessor(exporter));
-provider.register();
-
-Graceful.on("exit", async () => {
-  await provider.shutdown();
-});
-
-registerInstrumentations({
-  tracerProvider: provider,
-  instrumentations: [
-    new PgInstrumentation(),
-    new HttpInstrumentation(),
-    new ExpressInstrumentation(),
-  ],
-});
-
-import * as express from "./infra/express/express.js";
-import * as cron from "./infra/taskrunner/cron.js";
-import * as taskRunner from "./infra/taskrunner/taskRunner.js";
-import * as sde from "./eve/sde.js";
-import { default as axios } from "axios";
-import { Agent } from "https";
-
-axios.defaults.headers["User-Agent"] =
-  process.env.USER_AGENT || "SOUND Roster (roster.of-sound-mind.com)";
-axios.defaults.httpsAgent = new Agent({
-  keepAlive: true,
-  maxVersion: "TLSv1.3",
-  minVersion: "TLSv1.2",
-});
+const logger = buildLogger("server");
 
 // Crash the process in the face of an unhandled promise rejection
 process.on("unhandledRejection", (err) => {
@@ -90,20 +34,8 @@ process.on("unhandledRejection", (err) => {
   throw err;
 });
 
-main().catch((e) => {
+initServer().catch((e) => {
   logger.error(`Fatal error during startup.`);
   logger.error(e);
   process.exit(2);
 });
-
-async function main() {
-  const db = tables.build(getPostgresKnex()!);
-
-  await sde.loadStaticData(db, false);
-
-  taskRunner.init(db);
-  cron.init(db);
-  express.init(db, (port) => {
-    logger.info(`Serving from port ${port}.`);
-  });
-}
