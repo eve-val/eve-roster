@@ -21,7 +21,7 @@ import { arrayToMap } from "../util/collections.js";
 // unnecessary to update that character this time.
 const MIN_UPDATE_FREQUENCY_MILLIS = 10 * 60 * 1000;
 
-const CORP_OWNED_SHIP_NAME_PREFIX = "SA ";
+const CORP_OWNED_SHIP_NAME_PREFIX = "SA";
 
 const ASSET_SAFETY_LOCATION_ID = 2004;
 
