@@ -2357,21 +2357,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/reactivity@npm:3.2.37":
-  version: 3.2.37
-  resolution: "@vue/reactivity@npm:3.2.37"
+"@vue/reactivity@npm:3.2.38":
+  version: 3.2.38
+  resolution: "@vue/reactivity@npm:3.2.38"
   dependencies:
-    "@vue/shared": "npm:3.2.37"
-  checksum: b956ee2075dd0e3dd6c41baa0a336ab5840774e8a3956326e25f7257e6ed0a3ff3622a5371f00416bc5c93d13b35b274801537594ad3eaed080f976909046684
-  languageName: node
-  linkType: hard
-
-"@vue/reactivity@npm:3.2.41":
-  version: 3.2.41
-  resolution: "@vue/reactivity@npm:3.2.41"
-  dependencies:
-    "@vue/shared": "npm:3.2.41"
-  checksum: d7dbba0f521bbc90c14bd1046086a06d438e1decde18a4187709df86b74b6008d5ce05bf631c5b20ba2009eb13ba364124a2c4dc03cd7b9efdf7e695d7345849
+    "@vue/shared": "npm:3.2.38"
+  checksum: 4a4f8edb1b72fa24417d30aede9187943e90c98e3632af2bdfd612682f006b3aab914ca9586b80fa92063b67eacf3655ecfa301e0493c0fb5be53740e1959423
   languageName: node
   linkType: hard
 
@@ -2433,6 +2424,13 @@ __metadata:
   version: 3.2.37
   resolution: "@vue/shared@npm:3.2.37"
   checksum: db23efe46d0fea65ac905b583ef8e100438244c22128f8e4ff9eb392656352033000f5883621175da174573de0857dcf5cc6e12a2109223a7c2f335fe7bbcef6
+  languageName: node
+  linkType: hard
+
+"@vue/shared@npm:3.2.38":
+  version: 3.2.38
+  resolution: "@vue/shared@npm:3.2.38"
+  checksum: 190756713d991637294b8b0ea2eceaf2c874a3337056f7e07c96d91bddc19909d22bae67e0d89caf26d40025f1deb29404de33d051692f4fcdb7fd91073cc25a
   languageName: node
   linkType: hard
 

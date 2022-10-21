@@ -143,6 +143,7 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
+    "@vue/reactivity": "3.2.38",
     "ansi-html": "^0.0.9",
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
