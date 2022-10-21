@@ -2376,17 +2376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-core@npm:3.2.41":
-  version: 3.2.41
-  resolution: "@vue/runtime-core@npm:3.2.41"
-  dependencies:
-    "@vue/reactivity": "npm:3.2.41"
-    "@vue/shared": "npm:3.2.41"
-  checksum: 47f9653ad357516c5a519b854d29d3baf8b2f11763dbbf5f8dc92259bbde46416650178b986df97bc2bd0fffb632cb2e95075beec5a7666296fd54b9f92e09f3
-  languageName: node
-  linkType: hard
-
-"@vue/runtime-dom@npm:*":
+"@vue/runtime-dom@npm:3.2.37":
   version: 3.2.37
   resolution: "@vue/runtime-dom@npm:3.2.37"
   dependencies:
@@ -2394,17 +2384,6 @@ __metadata:
     "@vue/shared": "npm:3.2.37"
     csstype: "npm:^2.6.8"
   checksum: 488112a96295af7082398b1730216e4eb817ad28f0911848d4f22db560d9e5fd4c9a6b696da199eb42c2dc59aa49d837b9ed61a51a36c8383a2c0dc7eaa51b8d
-  languageName: node
-  linkType: hard
-
-"@vue/runtime-dom@npm:3.2.41, @vue/runtime-dom@npm:^3.2.41":
-  version: 3.2.41
-  resolution: "@vue/runtime-dom@npm:3.2.41"
-  dependencies:
-    "@vue/runtime-core": "npm:3.2.41"
-    "@vue/shared": "npm:3.2.41"
-    csstype: "npm:^2.6.8"
-  checksum: 4d826100b87e551033aa78788591ef4878e305662ea04c8b1e8cab1e4db06daecf069b3dd35163d92717003abe00fa95a59189e9a9ea28e7bcdf190515d6d7c7
   languageName: node
   linkType: hard
 
@@ -5198,7 +5177,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.40.1"
     "@typescript-eslint/parser": "npm:^5.40.1"
     "@vue/compiler-sfc": "npm:^3.2.41"
-    "@vue/runtime-dom": "npm:^3.2.41"
+    "@vue/runtime-dom": "npm:^3.2.37"
     axios: "npm:^1.0.0-alpha.1"
     bluebird: "npm:^3.7.2"
     body-parser: "npm:^1.20.0"
