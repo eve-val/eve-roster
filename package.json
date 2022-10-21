@@ -95,7 +95,7 @@
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "@vue/compiler-sfc": "^3.2.41",
-    "@vue/runtime-dom": "^3.2.37",
+    "@vue/runtime-dom": "^3.2.41",
     "buffer": "^6.0.3",
     "clean-webpack-plugin": "^4.0.0",
     "cleanup-mini-css-extract-plugin": "^1.1.1",
