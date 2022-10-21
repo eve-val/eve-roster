@@ -744,6 +744,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jest/schemas@npm:^29.0.0":
+  version: 29.0.0
+  resolution: "@jest/schemas@npm:29.0.0"
+  dependencies:
+    "@sinclair/typebox": "npm:^0.24.1"
+  checksum: 174f589fa0326e4f393cf56ac45beb8412e2ccd7c6040b45062035d80c95f5ae71512dab5757906b923ebfcd9c2b57ea40986377e0c06ad10ab2e24b561ac28d
+  languageName: node
+  linkType: hard
+
 "@jest/source-map@npm:^28.1.2":
   version: 28.1.2
   resolution: "@jest/source-map@npm:28.1.2"
@@ -826,6 +835,20 @@ __metadata:
     "@types/yargs": "npm:^17.0.8"
     chalk: "npm:^4.0.0"
   checksum: 78d58ed29af6383b89f38134fb1145509b6934e4a35c5795e537aefb0e0cfea0af2bd125924f6beda003c4391dd5070c42dc2345cbd3a5f5aff2d7c288998ef4
+  languageName: node
+  linkType: hard
+
+"@jest/types@npm:^29.2.1":
+  version: 29.2.1
+  resolution: "@jest/types@npm:29.2.1"
+  dependencies:
+    "@jest/schemas": "npm:^29.0.0"
+    "@types/istanbul-lib-coverage": "npm:^2.0.0"
+    "@types/istanbul-reports": "npm:^3.0.0"
+    "@types/node": "npm:*"
+    "@types/yargs": "npm:^17.0.8"
+    chalk: "npm:^4.0.0"
+  checksum: c928554654eb010aeed0e461ca10780e6c6ec2baf2663c0d3d5478454f295f520cf1eddbfda8a4c94fde418704cb881f15c9e03def1534e08e5baec74550f0f0
   languageName: node
   linkType: hard
 
@@ -4130,7 +4153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:*, css-minimizer-webpack-plugin@npm:^4.0.0":
+"css-minimizer-webpack-plugin@npm:*":
   version: 4.0.0
   resolution: "css-minimizer-webpack-plugin@npm:4.0.0"
   dependencies:
@@ -4152,6 +4175,35 @@ __metadata:
     esbuild:
       optional: true
   checksum: d282910535f6a4125886fa45cdcec8eceba6fb2007707c80ddc8ded8fe0ffee135dfa8aea189aa6d7607348c76e89b93c05506f1471ac0fc4b90aaaf99c6e10c
+  languageName: node
+  linkType: hard
+
+"css-minimizer-webpack-plugin@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "css-minimizer-webpack-plugin@npm:4.2.2"
+  dependencies:
+    cssnano: "npm:^5.1.8"
+    jest-worker: "npm:^29.1.2"
+    postcss: "npm:^8.4.17"
+    schema-utils: "npm:^4.0.0"
+    serialize-javascript: "npm:^6.0.0"
+    source-map: "npm:^0.6.1"
+  peerDependencies:
+    webpack: ^5.0.0
+  peerDependenciesMeta:
+    "@parcel/css":
+      optional: true
+    "@swc/css":
+      optional: true
+    clean-css:
+      optional: true
+    csso:
+      optional: true
+    esbuild:
+      optional: true
+    lightningcss:
+      optional: true
+  checksum: e0f4d14462aa6be40df117e108e7b1429543a64f621fbb4402af186f46cf7d4f5fff9838be9a9bcfcdafa1a1c3e753e83efaa210f8ebdc8ecdd26f2b932b40eb
   languageName: node
   linkType: hard
 
@@ -5207,7 +5259,7 @@ __metadata:
     cookie-parser: "npm:^1.4.6"
     cookie-session: "npm:^2.0.0"
     css-loader: "npm:^6.7.1"
-    css-minimizer-webpack-plugin: "npm:^4.0.0"
+    css-minimizer-webpack-plugin: "npm:^4.2.2"
     csurf: "npm:^1.11.0"
     envalid: "npm:^7.3.1"
     eslint: "npm:^8.23.0"
@@ -7724,6 +7776,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-util@npm:^29.2.1":
+  version: 29.2.1
+  resolution: "jest-util@npm:29.2.1"
+  dependencies:
+    "@jest/types": "npm:^29.2.1"
+    "@types/node": "npm:*"
+    chalk: "npm:^4.0.0"
+    ci-info: "npm:^3.2.0"
+    graceful-fs: "npm:^4.2.9"
+    picomatch: "npm:^2.2.3"
+  checksum: d2bb747485b631ec2ba862c1aa181fc94df4e4591c481bf7af4fa6aeb1e3eee27a6e85a6067579a05f65a8ca6ce05e1189dd59edf1853a970239a388bcad23f2
+  languageName: node
+  linkType: hard
+
 "jest-validate@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-validate@npm:27.5.1"
@@ -7787,6 +7853,18 @@ __metadata:
     merge-stream: "npm:^2.0.0"
     supports-color: "npm:^8.0.0"
   checksum: fb2c0fb1e836c0bb06ebee28905132866fb80c31d5b2251648055d2c706cbd8ec0f19580fff3a7a21510070ee2b3ad9467fbd11f24e18dc852d3c49cad262ffe
+  languageName: node
+  linkType: hard
+
+"jest-worker@npm:^29.1.2":
+  version: 29.2.1
+  resolution: "jest-worker@npm:29.2.1"
+  dependencies:
+    "@types/node": "npm:*"
+    jest-util: "npm:^29.2.1"
+    merge-stream: "npm:^2.0.0"
+    supports-color: "npm:^8.0.0"
+  checksum: 6feaeac250274c22e229a6b9bdc60e47e96310fd1d4726669aebe51bf3c8d3f4445c2901c8be0442a829b9b4730aeb5bf25255f8d05d73076b8558ac25f6cb6e
   languageName: node
   linkType: hard
 
@@ -10040,6 +10118,17 @@ __metadata:
     picocolors: "npm:^1.0.0"
     source-map-js: "npm:^1.0.2"
   checksum: 1e1e4a4cc235674bea79da18dd3e02ea8ffcd51546c7ddf1fc7ba4de5e89154a83988bb8c1b30bd9566df56fc0077dce6e620d8f9ce6ababf60f659ffc53f72c
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.17":
+  version: 8.4.18
+  resolution: "postcss@npm:8.4.18"
+  dependencies:
+    nanoid: "npm:^3.3.4"
+    picocolors: "npm:^1.0.0"
+    source-map-js: "npm:^1.0.2"
+  checksum: 686b922e5ced3d7dd5a6fe2d4b00f7787ac50db22f078f23f50462fdd9c00885e992f576c72eb804f62c5908a8b476d61d81d66ec91bb90eb4af2014eb3c321e
   languageName: node
   linkType: hard
 
