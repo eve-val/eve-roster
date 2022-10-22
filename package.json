@@ -58,7 +58,7 @@
     "svgo": "^2.8.0",
     "tmp": "^0.2.1",
     "unbzip2-stream": "^1.4.3",
-    "underscore": "^1.13.4",
+    "underscore": "^1.13.6",
     "verror": "^1.10.1"
   },
   "devDependencies": {
