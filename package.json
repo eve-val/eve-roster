@@ -65,7 +65,7 @@
     "@babel/types": "^7.19.4",
     "@sentry/browser": "^7.16.0",
     "@sentry/tracing": "^7.16.0",
-    "@types/bluebird": "^3.5.36",
+    "@types/bluebird": "^3.5.37",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cookie-session": "^2.0.44",
