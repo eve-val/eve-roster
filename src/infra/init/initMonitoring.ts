@@ -37,8 +37,8 @@ export function initMonitoring(env: Env) {
   provider.addSpanProcessor(new BatchSpanProcessor(exporter));
   provider.register();
 
-  Graceful.captureExceptions = true;
-  Graceful.on("exit", async () => {
+  Graceful.default.captureExceptions = true;
+  Graceful.default.on("exit", async () => {
     await provider.shutdown();
   });
 
