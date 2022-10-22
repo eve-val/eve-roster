@@ -5260,7 +5260,7 @@ __metadata:
     heapdump: "npm:^0.3.15"
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^3.4.0"
+    image-minimizer-webpack-plugin: "npm:^3.6.1"
     imagemin: "npm:^8.0.1"
     imagemin-gifsicle: "npm:^7.0.0"
     imagemin-mozjpeg: "npm:^10.0.0"
@@ -6682,9 +6682,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "image-minimizer-webpack-plugin@npm:3.4.0"
+"image-minimizer-webpack-plugin@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "image-minimizer-webpack-plugin@npm:3.6.1"
   dependencies:
     schema-utils: "npm:^4.0.0"
     serialize-javascript: "npm:^6.0.0"
@@ -6697,7 +6697,7 @@ __metadata:
       optional: true
     sharp:
       optional: true
-  checksum: d3d23b720b5148f5b967ee92cd2c296d6eeccf80a95bb3c2a6290d5c331d0284962b32459a8a8b227876308ed390a453c4bab172e7b01bc630b66f148a898abb
+  checksum: 59c95577e696f86804fd10c9899912b327a8a8c1bec5287873e816a20c244903523e2ff2b121fdb7dd099ef7fd4a542869cd0e23db3f97391ed88ab41141cb7e
   languageName: node
   linkType: hard
 
