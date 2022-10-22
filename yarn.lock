@@ -1045,9 +1045,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-express@npm:^0.31.1":
-  version: 0.31.1
-  resolution: "@opentelemetry/instrumentation-express@npm:0.31.1"
+"@opentelemetry/instrumentation-express@npm:^0.31.2":
+  version: 0.31.2
+  resolution: "@opentelemetry/instrumentation-express@npm:0.31.2"
   dependencies:
     "@opentelemetry/core": "npm:^1.0.0"
     "@opentelemetry/instrumentation": "npm:^0.32.0"
@@ -1055,7 +1055,7 @@ __metadata:
     "@types/express": "npm:4.17.13"
   peerDependencies:
     "@opentelemetry/api": ^1.0.0
-  checksum: 73add8b88864726984088f6fc9cbca6f7eccff356976296cdb97e3a10dd188044e2994e675a00847d5dfc926a0c3fc52be2fc0791b7bb6d3e72375c44103d6c2
+  checksum: ada91f5c59647e4dc4bce7f59d312d3860c438a24183fcaf6d4444b7605481d7192ba96e434dd76cb0eae3358aaf597ac9956f5cfde702e82adc39ee14961368
   languageName: node
   linkType: hard
 
@@ -5195,7 +5195,7 @@ __metadata:
     "@opentelemetry/core": "npm:^1.7.0"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.33.0"
     "@opentelemetry/instrumentation": "npm:^0.33.0"
-    "@opentelemetry/instrumentation-express": "npm:^0.31.1"
+    "@opentelemetry/instrumentation-express": "npm:^0.31.2"
     "@opentelemetry/instrumentation-http": "npm:^0.33.0"
     "@opentelemetry/instrumentation-pg": "npm:^0.31.1"
     "@opentelemetry/sdk-trace-base": "npm:^1.7.0"
