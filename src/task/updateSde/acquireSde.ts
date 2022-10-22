@@ -33,7 +33,7 @@ function downloadSde(job: JobLogger, target: string) {
           .pipe(
             progress({
               time: 1000,
-              length: parseInt(response.headers["content-length"]),
+              length: parseInt(response.headers["content-length"]!),
             })
           )
           .on("progress", (e) => {

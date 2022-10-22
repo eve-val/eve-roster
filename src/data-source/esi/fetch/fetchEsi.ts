@@ -37,7 +37,7 @@ export async function fetchEsiEx<T extends EsiEndpoint>(
   const response = await fetchEsiImpl(endpoint, params);
   return {
     data: response.data,
-    pageCount: parseInt(response.headers?.["x-pages"]) || 1,
+    pageCount: parseInt(response.headers?.["x-pages"] || "1") || 1,
   };
 }
 
