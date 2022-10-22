@@ -1816,7 +1816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:*, @types/pg@npm:^8.6.4":
+"@types/pg@npm:*":
   version: 8.6.4
   resolution: "@types/pg@npm:8.6.4"
   dependencies:
@@ -1835,6 +1835,17 @@ __metadata:
     pg-protocol: "npm:*"
     pg-types: "npm:^2.2.0"
   checksum: ad34cae383e9fc418cc0ebc054cd53d35e0768912b983208ab84413d26d0b47e6be85ea0b56c8ab6b7b32e12ed5b25fa61dffb26fdb44f94053ad5117ce3d9e7
+  languageName: node
+  linkType: hard
+
+"@types/pg@npm:^8.6.5":
+  version: 8.6.5
+  resolution: "@types/pg@npm:8.6.5"
+  dependencies:
+    "@types/node": "npm:*"
+    pg-protocol: "npm:*"
+    pg-types: "npm:^2.2.0"
+  checksum: 768676d354dee1928fa1f79bc48a199e83e7eeb6f2c8ca807b767ff6e696b2f045a0c789370f872154d2837585544fccd00730ad02b7c10392f7cb69f40eeb40
   languageName: node
   linkType: hard
 
@@ -5217,7 +5228,7 @@ __metadata:
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^16.11.39"
     "@types/node-schedule": "npm:^2.1.0"
-    "@types/pg": "npm:^8.6.4"
+    "@types/pg": "npm:^8.6.5"
     "@types/pg-pool": "npm:^2.0.3"
     "@types/progress-stream": "npm:^2.0.2"
     "@types/serve-favicon": "npm:^2.5.3"
