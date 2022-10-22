@@ -79,7 +79,7 @@
     "@types/mini-css-extract-plugin": "^2.5.1",
     "@types/node": "^16.11.39",
     "@types/node-schedule": "^2.1.0",
-    "@types/pg": "^8.6.4",
+    "@types/pg": "^8.6.5",
     "@types/pg-pool": "^2.0.3",
     "@types/progress-stream": "^2.0.2",
     "@types/serve-favicon": "^2.5.3",
