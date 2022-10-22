@@ -493,13 +493,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.5.9, @grpc/grpc-js@npm:^1.6.10":
-  version: 1.6.10
-  resolution: "@grpc/grpc-js@npm:1.6.10"
+"@grpc/grpc-js@npm:^1.5.9, @grpc/grpc-js@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "@grpc/grpc-js@npm:1.7.3"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.0"
     "@types/node": "npm:>=12.12.47"
-  checksum: c81e2e5047820fd2a5e121232a837feb5b19be23b758bf6c8a12f05e8be2779b46dc3245ad9585d79e256bf57a577099d875d8a96df2f8181a418d18a04fd832
+  checksum: 280d57b41000b025f551c0e757f073fbd8bb68f886b26a0656787a18d6297946ccd8c1f6d6b2d688f8e942358a6f5298b176381a58d2f8e5397da334f43484e6
   languageName: node
   linkType: hard
 
@@ -1072,9 +1072,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-express@npm:^0.31.1":
-  version: 0.31.1
-  resolution: "@opentelemetry/instrumentation-express@npm:0.31.1"
+"@opentelemetry/instrumentation-express@npm:^0.31.2":
+  version: 0.31.2
+  resolution: "@opentelemetry/instrumentation-express@npm:0.31.2"
   dependencies:
     "@opentelemetry/core": "npm:^1.0.0"
     "@opentelemetry/instrumentation": "npm:^0.32.0"
@@ -1082,7 +1082,7 @@ __metadata:
     "@types/express": "npm:4.17.13"
   peerDependencies:
     "@opentelemetry/api": ^1.0.0
-  checksum: 73add8b88864726984088f6fc9cbca6f7eccff356976296cdb97e3a10dd188044e2994e675a00847d5dfc926a0c3fc52be2fc0791b7bb6d3e72375c44103d6c2
+  checksum: ada91f5c59647e4dc4bce7f59d312d3860c438a24183fcaf6d4444b7605481d7192ba96e434dd76cb0eae3358aaf597ac9956f5cfde702e82adc39ee14961368
   languageName: node
   linkType: hard
 
@@ -1509,10 +1509,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bluebird@npm:^3.5.36":
-  version: 3.5.36
-  resolution: "@types/bluebird@npm:3.5.36"
-  checksum: ccc71c4609d00092b4133e9d2350d6865e02c73ab95053d7b9ff75d06a1a910b6e69b977cd64faa8cfda3c94ff0e1b351b745947341486b93730dc13d4958944
+"@types/bluebird@npm:^3.5.37":
+  version: 3.5.37
+  resolution: "@types/bluebird@npm:3.5.37"
+  checksum: cf183f3eb972d147488068ca07244df8ffae2f1ade0eaa978002a6af5b0b87d03f8a94ac570aa8dd8ab21d4b6578e888794991ebc030b74abdb63cb51ed45d94
   languageName: node
   linkType: hard
 
@@ -3067,14 +3067,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "axios@npm:1.0.0-alpha.1"
+"axios@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "axios@npm:1.1.3"
   dependencies:
     follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: c8b66546bb1f9c0c39290b7a635ed6683023515e4c2a792f3c6117b0bbadbb5228eae724b9216dd7f455034192bea3e8e0a9264bfebfc3959bdf181df1e4c61c
+  checksum: 2e28acd01cc06f9f10dfce3531ebbcd74f2f2a364f44ff4aa59363239baf699c58361e9bb6425ff91283f5fc623051c55bdd2d08c1c06dd7780f0d0762297ca7
   languageName: node
   linkType: hard
 
@@ -5014,9 +5014,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.5.1":
-  version: 9.5.1
-  resolution: "eslint-plugin-vue@npm:9.5.1"
+"eslint-plugin-vue@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "eslint-plugin-vue@npm:9.6.0"
   dependencies:
     eslint-utils: "npm:^3.0.0"
     natural-compare: "npm:^1.4.0"
@@ -5027,7 +5027,7 @@ __metadata:
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 501b633fe2a9b602ec3381b28e5b086e8b9d5ae65bfe6c869d9dfeccb40321ac9b550c7b5f89e7445afd13826860ed65789dac8c894960fe940d9ac620f83252
+  checksum: 94408249bff6d34483f5acc8707a508c6262387867f15af1d66869df98880d7f19825100e069038982221fe8152ef0731769785d2452901ac9738fcf3dbee04b
   languageName: node
   linkType: hard
 
@@ -5229,12 +5229,12 @@ __metadata:
   resolution: "eve-roster@workspace:."
   dependencies:
     "@babel/types": "npm:^7.19.4"
-    "@grpc/grpc-js": "npm:^1.6.10"
+    "@grpc/grpc-js": "npm:^1.7.3"
     "@opentelemetry/api": "npm:1.2.0"
     "@opentelemetry/core": "npm:^1.7.0"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.33.0"
     "@opentelemetry/instrumentation": "npm:^0.33.0"
-    "@opentelemetry/instrumentation-express": "npm:^0.31.1"
+    "@opentelemetry/instrumentation-express": "npm:^0.31.2"
     "@opentelemetry/instrumentation-http": "npm:^0.33.0"
     "@opentelemetry/instrumentation-pg": "npm:^0.31.1"
     "@opentelemetry/sdk-trace-base": "npm:^1.7.0"
@@ -5242,7 +5242,7 @@ __metadata:
     "@sentry/browser": "npm:^7.16.0"
     "@sentry/node": "npm:^7.16.0"
     "@sentry/tracing": "npm:^7.16.0"
-    "@types/bluebird": "npm:^3.5.36"
+    "@types/bluebird": "npm:^3.5.37"
     "@types/body-parser": "npm:^1.19.2"
     "@types/cookie-parser": "npm:^1.4.3"
     "@types/cookie-session": "npm:^2.0.44"
@@ -5273,7 +5273,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.40.1"
     "@vue/compiler-sfc": "npm:^3.2.41"
     "@vue/runtime-dom": "npm:^3.2.37"
-    axios: "npm:^1.0.0-alpha.1"
+    axios: "npm:^1.1.3"
     bluebird: "npm:^3.7.2"
     body-parser: "npm:^1.20.1"
     buffer: "npm:^6.0.3"
@@ -5290,7 +5290,7 @@ __metadata:
     eslint-plugin-jest: "npm:^27.1.3"
     eslint-plugin-prettier: "npm:^4.2.1"
     eslint-plugin-prettier-vue: "npm:^4.2.0"
-    eslint-plugin-vue: "npm:^9.5.1"
+    eslint-plugin-vue: "npm:^9.6.0"
     esprint: "npm:^3.6.0"
     events: "npm:^3.3.0"
     express: "npm:^4.18.2"
@@ -5299,7 +5299,7 @@ __metadata:
     heapdump: "npm:^0.3.15"
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^3.4.0"
+    image-minimizer-webpack-plugin: "npm:^3.6.1"
     imagemin: "npm:^8.0.1"
     imagemin-gifsicle: "npm:^7.0.0"
     imagemin-mozjpeg: "npm:^10.0.0"
@@ -5322,7 +5322,7 @@ __metadata:
     request: "npm:^2.88.2"
     serve-favicon: "npm:^2.5.0"
     source-map-support: "npm:^0.5.21"
-    sqlite3: "npm:^5.1.1"
+    sqlite3: "npm:^5.1.2"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^2.8.0"
     swagger-ui: "npm:^4.15.0"
@@ -6721,9 +6721,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "image-minimizer-webpack-plugin@npm:3.4.0"
+"image-minimizer-webpack-plugin@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "image-minimizer-webpack-plugin@npm:3.6.1"
   dependencies:
     schema-utils: "npm:^4.0.0"
     serialize-javascript: "npm:^6.0.0"
@@ -6736,7 +6736,7 @@ __metadata:
       optional: true
     sharp:
       optional: true
-  checksum: d3d23b720b5148f5b967ee92cd2c296d6eeccf80a95bb3c2a6290d5c331d0284962b32459a8a8b227876308ed390a453c4bab172e7b01bc630b66f148a898abb
+  checksum: 59c95577e696f86804fd10c9899912b327a8a8c1bec5287873e816a20c244903523e2ff2b121fdb7dd099ef7fd4a542869cd0e23db3f97391ed88ab41141cb7e
   languageName: node
   linkType: hard
 
@@ -11784,9 +11784,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite3@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "sqlite3@npm:5.1.1"
+"sqlite3@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "sqlite3@npm:5.1.2"
   dependencies:
     "@mapbox/node-pre-gyp": "npm:^1.0.0"
     node-addon-api: "npm:^4.2.0"
@@ -11800,7 +11800,7 @@ __metadata:
   peerDependenciesMeta:
     node-gyp:
       optional: true
-  checksum: b3330f5579c60a902d36471197731654b25e0ae58f98b5092c98952bbab254be9754e9964b7c58ea51ee7c1dd264e120a0ea866d2475a1c98179e3d41cf3960f
+  checksum: 324bc9a3deebbe3dba33eccb500007dac13e136d188b8977387a5e136493f66208b3b38e4f2159fed74724ef11b9ff6a048be8f49a7799cf5c8bcf8c2d6a1b51
   languageName: node
   linkType: hard
 

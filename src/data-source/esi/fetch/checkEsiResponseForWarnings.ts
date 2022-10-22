@@ -10,7 +10,7 @@ export function checkEsiResponseForWarnings(
   endpoint: EsiEndpoint,
   response: AxiosResponse
 ) {
-  const warning: string = response.headers["warning"];
+  const warning: string | undefined = response.headers["warning"];
 
   if (warning != undefined) {
     const tag = warning.startsWith(`199`)
