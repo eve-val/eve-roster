@@ -55,7 +55,7 @@
     "serve-favicon": "^2.5.0",
     "source-map-support": "^0.5.21",
     "sqlite3": "^5.1.2",
-    "svgo": "^2.8.0",
+    "svgo": "^3.0.0",
     "tmp": "^0.2.1",
     "unbzip2-stream": "^1.4.3",
     "underscore": "^1.13.6",
