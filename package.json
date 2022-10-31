@@ -62,7 +62,7 @@
     "verror": "^1.10.1"
   },
   "devDependencies": {
-    "@babel/types": "^7.19.4",
+    "@babel/types": "^7.20.0",
     "@sentry/browser": "^7.16.0",
     "@sentry/tracing": "^7.16.0",
     "@types/bluebird": "^3.5.37",
