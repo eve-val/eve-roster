@@ -376,7 +376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.9.2":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -4056,12 +4056,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-to-clipboard@npm:^3":
-  version: 3.3.1
-  resolution: "copy-to-clipboard@npm:3.3.1"
+"copy-to-clipboard@npm:^3.3.1":
+  version: 3.3.2
+  resolution: "copy-to-clipboard@npm:3.3.2"
   dependencies:
     toggle-selection: "npm:^1.0.6"
-  checksum: b73dbd1099d182c0d75fdac09e56499aac1bdc41c5f849cb4dcdec8d237c9ff8b659e21dc3d5f98c1f18fa64f7b3c78aa0126f9ca252019600d1005e6acd302a
+  checksum: f6f10e7c1c8ed93ca4480c726259560d1f3e89c29665dbb6d922fa3eb218340bfc1e241096362fd9843fb89fc5e94fc3417e77af9174cf74f1eecd46786550e8
   languageName: node
   linkType: hard
 
@@ -5412,7 +5412,7 @@ __metadata:
     sqlite3: "npm:^5.1.2"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.0.0"
-    swagger-ui: "npm:^4.15.0"
+    swagger-ui: "npm:^4.15.2"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^28.0.8"
     ts-jest-resolver: "npm:^2.0.0"
@@ -7062,16 +7062,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-dom@npm:^1.0.0":
-  version: 1.1.0
-  resolution: "is-dom@npm:1.1.0"
-  dependencies:
-    is-object: "npm:^1.0.1"
-    is-window: "npm:^1.0.2"
-  checksum: 14924e5a8c3a48946adbf16478f06e6be069371881a9c7826649e92ee81b36a5839a552a1895e109e47132bd6588fb8d8ae6054af57c6cd5517e0a0fe7b8d58f
-  languageName: node
-  linkType: hard
-
 "is-expression@npm:^4.0.0":
   version: 4.0.0
   resolution: "is-expression@npm:4.0.0"
@@ -7293,13 +7283,6 @@ __metadata:
   version: 1.0.0
   resolution: "is-typedarray@npm:1.0.0"
   checksum: f918df0d4215dbde9d0d29375cf39e353abe59ef3964862afc87bb6ce503e7439f4131260a7b1777074f5fcc64f659c75a4ce5a93ceb603901375cd0b13eedab
-  languageName: node
-  linkType: hard
-
-"is-window@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "is-window@npm:1.0.2"
-  checksum: 03e7a1ffa289bfe205db9026cb2b79d00c4fa6ce5beacc9a095e1fd731c049e98f86400bb05aa70b23b18bae01d644b4d8806375a18346fb834ad42b1b1281f7
   languageName: node
   linkType: hard
 
@@ -10447,7 +10430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10831,15 +10814,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-copy-to-clipboard@npm:5.0.4":
-  version: 5.0.4
-  resolution: "react-copy-to-clipboard@npm:5.0.4"
+"react-copy-to-clipboard@npm:5.1.0":
+  version: 5.1.0
+  resolution: "react-copy-to-clipboard@npm:5.1.0"
   dependencies:
-    copy-to-clipboard: "npm:^3"
-    prop-types: "npm:^15.5.8"
+    copy-to-clipboard: "npm:^3.3.1"
+    prop-types: "npm:^15.8.1"
   peerDependencies:
-    react: ^15.3.0 || ^16.0.0 || ^17.0.0
-  checksum: 3f1a91de4d60f344cf5311d726b2f3f73521c6c233c2995d31b6d674648a97a240bc1793690ac12c66984f785acc8c25f826635a22d02be49bc885a73c54c392
+    react: ^15.3.0 || 16 || 17 || 18
+  checksum: f3692a6a5ef9bc83770b9843cbd19279bfdffbcd5cef232b0735262df573c7fb39f3b917dceabd5150bc2743fad119686f3d0d3c911949f195cd1c8b22b50ee3
   languageName: node
   linkType: hard
 
@@ -10890,16 +10873,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-inspector@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "react-inspector@npm:5.1.1"
-  dependencies:
-    "@babel/runtime": "npm:^7.0.0"
-    is-dom: "npm:^1.0.0"
-    prop-types: "npm:^15.0.0"
+"react-inspector@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "react-inspector@npm:6.0.1"
   peerDependencies:
-    react: ^16.8.4 || ^17.0.0
-  checksum: 52e2b8fb051de60f9fac61a40801408689abe188501592840f87d4785d8ded082a55dae78027a7d227909eb63bf2583786ff728341b0629acc29e8147d0c133f
+    react: ^16.8.4 || ^17.0.0 || ^18.0.0
+  checksum: 3c0ec2652bbb7c9d5711c08817450d67dc2f6277d2be21260e18e0300ad069d37df2d7394a8a17d765f781c1ba6c46cbe30e9535393024f07089759bd2b978a4
   languageName: node
   linkType: hard
 
@@ -12233,9 +12212,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^4.15.0":
-  version: 4.15.0
-  resolution: "swagger-ui@npm:4.15.0"
+"swagger-ui@npm:^4.15.2":
+  version: 4.15.2
+  resolution: "swagger-ui@npm:4.15.2"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.18.9"
     "@braintree/sanitize-url": "npm:=6.0.0"
@@ -12253,12 +12232,12 @@ __metadata:
     randexp: "npm:^0.5.3"
     randombytes: "npm:^2.1.0"
     react: "npm:=17.0.2"
-    react-copy-to-clipboard: "npm:5.0.4"
+    react-copy-to-clipboard: "npm:5.1.0"
     react-debounce-input: "npm:=3.3.0"
     react-dom: "npm:=17.0.2"
     react-immutable-proptypes: "npm:2.2.0"
     react-immutable-pure-component: "npm:^2.2.0"
-    react-inspector: "npm:^5.1.1"
+    react-inspector: "npm:^6.0.1"
     react-redux: "npm:^7.2.4"
     react-syntax-highlighter: "npm:^15.4.5"
     redux: "npm:^4.1.2"
@@ -12272,7 +12251,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 7548cac2caee818ee2cf8333d1b26495faa60919d7d5bfb418fb0423a811f13c1d93326b930a5c375d145edce8d31b63edad3fce7d57b6c64dc809fe49a79b73
+  checksum: 3453442af43f38b973ecf78d20191d81078336b8599d65b25dff8f0fe688fd79cf7c74ded4f4136e37d2fea41f4a89aabd8f403afbebc53d45b327d7dac6439b
   languageName: node
   linkType: hard
 
