@@ -1390,15 +1390,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/tracing@npm:^7.16.0":
-  version: 7.16.0
-  resolution: "@sentry/tracing@npm:7.16.0"
+"@sentry/tracing@npm:^7.17.3":
+  version: 7.17.3
+  resolution: "@sentry/tracing@npm:7.17.3"
   dependencies:
-    "@sentry/core": "npm:7.16.0"
-    "@sentry/types": "npm:7.16.0"
-    "@sentry/utils": "npm:7.16.0"
+    "@sentry/core": "npm:7.17.3"
+    "@sentry/types": "npm:7.17.3"
+    "@sentry/utils": "npm:7.17.3"
     tslib: "npm:^1.9.3"
-  checksum: da4a672f99263eebeae466f065d82f08262c996098a3da512831c56370ac4ab4bfe514d3b28c58b0e69743e7ac1ae5863eadfb6cbde996dbedefede254ad3690
+  checksum: 59be1dbbc3a2e9428237166b2f579b7c2aee880a5326a06ceaec0105464027379de27a0a88c38789dd5dbea46ba0fc95bde5cafeab9828837986095c1a632415
   languageName: node
   linkType: hard
 
@@ -5350,7 +5350,7 @@ __metadata:
     "@opentelemetry/sdk-trace-node": "npm:^1.7.0"
     "@sentry/browser": "npm:^7.16.0"
     "@sentry/node": "npm:^7.17.3"
-    "@sentry/tracing": "npm:^7.16.0"
+    "@sentry/tracing": "npm:^7.17.3"
     "@types/bluebird": "npm:^3.5.37"
     "@types/body-parser": "npm:^1.19.2"
     "@types/cookie-parser": "npm:^1.4.3"
