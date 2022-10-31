@@ -1,6 +1,6 @@
 import pg from "pg";
 
-import { knex, Knex } from "knex";
+import { default as knex, Knex } from "knex";
 
 // By default, pg returns columns of type "bigint" (20) as strings, not numbers,
 // since they could possibly overflow Javascript's number type (which is a
@@ -52,5 +52,5 @@ export function getPostgresKnex() {
     (pgKnex as any).CLIENT = CLIENT;
   }
 
-  return pgKnex!;
+  return pgKnex;
 }

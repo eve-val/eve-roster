@@ -1,5 +1,5 @@
 import { default as Graceful } from "node-graceful";
-Graceful.default.captureExceptions = true;
+Graceful.captureExceptions = true;
 
 import * as Sentry from "@sentry/node";
 
@@ -112,7 +112,7 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
     onServing(port);
   });
 
-  Graceful.default.on("exit", async () => {
+  Graceful.on("exit", async () => {
     await server.close();
   });
 }
