@@ -8094,17 +8094,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "json5@npm:1.0.1"
-  dependencies:
-    minimist: "npm:^1.2.0"
-  bin:
-    json5: lib/cli.js
-  checksum: fd9492140ea8a1ec338c96e8527e940c9464ca3c7ef8fbf00b8bbbac1c6e60d612bf6640885e8a9108c3b71dc913f9a07a628df36f462853ea8c59bbce192e32
-  languageName: node
-  linkType: hard
-
 "json5@npm:^2.1.2, json5@npm:^2.2.1":
   version: 2.2.1
   resolution: "json5@npm:2.2.1"
@@ -8259,25 +8248,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^1.0.2":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
-  dependencies:
-    big.js: "npm:^5.2.2"
-    emojis-list: "npm:^3.0.0"
-    json5: "npm:^1.0.1"
-  checksum: ba50c7c77159d1f07d8d583b301fdd7f6b02101503b4057bb0cfbe474ce6aeb95d437a5f902fd969787177be740abbb058c2d5df686acaecd2a38e4ebad46a3c
-  languageName: node
-  linkType: hard
-
-"loader-utils@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "loader-utils@npm:2.0.0"
+"loader-utils@npm:^1.0.2, loader-utils@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "loader-utils@npm:2.0.3"
   dependencies:
     big.js: "npm:^5.2.2"
     emojis-list: "npm:^3.0.0"
     json5: "npm:^2.1.2"
-  checksum: ec086c7cb548168df640aae8890c31109ebdb5caa815d834e6b98da410df0180664517d6ff504257aad5db1ebbb9cd2643319bafd91afe8f354a59fc14aaf2de
+  checksum: 347419ce5bd826ab3692e8c1b23672229496c640f3d12349116688daa7d61b0646c5346aa401a8283e0fb9c96fd1186d132e632f8cd816ff0557a0c90ba6f8cb
   languageName: node
   linkType: hard
 
