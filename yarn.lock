@@ -2066,6 +2066,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webpack-hot-middleware@npm:^2.25.6":
+  version: 2.25.6
+  resolution: "@types/webpack-hot-middleware@npm:2.25.6"
+  dependencies:
+    "@types/connect": "npm:*"
+    tapable: "npm:^2.2.0"
+    webpack: "npm:^5"
+  checksum: 21d6e186ef6cdef80468ef61858041374f0a96fc9973f0bf9bea61c0eafee7b3dbc6d96c1c71364a55e6c335371c6c883e725df9155e983f91d753b44b23708c
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^7.4.4":
   version: 7.4.7
   resolution: "@types/ws@npm:7.4.7"
@@ -2884,12 +2895,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-html@npm:^0.0.9":
-  version: 0.0.9
-  resolution: "ansi-html@npm:0.0.9"
+"ansi-html-community@npm:0.0.8":
+  version: 0.0.8
+  resolution: "ansi-html-community@npm:0.0.8"
   bin:
     ansi-html: bin/ansi-html
-  checksum: 5903c26fd830a5afb2abffa197e27f7c43253083bac3f585fc6dea649e4dc930ca0fc8e729fd548b27841737c04d2259290c4bfff939941b3a64917f2d305b8c
+  checksum: 56bf91b53357d6fa66973feb7294140fdc9da5a11fa63f354ef05ae3b47db4bb367ca1a6960f09c572d395b05ed16c698ce5f23d172eae9c6e4b50213aff8deb
   languageName: node
   linkType: hard
 
@@ -5412,6 +5423,7 @@ __metadata:
     "@types/underscore": "npm:^1.11.4"
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-dev-middleware": "npm:^5.3.0"
+    "@types/webpack-hot-middleware": "npm:^2.25.6"
     "@typescript-eslint/eslint-plugin": "npm:^5.42.1"
     "@typescript-eslint/parser": "npm:^5.42.0"
     "@vue/compiler-sfc": "npm:^3.2.41"
@@ -5483,10 +5495,10 @@ __metadata:
     vue-loader: "npm:^17.0.1"
     vue-router: "npm:^4.1.6"
     vue-style-loader: "npm:^4.1.3"
-    webpack: "npm:^5.74.0"
+    webpack: "npm:^5.75.0"
     webpack-cli: "npm:^4.10.0"
     webpack-dev-middleware: "npm:^5.3.3"
-    webpack-hot-middleware: "webpack-contrib/webpack-hot-middleware#webpack5"
+    webpack-hot-middleware: "npm:^2.25.3"
     webpack-merge: "npm:^5.8.0"
   languageName: unknown
   linkType: soft
@@ -10744,13 +10756,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"querystring@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "querystring@npm:0.2.1"
-  checksum: b0977aff37e25f500731e870ca72627d1732096ff587fd28e4fccfcf358dbea960a3513cbcb58c74f49edd2b42f20eb5aa9660b9b281e5e10ea8de00913d2e4a
-  languageName: node
-  linkType: hard
-
 "querystringify@npm:^2.1.1":
   version: 2.2.0
   resolution: "querystringify@npm:2.2.0"
@@ -13151,15 +13156,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-hot-middleware@webpack-contrib/webpack-hot-middleware#webpack5":
-  version: 2.25.0
-  resolution: "webpack-hot-middleware@https://github.com/webpack-contrib/webpack-hot-middleware.git#commit=2cf576f86b7b9e18ee10bfd954fffde4e7e17a22"
+"webpack-hot-middleware@npm:^2.25.3":
+  version: 2.25.3
+  resolution: "webpack-hot-middleware@npm:2.25.3"
   dependencies:
-    ansi-html: "npm:0.0.7"
+    ansi-html-community: "npm:0.0.8"
     html-entities: "npm:^2.1.0"
-    querystring: "npm:^0.2.0"
     strip-ansi: "npm:^6.0.0"
-  checksum: f9f8779b6f96d9d13c5289970a12fc8afc075ac54c2a5f017473868441c7835f5c2949906a42e487d184408f9576db3c9857c6af570962d5e3f60acff48cb54d
+  checksum: 7e0b5e20c4554ec3fb7ea74489b0cf3649d532dcd73d380c61790d4c4dbee6bc3436316b767247ca57bffcc1cfbc17c9c3518871d849fceac06a9cb6f43c7fa2
   languageName: node
   linkType: hard
 
@@ -13180,9 +13184,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.74.0":
-  version: 5.74.0
-  resolution: "webpack@npm:5.74.0"
+"webpack@npm:^5, webpack@npm:^5.75.0":
+  version: 5.75.0
+  resolution: "webpack@npm:5.75.0"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.3"
     "@types/estree": "npm:^0.0.51"
@@ -13213,7 +13217,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: d6416e650775ec1ac2087daa1f0db738a07bd709b1ab2784d902d4add2d75bdbfa1c6103ce1191ddc11aaa08ad99cc99c49bfcf885a4b89553286716c3c1a9b4
+  checksum: 253fca9ba42fea3e3aaf6c913cb6aca6bf383a8a55f9fcdf8d9f364b4f7e406b3c308f4164ea3f45f11259e1a699a584fa6811bdd2c215101cb1a2fa6c0410dc
   languageName: node
   linkType: hard
 
