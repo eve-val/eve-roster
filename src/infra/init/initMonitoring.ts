@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { default as Graceful } from "node-graceful";
+import Graceful from "node-graceful";
 import { NodeTracerProvider } from "@opentelemetry/sdk-trace-node";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
@@ -37,8 +37,8 @@ export function initMonitoring(env: Env) {
   provider.addSpanProcessor(new BatchSpanProcessor(exporter));
   provider.register();
 
-  Graceful.captureExceptions = true;
-  Graceful.on("exit", async () => {
+  Graceful.default.captureExceptions = true;
+  Graceful.default.on("exit", async () => {
     await provider.shutdown();
   });
 

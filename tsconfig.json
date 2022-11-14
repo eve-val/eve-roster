@@ -4,11 +4,11 @@
     "outDir": "./out/server",
     "incremental": true,
 
-    "target": "es2020",
+    "target": "es2022",
     // Export Node-style modules since this is running on Node
-    "module": "nodenext",
+    "module": "node16",
     // We're running on Node, so use this strategy.
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node16",
 
     // Various strictness guarantees when compiling
     "strict": true,
