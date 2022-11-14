@@ -2884,6 +2884,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-html@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "ansi-html@npm:0.0.9"
+  bin:
+    ansi-html: bin/ansi-html
+  checksum: 5903c26fd830a5afb2abffa197e27f7c43253083bac3f585fc6dea649e4dc930ca0fc8e729fd548b27841737c04d2259290c4bfff939941b3a64917f2d305b8c
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^2.0.0":
   version: 2.1.1
   resolution: "ansi-regex@npm:2.1.1"
@@ -5477,6 +5486,7 @@ __metadata:
     webpack: "npm:^5.74.0"
     webpack-cli: "npm:^4.10.0"
     webpack-dev-middleware: "npm:^5.3.3"
+    webpack-hot-middleware: "webpack-contrib/webpack-hot-middleware#webpack5"
     webpack-merge: "npm:^5.8.0"
   languageName: unknown
   linkType: soft
@@ -6629,6 +6639,13 @@ __metadata:
   dependencies:
     lru-cache: "npm:^6.0.0"
   checksum: d47495db8d2a39faef6cd1adbdced4e6a52d41a4aedec757eb2552e93a881236e431e18e72a3b6d7aa7c575995f5b06b91cce5a86886fdccfbd405df28a61882
+  languageName: node
+  linkType: hard
+
+"html-entities@npm:^2.1.0":
+  version: 2.3.2
+  resolution: "html-entities@npm:2.3.2"
+  checksum: 4459210539357ac19c0874f6461c07b7240eb8064762e42010017c352888b500d1bb95ee06e0c9d61063e6ba954e06fdf700a2357f9262af68f3a1232811b5e5
   languageName: node
   linkType: hard
 
@@ -10727,6 +10744,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"querystring@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "querystring@npm:0.2.1"
+  checksum: b0977aff37e25f500731e870ca72627d1732096ff587fd28e4fccfcf358dbea960a3513cbcb58c74f49edd2b42f20eb5aa9660b9b281e5e10ea8de00913d2e4a
+  languageName: node
+  linkType: hard
+
 "querystringify@npm:^2.1.1":
   version: 2.2.0
   resolution: "querystringify@npm:2.2.0"
@@ -13124,6 +13148,18 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: 0e0b79101a6ae02710d3b4c4d6bd6b9cbd656b7bf3e4e8d47bb11686bdccebef0d970940f6b13124cb17acf85c369b01b85f8134ed0a128e6c10eac7829ef56b
+  languageName: node
+  linkType: hard
+
+"webpack-hot-middleware@webpack-contrib/webpack-hot-middleware#webpack5":
+  version: 2.25.0
+  resolution: "webpack-hot-middleware@https://github.com/webpack-contrib/webpack-hot-middleware.git#commit=2cf576f86b7b9e18ee10bfd954fffde4e7e17a22"
+  dependencies:
+    ansi-html: "npm:0.0.7"
+    html-entities: "npm:^2.1.0"
+    querystring: "npm:^0.2.0"
+    strip-ansi: "npm:^6.0.0"
+  checksum: f9f8779b6f96d9d13c5289970a12fc8afc075ac54c2a5f017473868441c7835f5c2949906a42e487d184408f9576db3c9857c6af570962d5e3f60acff48cb54d
   languageName: node
   linkType: hard
 

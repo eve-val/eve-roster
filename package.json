@@ -137,10 +137,12 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-middleware": "^5.3.3",
+    "webpack-hot-middleware": "webpack-contrib/webpack-hot-middleware#webpack5",
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
     "@vue/runtime-dom": "3.2.37",
+    "ansi-html": "^0.0.9",
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
     "strip-ansi": "^6.0.1",

@@ -129,6 +129,8 @@ async function setupClientServing(app: express.Application) {
     const webpack = (await import("webpack")).default;
     const webpackDevMiddleware = (await import("webpack-dev-middleware"))
       .default;
+    const webpackHotMiddleware = (await import("webpack-hot-middleware"))
+      .default;
 
     const compiler = webpack(clientConfig);
 
@@ -138,6 +140,8 @@ async function setupClientServing(app: express.Application) {
         stats: "minimal",
       })
     );
+
+    app.use(webpackHotMiddleware(compiler));
   }
 
   // Compiled front-end files from webpack
