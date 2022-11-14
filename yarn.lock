@@ -5494,7 +5494,7 @@ __metadata:
     heapdump: "npm:^0.3.15"
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^3.8.0"
+    image-minimizer-webpack-plugin: "npm:^3.8.1"
     imagemin: "npm:^8.0.1"
     imagemin-gifsicle: "npm:^7.0.0"
     imagemin-mozjpeg: "npm:^10.0.0"
@@ -6943,9 +6943,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "image-minimizer-webpack-plugin@npm:3.8.0"
+"image-minimizer-webpack-plugin@npm:^3.8.1":
+  version: 3.8.1
+  resolution: "image-minimizer-webpack-plugin@npm:3.8.1"
   dependencies:
     schema-utils: "npm:^4.0.0"
     serialize-javascript: "npm:^6.0.0"
@@ -6960,7 +6960,7 @@ __metadata:
       optional: true
     svgo:
       optional: true
-  checksum: 4c836c9f6802008745d48382b91fc84a71304ceddf0cc43c9e3c0ff961527c0cd8ad6a00c0eaa1a01b895d66ed64e9012fcc4b339d9310030c158943c3da5f2f
+  checksum: d5626765a02e1361ffad740eb79a9b0960575d9e4bb89d85465be29f3183235db0215e40d0cbe6f5d61ae51e9d9a62781cf17349f3644b47758a6f4fc7ad47c6
   languageName: node
   linkType: hard
 
