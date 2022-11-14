@@ -2066,6 +2066,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webpack-hot-middleware@npm:^2.25.6":
+  version: 2.25.6
+  resolution: "@types/webpack-hot-middleware@npm:2.25.6"
+  dependencies:
+    "@types/connect": "npm:*"
+    tapable: "npm:^2.2.0"
+    webpack: "npm:^5"
+  checksum: 21d6e186ef6cdef80468ef61858041374f0a96fc9973f0bf9bea61c0eafee7b3dbc6d96c1c71364a55e6c335371c6c883e725df9155e983f91d753b44b23708c
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^7.4.4":
   version: 7.4.7
   resolution: "@types/ws@npm:7.4.7"
@@ -2881,6 +2892,15 @@ __metadata:
   dependencies:
     type-fest: "npm:^0.21.3"
   checksum: da33f33b3b792e7273cefc1ec150afbc332cab602757d2ab70fb90e5c5cfa173b10bc4a0d9d0c60479ed60e25cdf35897a82f1e498987358a6087b99300872cc
+  languageName: node
+  linkType: hard
+
+"ansi-html-community@npm:0.0.8":
+  version: 0.0.8
+  resolution: "ansi-html-community@npm:0.0.8"
+  bin:
+    ansi-html: bin/ansi-html
+  checksum: 56bf91b53357d6fa66973feb7294140fdc9da5a11fa63f354ef05ae3b47db4bb367ca1a6960f09c572d395b05ed16c698ce5f23d172eae9c6e4b50213aff8deb
   languageName: node
   linkType: hard
 
@@ -5403,6 +5423,7 @@ __metadata:
     "@types/underscore": "npm:^1.11.4"
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-dev-middleware": "npm:^5.3.0"
+    "@types/webpack-hot-middleware": "npm:^2.25.6"
     "@typescript-eslint/eslint-plugin": "npm:^5.42.1"
     "@typescript-eslint/parser": "npm:^5.42.0"
     "@vue/compiler-sfc": "npm:^3.2.41"
@@ -5474,9 +5495,10 @@ __metadata:
     vue-loader: "npm:^17.0.1"
     vue-router: "npm:^4.1.6"
     vue-style-loader: "npm:^4.1.3"
-    webpack: "npm:^5.74.0"
+    webpack: "npm:^5.75.0"
     webpack-cli: "npm:^4.10.0"
     webpack-dev-middleware: "npm:^5.3.3"
+    webpack-hot-middleware: "npm:^2.25.3"
     webpack-merge: "npm:^5.8.0"
   languageName: unknown
   linkType: soft
@@ -6629,6 +6651,13 @@ __metadata:
   dependencies:
     lru-cache: "npm:^6.0.0"
   checksum: d47495db8d2a39faef6cd1adbdced4e6a52d41a4aedec757eb2552e93a881236e431e18e72a3b6d7aa7c575995f5b06b91cce5a86886fdccfbd405df28a61882
+  languageName: node
+  linkType: hard
+
+"html-entities@npm:^2.1.0":
+  version: 2.3.2
+  resolution: "html-entities@npm:2.3.2"
+  checksum: 4459210539357ac19c0874f6461c07b7240eb8064762e42010017c352888b500d1bb95ee06e0c9d61063e6ba954e06fdf700a2357f9262af68f3a1232811b5e5
   languageName: node
   linkType: hard
 
@@ -13127,6 +13156,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webpack-hot-middleware@npm:^2.25.3":
+  version: 2.25.3
+  resolution: "webpack-hot-middleware@npm:2.25.3"
+  dependencies:
+    ansi-html-community: "npm:0.0.8"
+    html-entities: "npm:^2.1.0"
+    strip-ansi: "npm:^6.0.0"
+  checksum: 7e0b5e20c4554ec3fb7ea74489b0cf3649d532dcd73d380c61790d4c4dbee6bc3436316b767247ca57bffcc1cfbc17c9c3518871d849fceac06a9cb6f43c7fa2
+  languageName: node
+  linkType: hard
+
 "webpack-merge@npm:^5.7.3, webpack-merge@npm:^5.8.0":
   version: 5.8.0
   resolution: "webpack-merge@npm:5.8.0"
@@ -13144,9 +13184,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.74.0":
-  version: 5.74.0
-  resolution: "webpack@npm:5.74.0"
+"webpack@npm:^5, webpack@npm:^5.75.0":
+  version: 5.75.0
+  resolution: "webpack@npm:5.75.0"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.3"
     "@types/estree": "npm:^0.0.51"
@@ -13177,7 +13217,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: d6416e650775ec1ac2087daa1f0db738a07bd709b1ab2784d902d4add2d75bdbfa1c6103ce1191ddc11aaa08ad99cc99c49bfcf885a4b89553286716c3c1a9b4
+  checksum: 253fca9ba42fea3e3aaf6c913cb6aca6bf383a8a55f9fcdf8d9f364b4f7e406b3c308f4164ea3f45f11259e1a699a584fa6811bdd2c215101cb1a2fa6c0410dc
   languageName: node
   linkType: hard
 
