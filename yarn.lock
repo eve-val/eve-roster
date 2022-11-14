@@ -2470,7 +2470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:3.2.45":
+"@vue/runtime-dom@npm:*, @vue/runtime-dom@npm:3.2.45, @vue/runtime-dom@npm:^3.2.45":
   version: 3.2.45
   resolution: "@vue/runtime-dom@npm:3.2.45"
   dependencies:
