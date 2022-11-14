@@ -13011,29 +13011,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-loader@npm:^17.0.0":
-  version: 17.0.0
-  resolution: "vue-loader@npm:17.0.0"
+"vue-loader@npm:^17.0.1":
+  version: 17.0.1
+  resolution: "vue-loader@npm:17.0.1"
   dependencies:
     chalk: "npm:^4.1.0"
     hash-sum: "npm:^2.0.0"
     loader-utils: "npm:^2.0.0"
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: c446a2a32bf4314c09ef202f335797d45d15bf85dc7e632181852a59ce0b0994417d232b2851cddd773e2516433ad6656a0ac9a561e5c81978fd0057b66719a7
+  peerDependenciesMeta:
+    "@vue/compiler-sfc":
+      optional: true
+    vue:
+      optional: true
+  checksum: 7360795ade02c1846a6b69f6b0f1f2fa378625fa192d6a0f9f5941ca7deea133ba6e25c65aa4e5939f4e6bfc2b075c0b4b5d5a17a5835275da0770befc5bdb41
   languageName: node
   linkType: hard
 
-"vue-loader@patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch::locator=eve-roster%40workspace%3A.":
-  version: 17.0.0
-  resolution: "vue-loader@patch:vue-loader@npm%3A17.0.0#./patches/vue-loader+17.0.0.patch::version=17.0.0&hash=725b7b&locator=eve-roster%40workspace%3A."
+"vue-loader@patch:vue-loader@^17.0.1#./patches/vue-loader+17.0.1.patch::locator=eve-roster%40workspace%3A.":
+  version: 17.0.1
+  resolution: "vue-loader@patch:vue-loader@npm%3A17.0.1#./patches/vue-loader+17.0.1.patch::version=17.0.1&hash=725b7b&locator=eve-roster%40workspace%3A."
   dependencies:
     chalk: "npm:^4.1.0"
     hash-sum: "npm:^2.0.0"
     loader-utils: "npm:^2.0.0"
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
-  checksum: 3e4210c12a41ff04bda32a53ca6dd8eba83b903fb0698064b5e823eae3c790c7a0bde51a9b03a234a51fc0a8f49164fccd38a01c1c07549493f49bad184362de
+  peerDependenciesMeta:
+    "@vue/compiler-sfc":
+      optional: true
+    vue:
+      optional: true
+  checksum: 5575eacff4393e0e05d4dbfb8e2d92c649c3627c94d0346e6173da9e5c841577f928204807a50475139231862fa4baac0789ce88d1d7fae5dee2c102496972d8
   languageName: node
   linkType: hard
 

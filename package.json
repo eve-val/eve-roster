@@ -146,7 +146,7 @@
     "find-versions": "^5",
     "lpad-align": "^3.0.0",
     "strip-ansi": "^6.0.1",
-    "vue-loader": "patch:vue-loader@^17.0.0#./patches/vue-loader+17.0.0.patch"
+    "vue-loader": "patch:vue-loader@^17.0.1#./patches/vue-loader+17.0.1.patch"
   },
   "jest": {
     "moduleFileExtensions": [
