@@ -27,7 +27,7 @@
     "@opentelemetry/core": "^1.8.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.34.0",
     "@opentelemetry/instrumentation": "^0.34.0",
-    "@opentelemetry/instrumentation-express": "^0.31.3",
+    "@opentelemetry/instrumentation-express": "^0.32.0",
     "@opentelemetry/instrumentation-http": "^0.34.0",
     "@opentelemetry/instrumentation-pg": "^0.32.0",
     "@opentelemetry/sdk-trace-base": "^1.8.0",
