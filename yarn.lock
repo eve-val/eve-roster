@@ -5444,7 +5444,7 @@ __metadata:
     jose: "npm:^4.11.0"
     json-loader: "npm:^0.5.7"
     knex: "npm:^2.3.0"
-    mini-css-extract-plugin: "npm:^2.6.1"
+    mini-css-extract-plugin: "npm:^2.7.0"
     moment: "npm:^2.29.4"
     moment-locales-webpack-plugin: "npm:^1.2.0"
     node-graceful: "npm:^3.1.0"
@@ -8874,7 +8874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:*, mini-css-extract-plugin@npm:^2.6.1":
+"mini-css-extract-plugin@npm:*":
   version: 2.6.1
   resolution: "mini-css-extract-plugin@npm:2.6.1"
   dependencies:
@@ -8882,6 +8882,17 @@ __metadata:
   peerDependencies:
     webpack: ^5.0.0
   checksum: 287625748e019d038e8c8fd1790a7d33d4827fd49e080b7c47c57076ff6149b3f279cdfc451c0a7491e9a879b04b7ed3eb42b0a64da133a11811ff8387d92c45
+  languageName: node
+  linkType: hard
+
+"mini-css-extract-plugin@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "mini-css-extract-plugin@npm:2.7.0"
+  dependencies:
+    schema-utils: "npm:^4.0.0"
+  peerDependencies:
+    webpack: ^5.0.0
+  checksum: e41d0229a396be67220448a9d4f3f4c7987895c9f64303c712978e9d40518dbabe07ef4f50e8a548d5a67cfbb3ad700e0c14c8817a366fc11db76de713fe1d1c
   languageName: node
   linkType: hard
 
