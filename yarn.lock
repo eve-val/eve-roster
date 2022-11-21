@@ -1820,7 +1820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^16.11.39":
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0":
   version: 16.11.39
   resolution: "@types/node@npm:16.11.39"
   checksum: 88e741e13a168024547bb0e90d53667793f35e7e13ab0f5f3dfca45eaa4722b7c51c8eb963255f7a415bcbd1d6369f2ba0765dab0a573d9859e169850bf9f9a8
@@ -1831,6 +1831,13 @@ __metadata:
   version: 12.20.55
   resolution: "@types/node@npm:12.20.55"
   checksum: 9b27dda0808201182f3b075fb38fff9cf5365fe906728a82d23257546ddb9899874f49606d495deb22e39338ddcb1bc381382b799181b3f1faf314c6ec8aa05f
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.18.3":
+  version: 16.18.3
+  resolution: "@types/node@npm:16.18.3"
+  checksum: af50539b260f956c2f4bb0207ddc46f6bf929bbf70230ec25252a38d43f9935c82c0a9d1c4e2c2056b6115e2fa283f6996aab699c1fa035937c07584c368ca8c
   languageName: node
   linkType: hard
 
@@ -5383,7 +5390,7 @@ __metadata:
     "@types/imagemin": "npm:^8"
     "@types/jest": "npm:^28.1.7"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
-    "@types/node": "npm:^16.11.39"
+    "@types/node": "npm:^16.18.3"
     "@types/node-schedule": "npm:^2.1.0"
     "@types/pg": "npm:^8.6.5"
     "@types/pg-pool": "npm:^2.0.3"
@@ -5458,7 +5465,7 @@ __metadata:
     ts-jest: "npm:^28.0.8"
     ts-jest-resolver: "npm:^2.0.0"
     ts-loader: "npm:^9.3.1"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^4.9.3"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.6"
     url: "npm:^0.11.0"
@@ -12877,23 +12884,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.8.4":
-  version: 4.8.4
-  resolution: "typescript@npm:4.8.4"
+"typescript@npm:^4.9.3":
+  version: 4.9.3
+  resolution: "typescript@npm:4.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 008c336ed785130b6e13254adbfc4084f5dbbe62851df9bac3eaf62fc29e0a396839c00ce47e0d92db44fa9a08b9f7ba4d31304f2b10cf7d42a0817728e822a1
+  checksum: b0aafee5d6427b67fc557c46a6e9c093586444db463fde7a19ffc4eecc31889246210ff679f8384769dc99fca975bba5ac17411816855bb2d8a549e4fe442cc7
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^4.8.4#optional!builtin<compat/typescript>":
-  version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=0102e9"
+"typescript@patch:typescript@npm%3A^4.9.3#optional!builtin<compat/typescript>":
+  version: 4.9.3
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#optional!builtin<compat/typescript>::version=4.9.3&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 72574875bac1c13aec22010780d4841a10a88342d73744dbbad538bb0ed601f2024187f197239f2dcbf2442f83ecc4de04a80941d49730c403969fbba035ed81
+  checksum: 06fd518bc55d054127b39aa7ad11551fd132bb7a8395913ed84fd5caf715455393d622e884ccb4fcf962d4eb5182600009c096b82ec516e8fadd09bf2150bb93
   languageName: node
   linkType: hard
 
