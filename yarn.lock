@@ -1572,22 +1572,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-tree@npm:*":
-  version: 2.0.0
-  resolution: "@types/css-tree@npm:2.0.0"
-  checksum: 6653ac26f6b117ba70b6d95c0f896a3c6f03a9b582280eb16c9687876345fcf652e729559a3bdc19c21044c3f9b49f0eff7903803c21a5c72584acc4cdec56c2
-  languageName: node
-  linkType: hard
-
-"@types/csso@npm:*":
-  version: 5.0.0
-  resolution: "@types/csso@npm:5.0.0"
-  dependencies:
-    "@types/css-tree": "npm:*"
-  checksum: c388e062fffe33480631f4dbec690f7d5ef85b5a13ab415af6f6fd2d2b613def9880152bfe1b13eee7f73e14b9ce8ad01191eaab674b05c91c4806928cfa148b
-  languageName: node
-  linkType: hard
-
 "@types/csurf@npm:^1.11.2":
   version: 1.11.2
   resolution: "@types/csurf@npm:1.11.2"
@@ -5508,7 +5492,7 @@ __metadata:
     source-map-support: "npm:^0.5.21"
     sqlite3: "npm:^5.1.2"
     stream-browserify: "npm:^3.0.0"
-    svgo: "npm:^3.0.1"
+    svgo: "npm:^3.0.2"
     swagger-ui: "npm:^4.15.5"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^28.0.8"
@@ -12366,9 +12350,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svgo@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "svgo@npm:3.0.1"
+"svgo@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "svgo@npm:3.0.2"
   dependencies:
     "@trysound/sax": "npm:0.2.0"
     commander: "npm:^7.2.0"
@@ -12377,8 +12361,8 @@ __metadata:
     csso: "npm:^5.0.5"
     picocolors: "npm:^1.0.0"
   bin:
-    svgo: ./bin/svgo
-  checksum: 5221be5c147d3f8dcbcc17a0c0351707eff33d8238f00662ffdf4db68d77189a6a7636ea15e83c4464892b5adddd4b3329bb8f727f58735ed755a7e16e79ee80
+    svgo: bin/svgo
+  checksum: 97f7d903def2fe0390b9875b89c0a57b66e0e2b5a6c230f6ad5ae3f2dd04765bc073a315354592f26af26adb5f133c3347b196ac68c309b9c1a36830c059ed69
   languageName: node
   linkType: hard
 
