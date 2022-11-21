@@ -1320,7 +1320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^7.20.0":
+"@sentry/browser@npm:^7.20.1":
   version: 7.20.1
   resolution: "@sentry/browser@npm:7.20.1"
   dependencies:
@@ -1343,7 +1343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.20.0":
+"@sentry/node@npm:^7.20.1":
   version: 7.20.1
   resolution: "@sentry/node@npm:7.20.1"
   dependencies:
@@ -5347,8 +5347,8 @@ __metadata:
     "@opentelemetry/instrumentation-pg": "npm:^0.33.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.8.0"
     "@opentelemetry/sdk-trace-node": "npm:^1.8.0"
-    "@sentry/browser": "npm:^7.20.0"
-    "@sentry/node": "npm:^7.20.0"
+    "@sentry/browser": "npm:^7.20.1"
+    "@sentry/node": "npm:^7.20.1"
     "@sentry/tracing": "npm:^7.20.1"
     "@types/bluebird": "npm:^3.5.37"
     "@types/body-parser": "npm:^1.19.2"
