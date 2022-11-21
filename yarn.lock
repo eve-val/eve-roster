@@ -1572,22 +1572,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-tree@npm:*":
-  version: 2.0.0
-  resolution: "@types/css-tree@npm:2.0.0"
-  checksum: 6653ac26f6b117ba70b6d95c0f896a3c6f03a9b582280eb16c9687876345fcf652e729559a3bdc19c21044c3f9b49f0eff7903803c21a5c72584acc4cdec56c2
-  languageName: node
-  linkType: hard
-
-"@types/csso@npm:*":
-  version: 5.0.0
-  resolution: "@types/csso@npm:5.0.0"
-  dependencies:
-    "@types/css-tree": "npm:*"
-  checksum: c388e062fffe33480631f4dbec690f7d5ef85b5a13ab415af6f6fd2d2b613def9880152bfe1b13eee7f73e14b9ce8ad01191eaab674b05c91c4806928cfa148b
-  languageName: node
-  linkType: hard
-
 "@types/csurf@npm:^1.11.2":
   version: 1.11.2
   resolution: "@types/csurf@npm:1.11.2"
