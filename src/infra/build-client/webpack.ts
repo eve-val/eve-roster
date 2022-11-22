@@ -140,37 +140,22 @@ export function commonConfig(
       new HtmlWebpackPugPlugin(),
 
       new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.imageminMinify,
-          options: {
-            plugins: [
-              ["gifsicle", { interlaced: true }],
-              ["mozjpeg", { quality: 80 }],
-              [
-                "pngquant",
-                {
-                  quality: [0.6, 0.8],
-                },
-              ],
-              [
-                "svgo",
-                {
-                  plugins: [
-                    {
-                      name: "preset-default",
-                      params: {
-                        overrides: {
-                          // disable plugins
-                          removeViewBox: false,
-                        },
-                      },
-                    },
-                  ],
-                },
-              ],
-            ],
+        minimizer: [
+          {
+            // `sharp` will handle all bitmap formats (JPG, PNG, GIF, ...)
+            implementation: ImageMinimizerPlugin.sharpMinify,
           },
-        },
+          {
+            // `svgo` will handle vector images (SVG)
+            implementation: ImageMinimizerPlugin.svgoMinify,
+            options: {
+              encodeOptions: {
+                multipass: true,
+                plugins: ["preset-default"],
+              },
+            },
+          },
+        ],
       }),
     ],
 
