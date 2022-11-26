@@ -1320,15 +1320,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^7.20.1":
-  version: 7.20.1
-  resolution: "@sentry/browser@npm:7.20.1"
+"@sentry/browser@npm:^7.21.1":
+  version: 7.21.1
+  resolution: "@sentry/browser@npm:7.21.1"
   dependencies:
-    "@sentry/core": "npm:7.20.1"
-    "@sentry/types": "npm:7.20.1"
-    "@sentry/utils": "npm:7.20.1"
+    "@sentry/core": "npm:7.21.1"
+    "@sentry/types": "npm:7.21.1"
+    "@sentry/utils": "npm:7.21.1"
     tslib: "npm:^1.9.3"
-  checksum: a7ad91c934e405f3a2c171741581ac48c09c79cd0b4d330758166f0aaf6cc96d667ba15adc1909b7b2fc7937d3cc7d24b89756db1d0e8de4151c25339d243643
+  checksum: 51f432a83149f9ed91e6b313ed064aee1a4a59fd6a6c64dbc1491377efd3ffec806601ff045fcb6b85bae152fb7f55ee69704dc44118704aba16d54d14fed575
   languageName: node
   linkType: hard
 
@@ -4956,7 +4956,7 @@ __metadata:
     "@opentelemetry/instrumentation-pg": "npm:^0.33.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.8.0"
     "@opentelemetry/sdk-trace-node": "npm:^1.8.0"
-    "@sentry/browser": "npm:^7.20.1"
+    "@sentry/browser": "npm:^7.21.1"
     "@sentry/node": "npm:^7.20.1"
     "@sentry/tracing": "npm:^7.21.1"
     "@types/bluebird": "npm:^3.5.37"
