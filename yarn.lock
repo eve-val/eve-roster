@@ -5013,7 +5013,7 @@ __metadata:
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^28.0.8"
     ts-jest-resolver: "npm:^2.0.0"
-    ts-loader: "npm:^9.3.1"
+    ts-loader: "npm:^9.4.2"
     typescript: "npm:^4.9.3"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.6"
@@ -11067,9 +11067,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^9.3.1":
-  version: 9.3.1
-  resolution: "ts-loader@npm:9.3.1"
+"ts-loader@npm:^9.4.2":
+  version: 9.4.2
+  resolution: "ts-loader@npm:9.4.2"
   dependencies:
     chalk: "npm:^4.1.0"
     enhanced-resolve: "npm:^5.0.0"
@@ -11078,7 +11078,7 @@ __metadata:
   peerDependencies:
     typescript: "*"
     webpack: ^5.0.0
-  checksum: 8692ffbff1c765719a043ba1d85f0705e6076d47f089ede90b32a054df676c273ce65139a082efbdd585d37589341e98b3ec603b559f6405e78bbf0141cf6758
+  checksum: c93a9c27f057174961d0b9a227894cc5183e793d196b6f3d183eb0fffc67437d69cbbc6122eb672d671c9663532d83be3aeae6bfe17e57335c280ac67eba2e26
   languageName: node
   linkType: hard
 
