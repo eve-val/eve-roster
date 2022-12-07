@@ -9457,16 +9457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:*, qs@npm:^6.10.2":
-  version: 6.10.3
-  resolution: "qs@npm:6.10.3"
-  dependencies:
-    side-channel: "npm:^1.0.4"
-  checksum: 69daaebb744bec0bd455ac08973c47c3dcbdb389165ceee7522dec41b2b812ecbd2015c09bcc39309efced5d955f849f07dbc4bfdb5b77a360e1ea9a65fc506a
-  languageName: node
-  linkType: hard
-
-"qs@npm:6.11.0":
+"qs@npm:*, qs@npm:6.11.0, qs@npm:^6.10.2":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:
@@ -9476,9 +9467,9 @@ __metadata:
   linkType: hard
 
 "qs@npm:~6.5.2":
-  version: 6.5.2
-  resolution: "qs@npm:6.5.2"
-  checksum: e996d1229afeab8ddf0c1dba9a08214891688160251b0b30168a2ab8845eedf6af8ea2201a81938d14af7df2bc84aaa561c1949bd2a1f62edb86af38ec731110
+  version: 6.5.3
+  resolution: "qs@npm:6.5.3"
+  checksum: 6a4be44c9bd3baef6db5d50905a5d305dce4aa11317c27c7599edee3aff835c1d96e582ff5b9205bcb07e8381d9e92de33570d459415c91d243ea926e27b0002
   languageName: node
   linkType: hard
 
