@@ -8,7 +8,6 @@ import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 import { Metadata, ChannelCredentials } from "@grpc/grpc-js";
-
 import { Env } from "./Env.js";
 
 export function initMonitoring(env: Env) {

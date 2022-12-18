@@ -1,7 +1,9 @@
 import { bool, cleanEnv, makeValidator, str } from "envalid";
 
+let cachedEnv: Env | null = null;
+
 export function initEnv() {
-  return cleanEnv(process.env, {
+  const env = cleanEnv(process.env, {
     // Must be set manually in all environments
     COOKIE_SECRET: str(),
     SSO_CLIENT_ID: str(),
@@ -31,9 +33,29 @@ export function initEnv() {
     DEBUG_GROUPS: jsonDebugGroups({ default: undefined }),
     DEBUG_DISABLE_CRON: bool({ default: false }),
   });
+
+  if (cachedEnv != null) {
+    throw new Error(`Env has already been initialized`);
+  }
+  cachedEnv = env;
+
+  return env;
 }
 
 export type Env = ReturnType<typeof initEnv>;
+
+/**
+ * A statically-available instance of Env, for use by legacy code that doesn't
+ * support manual injection.
+ *
+ * @deprecated
+ */
+export function getEnvLegacy() {
+  if (cachedEnv == null) {
+    throw new Error(`Env hasn't been initialized yet`);
+  }
+  return cachedEnv;
+}
 
 const int = makeValidator((input) => {
   const value = parseInt(input);
