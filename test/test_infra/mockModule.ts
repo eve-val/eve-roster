@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 /**
  * Wrapper around [jest.mock] that returns a typesafe instance of the mocked
  * module.
