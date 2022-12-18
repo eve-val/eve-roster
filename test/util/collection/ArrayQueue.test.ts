@@ -1,3 +1,4 @@
+import { expect, test } from "@jest/globals";
 import { ArrayQueue } from "../../../src/util/collection/ArrayQueue.js";
 
 test("Basic contents", () => {
