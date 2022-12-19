@@ -17,7 +17,6 @@ import crypto from "crypto";
 import csrf from "csurf";
 
 import { Tnex } from "../../db/tnex/index.js";
-import { isDevelopment } from "../../util/config.js";
 import { EVE_SSO_LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
 
 import { default as route_api } from "../../route/api/api.js";
@@ -106,7 +105,7 @@ export async function init(
   app.use("/api", route_api);
 
   // Set up client serving and dev mode (if in dev mode)
-  await setupClientServing(app);
+  await setupClientServing(env, app);
 
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler);
@@ -121,15 +120,14 @@ export async function init(
   });
 }
 
-async function setupClientServing(app: express.Application) {
+async function setupClientServing(env: Env, app: express.Application) {
   const paths = getProjectPaths();
   const outputPath = checkNotNil(paths.output);
   const publicPath = checkNotNil(paths.public);
 
-  if (isDevelopment()) {
-    const clientConfig = isDevelopment()
-      ? (await import("../build-client/webpack.dev.js")).default
-      : (await import("../build-client/webpack.prod.js")).default;
+  if (env.isDevelopment) {
+    const clientConfig = (await import("../build-client/webpack.dev.js"))
+      .default;
     const webpack = (await import("webpack")).default;
     const webpackDevMiddleware = (await import("webpack-dev-middleware"))
       .default;
