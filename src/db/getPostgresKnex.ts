@@ -1,6 +1,7 @@
 import pg from "pg";
 
 import knex, { Knex } from "knex";
+import { Env } from "../infra/init/Env.js";
 
 // By default, pg returns columns of type "bigint" (20) as strings, not numbers,
 // since they could possibly overflow Javascript's number type (which is a
@@ -16,7 +17,7 @@ pg.types.setTypeParser(20, function (value) {
 
 const CLIENT = "pg";
 
-function getConnection(env: any) {
+function getConnection(env: Env) {
   if (env.DATABASE_URL) {
     return env.DATABASE_URL;
   } else if (
@@ -38,17 +39,15 @@ function getConnection(env: any) {
   }
 }
 
-const CONFIG = {
-  client: CLIENT,
-  debug: false,
-  connection: getConnection(process.env),
-};
-
 let pgKnex: Knex | null = null;
 
-export function getPostgresKnex() {
+export function getPostgresKnex(env: Env) {
   if (pgKnex == null) {
-    pgKnex = knex.default(CONFIG);
+    pgKnex = knex.default({
+      client: CLIENT,
+      debug: false,
+      connection: getConnection(env),
+    });
     (pgKnex as any).CLIENT = CLIENT;
   }
 

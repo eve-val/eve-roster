@@ -34,13 +34,15 @@
 
 import { fileURLToPath } from "url";
 import { getPostgresKnex } from "../db/getPostgresKnex.js";
+import { initEnv } from "../infra/init/Env.js";
 
 // Directory is relative to project root
 const MIGRATE_CONFIG = {
   directory: "./schema",
 };
 
-const knex = getPostgresKnex();
+const env = initEnv();
+const knex = getPostgresKnex(env);
 
 export function updateDb(revert: boolean): Promise<void> {
   if (revert) {
