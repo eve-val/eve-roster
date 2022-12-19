@@ -4,8 +4,9 @@ import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
 import { loadSummarizedQueue } from "../../domain/skills/skillQueueSummarizer.js";
 import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary.js";
 import { parallelize } from "../../util/asyncUtil.js";
-import * as ccpSso from "../../domain/sso/loginParams.js";
 import { canDesignateMain } from "../../domain/account/canDesignateMain.js";
+import { EVE_SSO_LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
+import { getEnvLegacy } from "../../infra/init/Env.js";
 
 export interface Output {
   accountId: number;
@@ -29,7 +30,7 @@ export interface CharacterJson {
   needsReauth: boolean;
 }
 
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
+export default jsonEndpoint<Output>((req, res, db, account, privs) => {
   let mainCharacter: number;
 
   let characters = [] as CharacterJson[];
@@ -84,7 +85,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
         accountId: account.id,
         characters: characters,
         transfers: strippedTransfers,
-        loginParams: ccpSso.LOGIN_PARAMS,
+        loginParams: EVE_SSO_LOGIN_PARAMS.get(getEnvLegacy()),
         mainCharacter: mainCharacter,
         access: access,
       };

@@ -18,7 +18,7 @@ import csrf from "csurf";
 
 import { Tnex } from "../../db/tnex/index.js";
 import { isDevelopment } from "../../util/config.js";
-import { LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
+import { EVE_SSO_LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
 
 import { default as route_api } from "../../route/api/api.js";
 import { default as route_home } from "../../route/home.js";
@@ -28,6 +28,7 @@ import { default as route_esi_proxy } from "../../route/esi/proxy.js";
 import { getSession, endSession } from "./session.js";
 import { checkNotNil } from "../../util/assert.js";
 import { getProjectPaths } from "../build-client/paths.js";
+import { Env } from "../init/Env.js";
 
 const FRONTEND_ROUTES = [
   "/",
@@ -44,7 +45,11 @@ const FRONTEND_ROUTES = [
   "/ships/*",
 ];
 
-export async function init(db: Tnex, onServing: (port: number) => void) {
+export async function init(
+  db: Tnex,
+  env: Env,
+  onServing: (port: number) => void
+) {
   const app = express();
   app.locals.db = db;
 
@@ -75,7 +80,7 @@ export async function init(db: Tnex, onServing: (port: number) => void) {
     const session = getSession(req);
     session.nonce = nonce;
     res.render("login", {
-      loginParams: LOGIN_PARAMS,
+      loginParams: EVE_SSO_LOGIN_PARAMS.get(env),
       nonce: querystring.escape(nonce),
     });
   });
