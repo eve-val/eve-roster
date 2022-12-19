@@ -12,6 +12,7 @@ import { buildLoggerFromFilename } from "../logging/buildLogger.js";
 import { Task } from "./Task.js";
 import * as taskRunner from "./taskRunner.js";
 import { SCHEDULED_TASKS } from "../../task-registry/scheduledTasks.js";
+import { Env } from "../init/Env.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -23,8 +24,8 @@ export interface TaskSchedule {
   silent?: boolean;
 }
 
-export function init(db: Tnex) {
-  if (process.env.DEBUG_DISABLE_CRON == "true") {
+export function init(db: Tnex, env: Env) {
+  if (env.DEBUG_DISABLE_CRON) {
     logger.warn(`*** WARNING: Cron has been disabled via env flag. ***`);
   } else {
     new Cron(db).init();

@@ -7,7 +7,8 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 import { fetchAuthInfo } from "./jwt.js";
-import { getEnvLegacy } from "../../infra/init/Env.js";
+import { Env } from "../../infra/init/Env.js";
+import { generateSsoAuthToken } from "./generateSsoAuthCode.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -19,9 +20,10 @@ export class TokenRefresher {
   private _ssoAuthCode: string;
   private _activeRequests = new Map<number, Promise<RefreshResult>>();
 
-  constructor(ssoClientId: string, ssoSecretKey: string) {
-    this._ssoAuthCode = Buffer.from(`${ssoClientId}:${ssoSecretKey}`).toString(
-      "base64"
+  constructor(env: Env) {
+    this._ssoAuthCode = generateSsoAuthToken(
+      env.SSO_CLIENT_ID,
+      env.SSO_SECRET_KEY
     );
   }
 

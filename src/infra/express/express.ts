@@ -57,13 +57,13 @@ export async function init(
   app.use(Sentry.Handlers.requestHandler() as express.RequestHandler);
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(cookieParser(process.env.COOKIE_SECRET));
+  app.use(cookieParser(env.COOKIE_SECRET));
   app.use(csrf({ cookie: true }) as express.RequestHandler);
 
   app.use(
     cookieSession({
       name: "session",
-      secret: process.env.COOKIE_SECRET,
+      secret: env.COOKIE_SECRET,
     })
   );
 
@@ -112,9 +112,8 @@ export async function init(
   app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler);
 
   // Start the server
-  const port = parseInt(process.env.PORT || "8081");
-  const server = app.listen(port, () => {
-    onServing(port);
+  const server = app.listen(env.PORT, () => {
+    onServing(env.PORT);
   });
 
   Graceful.default.on("exit", async () => {

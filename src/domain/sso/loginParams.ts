@@ -23,8 +23,7 @@ function buildEveSsoLoginParams(env: Env) {
     env.DOKKU_NGINX_SSL_PORT ||
     env.DOKKU_PROXY_PORT ||
     env.DOKKU_NGINX_PORT ||
-    env.PORT ||
-    8081;
+    env.PORT;
   const hostname = env.HOSTNAME || "localhost";
   const protocol =
     env.DOKKU_PROXY_SSL_PORT || env.DOKKU_NGINX_SSL_PORT ? "https" : "http";
