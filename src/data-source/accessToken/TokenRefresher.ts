@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
 import { fetchAuthInfo } from "./jwt.js";
+import { getEnvLegacy } from "../../infra/init/Env.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -15,7 +16,14 @@ const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
  * new access token.
  */
 export class TokenRefresher {
+  private _ssoAuthCode: string;
   private _activeRequests = new Map<number, Promise<RefreshResult>>();
+
+  constructor(ssoClientId: string, ssoSecretKey: string) {
+    this._ssoAuthCode = Buffer.from(`${ssoClientId}:${ssoSecretKey}`).toString(
+      "base64"
+    );
+  }
 
   /**
    * Asks CCP for a new access token for this character. If the request
@@ -115,17 +123,13 @@ export class TokenRefresher {
       }),
       {
         headers: {
-          Authorization: "Basic " + SSO_AUTH_CODE,
+          Authorization: "Basic " + this._ssoAuthCode,
         },
         timeout: REQUEST_TIMEOUT,
       }
     );
   }
 }
-
-const SSO_AUTH_CODE = Buffer.from(
-  process.env.SSO_CLIENT_ID + ":" + process.env.SSO_SECRET_KEY
-).toString("base64");
 
 const REQUEST_TIMEOUT = 10000;
 
