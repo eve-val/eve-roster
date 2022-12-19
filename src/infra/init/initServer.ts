@@ -8,11 +8,12 @@ import * as taskRunner from "../taskrunner/taskRunner.js";
 import * as sde from "../../eve/sde.js";
 import { Agent } from "https";
 import { buildLogger } from "../logging/buildLogger.js";
+import { Env } from "./Env.js";
 
 const logger = buildLogger("initServer");
 
-export async function initServer() {
-  const db = tables.build(getPostgresKnex());
+export async function initServer(env: Env) {
+  const db = tables.build(getPostgresKnex(env));
 
   await sde.loadStaticData(db, false);
 

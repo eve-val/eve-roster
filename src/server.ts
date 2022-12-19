@@ -34,7 +34,7 @@ process.on("unhandledRejection", (err) => {
   throw err;
 });
 
-initServer().catch((e) => {
+initServer(env).catch((e) => {
   logger.error(`Fatal error during startup.`);
   logger.error(e);
   process.exit(2);
