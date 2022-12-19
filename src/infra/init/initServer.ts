@@ -20,7 +20,7 @@ export async function initServer(env: Env) {
   configureAxios();
   taskRunner.init(db);
   cron.init(db);
-  express.init(db, (port) => {
+  express.init(db, env, (port) => {
     logger.info(`Serving from port ${port}.`);
   });
 }
