@@ -9,11 +9,11 @@ import {
 import { MissingPrivilegeError } from "../../error/MissingPrivilegeError.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { getEnvLegacy } from "../init/Env.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
-const debugStr = process.env.DEBUG_GROUPS;
-const debugGroups = checkDebugGroups(debugStr && JSON.parse(debugStr));
+const debugGroups = checkDebugGroups(getEnvLegacy().DEBUG_GROUPS);
 
 export function getPrivileges(db: Tnex, accountId: number) {
   let groups: string[];
@@ -146,19 +146,17 @@ export class AccountPrivileges {
   }
 }
 
-function checkDebugGroups(debugGroups: string[] | undefined) {
-  if (debugGroups) {
-    logger.info(
-      `Using hard-coded ACL groups for all requests: [${debugGroups}].`
+function checkDebugGroups(debugGroups: string[]) {
+  logger.info(
+    `Using hard-coded ACL groups for all requests: [${debugGroups}].`
+  );
+  if (debugGroups.length > 0 && !debugGroups.includes(MEMBER_GROUP)) {
+    logger.warn("###########################################");
+    logger.warn(
+      `WARNING: debugGroups is nonempty, but is missing the` +
+        `"${MEMBER_GROUP}" group. This is probably a mistake.`
     );
-    if (debugGroups.length > 0 && !debugGroups.includes(MEMBER_GROUP)) {
-      logger.warn("###########################################");
-      logger.warn(
-        `WARNING: debugGroups is nonempty, but is missing the` +
-          `"${MEMBER_GROUP}" group. This is probably a mistake.`
-      );
-      logger.warn("###########################################");
-    }
+    logger.warn("###########################################");
   }
   return debugGroups;
 }

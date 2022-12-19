@@ -13,10 +13,7 @@ import {
 import { getEnvLegacy } from "../../infra/init/Env.js";
 
 const TOKEN_EXPIRATION_FUDGE_MS = 1000; // 1 second
-const tokenRefresher = new TokenRefresher(
-  getEnvLegacy().SSO_CLIENT_ID,
-  getEnvLegacy().SSO_SECRET_KEY
-);
+const tokenRefresher = new TokenRefresher(getEnvLegacy());
 
 /**
  * Retrieves an access token for a character. Throws an AccessTokenError if

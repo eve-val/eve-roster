@@ -20,6 +20,8 @@ import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { getSession } from "../infra/express/session.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { fetchAuthInfo } from "../data-source/accessToken/jwt.js";
+import { getEnvLegacy } from "../infra/init/Env.js";
+import { generateSsoAuthToken } from "../data-source/accessToken/generateSsoAuthCode.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -286,9 +288,11 @@ async function fetchAccessTokens(authCode: string) {
     .then((response) => response.data);
 }
 
-const SSO_AUTH_CODE = Buffer.from(
-  process.env.SSO_CLIENT_ID + ":" + process.env.SSO_SECRET_KEY
-).toString("base64");
+const env = getEnvLegacy();
+const SSO_AUTH_CODE = generateSsoAuthToken(
+  env.SSO_CLIENT_ID,
+  env.SSO_SECRET_KEY
+);
 
 interface AccessTokenResponse {
   access_token: string;

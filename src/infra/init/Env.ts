@@ -30,7 +30,7 @@ export function initEnv() {
     HONEYCOMB_DATASET: str({ devDefault: "" }),
 
     // Debugging flags
-    DEBUG_GROUPS: jsonDebugGroups({ default: undefined }),
+    DEBUG_GROUPS: jsonDebugGroups({ default: [] }),
     DEBUG_DISABLE_CRON: bool({ default: false }),
   });
 
@@ -73,9 +73,9 @@ const jsonDebugGroups = makeValidator((input) => {
   }
   for (const elem of value) {
     if (typeof elem != "string") {
-      throw new Error(`Value must be a string "${elem}"`);
+      throw new Error(`Value must be a string: "${elem}"`);
     }
   }
 
-  return value;
+  return value as string[];
 });

@@ -17,17 +17,16 @@ export async function initServer(env: Env) {
 
   await sde.loadStaticData(db, false);
 
-  configureAxios();
+  configureAxios(env);
   taskRunner.init(db);
-  cron.init(db);
+  cron.init(db, env);
   express.init(db, env, (port) => {
     logger.info(`Serving from port ${port}.`);
   });
 }
 
-function configureAxios() {
-  axios.defaults.headers["User-Agent"] =
-    process.env.USER_AGENT || "SOUND Roster (roster.of-sound-mind.com)";
+function configureAxios(env: Env) {
+  axios.defaults.headers["User-Agent"] = env.USER_AGENT;
   axios.defaults.httpsAgent = new Agent({
     keepAlive: true,
     maxVersion: "TLSv1.3",
