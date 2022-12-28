@@ -8,21 +8,22 @@
 
 import sourceMapSupport from "source-map-support";
 import { initEnv } from "./infra/init/Env.js";
-import { initMonitoring } from "./infra/init/initMonitoring.js";
+import { buildLogger } from "./infra/logging/buildLogger.js";
+
+// Adds support for taking heapdumps when the process receives the USR2 signal
+// See https://github.com/eve-val/eve-roster/wiki/Grabbing-a-heap-dump
+import "heapdump";
 
 // Causes stack traces to reference the original .ts files
 sourceMapSupport.install();
 
 const env = initEnv();
-initMonitoring(env);
-
-import { buildLogger } from "./infra/logging/buildLogger.js";
-import { initServer } from "./infra/init/initServer.js";
-// Adds support for taking heapdumps when the process receives the USR2 signal
-// See https://github.com/eve-val/eve-roster/wiki/Grabbing-a-heap-dump
-import "heapdump";
-
 const logger = buildLogger("server");
+
+const { initMonitoring } = await import("./infra/init/initMonitoring.js");
+const { initServer } = await import("./infra/init/initServer.js");
+
+initMonitoring(env);
 
 // Crash the process in the face of an unhandled promise rejection
 process.on("unhandledRejection", (err) => {
