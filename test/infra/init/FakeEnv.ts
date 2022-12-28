@@ -42,6 +42,7 @@ const DEFAULT_ENV: Env = {
   HONEYCOMB_DATASET: "test_honeycomb_dataset",
   DEBUG_GROUPS: [],
   DEBUG_DISABLE_CRON: false,
+  CLIENT_DEV_MODE: false,
   isDevelopment: false,
   isDev: false,
   isTest: true,
