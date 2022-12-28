@@ -22,6 +22,7 @@ import { SchemaVerificationError } from "../../util/express/schemaVerifier.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 import { getSession, endSession } from "./session.js";
+import { EndpointContext } from "./EndpointContext.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -71,7 +72,8 @@ export function htmlEndpoint<T extends object>(
         accountPrivs.account,
         accountPrivs.privs
       );
-      res.render(payload.template, payload.data);
+      const context = req.app.locals.context as EndpointContext;
+      await context.puggle.render(res, payload.template, payload.data);
     } catch (e) {
       if (!(e instanceof Error)) {
         throw e;

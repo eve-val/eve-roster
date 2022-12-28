@@ -32,6 +32,12 @@ export function initEnv() {
     // Debugging flags
     DEBUG_GROUPS: jsonDebugGroups({ default: [] }),
     DEBUG_DISABLE_CRON: bool({ default: false }),
+
+    /**
+     * If true, dev server and hot reloading will be enabled for the frontend
+     * client. If false, you must build the client before starting the server.
+     */
+    CLIENT_DEV_MODE: bool({ default: false }),
   });
 
   if (cachedEnv != null) {

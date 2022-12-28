@@ -25,9 +25,17 @@ import { default as route_authenticate } from "../../route/authenticate.js";
 import { default as route_swagger } from "../../route/esi/swagger.js";
 import { default as route_esi_proxy } from "../../route/esi/proxy.js";
 import { getSession, endSession } from "./session.js";
-import { checkNotNil } from "../../util/assert.js";
 import { getProjectPaths } from "../build-client/paths.js";
 import { Env } from "../init/Env.js";
+
+import type { Compiler } from "webpack";
+import type {
+  API,
+  IncomingMessage,
+  ServerResponse,
+} from "webpack-dev-middleware";
+import { Puggle } from "./puggle.js";
+import { EndpointContext } from "./EndpointContext.js";
 
 const FRONTEND_ROUTES = [
   "/",
@@ -50,7 +58,6 @@ export async function init(
   onServing: (port: number) => void
 ) {
   const app = express();
-  app.locals.db = db;
 
   // The request handler must be the first middleware on the app
   app.use(Sentry.Handlers.requestHandler() as express.RequestHandler);
@@ -66,22 +73,12 @@ export async function init(
     })
   );
 
+  // Serves `/` and all other webpack-compiled endpoints
+  const puggle = await setupWebpackServing(env, db, app);
+
   // For healthchecks
   app.get("/healthz", function (req, res) {
     res.send("ok");
-  });
-
-  // Includes root ('/')
-  app.get(FRONTEND_ROUTES, route_home);
-
-  app.get("/login", function (req, res) {
-    const nonce = crypto.randomBytes(16).toString("base64");
-    const session = getSession(req);
-    session.nonce = nonce;
-    res.render("login", {
-      loginParams: EVE_SSO_LOGIN_PARAMS.get(env),
-      nonce: querystring.escape(nonce),
-    });
   });
 
   app.get("/authenticate", route_authenticate);
@@ -104,11 +101,15 @@ export async function init(
   app.use("/api", limiter);
   app.use("/api", route_api);
 
-  // Set up client serving and dev mode (if in dev mode)
-  await setupClientServing(env, app);
-
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler);
+
+  // Make db and context available to route handlers
+  app.locals.db = db;
+  app.locals.context = {
+    db: db,
+    puggle: puggle,
+  } as EndpointContext;
 
   // Start the server
   const server = app.listen(env.PORT, () => {
@@ -120,38 +121,95 @@ export async function init(
   });
 }
 
-async function setupClientServing(env: Env, app: express.Application) {
-  const paths = getProjectPaths();
-  const outputPath = checkNotNil(paths.output);
-  const publicPath = checkNotNil(paths.public);
+/**
+ * Sets up serving for all webpack-compiled assets, including some HTML pages.
+ */
+async function setupWebpackServing(
+  env: Env,
+  db: Tnex,
+  app: express.Application
+) {
+  const projectPaths = getProjectPaths();
 
-  if (env.isDevelopment) {
+  let devInfra: DevInfra | null = null;
+  if (env.isDevelopment && env.CLIENT_DEV_MODE) {
+    const webpack = (await import("webpack")).default;
     const clientConfig = (await import("../build-client/webpack.dev.js"))
       .default;
-    const webpack = (await import("webpack")).default;
     const webpackDevMiddleware = (await import("webpack-dev-middleware"))
       .default;
     const webpackHotMiddleware = (await import("webpack-hot-middleware"))
       .default;
-
     const compiler = webpack(clientConfig);
+    const devMiddleware = webpackDevMiddleware(compiler, {
+      publicPath: projectPaths.public,
+      stats: "minimal",
+    });
 
-    app.use(
-      webpackDevMiddleware(compiler, {
-        publicPath: publicPath,
-        stats: "minimal",
-      })
-    );
-
+    app.use(devMiddleware);
     app.use(webpackHotMiddleware(compiler));
+
+    devInfra = {
+      compiler,
+      devMiddleware,
+    };
   }
 
-  // Compiled front-end files from webpack
+  // Block serving client pages until client is done compiling
+  if (devInfra != null) {
+    app.get([...FRONTEND_ROUTES, "/login"], waitForClientBuilt(devInfra));
+  }
+
+  // Includes root ('/')
+  app.get(FRONTEND_ROUTES, route_home);
+
+  app.get("/login", async function (req, res, next) {
+    const nonce = crypto.randomBytes(16).toString("base64");
+    const session = getSession(req);
+    session.nonce = nonce;
+
+    const context = req.app.locals.context as EndpointContext;
+    try {
+      await context.puggle.render(res, "login", {
+        loginParams: EVE_SSO_LOGIN_PARAMS.get(env),
+        nonce: querystring.escape(nonce),
+      });
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  // Serve pre-compiled front-end files
   app.use(
-    publicPath,
-    express.static(outputPath, { immutable: true, maxAge: "365d" })
+    projectPaths.public,
+    express.static(projectPaths.output, { immutable: true, maxAge: "365d" })
   );
-  app.set("view engine", "pug");
-  app.set("views", outputPath);
-  app.use(favicon(path.join(outputPath, "favicon.ico")));
+
+  // Serve favicon
+  if (devInfra == null) {
+    // TODO: favicon() is not compatible with the dev middleware, so for now we
+    // just disable serving it when in dev mode. This may not longer be
+    // necessary, since we're serving the favicon via the HtmlWebpackPlugin
+    // build rules.
+    app.use(favicon(path.join(projectPaths.output, "favicon.ico")));
+  }
+
+  return new Puggle(projectPaths.output, devInfra?.compiler);
+}
+
+function waitForClientBuilt(devInfra: DevInfra) {
+  return async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    devInfra.devMiddleware.waitUntilValid(() => {
+      next();
+    });
+  };
+}
+
+interface DevInfra {
+  compiler: Compiler;
+  devMiddleware: API<IncomingMessage, ServerResponse>;
 }
