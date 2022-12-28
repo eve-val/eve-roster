@@ -130,6 +130,7 @@ export function commonConfig(
         minify: false,
         chunks: ["main"],
       }),
+
       new HtmlWebpackPlugin({
         template: path.join(paths.clientSrc, "views/login.pug"),
         favicon: path.join(paths.clientSrc, "res/favicon.ico"),
@@ -137,6 +138,8 @@ export function commonConfig(
         minify: false,
         chunks: ["login"],
       }),
+
+      // Allows HtmlWebpackPlugin to understand pug templates
       new HtmlWebpackPugPlugin(),
 
       new ImageMinimizerPlugin({
