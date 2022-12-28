@@ -123,12 +123,11 @@ export class RotatingFileLogWriter extends Writable {
       if (err) {
         callback(err);
       } else {
+        console.log(outLine);
         if (!outLine.endsWith("\n")) {
           outLine += "\n";
         }
-        stream.write(outLine);
-        console.log(outLine);
-        callback();
+        stream.write(outLine, callback);
       }
     });
   }
