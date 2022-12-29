@@ -15,8 +15,8 @@
     "updatedb": "yarn node out/server/bin/updatedb.js",
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "test": "jest",
-    "lint": "esprint",
-    "presubmit": "prettier --write --list-different . && esprint && jest",
+    "lint": "esprint check --workers=4",
+    "presubmit": "prettier --write --list-different . && yarn lint && jest",
     "ci-lint": "esprint check --workers=2",
     "ci-pretty-check": "prettier --check .",
     "postinstall": "patch -N -r - -p1 < patches/pnp-loader.patch > /dev/null || true"
