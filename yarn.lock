@@ -5364,9 +5364,9 @@ __metadata:
   linkType: hard
 
 "fast-json-patch@npm:*, fast-json-patch@npm:^3.0.0-1":
-  version: 3.1.0
-  resolution: "fast-json-patch@npm:3.1.0"
-  checksum: 44b40c92c3f779e62e34ef32ae91b8c14a16ea85340b9bf9fd942628eeac1734b093ae3270ea856537bb648900c2dd542ca167b434c3f808bf3ab4185eee4673
+  version: 3.1.1
+  resolution: "fast-json-patch@npm:3.1.1"
+  checksum: c82b911a3eb0df7be609fcb86f2eaca243658af5723092a1ce881a1fe496b69cced8aed17af389039eb898b645396d02fd5f31aedb4bd30285af2c8dc3ceac40
   languageName: node
   linkType: hard
 
