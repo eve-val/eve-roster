@@ -443,14 +443,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.20.5":
-  version: 7.20.5
-  resolution: "@babel/types@npm:7.20.5"
+"@babel/types@npm:^7.20.7":
+  version: 7.20.7
+  resolution: "@babel/types@npm:7.20.7"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.19.4"
     "@babel/helper-validator-identifier": "npm:^7.19.1"
     to-fast-properties: "npm:^2.0.0"
-  checksum: c7f3c4ae2fa7d1c477a48094f9b0990747aea366bfdb1781095b88f66fbfdc3cd5045a23918eca0ffbc3323d84e674ce81f5f847a0efc17a97a3e268c5b8b456
+  checksum: 3457ea7eaf5d3cb20ff93c058d60983609c5963f87ac7793e2ef690934f34fadd874669d2abc4705d5953c212ed9d3cc0194618b66fa90b99ead6d2466ccce9d
   languageName: node
   linkType: hard
 
@@ -5116,7 +5116,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eve-roster@workspace:."
   dependencies:
-    "@babel/types": "npm:^7.20.5"
+    "@babel/types": "npm:^7.20.7"
     "@grpc/grpc-js": "npm:^1.7.3"
     "@jest/globals": "npm:^29.3.1"
     "@opentelemetry/api": "npm:1.3.0"
