@@ -160,10 +160,10 @@
     }
   },
   "engines": {
-    "node": "16.18"
+    "node": "16.19"
   },
   "volta": {
-    "node": "16.18"
+    "node": "16.19"
   },
-  "packageManager": "yarn@4.0.0-rc.33"
+  "packageManager": "yarn@4.0.0-rc.34"
 }
