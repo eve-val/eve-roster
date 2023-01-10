@@ -75,7 +75,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 import { Identity } from "../home";
 
 const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
-type UndoStatus = typeof UNDO_STATUSES[number];
+type UndoStatus = (typeof UNDO_STATUSES)[number];
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

@@ -119,4 +119,4 @@ function compareEsiQueueItem(a: EsiSkillQueueItem, b: EsiSkillQueueItem) {
 }
 
 type EsiSkillQueueItem =
-  typeof ESI_CHARACTERS_$characterId_SKILLQUEUE["response"][0];
+  (typeof ESI_CHARACTERS_$characterId_SKILLQUEUE)["response"][0];

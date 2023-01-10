@@ -175,11 +175,11 @@ async function updateMemberList(
 function buildMemberRows(
   job: JobLogger,
   corporationId: number,
-  memberIds: typeof ESI_CORPORATIONS_$corporationId_MEMBERS["response"],
-  titleDefs: typeof ESI_CORPORATIONS_$corporationId_TITLES["response"],
-  memberTitles: typeof ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES["response"],
-  memberRoles: typeof ESI_CORPORATIONS_$corporationId_ROLES["response"],
-  memberTracking: typeof ESI_CORPORATIONS_$corporationId_MEMBERTRACKING["response"],
+  memberIds: (typeof ESI_CORPORATIONS_$corporationId_MEMBERS)["response"],
+  titleDefs: (typeof ESI_CORPORATIONS_$corporationId_TITLES)["response"],
+  memberTitles: (typeof ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES)["response"],
+  memberRoles: (typeof ESI_CORPORATIONS_$corporationId_ROLES)["response"],
+  memberTracking: (typeof ESI_CORPORATIONS_$corporationId_MEMBERTRACKING)["response"],
   names: AsyncReturnType<typeof fetchEveNames>
 ) {
   const titleDefMap = arrayToMap(titleDefs, "title_id");

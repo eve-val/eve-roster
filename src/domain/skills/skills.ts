@@ -85,4 +85,4 @@ function getSkillRank(skillId: number) {
 }
 
 type EsiSkill =
-  typeof ESI_CHARACTERS_$characterId_SKILLS["response"]["skills"][0];
+  (typeof ESI_CHARACTERS_$characterId_SKILLS)["response"]["skills"][0];

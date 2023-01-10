@@ -120,7 +120,7 @@ import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
 const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
-type RequestStatus = typeof REQUEST_STATUSES[number];
+type RequestStatus = (typeof REQUEST_STATUSES)[number];
 
 import { VerdictOption, Srp } from "./types";
 

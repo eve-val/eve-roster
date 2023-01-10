@@ -55,7 +55,7 @@ import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
 const STATUSES = ["active", "inactive", "error"] as const;
-type Status = typeof STATUSES[number];
+type Status = (typeof STATUSES)[number];
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
