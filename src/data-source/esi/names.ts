@@ -34,7 +34,7 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
   let i = 0;
   while (i < unresolvedIds.length) {
     const end = Math.min(unresolvedIds.length, i + 1000);
-    let entries: typeof ESI_UNIVERSE_NAMES["response"] | null = null;
+    let entries: (typeof ESI_UNIVERSE_NAMES)["response"] | null = null;
     try {
       entries = await fetchEsi(ESI_UNIVERSE_NAMES, {
         _body: unresolvedIds.slice(i, end),

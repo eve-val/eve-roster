@@ -85,7 +85,7 @@ import { NameCacheMixin } from "../shared/nameCache";
 import { Payment } from "./types";
 
 const STATUSES = ["inactive", "saving", "error"];
-type Status = typeof STATUSES[number];
+type Status = (typeof STATUSES)[number];
 
 import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({

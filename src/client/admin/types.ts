@@ -33,7 +33,7 @@ const CITADEL_TYPES = [
   "Athanor",
   "Tatara",
 ];
-type CitadelType = typeof CITADEL_TYPES[number];
+type CitadelType = (typeof CITADEL_TYPES)[number];
 
 export interface Citadel {
   id: number | null;

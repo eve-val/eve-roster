@@ -108,7 +108,7 @@ export default defineComponent({
 });
 
 const APPEND_ATTRS = ["alertMessage"] as const;
-type AppendAttr = typeof APPEND_ATTRS[number];
+type AppendAttr = (typeof APPEND_ATTRS)[number];
 function isAppend(v: string): v is AppendAttr {
   return (<readonly string[]>APPEND_ATTRS).includes(v);
 }
@@ -120,12 +120,12 @@ const SUM_ATTRS = [
   "siggyScore",
   "activityScore",
 ] as const;
-type SumAttr = typeof SUM_ATTRS[number];
+type SumAttr = (typeof SUM_ATTRS)[number];
 function isSum(v: string): v is SumAttr {
   return (<readonly string[]>SUM_ATTRS).includes(v);
 }
 const MAX_ATTRS = ["lastSeen", "alertLevel"] as const;
-type MaxAttr = typeof MAX_ATTRS[number];
+type MaxAttr = (typeof MAX_ATTRS)[number];
 function isMax(v: string): v is MaxAttr {
   return (<readonly string[]>MAX_ATTRS).includes(v);
 }

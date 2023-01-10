@@ -32,9 +32,9 @@
 
 <script lang="ts">
 const HORIZONTAL_GRAVITIES = ["left", "center", "right"] as const;
-type HorizontalGravity = typeof HORIZONTAL_GRAVITIES[number];
+type HorizontalGravity = (typeof HORIZONTAL_GRAVITIES)[number];
 const VERTICAL_GRAVITIES = ["top", "center", "bottom"] as const;
-type VerticalGravity = typeof VERTICAL_GRAVITIES[number];
+type VerticalGravity = (typeof VERTICAL_GRAVITIES)[number];
 
 const MARGIN_TO_TARGET = 3;
 const ARROW_RISE = 7;

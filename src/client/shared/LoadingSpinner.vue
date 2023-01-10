@@ -57,9 +57,9 @@ import blockErrorIcon from "../shared-res/triangle-error.svg";
 import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
 const DISPLAY_VALUES = ["inline", "block", "none"] as const;
-type DisplayValue = typeof DISPLAY_VALUES[number];
+type DisplayValue = (typeof DISPLAY_VALUES)[number];
 const STATE_VALUES = ["hidden", "spinning", "error", "warning"] as const;
-type StateValue = typeof STATE_VALUES[number];
+type StateValue = (typeof STATE_VALUES)[number];
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

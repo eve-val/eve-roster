@@ -11,7 +11,7 @@ import unknownIcon from "./res/EveImage-Unknown.svg";
 import { SUPPORTED_TYPES, AssetType } from "./types";
 
 const SUPPORTED_SIZES = [32, 64, 128, 256, 512] as const;
-type AssetSize = typeof SUPPORTED_SIZES[number];
+type AssetSize = (typeof SUPPORTED_SIZES)[number];
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
