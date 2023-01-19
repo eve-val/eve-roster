@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.2
-  queue: eddiewebb/queue@1.6.5
+  node: circleci/node@5.1.0
+  queue: eddiewebb/queue@1.8.4
 parameters:
   node-version:
     type: string
@@ -10,6 +10,7 @@ jobs:
   deploy:
     docker:
       - image: cimg/base:stable
+    resource_class: small
     steps:
       - checkout
       - add_ssh_keys
