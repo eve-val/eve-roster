@@ -20,7 +20,7 @@ export function getPrivileges(db: Tnex, accountId: number) {
 
   return Promise.resolve()
     .then(() => {
-      return debugGroups || dao.group.getAccountGroups(db, accountId);
+      return debugGroups.length > 0 ? debugGroups : dao.group.getAccountGroups(db, accountId);
     })
     .then((_groups) => {
       groups = _groups;
@@ -147,9 +147,11 @@ export class AccountPrivileges {
 }
 
 function checkDebugGroups(debugGroups: string[]) {
-  logger.info(
-    `Using hard-coded ACL groups for all requests: [${debugGroups}].`
-  );
+  if (debugGroups.length > 0) {
+    logger.info(
+      `Using hard-coded ACL groups for all requests: [${debugGroups}].`
+    );
+  }
   if (debugGroups.length > 0 && !debugGroups.includes(MEMBER_GROUP)) {
     logger.warn("###########################################");
     logger.warn(
