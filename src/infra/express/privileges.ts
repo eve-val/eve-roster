@@ -20,7 +20,9 @@ export function getPrivileges(db: Tnex, accountId: number) {
 
   return Promise.resolve()
     .then(() => {
-      return debugGroups.length > 0 ? debugGroups : dao.group.getAccountGroups(db, accountId);
+      return debugGroups.length > 0
+        ? debugGroups
+        : dao.group.getAccountGroups(db, accountId);
     })
     .then((_groups) => {
       groups = _groups;
