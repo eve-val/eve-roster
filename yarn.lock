@@ -1785,14 +1785,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.18, @types/express-serve-static-core@npm:^4.17.9":
-  version: 4.17.28
-  resolution: "@types/express-serve-static-core@npm:4.17.28"
+"@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.18, @types/express-serve-static-core@npm:^4.17.31, @types/express-serve-static-core@npm:^4.17.9":
+  version: 4.17.33
+  resolution: "@types/express-serve-static-core@npm:4.17.33"
   dependencies:
     "@types/node": "npm:*"
     "@types/qs": "npm:*"
     "@types/range-parser": "npm:*"
-  checksum: 643cae979477eccc5dcea481a0c4c891de01d58e01b4f33462e00a26b21b754ca6a31c54c88214ad0a8faf4df089a7af492b48807114438d0a668fd87345b1b9
+  checksum: 9c465f534676699df2b52c157fcd9cfe0994d01b89d70d8f6ff81fd86f990b95d280e75f624a609941e6ed2395b2d731ac6af06a05c026871dc9a6c150e7eff9
   languageName: node
   linkType: hard
 
@@ -1808,15 +1808,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.14":
-  version: 4.17.14
-  resolution: "@types/express@npm:4.17.14"
+"@types/express@npm:^4.17.16":
+  version: 4.17.16
+  resolution: "@types/express@npm:4.17.16"
   dependencies:
     "@types/body-parser": "npm:*"
-    "@types/express-serve-static-core": "npm:^4.17.18"
+    "@types/express-serve-static-core": "npm:^4.17.31"
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
-  checksum: 7e2d23081f1aa8d8e4218fba4e305f2a52e221a99340ecc4694482cd2878cbb344deae1b8899e7682a05cf95c9a130e97534bf0e22d983c45d25a8788351803d
+  checksum: e415f59e44f9728165cb1a67d02472781a5bca0bd4b5a339f34be3a33977f1019b8d9205ba967d1d4a47775b25f882f8fed3d1de04b9bcb090d16dfa0fa0e2af
   languageName: node
   linkType: hard
 
@@ -2188,15 +2188,6 @@ __metadata:
   version: 1.10.6
   resolution: "@types/verror@npm:1.10.6"
   checksum: adc946fa8386dd951d893cc41820922179919e53d6b9415dbf2b40fbfdaa877df126d637502aa761871b39130ccd8e25b5b97199084776616270facc91e3bf47
-  languageName: node
-  linkType: hard
-
-"@types/webpack-dev-middleware@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "@types/webpack-dev-middleware@npm:5.3.0"
-  dependencies:
-    webpack-dev-middleware: "npm:*"
-  checksum: 10978f6e625774714a32990837d0e73ec832a1a6441a2729434baff2fd3393e07777a45e568c530e7239e96a63bf31d38e45bf228fc16197a656a626ceb12639
   languageName: node
   linkType: hard
 
@@ -5147,7 +5138,7 @@ __metadata:
     "@types/css-minimizer-webpack-plugin": "npm:^3.2.1"
     "@types/csurf": "npm:^1.11.2"
     "@types/events": "npm:^3"
-    "@types/express": "npm:^4.17.14"
+    "@types/express": "npm:^4.17.16"
     "@types/heapdump": "npm:^0.3.1"
     "@types/imagemin": "npm:^8.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
@@ -5163,7 +5154,6 @@ __metadata:
     "@types/tmp": "npm:^0.2.3"
     "@types/underscore": "npm:^1.11.4"
     "@types/verror": "npm:^1.10.6"
-    "@types/webpack-dev-middleware": "npm:^5.3.0"
     "@types/webpack-hot-middleware": "npm:^2.25.6"
     "@typescript-eslint/eslint-plugin": "npm:^5.49.0"
     "@typescript-eslint/parser": "npm:^5.49.0"
@@ -5690,7 +5680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-monkey@npm:1.0.3, fs-monkey@npm:^1.0.3":
+"fs-monkey@npm:^1.0.3":
   version: 1.0.3
   resolution: "fs-monkey@npm:1.0.3"
   checksum: fc4c994978d617d5f4dca22ecd385e2262ea724e5b74a2b2bbd86652c07051d02e51128126dd4c70a25a8111505c8121de0e221eaf29410a11b217edf4c3d26d
@@ -8010,15 +8000,6 @@ __metadata:
   dependencies:
     fs-monkey: "npm:^1.0.3"
   checksum: f2d8d2842babd8ce964b1fcb30fb38122dc08aad1f4b2d8d047a0830b651d90eba3a3433b4e77a069a7eca9d9858888f27b804a56a709e697c5e6f909d74a69b
-  languageName: node
-  linkType: hard
-
-"memfs@npm:^3.4.3":
-  version: 3.4.3
-  resolution: "memfs@npm:3.4.3"
-  dependencies:
-    fs-monkey: "npm:1.0.3"
-  checksum: b1a8d5915187f18282a03195f5b911af33de57646532e21ca57897321e9b02b2a45a4b04ee5a6a4cdbc2b61318065801259a342abfc7fe87cb6982e13b7f0dfd
   languageName: node
   linkType: hard
 
@@ -11886,21 +11867,6 @@ __metadata:
   bin:
     webpack-cli: bin/cli.js
   checksum: d8b36fcf7d3e39963fdeddc0de5566839fc5b524176f34a3dfe7bbf346e8deb5b9bc46785a75f9eb905916bb97a4a19da20dbe3aabdd74cf304d771070f322dc
-  languageName: node
-  linkType: hard
-
-"webpack-dev-middleware@npm:*":
-  version: 5.3.3
-  resolution: "webpack-dev-middleware@npm:5.3.3"
-  dependencies:
-    colorette: "npm:^2.0.10"
-    memfs: "npm:^3.4.3"
-    mime-types: "npm:^2.1.31"
-    range-parser: "npm:^1.2.1"
-    schema-utils: "npm:^4.0.0"
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 0e0b79101a6ae02710d3b4c4d6bd6b9cbd656b7bf3e4e8d47bb11686bdccebef0d970940f6b13124cb17acf85c369b01b85f8134ed0a128e6c10eac7829ef56b
   languageName: node
   linkType: hard
 
