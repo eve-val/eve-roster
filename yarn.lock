@@ -2211,13 +2211,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.48.0":
-  version: 5.48.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:5.48.0"
+"@typescript-eslint/eslint-plugin@npm:^5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/eslint-plugin@npm:5.49.0"
   dependencies:
-    "@typescript-eslint/scope-manager": "npm:5.48.0"
-    "@typescript-eslint/type-utils": "npm:5.48.0"
-    "@typescript-eslint/utils": "npm:5.48.0"
+    "@typescript-eslint/scope-manager": "npm:5.49.0"
+    "@typescript-eslint/type-utils": "npm:5.49.0"
+    "@typescript-eslint/utils": "npm:5.49.0"
     debug: "npm:^4.3.4"
     ignore: "npm:^5.2.0"
     natural-compare-lite: "npm:^1.4.0"
@@ -2230,7 +2230,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 9ae5331ae8c480e6dcb312f242e554b7666522e7b4ff5e94f1345b163332ec37f539cb3cf353c003a97ed0511cdc14916a199413c752cb1aded9b474d964e89d
+  checksum: e8b75c8521daf23bd7623857addcb7540e5d6dca9399b414d7f0b2925332b1607942258eb74d8da6c4acb05e31317c51c5e621d624533eefcaaf60d3397fe82a
   languageName: node
   linkType: hard
 
@@ -2271,12 +2271,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:5.48.0":
-  version: 5.48.0
-  resolution: "@typescript-eslint/type-utils@npm:5.48.0"
+"@typescript-eslint/scope-manager@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/scope-manager@npm:5.49.0"
   dependencies:
-    "@typescript-eslint/typescript-estree": "npm:5.48.0"
-    "@typescript-eslint/utils": "npm:5.48.0"
+    "@typescript-eslint/types": "npm:5.49.0"
+    "@typescript-eslint/visitor-keys": "npm:5.49.0"
+  checksum: fbf8146bd84def3029df9f9e4ca255f1067762e0faf5bf94aa83894fea64cdfe864647f9c7ba5c6d4c6ed2ce444a107ff9ab2cc0095c4537dbab42c7fdd6d848
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/type-utils@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/type-utils@npm:5.49.0"
+  dependencies:
+    "@typescript-eslint/typescript-estree": "npm:5.49.0"
+    "@typescript-eslint/utils": "npm:5.49.0"
     debug: "npm:^4.3.4"
     tsutils: "npm:^3.21.0"
   peerDependencies:
@@ -2284,7 +2294,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: e614072d55572f1eb58c6a8598ef482118049d75d9b2567fb0bb8ee672e82ad8fa644fcea602a05849e2aeae2cd5f9ad3d6d0d9f316a15c0a6a63842db6f7add
+  checksum: e4094104980c254a04ed3724b26ec3c8b193460f23774e5d836526614450dd59c19cb45a80f8a63d7b5129f4f4a05546396a792e9bdb431c260b30caf5957b39
   languageName: node
   linkType: hard
 
@@ -2299,6 +2309,13 @@ __metadata:
   version: 5.48.0
   resolution: "@typescript-eslint/types@npm:5.48.0"
   checksum: f3b818a9b83b703aa782c83f9a6de0471df529149d5cefb10418fba9d16500234bf57112cc5b2fd5854f6ac5ae3744c8f4827c5279eec5381dab01cd6d2eeef2
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/types@npm:5.49.0"
+  checksum: ca8ccb9a9312c1f2a420d8b8ed87ccbc420844d40fbe07473188556fd0359e00bd4703c56e369f93756a57be2121b6b51c40a189a270b292c3411f0a93c378bf
   languageName: node
   linkType: hard
 
@@ -2338,21 +2355,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:5.48.0":
-  version: 5.48.0
-  resolution: "@typescript-eslint/utils@npm:5.48.0"
+"@typescript-eslint/typescript-estree@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/typescript-estree@npm:5.49.0"
+  dependencies:
+    "@typescript-eslint/types": "npm:5.49.0"
+    "@typescript-eslint/visitor-keys": "npm:5.49.0"
+    debug: "npm:^4.3.4"
+    globby: "npm:^11.1.0"
+    is-glob: "npm:^4.0.3"
+    semver: "npm:^7.3.7"
+    tsutils: "npm:^3.21.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: f2a2837fa7e2a697a9e537144a9510aa5f8ee45c3c8327b98da0a69c888325874a41123428a14f6bb475556bbcc2c49f479850cf385da2c025261063be0ecc78
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/utils@npm:5.49.0"
   dependencies:
     "@types/json-schema": "npm:^7.0.9"
     "@types/semver": "npm:^7.3.12"
-    "@typescript-eslint/scope-manager": "npm:5.48.0"
-    "@typescript-eslint/types": "npm:5.48.0"
-    "@typescript-eslint/typescript-estree": "npm:5.48.0"
+    "@typescript-eslint/scope-manager": "npm:5.49.0"
+    "@typescript-eslint/types": "npm:5.49.0"
+    "@typescript-eslint/typescript-estree": "npm:5.49.0"
     eslint-scope: "npm:^5.1.1"
     eslint-utils: "npm:^3.0.0"
     semver: "npm:^7.3.7"
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  checksum: 03cf6134e5ba3e3f0a1e174bd3f8dc934f483318b4c3fc11ad42decd50d9f3094cbfda681a3a52fc2da8c028f8b0acda7837074fc3d3abfd7040da25c1aaaf02
+  checksum: a11c16851bb4cfebbf4c3e9949dc80c4a9d690180d6621f6d6f2650e11c9e8d63604abe299384d12c88f10f8e92751a11d48deff0587a77c97098bb9f98e2f53
   languageName: node
   linkType: hard
 
@@ -2389,6 +2424,16 @@ __metadata:
     "@typescript-eslint/types": "npm:5.48.0"
     eslint-visitor-keys: "npm:^3.3.0"
   checksum: fd075417c57bef6a875fa13a80f4cb2db3340e7a20e12e3acc92b97851795a55ca1e24aa95f0f478ced77a7b2b83a3b26c164b3187a7ef57bfcafca69fe1d3ee
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:5.49.0":
+  version: 5.49.0
+  resolution: "@typescript-eslint/visitor-keys@npm:5.49.0"
+  dependencies:
+    "@typescript-eslint/types": "npm:5.49.0"
+    eslint-visitor-keys: "npm:^3.3.0"
+  checksum: 327c45b6cff17996801300107e17a2429631af05423b0215980305e0320815ef466135c4d1f9f6918309abd0ee5d7b666290bd31147456b1cc8655dc6cca7fad
   languageName: node
   linkType: hard
 
@@ -5131,7 +5176,7 @@ __metadata:
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-dev-middleware": "npm:^5.3.0"
     "@types/webpack-hot-middleware": "npm:^2.25.6"
-    "@typescript-eslint/eslint-plugin": "npm:^5.48.0"
+    "@typescript-eslint/eslint-plugin": "npm:^5.49.0"
     "@typescript-eslint/parser": "npm:^5.48.0"
     "@vue/compiler-sfc": "npm:^3.2.45"
     "@vue/runtime-dom": "npm:^3.2.45"
