@@ -5210,7 +5210,7 @@ __metadata:
     jest: "npm:^28.1.3"
     jose: "npm:^4.11.2"
     json-loader: "npm:^0.5.7"
-    knex: "npm:^2.4.0"
+    knex: "npm:^2.4.2"
     mini-css-extract-plugin: "npm:^2.7.2"
     moment: "npm:^2.29.4"
     moment-locales-webpack-plugin: "npm:^1.2.0"
@@ -7676,9 +7676,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "knex@npm:2.4.0"
+"knex@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "knex@npm:2.4.2"
   dependencies:
     colorette: "npm:2.0.19"
     commander: "npm:^9.1.0"
@@ -7711,7 +7711,7 @@ __metadata:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: 17456b5a0045d97fec8cc7751a84f89720ab12b2c5a8d804f75146c4f78e478f4bbf142961c5b7bb165255c2381295e60e6f36d7c508c7ff69f5270eba6490b8
+  checksum: 930b245dacc9352654b94ccfd7013c698fa845e27a790ea6821eaa177c80e9258772f6ff8751c84569ff58e539d1e732dedb3e45f8eebd68498a5ca0450d4865
   languageName: node
   linkType: hard
 
