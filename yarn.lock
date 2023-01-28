@@ -1488,16 +1488,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^7.29.0":
-  version: 7.29.0
-  resolution: "@sentry/browser@npm:7.29.0"
+"@sentry/browser@npm:^7.34.0":
+  version: 7.34.0
+  resolution: "@sentry/browser@npm:7.34.0"
   dependencies:
-    "@sentry/core": "npm:7.29.0"
-    "@sentry/replay": "npm:7.29.0"
-    "@sentry/types": "npm:7.29.0"
-    "@sentry/utils": "npm:7.29.0"
+    "@sentry/core": "npm:7.34.0"
+    "@sentry/replay": "npm:7.34.0"
+    "@sentry/types": "npm:7.34.0"
+    "@sentry/utils": "npm:7.34.0"
     tslib: "npm:^1.9.3"
-  checksum: b388facb2d379e4fce7da8177c75777c55863a42804792d48a58a6c65488279f71a4205709dab3f9edca9d933ca5cc478e6a4fedb3ae9c28716929c558a272cc
+  checksum: a2c5332c0ab288ddef4bc598efecd87f2540bf15f92c45d697b2eb66f4699f16524756974d49e11685b4a5bdbfc92d92768af729be4f4e35c7424cea9c637d63
   languageName: node
   linkType: hard
 
@@ -1509,6 +1509,17 @@ __metadata:
     "@sentry/utils": "npm:7.29.0"
     tslib: "npm:^1.9.3"
   checksum: 3c8d10630f74913d6b6d9e2a8fb5a21abc1b4322fb627bb570073b361f649b4f3ba15eec5de5e7068c751067ce620f1474d0164db99ee407326e27563c036698
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:7.34.0":
+  version: 7.34.0
+  resolution: "@sentry/core@npm:7.34.0"
+  dependencies:
+    "@sentry/types": "npm:7.34.0"
+    "@sentry/utils": "npm:7.34.0"
+    tslib: "npm:^1.9.3"
+  checksum: 5d1ef856f306e7c4565430a566938bd71fc52f5318c696db063a9c9022ce340ba82555bb54af91f5984a3a8f22e82a0196ae205154a8abebba9d3818675282d0
   languageName: node
   linkType: hard
 
@@ -1527,16 +1538,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.29.0":
-  version: 7.29.0
-  resolution: "@sentry/replay@npm:7.29.0"
+"@sentry/replay@npm:7.34.0":
+  version: 7.34.0
+  resolution: "@sentry/replay@npm:7.34.0"
   dependencies:
-    "@sentry/core": "npm:7.29.0"
-    "@sentry/types": "npm:7.29.0"
-    "@sentry/utils": "npm:7.29.0"
-  peerDependencies:
-    "@sentry/browser": ">=7.24.0"
-  checksum: aadeb13e1a8e13bc4ee2cc8e005fddeb17285fbcc53d8753813f46cdd345d7889eb339ccf5e0e66bbfc56cbfce5fe631dae5bf15fdf6198c2ec59d75be4d904e
+    "@sentry/core": "npm:7.34.0"
+    "@sentry/types": "npm:7.34.0"
+    "@sentry/utils": "npm:7.34.0"
+  checksum: 6d1d98db18b3d5632166ac5ecb5a5f7626d0d0e08e3558a76d98f2be1fb2e336f6eff9e7e5f5020ac91306427ed8dad124f6822197152d89a4889cd781819791
   languageName: node
   linkType: hard
 
@@ -1559,6 +1568,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/types@npm:7.34.0":
+  version: 7.34.0
+  resolution: "@sentry/types@npm:7.34.0"
+  checksum: 1302ab6565f5a6934d28f520bf07f5be1460e2ee2f6a4f78d9eb43a0542c6de88e7a23aee3f04ff112959e14387b49ac1c68cdf05688c9d9f2e26400e43e73d5
+  languageName: node
+  linkType: hard
+
 "@sentry/utils@npm:7.29.0":
   version: 7.29.0
   resolution: "@sentry/utils@npm:7.29.0"
@@ -1566,6 +1582,16 @@ __metadata:
     "@sentry/types": "npm:7.29.0"
     tslib: "npm:^1.9.3"
   checksum: 0d740d19f71079268558c6e5d8145c8c527e6e9c676bb2f0d95eb336db7398ba86e4a4e87ed322dd3ac3df34d07fb9fa977fe0b6a6b9a351d0a820236b531cd6
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.34.0":
+  version: 7.34.0
+  resolution: "@sentry/utils@npm:7.34.0"
+  dependencies:
+    "@sentry/types": "npm:7.34.0"
+    tslib: "npm:^1.9.3"
+  checksum: ae3c4f5a78ac4a14b54273a7e72c8e4cf3da1caade7eca35cfe4b07d7d50cd560dc3e3bb310788501e9c6d8df9c658966774248bb1bc0a7d9b0faf00f8257d24
   languageName: node
   linkType: hard
 
@@ -5115,7 +5141,7 @@ __metadata:
     "@opentelemetry/instrumentation-pg": "npm:^0.34.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.9.0"
     "@opentelemetry/sdk-trace-node": "npm:^1.9.0"
-    "@sentry/browser": "npm:^7.29.0"
+    "@sentry/browser": "npm:^7.34.0"
     "@sentry/node": "npm:^7.29.0"
     "@sentry/tracing": "npm:^7.29.0"
     "@types/bluebird": "npm:^3.5.38"
