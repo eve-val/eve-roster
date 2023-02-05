@@ -3166,14 +3166,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.6":
-  version: 1.2.6
-  resolution: "axios@npm:1.2.6"
+"axios@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "axios@npm:1.3.2"
   dependencies:
     follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 926d43f22be0ebfa17548378cd6d4b4c27b4f1ea05147feb3b01819eb14548a25dd10f379d13b5162864fe8925c087dea7d14481c007ba6e9c699e912242c591
+  checksum: d70325ae823919b0d1c5b3a41392780f12dfafa666cf688c1948e72fc5ad4fe6ffdd7bfc1aa63fcbda54bba500dfadf680ad675632af72de18269626e9e18b67
   languageName: node
   linkType: hard
 
@@ -5159,7 +5159,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.49.0"
     "@vue/compiler-sfc": "npm:^3.2.45"
     "@vue/runtime-dom": "npm:^3.2.45"
-    axios: "npm:^1.2.6"
+    axios: "npm:^1.3.2"
     bluebird: "npm:^3.7.2"
     body-parser: "npm:^1.20.1"
     buffer: "npm:^6.0.3"
