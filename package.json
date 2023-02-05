@@ -91,7 +91,7 @@
     "@types/webpack-hot-middleware": "^2.25.6",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
-    "@vue/compiler-sfc": "^3.2.45",
+    "@vue/compiler-sfc": "^3.2.47",
     "@vue/runtime-dom": "^3.2.45",
     "buffer": "^6.0.3",
     "clean-webpack-plugin": "^4.0.0",
