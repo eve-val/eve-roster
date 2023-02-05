@@ -2447,25 +2447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.47, @vue/compiler-sfc@npm:^3.2.47":
-  version: 3.2.47
-  resolution: "@vue/compiler-sfc@npm:3.2.47"
-  dependencies:
-    "@babel/parser": "npm:^7.16.4"
-    "@vue/compiler-core": "npm:3.2.47"
-    "@vue/compiler-dom": "npm:3.2.47"
-    "@vue/compiler-ssr": "npm:3.2.47"
-    "@vue/reactivity-transform": "npm:3.2.47"
-    "@vue/shared": "npm:3.2.47"
-    estree-walker: "npm:^2.0.2"
-    magic-string: "npm:^0.25.7"
-    postcss: "npm:^8.1.10"
-    source-map: "npm:^0.6.1"
-  checksum: e60639e72330a7c56ce8db805e63b4ac806ab04a54fac88e89a6e362cc03880beaf6ca253a707a509bbe26db756f438f1470623a2c3e6e8714fa2308fb4db257
-  languageName: node
-  linkType: hard
-
-"@vue/compiler-sfc@npm:^3.2.37":
+"@vue/compiler-sfc@npm:3.2.47, @vue/compiler-sfc@npm:^3.2.37, @vue/compiler-sfc@npm:^3.2.47":
   version: 3.2.37
   resolution: "@vue/compiler-sfc@npm:3.2.37"
   dependencies:
@@ -2520,19 +2502,6 @@ __metadata:
     estree-walker: "npm:^2.0.2"
     magic-string: "npm:^0.25.7"
   checksum: ac407519af98dba961379c8b769fc6ffb63810b491fd773f23ff0040a396c98abea87d1c94c77ec5f99ffd3fa894b4d54b56340147fe7e5d749e8a713579e3a6
-  languageName: node
-  linkType: hard
-
-"@vue/reactivity-transform@npm:3.2.47":
-  version: 3.2.47
-  resolution: "@vue/reactivity-transform@npm:3.2.47"
-  dependencies:
-    "@babel/parser": "npm:^7.16.4"
-    "@vue/compiler-core": "npm:3.2.47"
-    "@vue/shared": "npm:3.2.47"
-    estree-walker: "npm:^2.0.2"
-    magic-string: "npm:^0.25.7"
-  checksum: 7139bf955fa5b76ad8e5d42bf5a236d64226ab7bd3940736943feee0a1aeadbb429d85a47fe1b6fb3712b8a18fe1f9cc5f855f5000e284f4c51b15997ec6d612
   languageName: node
   linkType: hard
 
