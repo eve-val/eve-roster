@@ -511,32 +511,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.7.1, @grpc/grpc-js@npm:^1.7.3":
-  version: 1.7.3
-  resolution: "@grpc/grpc-js@npm:1.7.3"
+"@grpc/grpc-js@npm:^1.7.1, @grpc/grpc-js@npm:^1.8.7":
+  version: 1.8.7
+  resolution: "@grpc/grpc-js@npm:1.8.7"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.0"
     "@types/node": "npm:>=12.12.47"
-  checksum: 280d57b41000b025f551c0e757f073fbd8bb68f886b26a0656787a18d6297946ccd8c1f6d6b2d688f8e942358a6f5298b176381a58d2f8e5397da334f43484e6
+  checksum: 87c524fb19f152aab410d11b00772d34ed7b90156414b344b6cf69d74ea75644438ab9418016bf014b9a83d0516155de922422bbb6a01fbe9145877a47989f7c
   languageName: node
   linkType: hard
 
-"@grpc/proto-loader@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@grpc/proto-loader@npm:0.7.0"
-  dependencies:
-    "@types/long": "npm:^4.0.1"
-    lodash.camelcase: "npm:^4.3.0"
-    long: "npm:^4.0.0"
-    protobufjs: "npm:^7.0.0"
-    yargs: "npm:^16.2.0"
-  bin:
-    proto-loader-gen-types: build/bin/proto-loader-gen-types.js
-  checksum: 8af1e7987c9d9a1c316971b8d9a804492409e2fc43ee284e21b8f17d4b981693b167af2e37d744f9fc023fcf1acf53f1ad2bc418f5082b9db1909ea0fa85e42b
-  languageName: node
-  linkType: hard
-
-"@grpc/proto-loader@npm:^0.7.3":
+"@grpc/proto-loader@npm:^0.7.0, @grpc/proto-loader@npm:^0.7.3":
   version: 0.7.3
   resolution: "@grpc/proto-loader@npm:0.7.3"
   dependencies:
@@ -5117,7 +5102,7 @@ __metadata:
   resolution: "eve-roster@workspace:."
   dependencies:
     "@babel/types": "npm:^7.20.7"
-    "@grpc/grpc-js": "npm:^1.7.3"
+    "@grpc/grpc-js": "npm:^1.8.7"
     "@jest/globals": "npm:^29.4.1"
     "@opentelemetry/api": "npm:1.4.0"
     "@opentelemetry/core": "npm:^1.9.1"
