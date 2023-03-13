@@ -1201,6 +1201,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/core@npm:1.10.0":
+  version: 1.10.0
+  resolution: "@opentelemetry/core@npm:1.10.0"
+  dependencies:
+    "@opentelemetry/semantic-conventions": "npm:1.10.0"
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.5.0"
+  checksum: eb11edf37fd4f4d4f3d56f10beff5466708f8de8f7daf514ded59e7615b296a7ba40ef54bd339e1d955d76e83af79ce9168a2061ec37f0655c9eec446179b3d1
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/core@npm:1.9.1, @opentelemetry/core@npm:^1.9.1":
   version: 1.9.1
   resolution: "@opentelemetry/core@npm:1.9.1"
@@ -1253,17 +1264,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-http@npm:^0.35.1":
-  version: 0.35.1
-  resolution: "@opentelemetry/instrumentation-http@npm:0.35.1"
+"@opentelemetry/instrumentation-http@npm:^0.36.0":
+  version: 0.36.0
+  resolution: "@opentelemetry/instrumentation-http@npm:0.36.0"
   dependencies:
-    "@opentelemetry/core": "npm:1.9.1"
-    "@opentelemetry/instrumentation": "npm:0.35.1"
-    "@opentelemetry/semantic-conventions": "npm:1.9.1"
+    "@opentelemetry/core": "npm:1.10.0"
+    "@opentelemetry/instrumentation": "npm:0.36.0"
+    "@opentelemetry/semantic-conventions": "npm:1.10.0"
     semver: "npm:^7.3.5"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 8bc68dc0437a6f000304c500f60a257ea7a8ea89c92e802284e0f91ff67838f80d6431d3ca8b62fb54796fa91edc43512972f1958441874e769152ff7b22203c
+  checksum: 3bdccd95acefe704282b448e13cec1e510458e483e8d9896e573ea832f8a8981c3ff53947f8f126207139c9136f7cf097e74d62ecc95fa6ac17e8f8f2564c79b
   languageName: node
   linkType: hard
 
@@ -1282,7 +1293,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:0.35.1, @opentelemetry/instrumentation@npm:^0.35.1":
+"@opentelemetry/instrumentation@npm:0.36.0":
+  version: 0.36.0
+  resolution: "@opentelemetry/instrumentation@npm:0.36.0"
+  dependencies:
+    require-in-the-middle: "npm:^6.0.0"
+    semver: "npm:^7.3.2"
+    shimmer: "npm:^1.2.1"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 0fb76488ff5fac8d95de5779324ff788fb24d1a4a51092719ad7f6030211a16362f95e87dfe7dc506351c0a97c115e1b7e751befbcb39ce56b067c9b852eb65a
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/instrumentation@npm:^0.35.1":
   version: 0.35.1
   resolution: "@opentelemetry/instrumentation@npm:0.35.1"
   dependencies:
@@ -1407,6 +1431,13 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.5.0"
   checksum: a3e433afb0a1f25bf68de03f4847b57afdc8ff877517463803295ef42145bab0a98dce2b2f14cfbbded2488204190c750c9c317c02f6e8be3979bd8c6181c889
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:1.10.0":
+  version: 1.10.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.10.0"
+  checksum: 584a19fc6688359eb8ada9a8a75bbed739aba7356b43f1818bd200b176bda19cc798db3a9056dcb0d4e4d2f78b3a1d37ab68d210a195bf26930e589b9484879c
   languageName: node
   linkType: hard
 
@@ -5559,7 +5590,7 @@ __metadata:
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.35.1"
     "@opentelemetry/instrumentation": "npm:^0.35.1"
     "@opentelemetry/instrumentation-express": "npm:^0.32.1"
-    "@opentelemetry/instrumentation-http": "npm:^0.35.1"
+    "@opentelemetry/instrumentation-http": "npm:^0.36.0"
     "@opentelemetry/instrumentation-pg": "npm:^0.35.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.9.1"
     "@opentelemetry/sdk-trace-node": "npm:^1.9.1"
@@ -6902,6 +6933,15 @@ __metadata:
   dependencies:
     has: "npm:^1.0.3"
   checksum: ac7e79bde4fe529a7281a2f7e8e7f8128c26a2fe660d248ff91def539c35c4353a5f9ff65c7d61565c4943f2614b0fc9310447680d397e7ca2564f0729ca6429
+  languageName: node
+  linkType: hard
+
+"is-core-module@npm:^2.9.0":
+  version: 2.11.0
+  resolution: "is-core-module@npm:2.11.0"
+  dependencies:
+    has: "npm:^1.0.3"
+  checksum: c1bf6feab8bba140f691b853db3032d33ce1bc883ecd1b7ddb4e33f2443b4da2bcbba671b6290c34f45c27a8fc02c0bf5e01c68192671f9133029d21a48f25b0
   languageName: node
   linkType: hard
 
@@ -9349,7 +9389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-parse@npm:^1.0.6":
+"path-parse@npm:^1.0.6, path-parse@npm:^1.0.7":
   version: 1.0.7
   resolution: "path-parse@npm:1.0.7"
   checksum: ca291d7bced407e20480b686d7ef4f9dd112ef00d6f109faa50bbefe8ff9dd51e164781fa0670c7b5d67a88610008e83e594f8294ec809c1b7203c6577ca3777
@@ -10820,6 +10860,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"require-in-the-middle@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "require-in-the-middle@npm:6.0.0"
+  dependencies:
+    debug: "npm:^4.1.1"
+    module-details-from-path: "npm:^1.0.3"
+    resolve: "npm:^1.22.1"
+  checksum: 69e68e509225d40f30b2c1b2ef26315e659547b4294fc59bed16ec130b698e8746bf653bcb0733c5c935b67c8243e590b4681c3a2dea7b2074691be17436846f
+  languageName: node
+  linkType: hard
+
 "requires-port@npm:^1.0.0":
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
@@ -10874,6 +10925,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:^1.22.1":
+  version: 1.22.1
+  resolution: "resolve@npm:1.22.1"
+  dependencies:
+    is-core-module: "npm:^2.9.0"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: d8ea39ac2ecaedc681504f043944a20cc05587d6ec52d4d9ec79801e58be083f2237d0e83170ce86c793083eaf71a6f95a7f921a79dfb6fa32b37107e61df36c
+  languageName: node
+  linkType: hard
+
 "resolve@patch:resolve@npm%3A^1.12.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.15.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>":
   version: 1.20.0
   resolution: "resolve@patch:resolve@npm%3A1.20.0#optional!builtin<compat/resolve>::version=1.20.0&hash=c3c19d"
@@ -10881,6 +10945,19 @@ __metadata:
     is-core-module: "npm:^2.2.0"
     path-parse: "npm:^1.0.6"
   checksum: 976d9e2ccefbecc754be43a1d1a6a5e689339ac8fb5c0b2ad0bcf7b78d7ec3da938645efb9d9986c66e760306394ea1a3cdae84aa5d7078714f88a020a5190f2
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@npm%3A^1.22.1#optional!builtin<compat/resolve>":
+  version: 1.22.1
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  dependencies:
+    is-core-module: "npm:^2.9.0"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: a6f214b97d932445796f78dab7a898ec78966327e0d6cb571f90b6ac0f3b3347bf6bab0a071d899bfdc316b26ed845f6655310b38b8f6ee4da5272a0c5ecef85
   languageName: node
   linkType: hard
 
@@ -11691,6 +11768,13 @@ __metadata:
     has-flag: "npm:^4.0.0"
     supports-color: "npm:^7.0.0"
   checksum: 293d4e2c03369358a41ec6750e0d0889fe864502c4c39955a6197ea978be7b35d6748d20e181c17ee2ba5d725ca878c34a269616de8a29c8bebb41f07855663b
+  languageName: node
+  linkType: hard
+
+"supports-preserve-symlinks-flag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
+  checksum: 14609489b044de2eaffe0e7549173bb39d6997510ac4b7279d07bf2aafe309205abe172a8c8d248062a24e32ab61a2ae85efc5b4cdf7f932c7cdbe81ca1f39ec
   languageName: node
   linkType: hard
 
