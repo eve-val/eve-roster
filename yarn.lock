@@ -5633,7 +5633,7 @@ __metadata:
     heapdump: "npm:^0.3.15"
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^3.8.1"
+    image-minimizer-webpack-plugin: "npm:^3.8.2"
     jest: "npm:^28.1.3"
     jose: "npm:^4.13.1"
     json-loader: "npm:^0.5.7"
@@ -6735,12 +6735,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "image-minimizer-webpack-plugin@npm:3.8.1"
+"image-minimizer-webpack-plugin@npm:^3.8.2":
+  version: 3.8.2
+  resolution: "image-minimizer-webpack-plugin@npm:3.8.2"
   dependencies:
     schema-utils: "npm:^4.0.0"
-    serialize-javascript: "npm:^6.0.0"
+    serialize-javascript: "npm:^6.0.1"
   peerDependencies:
     webpack: ^5.1.0
   peerDependenciesMeta:
@@ -6752,7 +6752,7 @@ __metadata:
       optional: true
     svgo:
       optional: true
-  checksum: d5626765a02e1361ffad740eb79a9b0960575d9e4bb89d85465be29f3183235db0215e40d0cbe6f5d61ae51e9d9a62781cf17349f3644b47758a6f4fc7ad47c6
+  checksum: ac568d035afe45e99b188cf02dbc6fa7e5f159e39889601203e8ec1ae25a166847253d6ec38897678ccd1c701388512a86bdc5120802948bb30a46758e83a846
   languageName: node
   linkType: hard
 
@@ -11165,6 +11165,15 @@ __metadata:
   dependencies:
     randombytes: "npm:^2.1.0"
   checksum: c54759aaf8581cc1509e838a9a1eb340b0addaf8103f1d7795af0cd2319475e43cc31793fbe2db72aa8059a93218dc22b79ae8277b0e69de474a4f79800cf54f
+  languageName: node
+  linkType: hard
+
+"serialize-javascript@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "serialize-javascript@npm:6.0.1"
+  dependencies:
+    randombytes: "npm:^2.1.0"
+  checksum: 918ab48d613d8d7ae3bd0a12da50961f7710dd5f7ec7ffea12c03017c11b02c3d8355b672d6aabef67c2c539ebd1d6665b10748760221df3fc299eb43705412e
   languageName: node
   linkType: hard
 
