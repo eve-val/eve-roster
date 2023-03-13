@@ -1185,10 +1185,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@opentelemetry/api@npm:1.4.0"
-  checksum: 45afe0fd4e39b4bde2e8724ad972ae4bd3ec603d8ac198ae0f6004d04970e1ff47bfa1a9665e2c6f733fb4aef56a7ed49c280b5c8de340f8851983a3f576a57a
+"@opentelemetry/api@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@opentelemetry/api@npm:1.4.1"
+  checksum: e856b2e15abb595964acffc3d0f966d42bc07b5e93850200b46a03b896fe319c98137b91b29d93d582b2d454352640edee1022e9a468b7f9b20aef9adc1d63ac
   languageName: node
   linkType: hard
 
@@ -5554,7 +5554,7 @@ __metadata:
     "@babel/types": "npm:^7.21.2"
     "@grpc/grpc-js": "npm:^1.8.7"
     "@jest/globals": "npm:^29.5.0"
-    "@opentelemetry/api": "npm:1.4.0"
+    "@opentelemetry/api": "npm:1.4.1"
     "@opentelemetry/core": "npm:^1.9.1"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.35.1"
     "@opentelemetry/instrumentation": "npm:^0.35.1"
