@@ -5576,7 +5576,7 @@ __metadata:
     serve-favicon: "npm:^2.5.0"
     sharp: "npm:^0.31.3"
     source-map-support: "npm:^0.5.21"
-    sqlite3: "npm:^5.1.5"
+    sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.0.2"
     swagger-ui: "npm:^4.18.1"
@@ -11262,9 +11262,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite3@npm:^5.1.5":
-  version: 5.1.5
-  resolution: "sqlite3@npm:5.1.5"
+"sqlite3@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "sqlite3@npm:5.1.6"
   dependencies:
     "@mapbox/node-pre-gyp": "npm:^1.0.0"
     node-addon-api: "npm:^4.2.0"
@@ -11278,7 +11278,7 @@ __metadata:
   peerDependenciesMeta:
     node-gyp:
       optional: true
-  checksum: 46fe60ea792a0f68a97e9e2035f3a55e7183394f0a15f7ec5cc5b954ba78455fd3ee4aa2f89e82741c24cb1e1511a7dc9ac1d3b305a7f31ec52bf3770d0377d2
+  checksum: 0d4e7119a94017d3bafc908300525c1eca550f2e59e7dbce3acab8279e8d88e63972c2ecb84ece0783887c8d8e9f7d6db314b32256d3908d3c51d48f401890aa
   languageName: node
   linkType: hard
 
