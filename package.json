@@ -120,7 +120,7 @@
     "svgo": "^3.0.2",
     "swagger-ui": "^4.18.1",
     "ts-jest": "^28.0.8",
-    "ts-jest-resolver": "^2.0.0",
+    "ts-jest-resolver": "^2.0.1",
     "ts-loader": "^9.3.1",
     "typescript": "^5.0.2",
     "url": "^0.11.0",
