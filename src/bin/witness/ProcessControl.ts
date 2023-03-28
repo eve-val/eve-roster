@@ -36,7 +36,7 @@ export class ProcessControl {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
       execArgv: [
         ...process.execArgv,
-        "--experimental-loader=import-in-the-middle/hook.mjs"
+        "--experimental-loader=import-in-the-middle/hook.mjs",
       ],
     });
     this._child.on("error", this._onChildError.bind(this));
