@@ -34,7 +34,10 @@ export class ProcessControl {
 
     this._child = child_process.fork(childPath, [], {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
-      execArgv: ["--experimental-loader=import-in-the-middle/hook.mjs"],
+      execArgv: [
+        ...process.execArgv,
+        "--experimental-loader=import-in-the-middle/hook.mjs",
+      ],
     });
     this._child.on("error", this._onChildError.bind(this));
     this._child.on("exit", this._onChildExit.bind(this));
