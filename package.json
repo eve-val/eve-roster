@@ -90,7 +90,7 @@
     "@types/verror": "^1.10.6",
     "@types/webpack-hot-middleware": "^2.25.6",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.55.0",
+    "@typescript-eslint/parser": "^5.57.0",
     "@vue/compiler-sfc": "^3.2.47",
     "@vue/runtime-dom": "^3.2.47",
     "buffer": "^6.0.3",
