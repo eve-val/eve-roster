@@ -32,9 +32,13 @@ export class ProcessControl {
     process.on("SIGQUIT", killHandler);
     process.on("SIGTERM", killHandler);
 
-    this._child = child_process.fork(childPath, [], {
-      stdio: ["ignore", "pipe", "pipe", "ipc"],
-    });
+    this._child = child_process.fork(
+      childPath,
+      ["--experimental-loader=import-in-the-middle/hook.mjs"],
+      {
+        stdio: ["ignore", "pipe", "pipe", "ipc"],
+      }
+    );
     this._child.on("error", this._onChildError.bind(this));
     this._child.on("exit", this._onChildExit.bind(this));
 
