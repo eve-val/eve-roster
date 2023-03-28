@@ -32,12 +32,10 @@ export class ProcessControl {
     process.on("SIGQUIT", killHandler);
     process.on("SIGTERM", killHandler);
 
+    const hook = require.resolve("import-in-the-middle/hook.mjs");
     this._child = child_process.fork(childPath, [], {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
-      execArgv: [
-        ...process.execArgv,
-        "--experimental-loader=import-in-the-middle/hook.mjs",
-      ],
+      execArgv: [...process.execArgv, `--experimental-loader=${hook}`],
     });
     this._child.on("error", this._onChildError.bind(this));
     this._child.on("exit", this._onChildExit.bind(this));
