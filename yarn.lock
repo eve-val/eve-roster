@@ -5622,6 +5622,7 @@ __metadata:
     html-webpack-pug-plugin: "npm:^4.0.0"
     image-minimizer-webpack-plugin: "npm:^3.8.2"
     import-in-the-middle: "npm:^1.3.4"
+    import-meta-resolve: "npm:^2.2.2"
     jest: "npm:^28.1.3"
     jose: "npm:^4.13.1"
     json-loader: "npm:^0.5.7"
@@ -6709,6 +6710,13 @@ __metadata:
   bin:
     import-local-fixture: fixtures/cli.js
   checksum: 9e6f9cdc751ceb4af18363c319416f4344a3483a7aab4bdf3e7506f1a9cacac99566b410a632a3a75490f6d3bc917a1142064d8fe830b24a0f1c2cdcc59fb34b
+  languageName: node
+  linkType: hard
+
+"import-meta-resolve@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "import-meta-resolve@npm:2.2.2"
+  checksum: 741cf5d431633765ef25ecdc940e4ffd2f7496f0eec7f2aac35ffd8a9cd7fcd548d9c6f4ba8b2dea4a1d154e5e78fe73a943b56d88abb2a6cfb7ed275baa1e4d
   languageName: node
   linkType: hard
 

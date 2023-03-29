@@ -2,6 +2,7 @@
 
 import * as child_process from "child_process";
 import { ChildProcess } from "child_process";
+import { resolve } from "import-meta-resolve";
 import * as logger from "./logger.js";
 
 /**
@@ -32,7 +33,10 @@ export class ProcessControl {
     process.on("SIGQUIT", killHandler);
     process.on("SIGTERM", killHandler);
 
-    const hook = require.resolve("import-in-the-middle/hook.mjs");
+    const hook = await resolve(
+      "import-in-the-middle/hook.mjs",
+      import.meta.url
+    );
     this._child = child_process.fork(childPath, [], {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
       execArgv: [...process.execArgv, `--experimental-loader=${hook}`],
