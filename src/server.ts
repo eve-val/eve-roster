@@ -17,9 +17,9 @@ const env = initEnv();
 const logger = buildLogger("server");
 
 const { initMonitoring } = await import("./infra/init/initMonitoring.js");
-const { initServer } = await import("./infra/init/initServer.js");
-
 initMonitoring(env);
+
+const { initServer } = await import("./infra/init/initServer.js");
 
 // Crash the process in the face of an unhandled promise rejection
 process.on("unhandledRejection", (err) => {
