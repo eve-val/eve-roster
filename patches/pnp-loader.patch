@@ -1,0 +1,11 @@
+--- a/.pnp.loader.mjs	2023-03-30 14:54:10.530801943 -0700
++++ b/.pnp.loader.mjs	2023-03-30 14:41:39.826359733 -0700
+@@ -1990,7 +1990,7 @@
+     specifier = fileURLToPath(url);
+   }
+   const { parentURL, conditions = [] } = context;
+-  const issuer = parentURL ? fileURLToPath(parentURL) : process.cwd();
++  const issuer = parentURL && tryParseURL(parentURL).protocol === `file:` ? fileURLToPath(parentURL) : process.cwd();
+   const pnpapi = findPnpApi(issuer) ?? (url ? findPnpApi(specifier) : null);
+   if (!pnpapi)
+     return nextResolve(originalSpecifier, context, nextResolve);
