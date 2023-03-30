@@ -5617,7 +5617,6 @@ __metadata:
     express: "npm:^4.18.2"
     express-rate-limit: "npm:^6.7.0"
     file-loader: "npm:^6.2.0"
-    heapdump: "npm:^0.3.15"
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
     image-minimizer-webpack-plugin: "npm:^3.8.2"
@@ -6427,16 +6426,6 @@ __metadata:
   bin:
     he: bin/he
   checksum: 624468c0a4a0086a722b756a53eddf35a141a16ab41ab965028d0280010753cd2e12a1181e2e638ffd4c9d5131949e198fd8e509b61645b02e8e36a7bdeadc97
-  languageName: node
-  linkType: hard
-
-"heapdump@npm:^0.3.15":
-  version: 0.3.15
-  resolution: "heapdump@npm:0.3.15"
-  dependencies:
-    nan: "npm:^2.13.2"
-    node-gyp: "npm:latest"
-  checksum: fa3413ef4d668de90c13273a787fc049126040a702cd98ae3d479032c7385a224a3a958b975a2a9f6854d539dabeb85a71f56561b5fa1293527fca4d72581917
   languageName: node
   linkType: hard
 
@@ -8597,15 +8586,6 @@ __metadata:
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
   checksum: 78c12f6b473a022ebacc393fc14b76fe40b8feda7218124b86c4684e440e10377a063bec1d3902df1f74714f02b74b36ad7d3a6de9e2fbffa26fc29e5ce018fc
-  languageName: node
-  linkType: hard
-
-"nan@npm:^2.13.2":
-  version: 2.14.2
-  resolution: "nan@npm:2.14.2"
-  dependencies:
-    node-gyp: "npm:latest"
-  checksum: 438f06864e3f333d0e803ccd88e787787fca654aeaf24e506fdf4fc5b72345ab83655a61086f21d3c4efe98b8691ce507ac4e50ca6912b183ae4ca1c52ae3a90
   languageName: node
   linkType: hard
 
