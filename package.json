@@ -9,7 +9,7 @@
     "build:dev": "yarn run build-server && yarn run build-client:dev",
     "build-client": "webpack --config out/server/infra/build-client/webpack.prod.js",
     "build-client:dev": "webpack --config out/server/infra/build-client/webpack.dev.js",
-    "build-server": "patch -N -r - -p1 < patches/pnp-loader.patch > /dev/null; tsc",
+    "build-server": "tsc",
     "watch-server": "tsc -w",
     "start": "yarn node out/server/bin/witness/witness.js",
     "updatedb": "yarn node out/server/bin/updatedb.js",
@@ -18,7 +18,8 @@
     "lint": "esprint",
     "presubmit": "prettier --write --list-different . && esprint && jest",
     "ci-lint": "esprint check --workers=2",
-    "ci-pretty-check": "prettier --check ."
+    "ci-pretty-check": "prettier --check .",
+    "postinstall": "patch -N -r - -p1 < patches/pnp-loader.patch > /dev/null || true"
   },
   "type": "module",
   "dependencies": {
