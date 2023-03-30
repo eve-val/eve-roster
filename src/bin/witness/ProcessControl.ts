@@ -1,20 +1,8 @@
 /* global NodeJS */
 
-import { createRequire } from "module";
 import * as child_process from "child_process";
 import { ChildProcess } from "child_process";
 import * as logger from "./logger.js";
-
-const require = createRequire(import.meta.url);
-const hook = require
-  .resolve("import-in-the-middle/hook.mjs")
-  .replace(
-    import.meta.url
-      .replace("file://", "")
-      .replace("out/server/bin/witness/ProcessControl.js", ""),
-    ""
-  )
-  .replace(".yarn/cache/", "");
 
 /**
  * Manages the lifecycle of the child and parent processes.
@@ -46,7 +34,11 @@ export class ProcessControl {
 
     this._child = child_process.fork(childPath, [], {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
-      execArgv: [...process.execArgv, `--experimental-loader=${hook}`],
+      execArgv: [
+        ...process.execArgv,
+        "--experimental-loader=import-in-the-middle/hook.mjs",
+        "--experimental-loader=./.pnp.loader.mjs",
+      ],
     });
     this._child.on("error", this._onChildError.bind(this));
     this._child.on("exit", this._onChildExit.bind(this));

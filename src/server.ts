@@ -10,10 +10,6 @@ import sourceMapSupport from "source-map-support";
 import { initEnv } from "./infra/init/Env.js";
 import { buildLogger } from "./infra/logging/buildLogger.js";
 
-// Adds support for taking heapdumps when the process receives the USR2 signal
-// See https://github.com/eve-val/eve-roster/wiki/Grabbing-a-heap-dump
-import "heapdump";
-
 // Causes stack traces to reference the original .ts files
 sourceMapSupport.install();
 
