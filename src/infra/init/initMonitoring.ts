@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/node";
 import Graceful from "node-graceful";
+import { ChannelCredentials } from "@grpc/grpc-js";
 import * as opentelemetry from "@opentelemetry/sdk-node";
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
@@ -19,6 +20,7 @@ export function initMonitoring(env: Env) {
         "x-honeycomb-team": env.HONEYCOMB_API_KEY,
         "x-honeycomb-dataset": env.HONEYCOMB_DATASET,
       },
+      credentials: ChannelCredentials.createSsl(),
     }),
     instrumentations: [getNodeAutoInstrumentations()],
   });
