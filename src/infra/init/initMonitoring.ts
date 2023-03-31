@@ -22,7 +22,13 @@ export function initMonitoring(env: Env) {
       credentials: ChannelCredentials.createSsl(),
       metadata: metadata,
     }),
-    instrumentations: [getNodeAutoInstrumentations()],
+    instrumentations: [
+      getNodeAutoInstrumentations({
+        "@opentelemetry/instrumentation-fs": {
+          enabled: false,
+        },
+      }),
+    ],
   });
   sdk.start();
 
