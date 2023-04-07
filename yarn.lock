@@ -1885,7 +1885,7 @@ __metadata:
 
 "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz::locator=eve-roster%40workspace%3A.":
   version: 0.37.0
-  resolution: "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz#./patches/opentelemetry-instrumentation-0.37.0.tgz::hash=d21386&locator=eve-roster%40workspace%3A."
+  resolution: "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz#./patches/opentelemetry-instrumentation-0.37.0.tgz::hash=9f55e4&locator=eve-roster%40workspace%3A."
   dependencies:
     import-in-the-middle: "npm:^1.3.4"
     require-in-the-middle: "npm:^6.0.0"
@@ -1893,7 +1893,7 @@ __metadata:
     shimmer: "npm:^1.2.1"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 6ef57a9ea5ad57ed186b0989cef27baa919fa46ff3bddd743cdadeed2257f415560e750583f2e24c267c3a380aea7870c38644d4401c60c953d4e29ee6df0a7a
+  checksum: 798881a13656a27a53a2d9270d29650e57a0f35242f1cb721fc1f44c4475630cb44a0ced16eed84a3fb403683b895f234ac8563becd5819b69d612464a15a191
   languageName: node
   linkType: hard
 
