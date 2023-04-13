@@ -36,7 +36,7 @@ export class ProcessControl {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
       execArgv: [
         ...process.execArgv,
-        "--experimental-loader=import-in-the-middle/hook.mjs",
+        "--experimental-loader=@opentelemetry/instrumentation/build/esm/hook.mjs",
         "--experimental-loader=./.pnp.loader.mjs",
       ],
     });
