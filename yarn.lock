@@ -1885,15 +1885,17 @@ __metadata:
 
 "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz::locator=eve-roster%40workspace%3A.":
   version: 0.37.0
-  resolution: "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz#./patches/opentelemetry-instrumentation-0.37.0.tgz::hash=d21386&locator=eve-roster%40workspace%3A."
+  resolution: "@opentelemetry/instrumentation@file:./patches/opentelemetry-instrumentation-0.37.0.tgz#./patches/opentelemetry-instrumentation-0.37.0.tgz::hash=b99a18&locator=eve-roster%40workspace%3A."
   dependencies:
+    "@types/shimmer": "npm:^1.0.2"
     import-in-the-middle: "npm:^1.3.4"
+    import-meta-resolve: "npm:^2.2.2"
     require-in-the-middle: "npm:^6.0.0"
     semver: "npm:^7.3.2"
     shimmer: "npm:^1.2.1"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 6ef57a9ea5ad57ed186b0989cef27baa919fa46ff3bddd743cdadeed2257f415560e750583f2e24c267c3a380aea7870c38644d4401c60c953d4e29ee6df0a7a
+  checksum: f6538d7c775d091a0f0d1bfe759dc86f4f14dff463fc4b1c823586245afae38e5b89804db196f11c2ba821aa69abfc6c42bb861a655469baea316f52d6ef701b
   languageName: node
   linkType: hard
 
@@ -3378,6 +3380,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10077a35607e4ed36dace9f2e33ecb45a18d495ca14e0091641114986f70a88749a141698f74bb9644c0c18ccec121fd0e1f6862908c26217e1a6284706bf21a
+  languageName: node
+  linkType: hard
+
+"@types/shimmer@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@types/shimmer@npm:1.0.2"
+  checksum: 3a9622e31ad6b5a1ef17b082a28aab4e3298fcd80d02d1e556528e198dcbca9ffa9dcb14863b51f052d24a7856c92a25834923bc11d282585187a7e391591108
   languageName: node
   linkType: hard
 
@@ -6583,7 +6592,6 @@ __metadata:
     html-webpack-plugin: "npm:^5.5.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
     image-minimizer-webpack-plugin: "npm:^3.8.2"
-    import-in-the-middle: "npm:^1.3.4"
     jest: "npm:^28.1.3"
     jose: "npm:^4.13.1"
     json-loader: "npm:^0.5.7"
@@ -7675,6 +7683,13 @@ __metadata:
   bin:
     import-local-fixture: fixtures/cli.js
   checksum: 9e6f9cdc751ceb4af18363c319416f4344a3483a7aab4bdf3e7506f1a9cacac99566b410a632a3a75490f6d3bc917a1142064d8fe830b24a0f1c2cdcc59fb34b
+  languageName: node
+  linkType: hard
+
+"import-meta-resolve@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "import-meta-resolve@npm:2.2.2"
+  checksum: 741cf5d431633765ef25ecdc940e4ffd2f7496f0eec7f2aac35ffd8a9cd7fcd548d9c6f4ba8b2dea4a1d154e5e78fe73a943b56d88abb2a6cfb7ed275baa1e4d
   languageName: node
   linkType: hard
 
