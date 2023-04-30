@@ -1,11 +1,12 @@
 import moment from "moment";
-import { ProcessControl } from "./ProcessControl.js";
-import { RotatingFileLogWriter } from "./RotatingFileLogWriter.js";
-import { getRootPath } from "./getRootPath.js";
-import * as logger from "./logger.js";
-
 import path from "path";
 import { fileURLToPath } from "url";
+
+import { ProcessControl } from "./ProcessControl.js";
+import { RotatingFileLogWriter } from "./RotatingFileLogWriter.js";
+import * as logger from "./logger.js";
+import { initEnv } from "../../infra/init/Env.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const CHILD_LOCATION = path.join(__dirname, "../../server.js");
@@ -33,12 +34,12 @@ const MAX_LOG_LIFETIME = moment.duration(30, "days").asMilliseconds();
  * out-of-order timestamps in the final log.
  */
 function main() {
+  const env = initEnv();
+
   const processControl = new ProcessControl(process);
   const child = processControl.spawnChild(CHILD_LOCATION);
 
-  const logsPath = process.env.LOG_DIR || path.join(getRootPath(), "logs");
-
-  const logWriter = new RotatingFileLogWriter(logsPath, MAX_LOG_LIFETIME);
+  const logWriter = new RotatingFileLogWriter(env.LOG_DIR, MAX_LOG_LIFETIME);
 
   logWriter.on("error", (error) => {
     logger.error("Error while writing logs:");

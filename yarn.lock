@@ -6010,6 +6010,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.0.3":
+  version: 16.0.3
+  resolution: "dotenv@npm:16.0.3"
+  checksum: abce82d99b45e2ebbd42625a78cadbfafe03072c15e6538b6a3a7ed204b6e091c0de929dd09231edc61f78afbdcd5b8a2f21b9e933e8ab27d75bee865a0e58c9
+  languageName: node
+  linkType: hard
+
 "drange@npm:^1.0.2":
   version: 1.1.1
   resolution: "drange@npm:1.1.1"
@@ -6586,6 +6593,7 @@ __metadata:
     css-loader: "npm:^6.7.3"
     css-minimizer-webpack-plugin: "npm:^5.0.0"
     csurf: "npm:^1.11.0"
+    dotenv: "npm:^16.0.3"
     envalid: "npm:^7.3.1"
     eslint: "npm:^8.38.0"
     eslint-config-prettier: "npm:^8.8.0"
