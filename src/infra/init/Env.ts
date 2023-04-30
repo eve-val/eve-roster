@@ -1,9 +1,26 @@
+import path from "path";
 import { bool, cleanEnv, makeValidator, str } from "envalid";
+import { getRootPath } from "../../bin/witness/getRootPath.js";
 
 let cachedEnv: Env | null = null;
 
 export function initEnv() {
   const env = cleanEnv(process.env, {
+    /**
+     * If set to "development", enables enhanced logging and debuggable
+     * behavior. Many development-focused flags lower in this file also require
+     * development mode in order to function.
+     */
+    NODE_ENV: str({
+      choices: ["production", "development", "test"],
+      default: "production",
+    }),
+
+    /**
+     * The directory to store runtime logs, both in production and development.
+     */
+    LOG_DIR: str({ default: path.join(getRootPath(), "logs") }),
+
     // Must be set manually in all environments
     COOKIE_SECRET: str(),
     SSO_CLIENT_ID: str(),

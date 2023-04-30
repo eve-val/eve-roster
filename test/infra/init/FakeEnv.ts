@@ -23,6 +23,8 @@ export function fakeEnvModule(props: Partial<Env> = {}) {
 }
 
 const DEFAULT_ENV: Env = {
+  NODE_ENV: "test",
+  LOG_DIR: "test_log_dir",
   COOKIE_SECRET: "test_cookie_secret",
   SSO_CLIENT_ID: "test_client_id",
   SSO_SECRET_KEY: "test_sso_secret_key",
