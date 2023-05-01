@@ -20,7 +20,7 @@ import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { getSession } from "../infra/express/session.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { fetchAuthInfo } from "../data-source/accessToken/jwt.js";
-import { getEnvLegacy } from "../infra/init/Env.js";
+import { getEnv } from "../infra/init/Env.js";
 import { generateSsoAuthToken } from "../data-source/accessToken/generateSsoAuthCode.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
@@ -288,7 +288,7 @@ async function fetchAccessTokens(authCode: string) {
     .then((response) => response.data);
 }
 
-const env = getEnvLegacy();
+const env = getEnv();
 const SSO_AUTH_CODE = generateSsoAuthToken(
   env.SSO_CLIENT_ID,
   env.SSO_SECRET_KEY

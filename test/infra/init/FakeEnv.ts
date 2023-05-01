@@ -12,7 +12,7 @@ export function fakeEnvModule(props: Partial<Env> = {}) {
 
   const fakeModule = {
     initEnv: () => fakeEnv,
-    getEnvLegacy: () => fakeEnv,
+    getEnv: () => fakeEnv,
     setEnv(props: Partial<Env>) {
       Object.assign(fakeEnv, props);
     },
