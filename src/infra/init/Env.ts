@@ -4,6 +4,17 @@ import { getRootPath } from "../../bin/witness/getRootPath.js";
 
 let cachedEnv: Env | null = null;
 
+/**
+ * Parses the process's environment variables and encapsulates them into an
+ * instance of [Env] that can be accessed via a call to [getEnv()].
+ *
+ * Because [getEnv()] can (and probably will) be accessed at import-time, it's
+ * important to run [initEnv()] _before_ most of the program's import statements
+ * have executed. This is generally achieved by setting up env (and other
+ * process-level things) in the root code file and only after that has been
+ * completely, dynamically-import the rest of the codebase via
+ * `await import("...")`.
+ */
 export function initEnv() {
   const env = cleanEnv(process.env, {
     /**
@@ -68,12 +79,9 @@ export function initEnv() {
 export type Env = ReturnType<typeof initEnv>;
 
 /**
- * A statically-available instance of Env, for use by legacy code that doesn't
- * support manual injection.
- *
- * @deprecated
+ * Call this method to access the env instance.
  */
-export function getEnvLegacy() {
+export function getEnv() {
   if (cachedEnv == null) {
     throw new Error(`Env hasn't been initialized yet`);
   }

@@ -6,7 +6,7 @@ import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary.js";
 import { parallelize } from "../../util/asyncUtil.js";
 import { canDesignateMain } from "../../domain/account/canDesignateMain.js";
 import { EVE_SSO_LOGIN_PARAMS } from "../../domain/sso/loginParams.js";
-import { getEnvLegacy } from "../../infra/init/Env.js";
+import { getEnv } from "../../infra/init/Env.js";
 
 export interface Output {
   accountId: number;
@@ -85,7 +85,7 @@ export default jsonEndpoint<Output>((req, res, db, account, privs) => {
         accountId: account.id,
         characters: characters,
         transfers: strippedTransfers,
-        loginParams: EVE_SSO_LOGIN_PARAMS.get(getEnvLegacy()),
+        loginParams: EVE_SSO_LOGIN_PARAMS.get(getEnv()),
         mainCharacter: mainCharacter,
         access: access,
       };

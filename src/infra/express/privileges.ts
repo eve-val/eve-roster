@@ -9,11 +9,11 @@ import {
 import { MissingPrivilegeError } from "../../error/MissingPrivilegeError.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
-import { getEnvLegacy } from "../init/Env.js";
+import { getEnv } from "../init/Env.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
-const debugGroups = checkDebugGroups(getEnvLegacy().DEBUG_GROUPS);
+const debugGroups = checkDebugGroups(getEnv().DEBUG_GROUPS);
 
 export function getPrivileges(db: Tnex, accountId: number) {
   let groups: string[];

@@ -10,10 +10,10 @@ import {
   TokenRefresher,
   AccessTokenUpdate,
 } from "./TokenRefresher.js";
-import { getEnvLegacy } from "../../infra/init/Env.js";
+import { getEnv } from "../../infra/init/Env.js";
 
 const TOKEN_EXPIRATION_FUDGE_MS = 1000; // 1 second
-const tokenRefresher = new TokenRefresher(getEnvLegacy());
+const tokenRefresher = new TokenRefresher(getEnv());
 
 /**
  * Retrieves an access token for a character. Throws an AccessTokenError if
