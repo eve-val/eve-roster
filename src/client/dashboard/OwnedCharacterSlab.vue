@@ -11,7 +11,7 @@
             :key="icon.key"
             class="status-icon"
             :inline="true"
-            gravity="center top"
+            gravity="top"
           >
             <template #default>
               <img class="status-icon-img" :src="icon.src" />

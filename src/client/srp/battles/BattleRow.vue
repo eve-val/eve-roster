@@ -42,7 +42,7 @@ May also contain triage UI if triageMode is enabled.
           :key="member.id"
           class="participant"
         >
-          <tool-tip gravity="center top">
+          <tool-tip gravity="top">
             <template #default>
               <a
                 class="killmail-link"

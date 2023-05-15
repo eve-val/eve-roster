@@ -37,6 +37,7 @@ import AppHeader from "../shared/AppHeader.vue";
 import DevLoadingSpinner from "./DevLoadingSpinner.vue";
 import DevOwnedCharacterSlab from "./DevOwnedCharacterSlab.vue";
 import DevTaskSlab from "./DevTaskSlab.vue";
+import DevToolTip from "./DevToolTip.vue";
 
 import { first } from "../../util/collections";
 
@@ -79,6 +80,11 @@ export default defineComponent({
           component: DevTaskSlab,
           label: "TaskSlab",
           path: "dev-task-slab",
+        },
+        {
+          component: DevToolTip,
+          label: "ToolTip",
+          path: "dev-tool-tip",
         },
       ],
     } as {

@@ -9,7 +9,7 @@
       />
       <tool-tip
         v-if="derivedState != 'spinning' && display == 'inline'"
-        :gravity="tooltipGravity || 'center top'"
+        :gravity="tooltipGravity || 'top'"
         style="vertical-align: text-bottom"
       >
         <template #default>

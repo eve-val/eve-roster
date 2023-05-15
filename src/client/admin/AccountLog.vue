@@ -30,7 +30,7 @@
             {{ row.relatedCharacterName }}
           </div>
           <div class="data">
-            <tool-tip v-if="row.data" gravity="right bottom" :inline="false">
+            <tool-tip v-if="row.data" gravity="bottom end">
               <template #default>
                 <div class="cell">{ ... }</div>
               </template>
