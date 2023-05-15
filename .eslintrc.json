@@ -30,7 +30,8 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    // Covered by @typescript-eslint/no-unused-vars
+    "no-unused-vars": "off",
     "no-redeclare": "off",
     "no-dupe-class-members": "off",
     // @typescript-eslint recommends disabling this rule as it can't detect
