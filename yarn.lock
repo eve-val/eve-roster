@@ -2076,7 +2076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:1.11.0, @opentelemetry/semantic-conventions@npm:^1.11.0":
+"@opentelemetry/semantic-conventions@npm:1.11.0":
   version: 1.11.0
   resolution: "@opentelemetry/semantic-conventions@npm:1.11.0"
   checksum: 07d642534bb7a5c2825f070c2fe5f3cd21827fefef2f3f7270c1bfd3aa76b0369fcebc0b0cf32245bf5e2b8dd36614e9351cf85daad5a43543a1e640127eaa4e
@@ -2101,6 +2101,13 @@ __metadata:
   version: 1.7.0
   resolution: "@opentelemetry/semantic-conventions@npm:1.7.0"
   checksum: 4731108b0a7b2c9be5ba3253fdfd20ad800fa2f277968d54de123fef2bf922eeb892b65e791bcbb9dff7ba0ecc894ac19e83271ee3938eb3ff40785f2a519502
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.13.0"
+  checksum: 35de7fb8df403e45d70753dfa58afe99604d864c9c87b05e134f5df5dde362ac19b18832efe94f4439f61c0fdc2369c87ec1d661a65baea69973c94273eb04df
   languageName: node
   linkType: hard
 
@@ -6549,7 +6556,7 @@ __metadata:
     "@opentelemetry/instrumentation": "npm:^0.38.0"
     "@opentelemetry/resources": "npm:^1.11.0"
     "@opentelemetry/sdk-node": "npm:^0.37.0"
-    "@opentelemetry/semantic-conventions": "npm:^1.11.0"
+    "@opentelemetry/semantic-conventions": "npm:^1.13.0"
     "@sentry/browser": "npm:^7.47.0"
     "@sentry/node": "npm:^7.47.0"
     "@sentry/tracing": "npm:^7.47.0"
