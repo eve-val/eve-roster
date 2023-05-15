@@ -2,7 +2,7 @@
   <div class="_character-row">
     <div class="horiz-aligner">
       <div class="alert col" :style="cellStyle(0)">
-        <tool-tip v-if="alertMessage != null" gravity="right" :inline="false">
+        <tool-tip v-if="alertMessage != null" gravity="top start">
           <template #default>
             <img class="alert-icon" :src="alertIconSrc" />
           </template>
@@ -26,7 +26,7 @@
             {{ displayVals[1] }}
           </template>
         </router-link>
-        <tool-tip v-if="!inPrimaryCorp" gravity="right" :inline="true">
+        <tool-tip v-if="!inPrimaryCorp" gravity="top" inline>
           <template #default>
             <eve-image
               :id="character.corporationId"
@@ -58,15 +58,13 @@
         <template v-if="!tooltipMessage(i + 3)">
           <span class="col-text">{{ dashDefault(dv) }}</span>
         </template>
-        <tool-tip v-else gravity="right" :inline="true">
-          <template #default>
-            <span
-              class="col-text"
-              :style="{ 'text-align': cellAlignment(i + 3) }"
-            >
-              {{ dashDefault(dv) }}
-            </span>
-          </template>
+        <tool-tip v-else gravity="top" inline>
+          <span
+            class="col-text"
+            :style="{ 'text-align': cellAlignment(i + 3) }"
+          >
+            {{ dashDefault(dv) }}
+          </span>
           <template #message>
             <span>{{ tooltipMessage(i + 3) }}</span>
           </template>
@@ -80,7 +78,6 @@
 import eveConstants from "../shared/eveConstants";
 import filter from "./filter";
 import { formatNumber } from "../shared/numberFormat";
-import { CssStyleObject } from "../shared/types";
 
 import EveImage from "../shared/EveImage.vue";
 import ToolTip from "../shared/ToolTip.vue";
@@ -97,7 +94,7 @@ const MSG_ICONS = [null, infoIcon, warningIcon, errorIcon] as const;
 
 type Value = string | number | boolean | null | undefined;
 
-import { defineComponent, PropType } from "vue";
+import { CSSProperties, defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,
@@ -182,7 +179,7 @@ export default defineComponent({
   },
 
   methods: {
-    cellStyle: function (idx: number): CssStyleObject {
+    cellStyle: function (idx: number): CSSProperties {
       let col = this.columns[idx];
       let paddingLeft = 0;
       let width = col.width;
@@ -266,9 +263,9 @@ export default defineComponent({
       }
     },
 
-    cellAlignment(colIdx: number): string {
+    cellAlignment(colIdx: number) {
       let col = this.columns[colIdx];
-      let align = "left";
+      let align: "left" | "center" | "right" = "left";
       if (col.key == "alertLevel") {
         align = "center";
       } else if (col.numeric) {
@@ -318,7 +315,6 @@ function altsLabel(altsCount: number): string {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  display: block;
 }
 
 .alert {
