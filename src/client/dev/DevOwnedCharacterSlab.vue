@@ -126,8 +126,8 @@
 <script lang="ts">
 import OwnedCharacterSlab from "../dashboard/OwnedCharacterSlab.vue";
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
-import { CharacterJson } from "../../route/api/dashboard";
-import { SkillQueueSummary } from "../../domain/skills/skillQueueSummary";
+import { CharacterJson } from "../../shared/route/api/dashboard_GET";
+import { SkillQueueSummary } from "../../shared/types/SkillQueueSummary";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {

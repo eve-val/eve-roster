@@ -102,9 +102,9 @@ interface Icon {
 
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
 
-import { SimpleMap } from "../../util/simpleTypes";
-import { CharacterJson } from "../../route/api/dashboard";
-import { Skill, Queue } from "../../domain/skills/skillQueueSummary";
+import { SimpleMap } from "../../shared/util/simpleTypes";
+import { CharacterJson } from "../../shared/route/api/dashboard_GET";
+import { Skill, Queue } from "../../shared/types/SkillQueueSummary";
 
 interface MenuItem {
   label: string;

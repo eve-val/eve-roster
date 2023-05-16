@@ -67,9 +67,9 @@ import MemberCorpDetail from "./overview/MemberCorpDetail.vue";
 import { Identity } from "../home";
 
 import {
-  Output,
+  Admin_Roster_SyncStatus_GET,
   CorpSection,
-} from "../../route/api/admin/roster/syncStatus_GET";
+} from "../../shared/route/api/admin/roster/syncStatus_GET";
 import { AxiosResponse } from "axios";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -102,7 +102,7 @@ export default defineComponent({
   mounted() {
     const promise = ajaxer.getAdminRosterSyncStatus();
     this.promise = promise;
-    promise.then((response: AxiosResponse<Output>) => {
+    promise.then((response: AxiosResponse<Admin_Roster_SyncStatus_GET>) => {
       this.addNames(response.data.names);
       const groups = _.groupBy(response.data.corporations, "type");
       this.primaryCorps = groups["full"];

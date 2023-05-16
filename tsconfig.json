@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Write compiled files to this directory
-    "outDir": "./out/server",
+    "outDir": "./out",
     "incremental": true,
 
     "target": "es2022",

@@ -31,7 +31,7 @@ import AllBorrowedShips from "./ships/AllBorrowedShips.vue";
 
 import { configureCsrfInterceptor } from "./shared/ajaxer";
 
-import { SimpleMap } from "../util/simpleTypes.js";
+import { SimpleMap } from "../shared/util/simpleTypes.js";
 
 // Anything added here should also be in server.js:FRONTEND_ROUTES
 // TODO(aiiane): make server.js just read it directly from here
