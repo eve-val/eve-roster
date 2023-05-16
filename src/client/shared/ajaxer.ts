@@ -1,7 +1,7 @@
 import { default as axios, AxiosResponse } from "axios";
-import { Output as syncStatus_Output } from "../../route/api/admin/roster/syncStatus_GET.js";
-import { Output as dashboard_Output } from "../../route/api/dashboard.js";
-import { Output as character_Output } from "../../route/api/character.js";
+import { Admin_Roster_SyncStatus_GET } from "../../shared/route/api/admin/roster/syncStatus_GET.js";
+import { Dashboard_GET } from "../../shared/route/api/dashboard_GET.js";
+import { Character_GET } from "../../shared/route/api/character_GET.js";
 import {
   Triage,
   Battles,
@@ -11,8 +11,8 @@ import {
 } from "../srp/types.js";
 import { Task, Job, Log, Citadel } from "../admin/types.js";
 import { Account } from "../roster/types.js";
-import { CharacterDescription } from "../../route/api/account/characters_GET.js";
-import { Payload as skills_Payload } from "../../route/api/character/skills.js";
+import { Account_Characters_GET } from "../../shared/route/api/account/characters_GET.js";
+import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET.js";
 import { Ship } from "../ships/ships.js";
 
 export function configureCsrfInterceptor(token: string) {
@@ -28,7 +28,7 @@ export function configureCsrfInterceptor(token: string) {
 
 export default {
   getDashboard() {
-    return axios.get<dashboard_Output>("/api/dashboard");
+    return axios.get<Dashboard_GET>("/api/dashboard");
   },
 
   getCorporation(id: number) {
@@ -54,7 +54,7 @@ export default {
   },
 
   getAccountCharacters(accountId: number) {
-    return axios.get<CharacterDescription[]>(
+    return axios.get<Account_Characters_GET>(
       `/api/account/${accountId}/characters`
     );
   },
@@ -84,7 +84,7 @@ export default {
   },
 
   getCharacter(id: number) {
-    return axios.get<character_Output>("/api/character/" + id);
+    return axios.get<Character_GET>("/api/character/" + id);
   },
 
   getCitadels() {
@@ -116,7 +116,7 @@ export default {
   },
 
   getSkills(id: number) {
-    return axios.get<skills_Payload>("/api/character/" + id + "/skills");
+    return axios.get<Character_Skills_GET>("/api/character/" + id + "/skills");
   },
 
   getSkillQueue(id: number) {
@@ -127,8 +127,8 @@ export default {
     return axios.get<any>("/api/dashboard/queueSummary");
   },
 
-  getAdminRosterSyncStatus(): Promise<AxiosResponse<syncStatus_Output>> {
-    return axios.get<syncStatus_Output>("/api/admin/roster/syncStatus");
+  getAdminRosterSyncStatus() {
+    return axios.get<Admin_Roster_SyncStatus_GET>("/api/admin/roster/syncStatus");
   },
 
   getAdminAccountLog() {

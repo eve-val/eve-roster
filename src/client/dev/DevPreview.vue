@@ -39,7 +39,7 @@ import DevOwnedCharacterSlab from "./DevOwnedCharacterSlab.vue";
 import DevTaskSlab from "./DevTaskSlab.vue";
 import DevToolTip from "./DevToolTip.vue";
 
-import { first } from "../../util/collections";
+import { first } from "../../shared/util/collections";
 
 import { Identity } from "../home";
 

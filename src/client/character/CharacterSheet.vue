@@ -135,15 +135,15 @@ import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import { formatNumber } from "../shared/numberFormat";
-import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
-import { first } from "../../util/collections";
+import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
+import { first } from "../../shared/util/collections";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
 import { Skill } from "./skills";
 
 import { Identity } from "../home";
-import { Character, Account } from "../../route/api/character";
+import { Character, Account } from "../../shared/route/api/character_GET";
 
 import { defineComponent, PropType } from "vue";
 import { useRoute } from "vue-router";

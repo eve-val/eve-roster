@@ -57,9 +57,9 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
 import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
-import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
+import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
 
-import { Payload } from "../../route/api/character/skills";
+import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -119,7 +119,7 @@ export default defineComponent({
       }
     },
 
-    processData(data: Payload) {
+    processData(data: Character_Skills_GET) {
       let skillMap: SimpleNumMap<Skill> = {};
       for (let skill of <Skill[]>data.skills) {
         skillMap[skill.id] = skill;

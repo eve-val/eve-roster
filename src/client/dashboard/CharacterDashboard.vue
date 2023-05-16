@@ -62,8 +62,8 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
-import { Identity } from "../home";
-import { CharacterJson } from "../../route/api/dashboard";
+import { Identity } from "../home.js";
+import { CharacterJson } from "../../shared/route/api/dashboard_GET.js";
 
 import { defineComponent, PropType, inject } from "vue";
 export default defineComponent({
