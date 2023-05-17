@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    // Export Node-style modules since this is running on Node
+    "module": "node16",
+    // We're running on Node, so use this strategy.
+    "moduleResolution": "node16",
+
+    // Necessary in order to treat each subsection as a typescript project
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Various strictness guarantees when compiling
+    "strict": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Recommended by github.com/tsconfig
+    "skipLibCheck": true,
+
+    // According to the TS team, this should always be set to true; the default
+    // is false for backwards compatibility.
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "allowJs": true /* Allow javascript files to be compiled. */,
+    "sourceMap": true /* Generates corresponding '.map' file. */
+  },
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.common.json",
+
+  "compilerOptions": {
+    "outDir": "../../out/client",
+    "incremental": true,
+  },
+
+  "references": [
+    { "path": "../shared" }
+  ],
+}
