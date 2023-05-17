@@ -1,33 +1,13 @@
 {
-  "compilerOptions": {
-    // Write compiled files to this directory
-    "outDir": "./out",
-    "incremental": true,
+  "extends": "./tsconfig.common.json",
 
-    "target": "es2022",
-    // Export Node-style modules since this is running on Node
-    "module": "node16",
-    // We're running on Node, so use this strategy.
-    "moduleResolution": "node16",
+  // This tsconfig exists solely to provide nice code completion for IDEs.
+  // See the tsconfigs in /src/server etc for the real versions.
 
-    // Various strictness guarantees when compiling
-    "strict": true,
-    "noImplicitReturns": true,
-    "alwaysStrict": true,
-    "forceConsistentCasingInFileNames": true,
-
-    // According to the TS team, this should always be set to true; the default
-    // is false for backwards compatibility.
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-
-    "lib": [
-      "es2020",
-      "dom"
-    ] /* Specify library files to be included in the compilation:  */,
-    "allowJs": true /* Allow javascript files to be compiled. */,
-    "sourceMap": true /* Generates corresponding '.map' file. */
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "static", "out/**/*", "src/client"]
+  "files": [],
+  "references": [
+    { "path": "./src/server" },
+    { "path": "./src/client" },
+    { "path": "./src/shared" },
+  ]
 }

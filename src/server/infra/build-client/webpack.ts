@@ -55,7 +55,8 @@ export function commonConfig(
           loader: "ts-loader",
           options: {
             appendTsSuffixTo: [/\.vue$/],
-            configFile: path.join(paths.root, "tsconfig.client.json"),
+            configFile: path.join(paths.clientSrc, "tsconfig.json"),
+            projectReferences: true,
           },
           exclude: /node_modules/,
         },
