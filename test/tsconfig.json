@@ -2,12 +2,12 @@
   "extends": "../tsconfig.common.json",
 
   "compilerOptions": {
-    "outDir": "../out/test",
+    "outDir": "../out/test"
   },
 
   "references": [
     { "path": "../src/server" },
     { "path": "../src/client" },
     { "path": "../src/shared" }
-  ],
+  ]
 }

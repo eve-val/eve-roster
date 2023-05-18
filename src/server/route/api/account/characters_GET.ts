@@ -5,17 +5,22 @@ import { AccountPrivileges } from "../../../infra/express/privileges.js";
 import { idParam } from "../../../util/express/paramVerifier.js";
 import { UnauthorizedClientError } from "../../../error/UnauthorizedClientError.js";
 import { dao } from "../../../db/dao.js";
-import { Account_Characters_GET, CharacterDescription } from "../../../../shared/route/api/account/characters_GET.js";
+import {
+  Account_Characters_GET,
+  CharacterDescription,
+} from "../../../../shared/route/api/account/characters_GET.js";
 
 /**
  * Returns a list of all characters owned by a particular account. Currently,
  * accounts can only ask about their own characters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Account_Characters_GET> => {
-  const targetAccountId = idParam(req, "id");
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Account_Characters_GET> => {
+    const targetAccountId = idParam(req, "id");
 
-  return handleEndpoint(db, account, privs, targetAccountId);
-});
+    return handleEndpoint(db, account, privs, targetAccountId);
+  }
+);
 
 async function handleEndpoint(
   db: Tnex,
