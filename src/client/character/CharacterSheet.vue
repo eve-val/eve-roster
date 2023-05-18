@@ -24,7 +24,7 @@
           />
           <div class="factoid-title">Corporation</div>
           <div class="factoid">
-            {{ corporationName || "-" }}
+            {{ name(coreData.character.corporationId) }}
           </div>
 
           <div class="factoid-title">Total SP</div>
@@ -151,6 +151,8 @@ import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import { NameCacheMixin } from "../shared/nameCache";
+import { RouteReader } from "../shared/RouteReader";
 import { formatNumber } from "../shared/numberFormat";
 import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
 import { first } from "../../shared/util/collections";
@@ -163,7 +165,6 @@ import { Identity } from "../home";
 import { Character, Account } from "../../shared/route/api/character_GET";
 
 import { defineComponent, PropType } from "vue";
-import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -175,6 +176,8 @@ export default defineComponent({
     SkillSheet,
   },
 
+  mixins: [NameCacheMixin, RouteReader],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
   },
@@ -182,7 +185,6 @@ export default defineComponent({
   data() {
     return {
       coreData: null,
-      corporationName: null,
       skillsMap: null,
       queue: null,
       promise: null,
@@ -194,7 +196,6 @@ export default defineComponent({
         timezones: string[] | undefined;
         citadels: string[] | undefined;
       } | null;
-      corporationName: string | null;
       skillsMap: SimpleNumMap<Skill> | null;
       queue: { id: number; targetLevel: number }[] | null;
       promise: Promise<any> | null;
@@ -203,7 +204,7 @@ export default defineComponent({
 
   computed: {
     characterId: function (): number {
-      return parseInt(first(useRoute().params.id));
+      return parseInt(first(this.route().params.id));
     },
 
     character(): Character | null {
@@ -260,26 +261,12 @@ export default defineComponent({
 
   watch: {
     characterId(_value: number) {
+      console.log("CharacterId changed to", _value);
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.coreData = null;
-      this.corporationName = null;
 
       this.fetchData();
-    },
-
-    character(value: Character | null) {
-      if (value && value.corporationId) {
-        ajaxer
-          .getCorporation(value.corporationId)
-          .then((response) => {
-            this.corporationName = response.data.name;
-          })
-          .catch((e) => {
-            // TODO
-            console.log(e);
-          });
-      }
     },
   },
 
@@ -297,19 +284,13 @@ export default defineComponent({
 
       const response = await promise;
 
-      const { character, account, access, citadels, timezones } = response.data;
+      const { character, account, access, citadels, timezones, names } =
+        response.data;
       if (citadels) {
         citadels.sort((a: string, b: string) => a.localeCompare(b));
       }
       this.coreData = { character, account, access, citadels, timezones };
-    },
-
-    async fetchCorporationName() {
-      const corpId = this.character?.corporationId;
-      if (corpId != null) {
-        const response = await ajaxer.getCorporation(corpId);
-        this.corporationName = response.data.name;
-      }
+      this.addNames(names);
     },
 
     formatSp() {

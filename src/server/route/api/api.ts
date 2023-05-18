@@ -50,7 +50,6 @@ import statistics_skills from "./statistics/skills.js";
 
 import roster from "./roster.js";
 import citadels from "./citadels.js";
-import corporation from "./corporation.js";
 
 const router = express.Router();
 
@@ -107,6 +106,5 @@ router.get("/statistics/skills", statistics_skills);
 
 router.get("/roster", roster);
 router.get("/citadels", citadels);
-router.get("/corporation/:id", corporation);
 
 export default router;
