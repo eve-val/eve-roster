@@ -9,10 +9,8 @@
 
     // This only exists to support the weird type hack in /server/util/stream
     // where we add generic support for streams for...some goddamn reason :(
-    "allowJs": true,
+    "allowJs": true
   },
 
-  "references": [
-    { "path": "../shared" }
-  ],
+  "references": [{ "path": "../shared" }]
 }

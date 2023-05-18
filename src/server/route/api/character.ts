@@ -13,89 +13,91 @@ import { Character_GET } from "../../../shared/route/api/character_GET.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
-export default jsonEndpoint((req, res, db, account, privs): Promise<Character_GET> => {
-  const characterId = idParam(req, "id");
-  let accountId: number | null;
-  let isOwned = false;
-  let payload: Character_GET;
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Character_GET> => {
+    const characterId = idParam(req, "id");
+    let accountId: number | null;
+    let isOwned = false;
+    let payload: Character_GET;
 
-  // Fetch character and account data
-  return Promise.resolve()
-    .then(() => {
-      return dao.character.getDetailedCharacterStats(db, characterId);
-    })
-    .then((row) => {
-      if (row == null) {
-        throw new NotFoundError();
-      }
-      accountId = row.account_id;
-      isOwned = account.id == row.account_id;
-
-      payload = {
-        character: {
-          name: row.character_name,
-          corporationId: row.character_corporationId,
-          titles: row.character_titles || [],
-          totalSp: row.sp_total || 0,
-        },
-        account: {
-          id: row.account_id,
-          groups: [],
-          main: undefined,
-          alts: undefined,
-        },
-        access: privs.dumpForFrontend(
-          [
-            "memberTimezone",
-            "memberHousing",
-            "characterSkills",
-            "characterSkillQueue",
-          ],
-          isOwned
-        ),
-      };
-
-      if (privs.canRead("memberTimezone", isOwned)) {
-        payload.account.activeTimezone = row.account_activeTimezone;
-      }
-
-      if (privs.canRead("memberHousing", isOwned)) {
-        payload.account.citadelName = row.citadel_name;
-      }
-
-      if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {
-        if (row.account_mainCharacter == characterId) {
-          return injectAlts(db, row.account_id, characterId, privs, payload);
-        } else {
-          return injectMain(db, row.account_id, payload);
+    // Fetch character and account data
+    return Promise.resolve()
+      .then(() => {
+        return dao.character.getDetailedCharacterStats(db, characterId);
+      })
+      .then((row) => {
+        if (row == null) {
+          throw new NotFoundError();
         }
-      }
+        accountId = row.account_id;
+        isOwned = account.id == row.account_id;
 
-      return null;
-    })
-    .then(() => {
-      if (privs.canWrite("memberTimezone", isOwned)) {
-        payload.timezones = TIMEZONE_LABELS;
-      }
-      if (privs.canWrite("memberHousing", isOwned)) {
-        return dao.citadel.getAll(db, ["citadel_name"]).then((rows) => {
-          payload.citadels = _.pluck(rows, "citadel_name");
-        });
-      }
-      return null;
-    })
-    .then(() => {
-      if (accountId != null && privs.canRead("memberGroups")) {
-        return dao.group.getAccountGroups(db, accountId).then((groups) => {
-          payload.account.groups = groups;
-        });
-      }
-      return null;
-    })
-    .then(() => {
-      return payload;
-    });
-});
+        payload = {
+          character: {
+            name: row.character_name,
+            corporationId: row.character_corporationId,
+            titles: row.character_titles || [],
+            totalSp: row.sp_total || 0,
+          },
+          account: {
+            id: row.account_id,
+            groups: [],
+            main: undefined,
+            alts: undefined,
+          },
+          access: privs.dumpForFrontend(
+            [
+              "memberTimezone",
+              "memberHousing",
+              "characterSkills",
+              "characterSkillQueue",
+            ],
+            isOwned
+          ),
+        };
+
+        if (privs.canRead("memberTimezone", isOwned)) {
+          payload.account.activeTimezone = row.account_activeTimezone;
+        }
+
+        if (privs.canRead("memberHousing", isOwned)) {
+          payload.account.citadelName = row.citadel_name;
+        }
+
+        if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {
+          if (row.account_mainCharacter == characterId) {
+            return injectAlts(db, row.account_id, characterId, privs, payload);
+          } else {
+            return injectMain(db, row.account_id, payload);
+          }
+        }
+
+        return null;
+      })
+      .then(() => {
+        if (privs.canWrite("memberTimezone", isOwned)) {
+          payload.timezones = TIMEZONE_LABELS;
+        }
+        if (privs.canWrite("memberHousing", isOwned)) {
+          return dao.citadel.getAll(db, ["citadel_name"]).then((rows) => {
+            payload.citadels = _.pluck(rows, "citadel_name");
+          });
+        }
+        return null;
+      })
+      .then(() => {
+        if (accountId != null && privs.canRead("memberGroups")) {
+          return dao.group.getAccountGroups(db, accountId).then((groups) => {
+            payload.account.groups = groups;
+          });
+        }
+        return null;
+      })
+      .then(() => {
+        return payload;
+      });
+  }
+);
 
 function injectAlts(
   db: Tnex,

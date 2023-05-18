@@ -7,15 +7,20 @@ import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
 import { AccountPrivileges } from "../../../../infra/express/privileges.js";
 import { fetchEveNames } from "../../../../data-source/esi/names.js";
 import { hasRosterScopes } from "../../../../domain/roster/hasRosterScopes.js";
-import { Admin_Roster_SyncStatus_GET, CorpSection } from "../../../../../shared/route/api/admin/roster/syncStatus_GET.js";
+import {
+  Admin_Roster_SyncStatus_GET,
+  CorpSection,
+} from "../../../../../shared/route/api/admin/roster/syncStatus_GET.js";
 
 /**
  * For each member corporation, returns the names of known directors and whether
  * we have memberlist-capable access tokens for those characters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Admin_Roster_SyncStatus_GET> => {
-  return handleEndpoint(db, account, privs);
-});
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Admin_Roster_SyncStatus_GET> => {
+    return handleEndpoint(db, account, privs);
+  }
+);
 
 async function handleEndpoint(
   db: Tnex,

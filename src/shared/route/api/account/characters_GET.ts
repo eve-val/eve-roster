@@ -1,4 +1,3 @@
-
 export type Account_Characters_GET = CharacterDescription[];
 
 export interface CharacterDescription {

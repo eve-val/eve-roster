@@ -8,6 +8,6 @@
   "references": [
     { "path": "./src/server" },
     { "path": "./src/client" },
-    { "path": "./src/shared" },
+    { "path": "./src/shared" }
   ]
 }

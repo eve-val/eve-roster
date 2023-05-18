@@ -128,7 +128,9 @@ export default {
   },
 
   getAdminRosterSyncStatus() {
-    return axios.get<Admin_Roster_SyncStatus_GET>("/api/admin/roster/syncStatus");
+    return axios.get<Admin_Roster_SyncStatus_GET>(
+      "/api/admin/roster/syncStatus"
+    );
   },
 
   getAdminAccountLog() {

@@ -9,7 +9,5 @@
     "moduleResolution": "node"
   },
 
-  "references": [
-    { "path": "../shared" }
-  ],
+  "references": [{ "path": "../shared" }]
 }

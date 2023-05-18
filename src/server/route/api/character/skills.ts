@@ -16,7 +16,11 @@ import {
 } from "../../../error/AccessTokenError.js";
 import * as time from "../../../util/time.js";
 import { defaultSkillName } from "../../../domain/skills/defaultSkillName.js";
-import { Character_Skills_GET, CompletedQueueEntryJson, QueueEntryJson } from "../../../../shared/route/api/character/skills_GET.js";
+import {
+  Character_Skills_GET,
+  CompletedQueueEntryJson,
+  QueueEntryJson,
+} from "../../../../shared/route/api/character/skills_GET.js";
 
 export default jsonEndpoint(function (
   req,

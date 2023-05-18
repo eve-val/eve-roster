@@ -5,6 +5,6 @@
     "outDir": "../../out/shared",
 
     // Don't include DOM library
-    "lib": ["ES2022"],
-  },
+    "lib": ["ES2022"]
+  }
 }

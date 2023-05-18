@@ -2,7 +2,11 @@ import moment from "moment";
 
 import { Tnex } from "../../db/tnex/index.js";
 import { dao } from "../../db/dao.js";
-import { SimpleNumMap, nil, AsyncReturnType } from "../../../shared/util/simpleTypes.js";
+import {
+  SimpleNumMap,
+  nil,
+  AsyncReturnType,
+} from "../../../shared/util/simpleTypes.js";
 import { SrpLossJson } from "../srp/SrpLossJson.js";
 import { Participant } from "./BattleData.js";
 import { arrayToMap, addAll } from "../../../shared/util/collections.js";
