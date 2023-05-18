@@ -79,7 +79,7 @@ export default defineComponent({
       skillGroups: null,
       promise: null,
     } as {
-      queue: null | { entries: QueueItem[] };
+      queue: null | Character_Skills_GET["queue"];
       skillGroups: null | SkillGroup[];
       promise: Promise<any> | null;
     };
@@ -129,8 +129,18 @@ export default defineComponent({
 
       if (data.queue != undefined) {
         this.queue = data.queue;
-        for (let qe of this.queue.entries) {
+        for (let qe of <QueueItem[]>this.queue.entries) {
           let skill = skillMap[qe.id];
+
+          if (skill == undefined) {
+            skill = {
+              id: 0,
+              group: 0,
+              level: 0,
+              name: "Unknown Skill",
+              sp: 0,
+            };
+          }
           skill.queuedLevel = qe.targetLevel;
           qe.skill = skill;
         }
