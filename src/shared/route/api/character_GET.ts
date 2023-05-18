@@ -18,8 +18,8 @@ export interface Character {
 export interface Account {
   id: number | null;
   groups: string[];
-  activeTimezone?: string | null;
-  citadelName?: string | null;
+  activeTimezone?: string;
+  citadelName?: string;
   main?: CharacterRef;
   alts?: CharacterRef[];
 }

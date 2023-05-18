@@ -22,35 +22,40 @@
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-import { defineComponent } from "vue";
+import { PropType, defineComponent } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
   },
 
   props: {
-    options: { type: Array, required: true },
+    options: { type: Array as PropType<Option[]>, required: true },
     initialValue: { type: String, required: false, default: "" },
-    submitHandler: { type: Function, required: true },
+    submitHandler: {
+      type: Function as PropType<(value: string) => Promise<any>>,
+      required: true,
+    },
   },
 
   data() {
     return {
       selectedValue: this.initialValue,
-      promise: null,
-    } as {
-      selectedValue: string;
-      promise: Promise<any> | null;
+      promise: null as Promise<any> | null,
     };
   },
 
   watch: {
     selectedValue: function (value) {
-      const promise = this.submitHandler(value || null);
+      const promise = this.submitHandler(value);
       this.promise = promise;
     },
   },
 });
+
+export interface Option {
+  label: string;
+  value: string;
+}
 </script>
 
 <style scoped>
