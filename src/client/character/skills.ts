@@ -46,6 +46,7 @@ export interface Skill extends api.Skill {
   queuedLevel?: number;
 }
 export interface SkillGroup {
+  id: string;
   name: string;
   position: number;
   skills: Skill[];
@@ -81,6 +82,7 @@ export function groupifySkills(skills: Skill[]): SkillGroup[] {
     }
 
     skillGroups.push({
+      id: groupId,
       name: groupDescriptor.name,
       position: groupDescriptor.position,
       skills: skills,
