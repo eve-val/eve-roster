@@ -34,7 +34,7 @@
           <span
             v-if="character.skillQueue.queueStatus == 'active'"
             class="training-remaining"
-            >{{ skillInTraining.timeRemaining }}</span
+            >{{ skillInTraining?.timeRemaining }}</span
           >
         </div>
         <div class="queue-summary">
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="menuItems.length > 0" class="menu">
-        <div class="menu-arrow" @mousedown="menu.toggle()" />
+        <div class="menu-arrow" @mousedown="menu?.toggle()" />
         <drop-menu
           ref="menu"
           class="menu-body"
@@ -101,9 +101,10 @@ interface Icon {
 }
 
 import { CORP_DOOMHEIM } from "../../shared/eveConstants";
-
-import { SimpleMap } from "../../shared/util/simpleTypes";
-import { CharacterJson } from "../../shared/route/api/dashboard_GET";
+import {
+  CharacterJson,
+  Dashboard_GET,
+} from "../../shared/route/api/dashboard_GET";
 import { Skill, Queue } from "../../shared/types/SkillQueueSummary";
 
 interface MenuItem {
@@ -127,7 +128,10 @@ export default defineComponent({
     isMain: { type: Boolean, required: true },
     highlightMain: { type: Boolean, required: true },
     loginParams: { type: String, required: true },
-    access: { type: Object as PropType<SimpleMap<number>>, required: true },
+    access: {
+      type: Object as PropType<Dashboard_GET["access"]>,
+      required: true,
+    },
   },
 
   emits: ["requireRefresh"],
@@ -273,11 +277,11 @@ export default defineComponent({
 
   methods: {
     onMouseOut() {
-      this.menu?.value?.hide();
+      this.menu?.hide();
     },
 
     onMenuItemClick(menuItem: MenuItem) {
-      this.menu?.value?.hide();
+      this.menu?.hide();
       switch (menuItem.tag) {
         case "designate-main":
           this.designateAsMain();

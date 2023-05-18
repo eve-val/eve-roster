@@ -10,13 +10,13 @@
           default-state="hidden"
         />
       </div>
-      <div class="characters-container">
+      <div v-if="coreData" class="characters-container">
         <pending-transfer-slab
           v-for="transfer in transfers"
           :key="transfer.character"
           class="slab"
           :character-id="transfer.character"
-          :account-id="accountId"
+          :account-id="coreData.accountId"
           :name="transfer.name"
           @require-refresh="onRequireRefresh"
         />
@@ -24,15 +24,15 @@
           v-for="character in characters"
           :key="character.id"
           class="slab"
-          :account-id="accountId"
+          :account-id="coreData.accountId"
           :character="character"
-          :login-params="loginParams"
-          :is-main="character.id == mainCharacter"
+          :login-params="coreData.loginParams"
+          :is-main="character.id == coreData.mainCharacter"
           :highlight-main="characters.length > 1"
-          :access="access"
+          :access="coreData.access"
           @require-refresh="onRequireRefresh"
         />
-        <div v-if="loginParams" class="add-character">
+        <div class="add-character">
           <a
             class="add-character-link"
             :href="
@@ -40,7 +40,7 @@
               '?state=addCharacter.' +
               nonce +
               '&' +
-              loginParams
+              coreData.loginParams
             "
             >＋ Add a character</a
           >
@@ -63,7 +63,10 @@ import OwnedCharacterSlab from "./OwnedCharacterSlab.vue";
 import PendingTransferSlab from "./PendingTransferSlab.vue";
 
 import { Identity } from "../home.js";
-import { CharacterJson } from "../../shared/route/api/dashboard_GET.js";
+import {
+  CharacterJson,
+  Dashboard_GET,
+} from "../../shared/route/api/dashboard_GET.js";
 
 import { defineComponent, PropType, inject } from "vue";
 export default defineComponent({
@@ -85,20 +88,19 @@ export default defineComponent({
 
   data() {
     return {
-      accountId: null,
+      coreData: null,
       characters: [],
       transfers: [],
-      loginParams: null,
-      mainCharacter: null,
-      access: null,
       promise: null,
     } as {
-      accountId: null | number;
+      coreData: {
+        accountId: number;
+        loginParams: string;
+        mainCharacter: number;
+        access: Dashboard_GET["access"];
+      } | null;
       characters: CharacterJson[];
       transfers: { character: number; name: string }[];
-      loginParams: string | null;
-      mainCharacter: number | null;
-      access: { designateMain: number; isMember: boolean } | null;
       promise: Promise<AxiosResponse> | null;
     };
   },
@@ -108,43 +110,38 @@ export default defineComponent({
   },
 
   methods: {
-    fetchData() {
+    async fetchData() {
+      this.coreData = null;
       this.characters = [];
       this.transfers = [];
-      this.loginParams = null;
-      this.mainCharacter = null;
-      this.access = null;
 
-      const promise = ajaxer.getDashboard();
-      this.promise = promise;
-      promise
-        .then((response) => {
-          this.accountId = response.data.accountId;
-          this.characters = response.data.characters;
-          this.transfers = response.data.transfers;
-          this.loginParams = response.data.loginParams;
-          this.mainCharacter = response.data.mainCharacter;
-          this.access = response.data.access;
+      const dashboardPromise = ajaxer.getDashboard();
+      this.promise = dashboardPromise;
 
-          this.sortCharacters();
+      const dashboardData = (await dashboardPromise).data;
+      this.coreData = {
+        accountId: dashboardData.accountId,
+        loginParams: dashboardData.loginParams,
+        mainCharacter: dashboardData.mainCharacter,
+        access: dashboardData.access,
+      };
+      this.characters = dashboardData.characters;
+      this.transfers = dashboardData.transfers;
+      this.sortCharacters();
 
-          const promise = ajaxer.getFreshSkillQueueSummaries();
-          this.promise = promise;
-          return promise;
-        })
-        .then((response) => {
-          let freshSummaries = response.data;
-          for (let character of this.characters) {
-            let updatedEntry = _.findWhere(freshSummaries, {
-              id: character.id,
-            });
-            if (updatedEntry) {
-              character.skillQueue = updatedEntry.skillQueue;
-            }
-          }
-
-          this.sortCharacters();
+      const freshSkillsPromise = ajaxer.getFreshSkillQueueSummaries();
+      this.promise = freshSkillsPromise;
+      const freshSummaries = (await freshSkillsPromise).data;
+      for (let character of this.characters) {
+        let updatedEntry = _.findWhere(freshSummaries, {
+          id: character.id,
         });
+        if (updatedEntry) {
+          character.skillQueue = updatedEntry.skillQueue;
+        }
+      }
+
+      this.sortCharacters();
     },
 
     onRequireRefresh(_characterId: number) {
@@ -152,8 +149,13 @@ export default defineComponent({
     },
 
     sortCharacters() {
+      const mainCharacter = this.coreData?.mainCharacter;
+      if (mainCharacter == null) {
+        return;
+      }
+
       this.characters.sort((a: CharacterJson, b: CharacterJson) => {
-        let result = compareIsMainCharacter(a, b, this.mainCharacter);
+        let result = compareIsMainCharacter(a, b, mainCharacter);
         if (result == 0) {
           result = compareHasActiveSkillQueue(a, b);
         }
