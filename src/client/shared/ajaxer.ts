@@ -31,10 +31,6 @@ export default {
     return axios.get<Dashboard_GET>("/api/dashboard");
   },
 
-  getCorporation(id: number) {
-    return axios.get<{ name: string }>("/api/corporation/" + id);
-  },
-
   putAccountMainCharacter(accountId: number, characterId: number) {
     return axios.put(`/api/account/${accountId}/mainCharacter`, {
       characterId: characterId,

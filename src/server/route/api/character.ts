@@ -10,95 +10,78 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 import { TIMEZONE_LABELS } from "../../domain/roster/timezoneLabels.js";
 import { Character_GET } from "../../../shared/route/api/character_GET.js";
+import { EsiNameFetcher } from "../../data-source/esi/EsiNameFetcher.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export default jsonEndpoint(
-  (req, res, db, account, privs): Promise<Character_GET> => {
+  async (req, res, db, account, privs): Promise<Character_GET> => {
     const characterId = idParam(req, "id");
-    let accountId: number | null;
-    let isOwned = false;
-    let payload: Character_GET;
 
-    // Fetch character and account data
-    return Promise.resolve()
-      .then(() => {
-        return dao.character.getDetailedCharacterStats(db, characterId);
-      })
-      .then((row) => {
-        if (row == null) {
-          throw new NotFoundError();
-        }
-        accountId = row.account_id;
-        isOwned = account.id == row.account_id;
+    const row = await dao.character.getDetailedCharacterStats(db, characterId);
+    if (row == null) {
+      throw new NotFoundError();
+    }
 
-        payload = {
-          character: {
-            name: row.character_name,
-            corporationId: row.character_corporationId,
-            titles: row.character_titles || [],
-            totalSp: row.sp_total || 0,
-          },
-          account: {
-            id: row.account_id,
-            groups: [],
-            main: undefined,
-            alts: undefined,
-            citadelName: undefined,
-            activeTimezone: undefined,
-          },
-          access: privs.dumpForFrontend(
-            [
-              "memberTimezone",
-              "memberHousing",
-              "characterSkills",
-              "characterSkillQueue",
-            ],
-            isOwned
-          ),
-        };
+    const accountId = row.account_id;
+    const isOwned = account.id == row.account_id;
 
-        if (privs.canRead("memberTimezone", isOwned)) {
-          payload.account.activeTimezone =
-            row.account_activeTimezone || undefined;
-        }
+    const payload: Character_GET = {
+      character: {
+        name: row.character_name,
+        corporationId: row.character_corporationId,
+        titles: row.character_titles || [],
+        totalSp: row.sp_total || 0,
+      },
+      account: {
+        id: row.account_id,
+        groups: [],
+        main: undefined,
+        alts: undefined,
+        citadelName: undefined,
+        activeTimezone: undefined,
+      },
+      access: privs.dumpForFrontend(
+        [
+          "memberTimezone",
+          "memberHousing",
+          "characterSkills",
+          "characterSkillQueue",
+        ],
+        isOwned
+      ),
+      names: await new EsiNameFetcher([row.character_corporationId]).fetch(),
+    };
 
-        if (privs.canRead("memberHousing", isOwned)) {
-          payload.account.citadelName = row.citadel_name || undefined;
-        }
+    if (privs.canRead("memberTimezone", isOwned)) {
+      payload.account.activeTimezone = row.account_activeTimezone || undefined;
+    }
 
-        if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {
-          if (row.account_mainCharacter == characterId) {
-            return injectAlts(db, row.account_id, characterId, privs, payload);
-          } else {
-            return injectMain(db, row.account_id, payload);
-          }
-        }
+    if (privs.canRead("memberHousing", isOwned)) {
+      payload.account.citadelName = row.citadel_name || undefined;
+    }
 
-        return null;
-      })
-      .then(() => {
-        if (privs.canWrite("memberTimezone", isOwned)) {
-          payload.timezones = TIMEZONE_LABELS;
-        }
-        if (privs.canWrite("memberHousing", isOwned)) {
-          return dao.citadel.getAll(db, ["citadel_name"]).then((rows) => {
-            payload.citadels = _.pluck(rows, "citadel_name");
-          });
-        }
-        return null;
-      })
-      .then(() => {
-        if (accountId != null && privs.canRead("memberGroups")) {
-          return dao.group.getAccountGroups(db, accountId).then((groups) => {
-            payload.account.groups = groups;
-          });
-        }
-        return null;
-      })
-      .then(() => {
-        return payload;
-      });
+    if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {
+      if (row.account_mainCharacter == characterId) {
+        injectAlts(db, row.account_id, characterId, privs, payload);
+      } else {
+        injectMain(db, row.account_id, payload);
+      }
+    }
+
+    if (privs.canWrite("memberTimezone", isOwned)) {
+      payload.timezones = TIMEZONE_LABELS;
+    }
+    if (privs.canWrite("memberHousing", isOwned)) {
+      const citadelRows = await dao.citadel.getAll(db, ["citadel_name"]);
+      payload.citadels = _.pluck(citadelRows, "citadel_name");
+    }
+
+    if (accountId != null && privs.canRead("memberGroups")) {
+      payload.account.groups = await dao.group.getAccountGroups(db, accountId);
+    }
+
+    return payload;
   }
 );
 

@@ -1,4 +1,4 @@
-import { SimpleMap } from "../../util/simpleTypes.js";
+import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes.js";
 
 export interface Character_GET {
   character: Character;
@@ -6,6 +6,7 @@ export interface Character_GET {
   access: SimpleMap<number>;
   timezones?: string[];
   citadels?: string[];
+  names: SimpleNumMap<string>;
 }
 
 export interface Character {
