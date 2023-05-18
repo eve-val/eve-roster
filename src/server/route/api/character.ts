@@ -44,6 +44,8 @@ export default jsonEndpoint(
             groups: [],
             main: undefined,
             alts: undefined,
+            citadelName: undefined,
+            activeTimezone: undefined,
           },
           access: privs.dumpForFrontend(
             [
@@ -57,11 +59,12 @@ export default jsonEndpoint(
         };
 
         if (privs.canRead("memberTimezone", isOwned)) {
-          payload.account.activeTimezone = row.account_activeTimezone;
+          payload.account.activeTimezone =
+            row.account_activeTimezone || undefined;
         }
 
         if (privs.canRead("memberHousing", isOwned)) {
-          payload.account.citadelName = row.citadel_name;
+          payload.account.citadelName = row.citadel_name || undefined;
         }
 
         if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {
