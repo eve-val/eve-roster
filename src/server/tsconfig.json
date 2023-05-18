@@ -3,6 +3,13 @@
 
   "compilerOptions": {
     "outDir": "../../out/server",
+
+    // Don't include DOM library
+    "lib": ["ES2022"],
+
+    // This only exists to support the weird type hack in /server/util/stream
+    // where we add generic support for streams for...some goddamn reason :(
+    "allowJs": true,
   },
 
   "references": [

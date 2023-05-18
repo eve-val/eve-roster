@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    // Export Node-style modules since this is running on Node
-    "module": "node16",
-    // We're running on Node, so use this strategy.
-    "moduleResolution": "node16",
+    // The following two settings are intended for just server-side and shared
+    // code compilation. We'll override them in the client config.
+    "target": "ES2022",
+    // Use Node's ES module support mode rather than classic node modules
+    "module": "Node16",
 
     // Necessary in order to treat each subsection as a typescript project
     "composite": true,
@@ -24,7 +24,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
 
-    "allowJs": true /* Allow javascript files to be compiled. */,
-    "sourceMap": true /* Generates corresponding '.map' file. */
+    "sourceMap": true
   },
 }
