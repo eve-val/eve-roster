@@ -43,14 +43,8 @@ import { first } from "../../shared/util/collections";
 
 import { Identity } from "../home";
 
-interface Section {
-  component: ComponentOptions;
-  label: string;
-  path: string;
-}
-
 import { defineComponent, PropType, ComponentOptions } from "vue";
-import { useRoute } from "vue-router";
+import { RouteReader } from "../shared/RouteReader";
 
 export default defineComponent({
   components: {
@@ -58,6 +52,8 @@ export default defineComponent({
     DevLoadingSpinner,
     DevTaskSlab,
   },
+
+  mixins: [RouteReader],
 
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
@@ -95,11 +91,17 @@ export default defineComponent({
   computed: {
     currentSection(): Section | undefined {
       return _.findWhere(this.sections, {
-        path: first(useRoute().params.section),
+        path: first(this.route().params.section),
       });
     },
   },
 });
+
+interface Section {
+  component: ComponentOptions;
+  label: string;
+  path: string;
+}
 </script>
 
 <style scoped>
