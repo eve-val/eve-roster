@@ -6847,7 +6847,7 @@ __metadata:
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.2"
     serve-favicon: "npm:^2.5.0"
-    sharp: "npm:^0.32.0"
+    sharp: "npm:^0.32.1"
     source-map-support: "npm:^0.5.21"
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
@@ -10007,12 +10007,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "node-addon-api@npm:6.0.0"
+"node-addon-api@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "node-addon-api@npm:6.1.0"
   dependencies:
     node-gyp: "npm:latest"
-  checksum: 232f33c4c24019d04eb24d6cbb9c5e24f38e09ada464cb811cd31b489dcaabec5151df3efa2a0b2e08a5a30a52a89034a8ce2a78a39bebc1ae0d5f274c388ebd
+  checksum: 868881a258ec40c180a540bc2eaf07844c44aad6965a5335a76eb05019790ef238412a6a23e757e462f5d1d9d9332dde97fb09a8642f7048b20c4313f708d98d
   languageName: node
   linkType: hard
 
@@ -12490,6 +12490,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:^7.5.0":
+  version: 7.5.1
+  resolution: "semver@npm:7.5.1"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 20fce7894334634f553a64334b21fa2dc7cccd08a5f31122c187f1c1d3e45b8fc47d599d3fa52342c3fb3ee0bd139a8fbd41bc5b9e849ada8f7e7cc91b18a180
+  languageName: node
+  linkType: hard
+
 "send@npm:0.18.0":
   version: 0.18.0
   resolution: "send@npm:0.18.0"
@@ -12622,20 +12633,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.32.0":
-  version: 0.32.0
-  resolution: "sharp@npm:0.32.0"
+"sharp@npm:^0.32.1":
+  version: 0.32.1
+  resolution: "sharp@npm:0.32.1"
   dependencies:
     color: "npm:^4.2.3"
     detect-libc: "npm:^2.0.1"
-    node-addon-api: "npm:^6.0.0"
+    node-addon-api: "npm:^6.1.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-    semver: "npm:^7.3.8"
+    semver: "npm:^7.5.0"
     simple-get: "npm:^4.0.1"
     tar-fs: "npm:^2.1.1"
     tunnel-agent: "npm:^0.6.0"
-  checksum: 67935bccc001e570ebf8fc18d36c86bf12c3260fbc4d397a37935ef7355b56921e15b7737376fb94627d43e2bd7115f0221eecc4e88cad8be19d4c441972cc59
+  checksum: 3bd31f361efae39f11ea0d74573beead26eeeb4a14b3ccea84c142d9f0fc57d32b7808c53f8e3f6b3ca1f31214d975b379478741d3c5f1097d2a0e5640957a03
   languageName: node
   linkType: hard
 
