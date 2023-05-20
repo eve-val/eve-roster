@@ -3453,12 +3453,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/serve-favicon@npm:^2.5.3":
-  version: 2.5.3
-  resolution: "@types/serve-favicon@npm:2.5.3"
+"@types/serve-favicon@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "@types/serve-favicon@npm:2.5.4"
   dependencies:
     "@types/express": "npm:*"
-  checksum: 7896f668f7433b9ee62b5c244b3e2fda914cd66bcde44ce529ca42b732afb249d5eb4c82ff8ea6e02090ca0192faae5ea0d89c43cdfcb9be82df07ff7a2c5528
+  checksum: e3a15fa6f60aaaedb4ee42aba00f421acf076800c0a0e91e67761595cf6b19a8d4abd6de2c1fa6ea0719f514ee5d72cd3594ee3fba4df888d655f65f0d08806c
   languageName: node
   linkType: hard
 
@@ -6661,7 +6661,7 @@ __metadata:
     "@types/pg-pool": "npm:^2.0.3"
     "@types/progress-stream": "npm:^2.0.2"
     "@types/pug": "npm:^2.0.6"
-    "@types/serve-favicon": "npm:^2.5.3"
+    "@types/serve-favicon": "npm:^2.5.4"
     "@types/source-map-support": "npm:^0.5.6"
     "@types/sqlite3": "npm:^3.1.8"
     "@types/swagger-ui": "npm:^3.52.0"
