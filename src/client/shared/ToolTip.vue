@@ -2,7 +2,8 @@
   <div
     class="_tooltip"
     :style="{
-      display: inline ? 'inline' : 'block',
+      zIndex: messageVisible ? 1000 : undefined,
+      // display: inline ? 'inline' : 'block',
     }"
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
@@ -30,23 +31,12 @@
 
 <script lang="ts">
 import { CSSProperties, PropType, defineComponent } from "vue";
-
-enum PrimaryGravity {
-  LEFT = "left",
-  TOP = "top",
-  RIGHT = "right",
-  BOTTOM = "bottom",
-}
-
-enum SecondaryGravity {
-  START = "start",
-  CENTER = "center",
-  END = "end",
-}
-
-type ToolTipGravity =
-  | `${PrimaryGravity}`
-  | `${PrimaryGravity} ${SecondaryGravity}`;
+import { inEnum, coerceToEnum } from "../../shared/util/enum";
+import {
+  ToolTipGravity,
+  ToolTipGravityPrimary,
+  ToolTipGravitySecondary,
+} from "./ToolTipGravity";
 
 const ARROW_RISE = 7;
 const ARROW_BASE = 14;
@@ -57,6 +47,9 @@ const ARROW_BASE = 14;
  *
  * Use the #default slot to specify the hosted content. Use the #message slot
  * to specify the contents of the tooltip.
+ *
+ * The tooltip assumes that the content should be rendered with display: inline.
+ * If that isn't correct, simply adjust the display style of the tooltip root.
  */
 export default defineComponent({
   props: {
@@ -79,27 +72,14 @@ export default defineComponent({
       validator: (value: string) => {
         const [primary, secondary] = splitGravString(value);
 
-        if (!valueIsPresentInEnum(primary, PrimaryGravity)) {
+        if (!inEnum(primary, ToolTipGravityPrimary)) {
           return false;
         }
-        if (
-          secondary != null &&
-          !valueIsPresentInEnum(secondary, SecondaryGravity)
-        ) {
+        if (secondary != null && !inEnum(secondary, ToolTipGravitySecondary)) {
           return false;
         }
         return true;
       },
-    },
-
-    /**
-     * Whether the element that wraps the hosted content should be by disdplayed
-     * with inline or block layout. This can also be modified via CSS styling.
-     */
-    inline: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
 
     devForceOpen: {
@@ -118,20 +98,28 @@ export default defineComponent({
   },
 
   computed: {
-    parsedGravity(): [PrimaryGravity, SecondaryGravity] {
+    parsedGravity(): [ToolTipGravityPrimary, ToolTipGravitySecondary] {
       const [rawPrimary, rawSecondary] = splitGravString(this.gravity);
 
       return [
-        coerceToEnum(rawPrimary, PrimaryGravity, PrimaryGravity.BOTTOM),
-        coerceToEnum(rawSecondary, SecondaryGravity, SecondaryGravity.CENTER),
+        coerceToEnum(
+          rawPrimary,
+          ToolTipGravityPrimary,
+          ToolTipGravityPrimary.BOTTOM
+        ),
+        coerceToEnum(
+          rawSecondary,
+          ToolTipGravitySecondary,
+          ToolTipGravitySecondary.CENTER
+        ),
       ];
     },
 
-    primaryGravity(): PrimaryGravity {
+    primaryGravity(): ToolTipGravityPrimary {
       return this.parsedGravity[0];
     },
 
-    secondaryGravity(): SecondaryGravity {
+    secondaryGravity(): ToolTipGravitySecondary {
       return this.parsedGravity[1];
     },
 
@@ -183,15 +171,15 @@ export default defineComponent({
       const margin = "5px";
 
       switch (this.primaryGravity) {
-        case PrimaryGravity.LEFT:
-        case PrimaryGravity.RIGHT:
+        case ToolTipGravityPrimary.LEFT:
+        case ToolTipGravityPrimary.RIGHT:
           style.width = riseDimen;
           style.height = baseDimen;
           style.marginTop = margin;
           style.marginBottom = margin;
           break;
-        case PrimaryGravity.TOP:
-        case PrimaryGravity.BOTTOM:
+        case ToolTipGravityPrimary.TOP:
+        case ToolTipGravityPrimary.BOTTOM:
           style.width = baseDimen;
           style.height = riseDimen;
           style.marginLeft = margin;
@@ -216,32 +204,32 @@ function splitGravString(str: string): string[] {
   return str.trim().split(/\s+/);
 }
 
-function computePrimaryFlexDirection(alignment: PrimaryGravity) {
+function computePrimaryFlexDirection(alignment: ToolTipGravityPrimary) {
   switch (alignment) {
-    case PrimaryGravity.LEFT:
+    case ToolTipGravityPrimary.LEFT:
       return "row-reverse";
-    case PrimaryGravity.TOP:
+    case ToolTipGravityPrimary.TOP:
       return "column-reverse";
-    case PrimaryGravity.RIGHT:
+    case ToolTipGravityPrimary.RIGHT:
       return "row";
-    case PrimaryGravity.BOTTOM:
+    case ToolTipGravityPrimary.BOTTOM:
       return "column";
   }
 }
 
-function computeSecondaryPercentage(alignment: SecondaryGravity) {
+function computeSecondaryPercentage(alignment: ToolTipGravitySecondary) {
   switch (alignment) {
-    case SecondaryGravity.START:
+    case ToolTipGravitySecondary.START:
       return "0";
-    case SecondaryGravity.CENTER:
+    case ToolTipGravitySecondary.CENTER:
       return "50%";
-    case SecondaryGravity.END:
+    case ToolTipGravitySecondary.END:
       return "100%";
   }
 }
 
 function triangleStyle(
-  gravity: PrimaryGravity,
+  gravity: ToolTipGravityPrimary,
   color: number,
   offset: "none" | "inset"
 ) {
@@ -250,45 +238,45 @@ function triangleStyle(
   const transparentBorder = `${ARROW_BASE / 2}px solid transparent`;
 
   switch (gravity) {
-    case PrimaryGravity.LEFT:
-    case PrimaryGravity.RIGHT:
+    case ToolTipGravityPrimary.LEFT:
+    case ToolTipGravityPrimary.RIGHT:
       style.borderTop = transparentBorder;
       style.borderBottom = transparentBorder;
       break;
-    case PrimaryGravity.TOP:
-    case PrimaryGravity.BOTTOM:
+    case ToolTipGravityPrimary.TOP:
+    case ToolTipGravityPrimary.BOTTOM:
       style.borderLeft = transparentBorder;
       style.borderRight = transparentBorder;
       break;
   }
 
   switch (gravity) {
-    case PrimaryGravity.LEFT:
+    case ToolTipGravityPrimary.LEFT:
       style.borderLeft = opaqueBorder;
       break;
-    case PrimaryGravity.RIGHT:
+    case ToolTipGravityPrimary.RIGHT:
       style.borderRight = opaqueBorder;
       break;
-    case PrimaryGravity.TOP:
+    case ToolTipGravityPrimary.TOP:
       style.borderTop = opaqueBorder;
       break;
-    case PrimaryGravity.BOTTOM:
+    case ToolTipGravityPrimary.BOTTOM:
       style.borderBottom = opaqueBorder;
       break;
   }
 
   if (offset == "inset") {
     switch (gravity) {
-      case PrimaryGravity.LEFT:
+      case ToolTipGravityPrimary.LEFT:
         style.left = "-1.5px";
         break;
-      case PrimaryGravity.RIGHT:
+      case ToolTipGravityPrimary.RIGHT:
         style.left = "1.5px";
         break;
-      case PrimaryGravity.TOP:
+      case ToolTipGravityPrimary.TOP:
         style.top = "-1.5px";
         break;
-      case PrimaryGravity.BOTTOM:
+      case ToolTipGravityPrimary.BOTTOM:
         style.top = "1.5px";
         break;
     }
@@ -296,46 +284,12 @@ function triangleStyle(
 
   return style;
 }
-
-type StringEnum = {
-  [key: string]: string;
-};
-
-function valueIsPresentInEnum<T extends StringEnum>(
-  value: string,
-  enumType: T
-) {
-  return findEnumValue(value, enumType, (foundValue) => foundValue != null);
-}
-
-function coerceToEnum<T extends StringEnum>(
-  value: string,
-  enumType: T,
-  defaultVal: T[keyof T]
-) {
-  return findEnumValue(value, enumType, (foundValue) =>
-    foundValue != null ? foundValue : defaultVal
-  );
-}
-
-function findEnumValue<T extends StringEnum, R>(
-  value: string,
-  enumType: T,
-  processor: (value: T[keyof T] | null) => R
-) {
-  for (let key in enumType) {
-    if (enumType[key] == value) {
-      return processor(value as T[keyof T]);
-    }
-  }
-  return processor(null);
-}
 </script>
 
 <style scoped>
 ._tooltip {
   position: relative;
-  z-index: 1000;
+  display: inline-block;
 }
 
 .zero-size-wrapper {

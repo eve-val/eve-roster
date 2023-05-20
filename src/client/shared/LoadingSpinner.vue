@@ -9,8 +9,7 @@
       />
       <tool-tip
         v-if="derivedState != 'spinning' && display == 'inline'"
-        :gravity="tooltipGravity || 'top'"
-        style="vertical-align: text-bottom"
+        :gravity="tooltipGravity"
       >
         <template #default>
           <img
@@ -20,7 +19,7 @@
           />
         </template>
         <template #message>
-          <span v-if="derivedMessage">{{ derivedMessage }}</span>
+          <span>{{ derivedMessage }}</span>
         </template>
       </tool-tip>
 
@@ -47,21 +46,34 @@
  * an error message if the Promise rejects.
  */
 
+import { defineComponent, PropType } from "vue";
 import ToolTip from "./ToolTip.vue";
+import { ToolTipGravity } from "./ToolTipGravity";
 
 import { AxiosResponse } from "axios";
+import { enumProp, EnumProp } from "./enumProp";
 
 import inlineErrorIcon from "../shared-res/circle-error.svg";
 import inlineWarningIcon from "../shared-res/circle-warning.svg";
 import blockErrorIcon from "../shared-res/triangle-error.svg";
 import blockWarningIcon from "../shared-res/triangle-warning.svg";
 
-const DISPLAY_VALUES = ["inline", "block", "none"] as const;
-type DisplayValue = (typeof DISPLAY_VALUES)[number];
-const STATE_VALUES = ["hidden", "spinning", "error", "warning"] as const;
-type StateValue = (typeof STATE_VALUES)[number];
+import { inEnum } from "../../shared/util/enum";
 
-import { defineComponent, PropType } from "vue";
+enum SpinnerDisplay {
+  INLINE = "inline",
+  BLOCK = "block",
+}
+
+type DerivedDisplay = EnumProp<SpinnerDisplay> | "none";
+
+enum SpinnerState {
+  HIDDEN = "hidden",
+  SPINNING = "spinning",
+  ERROR = "error",
+  WARNING = "warning",
+}
+
 export default defineComponent({
   components: {
     ToolTip,
@@ -85,13 +97,7 @@ export default defineComponent({
      *           message.
      * 'block': Replace spinner with icon and error message.
      */
-    display: {
-      type: String as PropType<DisplayValue>,
-      required: false,
-      default: "inline",
-      validator: (value: string) =>
-        (<readonly string[]>DISPLAY_VALUES).includes(value),
-    },
+    display: enumProp(SpinnerDisplay, SpinnerDisplay.INLINE),
 
     /**
      * Any of 'hidden' | 'spinning' | 'error' | 'warning'.
@@ -99,24 +105,18 @@ export default defineComponent({
      * instead of the spinner. This value overrides anything set by a promise.
      */
     state: {
-      type: String as PropType<StateValue | null>,
+      type: String as PropType<EnumProp<SpinnerState> | null>,
       required: false,
       default: null,
       validator: (value: string) =>
-        (<readonly string[]>STATE_VALUES).includes(value),
+        value == null || inEnum(value, SpinnerState),
     },
 
     /**
      * Default state for the spinner, before `state` or promises are applied.
      * See `state` for appropriate values. Default: 'spinning'.
      */
-    defaultState: {
-      type: String as PropType<StateValue>,
-      required: false,
-      default: "spinning",
-      validator: (value: string) =>
-        (<readonly string[]>STATE_VALUES).includes(value),
-    },
+    defaultState: enumProp(SpinnerState, SpinnerState.SPINNING),
 
     /** Displayed if state is 'error' or 'warning'. */
     adversityMessage: {
@@ -130,9 +130,9 @@ export default defineComponent({
      * 'error'/'warning' and `display` is 'inline'.
      */
     tooltipGravity: {
-      type: String,
+      type: String as PropType<ToolTipGravity>,
       required: false,
-      default: "right",
+      default: "top",
     },
 
     /**
@@ -152,13 +152,13 @@ export default defineComponent({
       stateFromPromise: null,
       messageFromPromise: null,
     } as {
-      stateFromPromise: null | StateValue;
+      stateFromPromise: null | SpinnerState;
       messageFromPromise: null | string;
     };
   },
 
   computed: {
-    derivedDisplay(): DisplayValue {
+    derivedDisplay(): DerivedDisplay {
       if (this.derivedState == "hidden") {
         return "none";
       } else {
@@ -166,7 +166,7 @@ export default defineComponent({
       }
     },
 
-    derivedState(): StateValue {
+    derivedState(): EnumProp<SpinnerState> {
       return this.state || this.stateFromPromise || this.defaultState;
     },
 
@@ -174,7 +174,7 @@ export default defineComponent({
       return this.messageFromPromise || this.adversityMessage;
     },
 
-    errorIconSrc(): string | null {
+    errorIconSrc(): string {
       switch (this.display) {
         case "inline":
           switch (this.derivedState) {
@@ -185,6 +185,7 @@ export default defineComponent({
               return inlineErrorIcon;
           }
         case "block":
+        default:
           switch (this.derivedState) {
             case "warning":
               return blockWarningIcon;
@@ -192,8 +193,6 @@ export default defineComponent({
             default:
               return blockErrorIcon;
           }
-        default:
-          return null;
       }
     },
   },
@@ -225,14 +224,14 @@ export default defineComponent({
         this.stateFromPromise = null;
         return;
       }
-      this.stateFromPromise = "spinning";
+      this.stateFromPromise = SpinnerState.SPINNING;
 
       promise
         .then(() => {
-          this.stateFromPromise = "hidden";
+          this.stateFromPromise = SpinnerState.HIDDEN;
         })
         .catch((e: string | Error | AxiosResponse) => {
-          this.stateFromPromise = "error";
+          this.stateFromPromise = SpinnerState.ERROR;
 
           let preface =
             `There was an error while ` +

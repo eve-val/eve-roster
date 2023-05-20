@@ -2,7 +2,7 @@
   <div class="_character-row">
     <div class="horiz-aligner">
       <div class="alert col" :style="cellStyle(0)">
-        <tool-tip v-if="alertMessage != null" gravity="top start">
+        <tool-tip v-if="alertMessage != null" gravity="bottom start">
           <template #default>
             <img class="alert-icon" :src="alertIconSrc" />
           </template>
@@ -26,7 +26,7 @@
             {{ displayVals[1] }}
           </template>
         </router-link>
-        <tool-tip v-if="!inPrimaryCorp" gravity="top" inline>
+        <tool-tip v-if="!inPrimaryCorp" gravity="right">
           <template #default>
             <eve-image
               :id="character.corporationId"
@@ -58,7 +58,7 @@
         <template v-if="!tooltipMessage(i + 3)">
           <span class="col-text">{{ dashDefault(dv) }}</span>
         </template>
-        <tool-tip v-else gravity="top" inline>
+        <tool-tip v-else gravity="top">
           <span
             class="col-text"
             :style="{ 'text-align': cellAlignment(i + 3) }"
