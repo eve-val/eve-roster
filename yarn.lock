@@ -6512,20 +6512,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.10.0":
-  version: 9.10.0
-  resolution: "eslint-plugin-vue@npm:9.10.0"
+"eslint-plugin-vue@npm:^9.13.0":
+  version: 9.13.0
+  resolution: "eslint-plugin-vue@npm:9.13.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.3.0"
     natural-compare: "npm:^1.4.0"
     nth-check: "npm:^2.0.1"
     postcss-selector-parser: "npm:^6.0.9"
     semver: "npm:^7.3.5"
-    vue-eslint-parser: "npm:^9.0.1"
+    vue-eslint-parser: "npm:^9.3.0"
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 6a3e6a6598add4b946f54dd169a3e485dac4e012bfcf2b78f1285bcf5b1c7727241dd849fdbf5791ad8609125f21ee3f43ef32036cf6d25eaee0092588df3a99
+  checksum: ee1833a937328b5ac1330d6fa0c791cceb467d0ed12f82adafd03b28ee7266f7349abec691c883d7ecde5c9b3af1b074aca131e778d92958ac91e7470d56375d
   languageName: node
   linkType: hard
 
@@ -6823,7 +6823,7 @@ __metadata:
     eslint-plugin-jest: "npm:^27.2.1"
     eslint-plugin-prettier: "npm:^4.2.1"
     eslint-plugin-prettier-vue: "npm:^4.2.0"
-    eslint-plugin-vue: "npm:^9.10.0"
+    eslint-plugin-vue: "npm:^9.13.0"
     esprint: "npm:^3.6.0"
     events: "npm:^3.3.0"
     express: "npm:^4.18.2"
@@ -13863,23 +13863,6 @@ __metadata:
   version: 3.1.0
   resolution: "void-elements@npm:3.1.0"
   checksum: b2e095b2355ec1f56efa095c45f406776f1c88c4742471cc530abed7e0337f7b90a082234635d87965e2b262c9123dee9cc18144479e1d6d9a88748959036441
-  languageName: node
-  linkType: hard
-
-"vue-eslint-parser@npm:^9.0.1":
-  version: 9.1.0
-  resolution: "vue-eslint-parser@npm:9.1.0"
-  dependencies:
-    debug: "npm:^4.3.4"
-    eslint-scope: "npm:^7.1.1"
-    eslint-visitor-keys: "npm:^3.3.0"
-    espree: "npm:^9.3.1"
-    esquery: "npm:^1.4.0"
-    lodash: "npm:^4.17.21"
-    semver: "npm:^7.3.6"
-  peerDependencies:
-    eslint: ">=6.0.0"
-  checksum: 6ae302c5a4e2aeab1da990fb733061688334a719133e5e1d2c1c5877a9bfec6055a5646b63ef77dbfcdc1288eca2024d03b574730318930d3e4b11cb6b7dd4de
   languageName: node
   linkType: hard
 
