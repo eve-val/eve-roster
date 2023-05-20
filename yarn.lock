@@ -5484,21 +5484,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.7.3":
-  version: 6.7.3
-  resolution: "css-loader@npm:6.7.3"
+"css-loader@npm:^6.7.4":
+  version: 6.7.4
+  resolution: "css-loader@npm:6.7.4"
   dependencies:
     icss-utils: "npm:^5.1.0"
-    postcss: "npm:^8.4.19"
+    postcss: "npm:^8.4.21"
     postcss-modules-extract-imports: "npm:^3.0.0"
-    postcss-modules-local-by-default: "npm:^4.0.0"
+    postcss-modules-local-by-default: "npm:^4.0.1"
     postcss-modules-scope: "npm:^3.0.0"
     postcss-modules-values: "npm:^4.0.0"
     postcss-value-parser: "npm:^4.2.0"
     semver: "npm:^7.3.8"
   peerDependencies:
     webpack: ^5.0.0
-  checksum: d40860763af7b0c4528112ef47d690df230b612623769982734f3becf7ceb26f03be15074d2657b459893536f35926ba4260173ea0769dbc646fcab420fa5d6e
+  checksum: 52e571bb97697dc4504ba7f26153a40a08bf46d7cd6f34b35f489d34a12ca285d1f4f995c57a3c7c34df548d431313574dbdee8cb91c4fd10fc3e4755ad9e7bb
   languageName: node
   linkType: hard
 
@@ -6681,7 +6681,7 @@ __metadata:
     cleanup-mini-css-extract-plugin: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.6"
     cookie-session: "npm:^2.0.0"
-    css-loader: "npm:^6.7.3"
+    css-loader: "npm:^6.7.4"
     css-minimizer-webpack-plugin: "npm:^5.0.0"
     csurf: "npm:^1.11.0"
     dotenv: "npm:^16.0.3"
@@ -10796,16 +10796,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-modules-local-by-default@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "postcss-modules-local-by-default@npm:4.0.0"
+"postcss-modules-local-by-default@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "postcss-modules-local-by-default@npm:4.0.1"
   dependencies:
     icss-utils: "npm:^5.0.0"
     postcss-selector-parser: "npm:^6.0.2"
     postcss-value-parser: "npm:^4.1.0"
   peerDependencies:
     postcss: ^8.1.0
-  checksum: 73a20c73e928310a1d2dd574b599f81d37e1b34ebbbfeb04823981fb2dc624e81a776bc391b497e0f607eb148d1c14e8e6d4968238243440acf31492272cca02
+  checksum: 23b2c224b734301ec194c5e7e12e40a6579386c4c3b0528768879f713480598cd8d2f058e2a9a6ecf911fcc47ee31ff87e2fc7662be91d468583519ce6fc4c52
   languageName: node
   linkType: hard
 
@@ -11169,17 +11169,6 @@ __metadata:
     picocolors: "npm:^1.0.0"
     source-map-js: "npm:^1.0.2"
   checksum: 1e1e4a4cc235674bea79da18dd3e02ea8ffcd51546c7ddf1fc7ba4de5e89154a83988bb8c1b30bd9566df56fc0077dce6e620d8f9ce6ababf60f659ffc53f72c
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.19":
-  version: 8.4.20
-  resolution: "postcss@npm:8.4.20"
-  dependencies:
-    nanoid: "npm:^3.3.4"
-    picocolors: "npm:^1.0.0"
-    source-map-js: "npm:^1.0.2"
-  checksum: bdc074b44b690f08c0496d78e0777bb2072633c6facbb6a987ae4cb1041333bcbd592e81244293ba1cf888ececc8dd224a1162751e84d173305aaed6f8f82957
   languageName: node
   linkType: hard
 
