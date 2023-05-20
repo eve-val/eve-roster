@@ -136,8 +136,7 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
-    "@opentelemetry/instrumentation": "file:./patches/opentelemetry-instrumentation-0.39.1.tgz",
-    "vue-loader": "patch:vue-loader@^17.0.1#./patches/vue-loader+17.0.1.patch"
+    "@opentelemetry/instrumentation": "file:./patches/opentelemetry-instrumentation-0.39.1.tgz"
   },
   "jest": {
     "moduleFileExtensions": [
