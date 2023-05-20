@@ -6737,7 +6737,7 @@ __metadata:
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.76.3"
     webpack-cli: "npm:^5.1.1"
-    webpack-dev-middleware: "npm:^6.0.2"
+    webpack-dev-middleware: "npm:^6.1.1"
     webpack-hot-middleware: "npm:^2.25.3"
     webpack-merge: "npm:^5.8.0"
   languageName: unknown
@@ -13863,9 +13863,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-dev-middleware@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "webpack-dev-middleware@npm:6.0.2"
+"webpack-dev-middleware@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "webpack-dev-middleware@npm:6.1.1"
   dependencies:
     colorette: "npm:^2.0.10"
     memfs: "npm:^3.4.12"
@@ -13877,7 +13877,7 @@ __metadata:
   peerDependenciesMeta:
     webpack:
       optional: true
-  checksum: 482b3e9f1ad81b0e823682cffa70fb3867d07cb1481006f4132144a06bf7344cf4f1b302e0acf9235b97b471581dc34e40330a8fbbfd08b6efa51ae0c354963f
+  checksum: 78ee64118f05c1fef478e0c2e099ee68e57d7f44008d57f9d6104cf6d01b948fb111ec8ad9cd0c6ef7bddade0773d4dcf011b7555b2d2c3a24fe8e12702f441b
   languageName: node
   linkType: hard
 
