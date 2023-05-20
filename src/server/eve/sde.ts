@@ -4,13 +4,22 @@ import {
   SdeSkill,
 } from "./sde/loadSdeSkillDefinitions.js";
 import { defaultSkillName } from "../domain/skills/defaultSkillName.js";
+import { Logger } from "../infra/logging/Logger.js";
 
 let skillDefinitions = new Map<number, SdeSkill>();
 
 export { SdeSkill } from "./sde/loadSdeSkillDefinitions.js";
 
-export async function loadStaticData(db: Tnex, strictMode: boolean) {
-  const _skillDefinitions = await loadSdeSkillDefinitions(db, strictMode);
+export async function loadStaticData(
+  db: Tnex,
+  strictMode: boolean,
+  logger: Logger | null = null
+) {
+  const _skillDefinitions = await loadSdeSkillDefinitions(
+    db,
+    strictMode,
+    logger
+  );
 
   skillDefinitions = _skillDefinitions;
 }
