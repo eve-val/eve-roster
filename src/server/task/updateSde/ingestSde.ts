@@ -18,6 +18,8 @@ import {
   TYPE_CAPSULE,
   TYPE_CAPSULE_GENOLUTION,
 } from "../../eve/constants/types.js";
+import { errorMessage, fullStackTrace } from "../../util/error.js";
+import { LogLevel } from "../../infra/logging/Logger.js";
 
 const IMPORTER_VERSION = 0;
 const IMPORT_LABEL = "Importing new SDE data...";
@@ -43,6 +45,30 @@ export async function ingestSde(
   });
 }
 
+export async function ingestSdeDryRun(
+  job: JobLogger,
+  db: Tnex,
+  sqlPath: string
+) {
+  job.setProgress(undefined, IMPORT_LABEL);
+  const sdeDb = await openSqliteDb(sqlPath);
+
+  try {
+    await db.transaction(async (db) => {
+      await ingestInternal(job, db, sdeDb, "fake_md5");
+      throw new Error("Dry run complete");
+    });
+  } catch (e) {
+    const message = errorMessage(e);
+    if (message == "Error: Dry run complete") {
+      job.log(LogLevel.INFO, "Dry run complete");
+    } else {
+      job.error(fullStackTrace(e));
+      throw e;
+    }
+  }
+}
+
 async function ingestInternal(
   job: JobLogger,
   db: Tnex,
@@ -63,7 +89,7 @@ async function ingestInternal(
 
   job.setProgress(undefined, "Verifying healthy import...");
   await fixupImport(db);
-  await verifyImport(db);
+  await verifyImport(db, job);
 }
 
 function createNewImport(db: Tnex, md5: string) {
@@ -96,12 +122,6 @@ async function importItems(
   for (const row of rows) {
     const typeId = checkNotNil(row.typeID as number);
 
-    if (!row.description) {
-      // Avoid occasional Fuzzwork SDE quirks due to changed items etc
-      skippedCount++;
-      continue;
-    }
-
     if (
       !row.published &&
       // The capsules are not marked as published for...some reason
@@ -111,6 +131,13 @@ async function importItems(
       skippedCount++;
       continue;
     }
+
+    if (!row.description) {
+      // Avoid occasional Fuzzwork SDE quirks due to changed items etc
+      skippedCount++;
+      continue;
+    }
+
     processedCount++;
 
     // Step 1: Upsert item

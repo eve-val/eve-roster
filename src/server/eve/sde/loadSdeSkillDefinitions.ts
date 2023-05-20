@@ -13,8 +13,9 @@ import {
   DGM_ATTR_REQUIRED_SKILL_3_LEVEL,
   DGM_ATTR_SKILL_TIME_CONSTANT,
 } from "../constants/dogma.js";
+import { Logger } from "../../infra/logging/Logger.js";
 
-const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
+const defaultLogger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface SdeSkill {
   readonly id: number;
@@ -27,12 +28,16 @@ export interface SdeSkill {
   }[];
 }
 
-export async function loadSdeSkillDefinitions(db: Tnex, strictMode: boolean) {
+export async function loadSdeSkillDefinitions(
+  db: Tnex,
+  strictMode: boolean,
+  logger: Logger | null
+) {
   const skills = new Map<number, PartialSkill>();
 
   await loadSkills(db, skills);
   await loadSkillAttributes(db, skills);
-  verifyDefinitions(skills, strictMode);
+  verifyDefinitions(logger || defaultLogger, skills, strictMode);
 
   return skills as Map<number, SdeSkill>;
 }
@@ -116,12 +121,20 @@ async function loadSkillAttributes(
 }
 
 function verifyDefinitions(
+  logger: Logger,
   skills: Map<number, PartialSkill>,
   strictMode: boolean
 ) {
+  const defaultSeverity = strictMode
+    ? ErrorSeverity.THROW
+    : ErrorSeverity.ERROR;
   for (const [id, skill] of skills) {
     if (skill.rank == null) {
-      handleFailure(`Undefined rank for ${id}:${skill.name}.`, strictMode);
+      handleFailure(
+        logger,
+        defaultSeverity,
+        `Undefined rank for ${id}:${skill.name}.`
+      );
       skill.rank = 1;
     }
     for (let i = 0; i < skill.requiredSkills.length; i++) {
@@ -129,22 +142,23 @@ function verifyDefinitions(
       let pruneRequirement = false;
       if (reqSkill == null) {
         handleFailure(
-          `Required skill ${i} for ${id}:${skill.name} is null.`,
-          strictMode
+          logger,
+          getSeverityForEmptyRequiredSkill(id, defaultSeverity),
+          `Required skill ${i} for ${id}:${skill.name} is null.`
         );
         pruneRequirement = true;
-      }
-      if (reqSkill.skill == null) {
+      } else if (reqSkill.skill == null) {
         handleFailure(
-          `Required skill ${i} for ${id}:${skill.name} has a null id.`,
-          strictMode
+          logger,
+          defaultSeverity,
+          `Required skill ${i} for ${id}:${skill.name} has a null id.`
         );
         pruneRequirement = true;
-      }
-      if (reqSkill.level == null) {
+      } else if (reqSkill.level == null) {
         handleFailure(
-          `Required skill ${i} for ${id}:${skill.name} has a null level.`,
-          strictMode
+          logger,
+          defaultSeverity,
+          `Required skill ${i} for ${id}:${skill.name} has a null level.`
         );
         pruneRequirement = true;
       }
@@ -156,11 +170,38 @@ function verifyDefinitions(
   }
 }
 
-function handleFailure(message: string, strictMode: boolean) {
-  if (strictMode) {
-    throw new Error(`SDE verification failure: ${message}`);
-  } else {
-    logger.error(message);
+function getSeverityForEmptyRequiredSkill(
+  skillId: number,
+  defaultSeverity: ErrorSeverity
+) {
+  switch (skillId) {
+    // For some reason, they only specify a requirement in the second slot,
+    // but not the first
+    case TYPE_FLEET_COMPRESSION_LOGISTICS:
+    case TYPE_GAS_DECOMPRESSION_EFFICIENCY:
+      return ErrorSeverity.SILENT;
+    default:
+      return defaultSeverity;
+  }
+}
+
+function handleFailure(
+  logger: Logger,
+  severity: ErrorSeverity,
+  message: string
+) {
+  switch (severity) {
+    case ErrorSeverity.THROW:
+      throw new Error(`SDE verification failure: ${message}`);
+    case ErrorSeverity.WARN:
+      logger.warn(message);
+      break;
+    case ErrorSeverity.INFO:
+      logger.info(message);
+      break;
+    case ErrorSeverity.SILENT:
+      // Do nothing
+      break;
   }
 }
 
@@ -204,3 +245,14 @@ interface PartialSkill {
     level: number | null;
   }[];
 }
+
+enum ErrorSeverity {
+  SILENT,
+  INFO,
+  WARN,
+  ERROR,
+  THROW,
+}
+
+const TYPE_FLEET_COMPRESSION_LOGISTICS = 62453;
+const TYPE_GAS_DECOMPRESSION_EFFICIENCY = 62452;

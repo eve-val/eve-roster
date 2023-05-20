@@ -14,6 +14,8 @@ import { truncateCronLog } from "../task/truncateCronLog.js";
 import { truncateCharacterLocations } from "../task/truncateCharacterLocations.js";
 import { updateSde } from "../task/updateSde.js";
 import { triagePendingLosses } from "../task/triagePendingLosses.js";
+import { updateSdeDryRun } from "../task/updateSdeDryRun.js";
+import { getEnv } from "../infra/init/Env.js";
 
 /**
  * List of tasks that can be manually invoked from the admin UI.
@@ -32,6 +34,11 @@ const TASKS: Task[] = [
   truncateCronLog,
   updateSde,
 ];
+
+if (getEnv().isDev) {
+  TASKS.push(updateSdeDryRun);
+}
+
 verifyTaskNamesAreUnique(TASKS);
 
 export function getRunnableTasks() {
