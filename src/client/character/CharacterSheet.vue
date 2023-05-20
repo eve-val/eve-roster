@@ -4,8 +4,8 @@
 
     <div class="centering-container">
       <div class="name-title">
-        <template v-if="character">
-          {{ character.name }}
+        <template v-if="coreData">
+          {{ coreData.character.name }}
         </template>
         <loading-spinner
           :promise="promise"
@@ -14,7 +14,7 @@
           size="34px"
         />
       </div>
-      <div v-if="character" class="root-container">
+      <div v-if="coreData" class="root-container">
         <div class="sidebar">
           <eve-image
             :id="characterId"
@@ -24,50 +24,55 @@
           />
           <div class="factoid-title">Corporation</div>
           <div class="factoid">
-            {{ corporationName || "-" }}
+            {{ name(coreData.character.corporationId) }}
           </div>
 
-          <template v-if="character">
-            <div class="factoid-title">Total SP</div>
-            <div class="factoid">
-              {{ formatSp() }}
-            </div>
-          </template>
+          <div class="factoid-title">Total SP</div>
+          <div class="factoid">
+            {{ formatSp() }}
+          </div>
 
-          <template v-if="account.main">
+          <template v-if="coreData.account.main">
             <div class="factoid-title">Main</div>
             <div class="factoid">
               <router-link
                 class="character-link"
-                :to="'/character/' + account.main.id"
+                :to="'/character/' + coreData.account.main.id"
               >
-                {{ account.main.name }}
+                {{ coreData.account.main.name }}
               </router-link>
             </div>
           </template>
 
-          <template v-if="account.alts">
+          <template v-if="coreData.account.alts">
             <div class="factoid-title">Alts</div>
-            <div v-for="alt in account.alts" :key="alt.id" class="factoid">
+            <div
+              v-for="alt in coreData.account.alts"
+              :key="alt.id"
+              class="factoid"
+            >
               <router-link class="character-link" :to="'/character/' + alt.id">
                 {{ alt.name }}
               </router-link>
             </div>
           </template>
 
-          <template v-if="account.id != null">
+          <template v-if="coreData.account.id != null">
             <template v-if="canWriteSrp">
               <div class="factoid-title">SRP</div>
               <div class="factoid">
                 <router-link
                   class="srp-link"
-                  :to="'/srp/history/' + account.id"
+                  :to="'/srp/history/' + coreData.account.id"
                 >
                   View Losses
                 </router-link>
               </div>
               <div class="factoid">
-                <router-link class="srp-link" :to="'/srp/triage/' + account.id">
+                <router-link
+                  class="srp-link"
+                  :to="'/srp/triage/' + coreData.account.id"
+                >
                   Triage Losses
                 </router-link>
               </div>
@@ -77,40 +82,52 @@
             <factoid-selector
               v-if="canWriteTimezone"
               :options="timezoneOptions"
-              :initial-value="account.activeTimezone"
-              :submit-handler="submitTimezone.bind(this)"
+              :initial-value="coreData.account.activeTimezone"
+              :submit-handler="(value) => submitTimezone(value)"
             />
             <div v-else class="factoid">
-              {{ account.activeTimezone || "-" }}
+              {{ coreData.account.activeTimezone || "-" }}
             </div>
 
-            <template v-if="access.memberHousing > 0">
+            <template v-if="coreData.access.memberHousing > 0">
               <div class="factoid-title">Citadel</div>
               <factoid-selector
                 v-if="canWriteCitadel"
                 :options="citadelOptions"
-                :initial-value="account.citadelName"
-                :submit-handler="submitHousing.bind(this)"
+                :initial-value="coreData.account.citadelName"
+                :submit-handler="(value) => submitHousing(value)"
               />
               <div v-else class="factoid">
-                {{ account.citadelName || "-" }}
+                {{ coreData.account.citadelName || "-" }}
               </div>
             </template>
 
-            <template v-if="account.groups != null">
+            <template v-if="coreData.account.groups != null">
               <div class="factoid-title">Groups</div>
-              <div v-for="group in account.groups" :key="group" class="factoid">
+              <div
+                v-for="group in coreData.account.groups"
+                :key="group"
+                class="factoid"
+              >
                 {{ group }}
               </div>
-              <div v-if="account.groups.length == 0" class="factoid">-</div>
+              <div v-if="coreData.account.groups.length == 0" class="factoid">
+                -
+              </div>
             </template>
           </template>
 
           <div class="factoid-title">Titles</div>
-          <div v-for="title in character.titles" :key="title" class="factoid">
+          <div
+            v-for="title in coreData.character.titles"
+            :key="title"
+            class="factoid"
+          >
             {{ title }}
           </div>
-          <div v-if="character.titles.length == 0" class="factoid">-</div>
+          <div v-if="coreData.character.titles.length == 0" class="factoid">
+            -
+          </div>
 
           <template v-if="canProxyApi">
             <div class="factoid-title">API Keys</div>
@@ -122,7 +139,7 @@
           </template>
         </div>
         <div class="content">
-          <skill-sheet :character-id="characterId" :access="access" />
+          <skill-sheet :character-id="characterId" :access="coreData.access" />
         </div>
       </div>
     </div>
@@ -134,19 +151,20 @@ import ajaxer from "../shared/ajaxer";
 import AppHeader from "../shared/AppHeader.vue";
 import EveImage from "../shared/EveImage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import { NameCacheMixin } from "../shared/nameCache";
+import { RouteReader } from "../shared/RouteReader";
 import { formatNumber } from "../shared/numberFormat";
-import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
-import { first } from "../../util/collections";
+import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
+import { first } from "../../shared/util/collections";
 
 import FactoidSelector from "./FactoidSelector.vue";
 import SkillSheet from "./SkillSheet.vue";
 import { Skill } from "./skills";
 
 import { Identity } from "../home";
-import { Character, Account } from "../../route/api/character";
+import { Character, Account } from "../../shared/route/api/character_GET";
 
 import { defineComponent, PropType } from "vue";
-import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -158,28 +176,26 @@ export default defineComponent({
     SkillSheet,
   },
 
+  mixins: [NameCacheMixin, RouteReader],
+
   props: {
     identity: { type: Object as PropType<Identity>, required: true },
   },
 
   data() {
     return {
-      character: null,
-      account: null,
-      access: null,
-      timezones: [],
-      citadels: [],
-      corporationName: null,
+      coreData: null,
       skillsMap: null,
       queue: null,
       promise: null,
     } as {
-      character: Character | null;
-      account: Account | null;
-      access: SimpleMap<number> | null;
-      timezones: string[] | undefined;
-      citadels: string[] | undefined;
-      corporationName: string | null;
+      coreData: {
+        character: Character;
+        account: Account;
+        access: SimpleMap<number>;
+        timezones: string[] | undefined;
+        citadels: string[] | undefined;
+      } | null;
       skillsMap: SimpleNumMap<Skill> | null;
       queue: { id: number; targetLevel: number }[] | null;
       promise: Promise<any> | null;
@@ -188,7 +204,19 @@ export default defineComponent({
 
   computed: {
     characterId: function (): number {
-      return parseInt(first(useRoute().params.id));
+      return parseInt(first(this.route().params.id));
+    },
+
+    character(): Character | null {
+      return this.coreData?.character || null;
+    },
+
+    account(): Account | null {
+      return this.coreData?.account || null;
+    },
+
+    access(): SimpleMap<number> | null {
+      return this.coreData?.access || null;
     },
 
     canWriteSrp: function (): boolean {
@@ -208,10 +236,10 @@ export default defineComponent({
     },
 
     timezoneOptions: function (): { value: string; label: string }[] {
-      if (this.timezones == undefined) {
+      if (this.coreData?.timezones == undefined) {
         return [];
       }
-      return this.timezones.map((timezone: string) => {
+      return this.coreData?.timezones.map((timezone: string) => {
         let hint = TIMEZONE_HINTS[timezone];
         return {
           value: timezone,
@@ -221,10 +249,10 @@ export default defineComponent({
     },
 
     citadelOptions: function (): { label: string; value: string }[] {
-      if (this.citadels == undefined) {
+      if (this.coreData?.citadels == undefined) {
         return [];
       }
-      return this.citadels.map((citadel: string) => ({
+      return this.coreData?.citadels.map((citadel: string) => ({
         label: citadel,
         value: citadel,
       }));
@@ -233,26 +261,12 @@ export default defineComponent({
 
   watch: {
     characterId(_value: number) {
+      console.log("CharacterId changed to", _value);
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
-      this.character = null;
-      this.corporationName = null;
+      this.coreData = null;
 
       this.fetchData();
-    },
-
-    character(value: Character | null) {
-      if (value && value.corporationId) {
-        ajaxer
-          .getCorporation(value.corporationId)
-          .then((response) => {
-            this.corporationName = response.data.name;
-          })
-          .catch((e) => {
-            // TODO
-            console.log(e);
-          });
-      }
     },
   },
 
@@ -261,24 +275,22 @@ export default defineComponent({
   },
 
   methods: {
-    fetchData() {
+    async fetchData() {
       if (!this.characterId) {
         return;
       }
       const promise = ajaxer.getCharacter(this.characterId);
       this.promise = promise;
-      promise.then((response) => {
-        this.character = response.data.character;
-        this.account = response.data.account;
-        this.access = response.data.access;
-        if (response.data.citadels) {
-          response.data.citadels.sort((a: string, b: string) =>
-            a.localeCompare(b)
-          );
-        }
-        this.citadels = response.data.citadels;
-        this.timezones = response.data.timezones;
-      });
+
+      const response = await promise;
+
+      const { character, account, access, citadels, timezones, names } =
+        response.data;
+      if (citadels) {
+        citadels.sort((a: string, b: string) => a.localeCompare(b));
+      }
+      this.coreData = { character, account, access, citadels, timezones };
+      this.addNames(names);
     },
 
     formatSp() {
@@ -309,14 +321,14 @@ export default defineComponent({
 
     submitTimezone(timezone: string) {
       if (this.account?.id == null) {
-        return;
+        return Promise.resolve();
       }
       return ajaxer.putAccountActiveTimezone(this.account.id, timezone);
     },
 
     submitHousing(citadelName: string) {
       if (this.account?.id == null) {
-        return;
+        return Promise.resolve();
       }
       return ajaxer.putAccountHomeCitadel(this.account.id, citadelName);
     },

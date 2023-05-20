@@ -1,4 +1,4 @@
-import { SimpleNumMap } from "../../util/simpleTypes.js";
+import { SimpleNumMap } from "../../shared/util/simpleTypes.js";
 
 export interface Loss {
   payout: number;

@@ -57,9 +57,9 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
 import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
-import { SimpleMap, SimpleNumMap } from "../../util/simpleTypes";
+import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
 
-import { Payload } from "../../route/api/character/skills";
+import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET";
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
@@ -79,7 +79,7 @@ export default defineComponent({
       skillGroups: null,
       promise: null,
     } as {
-      queue: null | { entries: QueueItem[] };
+      queue: null | Character_Skills_GET["queue"];
       skillGroups: null | SkillGroup[];
       promise: Promise<any> | null;
     };
@@ -119,7 +119,7 @@ export default defineComponent({
       }
     },
 
-    processData(data: Payload) {
+    processData(data: Character_Skills_GET) {
       let skillMap: SimpleNumMap<Skill> = {};
       for (let skill of <Skill[]>data.skills) {
         skillMap[skill.id] = skill;
@@ -129,8 +129,18 @@ export default defineComponent({
 
       if (data.queue != undefined) {
         this.queue = data.queue;
-        for (let qe of this.queue.entries) {
+        for (let qe of <QueueItem[]>this.queue.entries) {
           let skill = skillMap[qe.id];
+
+          if (skill == undefined) {
+            skill = {
+              id: 0,
+              group: 0,
+              level: 0,
+              name: "Unknown Skill",
+              sp: 0,
+            };
+          }
           skill.queuedLevel = qe.targetLevel;
           qe.skill = skill;
         }

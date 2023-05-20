@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.common.json",
+
+  "compilerOptions": {
+    "outDir": "../../out/client",
+
+    "target": "ES2020",
+    "module": "ES2022",
+    "moduleResolution": "node"
+  },
+
+  "references": [{ "path": "../shared" }]
+}

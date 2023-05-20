@@ -42,7 +42,7 @@ import _ from "underscore";
 import EveImage from "../shared/EveImage.vue";
 
 import ajaxer from "../shared/ajaxer";
-import { CharacterDescription } from "../../route/api/account/characters_GET";
+import { CharacterDescription } from "../../shared/route/api/account/characters_GET";
 
 import { defineComponent } from "vue";
 export default defineComponent({

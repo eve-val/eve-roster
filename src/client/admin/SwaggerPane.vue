@@ -6,8 +6,11 @@
 import { defineComponent, inject } from "vue";
 import SwaggerUI from "swagger-ui";
 import { useRoute } from "vue-router";
+import { RouteReader } from "../shared/RouteReader";
 
 export default defineComponent({
+  mixins: [RouteReader],
+
   setup() {
     const csrf = inject("csrf");
     return { csrf };
@@ -45,7 +48,7 @@ export default defineComponent({
       },
       onComplete: () => {
         if (useRoute().params.id) {
-          this.ui?.preauthorizeApiKey("proxy", useRoute().params.id);
+          this.ui?.preauthorizeApiKey("proxy", this.route().params.id);
         }
       },
     });
