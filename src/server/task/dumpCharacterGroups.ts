@@ -11,7 +11,7 @@ export const dumpCharacterGroups: Task = {
   name: "dumpCharacterGroups",
   displayName: "Dump groups",
   description: "Saves JSON file for slamgt with character/group associations.",
-  timeout: moment.duration(5, "minutes").asMilliseconds(),
+  timeout: moment.duration(30, "seconds").asMilliseconds(),
   executor,
 };
 
