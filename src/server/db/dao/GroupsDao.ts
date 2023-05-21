@@ -48,6 +48,21 @@ export default class GroupsDao {
       });
   }
 
+  getAllGroupsByAccount(db: Tnex) {
+    return db
+      .select(accountGroup)
+      .columns("accountGroup_group", "accountGroup_account")
+      .run()
+      .then((rows) => {
+        return rows.reduce((ret, row) => {
+          const prev = ret.get(row.accountGroup_account) ?? [];
+          prev.push(row.accountGroup_group);
+          ret.set(row.accountGroup_account, prev);
+          return ret;
+        }, new Map<number, string[]>());
+      });
+  }
+
   setAccountGroups(db: Tnex, accountId: number, groups: string[]) {
     return db.transaction((db) => {
       let oldGroups: string[];

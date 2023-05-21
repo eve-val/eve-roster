@@ -1,5 +1,6 @@
 import moment from "moment";
 
+import { dumpCharacterGroups } from "../task/dumpCharacterGroups.js";
 import { syncCharacterLocations } from "../task/syncCharacterLocations.js";
 import { syncCombatStats } from "../task/syncCombatStats.js";
 import { syncKillmails } from "../task/syncKillmails.js";
@@ -74,6 +75,13 @@ export const SCHEDULED_TASKS: TaskSchedule[] = [
     schedule: "27 * * * * *", // 27th second of every minute
     interval: moment.duration(1, "minutes").asMilliseconds(),
     channel: "notification",
+    silent: true,
+  },
+  {
+    task: dumpCharacterGroups,
+    schedule: "55 * * * * *", // 55th second of every minute
+    interval: moment.duration(1, "minutes").asMilliseconds(),
+    channel: "dump",
     silent: true,
   },
 ];
