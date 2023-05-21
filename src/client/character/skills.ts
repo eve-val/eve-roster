@@ -42,8 +42,8 @@ for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
 
 import * as api from "../../shared/route/api/character/skills_GET.js";
 
-export interface Skill extends api.Skill {
-  queuedLevel?: number;
+export interface Skill extends api.CharacterSkillJson {
+  queuedLevel: number;
 }
 export interface SkillGroup {
   id: string;
@@ -53,7 +53,7 @@ export interface SkillGroup {
 }
 
 export interface QueueItem extends api.QueueEntryJson {
-  skill?: Skill;
+  skill: Skill;
 }
 
 /**

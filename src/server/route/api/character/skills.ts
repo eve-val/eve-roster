@@ -15,12 +15,14 @@ import {
   AccessTokenErrorType,
 } from "../../../error/AccessTokenError.js";
 import * as time from "../../../util/time.js";
-import { defaultSkillName } from "../../../domain/skills/defaultSkillName.js";
 import {
+  CharacterSkillJson,
   Character_Skills_GET,
   CompletedQueueEntryJson,
   QueueEntryJson,
 } from "../../../../shared/route/api/character/skills_GET.js";
+import { arrayToMap } from "../../../../shared/util/collections.js";
+import { getAllSdeSkills } from "../../../eve/sde.js";
 
 export default jsonEndpoint(function (
   req,
@@ -104,16 +106,27 @@ function consumeOrThrowError(e: any) {
   }
 }
 
-function transformSkills(skills: SkillsheetEntry[]) {
-  return skills.map((skill) => {
-    return {
-      id: skill.skillsheet_skill,
-      name: skill.styp_name || defaultSkillName(skill.skillsheet_skill),
-      group: skill.styp_group,
-      level: skill.skillsheet_level,
-      sp: skill.skillsheet_skillpoints,
-    };
-  });
+function transformSkills(learnedSkills: SkillsheetEntry[]) {
+  // Note that because we iterate over only known skills here, new skills won't
+  // appear here until the SDE gets updated. Which is probably fine, because
+  // those skills would have to be called something useless like
+  // "Unknown Skill".
+
+  const learnedSkillMap = arrayToMap(learnedSkills, "skillsheet_skill");
+
+  const transformedSkills = [] as CharacterSkillJson[];
+  for (const eveSkill of getAllSdeSkills()) {
+    const learnedSkill = learnedSkillMap.get(eveSkill.id);
+    transformedSkills.push({
+      id: eveSkill.id,
+      name: eveSkill.name,
+      group: eveSkill.group,
+      level: learnedSkill?.skillsheet_level || 0,
+      sp: learnedSkill?.skillsheet_skillpoints || 0,
+    });
+  }
+
+  return transformedSkills;
 }
 
 function transformQueue(queue: NamedSkillQueueRow[]) {

@@ -4,7 +4,7 @@
       <loading-spinner :promise="promise" display="block" size="30px" />
 
       <template v-if="queue != null">
-        <div class="section-title">Training queue</div>
+        <div class="section-titletext">Training queue</div>
         <div v-if="queue.entries.length == 0" class="empty-queue">
           Skill queue is empty
         </div>
@@ -24,9 +24,36 @@
         </template>
       </template>
 
-      <template v-if="skillGroups != null">
-        <div class="section-title">Skills</div>
-        <div v-for="skillGroup in skillGroups" :key="skillGroup.id">
+      <template v-if="displaySkillTree.length > 0">
+        <div
+          class="section-title skills-title"
+          @mouseenter="allSkillsToggleVisible = true"
+          @mouseleave="allSkillsToggleVisible = false"
+        >
+          Skills
+          <transition name="skills-toggle">
+            <tool-tip
+              v-if="allSkillsToggleVisible"
+              class="all-skills-toggle-container"
+              gravity="right"
+            >
+              <button
+                class="all-skills-toggle"
+                :style="skillToggleButtonStyle"
+                @click="showAllSkills = !showAllSkills"
+              ></button>
+              <template #message>
+                {{
+                  showAllSkills
+                    ? "Showing all skills"
+                    : "Hiding untrained skills"
+                }}
+              </template>
+            </tool-tip>
+          </transition>
+        </div>
+
+        <div v-for="skillGroup in displaySkillTree" :key="skillGroup.id">
           <div class="skillgroup-title">
             {{ skillGroup.name }}
           </div>
@@ -51,21 +78,27 @@
 </template>
 
 <script lang="ts">
-import ajaxer from "../shared/ajaxer";
-import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import { CSSProperties, defineComponent, PropType, shallowRef } from "vue";
 
+import LoadingSpinner from "../shared/LoadingSpinner.vue";
+import ToolTip from "../shared/ToolTip.vue";
 import QueueEntry from "./QueueEntry.vue";
 import SkillPips from "./SkillPips.vue";
-import { Skill, SkillGroup, QueueItem, groupifySkills } from "./skills";
-import { SimpleMap, SimpleNumMap } from "../../shared/util/simpleTypes";
 
+import ajaxer from "../shared/ajaxer";
+import { Skill, QueueItem, groupifySkills } from "./skills";
+import { SimpleMap } from "../../shared/util/simpleTypes";
 import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET";
-import { defineComponent, PropType } from "vue";
+
+import rocketIconStroke from "./SkillSheet_rocket_launch_stroke.svg";
+import rocketIconFill from "./SkillSheet_rocket_launch_fill.svg";
+
 export default defineComponent({
   components: {
     LoadingSpinner,
-    SkillPips,
     QueueEntry,
+    SkillPips,
+    ToolTip,
   },
 
   props: {
@@ -73,15 +106,20 @@ export default defineComponent({
     access: { type: Object as PropType<SimpleMap<number>>, required: true },
   },
 
+  setup() {
+    const rawSkills = shallowRef(new Map<number, Skill>());
+
+    return {
+      rawSkills,
+    };
+  },
+
   data() {
     return {
-      queue: null,
-      skillGroups: null,
-      promise: null,
-    } as {
-      queue: null | Character_Skills_GET["queue"];
-      skillGroups: null | SkillGroup[];
-      promise: Promise<any> | null;
+      queue: null as Character_Skills_GET["queue"] | null,
+      promise: null as Promise<any> | null,
+      showAllSkills: true,
+      allSkillsToggleVisible: false,
     };
   },
 
@@ -93,12 +131,34 @@ export default defineComponent({
     canReadSkills: function (): boolean {
       return this.access != null && this.access["characterSkills"] >= 1;
     },
+
+    displaySkillTree() {
+      const skills = [] as Skill[];
+      for (const skill of this.rawSkills.values()) {
+        if (skill.level > 0 || this.showAllSkills) {
+          skills.push(skill);
+        }
+      }
+      return groupifySkills(skills);
+    },
+
+    skillToggleButtonStyle() {
+      const style = {} as CSSProperties;
+
+      if (this.showAllSkills) {
+        style.backgroundImage = `url(${rocketIconFill})`;
+      } else {
+        style.backgroundImage = `url(${rocketIconStroke})`;
+      }
+
+      return style;
+    },
   },
 
   watch: {
     characterId: function (_value: number) {
       this.queue = null;
-      this.skillGroups = null;
+      this.rawSkills = new Map<number, Skill>();
 
       this.fetchData();
     },
@@ -120,34 +180,55 @@ export default defineComponent({
     },
 
     processData(data: Character_Skills_GET) {
-      let skillMap: SimpleNumMap<Skill> = {};
-      for (let skill of <Skill[]>data.skills) {
-        skillMap[skill.id] = skill;
-        skill.queuedLevel = undefined;
+      const newSkillMap = new Map<number, Skill>();
+
+      // Process skills
+      for (let jsonSkill of data.skills) {
+        newSkillMap.set(jsonSkill.id, {
+          id: jsonSkill.id,
+          name: jsonSkill.name,
+          group: jsonSkill.group,
+          level: jsonSkill.level,
+          sp: jsonSkill.sp,
+          queuedLevel: 0,
+        });
       }
-      this.skillGroups = groupifySkills(data.skills);
+      this.rawSkills = newSkillMap;
 
+      // Process queue
       if (data.queue != undefined) {
-        this.queue = data.queue;
-        for (let qe of <QueueItem[]>this.queue.entries) {
-          let skill = skillMap[qe.id];
+        const queueItems = data.queue.entries.map((qiJson) => {
+          let skill = newSkillMap.get(qiJson.id) || unknownSkill();
 
-          if (skill == undefined) {
-            skill = {
-              id: 0,
-              group: 0,
-              level: 0,
-              name: "Unknown Skill",
-              sp: 0,
-            };
-          }
-          skill.queuedLevel = qe.targetLevel;
-          qe.skill = skill;
-        }
+          const queueItem: QueueItem = {
+            ...qiJson,
+            skill: skill,
+          };
+
+          skill.queuedLevel = queueItem.targetLevel;
+
+          return queueItem;
+        });
+
+        this.queue = {
+          ...data.queue,
+          entries: queueItems,
+        };
       }
     },
   },
 });
+
+function unknownSkill(): Skill {
+  return {
+    id: 0,
+    group: 0,
+    level: 0,
+    name: "Unknown Skill",
+    sp: 0,
+    queuedLevel: 0,
+  };
+}
 </script>
 
 <style scoped>
@@ -156,6 +237,26 @@ export default defineComponent({
   color: #a7a29c;
   margin: 40px 0 20px 0;
   font-weight: 300;
+}
+
+.skills-title {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.all-skills-toggle-container {
+  margin-left: 10px;
+}
+
+.all-skills-toggle {
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  background-size: contain;
+  cursor: pointer;
 }
 
 ._loading-spinner + .section-title {
@@ -208,5 +309,15 @@ export default defineComponent({
   color: #8a8a8a;
   font-size: 14px;
   margin-right: 13px;
+}
+
+.skills-toggle-enter-active,
+.skills-toggle-leave-active {
+  transition: opacity 250ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.skills-toggle-enter-from,
+.skills-toggle-leave-to {
+  opacity: 0;
 }
 </style>
