@@ -9,7 +9,7 @@ import { Task } from "../infra/taskrunner/Task.js";
 
 export const dumpCharacterGroups: Task = {
   name: "dumpCharacterGroups",
-  displayName: "Dump main characters and groups",
+  displayName: "Dump groups",
   description: "Saves JSON file for slamgt with character/group associations.",
   timeout: moment.duration(5, "minutes").asMilliseconds(),
   executor,
