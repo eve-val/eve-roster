@@ -184,21 +184,16 @@ export default defineComponent({
 
   data() {
     return {
-      coreData: null,
-      skillsMap: null,
-      queue: null,
-      promise: null,
-    } as {
-      coreData: {
+      coreData: null as {
         character: Character;
         account: Account;
         access: SimpleMap<number>;
         timezones: string[] | undefined;
         citadels: string[] | undefined;
-      } | null;
-      skillsMap: SimpleNumMap<Skill> | null;
-      queue: { id: number; targetLevel: number }[] | null;
-      promise: Promise<any> | null;
+      } | null,
+      skillsMap: null as SimpleNumMap<Skill> | null,
+      queue: null as { id: number; targetLevel: number }[] | null,
+      promise: null as Promise<any> | null,
     };
   },
 
@@ -261,7 +256,6 @@ export default defineComponent({
 
   watch: {
     characterId(_value: number) {
-      console.log("CharacterId changed to", _value);
       // We've transitioned from one character to another, so this component
       // is getting reused. Null out our data and fetch new data...
       this.coreData = null;
@@ -298,24 +292,6 @@ export default defineComponent({
         return formatNumber(this.character.totalSp);
       } else {
         return "-";
-      }
-    },
-
-    processSkillsData(skills: Skill[]) {
-      let map: SimpleNumMap<Skill> = {};
-      for (let skill of skills) {
-        map[skill.id] = skill;
-        skill.queuedLevel = undefined;
-      }
-      this.skillsMap = map;
-      this.maybeInjectQueueDataIntoSkillsMap();
-    },
-
-    maybeInjectQueueDataIntoSkillsMap() {
-      if (this.skillsMap != null && this.queue != null) {
-        for (let queueItem of this.queue) {
-          this.skillsMap[queueItem.id].queuedLevel = queueItem.targetLevel;
-        }
       }
     },
 

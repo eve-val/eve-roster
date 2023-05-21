@@ -24,6 +24,10 @@ export async function loadStaticData(
   skillDefinitions = _skillDefinitions;
 }
 
+export function getAllSdeSkills(): Iterable<SdeSkill> {
+  return skillDefinitions.values();
+}
+
 export function getSkillDefinition(skillId: number) {
   let skillDef = skillDefinitions.get(skillId);
   if (!skillDef) {

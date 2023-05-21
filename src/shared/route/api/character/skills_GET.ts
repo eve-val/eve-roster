@@ -1,5 +1,5 @@
 export interface Character_Skills_GET {
-  skills: Skill[];
+  skills: CharacterSkillJson[];
   // Only present if account can read this character's skill queue
   queue?: {
     entries: QueueEntryJson[];
@@ -10,7 +10,7 @@ export interface Character_Skills_GET {
   warning?: string;
 }
 
-export interface Skill {
+export interface CharacterSkillJson {
   id: number;
   name: string;
   group: number | null;
