@@ -27,6 +27,9 @@ async function executor(db: Tnex, _job: JobLogger) {
       return ret;
     })
     .then((mainsToGroups) => {
-      fs.writeFileSync("./userdump.json", JSON.stringify(mainsToGroups));
+      fs.writeFileSync(
+        "./userdump.json",
+        JSON.stringify(Object.fromEntries(mainsToGroups))
+      );
     });
 }
