@@ -99,6 +99,7 @@ export default class CronDao {
         // Filter out all syncCharacter & syncNotifications location entries
         // unless they ended in error or were run in the last minute.
         .whereNotIn("cronLog_task", [
+          "dumpCharacterGroups",
           "syncCharacterLocations",
           "syncNotifications",
         ])
