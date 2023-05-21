@@ -2,6 +2,7 @@ import _ from "underscore";
 
 import { Task } from "../infra/taskrunner/Task.js";
 
+import { dumpCharacterGroups } from "../task/dumpCharacterGroups.js";
 import { syncCharacterLocations } from "../task/syncCharacterLocations.js";
 import { syncCombatStats } from "../task/syncCombatStats.js";
 import { syncKillmails } from "../task/syncKillmails.js";
@@ -21,6 +22,7 @@ import { getEnv } from "../infra/init/Env.js";
  * List of tasks that can be manually invoked from the admin UI.
  */
 const TASKS: Task[] = [
+  dumpCharacterGroups,
   syncRoster,
   syncCombatStats,
   syncCharacterLocations,
