@@ -3359,10 +3359,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.2.1":
-  version: 20.2.1
-  resolution: "@types/node@npm:20.2.1"
-  checksum: d8431e663a93580f9b8f87c5f3db3cdaa32d3ffbe806820975d90f8d2c571928b67e35314dc3abe9a6cd590329fd8030ba7295e824262d5604d922bce6750348
+"@types/node@npm:^20.2.3":
+  version: 20.2.3
+  resolution: "@types/node@npm:20.2.3"
+  checksum: c98c23ca2f2aecf0ff26f368cbecc617b681ad4a5385af6ecb2f2ae4cf421409fe9a3bf243cea4ba7bf30f84b11e51ca432d26ee417aefbed136857506086099
   languageName: node
   linkType: hard
 
@@ -6683,7 +6683,7 @@ __metadata:
     "@types/heapdump": "npm:^0.3.1"
     "@types/imagemin": "npm:^8.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
-    "@types/node": "npm:^20.2.1"
+    "@types/node": "npm:^20.2.3"
     "@types/node-schedule": "npm:^2.1.0"
     "@types/pg": "npm:^8.6.6"
     "@types/pg-pool": "npm:^2.0.3"
