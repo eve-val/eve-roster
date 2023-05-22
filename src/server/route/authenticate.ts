@@ -209,6 +209,16 @@ async function authenticateChar(
           `You must create an account before you log in.`
         );
       } else {
+        // If ownerHash has been manually cleared, populate on login.
+        if (ownerHash == null) {
+          await dao.ownership.ownCharacter(
+            db,
+            charInfo.id,
+            owningAccount,
+            charInfo.ownerHash,
+            false
+          );
+        }
         authedAccount = owningAccount;
       }
       break;
