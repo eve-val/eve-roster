@@ -15,12 +15,17 @@ export default class OwnershipDao {
   ) {
     return db.transaction((db) => {
       return db
-        .insert(ownership, {
-          ownership_account: accountId,
-          ownership_character: characterId,
-          ownership_ownerHash: ownerHash,
-          ownership_opsec: false,
-        })
+        .upsert(
+          ownership,
+          {
+            ownership_account: accountId,
+            ownership_character: characterId,
+            ownership_ownerHash: ownerHash,
+            ownership_opsec: false,
+          },
+          "ownership_character",
+          {}
+        )
         .then(() => {
           return this._dao.log.logEvent(
             db,
