@@ -3569,10 +3569,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/underscore@npm:^1.11.4":
-  version: 1.11.4
-  resolution: "@types/underscore@npm:1.11.4"
-  checksum: ad935f17aff0100c97068bcbd9d93893d337826794acced2814c5a6ef69f6bf4c9f2f8f9b140890ade895135487464b268de793969eb0f1502a70295eb436acd
+"@types/underscore@npm:^1.11.5":
+  version: 1.11.5
+  resolution: "@types/underscore@npm:1.11.5"
+  checksum: 171970c5283fbfda4cc87a1ce3d259ed3a597e006c070f4d88fc9fefcaa5a2106a025336f4a29e3338e2df70a28d46ee77bac989c625940a70956be1fe32780e
   languageName: node
   linkType: hard
 
@@ -6694,7 +6694,7 @@ __metadata:
     "@types/sqlite3": "npm:^3.1.8"
     "@types/swagger-ui": "npm:^3.52.0"
     "@types/tmp": "npm:^0.2.3"
-    "@types/underscore": "npm:^1.11.4"
+    "@types/underscore": "npm:^1.11.5"
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-hot-middleware": "npm:^2.25.6"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.7"
