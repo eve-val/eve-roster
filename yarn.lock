@@ -5492,21 +5492,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.7.4":
-  version: 6.7.4
-  resolution: "css-loader@npm:6.7.4"
+"css-loader@npm:^6.8.0":
+  version: 6.8.0
+  resolution: "css-loader@npm:6.8.0"
   dependencies:
     icss-utils: "npm:^5.1.0"
     postcss: "npm:^8.4.21"
     postcss-modules-extract-imports: "npm:^3.0.0"
-    postcss-modules-local-by-default: "npm:^4.0.1"
+    postcss-modules-local-by-default: "npm:^4.0.3"
     postcss-modules-scope: "npm:^3.0.0"
     postcss-modules-values: "npm:^4.0.0"
     postcss-value-parser: "npm:^4.2.0"
     semver: "npm:^7.3.8"
   peerDependencies:
     webpack: ^5.0.0
-  checksum: 52e571bb97697dc4504ba7f26153a40a08bf46d7cd6f34b35f489d34a12ca285d1f4f995c57a3c7c34df548d431313574dbdee8cb91c4fd10fc3e4755ad9e7bb
+  checksum: cf8ca19a82be80a7999def8fd5a401e1b13cc2a1b8d65a75d10d7784d9f367dfea0dd219b22e0ac3ed9233cfc69e440aff5a36bdb482dac66f849433bd4017c7
   languageName: node
   linkType: hard
 
@@ -6698,7 +6698,7 @@ __metadata:
     cleanup-mini-css-extract-plugin: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.6"
     cookie-session: "npm:^2.0.0"
-    css-loader: "npm:^6.7.4"
+    css-loader: "npm:^6.8.0"
     css-minimizer-webpack-plugin: "npm:^5.0.0"
     csurf: "npm:^1.11.0"
     dotenv: "npm:^16.0.3"
@@ -10860,16 +10860,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-modules-local-by-default@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "postcss-modules-local-by-default@npm:4.0.1"
+"postcss-modules-local-by-default@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "postcss-modules-local-by-default@npm:4.0.3"
   dependencies:
     icss-utils: "npm:^5.0.0"
     postcss-selector-parser: "npm:^6.0.2"
     postcss-value-parser: "npm:^4.1.0"
   peerDependencies:
     postcss: ^8.1.0
-  checksum: 23b2c224b734301ec194c5e7e12e40a6579386c4c3b0528768879f713480598cd8d2f058e2a9a6ecf911fcc47ee31ff87e2fc7662be91d468583519ce6fc4c52
+  checksum: d80de6328b9858544e533aebdb60c6c837d67e89de5b93b4850d948e2fec4b56c00f33ab4db674cd59fe49f63c4d89437e69a350fef0d8165ce11b36396d6a45
   languageName: node
   linkType: hard
 
