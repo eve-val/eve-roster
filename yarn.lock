@@ -4419,36 +4419,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webpack-cli/configtest@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@webpack-cli/configtest@npm:2.1.0"
+"@webpack-cli/configtest@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@webpack-cli/configtest@npm:2.1.1"
   peerDependencies:
     webpack: 5.x.x
     webpack-cli: 5.x.x
-  checksum: 7c0c762995c5da5a3aa18dd6475d4ff40262785fe82f6bda984677c2701552855611e33fa0f20e6fc4766b59a2d1ea65a4be34fef414e9735dc505907810b376
+  checksum: 6d09369a46eb84f75ec1a21185a65057951b9853215ce177c1ec7d9759eed5df1773e4c8816dbe13c42a77e899faa1e079e2c24f620bbee17525ea0c91e2fa46
   languageName: node
   linkType: hard
 
-"@webpack-cli/info@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@webpack-cli/info@npm:2.0.1"
+"@webpack-cli/info@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@webpack-cli/info@npm:2.0.2"
   peerDependencies:
     webpack: 5.x.x
     webpack-cli: 5.x.x
-  checksum: 773e0212ee14059edc67896dffaf56c307bf3c2365b606dc314142be0b02c4da64c29a2b48b99b715513f8d896b282898ad24200a9b6eced2a3a6f032f5520a0
+  checksum: cc8e0cbbd2170b41a15f618f44e9e9c53f17510e3181f03229333bb34329376e9675e31e586df11e7585dc96c81d82ccf6c85a511ee0d26821918b717b29bae1
   languageName: node
   linkType: hard
 
-"@webpack-cli/serve@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@webpack-cli/serve@npm:2.0.4"
+"@webpack-cli/serve@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@webpack-cli/serve@npm:2.0.5"
   peerDependencies:
     webpack: 5.x.x
     webpack-cli: 5.x.x
   peerDependenciesMeta:
     webpack-dev-server:
       optional: true
-  checksum: 8b8351bae6831057b1dcca535debcdc81af282fd3743d190686ad9f63e4b43c4d6f2cebe12a43bf956cac7b9c94435b243c6a72f4912b0c033b4cdd1eac29bdf
+  checksum: 2819b59e6e12cbc45c3924011729b24c31ae95e690545871aacef48611be52aecd3ef3f42d713a98132b5f582ef3c72a63aa6c4f1b3ae54e734e95e4f4a7106e
   languageName: node
   linkType: hard
 
@@ -7087,7 +7087,7 @@ __metadata:
     vue-router: "npm:^4.2.2"
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.83.1"
-    webpack-cli: "npm:^5.1.1"
+    webpack-cli: "npm:^5.1.3"
     webpack-dev-middleware: "npm:^6.1.1"
     webpack-hot-middleware: "npm:^2.25.3"
     webpack-merge: "npm:^5.9.0"
@@ -14269,14 +14269,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-cli@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "webpack-cli@npm:5.1.1"
+"webpack-cli@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "webpack-cli@npm:5.1.3"
   dependencies:
     "@discoveryjs/json-ext": "npm:^0.5.0"
-    "@webpack-cli/configtest": "npm:^2.1.0"
-    "@webpack-cli/info": "npm:^2.0.1"
-    "@webpack-cli/serve": "npm:^2.0.4"
+    "@webpack-cli/configtest": "npm:^2.1.1"
+    "@webpack-cli/info": "npm:^2.0.2"
+    "@webpack-cli/serve": "npm:^2.0.5"
     colorette: "npm:^2.0.14"
     commander: "npm:^10.0.1"
     cross-spawn: "npm:^7.0.3"
@@ -14297,7 +14297,7 @@ __metadata:
       optional: true
   bin:
     webpack-cli: bin/cli.js
-  checksum: a563d2d6b6d4bc8f7e091b081773f64e094108af48cad6038edf050939f38e1d11873167252702166749a43e0287c811f5d094f6af4c260947619f9ce9dc3c8d
+  checksum: f9a62640c45c50490df9d1ed0ec6006dee2e8d774f6f6ab962da7ee32bf01e800952150df8a945360605edc3a60874a4a92b4835f82ce01567096e8a63652ce0
   languageName: node
   linkType: hard
 
