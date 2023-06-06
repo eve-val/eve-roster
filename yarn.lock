@@ -5781,9 +5781,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.8.0":
-  version: 6.8.0
-  resolution: "css-loader@npm:6.8.0"
+"css-loader@npm:^6.8.1":
+  version: 6.8.1
+  resolution: "css-loader@npm:6.8.1"
   dependencies:
     icss-utils: "npm:^5.1.0"
     postcss: "npm:^8.4.21"
@@ -5795,7 +5795,7 @@ __metadata:
     semver: "npm:^7.3.8"
   peerDependencies:
     webpack: ^5.0.0
-  checksum: cf8ca19a82be80a7999def8fd5a401e1b13cc2a1b8d65a75d10d7784d9f367dfea0dd219b22e0ac3ed9233cfc69e440aff5a36bdb482dac66f849433bd4017c7
+  checksum: 0a9798b05990a1bdd4da437c8cb3ec4730b1b86d1781992dee8be8c34d4e29119bdb53ef878161f6bbb7bc579fc42cc90f9a13ccb68715bde7ba03468294b564
   languageName: node
   linkType: hard
 
@@ -6987,7 +6987,7 @@ __metadata:
     cleanup-mini-css-extract-plugin: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.6"
     cookie-session: "npm:^2.0.0"
-    css-loader: "npm:^6.8.0"
+    css-loader: "npm:^6.8.1"
     css-minimizer-webpack-plugin: "npm:^5.0.0"
     csurf: "npm:^1.11.0"
     dotenv: "npm:^16.0.3"
