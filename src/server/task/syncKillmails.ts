@@ -23,7 +23,7 @@ export const syncKillmails: Task = {
   name: "syncKillmails",
   displayName: "Sync corp killmails",
   description: "Used to track SRP",
-  timeout: moment.duration(5, "minutes").asMilliseconds(),
+  timeout: moment.duration(20, "minutes").asMilliseconds(),
   executor,
 };
 
@@ -33,7 +33,7 @@ async function executor(db: Tnex, job: JobLogger) {
     "srpJurisdiction",
     "killmailSyncRanges"
   );
-  const memberCorps = await dao.config.getMemberCorporations(db);
+  const memberCorps = await dao.config.getSrpMemberCorporations(db);
 
   if (config.srpJurisdiction == null) {
     return;
