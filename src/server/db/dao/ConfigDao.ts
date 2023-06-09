@@ -127,4 +127,17 @@ export default class ConfigDao {
       .columns("groupTitle_title", "groupTitle_group")
       .run();
   }
+
+  getSrpMemberCorporations(db: Tnex) {
+    return db
+      .select(memberCorporation)
+      .where("mcorp_membership", "=", val("full"))
+      .columns(
+        "mcorp_corporationId",
+        "mcorp_membership",
+        "mcorp_name",
+        "mcorp_ticker"
+      )
+      .run();
+  }
 }
