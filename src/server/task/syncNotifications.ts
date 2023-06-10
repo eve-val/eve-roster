@@ -93,13 +93,19 @@ async function executor(db: Tnex, job: JobLogger) {
       try {
         await updateCharacter(db, characterId);
       } catch (e) {
-        ++errors;
-        if (e instanceof AccessTokenError || isAnyEsiError(e)) {
+        if (e instanceof AccessTokenError) {
+          logger.info(
+            `Access token error while fetching notifications for char ${characterId}.`,
+            e
+          );
+        } else if (isAnyEsiError(e)) {
+          ++errors;
           logger.warn(
             `ESI error while fetching notifications for char ${characterId}.`,
             e
           );
         } else {
+          ++errors;
           throw e;
         }
       } finally {
