@@ -62,6 +62,13 @@ export class TokenRefresher {
       errorType: null,
     };
 
+    if (!row.accessToken_refreshToken) {
+      // An empty refresh token means we don't currently have valid SSO for this
+      // character, and should not even attempt to refresh the access token.
+      result.errorType = AccessTokenErrorType.TOKEN_REFRESH_REJECTED;
+      return result;
+    }
+
     try {
       const response = await this._postRefreshRequest(
         row.accessToken_refreshToken
