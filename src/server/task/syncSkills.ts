@@ -65,10 +65,10 @@ function executor(db: Tnex, job: JobLogger) {
         );
         const errorCount = characterIds.length - successCount;
         if (errorCount > 0) {
-          job.warn(
+          job.info(
             `Failed to update ${errorCount}/${characterIds.length}` +
               ` characters' skills {${esiFailureCount} ESI errors,` +
-              ` ${accessTokenFailureCount} access token errors.`
+              ` ${accessTokenFailureCount} access token errors}.`
           );
         }
       });
