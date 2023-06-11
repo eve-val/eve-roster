@@ -2,6 +2,7 @@ import _ from "underscore";
 import moment from "moment";
 import { getAccessToken } from "../data-source/accessToken/accessToken.js";
 import { isAnyEsiError } from "../data-source/esi/error.js";
+import { EsiErrorKind } from "../data-source/esi/EsiError.js";
 import { EsiNotification } from "../data-source/esi/EsiNotification.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints.js";
@@ -99,6 +100,12 @@ async function executor(db: Tnex, job: JobLogger) {
             e
           );
         } else if (isAnyEsiError(e)) {
+          if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
+            logger.info(
+              `Marking access token as expired for char ${characterId} due to 403.`
+            );
+            dao.accessToken.markAsExpired(db, characterId);
+          }
           ++errors;
           logger.warn(
             `ESI error while fetching notifications for char ${characterId}.`,
