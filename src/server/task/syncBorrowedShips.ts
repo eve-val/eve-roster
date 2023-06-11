@@ -65,7 +65,7 @@ class LocationCache {
         // If the character cannot access the structure, stop fetching names to
         // avoid running into ESI error limits.
         if (isAnyEsiError(e) && e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
-          logger.warn(`unable to fetch location ${sid}: ${e.message}`);
+          logger.info(`unable to fetch location ${sid}: ${e.message}`);
           return;
         }
         // All other errors are unexpected, bubble them up.
