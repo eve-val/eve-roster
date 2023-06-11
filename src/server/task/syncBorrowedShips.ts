@@ -241,9 +241,9 @@ async function executor(db: Tnex, job: JobLogger) {
       } else if (isAnyEsiError(e)) {
         if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
           logger.info(
-            `Marking access token as expired for char ${characterId} due to 403.`
+            `Marking access token as invalid for char ${characterId} due to 403.`
           );
-          dao.accessToken.markAsExpired(db, characterId);
+          dao.accessToken.markAsInvalid(db, characterId);
         }
         ++errors;
         logger.warn(
