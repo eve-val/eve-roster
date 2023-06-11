@@ -68,6 +68,30 @@ export default class AccessTokenDao {
       });
   }
 
+  /**
+   * Stronger than markAsExpired - this indicates that not only is the access
+   * token expired, but the underlying refresh token is in some way flawed (e.g.
+   * doesn't have the correct scopes). Wipes out the existing refresh token so
+   * we won't try to use it again until a user re-authenticates the character
+   * with the roster app again.
+   */
+  markAsInvalid(db: Tnex, characterId: number) {
+    return db
+      .update(accessToken, {
+        accessToken_accessToken: "",
+        accessToken_accessTokenExpires: 0,
+        accessToken_refreshToken: "",
+        accessToken_needsUpdate: true,
+      })
+      .where("accessToken_character", "=", val(characterId))
+      .run()
+      .then((updateCount) => {
+        if (updateCount != 1) {
+          throw new Error(`No token to update for character ${characterId}.`);
+        }
+      });
+  }
+
   upsert(
     db: Tnex,
     characterId: number,
