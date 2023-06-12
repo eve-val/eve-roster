@@ -7034,7 +7034,7 @@ __metadata:
     typescript: "npm:^5.1.3"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.6"
-    url: "npm:^0.11.0"
+    url: "npm:^0.11.1"
     verror: "npm:^1.10.1"
     vue: "npm:^3.3.4"
     vue-eslint-parser: "npm:^9.3.0"
@@ -12018,6 +12018,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"punycode@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "punycode@npm:1.4.1"
+  checksum: 6c45a3cd2ba296ffd13488000e947a22b0e7885d2c570f04aef0f4f6f6008f1392b928c3f2bca5fe4c9030bbe94837bdb461050a941df286a597de741397ceb1
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^2.1.0":
   version: 2.1.1
   resolution: "punycode@npm:2.1.1"
@@ -12031,6 +12038,15 @@ __metadata:
   dependencies:
     side-channel: "npm:^1.0.4"
   checksum: 337966e2e957a7d2a69821c528f3d18a8b346ddb0f16cc08d11c6206aed3b6624927781ff437aa3909e54ad32ebdee2c5396ad4094b1c722760774f7082f6124
+  languageName: node
+  linkType: hard
+
+"qs@npm:^6.11.0":
+  version: 6.11.2
+  resolution: "qs@npm:6.11.2"
+  dependencies:
+    side-channel: "npm:^1.0.4"
+  checksum: 8a38f195494700a656b9e3c0d05d5c44fdd59c4ae9d66b4239d4a7fa38d0867b4ca794c00c45fccb3435aebe046304b7f5ccf558f2c0bc56b793407f282da086
   languageName: node
   linkType: hard
 
@@ -14030,7 +14046,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url@npm:^0.11.0, url@npm:~0.11.0":
+"url@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "url@npm:0.11.1"
+  dependencies:
+    punycode: "npm:^1.4.1"
+    qs: "npm:^6.11.0"
+  checksum: 4844bc64a0dce930f539b2f1c456da186a45df68395bf8726732b2c1cb94b3785a361cee97bafc20fcf9216102e3cedba7ad84377b4c230bf349d71ae7dfe7bb
+  languageName: node
+  linkType: hard
+
+"url@npm:~0.11.0":
   version: 0.11.0
   resolution: "url@npm:0.11.0"
   dependencies:
