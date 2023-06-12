@@ -245,11 +245,19 @@ async function executor(db: Tnex, job: JobLogger) {
           );
           dao.accessToken.markAsInvalid(db, characterId);
         }
-        ++errors;
-        logger.warn(
-          `ESI error while fetching ships for char ${characterId}.`,
-          e
-        );
+        if (e.kind == EsiErrorKind.INTERNAL_SERVER_ERROR) {
+          // Don't consider ISEs to be noteworthy failures on our side
+          logger.info(
+            `ESI server error while fetching ships for char ${characterId}.`,
+            e
+          );
+        } else {
+          ++errors;
+          logger.warn(
+            `ESI error while fetching ships for char ${characterId}.`,
+            e
+          );
+        }
       } else {
         ++errors;
         throw e;
