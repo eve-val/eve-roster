@@ -6698,9 +6698,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.14.1":
-  version: 9.14.1
-  resolution: "eslint-plugin-vue@npm:9.14.1"
+"eslint-plugin-vue@npm:^9.15.0":
+  version: 9.15.0
+  resolution: "eslint-plugin-vue@npm:9.15.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.3.0"
     natural-compare: "npm:^1.4.0"
@@ -6711,7 +6711,7 @@ __metadata:
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 814d8fc7184299b34e95def0e77dd52360c98315c6a502199f4963c56ffebd04cc4473e3e1c95f81fcfc6a43ae7635054b1c741c5a4ab084f016d4dc3ce30890
+  checksum: a28dcfbe9821fce71c7065baf605457788222961858e70091f1baaf623ac2f6767a58588f784a0d1fab062eb73c435c4d3cb568ebee4ed9356759d13f954aa9a
   languageName: node
   linkType: hard
 
@@ -7009,7 +7009,7 @@ __metadata:
     eslint-plugin-jest: "npm:^27.2.1"
     eslint-plugin-prettier: "npm:^4.2.1"
     eslint-plugin-prettier-vue: "npm:^4.2.0"
-    eslint-plugin-vue: "npm:^9.14.1"
+    eslint-plugin-vue: "npm:^9.15.0"
     esprint: "npm:^3.6.0"
     events: "npm:^3.3.0"
     express: "npm:^4.18.2"
