@@ -7042,7 +7042,7 @@ __metadata:
     vue-router: "npm:^4.2.2"
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.85.1"
-    webpack-cli: "npm:^5.1.3"
+    webpack-cli: "npm:^5.1.4"
     webpack-dev-middleware: "npm:^6.1.1"
     webpack-hot-middleware: "npm:^2.25.3"
     webpack-merge: "npm:^5.9.0"
@@ -14250,9 +14250,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-cli@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "webpack-cli@npm:5.1.3"
+"webpack-cli@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "webpack-cli@npm:5.1.4"
   dependencies:
     "@discoveryjs/json-ext": "npm:^0.5.0"
     "@webpack-cli/configtest": "npm:^2.1.1"
@@ -14278,7 +14278,7 @@ __metadata:
       optional: true
   bin:
     webpack-cli: bin/cli.js
-  checksum: f9a62640c45c50490df9d1ed0ec6006dee2e8d774f6f6ab962da7ee32bf01e800952150df8a945360605edc3a60874a4a92b4835f82ce01567096e8a63652ce0
+  checksum: 374f4a43c9ac4f4df5301e73f2e1cf1e6147b35a9385743d0009b505384f7821a82fa75c48967aca11d9ec837a8b3215855c4dc0ea02c9d6cad45c89fd7674c1
   languageName: node
   linkType: hard
 
