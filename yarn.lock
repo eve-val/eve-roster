@@ -171,10 +171,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-string-parser@npm:^7.21.5":
-  version: 7.21.5
-  resolution: "@babel/helper-string-parser@npm:7.21.5"
-  checksum: 83a322fdb4fa02f6ec35da3d48f7306344bed3f8f95555d1d7c02c172e0c68e51798910366f78ce4f1ef88a622f1be7a3ec96ca58b225d458dd16f057cda187a
+"@babel/helper-string-parser@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/helper-string-parser@npm:7.22.5"
+  checksum: b998b01b4778859c301ede18aea41abb0dcd0497191bdb216aa561741fe74f8651a8d7a486d4151a448c44d37a5a8603c0296b4d4e2f5388989dd86003952ad4
   languageName: node
   linkType: hard
 
@@ -185,10 +185,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-validator-identifier@npm:^7.19.1":
-  version: 7.19.1
-  resolution: "@babel/helper-validator-identifier@npm:7.19.1"
-  checksum: 089fdf605ee8dfa3004cd84c69e655ff9ab8bdb4e7fa02bf0012db728c6247acb599ca1118d2f9124d7b417fc5793ee348f2da8bc64be230b3b13ba7cd4364cc
+"@babel/helper-validator-identifier@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/helper-validator-identifier@npm:7.22.5"
+  checksum: ae436e63eca3aa0a70575a1a5ae8234307fdfe3b5c720002899bf49833c3abcde2b9b188ed10905f2c39013a95e49cc8356dd589cae80e03b39c3370c3e9de75
   languageName: node
   linkType: hard
 
@@ -462,14 +462,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.22.4":
-  version: 7.22.4
-  resolution: "@babel/types@npm:7.22.4"
+"@babel/types@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/types@npm:7.22.5"
   dependencies:
-    "@babel/helper-string-parser": "npm:^7.21.5"
-    "@babel/helper-validator-identifier": "npm:^7.19.1"
+    "@babel/helper-string-parser": "npm:^7.22.5"
+    "@babel/helper-validator-identifier": "npm:^7.22.5"
     to-fast-properties: "npm:^2.0.0"
-  checksum: 17c986be01b6cd19bbea2400b8773d706c0f8b573caeabba616862b9cbccf22ed3df4792e2a1d7cf41cd3ecd3a1ba481ad8be704c82de9f15f745619c04af98c
+  checksum: de48a2ae0e3765d0548e439432111c3e01176b6c3193bc155f0dc85f4b766421beced17871a676eab5dc29d8375bb47f77a0a33edb2d617a7a92db70f500eb05
   languageName: node
   linkType: hard
 
@@ -6937,7 +6937,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eve-roster@workspace:."
   dependencies:
-    "@babel/types": "npm:^7.22.4"
+    "@babel/types": "npm:^7.22.5"
     "@grpc/grpc-js": "npm:^1.8.7"
     "@jest/globals": "npm:^29.5.0"
     "@opentelemetry/api": "npm:1.4.1"
