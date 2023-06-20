@@ -4555,7 +4555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-keywords@npm:^5.0.0":
+"ajv-keywords@npm:^5.0.0, ajv-keywords@npm:^5.1.0":
   version: 5.1.0
   resolution: "ajv-keywords@npm:5.1.0"
   dependencies:
@@ -4587,6 +4587,18 @@ __metadata:
     require-from-string: "npm:^2.0.2"
     uri-js: "npm:^4.2.2"
   checksum: c4ea5946801eb67c19dbc1b6137f093186bc44e33f372841b09831fc413140ca31533f3a565320ff4e25eb78b24e2855f5a2d2fab077a4f68c98d74486e2c9da
+  languageName: node
+  linkType: hard
+
+"ajv@npm:^8.9.0":
+  version: 8.12.0
+  resolution: "ajv@npm:8.12.0"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.1"
+    json-schema-traverse: "npm:^1.0.0"
+    require-from-string: "npm:^2.0.2"
+    uri-js: "npm:^4.2.2"
+  checksum: adab5a15cfce05aa97767b5f01da510f79f351021c643b5593b001dc5063aac3822d9265da94f7e39fd32cc4054277e43728aa522f83d82daca50858a5c29361
   languageName: node
   linkType: hard
 
@@ -7005,7 +7017,7 @@ __metadata:
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:^5.5.3"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^3.8.2"
+    image-minimizer-webpack-plugin: "npm:^3.8.3"
     jest: "npm:^28.1.3"
     jose: "npm:^4.14.4"
     json-loader: "npm:^0.5.7"
@@ -8077,11 +8089,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^3.8.2":
-  version: 3.8.2
-  resolution: "image-minimizer-webpack-plugin@npm:3.8.2"
+"image-minimizer-webpack-plugin@npm:^3.8.3":
+  version: 3.8.3
+  resolution: "image-minimizer-webpack-plugin@npm:3.8.3"
   dependencies:
-    schema-utils: "npm:^4.0.0"
+    schema-utils: "npm:^4.2.0"
     serialize-javascript: "npm:^6.0.1"
   peerDependencies:
     webpack: ^5.1.0
@@ -8094,7 +8106,7 @@ __metadata:
       optional: true
     svgo:
       optional: true
-  checksum: ac568d035afe45e99b188cf02dbc6fa7e5f159e39889601203e8ec1ae25a166847253d6ec38897678ccd1c701388512a86bdc5120802948bb30a46758e83a846
+  checksum: b550b677fef1b6d46adae12cd1a8d3b08e63deceb2fe53c692acc356c819fb71250842ebe704d4e06d0fd7a74c968ceb8aeb52fb4e2a31499e9650c6fe2965a1
   languageName: node
   linkType: hard
 
@@ -12705,6 +12717,18 @@ __metadata:
     ajv-formats: "npm:^2.1.1"
     ajv-keywords: "npm:^5.0.0"
   checksum: 48cec913859fc9bdfe8b6bd5e242fe191e45c5c9a49435184fd1636aa2e32d6c1617b253742ab8ac390a78a1a4c192a1215c76f715469f0f1b8f8737f73d8c62
+  languageName: node
+  linkType: hard
+
+"schema-utils@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "schema-utils@npm:4.2.0"
+  dependencies:
+    "@types/json-schema": "npm:^7.0.9"
+    ajv: "npm:^8.9.0"
+    ajv-formats: "npm:^2.1.1"
+    ajv-keywords: "npm:^5.1.0"
+  checksum: f072805a595b8345f7ab6bcb131b37c1523a3734180128c0b6c7f2875a707b452857a60d812dc52baed4bff692436d30352cf059a74c3f6051f39c611d4bb65d
   languageName: node
   linkType: hard
 
