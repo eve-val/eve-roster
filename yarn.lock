@@ -6775,7 +6775,7 @@ __metadata:
     webpack: "npm:^5.87.0"
     webpack-cli: "npm:^5.1.4"
     webpack-dev-middleware: "npm:^6.1.1"
-    webpack-hot-middleware: "npm:^2.25.3"
+    webpack-hot-middleware: "npm:^2.25.4"
     webpack-merge: "npm:^5.9.0"
   languageName: unknown
   linkType: soft
@@ -14035,14 +14035,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-hot-middleware@npm:^2.25.3":
-  version: 2.25.3
-  resolution: "webpack-hot-middleware@npm:2.25.3"
+"webpack-hot-middleware@npm:^2.25.4":
+  version: 2.25.4
+  resolution: "webpack-hot-middleware@npm:2.25.4"
   dependencies:
     ansi-html-community: "npm:0.0.8"
     html-entities: "npm:^2.1.0"
     strip-ansi: "npm:^6.0.0"
-  checksum: 7e0b5e20c4554ec3fb7ea74489b0cf3649d532dcd73d380c61790d4c4dbee6bc3436316b767247ca57bffcc1cfbc17c9c3518871d849fceac06a9cb6f43c7fa2
+  checksum: 462c243a089008037d517e5805f933443f7bc9e554a6ee1cc5a8e038c203d845127af1d9e2977a687097d797a467752c0efc88020d751c8fc77d09240e25c11f
   languageName: node
   linkType: hard
 
