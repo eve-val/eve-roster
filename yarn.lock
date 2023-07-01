@@ -2422,16 +2422,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.57.0":
-  version: 7.57.0
-  resolution: "@sentry/utils@npm:7.57.0"
-  dependencies:
-    "@sentry/types": "npm:7.57.0"
-    tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: eda3810bc4255f59b3fdb5ea71f1913a13003cd405cdbe7aa25f4417de0129d441c8f659cef6191b14352683cd30c001352e5e58b42bf3e3ec28aac7e40edf3a
-  languageName: node
-  linkType: hard
-
 "@sideway/address@npm:^4.1.3":
   version: 4.1.4
   resolution: "@sideway/address@npm:4.1.4"
