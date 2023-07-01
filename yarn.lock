@@ -2356,17 +2356,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^7.56.0":
-  version: 7.56.0
-  resolution: "@sentry/browser@npm:7.56.0"
+"@sentry/browser@npm:^7.57.0":
+  version: 7.57.0
+  resolution: "@sentry/browser@npm:7.57.0"
   dependencies:
-    "@sentry-internal/tracing": "npm:7.56.0"
-    "@sentry/core": "npm:7.56.0"
-    "@sentry/replay": "npm:7.56.0"
-    "@sentry/types": "npm:7.56.0"
-    "@sentry/utils": "npm:7.56.0"
-    tslib: "npm:^1.9.3"
-  checksum: 69f0a3013717c640ef512f3a77030f47cfeaa54c8c90d42f35722b0a5c1af415f293d2f71bf6efb4431acb6037eb56f8dd162446cc3db5bfc5956d2020e0a3b8
+    "@sentry-internal/tracing": "npm:7.57.0"
+    "@sentry/core": "npm:7.57.0"
+    "@sentry/replay": "npm:7.57.0"
+    "@sentry/types": "npm:7.57.0"
+    "@sentry/utils": "npm:7.57.0"
+    tslib: "npm:^2.4.1 || ^1.9.3"
+  checksum: 2f33e29a70b994911a13a95b4e7d91dfe731300e7e8516b2557e3649281ab6eba4b19417caca4eb60a4da41ac994c909b599c282661738a9c310d5f3b79f581a
   languageName: node
   linkType: hard
 
@@ -2408,14 +2408,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.56.0":
-  version: 7.56.0
-  resolution: "@sentry/replay@npm:7.56.0"
+"@sentry/replay@npm:7.57.0":
+  version: 7.57.0
+  resolution: "@sentry/replay@npm:7.57.0"
   dependencies:
-    "@sentry/core": "npm:7.56.0"
-    "@sentry/types": "npm:7.56.0"
-    "@sentry/utils": "npm:7.56.0"
-  checksum: 82a5e8b65f97a7f757f2b29ef3b959fa489d6cc68a34f6da0b8ea3745606174f9a11abd0d9600952d0bd31ad87af58cc2fb0d944b07353f791fc311f211cb4b1
+    "@sentry/core": "npm:7.57.0"
+    "@sentry/types": "npm:7.57.0"
+    "@sentry/utils": "npm:7.57.0"
+  checksum: 91b8dd00ce81a69d5c84ba863ec87754c0e5092c9a336e0fcbb07ac0e1d9b9e0f47622c70235fcc5be4db19296bca7557fd03148e68a8abcc2ae5e0a9d4f8352
   languageName: node
   linkType: hard
 
@@ -6687,7 +6687,7 @@ __metadata:
     "@opentelemetry/resources": "npm:^1.14.0"
     "@opentelemetry/sdk-node": "npm:^0.40.0"
     "@opentelemetry/semantic-conventions": "npm:^1.14.0"
-    "@sentry/browser": "npm:^7.56.0"
+    "@sentry/browser": "npm:^7.57.0"
     "@sentry/node": "npm:^7.56.0"
     "@sentry/tracing": "npm:^7.57.0"
     "@types/bluebird": "npm:^3.5.38"
