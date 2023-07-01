@@ -6741,7 +6741,7 @@ __metadata:
     vue-loader: "npm:^17.2.2"
     vue-router: "npm:^4.2.2"
     vue-style-loader: "npm:^4.1.3"
-    webpack: "npm:^5.87.0"
+    webpack: "npm:^5.88.1"
     webpack-cli: "npm:^5.1.4"
     webpack-dev-middleware: "npm:^6.1.1"
     webpack-hot-middleware: "npm:^2.25.4"
@@ -13920,9 +13920,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.87.0":
-  version: 5.87.0
-  resolution: "webpack@npm:5.87.0"
+"webpack@npm:^5, webpack@npm:^5.88.1":
+  version: 5.88.1
+  resolution: "webpack@npm:5.88.1"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.3"
     "@types/estree": "npm:^1.0.0"
@@ -13953,7 +13953,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: ae83af9c096c4ba7272086a49ce7769b32e83426b8c1ecd99cc5dadedc66354efb6faba56e3157a5333613c88bdb605791041742c84c78fdf11875726763027c
+  checksum: 0aa58c68944a45ec19eefe23bbe52a6fadcb6da6f92a8c70758125f96dcfcc946fdd1fbcc8142d8edbf30dee218c829bf0728cb063fbfad0e88542a15622ac97
   languageName: node
   linkType: hard
 
