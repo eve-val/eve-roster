@@ -154,11 +154,11 @@
     }
   },
   "engines": {
-    "node": "19.9.0",
+    "node": "20.3.1",
     "yarn": "4.0.0-rc.45"
   },
   "volta": {
-    "node": "19.9.0"
+    "node": "20.3.1"
   },
   "packageManager": "yarn@4.0.0-rc.45"
 }
