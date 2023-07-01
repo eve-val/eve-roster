@@ -63,7 +63,7 @@
   "devDependencies": {
     "@babel/types": "^7.22.5",
     "@sentry/browser": "^7.56.0",
-    "@sentry/tracing": "^7.56.0",
+    "@sentry/tracing": "^7.57.0",
     "@types/bluebird": "^3.5.38",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-parser": "^1.4.3",
