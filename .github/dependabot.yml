@@ -4,3 +4,20 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      opentelemetry:
+        patterns:
+          - "@opentelemetry/*"
+      sentry:
+        patterns:
+          - "@sentry/*"
+      vue:
+        patterns:
+          - "@vue/*"
+          - "vue-*"
+          - "vue"
+      eslint:
+        patterns:
+          - "@typescript-eslint/*"
+          - "eslint-*"
+          - "eslint"
