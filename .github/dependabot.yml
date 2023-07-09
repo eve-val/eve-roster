@@ -7,17 +7,17 @@ updates:
     groups:
       opentelemetry:
         patterns:
-        - "@opentelemetry/*"
+          - "@opentelemetry/*"
       sentry:
         patterns:
-        - "@sentry/*"
+          - "@sentry/*"
       vue:
         patterns:
-        - "@vue/*"
-        - "vue-*"
-        - "vue"
+          - "@vue/*"
+          - "vue-*"
+          - "vue"
       eslint:
         patterns:
-        - "@typescript-eslint/*"
-        - "eslint-*"
-        - "eslint"
+          - "@typescript-eslint/*"
+          - "eslint-*"
+          - "eslint"
