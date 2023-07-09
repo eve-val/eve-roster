@@ -29,25 +29,25 @@ workflows:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: jest -i
-          cache-version: v4
+          cache-version: v5
           name: jest
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: ci-pretty-check
-          cache-version: v4
+          cache-version: v5
           name: pretty-check
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: ci-lint
-          cache-version: v4
+          cache-version: v5
           name: lint
       - node/test:
           version: << pipeline.parameters.node-version >>
           pkg-manager: yarn-berry
           run-command: build
-          cache-version: v4
+          cache-version: v5
           name: build
       - deploy:
           requires:
