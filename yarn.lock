@@ -940,15 +940,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/schemas@npm:^28.1.3":
-  version: 28.1.3
-  resolution: "@jest/schemas@npm:28.1.3"
-  dependencies:
-    "@sinclair/typebox": "npm:^0.24.1"
-  checksum: 3cf1d4b66c9c4ffda58b246de1ddcba8e6ad085af63dccdf07922511f13b68c0cc480a7bc620cb4f3099a6f134801c747e1df7bfc7a4ef4dceefbdea3e31e1de
-  languageName: node
-  linkType: hard
-
 "@jest/schemas@npm:^29.4.3":
   version: 29.4.3
   resolution: "@jest/schemas@npm:29.4.3"
@@ -1045,20 +1036,6 @@ __metadata:
     slash: "npm:^3.0.0"
     write-file-atomic: "npm:^4.0.2"
   checksum: f39d32a28904d091c185ecb51b8894efc9b1fb40dde8bb449d8203bee735df4351625a0c68022433727b63f2f58d172bd3d6dc5a16e3f073ffc3a8e9ec7a5760
-  languageName: node
-  linkType: hard
-
-"@jest/types@npm:^28.1.3":
-  version: 28.1.3
-  resolution: "@jest/types@npm:28.1.3"
-  dependencies:
-    "@jest/schemas": "npm:^28.1.3"
-    "@types/istanbul-lib-coverage": "npm:^2.0.0"
-    "@types/istanbul-reports": "npm:^3.0.0"
-    "@types/node": "npm:*"
-    "@types/yargs": "npm:^17.0.8"
-    chalk: "npm:^4.0.0"
-  checksum: a90e636df760799b6c3d91e34e539e701ea803e80312257e674e345a3c23a7c892df7a301afbc7883ec1d623daf3ba266cde57c5965e0692e5f1e61915d3524b
   languageName: node
   linkType: hard
 
@@ -2589,13 +2566,6 @@ __metadata:
   version: 2.0.0
   resolution: "@sideway/pinpoint@npm:2.0.0"
   checksum: 1ed21800128b2b23280ba4c9db26c8ff6142b97a8683f17639fd7f2128aa09046461574800b30fb407afc5b663c2331795ccf3b654d4b38fa096e41a5c786bf8
-  languageName: node
-  linkType: hard
-
-"@sinclair/typebox@npm:^0.24.1":
-  version: 0.24.20
-  resolution: "@sinclair/typebox@npm:0.24.20"
-  checksum: 3a495dc0b6b4187b0e0322af669728750f0251c616441c8b5934dfe10507e00dd51ce75915e65b61d110d4322f446138005f51ddbcb173c38d8e92f0b4e10f63
   languageName: node
   linkType: hard
 
@@ -6857,7 +6827,7 @@ __metadata:
     svgo: "npm:^3.0.2"
     swagger-ui: "npm:^5.1.0"
     tmp: "npm:^0.2.1"
-    ts-jest: "npm:^28.0.8"
+    ts-jest: "npm:^29.1.1"
     ts-jest-resolver: "npm:^2.0.1"
     ts-loader: "npm:^9.4.4"
     typescript: "npm:^5.1.6"
@@ -8849,17 +8819,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-util@npm:^28.0.0":
-  version: 28.1.3
-  resolution: "jest-util@npm:28.1.3"
+"jest-util@npm:^29.0.0, jest-util@npm:^29.6.1":
+  version: 29.6.1
+  resolution: "jest-util@npm:29.6.1"
   dependencies:
-    "@jest/types": "npm:^28.1.3"
+    "@jest/types": "npm:^29.6.1"
     "@types/node": "npm:*"
     chalk: "npm:^4.0.0"
     ci-info: "npm:^3.2.0"
     graceful-fs: "npm:^4.2.9"
     picomatch: "npm:^2.2.3"
-  checksum: 92895523d30ddde8f22bebbc20ed6e1be35b0a21c8e9df8a1fc289bf354f6a3f96e5d271340f2ed212a5aa0b55fd7717ff3167da8c5f247d623e2a93a3bf7b32
+  checksum: 7101a03451b96da90a0a24cbec7db9f2333835f5dff57f404b88d9d9981b624a2ec68665f41f6f1a0dde9a040dc9f132c12d6113029f00d3dba3f3d6ca87ea39
   languageName: node
   linkType: hard
 
@@ -8874,20 +8844,6 @@ __metadata:
     graceful-fs: "npm:^4.2.9"
     picomatch: "npm:^2.2.3"
   checksum: 27ae6fc6221d29b31df9c071f190e0e27a9caaeca04ee1ce03f5c925ec8abf594fcf0cb57bdcb93149381415ff1f8198157332b0c76f3592065b7c3fdb35fca1
-  languageName: node
-  linkType: hard
-
-"jest-util@npm:^29.6.1":
-  version: 29.6.1
-  resolution: "jest-util@npm:29.6.1"
-  dependencies:
-    "@jest/types": "npm:^29.6.1"
-    "@types/node": "npm:*"
-    chalk: "npm:^4.0.0"
-    ci-info: "npm:^3.2.0"
-    graceful-fs: "npm:^4.2.9"
-    picomatch: "npm:^2.2.3"
-  checksum: 7101a03451b96da90a0a24cbec7db9f2333835f5dff57f404b88d9d9981b624a2ec68665f41f6f1a0dde9a040dc9f132c12d6113029f00d3dba3f3d6ca87ea39
   languageName: node
   linkType: hard
 
@@ -9113,7 +9069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.1.2, json5@npm:^2.2.1":
+"json5@npm:^2.1.2, json5@npm:^2.2.1, json5@npm:^2.2.3":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
   bin:
@@ -12435,17 +12391,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.x, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.6, semver@npm:^7.3.7":
-  version: 7.3.7
-  resolution: "semver@npm:7.3.7"
-  dependencies:
-    lru-cache: "npm:^6.0.0"
-  bin:
-    semver: bin/semver.js
-  checksum: 6f60700810ef4879eb0af1d8d0626e5a2d11ba57ca7889e041d88155cb4b45629d1efebb8c6d381ecac4f87870ecb4e1b27760019d017ed1bf74a5083f4eeeb8
-  languageName: node
-  linkType: hard
-
 "semver@npm:^5.6.0":
   version: 5.7.1
   resolution: "semver@npm:5.7.1"
@@ -12461,6 +12406,17 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 8dd72e7c7cdbd8cff66b5530eeff9eec2342b127eef2c956259cdf66b85addf4829e6e4a045ca30d974d075595b0b03faa6318a597307eb3984649516b98b501
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.6, semver@npm:^7.3.7":
+  version: 7.3.7
+  resolution: "semver@npm:7.3.7"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 6f60700810ef4879eb0af1d8d0626e5a2d11ba57ca7889e041d88155cb4b45629d1efebb8c6d381ecac4f87870ecb4e1b27760019d017ed1bf74a5083f4eeeb8
   languageName: node
   linkType: hard
 
@@ -13437,24 +13393,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^28.0.8":
-  version: 28.0.8
-  resolution: "ts-jest@npm:28.0.8"
+"ts-jest@npm:^29.1.1":
+  version: 29.1.1
+  resolution: "ts-jest@npm:29.1.1"
   dependencies:
     bs-logger: "npm:0.x"
     fast-json-stable-stringify: "npm:2.x"
-    jest-util: "npm:^28.0.0"
-    json5: "npm:^2.2.1"
+    jest-util: "npm:^29.0.0"
+    json5: "npm:^2.2.3"
     lodash.memoize: "npm:4.x"
     make-error: "npm:1.x"
-    semver: "npm:7.x"
+    semver: "npm:^7.5.3"
     yargs-parser: "npm:^21.0.1"
   peerDependencies:
     "@babel/core": ">=7.0.0-beta.0 <8"
-    "@jest/types": ^28.0.0
-    babel-jest: ^28.0.0
-    jest: ^28.0.0
-    typescript: ">=4.3"
+    "@jest/types": ^29.0.0
+    babel-jest: ^29.0.0
+    jest: ^29.0.0
+    typescript: ">=4.3 <6"
   peerDependenciesMeta:
     "@babel/core":
       optional: true
@@ -13466,7 +13422,7 @@ __metadata:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: 16cfe812ac5ec6557c9dc17e93bb0785c535002e5c13287f5a2bd2440ab57ea03ff696b32a80ba2992ca9fddab1c8649d7ae42670c02a22322805212933b1096
+  checksum: 30e8259baba95dd786e64f7c18b864e904598f3ba07911be4d9bd29ca9c3c0024bad4ccf8ec0abd2a2fa14b06622cbbadff1b3be822189c657196442d33ee6ca
   languageName: node
   linkType: hard
 
