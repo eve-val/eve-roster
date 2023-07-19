@@ -5,6 +5,7 @@ import { ReadStream, ReadableOptions } from "./Readable.js";
 import { BasicCallback } from "./core.js";
 
 export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Duplex<In, Out> {
   constructor(opts?: DuplexOptions<Duplex<In, Out>, In>);
 

@@ -3,6 +3,7 @@ import { ReadStream } from "./Readable.js";
 import { BasicCallback } from "./core.js";
 
 export interface Writable<T> extends WriteStream<T> {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Writable<T> {
   constructor(opts?: WritableOptions<Writable<T>, T>);
 
