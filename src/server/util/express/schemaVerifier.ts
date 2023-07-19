@@ -35,7 +35,7 @@ export function optional<T>(schema: T): T | undefined {
   if (!(schema instanceof Schema)) {
     throw new Error(
       `Not a valid schema.` +
-        ` You must use the schema-specifying functions like string().`
+        ` You must use the schema-specifying functions like string().`,
     );
   }
   schema.optional = true;
@@ -46,7 +46,7 @@ export function nullable<T>(schema: T): T | null {
   if (!(schema instanceof Schema)) {
     throw new Error(
       `Not a valid schema.` +
-        ` You must use the schema-specifying functions like string().`
+        ` You must use the schema-specifying functions like string().`,
     );
   }
   schema.nullable = true;
@@ -77,7 +77,7 @@ export function simpleMap<T>(schema: T): SimpleMap<T> {
   if (!(schema instanceof Schema)) {
     throw new Error(
       `Not a valid schema.` +
-        ` You must use the schema-specifying functions like string().`
+        ` You must use the schema-specifying functions like string().`,
     );
   }
   return new SimpleMapSchema(schema) as any;
@@ -121,12 +121,12 @@ class Schema {
 
     if (value === undefined && !this.optional) {
       throw new SchemaVerificationError(
-        `Property ${pathToStr(path)} is required.`
+        `Property ${pathToStr(path)} is required.`,
       );
     }
     if (value === null && !this.nullable) {
       throw new SchemaVerificationError(
-        `Property ${pathToStr(path)} cannot be null.`
+        `Property ${pathToStr(path)} cannot be null.`,
       );
     }
 
@@ -137,7 +137,7 @@ class Schema {
     ) {
       throw new SchemaVerificationError(
         `Bad type for ${pathToStr(path)}. Expected "${this.primitiveType}"` +
-          ` but got "${typeof value}".`
+          ` but got "${typeof value}".`,
       );
     }
   }
@@ -159,7 +159,7 @@ class StringEnumSchema<T extends object> extends Schema {
     if (!this.isValueDefinedInEnum(value)) {
       throw new SchemaVerificationError(
         `Value "${value}" for ${pathToStr(path)} does not match any enum` +
-          ` values.`
+          ` values.`,
       );
     }
   }
@@ -205,7 +205,7 @@ class ObjectSchema<T extends object> extends Schema {
       if (!Object.prototype.hasOwnProperty.call(this._subSchema, k)) {
         path.push(k);
         throw new SchemaVerificationError(
-          `Unexpected property: ${pathToStr(path)}`
+          `Unexpected property: ${pathToStr(path)}`,
         );
       }
     }
@@ -227,7 +227,7 @@ class ArraySchema extends Schema {
 
     if (!(value instanceof Array)) {
       throw new SchemaVerificationError(
-        `Property ${pathToStr(path)} must be an array.`
+        `Property ${pathToStr(path)} must be an array.`,
       );
     }
 
@@ -259,14 +259,14 @@ class SimpleMapSchema extends Schema {
 function extractPropSchema(
   schema: Object,
   key: string | number,
-  path: string[]
+  path: string[],
 ): Schema {
   const prop: Schema = (schema as any)[key];
   if (!(prop instanceof Schema)) {
     path.push(key.toString());
     throw new Error(
       `Invalid schema specification at ${pathToStr(path)}.` +
-        ` You must use the schema-specifying functions like string().`
+        ` You must use the schema-specifying functions like string().`,
     );
   }
   return prop;

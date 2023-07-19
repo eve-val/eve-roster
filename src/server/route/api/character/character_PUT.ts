@@ -30,7 +30,7 @@ function setIsOpsec(
   accountId: number,
   privs: AccountPrivileges,
   characterId: number,
-  isOpsec: boolean
+  isOpsec: boolean,
 ) {
   logger.debug(`setIsOpsec ${accountId} ${characterId} ${isOpsec}`);
 
@@ -44,7 +44,7 @@ function setIsOpsec(
     if (isOpsec && isMemberCorp(row.mcorp_membership)) {
       throw new BadRequestError(
         `Cannot set character ${characterId} to opsec: character is in an ` +
-          `affiliated corp (${row.character_corporationId})`
+          `affiliated corp (${row.character_corporationId})`,
       );
     }
 

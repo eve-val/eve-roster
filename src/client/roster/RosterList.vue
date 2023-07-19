@@ -85,7 +85,7 @@ export default defineComponent({
           sourceColumns,
           (accum: boolean, sourceCol: string) =>
             accum && providedColumns.includes(sourceCol),
-          true
+          true,
         );
       });
 
@@ -233,7 +233,7 @@ function injectDerivedProps(account: Account): Account {
     ret.alts.push(
       Object.assign({}, char, {
         activityScore: getActivity(char),
-      })
+      }),
     );
   }
   return ret;

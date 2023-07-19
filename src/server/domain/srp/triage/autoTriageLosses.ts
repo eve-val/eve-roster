@@ -19,7 +19,7 @@ export async function autoTriageLosses(db: Tnex, losses: LossRow[]) {
       db,
       triagedLoss,
       marketValues,
-      config.srpJurisdiction
+      config.srpJurisdiction,
     );
   }
 }
@@ -33,7 +33,7 @@ async function maybeAutocommitVerdict(
   db: Tnex,
   triaged: TriagedLoss,
   marketValues: Map<number, number>,
-  jurisdiction: SrpJurisdiction
+  jurisdiction: SrpJurisdiction,
 ) {
   let status = SrpVerdictStatus.PENDING;
   let reason: SrpVerdictReason | null = null;
@@ -69,7 +69,7 @@ async function maybeAutocommitVerdict(
       status,
       reason,
       payout,
-      null
+      null,
     );
   }
 }

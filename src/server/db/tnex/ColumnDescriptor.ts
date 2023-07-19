@@ -40,7 +40,7 @@ export class ColumnDescriptorImpl<T extends object>
 }
 
 export function getColumnDescriptors<T extends object>(
-  table: T
+  table: T,
 ): ColumnDescriptor<T>[] {
   return Object.values(table);
 }

@@ -38,7 +38,7 @@ export default jsonEndpoint(
 
       for (const unownedChar of unownedChars) {
         accountList.push(
-          getJsonForUnownedCharacter(unownedChar, privs, corpNames)
+          getJsonForUnownedCharacter(unownedChar, privs, corpNames),
         );
       }
 
@@ -47,7 +47,7 @@ export default jsonEndpoint(
         rows: accountList,
       };
     });
-  }
+  },
 );
 
 function getCorpNames(db: Tnex) {
@@ -76,7 +76,7 @@ function pushAccounts(
   ownedRows: OwnedRosterCharacter[],
   privs: AccountPrivileges,
   corpNames: SimpleMap<string> | null,
-  outList: AccountJson[]
+  outList: AccountJson[],
 ) {
   interface AccountGroup {
     id: number;
@@ -120,7 +120,7 @@ function getJsonForAccount(
   mainRow: OwnedRosterCharacter,
   altRows: OwnedRosterCharacter[],
   privs: AccountPrivileges,
-  corpNames: SimpleMap<string> | null
+  corpNames: SimpleMap<string> | null,
 ): AccountJson {
   const accountJson: AccountJson = {
     main: getJsonForCharacter(mainRow, "main", privs, corpNames),
@@ -132,20 +132,20 @@ function getJsonForAccount(
       addAlert(
         accountJson,
         alert.LEVEL_WARNING,
-        "Main character is not in primary corporation."
+        "Main character is not in primary corporation.",
       );
     } else {
       addAlert(
         accountJson,
         alert.LEVEL_ERROR,
-        "Main character is not in any affiliated corporation."
+        "Main character is not in any affiliated corporation.",
       );
     }
   }
 
   if (altRows != null && privs.canRead("memberAlts")) {
     accountJson.alts = altRows.map((char) =>
-      getJsonForCharacter(char, "alt", privs, corpNames)
+      getJsonForCharacter(char, "alt", privs, corpNames),
     );
   }
 
@@ -167,7 +167,7 @@ function getJsonForAccount(
 function getJsonForUnownedCharacter(
   character: BasicRosterCharacter,
   privs: AccountPrivileges,
-  corpNames: SimpleMap<string> | null
+  corpNames: SimpleMap<string> | null,
 ): AccountJson {
   const json: AccountJson = {
     main: getJsonForCharacter(character, "unowned", privs, corpNames),
@@ -183,7 +183,7 @@ function getJsonForCharacter(
   row: BasicRosterCharacter,
   status: "main" | "alt" | "unowned",
   privs: AccountPrivileges,
-  corpNames: SimpleMap<string> | null
+  corpNames: SimpleMap<string> | null,
 ): CharacterJson {
   const obj = {
     id: row.character_id,
@@ -210,7 +210,7 @@ function getJsonForCharacter(
       addAlert(
         obj,
         alert.LEVEL_ERROR,
-        `Character needs to be reauthenticated.`
+        `Character needs to be reauthenticated.`,
       );
     }
   }
@@ -271,7 +271,7 @@ function getProvidedColumns(privs: AccountPrivileges) {
       "killValueInLastMonth",
       "lossesInLastMonth",
       "lossValueInLastMonth",
-      "siggyScore"
+      "siggyScore",
     );
   }
   return providedColumns;

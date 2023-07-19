@@ -31,7 +31,7 @@ async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  input: Input
+  input: Input,
 ) {
   const row = await dao.character.getCoreData(db, input.character);
   if (row == null) {
@@ -39,7 +39,7 @@ async function handleEndpoint(
   }
   if (row.account_id != account.id) {
     throw new UnauthorizedClientError(
-      `Account ${account.id} doesn't own character ${input.character}.`
+      `Account ${account.id} doesn't own character ${input.character}.`,
     );
   }
   // TODO: Catch errors below and throw a uservisible error

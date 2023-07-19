@@ -12,7 +12,7 @@ const config: webpack.Configuration = merge(
     // There are a dizzying array of options that trade accuracy for speed, etc.
     // See https://webpack.js.org/configuration/devtool/
     devtool: "eval-cheap-module-source-map",
-  }
+  },
 );
 
 export default config;

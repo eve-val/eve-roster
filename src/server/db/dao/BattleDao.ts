@@ -29,7 +29,7 @@ export default class BattleDao {
     return makeKillmailIterator(db, batchSize, (query) =>
       query
         .leftJoin(killmailBattle, "kmb_killmail", "=", "km_id")
-        .whereNull("kmb_killmail")
+        .whereNull("kmb_killmail"),
     );
   }
 
@@ -52,7 +52,7 @@ export default class BattleDao {
         kmb_killmail: kmId,
         kmb_battle: battleId,
       })),
-      "kmb_killmail"
+      "kmb_killmail",
     );
   }
 
@@ -95,7 +95,7 @@ export default class BattleDao {
       query = query.where(
         filter.bound.col,
         filter.bound.cmp,
-        val(filter.bound.value)
+        val(filter.bound.value),
       );
     }
 

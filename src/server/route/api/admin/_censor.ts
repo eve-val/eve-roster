@@ -2,25 +2,25 @@ export function censor(
   str: null,
   uncensoredLen: number,
   censoredLen: number,
-  censorshipChar?: string
+  censorshipChar?: string,
 ): null;
 export function censor(
   str: string,
   uncensoredLen: number,
   censoredLen: number,
-  censorshipChar?: string
+  censorshipChar?: string,
 ): string;
 export function censor(
   str: string | null,
   uncensoredLen: number,
   censoredLen: number,
-  censorshipChar?: string
+  censorshipChar?: string,
 ): string | null;
 export function censor(
   str: string | null,
   uncensoredLen: number,
   censoredLen: number,
-  censorshipChar = "*"
+  censorshipChar = "*",
 ): string | null {
   if (str == null || str === "") {
     return str;

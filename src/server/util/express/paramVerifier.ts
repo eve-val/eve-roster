@@ -13,7 +13,7 @@ export function idParam(req: express.Request, key: string): number {
   const strParam = getParam(req, key);
   if (!POSITIVE_INTEGER_PATTERN.test(strParam)) {
     throw new BadRequestError(
-      `Value "${strParam}" for key "${key}" is not a valid ID.`
+      `Value "${strParam}" for key "${key}" is not a valid ID.`,
     );
   }
   return parseInt(strParam);
@@ -21,14 +21,14 @@ export function idParam(req: express.Request, key: string): number {
 
 export function stringQuery(
   req: express.Request,
-  key: string
+  key: string,
 ): string | undefined {
   return getStringQuery(req, key);
 }
 
 export function boolQuery(
   req: express.Request,
-  key: string
+  key: string,
 ): boolean | undefined {
   if (req.query[key] == undefined) {
     return undefined;
@@ -39,7 +39,7 @@ export function boolQuery(
 
 export function intQuery(
   req: express.Request,
-  key: string
+  key: string,
 ): number | undefined {
   const val = getStringQuery(req, key);
   if (val == undefined) {
@@ -56,7 +56,7 @@ export function intQuery(
 export function enumQuery<EType extends string>(
   req: express.Request,
   key: string,
-  enu: MixedObject
+  enu: MixedObject,
 ): EType | undefined {
   const value = getStringQuery(req, key);
   if (value === undefined) {
@@ -78,7 +78,7 @@ export function enumQuery<EType extends string>(
  */
 export function jsonQuery(
   req: express.Request,
-  key: string
+  key: string,
 ): object | undefined {
   const val = getStringQuery(req, key);
   if (val == undefined) {
@@ -105,7 +105,7 @@ function getParam(req: express.Request, key: string): string {
   if (typeof param != "string") {
     throw new BadRequestError(
       `Wrong type on param ${key}. Was expecting "string" but` +
-        ` got "${typeof param}".`
+        ` got "${typeof param}".`,
     );
   }
   if (param.length == 0) {

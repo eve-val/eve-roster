@@ -67,7 +67,7 @@ export default async function (req: express.Request, res: express.Response) {
       req.app.locals.db,
       session.accountId,
       authType,
-      authCode
+      authCode,
     );
 
     session.accountId = accountId;
@@ -94,7 +94,7 @@ async function handleEndpoint(
   db: Tnex,
   accountId: number | undefined,
   authType: AuthType,
-  authCode: string
+  authCode: string,
 ) {
   const charInfo = await fetchCharInfo(authCode);
   await storeCharInfo(db, charInfo);
@@ -162,7 +162,7 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
       character_logonDate: UpdatePolicy.PRESERVE_EXISTING,
       character_logoffDate: UpdatePolicy.PRESERVE_EXISTING,
       character_siggyScore: UpdatePolicy.PRESERVE_EXISTING,
-    }
+    },
   );
 
   await dao.accessToken.upsert(
@@ -171,7 +171,7 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     charInfo.refreshToken,
     charInfo.scopes,
     charInfo.accessToken,
-    charInfo.accessTokenExpires
+    charInfo.accessTokenExpires,
   );
 }
 
@@ -179,7 +179,7 @@ async function authenticateChar(
   db: Tnex,
   existingAuthedAccount: number | undefined,
   authType: AuthType,
-  charInfo: CharacterInfo
+  charInfo: CharacterInfo,
 ) {
   const ownershipData = await dao.character.getOwnershipData(db, charInfo.id);
   const owningAccount = ownershipData && ownershipData.account_id;
@@ -192,7 +192,7 @@ async function authenticateChar(
     (charInfo.corporationId == null || charInfo.roles == null)
   ) {
     throw new UserVisibleError(
-      `CCP's servers are misbehaving; please try again.`
+      `CCP's servers are misbehaving; please try again.`,
     );
   }
 
@@ -200,13 +200,13 @@ async function authenticateChar(
     case AuthType.LOG_IN:
       if (owningAccount == null) {
         throw new UserVisibleError(
-          `You must create an account before you log in.`
+          `You must create an account before you log in.`,
         );
       } else if (ownerHash != null && charInfo.ownerHash != ownerHash) {
         // Character has changed hands. Refuse auth until they create a new
         // account / transfer character to existing account.
         throw new UserVisibleError(
-          `You must create an account before you log in.`
+          `You must create an account before you log in.`,
         );
       } else {
         // If ownerHash has been manually cleared, populate on login.
@@ -216,7 +216,7 @@ async function authenticateChar(
             charInfo.id,
             owningAccount,
             charInfo.ownerHash,
-            false
+            false,
           );
         }
         authedAccount = owningAccount;
@@ -228,7 +228,7 @@ async function authenticateChar(
         // TODO: We should support this eventually
         throw new UserVisibleError(
           `Cannot create account: this character is already owned by another ` +
-            `account`
+            `account`,
         );
       }
       authedAccount = await db.asyncTransaction(async (db) => {
@@ -240,7 +240,7 @@ async function authenticateChar(
           charInfo.id,
           createdAccountId,
           charInfo.ownerHash,
-          true
+          true,
         );
         return createdAccountId;
       });
@@ -249,7 +249,7 @@ async function authenticateChar(
     case AuthType.ADD_CHARACTER:
       if (existingAuthedAccount == undefined) {
         throw new UserVisibleError(
-          `You must log in before you can add a character.`
+          `You must log in before you can add a character.`,
         );
       }
       if (owningAccount == null) {
@@ -258,14 +258,14 @@ async function authenticateChar(
           charInfo.id,
           existingAuthedAccount,
           charInfo.ownerHash,
-          false
+          false,
         );
       } else if (owningAccount != existingAuthedAccount) {
         await dao.ownership.createPendingOwnership(
           db,
           charInfo.id,
           existingAuthedAccount,
-          charInfo.ownerHash
+          charInfo.ownerHash,
         );
       } else {
         // Already logged in and account already owns character: do nothing
@@ -293,7 +293,7 @@ async function fetchAccessTokens(authCode: string) {
           Authorization: "Basic " + SSO_AUTH_CODE,
           "content-type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     )
     .then((response) => response.data);
 }
@@ -301,7 +301,7 @@ async function fetchAccessTokens(authCode: string) {
 const env = getEnv();
 const SSO_AUTH_CODE = generateSsoAuthToken(
   env.SSO_CLIENT_ID,
-  env.SSO_SECRET_KEY
+  env.SSO_SECRET_KEY,
 );
 
 interface AccessTokenResponse {

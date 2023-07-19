@@ -36,7 +36,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 async function handleEndpoint(
   db: Tnex,
   privs: AccountPrivileges,
-  paymentId: number
+  paymentId: number,
 ) {
   privs.requireRead("srp");
 

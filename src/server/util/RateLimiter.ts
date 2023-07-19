@@ -40,7 +40,7 @@ export class RateLimiter {
   private _scheduleTimeout() {
     const remaining = Math.max(
       0,
-      this._minInterval - (Date.now() - this._lastCheckout)
+      this._minInterval - (Date.now() - this._lastCheckout),
     );
     setTimeout(() => {
       const callback = this._queue.dequeue();

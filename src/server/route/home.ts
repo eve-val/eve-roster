@@ -9,7 +9,7 @@ export default htmlEndpoint(async (req, res, db, account, privs) => {
     },
     access: privs.dumpForFrontend(
       ["roster", "adminConsole", "characterShips", "srp", "api"],
-      false
+      false,
     ),
     isMember: privs.isMember(),
   };

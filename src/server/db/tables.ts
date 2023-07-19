@@ -130,7 +130,7 @@ export class CharacterNotification {
   characterNotification_type = varchar();
 }
 export const characterNotification = tables.register(
-  new CharacterNotification()
+  new CharacterNotification(),
 );
 
 export class CharacterNotificationUpdate {
@@ -138,7 +138,7 @@ export class CharacterNotificationUpdate {
   characterNotificationUpdate_timestamp = bigInt();
 }
 export const characterNotificationUpdate = tables.register(
-  new CharacterNotificationUpdate()
+  new CharacterNotificationUpdate(),
 );
 
 export class Citadel {
@@ -203,7 +203,7 @@ export class CombatStats {
 }
 export const combatStats = tables.register(
   new CombatStats(),
-  "characterCombatStats"
+  "characterCombatStats",
 );
 
 /**

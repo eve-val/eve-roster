@@ -15,7 +15,7 @@ const config: webpack.Configuration = merge(
     // Emit a source map, even for production. Recommended by webpack, but means
     // we have to serve the source map as well
     devtool: "source-map",
-  }
+  },
 );
 
 export default config;

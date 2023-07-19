@@ -59,7 +59,7 @@ export async function getAccessTokens(db: Tnex, characterIds: number[]) {
 
 export async function getAccessTokensFromRows(
   db: Tnex,
-  rows: AccessTokenRowSub[]
+  rows: AccessTokenRowSub[],
 ) {
   const tokenMap = new Map<number, TokenResult>();
   const refreshRequests: Promise<RefreshResult>[] = [];
@@ -133,7 +133,7 @@ export interface ErrorResult {
 }
 
 function tokenHasExpired(
-  row: Pick<AccessToken, "accessToken_accessTokenExpires">
+  row: Pick<AccessToken, "accessToken_accessTokenExpires">,
 ) {
   return (
     Date.now() > row.accessToken_accessTokenExpires - TOKEN_EXPIRATION_FUDGE_MS

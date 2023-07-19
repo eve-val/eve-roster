@@ -16,7 +16,7 @@ exports.up = async function (trx) {
 
   await trx.raw(
     `UPDATE "killmail"` +
-      ` SET "victimCorp" = ("data"->'victim'->>'corporation_id')::int`
+      ` SET "victimCorp" = ("data"->'victim'->>'corporation_id')::int`,
   );
 
   await trx("killmail").update({ processed: true });
@@ -47,7 +47,7 @@ exports.down = async function (trx) {
         FROM "killmail" as "km2"
           LEFT JOIN "memberCorporation" as "mc"
             ON "mc"."corporationId" = "km2"."victimCorp"
-        WHERE "km2"."id" = "km"."id"`
+        WHERE "km2"."id" = "km"."id"`,
   );
 
   await trx.schema.alterTable("killmail", (table) => {

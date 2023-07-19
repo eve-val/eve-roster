@@ -298,7 +298,7 @@ export default defineComponent({
     designateAsMain() {
       const promise = ajaxer.putAccountMainCharacter(
         this.accountId,
-        this.character.id
+        this.character.id,
       );
       this.promise = promise;
       promise.then(() => {
@@ -309,7 +309,7 @@ export default defineComponent({
     toggleOpsec() {
       const promise = ajaxer.putCharacterIsOpsec(
         this.character.id,
-        !this.character.opsec
+        !this.character.opsec,
       );
       this.promise = promise;
       promise.then(() => {

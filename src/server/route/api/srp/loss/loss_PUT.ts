@@ -36,7 +36,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     account,
     privs,
     idParam(req, "id"),
-    verify(req.body, inputSchema)
+    verify(req.body, inputSchema),
   );
 });
 
@@ -45,14 +45,14 @@ async function handleEndpoint(
   account: AccountSummary,
   privs: AccountPrivileges,
   id: number,
-  input: Input
+  input: Input,
 ) {
   privs.requireWrite("srp");
 
   if (input.verdict == SrpVerdictStatus.INELIGIBLE) {
     if (input.reason == null) {
       throw new BadRequestError(
-        `Reason must be specified if status is ineligible.`
+        `Reason must be specified if status is ineligible.`,
       );
     } else if (
       input.reason == SrpVerdictReason.OUTSIDE_JURISDICTION ||
@@ -71,7 +71,7 @@ async function handleEndpoint(
     input.verdict,
     input.reason,
     input.payout,
-    account.id
+    account.id,
   );
 
   if (updateCount != 1) {
@@ -81,7 +81,7 @@ async function handleEndpoint(
   const mainRow = await dao.account.getMain(db, account.id);
   if (mainRow == null) {
     throw new UserVisibleError(
-      `Account does not have a main character configured.`
+      `Account does not have a main character configured.`,
     );
   }
 

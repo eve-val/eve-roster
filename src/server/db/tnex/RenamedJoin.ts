@@ -14,14 +14,14 @@ export class RenamedJoin<T extends object, U> {
 
   public using<K extends keyof T, L extends string>(
     column: K,
-    alias: L
+    alias: L,
   ): RenamedJoin<T, U & Link<T, K, L>> {
     const [prefix] = this._registry.splitColumn(alias);
 
     if (prefix != this.tableAlias) {
       throw new Error(
         `Alias "${alias}" for column "${String(column)}" must be` +
-          ` prefixed with "${this.tableAlias}".`
+          ` prefixed with "${this.tableAlias}".`,
       );
     }
 

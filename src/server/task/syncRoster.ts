@@ -47,7 +47,7 @@ async function executor(db: Tnex, job: JobLogger) {
 async function syncCorporation(
   db: Tnex,
   job: JobLogger,
-  corporation: MemberCorporation
+  corporation: MemberCorporation,
 ) {
   const corpId = corporation.mcorp_corporationId;
   const errorLevel =
@@ -62,14 +62,14 @@ async function syncCorporation(
     if (row.accessToken_needsUpdate) {
       job.info(
         `Skipping director ${row.character_id}/${row.character_name}` +
-          ` (access token has expired).`
+          ` (access token has expired).`,
       );
       continue;
     }
     if (!hasRosterScopes(row.accessToken_scopes)) {
       job.info(
         `Skipping director ${row.character_id}/${row.character_name}` +
-          ` (insufficient token scopes).`
+          ` (insufficient token scopes).`,
       );
       continue;
     }
@@ -87,7 +87,7 @@ async function syncCorporation(
       } else {
         job.error(
           `Unexpected failure while trying to sync corp ${corpId} using ` +
-            `char ${row.character_name}'s token.`
+            `char ${row.character_name}'s token.`,
         );
         job.error(e.toString());
 
@@ -113,7 +113,7 @@ async function updateMemberList(
   db: Tnex,
   job: JobLogger,
   corporationId: number,
-  director: number
+  director: number,
 ) {
   const token = await getAccessToken(db, director);
   const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] =
@@ -149,7 +149,7 @@ async function updateMemberList(
     memberTitles,
     memberRoles,
     memberTracking,
-    names
+    names,
   );
 
   await db.asyncTransaction(async (db) => {
@@ -180,7 +180,7 @@ function buildMemberRows(
   memberTitles: (typeof ESI_CORPORATIONS_$corporationId_MEMBERS_TITLES)["response"],
   memberRoles: (typeof ESI_CORPORATIONS_$corporationId_ROLES)["response"],
   memberTracking: (typeof ESI_CORPORATIONS_$corporationId_MEMBERTRACKING)["response"],
-  names: AsyncReturnType<typeof fetchEveNames>
+  names: AsyncReturnType<typeof fetchEveNames>,
 ) {
   const titleDefMap = arrayToMap(titleDefs, "title_id");
 

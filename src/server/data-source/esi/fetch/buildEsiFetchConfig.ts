@@ -7,7 +7,7 @@ import { EsiEndpointParams } from "./EsiEndpointParams.js";
 export function buildEsiFetchConfig<T extends EsiEndpoint>(
   baseUrl: string,
   endpoint: T,
-  params: EsiEndpointParams<T>
+  params: EsiEndpointParams<T>,
 ): AxiosRequestConfig {
   const url = baseUrl + bindPath(endpoint.path, params as MixedObject);
 
@@ -49,7 +49,7 @@ function bindPath(path: string, params: MixedObject) {
     const val = params[p1];
     if (val == undefined) {
       throw new Error(
-        `Unbound param '${p1}" for path "${path}" in ${inspect(params)}.`
+        `Unbound param '${p1}" for path "${path}" in ${inspect(params)}.`,
       );
     }
     return val.toString();

@@ -8,7 +8,7 @@ const logger = buildLogger("esi");
 
 export function checkEsiResponseForWarnings(
   endpoint: EsiEndpoint,
-  response: AxiosResponse
+  response: AxiosResponse,
 ) {
   const warning: string | undefined = response.headers["warning"];
 

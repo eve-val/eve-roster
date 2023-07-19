@@ -61,7 +61,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
     sourceCorporation: number,
     start: number,
     end: number | undefined,
-    timeWindow: number
+    timeWindow: number,
   ) {
     super({ objectMode: true });
 
@@ -75,7 +75,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
   _transform(
     chunk: ZKillmail,
     encoding: string,
-    callback: TransformCallback<Killmail>
+    callback: TransformCallback<Killmail>,
   ) {
     let wasError = false;
     try {
@@ -106,7 +106,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
       if (this._outOfOrderCount > MAX_OUT_OF_ORDER_TOLERANCE) {
         throw new Error(
           `ZKillboard returned ${this._outOfOrderCount} consecutive results` +
-            ` in the wrong temporal order. Their API might have changed.`
+            ` in the wrong temporal order. Their API might have changed.`,
         );
       }
 
@@ -114,7 +114,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
       for (i = this._queue.start(); i < this._queue.end(); i++) {
         if (this._queue.get(i).km_timestamp < row.km_timestamp) {
           this._logger.info(
-            `Found an out of order killmail, inserting at position ${i}.`
+            `Found an out of order killmail, inserting at position ${i}.`,
           );
           this._queue.insert(i, row);
           break;
@@ -161,7 +161,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
       const end = this._endBound || Date.now();
       this._logger.setProgress(
         (end - row.km_timestamp) / (end - this._startBound),
-        `Syncing killmails for corp ${this._sourceCorporation}...`
+        `Syncing killmails for corp ${this._sourceCorporation}...`,
       );
       this.push(row);
     }

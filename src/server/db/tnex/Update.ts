@@ -16,7 +16,7 @@ export class Update<T extends object, F extends object> extends Query<
   constructor(knex: Knex, scoper: Scoper, table: T, preppedValues: object) {
     super(
       scoper.mirror(),
-      knex(scoper.getTableName(table)).update(preppedValues)
+      knex(scoper.getTableName(table)).update(preppedValues),
     );
     this._knex = knex;
   }
@@ -37,7 +37,7 @@ export class Update<T extends object, F extends object> extends Query<
     } else {
       const tableQs = new Array(this._fromTables.length).fill("??").join(",");
       const tableNames = this._fromTables.map((table) =>
-        this._scoper.getTableName(table)
+        this._scoper.getTableName(table),
       );
       const fromClause = this._knex.raw(tableQs, tableNames);
 

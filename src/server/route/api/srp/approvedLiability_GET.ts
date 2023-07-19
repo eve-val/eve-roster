@@ -19,7 +19,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 async function handleEndpoint(
   db: Tnex,
   _account: AccountSummary,
-  _privs: AccountPrivileges
+  _privs: AccountPrivileges,
 ) {
   const row = await dao.srp.getApprovedLiability(db);
 

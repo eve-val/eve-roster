@@ -58,7 +58,7 @@ class LocationCache {
           {
             structureId: sid,
             _token: token,
-          }
+          },
         );
         this.cache.set(sid, structureData.name);
       } catch (e) {
@@ -167,7 +167,7 @@ async function findShips(
   characterId: number,
   token: string,
   assets: Asset[],
-  locCache: LocationCache
+  locCache: LocationCache,
 ): Promise<CharacterShipRow[]> {
   const assetMap = arrayToMap(assets, "itemId");
   const ships = assets
@@ -197,18 +197,18 @@ async function findShips(
         typeId: it.asset.typeId,
         name: it.asset.name!,
         locationDescription: it.describeLocation(locCache),
-      }
+      },
   );
 }
 
 async function updateCharacter(
   db: Tnex,
   locCache: LocationCache,
-  characterId: number
+  characterId: number,
 ) {
   const lastUpdated = await dao.characterShip.getLastUpdateTimestamp(
     db,
-    characterId
+    characterId,
   );
   const updateNeededCutoff = new Date().getTime() - MIN_UPDATE_FREQUENCY_MILLIS;
   if (lastUpdated > updateNeededCutoff) {
@@ -223,7 +223,7 @@ async function updateCharacter(
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
   const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
-    db
+    db,
   );
   const locCache = new LocationCache(job);
   const len = characterIds.length;
@@ -236,12 +236,12 @@ async function executor(db: Tnex, job: JobLogger) {
       if (e instanceof AccessTokenError) {
         logger.info(
           `Access token error while fetching ships for char ${characterId}.`,
-          e
+          e,
         );
       } else if (isAnyEsiError(e)) {
         if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
           logger.info(
-            `Marking access token as invalid for char ${characterId} due to 403.`
+            `Marking access token as invalid for char ${characterId} due to 403.`,
           );
           dao.accessToken.markAsInvalid(db, characterId);
         }
@@ -249,13 +249,13 @@ async function executor(db: Tnex, job: JobLogger) {
           // Don't consider ISEs to be noteworthy failures on our side
           logger.info(
             `ESI server error while fetching ships for char ${characterId}.`,
-            e
+            e,
           );
         } else {
           ++errors;
           logger.warn(
             `ESI error while fetching ships for char ${characterId}.`,
-            e
+            e,
           );
         }
       } else {

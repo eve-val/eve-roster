@@ -22,7 +22,7 @@ export function configureCsrfInterceptor(token: string) {
       req.headers!["x-csrf-token"] = token;
       return req;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
   );
 }
 
@@ -51,7 +51,7 @@ export default {
 
   getAccountCharacters(accountId: number) {
     return axios.get<Account_Characters_GET>(
-      `/api/account/${accountId}/characters`
+      `/api/account/${accountId}/characters`,
     );
   },
 
@@ -91,7 +91,7 @@ export default {
     name: string,
     type: string,
     allianceAccess: boolean,
-    allianceOwned: boolean
+    allianceOwned: boolean,
   ) {
     return axios.post<Citadel>("/api/admin/citadel", {
       name: name,
@@ -125,7 +125,7 @@ export default {
 
   getAdminRosterSyncStatus() {
     return axios.get<Admin_Roster_SyncStatus_GET>(
-      "/api/admin/roster/syncStatus"
+      "/api/admin/roster/syncStatus",
     );
   },
 
@@ -161,7 +161,7 @@ export default {
 
   getAdminSrpJurisdiction() {
     return axios.get<{ srpJurisdiction: { start?: number } }>(
-      "/api/admin/srp/jurisdiction"
+      "/api/admin/srp/jurisdiction",
     );
   },
 
@@ -173,7 +173,7 @@ export default {
 
   getSrpApprovedLiability() {
     return axios.get<{ approvedLiability: number }>(
-      "/api/srp/approvedLiability"
+      "/api/srp/approvedLiability",
     );
   },
 
@@ -204,7 +204,7 @@ export default {
     killmail: number,
     verdict: string,
     reason: string | null,
-    payout: number
+    payout: number,
   ) {
     return axios.put<{ id: number; name: string }>(
       `/api/srp/loss/${killmail}`,
@@ -212,7 +212,7 @@ export default {
         verdict: verdict,
         reason: reason,
         payout: payout,
-      }
+      },
     );
   },
 
@@ -233,7 +233,7 @@ export default {
   putSrpPaymentStatus(
     srp: number,
     paid: boolean,
-    payingCharacter: number | undefined
+    payingCharacter: number | undefined,
   ): Promise<AxiosResponse<{}>> {
     return axios.put<{}>(`/api/srp/payment/${srp}`, {
       paid: paid,

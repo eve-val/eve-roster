@@ -60,7 +60,7 @@ export default class RosterDao {
   }
 
   getCharactersOwnedByAssociatedAccounts(
-    db: Tnex
+    db: Tnex,
   ): Promise<OwnedRosterCharacter[]> {
     return db
       .select(t.account)
@@ -76,7 +76,7 @@ export default class RosterDao {
             t.character,
             "character_corporationId",
             "=",
-            "mcorp_corporationId"
+            "mcorp_corporationId",
           )
           .join(t.ownership, "ownership_character", "=", "character_id")
           .join(t.account, "account_id", "=", "ownership_account")
@@ -84,7 +84,7 @@ export default class RosterDao {
           .columnAs("account_id", "memberAccount_mid"),
         "memberAccount_mid",
         "=",
-        "account_id"
+        "account_id",
       )
       .join(t.ownership, "ownership_account", "=", "memberAccount_mid")
       .join(t.character, "character_id", "=", "ownership_character")
@@ -95,7 +95,7 @@ export default class RosterDao {
         t.memberCorporation,
         "mcorp_corporationId",
         "=",
-        "character_corporationId"
+        "character_corporationId",
       )
       .leftJoin(
         db
@@ -106,7 +106,7 @@ export default class RosterDao {
           .columnAs("accountGroup_group", "trialCheck_group"),
         "trialCheck_account",
         "=",
-        "account_id"
+        "account_id",
       )
       .columns(
         "character_id",
@@ -128,7 +128,7 @@ export default class RosterDao {
         "citadel_name",
         "ownership_opsec",
         "trialCheck_group",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }
@@ -156,7 +156,7 @@ export default class RosterDao {
         "cstats_lossesInLastMonth",
         "cstats_lossValueInLastMonth",
         "mcorp_membership",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }
@@ -185,7 +185,7 @@ export default class RosterDao {
         "character_id",
         "character_name",
         "accessToken_scopes",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }
@@ -201,7 +201,7 @@ export default class RosterDao {
         "character_name",
         "character_corporationId",
         "accessToken_scopes",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }

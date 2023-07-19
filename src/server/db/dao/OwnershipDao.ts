@@ -11,7 +11,7 @@ export default class OwnershipDao {
     characterId: number,
     accountId: number,
     ownerHash: string,
-    isMain: boolean
+    isMain: boolean,
   ) {
     return db.transaction((db) => {
       return db
@@ -24,14 +24,14 @@ export default class OwnershipDao {
             ownership_opsec: false,
           },
           "ownership_character",
-          {}
+          {},
         )
         .then(() => {
           return this._dao.log.logEvent(
             db,
             accountId,
             "OWN_CHARACTER",
-            characterId
+            characterId,
           );
         })
         .then(() => {
@@ -50,7 +50,7 @@ export default class OwnershipDao {
     db: Tnex,
     characterId: number,
     accountId: number,
-    newAccountId: number
+    newAccountId: number,
   ) {
     return db.transaction((db) => {
       return db
@@ -67,7 +67,7 @@ export default class OwnershipDao {
                 return this._dao.account.setMain(
                   db,
                   accountId,
-                  row.ownership_character
+                  row.ownership_character,
                 );
               }
             }
@@ -91,7 +91,7 @@ export default class OwnershipDao {
     db: Tnex,
     characterId: number,
     accountId: number,
-    ownerHash: string
+    ownerHash: string,
   ) {
     return db.upsert(
       pendingOwnership,
@@ -100,7 +100,7 @@ export default class OwnershipDao {
         pendingOwnership_account: accountId,
         pendingOwnership_ownerHash: ownerHash,
       },
-      "pendingOwnership_character"
+      "pendingOwnership_character",
     );
   }
 
@@ -111,7 +111,7 @@ export default class OwnershipDao {
         ownership,
         "ownership_character",
         "=",
-        "pendingOwnership_character"
+        "pendingOwnership_character",
       )
       .where("pendingOwnership_account", "=", val(account))
       .andWhere("pendingOwnership_character", "=", val(character))
@@ -129,7 +129,7 @@ export default class OwnershipDao {
         if (delCount != 1) {
           throw new Error(
             `Delete count was ${delCount} when trying to delete` +
-              ` pending transfer for char ${character} on account ${account}.`
+              ` pending transfer for char ${character} on account ${account}.`,
           );
         }
       });

@@ -49,7 +49,7 @@ function executor(db: Tnex, job: JobLogger) {
               esiFailureCount++;
               logger.warn(
                 `ESI error while fetching skills for char ${characterId}.`,
-                e
+                e,
               );
             } else {
               throw e;
@@ -61,14 +61,14 @@ function executor(db: Tnex, job: JobLogger) {
       }).then(() => {
         logger.info(
           `syncSkills updated ${successCount}/${characterIds.length} ` +
-            `characters' skills.`
+            `characters' skills.`,
         );
         const errorCount = characterIds.length - successCount;
         if (errorCount > 0) {
           job.info(
             `Failed to update ${errorCount}/${characterIds.length}` +
               ` characters' skills {${esiFailureCount} ESI errors,` +
-              ` ${accessTokenFailureCount} access token errors}.`
+              ` ${accessTokenFailureCount} access token errors}.`,
           );
         }
       });

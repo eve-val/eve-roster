@@ -9,7 +9,7 @@ export class Writable<T> {
   _write(chunk: T, encoding: string, callback: BasicCallback): void;
   _writev?(
     chunks: { chunk: T; encoding: string }[],
-    callback: BasicCallback
+    callback: BasicCallback,
   ): void;
   _destroy(error: Error | null, callback: BasicCallback): void;
   _final(callback: BasicCallback): void;
@@ -23,7 +23,7 @@ export interface WriteStream<T> extends EventEmitter {
   write(
     chunk: T,
     encoding?: string,
-    cb?: (error: Error | null | undefined) => void
+    cb?: (error: Error | null | undefined) => void,
   ): boolean;
   setDefaultEncoding(encoding: string): this;
   end(cb?: () => void): void;
@@ -82,11 +82,11 @@ export interface WriteStream<T> extends EventEmitter {
   prependListener(event: "pipe", listener: (src: ReadStream<T>) => void): this;
   prependListener(
     event: "unpipe",
-    listener: (src: ReadStream<T>) => void
+    listener: (src: ReadStream<T>) => void,
   ): this;
   prependListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   prependOnceListener(event: "close", listener: () => void): this;
@@ -95,15 +95,15 @@ export interface WriteStream<T> extends EventEmitter {
   prependOnceListener(event: "finish", listener: () => void): this;
   prependOnceListener(
     event: "pipe",
-    listener: (src: ReadStream<T>) => void
+    listener: (src: ReadStream<T>) => void,
   ): this;
   prependOnceListener(
     event: "unpipe",
-    listener: (src: ReadStream<T>) => void
+    listener: (src: ReadStream<T>) => void,
   ): this;
   prependOnceListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   removeListener(event: "close", listener: () => void): this;
@@ -114,7 +114,7 @@ export interface WriteStream<T> extends EventEmitter {
   removeListener(event: "unpipe", listener: (src: ReadStream<T>) => void): this;
   removeListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 }
 
@@ -126,7 +126,7 @@ export interface WritableOptions<This, T> {
   writev?(
     this: This,
     chunks: { chunk: T; encoding: string }[],
-    callback: BasicCallback
+    callback: BasicCallback,
   ): void;
   destroy?(this: This, error: Error | null, callback: BasicCallback): void;
   final?(this: This, callback: BasicCallback): void;

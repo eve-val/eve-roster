@@ -33,5 +33,5 @@ export default jsonEndpoint(
       progress: job.progress || null,
       progressLabel: job.progressLabel || null,
     };
-  }
+  },
 );

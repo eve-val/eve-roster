@@ -29,7 +29,7 @@ export async function fetchZKillResultPage(url: string, page: number) {
     throw new Error(`Error from ZKillboard: ${response.data.error}`);
   } else if (!(response.data instanceof Array)) {
     throw new Error(
-      `Unexpected response from ZKillboard: "${util.inspect(response)}"`
+      `Unexpected response from ZKillboard: "${util.inspect(response)}"`,
     );
   }
 

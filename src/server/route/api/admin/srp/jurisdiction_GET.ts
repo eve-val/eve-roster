@@ -19,7 +19,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges
+  privs: AccountPrivileges,
 ) {
   privs.requireRead("serverConfig");
 

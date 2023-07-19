@@ -23,13 +23,13 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<{}> => {
 
       if (!TIMEZONE_LABELS.includes(input.activeTimezone)) {
         throw new BadRequestError(
-          `Invalid timezone: "${input.activeTimezone}".`
+          `Invalid timezone: "${input.activeTimezone}".`,
         );
       }
       return dao.account.setActiveTimezone(
         db,
         targetAccountId,
-        input.activeTimezone
+        input.activeTimezone,
       );
     })
     .then((updateCount) => {

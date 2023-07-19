@@ -34,7 +34,7 @@ function executor(db: Tnex, job: JobLogger) {
       } else if (failureCount > 0 && updateCount > 0) {
         job.warn(`Failed to update ${failureCount} character killboards.`);
       }
-    }
+    },
   );
 }
 
@@ -58,14 +58,14 @@ function fetchAll(db: Tnex, job: JobLogger, year: number, month: number) {
           job,
           currentProgress,
           idx,
-          rows.length
+          rows.length,
         );
         return syncCharacterKillboard(
           db,
           row.character_id,
           row.character_name,
           year,
-          month
+          month,
         )
           .then(() => {
             updateCount++;
@@ -73,12 +73,12 @@ function fetchAll(db: Tnex, job: JobLogger, year: number, month: number) {
           .catch((e) => {
             logger.warn(
               `Error fetching killboard for ${row.character_name}:`,
-              e
+              e,
             );
             failureCount++;
             if (failureCount > MAX_FAILURES_BEFORE_BAILING) {
               throw new Error(
-                "syncCombatStats aborted (failure count too high)"
+                "syncCombatStats aborted (failure count too high)",
               );
             }
           });
@@ -93,20 +93,20 @@ function syncCharacterKillboard(
   characterId: number,
   characterName: string,
   year: number,
-  month: number
+  month: number,
 ) {
   return serialize(["kills", "losses"], (kind) =>
-    fetchMails(kind, characterId, year, month)
+    fetchMails(kind, characterId, year, month),
   )
     .then(([kills, losses]) => {
       const killCount = kills.length;
       const lossCount = losses.length;
 
       const killValue = Math.round(
-        kills.reduce((accum, kill) => accum + kill.zkb.totalValue, 0)
+        kills.reduce((accum, kill) => accum + kill.zkb.totalValue, 0),
       );
       const lossValue = Math.round(
-        losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0)
+        losses.reduce((accum, loss) => accum + loss.zkb.totalValue, 0),
       );
 
       return dao.combatStats.updateCharacterCombatStats(
@@ -115,7 +115,7 @@ function syncCharacterKillboard(
         killCount,
         lossCount,
         killValue,
-        lossValue
+        lossValue,
       );
     })
     .then(async () => {
@@ -128,7 +128,7 @@ function logProgressUpdate(
   job: JobLogger,
   lastLoggedProgress: number,
   idx: number,
-  length: number
+  length: number,
 ) {
   const progress = Math.floor(idx / length / PROGRESS_INTERVAL_PERC);
   if (progress > lastLoggedProgress || idx == 0) {
@@ -144,7 +144,7 @@ async function fetchMails(
   kind: string,
   characterId: number,
   year: number,
-  month: number
+  month: number,
 ) {
   const mails = [] as ZkillIncident[];
 
@@ -155,7 +155,7 @@ async function fetchMails(
       characterId,
       year,
       month,
-      pageIndex
+      pageIndex,
     );
     for (const incident of page) {
       mails.push(incident);
@@ -176,7 +176,7 @@ function fetchMailsPage(
   characterId: number,
   year: number,
   month: number,
-  page: number
+  page: number,
 ): Promise<ZkillIncident[]> {
   const url =
     `https://zkillboard.com/api/${kind}/characterID/${characterId}` +
@@ -186,12 +186,12 @@ function fetchMailsPage(
       headers: {
         "Accept-Encoding": "gzip",
       },
-    })
+    }),
   ).then((response) => {
     if (!response.data || "error" in response.data) {
       const errorMessage = response.data?.error;
       throw new Error(
-        `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`
+        `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`,
       );
     }
     return response.data;

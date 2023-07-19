@@ -31,7 +31,7 @@ export class BattleWriter extends Writable<BattleResult> {
 
   private async _writeBattle(
     result: BattleResult,
-    callback: (err?: Error) => void
+    callback: (err?: Error) => void,
   ) {
     if (result.type == "deleted") {
       await dao.battle.deleteBattle(this._db, result.battleId);
@@ -62,7 +62,7 @@ export class BattleWriter extends Writable<BattleResult> {
       await dao.battle.setAssociatedKillmails(
         this._db,
         battleId,
-        data.killmails
+        data.killmails,
       );
       this._newBattleCount++;
     }

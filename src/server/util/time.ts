@@ -18,7 +18,7 @@ const UNITS = [
 export function shortDurationString(
   start: moment.MomentInput,
   end: moment.MomentInput,
-  maxUnits?: number
+  maxUnits?: number,
 ): string {
   maxUnits = maxUnits || UNITS.length;
 

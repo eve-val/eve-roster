@@ -292,7 +292,7 @@ export default defineComponent({
         this.srp.killmail,
         verdict,
         reason,
-        payout
+        payout,
       );
       this.savePromise = savePromise;
       savePromise
@@ -480,7 +480,7 @@ const MAIN_STATUSES: Status[] = [
 
 const ALL_STATUSES: Status[] = MAIN_STATUSES.concat(
   INELIGIBLE_STATUSES,
-  UNSETTABLE_STATUSES
+  UNSETTABLE_STATUSES,
 );
 
 function isValidInputPayout(inputPayout: number | null): boolean {

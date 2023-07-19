@@ -6,7 +6,7 @@ export class Transform<In, Out> extends Duplex<In, Out> {
   _transform?(
     chunk: In,
     encoding: string,
-    callback: TransformCallback<Out>
+    callback: TransformCallback<Out>,
   ): void;
 
   _flush?(callback: TransformCallback<Out>): void;

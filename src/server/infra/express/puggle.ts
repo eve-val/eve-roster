@@ -33,7 +33,7 @@ export class Puggle {
       outputPath,
       compiler != null
         ? new DevMiddlewareTemplateFs(compiler)
-        : new ProdTemplateFs()
+        : new ProdTemplateFs(),
     );
   }
 
@@ -46,7 +46,10 @@ export class Puggle {
 class TemplateProvider {
   private cache = new Map<string, TemplateCacheEntry>();
 
-  constructor(private outputPath: string, private fs: TemplateFs) {}
+  constructor(
+    private outputPath: string,
+    private fs: TemplateFs,
+  ) {}
 
   async getTemplate(name: string): Promise<pug.compileTemplate> {
     const cached = this.cache.get(name);
@@ -67,7 +70,7 @@ class TemplateProvider {
         try {
           const timestamp = Date.now();
           const template = pug.compile(
-            await this.fs.readFile(filepath, "utf-8")
+            await this.fs.readFile(filepath, "utf-8"),
           );
           this.cache.set(name, {
             type: "cached",
@@ -79,7 +82,7 @@ class TemplateProvider {
         } catch (e) {
           reject(e);
         }
-      }
+      },
     );
 
     this.cache.set(name, {
@@ -118,7 +121,7 @@ class DevMiddlewareTemplateFs implements TemplateFs {
         (err, data) => {
           if (err) reject(err);
           else resolve(data);
-        }
+        },
       );
     });
   }
@@ -130,7 +133,7 @@ class DevMiddlewareTemplateFs implements TemplateFs {
         (err, data) => {
           if (err) reject(err);
           else resolve(data);
-        }
+        },
       );
     });
   }

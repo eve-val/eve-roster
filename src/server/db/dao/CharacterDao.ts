@@ -49,7 +49,7 @@ export default class CharacterDao {
         memberCorporation,
         "mcorp_corporationId",
         "=",
-        "character_corporationId"
+        "character_corporationId",
       )
       .where("account_id", "=", val(accountId))
       .andWhere("character_deleted", "=", val(false))
@@ -61,7 +61,7 @@ export default class CharacterDao {
         "ownership_opsec",
         "mcorp_membership",
         "account_mainCharacter",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }
@@ -75,7 +75,7 @@ export default class CharacterDao {
         memberCorporation,
         "mcorp_corporationId",
         "=",
-        "character_corporationId"
+        "character_corporationId",
       )
       .where("character_id", "=", val(characterId))
       .columns("account_id", "character_corporationId", "mcorp_membership")
@@ -108,7 +108,7 @@ export default class CharacterDao {
           .where("skillsheet_character", "=", val(id)),
         "sp_character",
         "=",
-        "character_id"
+        "character_id",
       )
       .where("character_id", "=", val(id))
       .columns(
@@ -121,7 +121,7 @@ export default class CharacterDao {
         "account_activeTimezone",
         "citadel_id",
         "citadel_name",
-        "sp_total"
+        "sp_total",
       )
       .fetchFirst();
   }
@@ -129,7 +129,7 @@ export default class CharacterDao {
   upsertCharacter(
     db: Tnex,
     upserted: Character,
-    strategy?: UpdateStrategy<Partial<Character>>
+    strategy?: UpdateStrategy<Partial<Character>>,
   ) {
     return db.upsert(character, upserted, "character_id", strategy);
   }
