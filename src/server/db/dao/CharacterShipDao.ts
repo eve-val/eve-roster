@@ -15,7 +15,7 @@ export default class CharacterShipDao {
   async setCharacterShips(
     db: Tnex,
     characterId: number,
-    ships: CharacterShipRow[]
+    ships: CharacterShipRow[],
   ): Promise<void> {
     const items = ships.map((row) => {
       return {
@@ -34,7 +34,7 @@ export default class CharacterShipDao {
           characterShipUpdate_character: characterId,
           characterShipUpdate_timestamp: Date.now(),
         },
-        "characterShipUpdate_character"
+        "characterShipUpdate_character",
       );
       await db
         .del(characterShip)
@@ -58,7 +58,7 @@ export default class CharacterShipDao {
     predicates: {
       includeOpsecChars?: boolean;
       accountId?: number;
-    }
+    },
   ): Promise<BorrowedShipOutputRow[]> {
     let q = db
       .select(characterShip)
@@ -66,7 +66,7 @@ export default class CharacterShipDao {
         characterShipUpdate,
         "characterShipUpdate_character",
         "=",
-        "characterShip_character"
+        "characterShip_character",
       )
       .join(character, "character_id", "=", "characterShip_character")
       .join(ownership, "ownership_character", "=", "character_id")
@@ -78,7 +78,7 @@ export default class CharacterShipDao {
           .using("character_name", "mainChar_name"),
         "mainChar_id",
         "=",
-        "account_mainCharacter"
+        "account_mainCharacter",
       )
       .join(sdeType, "styp_id", "=", "characterShip_typeId")
       .columns(
@@ -88,7 +88,7 @@ export default class CharacterShipDao {
         "characterShip_id",
         "characterShip_name",
         "characterShip_locationDescription",
-        "characterShipUpdate_timestamp"
+        "characterShipUpdate_timestamp",
       );
     if (predicates.accountId !== undefined) {
       q = q.where("account_id", "=", val(predicates.accountId));
@@ -107,7 +107,7 @@ export default class CharacterShipDao {
           name: r.characterShip_name,
           locationDescription: r.characterShip_locationDescription,
           timestamp: r.characterShipUpdate_timestamp,
-        }
+        },
     );
   }
 }

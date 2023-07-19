@@ -49,13 +49,13 @@ class Cron {
     return this._runTaskIfOverdue(schedTask)
       .then(() => {
         schedule.scheduleJob(schedTask.schedule, () =>
-          this._runTask(schedTask)
+          this._runTask(schedTask),
         );
       })
       .catch((e) => {
         logger.error(
           `Error while initializing task "${schedTask.task.name}".`,
-          e
+          e,
         );
       });
   }

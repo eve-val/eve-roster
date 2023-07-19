@@ -70,7 +70,7 @@ export interface TemplateRule extends CoreRule {
 export interface FuncRule extends CoreRule {
   discriminant: (
     killmail: ZKillmail,
-    meta: LossMeta
+    meta: LossMeta,
   ) => TriageVerdict[] | undefined;
 }
 

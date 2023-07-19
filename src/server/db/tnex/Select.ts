@@ -27,7 +27,7 @@ interface ColumnSelect {
  */
 export class Select<
   J extends object /* joined */,
-  S /* selected */
+  S /* selected */,
 > extends Query<J, S[]> {
   private _knex: Knex;
   private _subqueryTableName: string | undefined;
@@ -39,7 +39,7 @@ export class Select<
     knex: Knex,
     scoper: Scoper,
     table: J,
-    subqueryTableName?: string
+    subqueryTableName?: string,
   ) {
     super(scoper.mirror(), knex(scoper.getTableName(table)));
     this._knex = knex;
@@ -66,7 +66,7 @@ export class Select<
   ): Select<J, S & Pick<J, K>> {
     if (this._subqueryTableName != null) {
       throw new Error(
-        `Subqueries don't support columns(). Use columnAs() instead.`
+        `Subqueries don't support columns(). Use columnAs() instead.`,
       );
     }
 
@@ -90,7 +90,7 @@ export class Select<
    */
   public columnAs<K extends StringKeyOf<J>, L extends string>(
     column: K,
-    alias: L
+    alias: L,
   ): Select<J, S & Link<J, K, L>> {
     this._pendingSelectedColumns.push({ column, alias });
 
@@ -106,21 +106,21 @@ export class Select<
     subselect: Select<T, E>,
     left: StringKeyOf<E>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & E, S>;
   // Renamed join
   public join<T extends object, E>(
     renamedTable: RenamedJoin<T, E>,
     left: StringKeyOf<E>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & E, S>;
   // Normal join
   public join<T extends object>(
     table: T,
     left: StringKeyOf<T>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & T, S>;
   // Implementation
   public join(table: object, left: string, cmp: Comparison, right: string) {
@@ -142,7 +142,7 @@ export class Select<
       joinTarget,
       this._scoper.scopeColumn(left, requiredPrefix),
       cmp,
-      this._scoper.scopeColumn(right)
+      this._scoper.scopeColumn(right),
     );
 
     return this;
@@ -153,21 +153,21 @@ export class Select<
     sub: Select<T, E>,
     left: StringKeyOf<E>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & Nullable<E>, S>;
   // Renamed join
   public leftJoin<T extends object, E>(
     join: RenamedJoin<T, E>,
     left: StringKeyOf<E>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & Nullable<E>, S>;
   // Normal
   public leftJoin<T extends object>(
     table: T,
     left: StringKeyOf<T>,
     cmp: Comparison,
-    right: StringKeyOf<J>
+    right: StringKeyOf<J>,
   ): Select<J & Nullable<T>, S>;
   // Implementation
   public leftJoin(table: object, left: string, cmp: Comparison, right: string) {
@@ -189,7 +189,7 @@ export class Select<
       joinTarget,
       this._scoper.scopeColumn(left),
       cmp,
-      this._scoper.scopeColumn(right)
+      this._scoper.scopeColumn(right),
     );
 
     return this;
@@ -202,7 +202,7 @@ export class Select<
   private _processSubJoin<T extends object, E>(sub: Select<T, E>) {
     if (sub._subqueryTableName == null) {
       throw new Error(
-        `Query is not a subquery. Use subselect() instead of select()`
+        `Query is not a subquery. Use subselect() instead of select()`,
       );
     }
 
@@ -227,7 +227,7 @@ export class Select<
 
   public sum<K extends StringKeyOf<J>, L extends string>(
     column: K,
-    alias: L
+    alias: L,
   ): Select<J, S & Link<J, K, L>> {
     this._query = this._query.sum(this._prepForSelect(column, alias));
     return this as any;
@@ -235,7 +235,7 @@ export class Select<
 
   public count<K extends StringKeyOf<J>, L extends string>(
     column: K,
-    alias: L
+    alias: L,
   ): Select<J, S & Link<J, K, L>> {
     // TODO: Flag that this might need to be converted from a string to a
     // number.
@@ -245,7 +245,7 @@ export class Select<
 
   public max<K extends StringKeyOf<J>, L extends string>(
     column: K,
-    alias: L
+    alias: L,
   ): Select<J, S & Link<J, K, L>> {
     this._query = this._query.max(this._prepForSelect(column, alias));
     return this as any;
@@ -276,11 +276,11 @@ export class Select<
    * This is a Postgres-only extension.
    */
   public distinctOn<K extends StringKeyOf<J>>(
-    column: K
+    column: K,
   ): Select<J, S & Pick<J, K>> {
     const scopedCol = this._scoper.scopeColumn(column);
     this._query = this._query.distinct(
-      this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column])
+      this._knex.raw(`ON (??) ?? as ??`, [scopedCol, scopedCol, column]),
     );
 
     return this as any;
@@ -293,7 +293,7 @@ export class Select<
   public orderBy(column: StringKeyOf<J>, direction: "asc" | "desc"): this {
     this._query = this._query.orderBy(
       this._scoper.scopeColumn(column),
-      direction
+      direction,
     );
     return this;
   }
@@ -329,14 +329,14 @@ export class Select<
     } else {
       if (alias == undefined) {
         throw new Error(
-          `Unexpectedly undefined alias for "${prefixedColumn}".`
+          `Unexpectedly undefined alias for "${prefixedColumn}".`,
         );
       }
       const [prefix] = this._scoper.splitColumn(alias);
       if (prefix != this._subqueryTableName) {
         throw new Error(
           `Alias "${alias}" for column "${prefixedColumn}" must be` +
-            ` prefixed with "${this._subqueryTableName}".`
+            ` prefixed with "${this._subqueryTableName}".`,
         );
       }
 

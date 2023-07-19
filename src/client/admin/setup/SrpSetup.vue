@@ -102,7 +102,7 @@ export default defineComponent({
       const jurisdiction = response.data.srpJurisdiction;
       const trackSrp = jurisdiction != null;
       const startInput = timestampToDateStr(
-        (jurisdiction && jurisdiction.start) || Date.now()
+        (jurisdiction && jurisdiction.start) || Date.now(),
       );
 
       this.savedState = {

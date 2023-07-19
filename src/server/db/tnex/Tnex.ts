@@ -60,7 +60,7 @@ export class Tnex {
       return Promise.resolve(
         this._knex.transaction((trx) => {
           return callback(new Tnex(trx, this._registry, this._knex));
-        })
+        }),
       );
     }
   }
@@ -74,7 +74,7 @@ export class Tnex {
       this._knex,
       this._registry,
       startingTable,
-      asTableName
+      asTableName,
     );
   }
 
@@ -84,30 +84,30 @@ export class Tnex {
 
   public insert<T extends object, R extends T = T>(
     table: T,
-    row: R
+    row: R,
   ): Promise<void>;
   public insert<T extends object, K extends keyof T, R extends T = T>(
     table: T,
     row: R,
-    returning: K
+    returning: K,
   ): Promise<T[K]>;
   public insert<
     T extends object,
     K extends keyof T,
     L extends keyof T,
-    R extends T = T
+    R extends T = T,
   >(table: T, row: R, returning: [K, L]): Promise<[T[K], T[L]]>;
   public insert<
     T extends object,
     K extends keyof T,
     L extends keyof T,
     M extends keyof T,
-    R extends T = T
+    R extends T = T,
   >(table: T, row: R, returning: [K, L, M]): Promise<[T[K], T[L], T[M]]>;
   public insert<T extends object, R extends T = T>(
     table: T,
     row: R,
-    returning?: string | string[]
+    returning?: string | string[],
   ) {
     const tableName = this._registry.getTableName(table);
     const retKeys = this._prepReturningKeys(returning);
@@ -130,12 +130,12 @@ export class Tnex {
   public insertAll<T extends object, K extends keyof T>(
     table: T,
     rows: T[],
-    returning: K
+    returning: K,
   ): Promise<T[K][]>;
   public insertAll<T extends object>(
     table: T,
     rows: T[],
-    returning?: string
+    returning?: string,
   ): Promise<any[] | void> {
     if (rows.length === 0) {
       return Promise.resolve([]);
@@ -145,7 +145,7 @@ export class Tnex {
     return this._knex(tableName)
       .insert(
         rows.map((row) => this._prepRowForInsert(row, table)),
-        retKeys
+        retKeys,
       )
       .then((results) => {
         if (returning === undefined) {
@@ -161,7 +161,7 @@ export class Tnex {
       this._knex,
       this._registry,
       table,
-      this._prepRowForInsert(values, table)
+      this._prepRowForInsert(values, table),
     );
   }
 
@@ -172,7 +172,7 @@ export class Tnex {
   public updateAll<T extends object, K extends StringKeyOf<T>>(
     table: T,
     idColumn: K,
-    rows: (Partial<T> & Pick<T, K>)[]
+    rows: (Partial<T> & Pick<T, K>)[],
   ) {
     // Query structure:
     // UPDATE tableName SET
@@ -191,7 +191,7 @@ export class Tnex {
     const strippedId = this._registry.stripPrefix(idColumn);
     const synthTable = `__updatesFor_${tableName}`;
     const columns = getColumnDescriptors(table).filter((col) =>
-      Object.prototype.hasOwnProperty.call(rows[0], col.prefixedName)
+      Object.prototype.hasOwnProperty.call(rows[0], col.prefixedName),
     );
 
     const query: string[] = [];
@@ -225,7 +225,7 @@ export class Tnex {
         if (val === undefined) {
           throw new Error(
             `Column ${String(col.prefixedName)} is undefined in row` +
-              ` ${inspect(row)}.`
+              ` ${inspect(row)}.`,
           );
         }
         bindings.push(prepValueForInsert(val, col));
@@ -248,7 +248,7 @@ export class Tnex {
   public del<T extends object>(table: T): Query<T, number> {
     return new Query<T, number>(
       this._registry,
-      this._knex(this._registry.getTableName(table)).del()
+      this._knex(this._registry.getTableName(table)).del(),
     );
   }
 
@@ -266,7 +266,7 @@ export class Tnex {
     table: T,
     row: R,
     primaryColumn: StringKeyOf<T>,
-    updateStrategy?: UpdateStrategy<Partial<T>>
+    updateStrategy?: UpdateStrategy<Partial<T>>,
   ): Promise<number> {
     return this.upsertAll(table, [row], primaryColumn, updateStrategy);
   }
@@ -285,7 +285,7 @@ export class Tnex {
     table: T,
     rows: R[],
     primaryColumn: StringKeyOf<T>,
-    updateStrategy?: UpdateStrategy<Partial<T>>
+    updateStrategy?: UpdateStrategy<Partial<T>>,
   ): Promise<number> {
     if (rows.length == 0) {
       return Promise.resolve(0);
@@ -343,7 +343,7 @@ export class Tnex {
       return this._knex.raw(query, bindings).then((response) => {
         return response.rows.reduce(
           (accum: number, value: any) => accum + value.count,
-          0
+          0,
         );
       });
     } else {
@@ -369,13 +369,13 @@ export class Tnex {
     table: T,
     sharedColumn: K,
     sharedColumnValue: T[K] & number,
-    rows: T[]
+    rows: T[],
   ) {
     for (const row of rows) {
       if (row[sharedColumn] != sharedColumnValue) {
         throw new Error(
           `Column ${sharedColumn} should be ${sharedColumnValue} but is ` +
-            `${row[sharedColumn]} instead. In row: ${inspect(row)}.`
+            `${row[sharedColumn]} instead. In row: ${inspect(row)}.`,
         );
       }
     }
@@ -417,7 +417,7 @@ export class Tnex {
     if (this._getClient() == "pg") {
       return this._knex.raw(
         `SELECT pg_advisory_xact_lock('??'::regclass::int, ?);`,
-        [this._registry.getTableName(table), key]
+        [this._registry.getTableName(table), key],
       );
     } else {
       throw new Error(`Unsupported client type: "${this._getClient()}".`);
@@ -469,7 +469,7 @@ function repeat(str: string, separator: string, count: number) {
 
 function prepValueForInsert<T extends object>(
   value: any,
-  column: ColumnDescriptor<T>
+  column: ColumnDescriptor<T>,
 ) {
   if (column.type == DataType.JSON) {
     // node-pg will auto-stringify objects passed to it, but arrays and

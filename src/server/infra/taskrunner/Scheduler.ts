@@ -69,7 +69,7 @@ export class Scheduler {
       _nextExecutionId,
       task,
       options.channel,
-      options.silent || false
+      options.silent || false,
     );
     _nextExecutionId++;
 
@@ -110,7 +110,7 @@ export class Scheduler {
           const work = job.task.executor(this._db, job);
           job.timeoutId = setTimeout(
             () => this._timeoutJob(job),
-            job.task.timeout
+            job.task.timeout,
           );
           job.setStatus("running", "pending");
           return work;
@@ -152,7 +152,7 @@ export class Scheduler {
           return dao.cron.finishJob(
             this._db,
             checkNotNil(job.logId),
-            jobResult
+            jobResult,
           );
         })
         .catch((e) => {
@@ -209,7 +209,7 @@ export class Scheduler {
 
   private _findQueuedTaskInChannel(
     task: Task,
-    channelName: string | undefined
+    channelName: string | undefined,
   ) {
     if (channelName == undefined) {
       return undefined;
@@ -244,7 +244,7 @@ export class Scheduler {
     if (channel.runningJob == undefined && channel.queue.length > 0) {
       logger.warn(
         `Job channel "${channel.name}" has stalled. Queue is` +
-          ` [${inspect(_.pluck(_.pluck(channel.queue, "task"), "name"))}].`
+          ` [${inspect(_.pluck(_.pluck(channel.queue, "task"), "name"))}].`,
       );
     }
   }
@@ -261,7 +261,7 @@ export class Scheduler {
       if (i < 0) {
         throw new Error(
           `Cannot remove job ${inspect(job)} from channel` +
-            ` ${inspect(channel)}.`
+            ` ${inspect(channel)}.`,
         );
       }
       channel.queue.splice(i, 1);

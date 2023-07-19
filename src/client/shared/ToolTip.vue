@@ -105,12 +105,12 @@ export default defineComponent({
         coerceToEnum(
           rawPrimary,
           ToolTipGravityPrimary,
-          ToolTipGravityPrimary.BOTTOM
+          ToolTipGravityPrimary.BOTTOM,
         ),
         coerceToEnum(
           rawSecondary,
           ToolTipGravitySecondary,
-          ToolTipGravitySecondary.CENTER
+          ToolTipGravitySecondary.CENTER,
         ),
       ];
     },
@@ -231,7 +231,7 @@ function computeSecondaryPercentage(alignment: ToolTipGravitySecondary) {
 function triangleStyle(
   gravity: ToolTipGravityPrimary,
   color: number,
-  offset: "none" | "inset"
+  offset: "none" | "inset",
 ) {
   let style = {} as CSSProperties;
   const opaqueBorder = `${ARROW_RISE}px solid #${color.toString(16)}`;

@@ -36,7 +36,7 @@ export function updateSkills(db: Tnex, characterId: number) {
         return esiSkillToRow(
           characterId,
           esiSkill,
-          completedSkills[esiSkill.skill_id!]
+          completedSkills[esiSkill.skill_id!],
         );
       });
 
@@ -62,7 +62,7 @@ async function getEsiSkills(characterId: number, accessToken: string) {
 function esiSkillToRow(
   characterId: number,
   esiSkill: EsiSkill,
-  completedEntry: NamedSkillQueueRow | undefined
+  completedEntry: NamedSkillQueueRow | undefined,
 ) {
   let skillLevel = esiSkill.trained_skill_level || 0;
   let skillSp = esiSkill.skillpoints_in_skill || 0;

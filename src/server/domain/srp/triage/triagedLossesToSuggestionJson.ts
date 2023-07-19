@@ -7,7 +7,7 @@ import { TriagedLoss } from "./triageLosses.js";
  * Converts the output for triageLosses() to the triage format in SrpLossJson.
  */
 export async function triagedLossesToSuggestionJson(
-  triagedLosses: TriagedLoss[]
+  triagedLosses: TriagedLoss[],
 ) {
   const marketValues = await fetchHullMarketValues(triagedLosses);
 
@@ -26,7 +26,7 @@ export async function triagedLossesToSuggestionJson(
           payout: resolvePayout(
             suggestion,
             triagedLoss.loss.km_data,
-            marketValues
+            marketValues,
           ),
           verdict: suggestion.status,
         });

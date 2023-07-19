@@ -27,7 +27,7 @@ async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  input: Input
+  input: Input,
 ) {
   privs.requireWrite("serverConfig");
 

@@ -7,7 +7,7 @@ import pLimit from "p-limit";
 export function parallelize<T, U>(
   list: T[],
   callback: (value: T, index: number) => U | PromiseLike<U>,
-  limit = Infinity
+  limit = Infinity,
 ): Promise<U[]> {
   const work = [] as (U | PromiseLike<U>)[];
   const l = pLimit(limit);
@@ -16,7 +16,7 @@ export function parallelize<T, U>(
     work.push(
       l(() => {
         return callback(list[i], i);
-      })
+      }),
     );
   }
   return Promise.all(work);
@@ -29,7 +29,7 @@ export function parallelize<T, U>(
  */
 export async function serialize<T, U>(
   list: T[],
-  callback: (value: T, index: number) => U | PromiseLike<U>
+  callback: (value: T, index: number) => U | PromiseLike<U>,
 ): Promise<U[]> {
   const results = [] as U[];
 

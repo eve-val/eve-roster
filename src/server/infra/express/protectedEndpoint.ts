@@ -35,7 +35,7 @@ export type JsonEndpointHandler<T extends object> = (
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges
+  privs: AccountPrivileges,
 ) => Promise<T>;
 
 export type HtmlEndpointHandler<T extends Object> = (
@@ -43,7 +43,7 @@ export type HtmlEndpointHandler<T extends Object> = (
   res: express.Response,
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges
+  privs: AccountPrivileges,
 ) => Promise<HtmlPayload<T>>;
 
 export interface HtmlPayload<T extends object> {
@@ -52,7 +52,7 @@ export interface HtmlPayload<T extends object> {
 }
 
 export function htmlEndpoint<T extends object>(
-  handler: HtmlEndpointHandler<T>
+  handler: HtmlEndpointHandler<T>,
 ): ExpressHandler {
   return async function (req, res) {
     try {
@@ -63,14 +63,14 @@ export function htmlEndpoint<T extends object>(
       }
       const accountPrivs = await getAccountPrivs(
         req.app.locals.db,
-        session.accountId
+        session.accountId,
       );
       const payload = await handler(
         req,
         res,
         req.app.locals.db,
         accountPrivs.account,
-        accountPrivs.privs
+        accountPrivs.privs,
       );
       const context = req.app.locals.context as EndpointContext;
       await context.puggle.render(res, payload.template, payload.data);
@@ -84,21 +84,21 @@ export function htmlEndpoint<T extends object>(
 }
 
 export function jsonEndpoint<T extends object>(
-  handler: JsonEndpointHandler<T>
+  handler: JsonEndpointHandler<T>,
 ): ExpressHandler {
   return async function (req, res) {
     try {
       const session = getSession(req);
       const accountPrivs = await getAccountPrivs(
         req.app.locals.db,
-        session.accountId
+        session.accountId,
       );
       const payload = await handler(
         req,
         res,
         req.app.locals.db,
         accountPrivs.account,
-        accountPrivs.privs
+        accountPrivs.privs,
       );
 
       const space = req.query.pretty != undefined ? 2 : undefined;
@@ -117,14 +117,14 @@ function handleError(
   type: EndpointType,
   e: Error,
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   if (isLoggableError(e)) {
     const accountId = req.session?.accountId;
     logger.error(
       `ERROR while handling endpoint ${req.originalUrl}` +
         ` w/ accountId ${accountId}`,
-      e
+      e,
     );
   }
 

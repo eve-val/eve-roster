@@ -145,7 +145,7 @@ export default defineComponent({
       }
       ajaxer.postOpenInformationWindow(
         this.payingCharacter,
-        this.payment.recipient
+        this.payment.recipient,
       );
     },
 
@@ -157,7 +157,7 @@ export default defineComponent({
       const savePromise = ajaxer.putSrpPaymentStatus(
         this.payment.id,
         true,
-        this.payingCharacter
+        this.payingCharacter,
       );
       this.savePromise = savePromise;
       savePromise
@@ -178,7 +178,7 @@ export default defineComponent({
       const undoPromise = ajaxer.putSrpPaymentStatus(
         this.payment.id,
         false,
-        undefined
+        undefined,
       );
       this.undoPromise = undoPromise;
       undoPromise

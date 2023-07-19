@@ -23,7 +23,7 @@ export class TokenRefresher {
   constructor(env: Env) {
     this._ssoAuthCode = generateSsoAuthToken(
       env.SSO_CLIENT_ID,
-      env.SSO_SECRET_KEY
+      env.SSO_SECRET_KEY,
     );
   }
 
@@ -71,7 +71,7 @@ export class TokenRefresher {
 
     try {
       const response = await this._postRefreshRequest(
-        row.accessToken_refreshToken
+        row.accessToken_refreshToken,
       );
 
       const authInfo = await fetchAuthInfo(response.data.access_token);
@@ -92,7 +92,7 @@ export class TokenRefresher {
         if (e.response.status == 400) {
           logger.info(
             `Access token refresh request was rejected for char ` +
-              `${row.accessToken_character}.`
+              `${row.accessToken_character}.`,
           );
           result.errorType = AccessTokenErrorType.TOKEN_REFRESH_REJECTED;
           result.row = {
@@ -106,7 +106,7 @@ export class TokenRefresher {
           result.errorType = AccessTokenErrorType.HTTP_FAILURE;
           logger.error(
             `HTTP error while refreshing token for ` +
-              `${row.accessToken_character}.`
+              `${row.accessToken_character}.`,
           );
           logger.error(e.message);
         }
@@ -114,7 +114,7 @@ export class TokenRefresher {
         result.errorType = AccessTokenErrorType.HTTP_FAILURE;
         logger.error(
           `Generic error while refreshing token for ` +
-            `${row.accessToken_character}.`
+            `${row.accessToken_character}.`,
         );
         logger.error(e.message);
       }
@@ -135,7 +135,7 @@ export class TokenRefresher {
           Authorization: "Basic " + this._ssoAuthCode,
         },
         timeout: REQUEST_TIMEOUT,
-      }
+      },
     );
   }
 }

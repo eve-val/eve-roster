@@ -12,7 +12,7 @@ export class Scoper {
   public constructor(
     separator: string,
     tableToName: Map<object, string>,
-    prefixToName: Map<string, string>
+    prefixToName: Map<string, string>,
   ) {
     this._separator = separator;
     this._tableToNameGlobal = tableToName;
@@ -23,7 +23,7 @@ export class Scoper {
     return new Scoper(
       this._separator,
       this._tableToNameGlobal,
-      this._prefixToNameGlobal
+      this._prefixToNameGlobal,
     );
   }
 
@@ -34,7 +34,7 @@ export class Scoper {
       if (prefix != subqueryTableName) {
         throw new Error(
           `Column "${columnName}" must be prefixed with` +
-            ` "${subqueryTableName}".`
+            ` "${subqueryTableName}".`,
         );
       }
       tableName = subqueryTableName;
@@ -54,7 +54,7 @@ export class Scoper {
     if (tableName == undefined) {
       throw new Error(
         `Unknown table "${util.inspect(table)}".` +
-          ` Did you forget to register it?`
+          ` Did you forget to register it?`,
       );
     }
     return tableName;

@@ -54,7 +54,7 @@ export function formatLocationFlag(locationFlag: string): string {
 export async function fetchAssets(
   characterId: number,
   token: string,
-  db: Tnex
+  db: Tnex,
 ): Promise<Asset[]> {
   const assets: EsiAsset[] = [];
   for (let page = 1; page <= MAX_ASSET_PAGES_TO_FETCH; page++) {
@@ -64,7 +64,7 @@ export async function fetchAssets(
         characterId,
         page,
         _token: token,
-      }
+      },
     );
     data.forEach((asset) => assets.push(asset));
     if (page >= pageCount) {
@@ -82,7 +82,7 @@ async function fetchShipNames(
   assets: EsiAsset[],
   typeData: TypeDataMap,
   characterId: number,
-  token: string
+  token: string,
 ): Promise<Map<number, string>> {
   const itemIds = assets
     .filter((asset) => isAssembledShip(asset, typeData))
@@ -104,7 +104,7 @@ type TypeDataMap = Map<number, TypeData>;
 
 async function fetchTypeData(
   assets: EsiAsset[],
-  db: Tnex
+  db: Tnex,
 ): Promise<TypeDataMap> {
   const typeIds = new Set<number>(assets.map((asset) => asset.type_id));
   const rows = await dao.sde.getTypes(db, Array.from(typeIds), [
@@ -136,7 +136,7 @@ function isAssembledShip(a: EsiAsset, typeData: TypeDataMap): boolean {
 function convertAsset(
   a: EsiAsset,
   typeData: TypeDataMap,
-  shipNames: Map<number, string>
+  shipNames: Map<number, string>,
 ): Asset {
   const td = typeData.get(a.type_id)!;
   return {

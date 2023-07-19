@@ -20,7 +20,7 @@ export default class SkillQueueDao {
       .select(
         "mainCharacter.id as id",
         "mainCharacter.name as name",
-        "characterCombatStats.killsInLastMonth as kills"
+        "characterCombatStats.killsInLastMonth as kills",
       )
       .join(
         // Subselect: all member accounts
@@ -32,7 +32,7 @@ export default class SkillQueueDao {
           .as("memberAccount"),
         "memberAccount.id",
         "=",
-        "account.id"
+        "account.id",
       )
       .join("ownership", "ownership.account", "=", "account.id")
       .join("character", "character.id", "=", "ownership.character")
@@ -40,13 +40,13 @@ export default class SkillQueueDao {
         "character as mainCharacter",
         "mainCharacter.id",
         "=",
-        "account.mainCharacter"
+        "account.mainCharacter",
       )
       .join(
         "characterCombatStats",
         "characterCombatStats.character",
         "=",
-        "mainCharacter.id"
+        "mainCharacter.id",
       )
       .distinct("account.id")
       .orderBy("characterCombatStats.killsInLastMonth", "desc");
@@ -60,7 +60,7 @@ export default class SkillQueueDao {
           `skillsheet as ${alias}`,
           `${alias}.character`,
           "=",
-          "character.id"
+          "character.id",
         )
         .where(`${alias}.skill`, "=", r.skill)
         .where(`${alias}.level`, ">=", r.minLevel);

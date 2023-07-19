@@ -34,7 +34,7 @@ export default jsonEndpoint((req, res, db, account, _privs) => {
       if (!canDesignateMain(created)) {
         throw new UnauthorizedClientError(
           `Account was created ${created}, which is outside this account's` +
-            ` main designation window.`
+            ` main designation window.`,
         );
       }
       return dao.character.getCoreData(db, newMainId);
@@ -45,7 +45,7 @@ export default jsonEndpoint((req, res, db, account, _privs) => {
       }
       if (charData.account_id != account.id) {
         throw new BadRequestError(
-          `Account ${account.id} doesn't own character ${newMainId}`
+          `Account ${account.id} doesn't own character ${newMainId}`,
         );
       }
       if (charData.character_corporationId == CORP_DOOMHEIM) {

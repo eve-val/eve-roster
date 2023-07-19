@@ -30,7 +30,7 @@ export class FilterableQuery<T extends object> {
   public where<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
     column: K1,
     cmp: Comparison,
-    right: K2 | ValueWrapper<T[K1] & ColumnType>
+    right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
     if (right instanceof ValueWrapper) {
       // This is a simple where clause that has every row compared to the
@@ -55,7 +55,7 @@ export class FilterableQuery<T extends object> {
   public andWhere<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
     column: K1,
     cmp: Comparison,
-    right: K2 | ValueWrapper<T[K1] & ColumnType>
+    right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
     // andWhere in knex is just an alias to where, so there's no need to
     // duplicate logic between the two. But keeping andWhere around can help
@@ -66,13 +66,13 @@ export class FilterableQuery<T extends object> {
   public orWhere<K1 extends StringKeyOf<T>, K2 extends StringKeyOf<T>>(
     column: K1,
     cmp: Comparison,
-    right: K2 | ValueWrapper<T[K1] & ColumnType>
+    right: K2 | ValueWrapper<T[K1] & ColumnType>,
   ): this {
     if (right instanceof ValueWrapper) {
       this._query = this._query.orWhere(
         this._scoper.scopeColumn(column),
         cmp,
-        right.value
+        right.value,
       );
     } else {
       const rawLeft = this._scoper.scopeColumn(column);
@@ -102,7 +102,7 @@ export class FilterableQuery<T extends object> {
 
   public whereIn<K extends StringKeyOf<T>>(
     column: K,
-    values: T[K][] & ColumnType[]
+    values: T[K][] & ColumnType[],
   ): this {
     this._query = this._query.whereIn(this._scoper.scopeColumn(column), values);
 
@@ -111,11 +111,11 @@ export class FilterableQuery<T extends object> {
 
   public whereNotIn<K extends StringKeyOf<T>>(
     column: K,
-    values: T[K][] & ColumnType[]
+    values: T[K][] & ColumnType[],
   ): this {
     this._query = this._query.whereNotIn(
       this._scoper.scopeColumn(column),
-      values
+      values,
     );
 
     return this;
@@ -125,7 +125,7 @@ export class FilterableQuery<T extends object> {
   public whereContains<K1 extends StringKeyOf<T>>(
     column: K1,
     operator: "@>",
-    json: DeepPartial<T[K1]> & object
+    json: DeepPartial<T[K1]> & object,
   ) {
     const rawLeft = this._scoper.scopeColumn(column);
     const rawRight = JSON.stringify(json);
@@ -141,7 +141,7 @@ export class FilterableQuery<T extends object> {
   public whereNotContains<K1 extends StringKeyOf<T>>(
     column: K1,
     operator: "@>",
-    json: DeepPartial<T[K1]> & object
+    json: DeepPartial<T[K1]> & object,
   ) {
     const rawLeft = this._scoper.scopeColumn(column);
     const rawRight = JSON.stringify(json);
@@ -156,7 +156,7 @@ export class FilterableQuery<T extends object> {
 
   /** Begins a boolean parenthetical. Equivalent of `AND (...)` */
   public and(
-    callback: (this: FilterableQuery<T>, builder: FilterableQuery<T>) => void
+    callback: (this: FilterableQuery<T>, builder: FilterableQuery<T>) => void,
   ): this {
     this._query.where((qb: Knex.QueryBuilder) => {
       const filter = new FilterableQuery<T>(this._scoper, qb);
@@ -168,7 +168,7 @@ export class FilterableQuery<T extends object> {
 
   /** Begins a boolean parenthetical. Equivalent of `OR (...)` */
   public or(
-    callback: (this: FilterableQuery<T>, builder: FilterableQuery<T>) => void
+    callback: (this: FilterableQuery<T>, builder: FilterableQuery<T>) => void,
   ): this {
     this._query.orWhere((qb: Knex.QueryBuilder) => {
       const filter = new FilterableQuery<T>(this._scoper, qb);

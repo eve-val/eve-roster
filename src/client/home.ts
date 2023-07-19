@@ -117,7 +117,7 @@ const routes: RouteRecordRaw[] = [
 if (process.env.NODE_ENV == "development") {
   routes.push(
     { path: "/dev/", component: DevPreview },
-    { path: "/dev/:section", component: DevPreview }
+    { path: "/dev/:section", component: DevPreview },
   );
 }
 

@@ -26,7 +26,7 @@ export default class CharacterNotificationDao {
       .then((rows) =>
         _.map(rows, async function (row) {
           const sol = row.characterNotification_text.match(
-            /solarSystemID: (?<id>\d+)/
+            /solarSystemID: (?<id>\d+)/,
           );
           return {
             type: row.characterNotification_type,
@@ -35,14 +35,14 @@ export default class CharacterNotificationDao {
               ? (await fetchEveNames([+sol.groups.id]))[+sol.groups.id]
               : "n/a",
           };
-        })
+        }),
       );
   }
 
   async setCharacterNotifications(
     db: Tnex,
     characterId: number,
-    notifications: EsiNotification[]
+    notifications: EsiNotification[],
   ): Promise<void> {
     const items = notifications.map((n) => {
       return {
@@ -63,19 +63,19 @@ export default class CharacterNotificationDao {
           characterNotificationUpdate_character: characterId,
           characterNotificationUpdate_timestamp: +moment(),
         },
-        "characterNotificationUpdate_character"
+        "characterNotificationUpdate_character",
       );
       await db.upsertAll(
         characterNotification,
         items,
-        "characterNotification_id"
+        "characterNotification_id",
       );
     });
   }
 
   async getLastUpdateTimestamp(
     db: Tnex,
-    characterId: number
+    characterId: number,
   ): Promise<moment.Moment> {
     const timestamp = await db
       .select(characterNotificationUpdate)

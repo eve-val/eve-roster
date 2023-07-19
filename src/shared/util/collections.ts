@@ -20,7 +20,7 @@ export function arrayToMap<T, K extends keyof T>(array: T[], key: K) {
  */
 export function refine<Q, R>(
   array: Q[],
-  callback: (value: Q) => R | undefined | null
+  callback: (value: Q) => R | undefined | null,
 ) {
   const len = array.length;
   const out: R[] = [];

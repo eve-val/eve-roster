@@ -1,7 +1,7 @@
 import { createRemoteJWKSet, jwtVerify, JWTPayload } from "jose";
 
 export async function fetchAuthInfo(
-  accessToken: string
+  accessToken: string,
 ): Promise<AuthInfoResponse & JWTPayload> {
   const result = await jwtVerify(
     accessToken,
@@ -12,7 +12,7 @@ export async function fetchAuthInfo(
     }),
     {
       issuer: "login.eveonline.com",
-    }
+    },
   );
   return <AuthInfoResponse & JWTPayload>result.payload;
 }

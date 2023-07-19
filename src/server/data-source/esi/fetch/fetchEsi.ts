@@ -14,7 +14,7 @@ import { EsiEndpointParams } from "./EsiEndpointParams.js";
  */
 export async function fetchEsi<T extends EsiEndpoint>(
   endpoint: T,
-  params: EsiEndpointParams<T>
+  params: EsiEndpointParams<T>,
 ): Promise<T["response"]> {
   const response = await fetchEsiImpl(endpoint, params);
   return response.data;
@@ -32,7 +32,7 @@ export interface EsiResults<T extends EsiEndpoint> {
  */
 export async function fetchEsiEx<T extends EsiEndpoint>(
   endpoint: T,
-  params: EsiEndpointParams<T>
+  params: EsiEndpointParams<T>,
 ): Promise<EsiResults<T>> {
   const response = await fetchEsiImpl(endpoint, params);
   return {
@@ -43,7 +43,7 @@ export async function fetchEsiEx<T extends EsiEndpoint>(
 
 async function fetchEsiImpl<T extends EsiEndpoint>(
   endpoint: T,
-  params: EsiEndpointParams<T>
+  params: EsiEndpointParams<T>,
 ): Promise<AxiosResponse<T["response"]>> {
   const config = buildEsiFetchConfig(BASE_URL, endpoint, params);
 
@@ -75,7 +75,7 @@ async function fetchEsiImpl<T extends EsiEndpoint>(
     throw new EsiError(
       errKind,
       `${errKind} while fetching "${config.url}"`,
-      err
+      err,
     );
   }
 

@@ -26,11 +26,11 @@ import { isCapsule } from "../../eve/util/isCapsule.js";
 export async function battlesToJson(
   db: Tnex,
   battles: AsyncReturnType<typeof dao.battle.listBattles>,
-  includeSrps: boolean
+  includeSrps: boolean,
 ): Promise<BattleOutput> {
   const memberCorps = arrayToMap(
     await dao.config.getMemberCorporations(db),
-    "mcorp_corporationId"
+    "mcorp_corporationId",
   );
 
   const ids = new Set<number | nil>();
@@ -71,7 +71,7 @@ export async function battlesToJson(
 function rowToJson(
   row: Battle,
   memberCorps: Map<number, MemberCorporation>,
-  ids: Set<number | nil>
+  ids: Set<number | nil>,
 ): BattleJson {
   const teamMap = {} as SimpleNumMap<Team>;
 
@@ -107,7 +107,7 @@ function rowToJson(
     (a, b) => {
       return rankTeam(a, memberCorps) - rankTeam(b, memberCorps);
     },
-    cmpNumberProp("corporationId", "reverse")
+    cmpNumberProp("corporationId", "reverse"),
   );
 
   for (const team of teams) {
@@ -119,7 +119,7 @@ function rowToJson(
         } else {
           return member.shipId || null;
         }
-      })
+      }),
     );
   }
 

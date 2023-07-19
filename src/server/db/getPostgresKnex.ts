@@ -34,7 +34,7 @@ function getConnection(env: Env) {
     };
   } else {
     throw new Error(
-      "DATABASE_URL (or DATABASE_{HOST,USER,NAME,PASS}) env var must be specified."
+      "DATABASE_URL (or DATABASE_{HOST,USER,NAME,PASS}) env var must be specified.",
     );
   }
 }

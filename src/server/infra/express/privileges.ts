@@ -108,7 +108,7 @@ export class AccountPrivileges {
         level,
         isOwner,
         this._groups,
-        this._privs
+        this._privs,
       );
     }
     return this;
@@ -117,7 +117,7 @@ export class AccountPrivileges {
   _satisfies(
     privilegeName: PrivilegeName,
     requestedLevel: number,
-    isOwner = false
+    isOwner = false,
   ) {
     return this._getEffectiveLevel(privilegeName, isOwner) >= requestedLevel;
   }
@@ -151,14 +151,14 @@ export class AccountPrivileges {
 function checkDebugGroups(debugGroups: string[]) {
   if (debugGroups.length > 0) {
     logger.info(
-      `Using hard-coded ACL groups for all requests: [${debugGroups}].`
+      `Using hard-coded ACL groups for all requests: [${debugGroups}].`,
     );
   }
   if (debugGroups.length > 0 && !debugGroups.includes(MEMBER_GROUP)) {
     logger.warn("###########################################");
     logger.warn(
       `WARNING: debugGroups is nonempty, but is missing the` +
-        `"${MEMBER_GROUP}" group. This is probably a mistake.`
+        `"${MEMBER_GROUP}" group. This is probably a mistake.`,
     );
     logger.warn("###########################################");
   }

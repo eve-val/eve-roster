@@ -8,7 +8,7 @@ const fakeEnv = mockModule(
   "src/server/infra/init/Env.js",
   fakeEnvModule({
     COOKIE_SECRET: "early_secret",
-  })
+  }),
 );
 
 import {
@@ -33,6 +33,6 @@ test("Example global function properly reads fake hostname", () => {
   });
 
   expect(exampleFunctionThatDependsOnEnv()).toBe(
-    "The hostname is some.fake.hostname"
+    "The hostname is some.fake.hostname",
   );
 });

@@ -26,7 +26,7 @@ const FILTER_SCHEMA = {
     array({
       key: stringEnum<BattleColumn>(BattleColumn),
       order: stringEnum<ResultOrder>(ResultOrder),
-    })
+    }),
   ),
   limit: optional(number()),
   offset: optional(number()),
@@ -36,7 +36,7 @@ const FILTER_SCHEMA = {
       col: stringEnum<BattleColumn>(BattleColumn),
       cmp: stringEnum<BoundCmp>(BoundCmp),
       value: number(),
-    })
+    }),
   ),
 };
 
@@ -57,5 +57,5 @@ export default jsonEndpoint(
     const battles = await dao.battle.listBattles(db, filter);
 
     return battlesToJson(db, battles, includeSrps);
-  }
+  },
 );

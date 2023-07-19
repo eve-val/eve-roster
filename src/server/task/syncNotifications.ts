@@ -45,7 +45,7 @@ export const syncNotifications: Task = {
 
 async function findNotifications(
   characterId: number,
-  accessToken: string
+  accessToken: string,
 ): Promise<EsiNotification[]> {
   return await fetchEsi(ESI_CHARACTERS_$characterId_NOTIFICATIONS, {
     characterId,
@@ -56,7 +56,7 @@ async function findNotifications(
 async function updateCharacter(db: Tnex, characterId: number) {
   const lastUpdated = await dao.characterNotification.getLastUpdateTimestamp(
     db,
-    characterId
+    characterId,
   );
   const updateNeededCutoff = moment().subtract(MAX_UPDATE_FREQUENCY);
   if (lastUpdated.isAfter(updateNeededCutoff)) {
@@ -67,7 +67,7 @@ async function updateCharacter(db: Tnex, characterId: number) {
   await dao.characterNotification.setCharacterNotifications(
     db,
     characterId,
-    messages
+    messages,
   );
 }
 
@@ -81,7 +81,7 @@ async function executor(db: Tnex, job: JobLogger) {
     (characterId) =>
       // Only pull 1/12 of characters every minute; cache refresh is 10 min.
       // This maximizes chance we'll find out about structure hits quickly.
-      characterId % 12 == start.minute() % 12
+      characterId % 12 == start.minute() % 12,
   );
 
   const len = characterIds.length;
@@ -97,19 +97,19 @@ async function executor(db: Tnex, job: JobLogger) {
         if (e instanceof AccessTokenError) {
           logger.info(
             `Access token error while fetching notifications for char ${characterId}.`,
-            e
+            e,
           );
         } else if (isAnyEsiError(e)) {
           if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
             logger.info(
-              `Marking access token as invalid for char ${characterId} due to 403.`
+              `Marking access token as invalid for char ${characterId} due to 403.`,
             );
             dao.accessToken.markAsInvalid(db, characterId);
           }
           ++errors;
           logger.warn(
             `ESI error while fetching notifications for char ${characterId}.`,
-            e
+            e,
           );
         } else {
           ++errors;
@@ -130,7 +130,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const deduped = await dao.characterNotification.getRecentStructurePings(
     db,
     since,
-    IMPORTANT_NOTIFICATION_TYPES
+    IMPORTANT_NOTIFICATION_TYPES,
   );
   const span = trace.getSpan(context.active());
   for (const msg of deduped) {

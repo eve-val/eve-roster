@@ -26,7 +26,7 @@ export interface TriagedLoss {
  */
 export async function triageLosses(
   db: Tnex,
-  rows: LossRow[]
+  rows: LossRow[],
 ): Promise<TriagedLoss[]> {
   const shipDefs = await loadShipDefs(db, rows);
 
@@ -38,7 +38,7 @@ export async function triageLosses(
         row.km_data,
         row.related_data,
         row.account_mainCharacter,
-        shipDefs
+        shipDefs,
       ),
     };
   });
@@ -47,7 +47,7 @@ export async function triageLosses(
 /** For each type ID, load its associated group ID and market group ID. */
 async function loadShipDefs(
   db: Tnex,
-  losses: LossRow[]
+  losses: LossRow[],
 ): Promise<Map<number, ShipDef>> {
   const ids = new Set<number>();
   for (const loss of losses) {
@@ -84,7 +84,7 @@ function triageLoss(
   killmail: ZKillmail,
   relatedKillmail: ZKillmail | null,
   mainCharacter: number | null,
-  shipDefs: Map<number, ShipDef>
+  shipDefs: Map<number, ShipDef>,
 ) {
   const triage = [];
   for (const rule of rules) {
@@ -93,7 +93,7 @@ function triageLoss(
       killmail,
       relatedKillmail,
       mainCharacter,
-      shipDefs
+      shipDefs,
     );
     if (results != undefined) {
       for (const result of results) {
@@ -109,7 +109,7 @@ function executeRule(
   killmail: ZKillmail,
   relatedKillmail: ZKillmail | null,
   mainCharacter: number | null,
-  shipDefs: Map<number, ShipDef>
+  shipDefs: Map<number, ShipDef>,
 ) {
   const shipDef = shipDefs.get(killmail.victim.ship_type_id);
   if (shipDef == undefined) {
@@ -146,7 +146,7 @@ function executeRule(
 function testFilter(
   match: TriageRule["filter"],
   killmail: ZKillmail,
-  shipDef: ShipDef
+  shipDef: ShipDef,
 ) {
   if (
     match.tag != undefined &&

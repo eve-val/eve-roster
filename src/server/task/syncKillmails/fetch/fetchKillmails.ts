@@ -19,7 +19,7 @@ export async function fetchKillmails(
   job: JobLogger,
   corpId: number,
   start: number,
-  end: number | undefined
+  end: number | undefined,
 ) {
   job.setProgress(undefined, `Syncing killmails for corp ${corpId}...`);
   job.info(`  start=${start} (${moment.utc(start).toString()})`);
@@ -35,7 +35,7 @@ async function fetchKillmailsInternal(
   job: JobLogger,
   corpId: number,
   start: number,
-  end: number | undefined
+  end: number | undefined,
 ) {
   const queryUrl = getZkillboardQueryUrl(corpId, end);
   job.info(`  Query: ${queryUrl}`);
@@ -47,7 +47,7 @@ async function fetchKillmailsInternal(
     corpId,
     start,
     end,
-    MAX_REORDERING_WINDOW
+    MAX_REORDERING_WINDOW,
   );
   const killmailWriter = new KillmailWriter(db, WRITER_BUFFER_SIZE);
 
@@ -61,18 +61,18 @@ async function fetchKillmailsInternal(
   job.setProgress(undefined, undefined);
   job.info(
     `  Fetched ${esiFetcher.getFetchCount()} killmails,` +
-      ` wrote ${killmailWriter.getWriteCount()} killmails.`
+      ` wrote ${killmailWriter.getWriteCount()} killmails.`,
   );
 }
 
 function getZkillboardQueryUrl(
   sourceCorporation: number,
-  endTime: number | undefined
+  endTime: number | undefined,
 ) {
   let url = `corporationID/${sourceCorporation}/`;
   if (endTime != undefined) {
     const beforeArg = formatZKillTimeArgument(
-      moment.utc(endTime).add(1, "hour")
+      moment.utc(endTime).add(1, "hour"),
     );
     url += `endTime/${beforeArg}/`;
   }

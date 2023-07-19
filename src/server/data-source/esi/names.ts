@@ -42,7 +42,7 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
     } catch (e) {
       if (isAnyEsiError(e)) {
         logger.error(
-          "ESI error while fetching names for " + unresolvedIds.slice(i, end)
+          "ESI error while fetching names for " + unresolvedIds.slice(i, end),
         );
         logger.error(printError(e));
       }

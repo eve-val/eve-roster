@@ -150,7 +150,7 @@ export default defineComponent({
       const undoPromise = ajaxer.putSrpPaymentStatus(
         this.srpId,
         false,
-        undefined
+        undefined,
       );
       this.undoPromise = undoPromise;
       undoPromise

@@ -176,7 +176,7 @@ export default defineComponent({
             "Moving %s from %s to %s",
             this.draggedCharacter.name,
             sourceCitadel,
-            targetCitadel
+            targetCitadel,
           );
 
           character.homeCitadel = targetCitadel;

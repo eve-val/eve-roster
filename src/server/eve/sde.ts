@@ -13,12 +13,12 @@ export { SdeSkill } from "./sde/loadSdeSkillDefinitions.js";
 export async function loadStaticData(
   db: Tnex,
   strictMode: boolean,
-  logger: Logger | null = null
+  logger: Logger | null = null,
 ) {
   const _skillDefinitions = await loadSdeSkillDefinitions(
     db,
     strictMode,
-    logger
+    logger,
   );
 
   skillDefinitions = _skillDefinitions;

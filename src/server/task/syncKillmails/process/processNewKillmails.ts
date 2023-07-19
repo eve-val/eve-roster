@@ -30,8 +30,8 @@ export async function processNewKillmails(db: Tnex, log: JobLogger) {
       db,
       BATCH_SIZE,
       preWindowStart,
-      preWindowEnd
-    )
+      preWindowEnd,
+    ),
   );
   const associator = new KillmailAssociator(CAPSULE_SHIP_ASSOCIATION_WINDOW);
   const updater = new KillmailProcessor(db, 100);

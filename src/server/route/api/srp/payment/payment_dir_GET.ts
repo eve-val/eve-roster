@@ -58,13 +58,13 @@ async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  filter: SrpReimbursementFilter
+  filter: SrpReimbursementFilter,
 ) {
   privs.requireRead("srp");
 
   filter.limit = Math.min(
     MAX_ROWS_PER_QUERY,
-    filter.limit || DEFAULT_ROWS_PER_QUERY
+    filter.limit || DEFAULT_ROWS_PER_QUERY,
   );
 
   const rows = await dao.srp.listReimbursements(db, filter);

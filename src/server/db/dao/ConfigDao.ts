@@ -48,7 +48,7 @@ export default class ConfigDao {
         .then((updated) => {
           if (updated != 1) {
             throw new Error(
-              `Cannot write to nonexistent config value "${key}"`
+              `Cannot write to nonexistent config value "${key}"`,
             );
           }
         });
@@ -67,7 +67,7 @@ export default class ConfigDao {
   setSiggyCredentials(
     db: Tnex,
     username: string | null,
-    password: string | null
+    password: string | null,
   ) {
     return this.set(db, {
       siggyUsername: username,
@@ -82,7 +82,7 @@ export default class ConfigDao {
         "mcorp_corporationId",
         "mcorp_membership",
         "mcorp_name",
-        "mcorp_ticker"
+        "mcorp_ticker",
       )
       .run();
   }
@@ -90,7 +90,7 @@ export default class ConfigDao {
   setMemberCorpConfigs(
     db: Tnex,
     corpConfigs: MemberCorporation[],
-    titleMappings: GroupTitle[]
+    titleMappings: GroupTitle[],
   ) {
     return db.transaction((db) => {
       return Promise.resolve()
@@ -112,7 +112,7 @@ export default class ConfigDao {
               throw new UserVisibleError(
                 `Invalid title mapping "${link.groupTitle_title}" ->` +
                   ` "${link.groupTitle_group}".` +
-                  ` Did you forget to create the group first?`
+                  ` Did you forget to create the group first?`,
               );
             });
           });
@@ -136,7 +136,7 @@ export default class ConfigDao {
         "mcorp_corporationId",
         "mcorp_membership",
         "mcorp_name",
-        "mcorp_ticker"
+        "mcorp_ticker",
       )
       .run();
   }

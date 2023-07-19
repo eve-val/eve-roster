@@ -5,7 +5,7 @@ export type EnumProp<T extends string> = `${T}`;
 
 export function enumProp<T extends StringEnum>(
   enumType: T,
-  defaultValue: T[keyof T]
+  defaultValue: T[keyof T],
 ) {
   return {
     type: String as PropType<EnumProp<T[keyof T]>>,
@@ -16,7 +16,7 @@ export function enumProp<T extends StringEnum>(
 
 export function requiredEnumProp<T extends StringEnum>(
   enumType: T,
-  defaultValue: T[keyof T]
+  defaultValue: T[keyof T],
 ) {
   return {
     type: String as PropType<EnumProp<T[keyof T]>>,

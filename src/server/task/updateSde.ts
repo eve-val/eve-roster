@@ -54,7 +54,7 @@ async function createTmpFile(prefix: string, postfix: string) {
         } else {
           resolve(path);
         }
-      }
+      },
     );
   });
 }

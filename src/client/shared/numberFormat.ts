@@ -19,7 +19,7 @@ export function formatNumber(
   } = {
     decimalPlaces: "auto",
     formatter: null,
-  }
+  },
 ) {
   const formatter =
     options.formatter || ((valueStr, unitStr) => `${valueStr}${unitStr}`);

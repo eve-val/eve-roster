@@ -55,7 +55,7 @@ const FRONTEND_ROUTES = [
 export async function init(
   db: Tnex,
   env: Env,
-  onServing: (port: number) => void
+  onServing: (port: number) => void,
 ) {
   const app = express();
 
@@ -70,7 +70,7 @@ export async function init(
     cookieSession({
       name: "session",
       secret: env.COOKIE_SECRET,
-    })
+    }),
   );
 
   // Serves `/` and all other webpack-compiled endpoints
@@ -127,7 +127,7 @@ export async function init(
 async function setupWebpackServing(
   env: Env,
   db: Tnex,
-  app: express.Application
+  app: express.Application,
 ) {
   const projectPaths = getProjectPaths();
 
@@ -182,7 +182,7 @@ async function setupWebpackServing(
   // Serve pre-compiled front-end files
   app.use(
     projectPaths.public,
-    express.static(projectPaths.output, { immutable: true, maxAge: "365d" })
+    express.static(projectPaths.output, { immutable: true, maxAge: "365d" }),
   );
 
   // Serve favicon
@@ -201,7 +201,7 @@ function waitForClientBuilt(devInfra: DevInfra) {
   return async (
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
+    next: express.NextFunction,
   ) => {
     devInfra.devMiddleware.waitUntilValid(() => {
       next();

@@ -139,7 +139,7 @@ export default defineComponent({
       if (this.isMain) {
         level = Math.max(
           this.account.alertLevel || 0,
-          this.character.alertLevel || 0
+          this.character.alertLevel || 0,
         );
       } else {
         level = this.character.alertLevel || 0;
@@ -172,7 +172,7 @@ export default defineComponent({
     inPrimaryCorp: function (): boolean {
       return (
         eveConstants.primaryCorporations.indexOf(
-          this.character.corporationId
+          this.character.corporationId,
         ) != -1
       );
     },

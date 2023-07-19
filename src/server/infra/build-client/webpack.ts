@@ -22,7 +22,7 @@ const require = createRequire(import.meta.url);
 
 export function commonConfig(
   mode: "development" | "production",
-  paths: ProjectPaths
+  paths: ProjectPaths,
 ): webpack.Configuration {
   return {
     // webpack gives us a lot of nice built-in behavior depending on whether

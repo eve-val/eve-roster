@@ -25,7 +25,7 @@ export default class CombatStatsDao {
     kills: number,
     losses: number,
     killValue: number,
-    lossValue: number
+    lossValue: number,
   ) {
     return db.upsert(
       t.combatStats,
@@ -37,7 +37,7 @@ export default class CombatStatsDao {
         cstats_lossValueInLastMonth: lossValue,
         cstats_updated: Date.now(),
       },
-      "cstats_character"
+      "cstats_character",
     );
   }
 }

@@ -50,10 +50,10 @@ exports.up = async function (trx) {
 
   // These need to be much longer to support the new scopes
   await trx.schema.raw(
-    `ALTER TABLE "accessToken" ALTER COLUMN "refreshToken" TYPE text;`
+    `ALTER TABLE "accessToken" ALTER COLUMN "refreshToken" TYPE text;`,
   );
   await trx.schema.raw(
-    `ALTER TABLE "accessToken" ALTER COLUMN "accessToken" TYPE text;`
+    `ALTER TABLE "accessToken" ALTER COLUMN "accessToken" TYPE text;`,
   );
 };
 

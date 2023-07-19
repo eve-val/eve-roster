@@ -19,7 +19,7 @@ import {
  */
 export function srpLossToJson(
   row: SrpLossRow,
-  ids: Set<number | nil>
+  ids: Set<number | nil>,
 ): SrpLossJson {
   const json: SrpLossJson = {
     killmail: row.km_id,

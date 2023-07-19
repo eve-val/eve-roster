@@ -21,7 +21,7 @@ export async function fetchHullMarketValues(losses: TriagedLoss[]) {
 export function resolvePayout(
   approval: ApprovedVerdict,
   killmail: ZKillmail,
-  marketValues: Map<number, number>
+  marketValues: Map<number, number>,
 ) {
   let value: number;
   switch (approval.payout.kind) {
@@ -37,7 +37,7 @@ export function resolvePayout(
       return getMarketValue(
         approval.payout,
         killmail.victim.ship_type_id,
-        marketValues
+        marketValues,
       );
   }
 }
@@ -66,7 +66,7 @@ function extractMarketLookups(losses: TriagedLoss[]) {
 function getMarketValue(
   payout: MarketPayout,
   shipId: number,
-  marketValues: Map<number, number>
+  marketValues: Map<number, number>,
 ) {
   if (payout.items == undefined) {
     return (

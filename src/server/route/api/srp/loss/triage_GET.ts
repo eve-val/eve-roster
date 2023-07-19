@@ -24,7 +24,7 @@ async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  id: number
+  id: number,
 ) {
   privs.requireWrite("srp");
 
@@ -35,7 +35,7 @@ async function handleEndpoint(
   }
 
   const jsonMap = await triagedLossesToSuggestionJson(
-    await triageLosses(db, rows)
+    await triageLosses(db, rows),
   );
 
   return {

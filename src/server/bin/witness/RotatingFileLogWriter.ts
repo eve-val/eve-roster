@@ -51,7 +51,7 @@ export class RotatingFileLogWriter extends Writable {
 
   _writev?(
     chunks: { chunk: Buffer; encoding: string }[],
-    callback: BasicCallback
+    callback: BasicCallback,
   ): void {
     try {
       asyncEach(
@@ -59,7 +59,7 @@ export class RotatingFileLogWriter extends Writable {
         (entry, entryCb) => {
           this._processChunk(entry.chunk.toString("utf8"), entryCb);
         },
-        callback
+        callback,
       );
     } catch (err) {
       if (err instanceof Error) {
@@ -97,7 +97,7 @@ export class RotatingFileLogWriter extends Writable {
       (entry, entryCb) => {
         this._processLine(entry, entryCb);
       },
-      callback
+      callback,
     );
   }
 
@@ -134,7 +134,7 @@ export class RotatingFileLogWriter extends Writable {
 
   private _getFileFor(
     timestamp: Moment,
-    callback: (err: Error | null, stream: WriteStream) => void
+    callback: (err: Error | null, stream: WriteStream) => void,
   ) {
     const bucketStart = timestamp.startOf(this._bucketSize);
 
@@ -150,7 +150,7 @@ export class RotatingFileLogWriter extends Writable {
 
   private _rotateLogFile(
     fileStart: Moment,
-    callback: (err: Error | null, stream: WriteStream) => void
+    callback: (err: Error | null, stream: WriteStream) => void,
   ) {
     const newFilePath = this._getLogFilePath(fileStart);
     logger.log("Opening log file", newFilePath);
@@ -186,7 +186,7 @@ export class RotatingFileLogWriter extends Writable {
 
 function openFileForAppend(
   filepath: string,
-  callback: (err: Error | null, stream: WriteStream) => void
+  callback: (err: Error | null, stream: WriteStream) => void,
 ) {
   fs.open(filepath, "a", (err, fd) => {
     if (err) {
