@@ -25,3 +25,4 @@ updates:
         patterns:
           - "jest"
           - "ts-jest"
+          - "@jest/*"
