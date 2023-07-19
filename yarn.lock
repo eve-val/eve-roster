@@ -6746,7 +6746,7 @@ __metadata:
     vue: "npm:^3.3.4"
     vue-eslint-parser: "npm:^9.3.1"
     vue-loader: "npm:^17.2.2"
-    vue-router: "npm:^4.2.2"
+    vue-router: "npm:^4.2.4"
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.88.1"
     webpack-cli: "npm:^5.1.4"
@@ -13747,14 +13747,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "vue-router@npm:4.2.2"
+"vue-router@npm:^4.2.4":
+  version: 4.2.4
+  resolution: "vue-router@npm:4.2.4"
   dependencies:
     "@vue/devtools-api": "npm:^6.5.0"
   peerDependencies:
     vue: ^3.2.0
-  checksum: 65ae6230e9ebe4e63f02a82c803e7742d7483912131ec8e295e4fb9eb5f62546634975ff15062dc3bad1b720cefed2425250c3b2b4c9ffe3abae3d148c72de00
+  checksum: 562af097e03d2e2ee96923864a45e878329b4613c40f96efdec5343487c5ebb604c46575953db21dfc7ba29e2eca26ec6c70dae99c4d7e9c1066cbbfc4c23010
   languageName: node
   linkType: hard
 
