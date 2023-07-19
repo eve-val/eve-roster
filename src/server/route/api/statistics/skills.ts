@@ -37,7 +37,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     .then((rows) => {
       return {
         query: skillRequirements.map(
-          (sr) => `${sde.getSkillName(sr.skill)} ${sr.minLevel}`
+          (sr) => `${sde.getSkillName(sr.skill)} ${sr.minLevel}`,
         ),
         stats: {
           matchingAccounts: rows.length,

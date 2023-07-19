@@ -31,7 +31,7 @@ export async function ingestSde(
   job: JobLogger,
   db: Tnex,
   zipPath: string,
-  sqlPath: string
+  sqlPath: string,
 ) {
   job.setProgress(undefined, IMPORT_LABEL);
 
@@ -48,7 +48,7 @@ export async function ingestSde(
 export async function ingestSdeDryRun(
   job: JobLogger,
   db: Tnex,
-  sqlPath: string
+  sqlPath: string,
 ) {
   job.setProgress(undefined, IMPORT_LABEL);
   const sdeDb = await openSqliteDb(sqlPath);
@@ -73,7 +73,7 @@ async function ingestInternal(
   job: JobLogger,
   db: Tnex,
   sde: sqlite3.Database,
-  md5: string
+  md5: string,
 ) {
   const importId = await createNewImport(db, md5);
   job.info(`Import ID for this task is "${importId}".`);
@@ -101,7 +101,7 @@ function createNewImport(db: Tnex, md5: string) {
       simp_importerVersion: IMPORTER_VERSION,
       simp_timestamp: Date.now(),
     },
-    "simp_id"
+    "simp_id",
   );
 }
 
@@ -111,7 +111,7 @@ async function importItems(
   sde: sqlite3.Database,
   importId: number,
   categoryName: string,
-  categoryId: number
+  categoryId: number,
 ) {
   job.info(`Importing items in category "${categoryName}"...`);
 
@@ -159,7 +159,7 @@ async function importItems(
         styp_basePrice: row.basePrice,
         styp_marketGroup: row.marketGroupID,
       },
-      "styp_id"
+      "styp_id",
     );
 
     // Step 2: Set itemAttrs
@@ -175,7 +175,7 @@ async function importItems(
           sta_valueInt: attr.valueInt,
           sta_valueFloat: attr.valueFloat,
         };
-      })
+      }),
     );
   }
   job.info(`  Inserted ${processedCount} records (skipped ${skippedCount}).`);
@@ -185,7 +185,7 @@ async function importAttributes(
   job: JobLogger,
   db: Tnex,
   sde: sqlite3.Database,
-  importId: number
+  importId: number,
 ) {
   job.info(`Importing attributes...`);
 
@@ -216,7 +216,7 @@ async function importAttributes(
         sattr_category: row.categoryID,
         sattr_published: !!row.published,
       },
-      "sattr_id"
+      "sattr_id",
     );
   }
 

@@ -39,7 +39,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
   }
 
   protected async _processChunk(
-    chunk: ZKillDescriptor
+    chunk: ZKillDescriptor,
   ): Promise<ZKillmail | null> {
     if (this._closed) {
       return null;
@@ -47,7 +47,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
     const esiMail = await this._fetchMail(
       chunk.killmail_id,
       chunk.zkb.hash,
-      MAX_FAILURES_PER_REQUEST
+      MAX_FAILURES_PER_REQUEST,
     );
     this._fetchCount++;
     return combineKillmails(esiMail, chunk);
@@ -76,7 +76,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
           // Try again
           this._logger.info(
             `FAILURE ${failures} (max ${maxFailures}) for` +
-              ` killmail ${id}, "${cause.response.statusText}", retrying...`
+              ` killmail ${id}, "${cause.response.statusText}", retrying...`,
           );
         } else {
           throw e;
@@ -88,7 +88,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
 
 function combineKillmails(
   km: EsiKillmail,
-  descriptor: ZKillDescriptor
+  descriptor: ZKillDescriptor,
 ): ZKillmail {
   const zkm = km as ZKillmail;
   zkm.zkb = descriptor.zkb;

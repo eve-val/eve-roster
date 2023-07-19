@@ -14,5 +14,5 @@ export default jsonEndpoint(
     const battles = await dao.battle.listBattles(db, { id: id });
 
     return battlesToJson(db, battles, includeSrps);
-  }
+  },
 );

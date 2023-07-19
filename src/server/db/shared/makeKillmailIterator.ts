@@ -17,7 +17,7 @@ import { StreamIterator } from "../../util/stream/BatchedObjectReadable.js";
 export function makeKillmailIterator<J extends Killmail, S extends Killmail>(
   db: Tnex,
   batchSize: number,
-  modifyQuery: (query: Select<Killmail, Killmail>) => Select<J, S>
+  modifyQuery: (query: Select<Killmail, Killmail>) => Select<J, S>,
 ): StreamIterator<S> {
   const iter = {
     _prevTimestamp: null as number | null,
@@ -36,7 +36,7 @@ export function makeKillmailIterator<J extends Killmail, S extends Killmail>(
           "km_hullCategory",
           "km_relatedLoss",
           "km_data",
-          "km_processed"
+          "km_processed",
         )
         .limit(batchSize);
       if (this._prevTimestamp != null) {
@@ -47,7 +47,7 @@ export function makeKillmailIterator<J extends Killmail, S extends Killmail>(
 
       let rows = await query.run();
       rows = rows.filter(
-        (row) => !this._previousMails.has(row.km_data.killmail_id)
+        (row) => !this._previousMails.has(row.km_data.killmail_id),
       );
 
       if (rows.length > 0) {

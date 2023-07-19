@@ -32,7 +32,7 @@ export function parseLogFilename(filename: string) {
 export function formatOutputLine(
   timestamp: Moment,
   levelTag: string,
-  message: string
+  message: string,
 ) {
   const timestampStr = timestamp.format(OUTPUT_TIMESTAMP_FORMAT);
   const pidStr = process.pid.toString().padStart(5);
@@ -46,7 +46,7 @@ export function parseInputLine(line: string) {
 export function formatInputLine(
   timestamp: number,
   levelTag: LevelTag,
-  message: string
+  message: string,
 ) {
   return `${timestamp} ${levelTag} ${message}\n`;
 }

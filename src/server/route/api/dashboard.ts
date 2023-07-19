@@ -66,7 +66,7 @@ export default jsonEndpoint<Output>((req, res, db, account, privs) => {
               corpId: row.character_corporationId,
               needsReauth: row.accessToken_needsUpdate !== false,
             };
-          }
+          },
         );
       });
     })

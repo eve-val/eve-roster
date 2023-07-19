@@ -19,26 +19,26 @@ export default jsonEndpoint(
     const targetAccountId = idParam(req, "id");
 
     return handleEndpoint(db, account, privs, targetAccountId);
-  }
+  },
 );
 
 async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  targetAccount: number
+  targetAccount: number,
 ) {
   // TODO: Allow other accounts to read if they have the right privs
   if (targetAccount != account.id) {
     throw new UnauthorizedClientError(
       `Account ${account.id} cannot read characters of account` +
-        `${targetAccount}.`
+        `${targetAccount}.`,
     );
   }
 
   const rows = await dao.character.getCharactersOwnedByAccount(
     db,
-    targetAccount
+    targetAccount,
   );
 
   const chars: CharacterDescription[] = [];

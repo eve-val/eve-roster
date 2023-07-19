@@ -36,7 +36,7 @@ export async function createPendingBattles(db: Tnex, logger: Logger) {
     const initialBattles = await dao.battle.getBattlesWithinRange(
       db,
       row.km_timestamp - WINDOW,
-      row.km_timestamp + moment.duration(1, "hour").asMilliseconds()
+      row.km_timestamp + moment.duration(1, "hour").asMilliseconds(),
     );
 
     const iterator = dao.battle.getKillmailsWithoutBattlesIterator(db, 300);

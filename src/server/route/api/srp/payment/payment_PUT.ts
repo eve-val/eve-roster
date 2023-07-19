@@ -30,7 +30,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     account,
     privs,
     idParam(req, "id"),
-    verify(req.body, inputSchema)
+    verify(req.body, inputSchema),
   );
 });
 
@@ -39,7 +39,7 @@ async function handleEndpoint(
   account: AccountSummary,
   privs: AccountPrivileges,
   id: number,
-  input: Input
+  input: Input,
 ) {
   privs.requireWrite("srp");
 
@@ -51,7 +51,7 @@ async function handleEndpoint(
     updateCount = await dao.srp.markReimbursementAsPaid(
       db,
       id,
-      input.payingCharacter
+      input.payingCharacter,
     );
   } else {
     updateCount = await dao.srp.markReimbursementAsUnpaid(db, id);

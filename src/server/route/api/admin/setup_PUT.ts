@@ -32,7 +32,7 @@ export class Input {
     object({
       username: nullable(string()),
       password: nullable(string()),
-    })
+    }),
   );
 }
 const inputSchema = new Input();
@@ -48,7 +48,7 @@ async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
   privs: AccountPrivileges,
-  input: Input
+  input: Input,
 ) {
   privs.requireWrite("serverConfig", false);
   verifyConfig(input);
@@ -60,7 +60,7 @@ async function handleEndpoint(
       return dao.config.setSiggyCredentials(
         db,
         input.siggy.username,
-        input.siggy.password
+        input.siggy.password,
       );
     }
 
@@ -69,7 +69,7 @@ async function handleEndpoint(
       account.id,
       "MODIFY_SERVER_CONFIG",
       null,
-      censorConfigForLogging(input)
+      censorConfigForLogging(input),
     );
   });
 
@@ -89,7 +89,7 @@ async function storeCorpConfigs(db: Tnex, corpConfigs: Input["corporations"]) {
           mcorp_name: corpInfo.name,
           mcorp_ticker: corpInfo.ticker,
         };
-      })
+      }),
     );
   }
 

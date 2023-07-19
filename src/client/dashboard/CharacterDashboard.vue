@@ -171,7 +171,7 @@ export default defineComponent({
 function compareIsMainCharacter(
   a: CharacterJson,
   b: CharacterJson,
-  mainCharacterId: number | null
+  mainCharacterId: number | null,
 ): number {
   if (a.id == mainCharacterId) {
     return -1;
@@ -184,7 +184,7 @@ function compareIsMainCharacter(
 
 function compareHasActiveSkillQueue(
   a: CharacterJson,
-  b: CharacterJson
+  b: CharacterJson,
 ): number {
   let aActive = a.skillQueue.queueStatus == "active";
   let bActive = b.skillQueue.queueStatus == "active";

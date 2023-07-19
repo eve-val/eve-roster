@@ -28,7 +28,7 @@ export class BattleCreator extends Transform<Killmail, BattleResult> {
   public _transform(
     chunk: any,
     encoding: string,
-    callback: TransformCallback<BattleResult>
+    callback: TransformCallback<BattleResult>,
   ) {
     try {
       this._transformChunk(chunk);

@@ -26,7 +26,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
 async function handleEndpoint(
   db: Tnex,
   privs: AccountPrivileges,
-  killmailId: number
+  killmailId: number,
 ) {
   const row = await dao.killmail.getKillmail(db, killmailId);
   if (row == null) {

@@ -32,7 +32,7 @@ export default class CronDao {
         cronLog_end: null,
         cronLog_result: null,
       },
-      "cronLog_id"
+      "cronLog_id",
     );
   }
 
@@ -76,7 +76,7 @@ export default class CronDao {
             })
             .then((deleteCount) => {
               logger.info(
-                `Truncated ${deleteCount} cronLog rows for task "${task}".`
+                `Truncated ${deleteCount} cronLog rows for task "${task}".`,
               );
             });
         });
@@ -92,7 +92,7 @@ export default class CronDao {
           "cronLog_task",
           "cronLog_start",
           "cronLog_end",
-          "cronLog_result"
+          "cronLog_result",
         )
 
         // HACK to limit log spam until we get better UI
@@ -107,7 +107,7 @@ export default class CronDao {
         .orWhere(
           "cronLog_start",
           ">=",
-          val(moment().subtract(1, "minute").valueOf())
+          val(moment().subtract(1, "minute").valueOf()),
         )
 
         .orderBy("cronLog_id", "desc")

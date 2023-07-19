@@ -9,5 +9,5 @@ export default jsonEndpoint(
       accountId: account.id,
       includeOpsecChars: privs.canRead("memberOpsecAlts", true),
     });
-  }
+  },
 );

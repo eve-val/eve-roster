@@ -54,18 +54,18 @@ function executor(db: Tnex, job: JobLogger) {
               completedCharacters++;
               job.setProgress(
                 completedCharacters / characterIds.length,
-                undefined
+                undefined,
               );
             });
         },
-        3
+        3,
       ).then(() => {
         if (esiErrorCharacterIds.length > 0) {
           job.warn(`syncCorps got ESI errors for ${esiErrorCharacterIds}.`);
         }
         logger.info(
           `syncCorps successfully synced ${completedCharacters}/` +
-            `${characterIds.length} characters.`
+            `${characterIds.length} characters.`,
         );
       });
     });

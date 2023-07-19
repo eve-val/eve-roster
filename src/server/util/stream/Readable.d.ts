@@ -5,6 +5,7 @@ import { BasicCallback } from "./core.js";
 import { WriteStream } from "./Writable.js";
 
 export interface Readable<T> extends ReadStream<T> {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Readable<T> {
   constructor(opts?: ReadableOptions<Readable<T>>);
 
@@ -23,7 +24,7 @@ export interface ReadStream<T> extends EventEmitter {
   isPaused(): boolean;
   pipe<T, S extends WriteStream<T>>(
     destination: S,
-    options?: { end?: boolean }
+    options?: { end?: boolean },
   ): S;
   unpipe<T, S extends WriteStream<T>>(destination?: S): this;
   unshift(chunk: T): void;
@@ -75,7 +76,7 @@ export interface ReadStream<T> extends EventEmitter {
   prependListener(event: "error", listener: (err: Error) => void): this;
   prependListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   prependOnceListener(event: "close", listener: () => void): this;
@@ -85,7 +86,7 @@ export interface ReadStream<T> extends EventEmitter {
   prependOnceListener(event: "error", listener: (err: Error) => void): this;
   prependOnceListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   removeListener(event: "close", listener: () => void): this;
@@ -95,7 +96,7 @@ export interface ReadStream<T> extends EventEmitter {
   removeListener(event: "error", listener: (err: Error) => void): this;
   removeListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   [Symbol.asyncIterator](): AsyncIterableIterator<T>;

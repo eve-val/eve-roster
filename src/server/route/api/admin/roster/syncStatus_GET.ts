@@ -19,13 +19,13 @@ import {
 export default jsonEndpoint(
   (req, res, db, account, privs): Promise<Admin_Roster_SyncStatus_GET> => {
     return handleEndpoint(db, account, privs);
-  }
+  },
 );
 
 async function handleEndpoint(
   db: Tnex,
   account: AccountSummary,
-  privs: AccountPrivileges
+  privs: AccountPrivileges,
 ) {
   privs.requireRead("serverConfig");
 

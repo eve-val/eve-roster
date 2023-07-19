@@ -42,7 +42,7 @@ async function executor(db: Tnex, job: JobLogger) {
     if (tokenResult.kind == "error") {
       job.warn(
         `Error (${tokenResult.error}) while refreshing token for ` +
-          `${row.accessToken_character}.`
+          `${row.accessToken_character}.`,
       );
       continue;
     }
@@ -55,13 +55,13 @@ async function executor(db: Tnex, job: JobLogger) {
             } else {
               job.error(
                 `Error while updating location for ` +
-                  `${row.accessToken_character}:`
+                  `${row.accessToken_character}:`,
               );
               job.error(e);
             }
             return null;
-          }
-        )
+          },
+        ),
       );
     }
   }
@@ -83,7 +83,7 @@ async function executor(db: Tnex, job: JobLogger) {
       `The following characters got ESI errors: ` +
         esiErrors
           .map(([character, error]) => `${character} (${error})`)
-          .join(", ")
+          .join(", "),
     );
   }
 }
@@ -142,7 +142,7 @@ function locationsEqual(a: CharacterLocation, b: CharacterLocation) {
 
 async function fetchUpdatedLocationRow(
   characterId: number,
-  accessToken: string
+  accessToken: string,
 ): Promise<CharacterLocation> {
   const [locationResults, shipResults] = await Promise.all([
     fetchEsi(ESI_CHARACTERS_$characterId_LOCATION, {

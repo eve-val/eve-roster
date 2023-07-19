@@ -21,7 +21,7 @@ export class EsiError extends VError {
         name: "EsiError",
         cause: causedBy,
       },
-      message
+      message,
     );
     this.kind = kind;
   }

@@ -82,7 +82,7 @@ export default class GroupsDao {
             accountGroup,
             "accountGroup_account",
             accountId,
-            rows
+            rows,
           );
         })
         .then(() => {
@@ -97,7 +97,7 @@ export default class GroupsDao {
               {
                 old: oldGroups,
                 new: groups,
-              }
+              },
             );
           }
           return null;
@@ -139,13 +139,13 @@ export default class GroupsDao {
           .groupBy("gp_privilege"),
         "granted_privilege",
         "=",
-        "priv_name"
+        "priv_name",
       )
       .columns(
         "priv_name",
         "granted_level",
         "priv_ownerLevel",
-        "priv_requiresMembership"
+        "priv_requiresMembership",
       )
       .run();
   }

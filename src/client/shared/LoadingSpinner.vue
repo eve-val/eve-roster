@@ -261,14 +261,14 @@ function isError(e: any): e is Error {
   return typeof e.message === "string";
 }
 function hasResponseMessage(
-  e: any
+  e: any,
 ): e is { response: AxiosResponse<{ message: string }> } {
   return (
     typeof e.response !== "undefined" && typeof e.response?.data === "string"
   );
 }
 function hasResponseWarning(
-  e: any
+  e: any,
 ): e is { response: AxiosResponse<{ warning: string }> } {
   return (
     typeof e.response !== "undefined" && typeof e.response?.warning === "string"

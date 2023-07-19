@@ -33,7 +33,7 @@ import {
 export function loadSummarizedQueue(
   db: Tnex,
   characterId: number,
-  freshness: DataFreshness
+  freshness: DataFreshness,
 ): Promise<SkillQueueSummary> {
   return Promise.resolve()
     .then(() => {
@@ -90,7 +90,7 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
     logger.error(
       `ESI error "${e.name}" while fetching skill queue for character` +
         ` ${characterId}.`,
-      e
+      e,
     );
   } else if (e instanceof AccessTokenError) {
     if (e.type == AccessTokenErrorType.HTTP_FAILURE) {
@@ -129,7 +129,7 @@ function getQueueStatus(queue: NamedSkillQueueRow[]): QueueStatus {
 
 function getActiveSkillSummary(
   queue: NamedSkillQueueRow[],
-  queueStatus: QueueStatus
+  queueStatus: QueueStatus,
 ) {
   let summary = null;
   if (queue.length > 0) {
@@ -151,7 +151,7 @@ function getActiveSkillSummary(
 
 function getQueueSummary(
   queue: NamedSkillQueueRow[],
-  queueStatus: QueueStatus
+  queueStatus: QueueStatus,
 ) {
   const finalEntry = queue[queue.length - 1];
   return {

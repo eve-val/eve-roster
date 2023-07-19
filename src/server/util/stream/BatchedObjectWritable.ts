@@ -33,7 +33,7 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
   async _write(
     chunk: T,
     encoding: string,
-    callback: BasicCallback
+    callback: BasicCallback,
   ): Promise<void> {
     this._writeToBuffer(chunk);
     if (this._size >= this._maxSize) {
@@ -51,7 +51,7 @@ export abstract class BatchedObjectWritable<T> extends Writable<T> {
 
   async _writev(
     chunks: { chunk: T; encoding: string }[],
-    callback: BasicCallback
+    callback: BasicCallback,
   ): Promise<void> {
     let errorState = false;
     for (const chunk of chunks) {

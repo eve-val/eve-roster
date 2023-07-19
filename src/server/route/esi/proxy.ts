@@ -63,5 +63,5 @@ export default jsonEndpoint(
         res.status(fetchResponse.status);
         return fetchResponse.data;
       });
-  }
+  },
 );

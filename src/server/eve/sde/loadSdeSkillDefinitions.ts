@@ -31,7 +31,7 @@ export interface SdeSkill {
 export async function loadSdeSkillDefinitions(
   db: Tnex,
   strictMode: boolean,
-  logger: Logger | null
+  logger: Logger | null,
 ) {
   const skills = new Map<number, PartialSkill>();
 
@@ -62,7 +62,7 @@ async function loadSkills(db: Tnex, skills: Map<number, PartialSkill>) {
 
 async function loadSkillAttributes(
   db: Tnex,
-  skills: Map<number, PartialSkill>
+  skills: Map<number, PartialSkill>,
 ) {
   const attrRows = await db
     .select(sdeType)
@@ -123,7 +123,7 @@ async function loadSkillAttributes(
 function verifyDefinitions(
   logger: Logger,
   skills: Map<number, PartialSkill>,
-  strictMode: boolean
+  strictMode: boolean,
 ) {
   const defaultSeverity = strictMode
     ? ErrorSeverity.THROW
@@ -133,7 +133,7 @@ function verifyDefinitions(
       handleFailure(
         logger,
         defaultSeverity,
-        `Undefined rank for ${id}:${skill.name}.`
+        `Undefined rank for ${id}:${skill.name}.`,
       );
       skill.rank = 1;
     }
@@ -144,21 +144,21 @@ function verifyDefinitions(
         handleFailure(
           logger,
           getSeverityForEmptyRequiredSkill(id, defaultSeverity),
-          `Required skill ${i} for ${id}:${skill.name} is null.`
+          `Required skill ${i} for ${id}:${skill.name} is null.`,
         );
         pruneRequirement = true;
       } else if (reqSkill.skill == null) {
         handleFailure(
           logger,
           defaultSeverity,
-          `Required skill ${i} for ${id}:${skill.name} has a null id.`
+          `Required skill ${i} for ${id}:${skill.name} has a null id.`,
         );
         pruneRequirement = true;
       } else if (reqSkill.level == null) {
         handleFailure(
           logger,
           defaultSeverity,
-          `Required skill ${i} for ${id}:${skill.name} has a null level.`
+          `Required skill ${i} for ${id}:${skill.name} has a null level.`,
         );
         pruneRequirement = true;
       }
@@ -172,7 +172,7 @@ function verifyDefinitions(
 
 function getSeverityForEmptyRequiredSkill(
   skillId: number,
-  defaultSeverity: ErrorSeverity
+  defaultSeverity: ErrorSeverity,
 ) {
   switch (skillId) {
     // For some reason, they only specify a requirement in the second slot,
@@ -188,7 +188,7 @@ function getSeverityForEmptyRequiredSkill(
 function handleFailure(
   logger: Logger,
   severity: ErrorSeverity,
-  message: string
+  message: string,
 ) {
   switch (severity) {
     case ErrorSeverity.THROW:
@@ -208,7 +208,7 @@ function handleFailure(
 function setRequiredSkill(
   skill: PartialSkill,
   position: number,
-  requiredSkill: number
+  requiredSkill: number,
 ) {
   getRequiredSkill(skill, position).skill = requiredSkill;
 }
@@ -216,7 +216,7 @@ function setRequiredSkill(
 function setRequiredSkillLevel(
   skill: PartialSkill,
   position: number,
-  level: number
+  level: number,
 ) {
   getRequiredSkill(skill, position).level = level;
 }

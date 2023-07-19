@@ -34,7 +34,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     executionId: number,
     task: Task,
     channel: string | undefined,
-    silent: boolean
+    silent: boolean,
   ) {
     super();
 
@@ -86,7 +86,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
     }
     if (result != "pending" && status != "finished") {
       throw new Error(
-        `Cannot set job result to ${result} when status is not 'finished'.`
+        `Cannot set job result to ${result} when status is not 'finished'.`,
       );
     }
     this._result = result;

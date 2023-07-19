@@ -16,7 +16,7 @@ import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
 export function updateSkillQueue(
   db: Tnex,
   characterId: number,
-  accessToken?: string
+  accessToken?: string,
 ) {
   let newQueue: SkillQueueRow[];
 
@@ -55,13 +55,13 @@ export function getTrainingProgress(queueEntry: SkillQueueRow) {
   const pretrainedProgress = getProgressFraction(
     queueEntry.levelStartSp,
     queueEntry.levelEndSp,
-    queueEntry.trainingStartSp
+    queueEntry.trainingStartSp,
   );
 
   let trainedProgress = getProgressFraction(
     queueEntry.startTime,
     queueEntry.endTime,
-    Date.now()
+    Date.now(),
   );
 
   // Bound the result between 0 and 1, otherwise a skill that finished
@@ -74,7 +74,7 @@ export function getTrainingProgress(queueEntry: SkillQueueRow) {
 function getProgressFraction(
   start: number | null,
   end: number | null,
-  current: number
+  current: number,
 ) {
   if (start == null || end == null || end - start == 0) {
     return 0;
@@ -84,7 +84,7 @@ function getProgressFraction(
 }
 
 function convertEsiQueueToNativeQueue(
-  esiQueue: EsiSkillQueueItem[]
+  esiQueue: EsiSkillQueueItem[],
 ): SkillQueueRow[] {
   esiQueue.sort(compareEsiQueueItem);
 

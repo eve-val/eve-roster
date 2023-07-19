@@ -31,7 +31,7 @@ export class KillmailAssociator extends Transform<
   _transform(
     chunk: UnprocessedKillmailRow,
     encoding: string,
-    callback: TransformCallback<ProcessedKillmail>
+    callback: TransformCallback<ProcessedKillmail>,
   ) {
     this._flushKillmailsEarlierThan(chunk.km_timestamp - this._maxTimeWindow);
 

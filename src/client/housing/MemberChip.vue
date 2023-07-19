@@ -51,7 +51,7 @@ export default defineComponent({
         this.character.homeCitadel,
         bounds,
         ev.screenX,
-        ev.screenY
+        ev.screenY,
       );
     },
   },

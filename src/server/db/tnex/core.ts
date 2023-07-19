@@ -52,7 +52,7 @@ export class ValueWrapper<T extends ColumnType> {
 
 export function splitColumn(
   columnName: string,
-  separator: string
+  separator: string,
 ): [string, string] {
   const split = columnName.split(separator);
   if (split.length != 2 || split[0].length == 0) {

@@ -31,7 +31,7 @@ async function executor(db: Tnex, job: JobLogger) {
   const config = await dao.config.get(
     db,
     "srpJurisdiction",
-    "killmailSyncRanges"
+    "killmailSyncRanges",
   );
   const memberCorps = await dao.config.getSrpMemberCorporations(db);
 
@@ -45,7 +45,7 @@ async function executor(db: Tnex, job: JobLogger) {
     job,
     config.srpJurisdiction,
     memberCorps,
-    syncedRanges
+    syncedRanges,
   );
 
   await dao.config.set(db, { killmailSyncRanges: syncedRanges });
@@ -60,7 +60,7 @@ async function syncKillmailsForAllCorps(
   job: JobLogger,
   jurisdiction: { start: number; end: number | undefined },
   memberCorps: MemberCorporation[],
-  syncedRanges: { [key: number]: { start: number; end: number } }
+  syncedRanges: { [key: number]: { start: number; end: number } },
 ) {
   for (const memberCorp of memberCorps) {
     try {
@@ -70,7 +70,7 @@ async function syncKillmailsForAllCorps(
         job,
         memberCorp.mcorp_corporationId,
         syncedRanges[corpId],
-        jurisdiction
+        jurisdiction,
       );
     } catch (e) {
       if (!(e instanceof Error)) {
@@ -79,7 +79,7 @@ async function syncKillmailsForAllCorps(
       job.error(
         `Error while syncing kills for corp ` +
           `${memberCorp.mcorp_corporationId}`,
-        e
+        e,
       );
     }
   }
@@ -92,7 +92,7 @@ async function syncKillmailsForCorp(
   job: JobLogger,
   corpId: number,
   syncedRange: { start: number; end: number } | undefined,
-  jurisdiction: { start: number; end: number | undefined }
+  jurisdiction: { start: number; end: number | undefined },
 ) {
   if (syncedRange == undefined || syncedRange.start > jurisdiction.start) {
     job.info(`Performing pre-range fill...`);
@@ -101,7 +101,7 @@ async function syncKillmailsForCorp(
       job,
       corpId,
       jurisdiction.start,
-      syncedRange && syncedRange.start
+      syncedRange && syncedRange.start,
     );
   }
   if (

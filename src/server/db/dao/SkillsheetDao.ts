@@ -23,7 +23,7 @@ export default class SkillQueueDao {
         "skillsheet_level",
         "skillsheet_skillpoints",
         "styp_name",
-        "styp_group"
+        "styp_group",
       )
       .run();
   }

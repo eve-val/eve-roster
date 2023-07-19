@@ -61,7 +61,7 @@ export default defineComponent({
         return generalPurposeCompare(
           getSortVal(this.sortColumn, a.aggregate, a),
           getSortVal(this.sortColumn, b.aggregate, b),
-          this.sort.reverse
+          this.sort.reverse,
         );
       });
 
@@ -72,7 +72,7 @@ export default defineComponent({
           return generalPurposeCompare(
             getSortVal(this.sortColumn, a, null),
             getSortVal(this.sortColumn, b, null),
-            this.sort.reverse
+            this.sort.reverse,
           );
         });
         row.alts = alts;
@@ -97,7 +97,7 @@ export default defineComponent({
 function getSortVal(
   column: SortableColumn,
   character: Character | undefined,
-  account: Account | null
+  account: Account | null,
 ): number | string | boolean | null | undefined {
   if (column.account) {
     if (account == null) {

@@ -6,7 +6,7 @@ import { FilterableQuery } from "./FilterableQuery.js";
 // that interface
 export class Query<
   T extends object,
-  R /* return type */
+  R /* return type */,
 > extends FilterableQuery<T> {
   constructor(scoper: Scoper, query: Knex.QueryBuilder) {
     super(scoper, query);

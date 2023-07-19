@@ -74,7 +74,7 @@ export default defineComponent({
     transferCharacter() {
       const promise = ajaxer.postCharacterTransfer(
         this.accountId,
-        this.characterId
+        this.characterId,
       );
       this.promise = promise;
       promise.then(() => {
@@ -86,7 +86,7 @@ export default defineComponent({
     cancelTransfer() {
       const promise = ajaxer.deleteCharacterTransfer(
         this.accountId,
-        this.characterId
+        this.characterId,
       );
       this.promise = promise;
       promise.then(() => {

@@ -27,7 +27,7 @@ export default jsonEndpoint((req, res, db, account, _privs) => {
       if (row == undefined) {
         throw new BadRequestError(
           `No pending transfer found for account ${account.id} and` +
-            ` character ${charId}`
+            ` character ${charId}`,
         );
       }
       const newAccountId = account.id;
@@ -41,7 +41,7 @@ export default jsonEndpoint((req, res, db, account, _privs) => {
                 db,
                 charId,
                 oldAccountId,
-                newAccountId
+                newAccountId,
               );
             }
             return null;
@@ -52,14 +52,14 @@ export default jsonEndpoint((req, res, db, account, _privs) => {
               charId,
               newAccountId,
               row.pendingOwnership_ownerHash,
-              false
+              false,
             );
           })
           .then(() => {
             return dao.ownership.deletePendingOwnership(
               db,
               newAccountId,
-              charId
+              charId,
             );
           });
       });

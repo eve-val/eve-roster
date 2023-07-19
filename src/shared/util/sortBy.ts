@@ -47,7 +47,7 @@ export type SortDirection = "forward" | "reverse";
  */
 export function cmpNullProp<T>(
   prop: keyof T,
-  sortNulls: SortNulls = "endNulls"
+  sortNulls: SortNulls = "endNulls",
 ): Comparitor<T> {
   return (a: T, b: T) => {
     const aVal = a[prop];
@@ -84,7 +84,7 @@ export function cmpNullProp<T>(
 export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
   prop: K | Extractor<T, string>,
   direction: SortDirection = "forward",
-  sortNulls: SortNulls = "endNulls"
+  sortNulls: SortNulls = "endNulls",
 ): Comparitor<T> {
   return (a: T, b: T) => {
     const aVal: string = typeof prop == "function" ? prop(a) : (a[prop] as any);
@@ -120,7 +120,7 @@ export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
 export function cmpNumberProp<T, K extends KeysOfType<T, number | nil>>(
   prop: K | Extractor<T, number>,
   direction: SortDirection = "forward",
-  sortNulls: SortNulls = "endNulls"
+  sortNulls: SortNulls = "endNulls",
 ): Comparitor<T> {
   return (a: T, b: T) => {
     const aVal: number = typeof prop == "function" ? prop(a) : (a[prop] as any);

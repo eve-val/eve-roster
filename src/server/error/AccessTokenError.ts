@@ -9,7 +9,7 @@ export const enum AccessTokenErrorType {
 export class AccessTokenError extends ExtendableError {
   constructor(
     public readonly characterId: number,
-    public readonly type: AccessTokenErrorType
+    public readonly type: AccessTokenErrorType,
   ) {
     super(getMessage(type, characterId));
   }

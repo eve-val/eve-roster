@@ -24,44 +24,40 @@ import {
 import { arrayToMap } from "../../../../shared/util/collections.js";
 import { getAllSdeSkills } from "../../../eve/sde.js";
 
-export default jsonEndpoint(function (
-  req,
-  res,
-  db,
-  account,
-  privs
-): Promise<Character_Skills_GET> {
-  const characterId: number = parseInt(req.params.id);
-  let isOwner = false;
+export default jsonEndpoint(
+  function (req, res, db, account, privs): Promise<Character_Skills_GET> {
+    const characterId: number = parseInt(req.params.id);
+    let isOwner = false;
 
-  return Promise.resolve()
-    .then(() => {
-      return dao.character.getOwner(db, characterId);
-    })
-    .then((row) => {
-      isOwner = account.id == (row && row.account_id);
-      privs.requireRead("characterSkills", isOwner);
-      return fetchData(db, characterId);
-    })
-    .then(({ rawSkills, rawQueue, warningMessage }) => {
-      const payload: Character_Skills_GET = {
-        skills: transformSkills(rawSkills),
-        queue: undefined,
-        warning: warningMessage,
-      };
-
-      if (privs.canRead("characterSkillQueue", isOwner)) {
-        const { queued, completed } = transformQueue(rawQueue);
-        payload.queue = {
-          entries: queued,
-          completed: completed,
-          durationLabel: getRemainingDurationLabel(rawQueue),
+    return Promise.resolve()
+      .then(() => {
+        return dao.character.getOwner(db, characterId);
+      })
+      .then((row) => {
+        isOwner = account.id == (row && row.account_id);
+        privs.requireRead("characterSkills", isOwner);
+        return fetchData(db, characterId);
+      })
+      .then(({ rawSkills, rawQueue, warningMessage }) => {
+        const payload: Character_Skills_GET = {
+          skills: transformSkills(rawSkills),
+          queue: undefined,
+          warning: warningMessage,
         };
-      }
 
-      return payload;
-    });
-});
+        if (privs.canRead("characterSkillQueue", isOwner)) {
+          const { queued, completed } = transformQueue(rawQueue);
+          payload.queue = {
+            entries: queued,
+            completed: completed,
+            durationLabel: getRemainingDurationLabel(rawQueue),
+          };
+        }
+
+        return payload;
+      });
+  },
+);
 
 function fetchData(db: Tnex, characterId: number) {
   let warningMessage: string | undefined;

@@ -21,7 +21,7 @@ export default class LogDao {
     accountId: number,
     event: LoggableEvent,
     relatedCharacter: number | null = null,
-    data?: object
+    data?: object,
   ): Promise<void> {
     return db
       .insert(accountLog, {
@@ -47,7 +47,7 @@ export default class LogDao {
           .using("character_name", "mainChar_name"),
         "mainChar_id",
         "=",
-        "account_mainCharacter"
+        "account_mainCharacter",
       )
       .leftJoin(
         db
@@ -56,7 +56,7 @@ export default class LogDao {
           .using("character_name", "relatedChar_name"),
         "relatedChar_id",
         "=",
-        "accountLog_relatedCharacter"
+        "accountLog_relatedCharacter",
       )
       .orderBy("accountLog_timestamp", "desc")
       .limit(200)
@@ -69,7 +69,7 @@ export default class LogDao {
         "accountLog_event",
         "accountLog_relatedCharacter",
         "relatedChar_name",
-        "accountLog_data"
+        "accountLog_data",
       )
       .run();
   }

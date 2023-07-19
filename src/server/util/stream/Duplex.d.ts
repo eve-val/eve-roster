@@ -5,6 +5,7 @@ import { ReadStream, ReadableOptions } from "./Readable.js";
 import { BasicCallback } from "./core.js";
 
 export interface Duplex<In, Out> extends ReadWriteStream<In, Out> {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Duplex<In, Out> {
   constructor(opts?: DuplexOptions<Duplex<In, Out>, In>);
 
@@ -14,7 +15,7 @@ export class Duplex<In, Out> {
   _write(chunk: Out, encoding: string, callback: BasicCallback): void;
   _writev?(
     chunks: { chunk: Out; encoding: string }[],
-    callback: BasicCallback
+    callback: BasicCallback,
   ): void;
   _final(callback: BasicCallback): void;
 }
@@ -27,7 +28,7 @@ export interface ReadWriteStream<In, Out> {
   write(
     chunk: In,
     encoding?: string,
-    cb?: (error: Error | null | undefined) => void
+    cb?: (error: Error | null | undefined) => void,
   ): boolean;
   setDefaultEncoding(encoding: string): this;
   end(cb?: () => void): void;
@@ -114,14 +115,14 @@ export interface ReadWriteStream<In, Out> {
   prependListener(event: "pipe", listener: (src: ReadStream<In>) => void): this;
   prependListener(
     event: "unpipe",
-    listener: (src: ReadStream<In>) => void
+    listener: (src: ReadStream<In>) => void,
   ): this;
   prependListener(event: "data", listener: (chunk: Out) => void): this;
   prependListener(event: "end", listener: () => void): this;
   prependListener(event: "readable", listener: () => void): this;
   prependListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   prependOnceListener(event: "close", listener: () => void): this;
@@ -130,18 +131,18 @@ export interface ReadWriteStream<In, Out> {
   prependOnceListener(event: "finish", listener: () => void): this;
   prependOnceListener(
     event: "pipe",
-    listener: (src: ReadStream<In>) => void
+    listener: (src: ReadStream<In>) => void,
   ): this;
   prependOnceListener(
     event: "unpipe",
-    listener: (src: ReadStream<In>) => void
+    listener: (src: ReadStream<In>) => void,
   ): this;
   prependOnceListener(event: "data", listener: (chunk: Out) => void): this;
   prependOnceListener(event: "end", listener: () => void): this;
   prependOnceListener(event: "readable", listener: () => void): this;
   prependOnceListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 
   removeListener(event: "close", listener: () => void): this;
@@ -151,14 +152,14 @@ export interface ReadWriteStream<In, Out> {
   removeListener(event: "pipe", listener: (src: ReadStream<In>) => void): this;
   removeListener(
     event: "unpipe",
-    listener: (src: ReadStream<In>) => void
+    listener: (src: ReadStream<In>) => void,
   ): this;
   removeListener(event: "data", listener: (chunk: Out) => void): this;
   removeListener(event: "end", listener: () => void): this;
   removeListener(event: "readable", listener: () => void): this;
   removeListener(
     event: string | symbol,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): this;
 }
 

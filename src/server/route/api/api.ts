@@ -81,7 +81,7 @@ router.get("/character/:id/skills", character_skills);
 
 router.post(
   "/control/openwindow/information",
-  control_openwindow_information_POST
+  control_openwindow_information_POST,
 );
 
 router.get("/dashboard", dashboard);

@@ -40,7 +40,7 @@ export default class AccountDao {
             account_activeTimezone: null,
             account_homeCitadel: null,
           },
-          "account_id"
+          "account_id",
         )
         .then((_id) => {
           id = _id;
@@ -56,7 +56,7 @@ export default class AccountDao {
                 groupExplicit_account: id,
                 groupExplicit_group: ADMIN_GROUP,
               },
-              "groupExplicit_id"
+              "groupExplicit_id",
             );
           }
           return -1;
@@ -104,14 +104,14 @@ export default class AccountDao {
         .then((updateCount) => {
           if (updateCount != 1) {
             throw new Error(
-              `No rows updated when setting main of account ${accountId}.`
+              `No rows updated when setting main of account ${accountId}.`,
             );
           }
           return this._dao.log.logEvent(
             db,
             accountId,
             "DESIGNATE_MAIN",
-            mainCharacterId
+            mainCharacterId,
           );
         })
         .then(() => {

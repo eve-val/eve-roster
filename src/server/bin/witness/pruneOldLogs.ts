@@ -12,7 +12,7 @@ import * as logger from "./logger.js";
 export function pruneOldLogs(
   directory: string,
   maxLifetime: number,
-  callback: BasicCallback
+  callback: BasicCallback,
 ) {
   fs.readdir(directory, {}, (err, files) => {
     if (err) {
@@ -35,7 +35,7 @@ export function pruneOldLogs(
           callback();
         }
       },
-      callback
+      callback,
     );
   });
 }

@@ -108,7 +108,7 @@ export default defineComponent({
                   value: sentinelId,
                 },
         },
-        true
+        true,
       );
 
       this.fetchPromise.then((response) => {

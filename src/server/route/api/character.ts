@@ -48,7 +48,7 @@ export default jsonEndpoint(
           "characterSkills",
           "characterSkillQueue",
         ],
-        isOwned
+        isOwned,
       ),
       names: await new EsiNameFetcher([row.character_corporationId]).fetch(),
     };
@@ -82,7 +82,7 @@ export default jsonEndpoint(
     }
 
     return payload;
-  }
+  },
 );
 
 function injectAlts(
@@ -90,7 +90,7 @@ function injectAlts(
   accountId: number,
   thisCharacterId: number,
   privs: AccountPrivileges,
-  payload: Character_GET
+  payload: Character_GET,
 ) {
   return dao.account.getAlts(db, accountId).then(function (rows) {
     const alts = [];

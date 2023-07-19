@@ -24,7 +24,7 @@ export default class LocationDao {
         "charloc_shipItemId",
         "charloc_shipName",
         "charloc_solarSystemId",
-        "charloc_timestamp"
+        "charloc_timestamp",
       )
       .run();
   }
@@ -39,7 +39,7 @@ export default class LocationDao {
         "accessToken_character",
         "accessToken_accessToken",
         "accessToken_accessTokenExpires",
-        "accessToken_refreshToken"
+        "accessToken_refreshToken",
       )
       .run();
   }

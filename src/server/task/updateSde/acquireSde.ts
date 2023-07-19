@@ -14,7 +14,7 @@ const SDE_DOWNLOAD_PROGRESS_LABEL = "Downloading SDE...";
 export async function acquireSde(
   job: JobLogger,
   zipFile: string,
-  sqlFile: string
+  sqlFile: string,
 ) {
   await downloadSde(job, zipFile);
   await unbzipFile(job, zipFile, sqlFile);
@@ -34,7 +34,7 @@ function downloadSde(job: JobLogger, target: string) {
             progress({
               time: 1000,
               length: parseInt(response.headers["content-length"]!),
-            })
+            }),
           )
           .on("progress", (e) => {
             job.setProgress(e.percentage / 100, SDE_DOWNLOAD_PROGRESS_LABEL);

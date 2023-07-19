@@ -17,7 +17,7 @@ export async function fetchSwagger(baseUrl: string): Promise<object> {
 
 export async function getModifiedSwagger(
   baseUrl: string,
-  host: string
+  host: string,
 ): Promise<object> {
   const swagger: any = await fetchSwagger(baseUrl);
 

@@ -37,7 +37,7 @@ export default class KillmailDao {
     db: Tnex,
     batchSize: number,
     preWindowStart: number,
-    preWindowEnd: number
+    preWindowEnd: number,
   ): StreamIterator<UnprocessedKillmailRow> {
     return makeKillmailIterator(db, batchSize, (query) =>
       query
@@ -48,7 +48,7 @@ export default class KillmailDao {
           memberCorporation,
           "mcorp_corporationId",
           "=",
-          "km_victimCorp"
+          "km_victimCorp",
         )
         .and((clause) => {
           clause.where("km_processed", "=", val(false)).or((clause) => {
@@ -57,21 +57,21 @@ export default class KillmailDao {
               .where("km_timestamp", "<=", val(preWindowEnd));
           });
         })
-        .columns("account_mainCharacter", "mcorp_corporationId")
+        .columns("account_mainCharacter", "mcorp_corporationId"),
     );
   }
 
   async upsertKillmails(
     db: Tnex,
     rows: Killmail[],
-    updateStrategy?: UpdateStrategy<Partial<Killmail>>
+    updateStrategy?: UpdateStrategy<Partial<Killmail>>,
   ) {
     return db.upsertAll(killmail, rows, "km_id", updateStrategy);
   }
 
   async updateKillmails(
     db: Tnex,
-    rows: Partial<Killmail> & Pick<Killmail, "km_id">[]
+    rows: Partial<Killmail> & Pick<Killmail, "km_id">[],
   ) {
     return db.updateAll(killmail, "km_id", rows);
   }

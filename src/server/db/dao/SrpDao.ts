@@ -65,7 +65,7 @@ export default class SrpDao {
         srpv_reimbursement: UpdatePolicy.PRESERVE_EXISTING,
         srpv_modified: UpdatePolicy.PRESERVE_EXISTING,
         srpv_renderingAccount: UpdatePolicy.PRESERVE_EXISTING,
-      }
+      },
     );
   }
 
@@ -85,7 +85,7 @@ export default class SrpDao {
           .using("km_data", "related_data"),
         "related_id",
         "=",
-        "km_relatedLoss"
+        "km_relatedLoss",
       )
       .leftJoin(
         db
@@ -94,7 +94,7 @@ export default class SrpDao {
           .using("account_mainCharacter", "rendering_mainCharacter"),
         "rendering_id",
         "=",
-        "srpv_renderingAccount"
+        "srpv_renderingAccount",
       )
       .leftJoin(killmailBattle, "kmb_killmail", "=", "km_id")
       .orderBy("km_id", order)
@@ -112,7 +112,7 @@ export default class SrpDao {
         "srpr_payingCharacter",
         "related_data",
         "account_mainCharacter",
-        "kmb_battle"
+        "kmb_battle",
       );
     if (filter.limit != undefined) {
       query = query.limit(filter.limit);
@@ -148,7 +148,7 @@ export default class SrpDao {
     verdict: SrpVerdictStatus,
     reason: SrpVerdictReason | null,
     payout: number,
-    renderingAccount: number | null
+    renderingAccount: number | null,
   ) {
     // If SRP already associated with a paid reimbursement, ERROR
     // If verdict is ACCEPTED, create a reimbursement if necessary
@@ -168,7 +168,7 @@ export default class SrpDao {
           "srpr_id",
           "srpr_paid",
           "km_character",
-          "account_mainCharacter"
+          "account_mainCharacter",
         )
         .fetchFirst();
 
@@ -192,7 +192,7 @@ export default class SrpDao {
         if (rid == null) {
           rid = await this.createReimbursement(
             db,
-            lossRow.account_mainCharacter || lossRow.km_character
+            lossRow.account_mainCharacter || lossRow.km_character,
           );
         }
       }
@@ -240,7 +240,7 @@ export default class SrpDao {
       subquery = subquery.andWhere(
         filter.orderBy == "id" ? "srpr_id" : "srpr_modified",
         filter.order == "desc" ? "<" : ">",
-        val(filter.startingAfter)
+        val(filter.startingAfter),
       );
     }
 
@@ -255,7 +255,7 @@ export default class SrpDao {
           .using("character_corporationId", "payingChar_corporationId"),
         "payingChar_id",
         "=",
-        "srpr_payingCharacter"
+        "srpr_payingCharacter",
       )
       .orderBy(orderByCol, filter.order)
       .where("combined_losses", ">", val(0))
@@ -267,7 +267,7 @@ export default class SrpDao {
         "srpr_recipientCharacter",
         "character_corporationId",
         "srpr_payingCharacter",
-        "payingChar_corporationId"
+        "payingChar_corporationId",
       )
       .run();
   }
@@ -280,7 +280,7 @@ export default class SrpDao {
         "srpr_recipientCharacter",
         "srpr_modified",
         "srpr_paid",
-        "srpr_payingCharacter"
+        "srpr_payingCharacter",
       )
       .fetchFirst();
   }
@@ -288,7 +288,7 @@ export default class SrpDao {
   async markReimbursementAsPaid(
     db: Tnex,
     reimbursement: number,
-    payingCharacter: number
+    payingCharacter: number,
   ) {
     return await db
       .update(srpReimbursement, {
@@ -362,7 +362,7 @@ export default class SrpDao {
         srpr_paid: false,
         srpr_payingCharacter: null,
       },
-      "srpr_id"
+      "srpr_id",
     );
   }
 
@@ -377,7 +377,7 @@ export default class SrpDao {
         srpReimbursement,
         "srpr_recipientCharacter",
         "=",
-        "account_mainCharacter"
+        "account_mainCharacter",
       )
       .where("character_id", "=", val(characterId))
       .where("srpr_paid", "=", val(false))

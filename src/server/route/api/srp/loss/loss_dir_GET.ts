@@ -38,7 +38,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
       account: intQuery(req, "account"),
       character: intQuery(req, "character"),
     },
-    boolQuery(req, "includeTriage") || false
+    boolQuery(req, "includeTriage") || false,
   );
 });
 
@@ -49,13 +49,13 @@ async function handleEndpoint(
   db: Tnex,
   privs: AccountPrivileges,
   filter: SrpLossFilter,
-  includeTriage: boolean
+  includeTriage: boolean,
 ) {
   privs.requireRead("srp");
 
   filter.limit = Math.min(
     MAX_ROWS_PER_QUERY,
-    filter.limit || DEFAULT_ROWS_PER_QUERY
+    filter.limit || DEFAULT_ROWS_PER_QUERY,
   );
 
   const unresolvedIds = new Set<number | nil>();

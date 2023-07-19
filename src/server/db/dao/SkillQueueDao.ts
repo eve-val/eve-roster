@@ -8,7 +8,7 @@ class SkillQueueDao {
 
   getCachedSkillQueue(
     db: Tnex,
-    characterId: number
+    characterId: number,
   ): Promise<NamedSkillQueueRow[]> {
     return db
       .select(characterSkillQueue)
@@ -23,7 +23,7 @@ class SkillQueueDao {
         "characterSkillQueue_levelStartSp",
         "characterSkillQueue_levelEndSp",
         "characterSkillQueue_trainingStartSp",
-        "styp_name"
+        "styp_name",
       )
       .run()
       .then((rows) => {
@@ -46,7 +46,7 @@ class SkillQueueDao {
   setCachedSkillQueue(
     db: Tnex,
     characterId: number,
-    queueItems: SkillQueueRow[]
+    queueItems: SkillQueueRow[],
   ) {
     const items = queueItems.map((qi, index) => {
       return {
@@ -67,7 +67,7 @@ class SkillQueueDao {
       characterSkillQueue,
       "characterSkillQueue_character",
       characterId,
-      items
+      items,
     );
   }
 }

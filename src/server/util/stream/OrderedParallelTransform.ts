@@ -36,7 +36,7 @@ export abstract class OrderedParallelTransform<In, Out> extends Transform<
   _transform(
     chunk: In,
     encoding: string,
-    callback: TransformCallback<Out>
+    callback: TransformCallback<Out>,
   ): void {
     try {
       this._transformInternal(chunk, callback);

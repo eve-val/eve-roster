@@ -14,7 +14,7 @@ export default class AccessTokenDao {
         "accessToken_refreshToken",
         "accessToken_accessToken",
         "accessToken_accessTokenExpires",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .fetchFirst();
   }
@@ -28,7 +28,7 @@ export default class AccessTokenDao {
         "accessToken_refreshToken",
         "accessToken_accessToken",
         "accessToken_accessTokenExpires",
-        "accessToken_needsUpdate"
+        "accessToken_needsUpdate",
       )
       .run();
   }
@@ -42,7 +42,7 @@ export default class AccessTokenDao {
       | "accessToken_accessToken"
       | "accessToken_accessTokenExpires"
       | "accessToken_needsUpdate"
-    >[]
+    >[],
   ) {
     return db.updateAll(accessToken, "accessToken_character", rows);
   }
@@ -98,7 +98,7 @@ export default class AccessTokenDao {
     refreshToken: string,
     scopes: string[],
     accessTokenVal: string,
-    accessTokenExpires: number
+    accessTokenExpires: number,
   ) {
     return db.upsert(
       accessToken,
@@ -110,7 +110,7 @@ export default class AccessTokenDao {
         accessToken_needsUpdate: false,
         accessToken_scopes: scopes,
       },
-      "accessToken_character"
+      "accessToken_character",
     );
   }
 }

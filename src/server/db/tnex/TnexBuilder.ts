@@ -33,7 +33,7 @@ export class TnexBuilder {
       if (!table.constructor) {
         throw new Error(
           `No table name provided and table doesn't have a constructor to` +
-            ` infer a name from.`
+            ` infer a name from.`,
         );
       }
       tableName = this._tableNameSupplier(table.constructor.name);
@@ -48,7 +48,7 @@ export class TnexBuilder {
       if (!(value instanceof ColumnDescriptorImpl)) {
         throw new Error(
           `Property "${prop}" in table "${tableName}" is not a` +
-            ` ColumnDescriptor.`
+            ` ColumnDescriptor.`,
         );
       }
 
@@ -63,14 +63,14 @@ export class TnexBuilder {
           throw new Error(
             `Inconsistent prefixing in table "${tableName}".` +
               ` Column "${prop}" doesn't match inferred prefix` +
-              ` "${tablePrefix}".`
+              ` "${tablePrefix}".`,
           );
         }
       }
     }
     if (tablePrefix == null) {
       throw new Error(
-        `Table ${util.inspect(table)} must declare at least one column.`
+        `Table ${util.inspect(table)} must declare at least one column.`,
       );
     }
     this._registeredNames.add(tableName);
@@ -84,7 +84,7 @@ export class TnexBuilder {
     return new Tnex(
       knex,
       new Scoper(this._separator, this._tableToName, this._prefixToName),
-      knex
+      knex,
     );
   }
 }

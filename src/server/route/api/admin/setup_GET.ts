@@ -38,14 +38,14 @@ function getCorpConfig(db: Tnex) {
     .then(() => dao.config.getMemberCorporations(db))
     .then((configRows) => {
       return Bluebird.map(configRows, (configRow) =>
-        convertCorpConfigRowToJson(db, configRow)
+        convertCorpConfigRowToJson(db, configRow),
       );
     });
 }
 
 function convertCorpConfigRowToJson(
   db: Tnex,
-  row: MemberCorporation
+  row: MemberCorporation,
 ): Promise<CorporationConfig> {
   return Promise.resolve()
     .then(() => {
@@ -61,7 +61,7 @@ function convertCorpConfigRowToJson(
 }
 
 function createTitleMap(
-  mapRows: Pick<GroupTitle, "groupTitle_title" | "groupTitle_group">[]
+  mapRows: Pick<GroupTitle, "groupTitle_title" | "groupTitle_group">[],
 ) {
   const map = {} as SimpleMap<string>;
   for (const row of mapRows) {

@@ -6,7 +6,7 @@
 
 exports.up = async function (trx) {
   await trx.schema.raw(
-    `ALTER TABLE "config" ALTER COLUMN "value" TYPE jsonb USING value::jsonb;`
+    `ALTER TABLE "config" ALTER COLUMN "value" TYPE jsonb USING value::jsonb;`,
   );
 
   await trx.schema.alterTable("killmail", (table) => {

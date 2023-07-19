@@ -9,7 +9,7 @@ import { BasicCallback } from "../../util/stream/core.js";
 export function asyncEach<T>(
   arr: T[],
   handler: (entry: T, callback: BasicCallback) => void,
-  callback: BasicCallback
+  callback: BasicCallback,
 ) {
   let i = 0;
   const len = arr.length;

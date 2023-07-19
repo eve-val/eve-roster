@@ -8,5 +8,5 @@ export default jsonEndpoint(
     return dao.characterShip.getBorrowedShips(db, {
       includeOpsecChars: privs.canRead("memberOpsecAlts"),
     });
-  }
+  },
 );
