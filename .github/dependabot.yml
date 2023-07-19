@@ -23,6 +23,6 @@ updates:
           - "eslint"
       jest:
         patterns:
+          - "@jest/*"
           - "jest"
           - "ts-jest"
-          - "@jest/*"
