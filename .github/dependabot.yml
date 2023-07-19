@@ -21,3 +21,7 @@ updates:
           - "@typescript-eslint/*"
           - "eslint-*"
           - "eslint"
+      jest:
+        patterns:
+          - "jest"
+          - "ts-jest"
