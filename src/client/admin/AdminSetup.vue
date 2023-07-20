@@ -67,9 +67,12 @@ export default defineComponent({
   mounted() {
     const promise = ajaxer.getAdminSetup();
     this.promise = promise;
-    promise.then((response: AxiosResponse<string>) => {
-      this.setupJson = JSON.stringify(response.data, null, 2);
-    });
+    promise.then(
+      (response: AxiosResponse<string>) => {
+        this.setupJson = JSON.stringify(response.data, null, 2);
+      },
+      () => {},
+    );
   },
 
   methods: {
@@ -82,6 +85,7 @@ export default defineComponent({
       const promise = Promise.resolve()
         .then(() => {
           let cleanedJson = this.setupJson.replace(JSON_COMMENT_PATTERN, "");
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return JSON.parse(cleanedJson);
         })
         .then((setupJson: string) => {

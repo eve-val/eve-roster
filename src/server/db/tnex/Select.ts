@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import { Knex } from "knex";
 
 import { Comparison, Link, Nullable, StringKeyOf } from "./core.js";

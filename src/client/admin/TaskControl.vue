@@ -111,10 +111,13 @@ export default defineComponent({
       ajaxer.getAdminTaskLog(),
     ]);
     this.promise = promise;
-    promise.then(([tasks, jobs, logs]) => {
-      this.initializeTasks(tasks.data, jobs.data);
-      this.taskLog = logs.data;
-    });
+    promise.then(
+      ([tasks, jobs, logs]) => {
+        this.initializeTasks(tasks.data, jobs.data);
+        this.taskLog = logs.data;
+      },
+      () => {},
+    );
   },
 
   methods: {
@@ -158,14 +161,17 @@ export default defineComponent({
       }
       this.polling = true;
       let poll = () => {
-        ajaxer.getAdminJobs().then((response) => {
-          this.applyJobs(response.data);
-          if (this.areAnyActiveJobs) {
-            setTimeout(poll, POLL_FREQUENCY);
-          } else {
-            this.polling = false;
-          }
-        });
+        ajaxer.getAdminJobs().then(
+          (response) => {
+            this.applyJobs(response.data);
+            if (this.areAnyActiveJobs) {
+              setTimeout(poll, POLL_FREQUENCY);
+            } else {
+              this.polling = false;
+            }
+          },
+          () => {},
+        );
       };
       poll();
     },
@@ -226,9 +232,12 @@ export default defineComponent({
     },
 
     fetchUpdatedTaskLog() {
-      ajaxer.getAdminTaskLog().then((response) => {
-        this.taskLog = response.data;
-      });
+      ajaxer.getAdminTaskLog().then(
+        (response) => {
+          this.taskLog = response.data;
+        },
+        () => {},
+      );
     },
   },
 });

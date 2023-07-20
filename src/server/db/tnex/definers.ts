@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import { ColumnDescriptorImpl, DataType } from "./ColumnDescriptor.js";
 
 export function nullable<K>(value: K): K | null {

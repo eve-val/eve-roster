@@ -13,7 +13,7 @@
     "eslint-plugin-prettier-vue"
   ],
   "extends": [
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:jest/recommended",
     "plugin:vue/vue3-recommended",

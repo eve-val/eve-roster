@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+
 import * as fs from "fs";
 import { default as axios } from "axios";
 import progress from "progress-stream";
