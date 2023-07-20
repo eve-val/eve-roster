@@ -98,40 +98,52 @@ export default defineComponent({
 
   methods: {
     fetchData() {
-      ajaxer.getCitadels().then((response) => {
-        this.citadels = response.data.citadels;
-      });
+      ajaxer.getCitadels().then(
+        (response) => {
+          this.citadels = response.data.citadels;
+        },
+        () => {},
+      );
     },
 
     addCitadel() {
       let c = this.newCitadel;
       ajaxer
         .postCitadel(c.name, c.type, c.allianceAccess, c.allianceOwned)
-        .then((response) => {
-          this.citadels.push(response.data);
-          this.newCitadel.name = "";
-        });
+        .then(
+          (response) => {
+            this.citadels.push(response.data);
+            this.newCitadel.name = "";
+          },
+          () => {},
+        );
     },
 
     removeCitadel(id: number) {
-      ajaxer.deleteCitadel(id).then((_response) => {
-        for (let i = 0; i < this.citadels.length; i++) {
-          if (this.citadels[i].id === id) {
-            this.citadels.splice(i, 1);
-            break;
+      ajaxer.deleteCitadel(id).then(
+        (_response) => {
+          for (let i = 0; i < this.citadels.length; i++) {
+            if (this.citadels[i].id === id) {
+              this.citadels.splice(i, 1);
+              break;
+            }
           }
-        }
-      });
+        },
+        () => {},
+      );
     },
 
     renameCitadel(id: number, name: string) {
-      ajaxer.putCitadelName(id, name).then((_response) => {
-        this.citadels.map((citadel: Citadel) => {
-          if (citadel.id === id) {
-            citadel.name = name;
-          }
-        });
-      });
+      ajaxer.putCitadelName(id, name).then(
+        (_response) => {
+          this.citadels.map((citadel: Citadel) => {
+            if (citadel.id === id) {
+              citadel.name = name;
+            }
+          });
+        },
+        () => {},
+      );
     },
 
     addLogic(event: KeyboardEvent) {

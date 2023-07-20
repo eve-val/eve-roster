@@ -102,13 +102,16 @@ export default defineComponent({
   mounted() {
     const promise = ajaxer.getAdminRosterSyncStatus();
     this.promise = promise;
-    promise.then((response: AxiosResponse<Admin_Roster_SyncStatus_GET>) => {
-      this.addNames(response.data.names);
-      const groups = _.groupBy(response.data.corporations, "type");
-      this.primaryCorps = groups.full;
-      this.affiliatedCorps = groups.affiliated;
-      this.loaded = true;
-    });
+    promise.then(
+      (response: AxiosResponse<Admin_Roster_SyncStatus_GET>) => {
+        this.addNames(response.data.names);
+        const groups = _.groupBy(response.data.corporations, "type");
+        this.primaryCorps = groups.full;
+        this.affiliatedCorps = groups.affiliated;
+        this.loaded = true;
+      },
+      () => {},
+    );
   },
 });
 </script>

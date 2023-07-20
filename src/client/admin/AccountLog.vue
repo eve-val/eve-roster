@@ -83,10 +83,13 @@ export default defineComponent({
   mounted() {
     const promise = ajaxer.getAdminAccountLog();
     this.promise = promise;
-    promise.then((response) => {
-      let rows = response.data.rows;
-      this.rows = rows;
-    });
+    promise.then(
+      (response) => {
+        let rows = response.data.rows;
+        this.rows = rows;
+      },
+      () => {},
+    );
   },
 
   methods: {
