@@ -30,8 +30,8 @@ export default jsonEndpoint(
       character: {
         name: row.character_name,
         corporationId: row.character_corporationId,
-        titles: row.character_titles || [],
-        totalSp: row.sp_total || 0,
+        titles: row.character_titles ?? [],
+        totalSp: row.sp_total ?? 0,
       },
       account: {
         id: row.account_id,
@@ -54,11 +54,11 @@ export default jsonEndpoint(
     };
 
     if (privs.canRead("memberTimezone", isOwned)) {
-      payload.account.activeTimezone = row.account_activeTimezone || undefined;
+      payload.account.activeTimezone = row.account_activeTimezone ?? undefined;
     }
 
     if (privs.canRead("memberHousing", isOwned)) {
-      payload.account.citadelName = row.citadel_name || undefined;
+      payload.account.citadelName = row.citadel_name ?? undefined;
     }
 
     if (privs.canRead("memberAlts", isOwned) && row.account_id != null) {

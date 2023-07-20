@@ -219,7 +219,7 @@ function buildMemberRows(
     if (row) {
       row.character_titles = refine(titleList.titles, (title) => {
         const entry = titleDefMap.get(title);
-        return entry && entry.name;
+        return entry?.name;
       });
     }
   }

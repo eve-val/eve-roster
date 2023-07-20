@@ -70,7 +70,7 @@ function getGroupsDerivedFromCharacters(db: Tnex, accountId: number) {
               return dao.group.getTitleDerivedGroups(
                 db,
                 row.character_corporationId,
-                row.character_titles || [],
+                row.character_titles ?? [],
               );
             })
             .then((groupsFromTitles) => {

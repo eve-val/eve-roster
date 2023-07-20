@@ -13,7 +13,7 @@ export default jsonEndpoint(
     privs.requireRead("api", false);
 
     // read the character id from the header.
-    const targetCharacter = +(req.get(CHARACTER_HEADER) || "");
+    const targetCharacter = +(req.get(CHARACTER_HEADER) ?? "");
 
     // read the URL path from our path, trimming our prefix.
     const prefix = req.route.path.slice(0, -2);
@@ -31,7 +31,7 @@ export default jsonEndpoint(
         // Reissue the request using the credentials.
         const config: AxiosRequestConfig = {
           url: targetPath,
-          method: <Method>req.method,
+          method: req.method as Method,
           headers: {
             Accept: "application/json",
           },
@@ -53,7 +53,7 @@ export default jsonEndpoint(
           config.data = req.body;
         }
         if (token) {
-          config.headers!["Authorization"] = `Bearer ${token}`;
+          config.headers!.Authorization = `Bearer ${token}`;
         }
 
         return config;

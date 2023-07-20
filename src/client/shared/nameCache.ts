@@ -23,7 +23,7 @@ export const NameCacheMixin = {
     },
 
     name(id: number) {
-      return nameCache.get(id) || "[Unknown entity]";
+      return nameCache.get(id) ?? "[Unknown entity]";
     },
   },
 };

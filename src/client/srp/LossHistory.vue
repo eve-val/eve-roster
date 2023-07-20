@@ -131,7 +131,7 @@ export default defineComponent({
 
       this.fetchPromise.then((response) => {
         this.addNames(response.data.names);
-        this.rows = this.rows || [];
+        this.rows = this.rows ?? [];
         for (let srp of response.data.srps) {
           this.rows.push(srp);
         }

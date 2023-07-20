@@ -38,7 +38,7 @@ async function executor(db: Tnex, job: JobLogger) {
   if (config.srpJurisdiction == null) {
     return;
   }
-  let syncedRanges = config.killmailSyncRanges || {};
+  let syncedRanges = config.killmailSyncRanges ?? {};
 
   syncedRanges = await syncKillmailsForAllCorps(
     db,
@@ -60,7 +60,7 @@ async function syncKillmailsForAllCorps(
   job: JobLogger,
   jurisdiction: { start: number; end: number | undefined },
   memberCorps: MemberCorporation[],
-  syncedRanges: { [key: number]: { start: number; end: number } },
+  syncedRanges: Record<number, { start: number; end: number }>,
 ) {
   for (const memberCorp of memberCorps) {
     try {
@@ -101,7 +101,7 @@ async function syncKillmailsForCorp(
       job,
       corpId,
       jurisdiction.start,
-      syncedRange && syncedRange.start,
+      syncedRange?.start,
     );
   }
   if (

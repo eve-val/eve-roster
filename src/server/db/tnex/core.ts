@@ -38,9 +38,7 @@ export type DeepPartial<T> = {
     : T[P];
 };
 
-export type SimpleObj = {
-  [key: string]: any;
-};
+export type SimpleObj = Record<string, any>;
 
 export type Nullable<T> = {
   [P in keyof T]: T[P] | null;

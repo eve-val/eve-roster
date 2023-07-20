@@ -105,8 +105,8 @@ export default defineComponent({
     promise.then((response: AxiosResponse<Admin_Roster_SyncStatus_GET>) => {
       this.addNames(response.data.names);
       const groups = _.groupBy(response.data.corporations, "type");
-      this.primaryCorps = groups["full"];
-      this.affiliatedCorps = groups["affiliated"];
+      this.primaryCorps = groups.full;
+      this.affiliatedCorps = groups.affiliated;
       this.loaded = true;
     });
   },

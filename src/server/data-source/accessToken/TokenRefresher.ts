@@ -79,7 +79,7 @@ export class TokenRefresher {
       result.row = {
         accessToken_character: row.accessToken_character,
         accessToken_accessToken: response.data.access_token,
-        accessToken_accessTokenExpires: (authInfo.exp || 0) * 1000,
+        accessToken_accessTokenExpires: (authInfo.exp ?? 0) * 1000,
         accessToken_refreshToken: response.data.refresh_token,
         accessToken_needsUpdate: false,
       };

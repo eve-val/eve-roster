@@ -47,7 +47,7 @@ export default async function (req: express.Request, res: express.Response) {
     if (state && typeof state == "string" && state.indexOf(".") != -1) {
       const t = state.split(".")[0];
       if (Object.values<string>(AuthType).includes(t)) {
-        authType = <AuthType>t;
+        authType = t as AuthType;
       }
       nonce = state.split(".")[1];
     }
@@ -110,11 +110,11 @@ async function fetchCharInfo(authCode: string) {
     id: charId,
     ownerHash: authInfo.owner,
     name: authInfo.name,
-    scopes: authInfo.scp || [],
+    scopes: authInfo.scp ?? [],
 
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
-    accessTokenExpires: (authInfo.exp || 0) * 1000,
+    accessTokenExpires: (authInfo.exp ?? 0) * 1000,
 
     corporationId: null,
     roles: null,
@@ -147,7 +147,7 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     {
       character_id: charInfo.id,
       character_name: charInfo.name,
-      character_corporationId: charInfo.corporationId || UNKNOWN_CORPORATION_ID,
+      character_corporationId: charInfo.corporationId ?? UNKNOWN_CORPORATION_ID,
       character_roles: charInfo.roles,
       character_deleted: false,
       character_titles: null,
@@ -182,8 +182,8 @@ async function authenticateChar(
   charInfo: CharacterInfo,
 ) {
   const ownershipData = await dao.character.getOwnershipData(db, charInfo.id);
-  const owningAccount = ownershipData && ownershipData.account_id;
-  const ownerHash = ownershipData && ownershipData.ownership_ownerHash;
+  const owningAccount = ownershipData?.account_id;
+  const ownerHash = ownershipData?.ownership_ownerHash;
 
   let authedAccount: number;
 

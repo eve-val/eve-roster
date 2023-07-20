@@ -121,7 +121,7 @@ export default defineComponent({
     },
 
     canEditSrp(): boolean {
-      return this.identity.access["srp"] == 2;
+      return this.identity.access.srp == 2;
     },
   },
 

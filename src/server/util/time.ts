@@ -20,7 +20,7 @@ export function shortDurationString(
   end: moment.MomentInput,
   maxUnits?: number,
 ): string {
-  maxUnits = maxUnits || UNITS.length;
+  maxUnits = maxUnits ?? UNITS.length;
 
   let timeRemaining = moment(end).diff(moment(start), "days", true);
   timeRemaining = Math.abs(timeRemaining);

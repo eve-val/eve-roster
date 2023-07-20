@@ -38,7 +38,7 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
       account: intQuery(req, "account"),
       character: intQuery(req, "character"),
     },
-    boolQuery(req, "includeTriage") || false,
+    boolQuery(req, "includeTriage") ?? false,
   );
 });
 
@@ -55,7 +55,7 @@ async function handleEndpoint(
 
   filter.limit = Math.min(
     MAX_ROWS_PER_QUERY,
-    filter.limit || DEFAULT_ROWS_PER_QUERY,
+    filter.limit ?? DEFAULT_ROWS_PER_QUERY,
   );
 
   const unresolvedIds = new Set<number | nil>();
@@ -67,7 +67,7 @@ async function handleEndpoint(
     const triaged = await triageLosses(db, rows);
     const suggestionsJson = await triagedLossesToSuggestionJson(triaged);
     for (const srp of srps) {
-      srp.triage = suggestionsJson.get(srp.killmail) || null;
+      srp.triage = suggestionsJson.get(srp.killmail) ?? null;
     }
   }
 

@@ -51,7 +51,7 @@ export default defineComponent({
           return col;
         }
       }
-      return <SortableColumn>this.columns[1];
+      return this.columns[1] as SortableColumn;
     },
 
     sortedRows: function (): Account[] {

@@ -44,11 +44,11 @@ export default defineComponent({
 
   computed: {
     canReadRoster(): boolean {
-      return this.identity.access["roster"] >= 1;
+      return this.identity.access.roster >= 1;
     },
 
     canAccessAdminConsole(): boolean {
-      return this.identity.access["adminConsole"] >= 1;
+      return this.identity.access.adminConsole >= 1;
     },
 
     canAccessDev(): boolean {

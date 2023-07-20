@@ -86,7 +86,7 @@
               :submit-handler="(value) => submitTimezone(value)"
             />
             <div v-else class="factoid">
-              {{ coreData.account.activeTimezone || "-" }}
+              {{ coreData.account.activeTimezone ?? "-" }}
             </div>
 
             <template v-if="coreData.access.memberHousing > 0">
@@ -98,7 +98,7 @@
                 :submit-handler="(value) => submitHousing(value)"
               />
               <div v-else class="factoid">
-                {{ coreData.account.citadelName || "-" }}
+                {{ coreData.account.citadelName ?? "-" }}
               </div>
             </template>
 
@@ -203,31 +203,31 @@ export default defineComponent({
     },
 
     character(): Character | null {
-      return this.coreData?.character || null;
+      return this.coreData?.character ?? null;
     },
 
     account(): Account | null {
-      return this.coreData?.account || null;
+      return this.coreData?.account ?? null;
     },
 
     access(): SimpleMap<number> | null {
-      return this.coreData?.access || null;
+      return this.coreData?.access ?? null;
     },
 
     canWriteSrp: function (): boolean {
-      return this.identity.access["srp"] == 2;
+      return this.identity.access.srp == 2;
     },
 
     canProxyApi: function (): boolean {
-      return this.identity.access["api"] == 2;
+      return this.identity.access.api == 2;
     },
 
     canWriteTimezone: function (): boolean {
-      return this.access != null && this.access["memberTimezone"] == 2;
+      return this.access != null && this.access.memberTimezone == 2;
     },
 
     canWriteCitadel: function (): boolean {
-      return this.access != null && this.access["memberHousing"] == 2;
+      return this.access != null && this.access.memberHousing == 2;
     },
 
     timezoneOptions: function (): { value: string; label: string }[] {
@@ -311,7 +311,7 @@ export default defineComponent({
   },
 });
 
-const TIMEZONE_HINTS: { [key: string]: string | null } = {
+const TIMEZONE_HINTS: Record<string, string | null> = {
   "US West": "PT/MT",
   "US East": "CT/ET",
   "EU West": "WET/CET",

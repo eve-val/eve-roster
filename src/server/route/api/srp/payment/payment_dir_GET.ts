@@ -45,8 +45,8 @@ export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
     account: intQuery(req, "account"),
     limit: intQuery(req, "limit"),
     order:
-      enumQuery<ResultOrder>(req, "order", ResultOrder) || ResultOrder.DESC,
-    orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) || OrderBy.ID,
+      enumQuery<ResultOrder>(req, "order", ResultOrder) ?? ResultOrder.DESC,
+    orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) ?? OrderBy.ID,
     startingAfter: intQuery(req, "startingAfter"),
   });
 });
@@ -64,7 +64,7 @@ async function handleEndpoint(
 
   filter.limit = Math.min(
     MAX_ROWS_PER_QUERY,
-    filter.limit || DEFAULT_ROWS_PER_QUERY,
+    filter.limit ?? DEFAULT_ROWS_PER_QUERY,
   );
 
   const rows = await dao.srp.listReimbursements(db, filter);

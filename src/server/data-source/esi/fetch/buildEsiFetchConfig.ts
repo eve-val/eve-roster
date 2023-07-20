@@ -36,7 +36,7 @@ export function buildEsiFetchConfig<T extends EsiEndpoint>(
   }
 
   if (params._token != undefined) {
-    config.headers!["Authorization"] = `Bearer ${params._token}`;
+    config.headers!.Authorization = `Bearer ${params._token}`;
   }
 
   return config;

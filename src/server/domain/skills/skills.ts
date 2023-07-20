@@ -36,7 +36,7 @@ export function updateSkills(db: Tnex, characterId: number) {
         return esiSkillToRow(
           characterId,
           esiSkill,
-          completedSkills[esiSkill.skill_id!],
+          completedSkills[esiSkill.skill_id],
         );
       });
 
@@ -74,7 +74,7 @@ function esiSkillToRow(
 
   return {
     skillsheet_character: characterId,
-    skillsheet_skill: esiSkill.skill_id!,
+    skillsheet_skill: esiSkill.skill_id,
     skillsheet_level: skillLevel,
     skillsheet_skillpoints: skillSp,
   };

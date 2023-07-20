@@ -190,8 +190,7 @@ function getJsonForCharacter(
     name: row.character_name,
     corporationId: row.character_corporationId,
     corporationName:
-      (corpNames && corpNames[row.character_corporationId]) ||
-      "Name unavailable",
+      corpNames?.[row.character_corporationId] ?? "Name unavailable",
   } as CharacterJson;
 
   if (row.mcorp_membership == "full" || row.mcorp_membership == "affiliated") {
@@ -281,7 +280,7 @@ function addAlert(target: Alertable, level: number, message: string) {
   if (target.alertMessage) {
     // Append message and possibly increase level
     target.alertMessage = target.alertMessage + "\n" + message;
-    target.alertLevel = Math.max(target.alertLevel || 0, level);
+    target.alertLevel = Math.max(target.alertLevel ?? 0, level);
   } else {
     // No previous message so set as-is
     target.alertMessage = message;

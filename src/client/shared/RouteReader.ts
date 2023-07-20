@@ -9,7 +9,7 @@ import { RouteLocationNormalizedLoaded } from "vue-router";
 export const RouteReader = {
   methods: {
     route(): RouteLocationNormalizedLoaded {
-      return (this as any)["$route"];
+      return (this as any).$route;
     },
   },
 };

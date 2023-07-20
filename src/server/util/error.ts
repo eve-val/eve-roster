@@ -10,7 +10,7 @@ export function fullStackTrace(e: unknown) {
 }
 
 function errorToFullString(e: Error) {
-  let message = e.stack || e.message;
+  let message = e.stack ?? e.message;
   if (e.cause) {
     message += `\ncaused by:` + fullStackTrace(e.cause);
   }

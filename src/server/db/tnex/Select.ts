@@ -324,7 +324,7 @@ export class Select<
       // "character.id as foobar"
       return (
         `${this._scoper.scopeColumn(prefixedColumn)} as` +
-        ` ${alias || prefixedColumn}`
+        ` ${alias ?? prefixedColumn}`
       );
     } else {
       if (alias == undefined) {

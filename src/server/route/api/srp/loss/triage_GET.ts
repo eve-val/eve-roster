@@ -39,6 +39,6 @@ async function handleEndpoint(
   );
 
   return {
-    triage: jsonMap.get(id) || null,
+    triage: jsonMap.get(id) ?? null,
   };
 }

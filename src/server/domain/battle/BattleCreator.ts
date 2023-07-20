@@ -187,7 +187,7 @@ function extractParticipants(killmail: ZKillmail) {
 function buildParticipant(entity: KillmailEntity): Participant {
   const id =
     `${entity.ship_type_id},` +
-    `${entity.character_id || entity.corporation_id || entity.faction_id}`;
+    `${entity.character_id ?? entity.corporation_id ?? entity.faction_id}`;
   return {
     id: id,
     shipId: entity.ship_type_id,

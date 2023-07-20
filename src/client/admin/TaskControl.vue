@@ -95,8 +95,8 @@ export default defineComponent({
       return this.tasks.filter((t: Task) => t.job == null);
     },
     areAnyActiveJobs() {
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].job != null) {
+      for (const task of this.tasks) {
+        if (task.job != null) {
           return true;
         }
       }
@@ -175,7 +175,7 @@ export default defineComponent({
       let jobEnded = false;
       for (let i = 0; i < this.tasks.length; i++) {
         let task = this.tasks[i];
-        let job: Job | null = _.findWhere(jobs, { task: task.name }) || null;
+        let job: Job | null = _.findWhere(jobs, { task: task.name }) ?? null;
         if (task.isSynthetic && job == null) {
           // snip the task
           this.tasks.splice(i, 1);

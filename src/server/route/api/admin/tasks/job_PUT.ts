@@ -30,8 +30,8 @@ export default jsonEndpoint(
       id: job.executionId,
       task: job.task.name,
       startTime: job.startTime!,
-      progress: job.progress || null,
-      progressLabel: job.progressLabel || null,
+      progress: job.progress ?? null,
+      progressLabel: job.progressLabel ?? null,
     };
   },
 );

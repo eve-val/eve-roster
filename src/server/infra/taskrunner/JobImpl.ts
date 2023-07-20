@@ -98,7 +98,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
   }
 
   public get timedOut() {
-    return this._timedOut || false;
+    return this._timedOut ?? false;
   }
 
   public set timedOut(timedOut: boolean) {

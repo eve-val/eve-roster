@@ -17,8 +17,10 @@ export function coerceToEnum<T extends StringEnum>(
   enumType: T,
   defaultVal: T[keyof T],
 ): T[keyof T] {
-  return findEnumValue(value, enumType, (foundValue) =>
-    foundValue != null ? foundValue : defaultVal,
+  return findEnumValue(
+    value,
+    enumType,
+    (foundValue) => foundValue ?? defaultVal,
   );
 }
 
@@ -35,6 +37,4 @@ function findEnumValue<T extends StringEnum, R>(
   return processor(null);
 }
 
-type StringEnum = {
-  [key: string]: string;
-};
+type StringEnum = Record<string, string>;

@@ -90,8 +90,7 @@ export default defineComponent({
       let houseMap = {
         [UNASSIGNED_KEY]: { name: UNASSIGNED_KEY, occupants: [] },
       };
-      for (let i = 0; i < this.pilots.length; i++) {
-        var pilot = this.pilots[i];
+      for (const pilot of this.pilots) {
         let citadel = pilot.homeCitadel || UNASSIGNED_KEY;
         var house = houseMap[citadel];
         if (!house) {
@@ -110,8 +109,7 @@ export default defineComponent({
 
     citadels: () => {
       let houseList = [];
-      for (let v in this.pilotsByHouse) {
-        let house = this.pilotsByHouse[v];
+      for (const house of this.pilotsByHouse) {
         if (house.name != UNASSIGNED_KEY) {
           houseList.push(house);
         }
@@ -144,8 +142,7 @@ export default defineComponent({
 
   methods: {
     transformPilots: (pilots) => {
-      for (let i = 0; i < pilots.length; i++) {
-        let pilot = pilots[i];
+      for (const pilot of pilots) {
         pilot.transactionInProgress = false;
       }
       return pilots;
@@ -208,9 +205,9 @@ export default defineComponent({
     },
 
     findCharacter: (name) => {
-      for (let i = 0; i < this.pilots.length; i++) {
-        if (this.pilots[i].name == name) {
-          return this.pilots[i];
+      for (const pilot of this.pilots) {
+        if (pilot.name == name) {
+          return pilot;
         }
       }
       return null;

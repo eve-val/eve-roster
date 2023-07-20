@@ -7,7 +7,7 @@
       </div>
       <div class="middle-area">
         <span v-if="task.job" style="color: #e1c87b">{{
-          task.job.progressLabel || ""
+          task.job.progressLabel ?? ""
         }}</span>
         <span v-else style="color: #9d9d9d">{{ task.description }}</span>
       </div>
@@ -66,7 +66,7 @@ export default defineComponent({
   computed: {
     rootStyle(): { backgroundColor: string } {
       let bgColor;
-      if (this.task.job && this.task.job.progress != null) {
+      if (this.task.job?.progress != null) {
         bgColor = "#2e291e";
       } else if (this.task.job) {
         bgColor = "#7c6214";
@@ -88,14 +88,14 @@ export default defineComponent({
     },
 
     progressBarStyle(): { width: string } {
-      let widthPerc = this.task.job?.progress || 0;
+      let widthPerc = this.task.job?.progress ?? 0;
       return {
         width: widthPerc * 100 + "%",
       };
     },
 
     middleText(): string {
-      return this.task.job?.progressLabel || this.task.description;
+      return this.task.job?.progressLabel ?? this.task.description;
     },
   },
 

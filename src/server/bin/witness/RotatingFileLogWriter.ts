@@ -72,7 +72,7 @@ export class RotatingFileLogWriter extends Writable {
 
   _destroy(err: Error | null, callback: (error: Error | null) => void) {
     if (this._logFileStream != null) {
-      this._logFileStream.destroy(err || undefined);
+      this._logFileStream.destroy(err ?? undefined);
     }
     // TODO: Do we need to call callback() here?
     callback(null);

@@ -34,7 +34,7 @@ export default jsonEndpoint(
         return dao.character.getOwner(db, characterId);
       })
       .then((row) => {
-        isOwner = account.id == (row && row.account_id);
+        isOwner = account.id == row?.account_id;
         privs.requireRead("characterSkills", isOwner);
         return fetchData(db, characterId);
       })
@@ -117,8 +117,8 @@ function transformSkills(learnedSkills: SkillsheetEntry[]) {
       id: eveSkill.id,
       name: eveSkill.name,
       group: eveSkill.group,
-      level: learnedSkill?.skillsheet_level || 0,
-      sp: learnedSkill?.skillsheet_skillpoints || 0,
+      level: learnedSkill?.skillsheet_level ?? 0,
+      sp: learnedSkill?.skillsheet_skillpoints ?? 0,
     });
   }
 
@@ -132,9 +132,7 @@ function transformQueue(queue: NamedSkillQueueRow[]) {
   const completedEntries = [] as CompletedQueueEntryJson[];
   const queuedEntries = [] as QueueEntryJson[];
 
-  for (let i = 0; i < queue.length; i++) {
-    const queueItem = queue[i];
-
+  for (const queueItem of queue) {
     if (isQueueEntryCompleted(queueItem)) {
       completedEntries.push({
         id: queueItem.skill,
@@ -182,7 +180,7 @@ function transformQueue(queue: NamedSkillQueueRow[]) {
 function getRemainingDuration(queue: NamedSkillQueueRow[], now: number) {
   let totalDuration = null;
   const lastItem = queue.length > 0 ? queue[queue.length - 1] : null;
-  if (lastItem != null && lastItem.endTime != null) {
+  if (lastItem?.endTime != null) {
     totalDuration = lastItem.endTime - now;
   }
   return totalDuration;
@@ -190,7 +188,7 @@ function getRemainingDuration(queue: NamedSkillQueueRow[], now: number) {
 
 function getRemainingDurationLabel(queue: NamedSkillQueueRow[]) {
   const lastItem = queue[queue.length - 1];
-  if (lastItem != null && lastItem.endTime != null) {
+  if (lastItem?.endTime != null) {
     return time.shortDurationString(Date.now(), lastItem.endTime);
   } else {
     return null;

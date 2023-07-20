@@ -21,14 +21,14 @@ export async function getModifiedSwagger(
 ): Promise<object> {
   const swagger: any = await fetchSwagger(baseUrl);
 
-  swagger["basePath"] = "/esi/proxy";
-  swagger["host"] = host;
-  delete swagger["schemes"];
+  swagger.basePath = "/esi/proxy";
+  swagger.host = host;
+  delete swagger.schemes;
 
   // Replace securityDefinitions to specify API Key auth - we'll use the
   // character id we want to proxy for as the API "key" but rely on our
   // own out of band authentication.
-  swagger["securityDefinitions"] = {
+  swagger.securityDefinitions = {
     proxy: {
       type: "apiKey",
       in: "header",
@@ -38,25 +38,25 @@ export async function getModifiedSwagger(
 
   // Replace individual security blocks within each path to refer to the
   // new securityDefinitions type we set up.
-  for (const path in swagger["paths"]) {
+  for (const path in swagger.paths) {
     let shouldDelete = false;
-    for (const method in swagger["paths"][path]) {
-      if ("security" in swagger["paths"][path][method]) {
-        const security = swagger["paths"][path][method]["security"];
+    for (const method in swagger.paths[path]) {
+      if ("security" in swagger.paths[path][method]) {
+        const security = swagger.paths[path][method].security;
         for (const index in security) {
           if ("evesso" in security[index]) {
-            for (const subindex in security[index]["evesso"]) {
-              if (security[index]["evesso"][subindex].includes("esi-mail")) {
+            for (const subindex in security[index].evesso) {
+              if (security[index].evesso[subindex].includes("esi-mail")) {
                 shouldDelete = true;
               }
             }
           }
         }
-        swagger["paths"][path][method]["security"] = [{ proxy: [] }];
+        swagger.paths[path][method].security = [{ proxy: [] }];
       }
     }
     if (shouldDelete) {
-      delete swagger["paths"][path];
+      delete swagger.paths[path];
     }
   }
 

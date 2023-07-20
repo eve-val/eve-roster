@@ -35,7 +35,9 @@ export function srpLossToJson(
       : null,
     executioner: getExecutioner(row.km_data, ids),
     status:
-      row.srpr_paid == true ? <UnifiedSrpLossStatus>"paid" : row.srpv_status,
+      row.srpr_paid == true
+        ? ("paid" as UnifiedSrpLossStatus)
+        : row.srpv_status,
     reason: row.srpv_reason,
     payout: row.srpv_payout,
     reimbursement: row.srpr_id,

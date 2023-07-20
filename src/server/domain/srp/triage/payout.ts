@@ -70,7 +70,7 @@ function getMarketValue(
 ) {
   if (payout.items == undefined) {
     return (
-      (marketValues.get(shipId) || payout.fallback) + (payout.additional || 0)
+      (marketValues.get(shipId) ?? payout.fallback) + (payout.additional ?? 0)
     );
   } else {
     let sum = 0;
@@ -79,7 +79,7 @@ function getMarketValue(
       if (value != undefined) {
         sum += value;
       } else {
-        return payout.fallback + (payout.additional || 0);
+        return payout.fallback + (payout.additional ?? 0);
       }
     }
     return sum;

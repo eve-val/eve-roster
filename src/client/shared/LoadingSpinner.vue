@@ -167,11 +167,11 @@ export default defineComponent({
     },
 
     derivedState(): EnumProp<SpinnerState> {
-      return this.state || this.stateFromPromise || this.defaultState;
+      return this.state ?? this.stateFromPromise ?? this.defaultState;
     },
 
     derivedMessage(): string {
-      return this.messageFromPromise || this.adversityMessage;
+      return this.messageFromPromise ?? this.adversityMessage;
     },
 
     errorIconSrc(): string {
@@ -235,7 +235,7 @@ export default defineComponent({
 
           let preface =
             `There was an error while ` +
-            `${this.actionLabel || "performing this action"}. `;
+            `${this.actionLabel ?? "performing this action"}. `;
           let message;
           if (isString(e)) {
             message = e;

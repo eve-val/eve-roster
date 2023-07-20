@@ -69,8 +69,7 @@ export class EsiKillmailFetcher extends OrderedParallelTransform<
         const cause = VError.cause(e) as AxiosError | null;
         if (
           failures <= maxFailures &&
-          cause != null &&
-          cause.response != null &&
+          cause?.response != null &&
           cause.response.status >= 500
         ) {
           // Try again

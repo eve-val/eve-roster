@@ -113,7 +113,7 @@ export default defineComponent({
       this.fetchPromise.then((response) => {
         this.addNames(response.data.names);
 
-        this.payments = this.payments || [];
+        this.payments = this.payments ?? [];
         for (let payment of response.data.payments) {
           this.payments.push(payment);
         }

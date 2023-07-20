@@ -45,13 +45,13 @@ export async function battlesToJson(
     const triage = await triageLosses(db, srpRows);
     const suggestionJson = await triagedLossesToSuggestionJson(triage);
     for (const srp of srpJson) {
-      srp.triage = suggestionJson.get(srp.killmail) || null;
+      srp.triage = suggestionJson.get(srp.killmail) ?? null;
     }
 
     for (const srpRow of srpRows) {
       if (srpRow.kmb_battle != null) {
         const srpJson = srpLossToJson(srpRow, ids);
-        srpJson.triage = suggestionJson.get(srpRow.km_id) || null;
+        srpJson.triage = suggestionJson.get(srpRow.km_id) ?? null;
         const battleJson = battlesJsonMap.get(srpRow.kmb_battle);
         if (battleJson != undefined) {
           battleJson.srps.push(srpJson);
@@ -76,12 +76,12 @@ function rowToJson(
   const teamMap = {} as SimpleNumMap<Team>;
 
   for (const participant of row.battle_data.participants) {
-    const teamId = participant.corporationId || 0;
+    const teamId = participant.corporationId ?? 0;
     let team = teamMap[teamId];
     if (team == undefined) {
       team = {
         corporationId: teamId,
-        allianceId: participant.allianceId || null,
+        allianceId: participant.allianceId ?? null,
         members: [],
         totalLosses: 0,
       };
@@ -117,7 +117,7 @@ function rowToJson(
         if (isCapsule(member.shipId)) {
           return Number.MAX_SAFE_INTEGER;
         } else {
-          return member.shipId || null;
+          return member.shipId ?? null;
         }
       }),
     );
