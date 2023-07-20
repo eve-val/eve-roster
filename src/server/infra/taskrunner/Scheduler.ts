@@ -54,8 +54,8 @@ export class Scheduler {
    */
   public runTask(task: Task, options = {} as TaskOptions): Job {
     return (
-      this._findRunningJob(task) ||
-      this._findQueuedTaskInChannel(task, options.channel) ||
+      this._findRunningJob(task) ??
+      this._findQueuedTaskInChannel(task, options.channel) ??
       this._createAndRunJob(task, options)
     );
   }
@@ -69,7 +69,7 @@ export class Scheduler {
       _nextExecutionId,
       task,
       options.channel,
-      options.silent || false,
+      options.silent ?? false,
     );
     _nextExecutionId++;
 
@@ -122,7 +122,7 @@ export class Scheduler {
           if (executorError) {
             logger.error(`Error while executing ${jobSummary(job)}.`);
             logger.error(executorError);
-            job.error(executorError.message || executorError.toString());
+            job.error(executorError.message ?? executorError.toString());
           }
 
           if (job.errors.length > 0) {
@@ -289,6 +289,6 @@ class JobChannel {
 function jobSummary(job: JobImpl) {
   return (
     `job "${job.task.name}" (id ${job.executionId}, logId ${job.logId},` +
-    ` channel=${job.channel || "none"})`
+    ` channel=${job.channel ?? "none"})`
   );
 }

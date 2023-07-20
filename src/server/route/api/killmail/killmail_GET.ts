@@ -46,7 +46,7 @@ async function buildNameMap(mail: ZKillmail) {
   unnamedIds.add(mail.solar_system_id);
   unnamedIds.add(mail.victim.character_id);
   unnamedIds.add(mail.victim.corporation_id);
-  unnamedIds.add(mail.victim.alliance_id!);
+  unnamedIds.add(mail.victim.alliance_id);
   unnamedIds.add(mail.victim.ship_type_id);
 
   if (mail.victim.items) {
@@ -55,7 +55,7 @@ async function buildNameMap(mail: ZKillmail) {
     }
   }
   for (const attacker of mail.attackers) {
-    unnamedIds.add(attacker.ship_type_id!);
+    unnamedIds.add(attacker.ship_type_id);
     unnamedIds.add(attacker.weapon_type_id);
     unnamedIds.add(attacker.character_id);
     unnamedIds.add(attacker.corporation_id);

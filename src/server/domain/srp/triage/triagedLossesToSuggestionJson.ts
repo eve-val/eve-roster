@@ -40,7 +40,7 @@ export async function triagedLossesToSuggestionJson(
 
     out.set(triagedLoss.loss.km_data.killmail_id, {
       extraOptions: suggestedVerdicts,
-      suggestedOption: suggestedKey || "custom",
+      suggestedOption: suggestedKey ?? "custom",
     });
   }
   return out;

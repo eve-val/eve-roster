@@ -14,7 +14,7 @@
   ],
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/stylistic",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:jest/recommended",
     "plugin:vue/vue3-recommended",
     "plugin:prettier/recommended",

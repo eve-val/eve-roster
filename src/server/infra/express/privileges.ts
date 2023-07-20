@@ -31,8 +31,8 @@ export function getPrivileges(db: Tnex, accountId: number) {
     .then((rows) => {
       const privs = rows.map((row) => {
         return {
-          name: row.priv_name as PrivilegeName,
-          level: row.granted_level || 0,
+          name: row.priv_name,
+          level: row.granted_level ?? 0,
           ownerLevel: row.priv_ownerLevel,
           requiresMembership: row.priv_requiresMembership,
         };
@@ -133,7 +133,7 @@ export class AccountPrivileges {
     if (priv == null) {
       throw new Error("Unknown privilege: " + privilegeName);
     }
-    effectiveLevel = priv.level || 0;
+    effectiveLevel = priv.level ?? 0;
     if (isOwner) {
       effectiveLevel = Math.max(priv.level, priv.ownerLevel);
     }

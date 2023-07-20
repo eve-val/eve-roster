@@ -58,7 +58,7 @@ test("Number sort - extractor", () => {
   expect(
     sortBy(
       [{ a: 3 }, { a: null }, { a: 1 }, { a: null }],
-      cmpNumberProp((obj) => obj.a || 2),
+      cmpNumberProp((obj) => obj.a ?? 2),
     ),
   ).toEqual([{ a: 1 }, { a: null }, { a: null }, { a: 3 }]);
 });
@@ -103,7 +103,7 @@ test("String sort - extractor", () => {
   expect(
     sortBy(
       [{ a: "x" }, { a: null }, { a: "z" }, { a: null }],
-      cmpStringProp((obj) => obj.a || "y"),
+      cmpStringProp((obj) => obj.a ?? "y"),
     ),
   ).toEqual([{ a: "x" }, { a: null }, { a: null }, { a: "z" }]);
 });

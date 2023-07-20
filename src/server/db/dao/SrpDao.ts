@@ -70,7 +70,7 @@ export default class SrpDao {
   }
 
   async listSrps(db: Tnex, filter: SrpLossFilter): Promise<SrpLossRow[]> {
-    const order = filter.order || "desc";
+    const order = filter.order ?? "desc";
 
     let query = db
       .select(killmail)
@@ -192,7 +192,7 @@ export default class SrpDao {
         if (rid == null) {
           rid = await this.createReimbursement(
             db,
-            lossRow.account_mainCharacter || lossRow.km_character,
+            lossRow.account_mainCharacter ?? lossRow.km_character,
           );
         }
       }
@@ -384,7 +384,7 @@ export default class SrpDao {
       .columns("srpr_id")
       .fetchFirst();
 
-    if (accountReim != null && accountReim.srpr_id != null) {
+    if (accountReim?.srpr_id) {
       return accountReim.srpr_id;
     }
 
@@ -397,7 +397,7 @@ export default class SrpDao {
       .columns("srpr_id")
       .fetchFirst();
 
-    return characterReim && characterReim.srpr_id;
+    return characterReim?.srpr_id ?? null;
   }
 }
 

@@ -12,8 +12,8 @@ import { isCapsule } from "../../../eve/util/isCapsule.js";
 export function killmailToRow(killmail: ZKillmail): Killmail {
   return {
     km_id: killmail.killmail_id,
-    km_character: killmail.victim.character_id || null,
-    km_victimCorp: killmail.victim.corporation_id || null,
+    km_character: killmail.victim.character_id ?? null,
+    km_victimCorp: killmail.victim.corporation_id ?? null,
     km_timestamp: moment.utc(killmail.killmail_time).valueOf(),
     km_hullCategory: getHullCategory(killmail),
     km_relatedLoss: null,

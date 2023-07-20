@@ -50,7 +50,7 @@ export default class CharacterShipDao {
       .where("characterShipUpdate_character", "=", val(characterId))
       .columns("characterShipUpdate_timestamp")
       .fetchFirst();
-    return timestamp?.characterShipUpdate_timestamp || 0;
+    return timestamp?.characterShipUpdate_timestamp ?? 0;
   }
 
   async getBorrowedShips(

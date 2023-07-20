@@ -86,7 +86,7 @@ import infoIcon from "../shared-res/circle-info.svg";
 import warningIcon from "../shared-res/triangle-warning.svg";
 import errorIcon from "../shared-res/triangle-error.svg";
 
-import { AccountColumn, CharacterColumn, Column } from "./rosterColumns";
+import { AccountColumn, Column } from "./rosterColumns";
 import { Account, Character } from "./types";
 
 // Indices must match levels in src/shared/rosterAlertLevels.js
@@ -138,11 +138,11 @@ export default defineComponent({
       let level = 0;
       if (this.isMain) {
         level = Math.max(
-          this.account.alertLevel || 0,
-          this.character.alertLevel || 0,
+          this.account.alertLevel ?? 0,
+          this.character.alertLevel ?? 0,
         );
       } else {
-        level = this.character.alertLevel || 0;
+        level = this.character.alertLevel ?? 0;
       }
 
       return MSG_ICONS[level];
@@ -153,13 +153,13 @@ export default defineComponent({
       if (this.isMain) {
         // Must include any account message
         message = (
-          (this.account.alertMessage || "") +
+          (this.account.alertMessage ?? "") +
           " " +
-          (this.character.alertMessage || "")
+          (this.character.alertMessage ?? "")
         ).trim();
       } else {
         // Just the character message if it exists
-        message = (this.character.alertMessage || "").trim();
+        message = (this.character.alertMessage ?? "").trim();
       }
       return message.length > 0 ? message : null;
     },
@@ -241,7 +241,7 @@ export default defineComponent({
             return altsLabel(this.account.alts.length);
           }
         case "lastSeen":
-          return this.character.lastSeenLabel || "-";
+          return this.character.lastSeenLabel ?? "-";
         default:
           if (col.account) {
             if (!this.isMain) {
@@ -250,7 +250,7 @@ export default defineComponent({
               return this.account[(col as AccountColumn).key] as Value;
             }
           } else {
-            return this.character[(col as CharacterColumn).key];
+            return this.character[col.key];
           }
       }
     },

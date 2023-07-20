@@ -369,7 +369,7 @@ export default defineComponent({
         status: srp.status,
         reason: nullReasonStatuses.includes(srp.status) ? null : srp.reason,
       });
-      return entry?.label || "Unknown status";
+      return entry?.label ?? "Unknown status";
     },
   },
 });

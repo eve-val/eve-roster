@@ -22,7 +22,7 @@ export function updateSkillQueue(
 
   return Promise.resolve()
     .then(() => {
-      return accessToken || getAccessToken(db, characterId);
+      return accessToken ?? getAccessToken(db, characterId);
     })
     .then((accessToken) => {
       return fetchEsi(ESI_CHARACTERS_$characterId_SKILLQUEUE, {
@@ -94,9 +94,9 @@ function convertEsiQueueToNativeQueue(
       targetLevel: qi.finished_level,
       startTime: null,
       endTime: null,
-      levelStartSp: qi.level_start_sp || 0,
-      levelEndSp: qi.level_end_sp || 0,
-      trainingStartSp: qi.training_start_sp || 0,
+      levelStartSp: qi.level_start_sp ?? 0,
+      levelEndSp: qi.level_end_sp ?? 0,
+      trainingStartSp: qi.training_start_sp ?? 0,
     };
 
     if (qi.start_date != undefined && qi.finish_date != undefined) {

@@ -79,7 +79,7 @@ export default defineComponent({
       let providedColumns: string[] = response.data.columns;
 
       this.displayColumns = rosterColumns.filter((col: Column) => {
-        let sourceColumns: string[] = col.derivedFrom || [col.key];
+        let sourceColumns: string[] = col.derivedFrom ?? [col.key];
 
         return _.reduce(
           sourceColumns,

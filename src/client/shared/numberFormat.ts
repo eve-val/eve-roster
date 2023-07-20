@@ -22,7 +22,7 @@ export function formatNumber(
   },
 ) {
   const formatter =
-    options.formatter || ((valueStr, unitStr) => `${valueStr}${unitStr}`);
+    options.formatter ?? ((valueStr, unitStr) => `${valueStr}${unitStr}`);
 
   let st: Stop = VALUE_STOPS[0];
   for (const stop of VALUE_STOPS) {

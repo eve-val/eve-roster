@@ -63,8 +63,7 @@ class Cron {
   private _runTaskIfOverdue(task: TaskSchedule) {
     return dao.cron.getMostRecentJob(this._db, task.task.name).then((row) => {
       const runTask =
-        row == null ||
-        row.cronLog_end == null ||
+        row?.cronLog_end == null ||
         row.cronLog_end + task.interval < Date.now();
       if (runTask) {
         this._runTask(task);
@@ -76,7 +75,7 @@ class Cron {
 
   private _runTask(scheduledTask: TaskSchedule) {
     taskRunner.runTask(scheduledTask.task, {
-      channel: scheduledTask.channel || "cron",
+      channel: scheduledTask.channel ?? "cron",
       silent: scheduledTask.silent,
     });
   }

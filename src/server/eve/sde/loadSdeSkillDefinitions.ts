@@ -37,7 +37,7 @@ export async function loadSdeSkillDefinitions(
 
   await loadSkills(db, skills);
   await loadSkillAttributes(db, skills);
-  verifyDefinitions(logger || defaultLogger, skills, strictMode);
+  verifyDefinitions(logger ?? defaultLogger, skills, strictMode);
 
   return skills as Map<number, SdeSkill>;
 }
@@ -89,27 +89,26 @@ async function loadSkillAttributes(
 
     // The SDE isn't consistent as to whether it uses valueInt or valueFloat
     // for certain skill attributes, so we pick whichever is not null. Oy.
-    const value =
-      row.sta_valueInt != null ? row.sta_valueInt : row.sta_valueFloat!;
+    const value = row.sta_valueInt ?? row.sta_valueFloat!;
 
     switch (row.sattr_id) {
       case DGM_ATTR_REQUIRED_SKILL_1:
-        setRequiredSkill(skill, 0, value!);
+        setRequiredSkill(skill, 0, value);
         break;
       case DGM_ATTR_REQUIRED_SKILL_1_LEVEL:
-        setRequiredSkillLevel(skill, 0, value!);
+        setRequiredSkillLevel(skill, 0, value);
         break;
       case DGM_ATTR_REQUIRED_SKILL_2:
-        setRequiredSkill(skill, 1, value!);
+        setRequiredSkill(skill, 1, value);
         break;
       case DGM_ATTR_REQUIRED_SKILL_2_LEVEL:
-        setRequiredSkillLevel(skill, 1, value!);
+        setRequiredSkillLevel(skill, 1, value);
         break;
       case DGM_ATTR_REQUIRED_SKILL_3:
-        setRequiredSkill(skill, 2, value!);
+        setRequiredSkill(skill, 2, value);
         break;
       case DGM_ATTR_REQUIRED_SKILL_3_LEVEL:
-        setRequiredSkillLevel(skill, 2, value!);
+        setRequiredSkillLevel(skill, 2, value);
         break;
       case DGM_ATTR_SKILL_TIME_CONSTANT:
         skill.rank = value;

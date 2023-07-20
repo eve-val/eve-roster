@@ -42,7 +42,7 @@ export default defineComponent({
 
   computed: {
     canSeeAllBorrowedShips(): boolean {
-      return this.identity.access["characterShips"] >= 1;
+      return this.identity.access.characterShips >= 1;
     },
   },
 });

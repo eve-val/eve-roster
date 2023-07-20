@@ -20,7 +20,7 @@ export default htmlEndpoint(async (req, res, db, account, privs) => {
     data: {
       identity: JSON.stringify(identity),
       csrf: JSON.stringify(req.csrfToken()),
-      nonce: JSON.stringify(querystring.escape(session.nonce || "")),
+      nonce: JSON.stringify(querystring.escape(session.nonce ?? "")),
     },
   };
 });

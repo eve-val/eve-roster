@@ -82,7 +82,7 @@ class LocationCache {
   }
 
   get(x: number) {
-    return this.cache.get(x) || `Unknown citadel ${x}`;
+    return this.cache.get(x) ?? `Unknown citadel ${x}`;
   }
 }
 

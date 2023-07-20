@@ -9,7 +9,7 @@ import {
 export default jsonEndpoint(
   async (req, res, db, _account, _privs): Promise<BattleOutput> => {
     const id = idParam(req, "id");
-    const includeSrps = boolQuery(req, "includeSrp") || false;
+    const includeSrps = boolQuery(req, "includeSrp") ?? false;
 
     const battles = await dao.battle.listBattles(db, { id: id });
 

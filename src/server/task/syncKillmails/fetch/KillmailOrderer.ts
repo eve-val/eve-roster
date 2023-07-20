@@ -158,7 +158,7 @@ export class KillmailOrderer extends Transform<ZKillmail, Killmail> {
       this._closed = true;
       this.emit("exceedBounds");
     } else {
-      const end = this._endBound || Date.now();
+      const end = this._endBound ?? Date.now();
       this._logger.setProgress(
         (end - row.km_timestamp) / (end - this._startBound),
         `Syncing killmails for corp ${this._sourceCorporation}...`,

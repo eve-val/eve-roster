@@ -66,7 +66,7 @@
               <skill-pips
                 class="skill-pips"
                 :trained-level="skill.level"
-                :queued-level="skill.queuedLevel || 0"
+                :queued-level="skill.queuedLevel ?? 0"
               />
               {{ skill.name }}
             </div>
@@ -125,11 +125,11 @@ export default defineComponent({
 
   computed: {
     canReadSkillQueue: function (): boolean {
-      return this.access != null && this.access["characterSkillQueue"] >= 1;
+      return this.access != null && this.access.characterSkillQueue >= 1;
     },
 
     canReadSkills: function (): boolean {
-      return this.access != null && this.access["characterSkills"] >= 1;
+      return this.access != null && this.access.characterSkills >= 1;
     },
 
     displaySkillTree() {
@@ -198,7 +198,7 @@ export default defineComponent({
       // Process queue
       if (data.queue != undefined) {
         const queueItems = data.queue.entries.map((qiJson) => {
-          let skill = newSkillMap.get(qiJson.id) || unknownSkill();
+          let skill = newSkillMap.get(qiJson.id) ?? unknownSkill();
 
           const queueItem: QueueItem = {
             ...qiJson,

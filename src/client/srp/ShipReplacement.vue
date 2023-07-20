@@ -43,7 +43,7 @@ export default defineComponent({
 
   computed: {
     canWriteSrp(): boolean {
-      return this.identity.access["srp"] == 2;
+      return this.identity.access.srp == 2;
     },
   },
 });

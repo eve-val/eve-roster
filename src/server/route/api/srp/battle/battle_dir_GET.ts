@@ -42,8 +42,8 @@ const FILTER_SCHEMA = {
 
 export default jsonEndpoint(
   async (req, res, db, _account, _privs): Promise<BattleOutput> => {
-    const includeSrps = boolQuery(req, "includeSrp") || false;
-    const filter = verify(jsonQuery(req, "filter") || {}, FILTER_SCHEMA);
+    const includeSrps = boolQuery(req, "includeSrp") ?? false;
+    const filter = verify(jsonQuery(req, "filter") ?? {}, FILTER_SCHEMA);
 
     if (filter.limit == undefined) {
       filter.limit = 30;

@@ -24,6 +24,6 @@ async function handleEndpoint(
   const row = await dao.srp.getApprovedLiability(db);
 
   return {
-    approvedLiability: (row && row.liability) || 0,
+    approvedLiability: row?.liability ?? 0,
   };
 }

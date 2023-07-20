@@ -31,7 +31,7 @@ class SkillQueueDao {
           return {
             skill: row.characterSkillQueue_skill,
             name:
-              row.styp_name || defaultSkillName(row.characterSkillQueue_skill),
+              row.styp_name ?? defaultSkillName(row.characterSkillQueue_skill),
             targetLevel: row.characterSkillQueue_targetLevel,
             startTime: row.characterSkillQueue_startTime,
             endTime: row.characterSkillQueue_endTime,

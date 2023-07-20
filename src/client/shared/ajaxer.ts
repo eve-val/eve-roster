@@ -19,7 +19,7 @@ export function configureCsrfInterceptor(token: string) {
   axios.interceptors.request.use(
     (req) => {
       // TODO: if we do remote fetch, avoid leaking csrf token to other host.
-      req.headers!["x-csrf-token"] = token;
+      req.headers["x-csrf-token"] = token;
       return req;
     },
     (error) => Promise.reject(error),
