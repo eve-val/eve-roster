@@ -26,6 +26,4 @@ export function requiredEnumProp<T extends StringEnum>(
   };
 }
 
-type StringEnum = {
-  [key: string]: string;
-};
+type StringEnum = Record<string, string>;

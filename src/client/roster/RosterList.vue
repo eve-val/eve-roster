@@ -110,7 +110,7 @@ export default defineComponent({
 const APPEND_ATTRS = ["alertMessage"] as const;
 type AppendAttr = (typeof APPEND_ATTRS)[number];
 function isAppend(v: string): v is AppendAttr {
-  return (<readonly string[]>APPEND_ATTRS).includes(v);
+  return (APPEND_ATTRS as readonly string[]).includes(v);
 }
 const SUM_ATTRS = [
   "killsInLastMonth",
@@ -122,12 +122,12 @@ const SUM_ATTRS = [
 ] as const;
 type SumAttr = (typeof SUM_ATTRS)[number];
 function isSum(v: string): v is SumAttr {
-  return (<readonly string[]>SUM_ATTRS).includes(v);
+  return (SUM_ATTRS as readonly string[]).includes(v);
 }
 const MAX_ATTRS = ["lastSeen", "alertLevel"] as const;
 type MaxAttr = (typeof MAX_ATTRS)[number];
 function isMax(v: string): v is MaxAttr {
-  return (<readonly string[]>MAX_ATTRS).includes(v);
+  return (MAX_ATTRS as readonly string[]).includes(v);
 }
 
 function isCharacterKey(c: Character, key: string): key is keyof Character {

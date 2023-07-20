@@ -60,7 +60,7 @@ async function syncKillmailsForAllCorps(
   job: JobLogger,
   jurisdiction: { start: number; end: number | undefined },
   memberCorps: MemberCorporation[],
-  syncedRanges: { [key: number]: { start: number; end: number } },
+  syncedRanges: Record<number, { start: number; end: number }>,
 ) {
   for (const memberCorp of memberCorps) {
     try {

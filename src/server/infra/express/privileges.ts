@@ -93,7 +93,7 @@ export class AccountPrivileges {
   }
 
   dumpForFrontend(privNames: PrivilegeName[], isOwner: boolean) {
-    const out = <{ [key: string]: number }>{};
+    const out = {} as Record<string, number>;
     for (const privName of privNames) {
       out[privName] = this._getEffectiveLevel(privName, isOwner);
     }

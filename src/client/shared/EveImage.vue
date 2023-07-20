@@ -25,7 +25,7 @@ export default defineComponent({
       type: String as PropType<AssetType | null>,
       required: true,
       validator: (value: string) =>
-        !value || (<readonly string[]>SUPPORTED_TYPES).includes(value),
+        !value || (SUPPORTED_TYPES as readonly string[]).includes(value),
     },
     size: {
       type: Number,
@@ -36,9 +36,9 @@ export default defineComponent({
   computed: {
     requestSize: function (): AssetSize {
       let requestSize: AssetSize = SUPPORTED_SIZES[0];
-      for (let i = 0; i < SUPPORTED_SIZES.length; i++) {
-        requestSize = SUPPORTED_SIZES[i];
-        if (<number>requestSize >= this.size) {
+      for (const size of SUPPORTED_SIZES) {
+        requestSize = size;
+        if ((requestSize as number) >= this.size) {
           break;
         }
       }

@@ -29,9 +29,8 @@ const GROUP_DISPLAY_ORDER: { groupId: string; name: string }[] = [
   { groupId: "1545", name: "Structure Management" },
 ];
 
-const GROUP_DISPLAY_MAP: {
-  [index: string]: { name: string; position: number };
-} = {};
+const GROUP_DISPLAY_MAP: Record<string, { name: string; position: number }> =
+  {};
 for (let i = 0; i < GROUP_DISPLAY_ORDER.length; i++) {
   const group = GROUP_DISPLAY_ORDER[i];
   GROUP_DISPLAY_MAP[group.groupId] = {

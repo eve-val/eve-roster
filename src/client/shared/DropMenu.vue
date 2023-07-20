@@ -22,8 +22,8 @@ export default defineComponent({
   data() {
     return {
       shown: false,
-      prevMouseDownTimestamp: <number | null>null,
-      globalListener: <EventListenerOrEventListenerObject | null>null,
+      prevMouseDownTimestamp: null as number | null,
+      globalListener: null as EventListenerOrEventListenerObject | null,
       destroyed: false,
     };
   },

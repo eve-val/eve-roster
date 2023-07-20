@@ -132,9 +132,7 @@ function transformQueue(queue: NamedSkillQueueRow[]) {
   const completedEntries = [] as CompletedQueueEntryJson[];
   const queuedEntries = [] as QueueEntryJson[];
 
-  for (let i = 0; i < queue.length; i++) {
-    const queueItem = queue[i];
-
+  for (const queueItem of queue) {
     if (isQueueEntryCompleted(queueItem)) {
       completedEntries.push({
         id: queueItem.skill,

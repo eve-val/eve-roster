@@ -35,6 +35,4 @@ function findEnumValue<T extends StringEnum, R>(
   return processor(null);
 }
 
-type StringEnum = {
-  [key: string]: string;
-};
+type StringEnum = Record<string, string>;

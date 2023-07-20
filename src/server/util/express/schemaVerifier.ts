@@ -17,9 +17,7 @@ import { ExtendableError } from "../../error/ExtendableError.js";
 export type Requirement = "required" | "optional";
 export type SchemaType = number | string | boolean | object;
 
-export type SimpleMap<T> = {
-  [key: string]: T;
-};
+export type SimpleMap<T> = Record<string, T>;
 
 type PrimitiveType = "string" | "number" | "boolean" | "object";
 

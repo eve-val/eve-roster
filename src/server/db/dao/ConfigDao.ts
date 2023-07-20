@@ -17,7 +17,7 @@ export interface ConfigEntries {
   siggyUsername: string;
   siggyPassword: string;
   srpJurisdiction: { start: number; end: number | undefined };
-  killmailSyncRanges: { [key: number]: { start: number; end: number } };
+  killmailSyncRanges: Record<number, { start: number; end: number }>;
 }
 
 export default class ConfigDao {

@@ -52,8 +52,8 @@ export function updateDb(revert: boolean): Promise<void> {
       const scripts = reverts[1];
       if (scripts.length > 0) {
         console.log("Batch", batch, "rolled back successfully. Reverted:");
-        for (let i = 0; i < scripts.length; i++) {
-          console.log(scripts[i]);
+        for (const script of scripts) {
+          console.log(script);
         }
       } else {
         console.log("No schema changes to roll back");
@@ -67,8 +67,8 @@ export function updateDb(revert: boolean): Promise<void> {
       const scripts = updates[1];
       if (scripts.length > 0) {
         console.log("Batch", batch, "completed successfully. Applied:");
-        for (let i = 0; i < scripts.length; i++) {
-          console.log(scripts[i]);
+        for (const script of scripts) {
+          console.log(script);
         }
       } else {
         console.log("Schema already up to date");

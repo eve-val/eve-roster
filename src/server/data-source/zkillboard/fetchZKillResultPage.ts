@@ -37,7 +37,7 @@ export async function fetchZKillResultPage(url: string, page: number) {
 }
 
 function isErrorResponse(response: ResultResponse): response is ErrorResponse {
-  return (<ErrorResponse>response).error != undefined;
+  return (response as ErrorResponse).error != undefined;
 }
 
 type ResultResponse = ZKillDescriptor[] | ErrorResponse;

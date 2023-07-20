@@ -311,7 +311,7 @@ export default defineComponent({
   },
 });
 
-const TIMEZONE_HINTS: { [key: string]: string | null } = {
+const TIMEZONE_HINTS: Record<string, string | null> = {
   "US West": "PT/MT",
   "US East": "CT/ET",
   "EU West": "WET/CET",

@@ -99,7 +99,7 @@ export default class CharacterShipDao {
     const rows = await q.run();
     return rows.map(
       (r) =>
-        <BorrowedShipOutputRow>{
+        ({
           id: r.characterShip_id,
           mainCharacterName: r.mainChar_name,
           characterName: r.character_name,
@@ -107,7 +107,7 @@ export default class CharacterShipDao {
           name: r.characterShip_name,
           locationDescription: r.characterShip_locationDescription,
           timestamp: r.characterShipUpdate_timestamp,
-        },
+        }) as BorrowedShipOutputRow,
     );
   }
 }

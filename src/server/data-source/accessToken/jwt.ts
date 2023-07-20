@@ -14,7 +14,7 @@ export async function fetchAuthInfo(
       issuer: "login.eveonline.com",
     },
   );
-  return <AuthInfoResponse & JWTPayload>result.payload;
+  return result.payload as AuthInfoResponse & JWTPayload;
 }
 
 interface AuthInfoResponse {

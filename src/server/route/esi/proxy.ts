@@ -31,7 +31,7 @@ export default jsonEndpoint(
         // Reissue the request using the credentials.
         const config: AxiosRequestConfig = {
           url: targetPath,
-          method: <Method>req.method,
+          method: req.method as Method,
           headers: {
             Accept: "application/json",
           },

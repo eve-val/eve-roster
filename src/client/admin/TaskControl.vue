@@ -95,8 +95,8 @@ export default defineComponent({
       return this.tasks.filter((t: Task) => t.job == null);
     },
     areAnyActiveJobs() {
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].job != null) {
+      for (const task of this.tasks) {
+        if (task.job != null) {
           return true;
         }
       }

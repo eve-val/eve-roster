@@ -136,5 +136,5 @@ export interface LossMeta {
 }
 
 export function isFuncRule(rule: TriageRule): rule is FuncRule {
-  return (<FuncRule>rule).discriminant != undefined;
+  return (rule as FuncRule).discriminant != undefined;
 }

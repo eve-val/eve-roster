@@ -73,7 +73,7 @@ const routes: RouteRecordRaw[] = [
         path: "history/:id",
         component: CombatHistory,
         props: (route) => ({
-          forAccount: parseInt(<string>route.params.id),
+          forAccount: parseInt(route.params.id as string),
           triageMode: false,
         }),
       },
@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
         path: "triage/:id",
         component: CombatHistory,
         props: (route) => ({
-          forAccount: parseInt(<string>route.params.id),
+          forAccount: parseInt(route.params.id as string),
           triageMode: true,
         }),
       },
@@ -103,12 +103,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/srp/payment/:id",
     component: PaymentDetail,
-    props: (route) => ({ srpId: parseInt(<string>route.params.id) }),
+    props: (route) => ({ srpId: parseInt(route.params.id as string) }),
   },
   {
     path: "/srp/battle/:id",
     component: BattleDetail,
-    props: (route) => ({ battleId: parseInt(<string>route.params.id) }),
+    props: (route) => ({ battleId: parseInt(route.params.id as string) }),
   },
   { path: "/ships", redirect: "/ships/borrowed-by-me" },
   { path: "/ships/borrowed-by-me", component: ShipsBorrowedByMe },

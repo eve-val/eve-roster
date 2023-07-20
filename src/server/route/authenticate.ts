@@ -47,7 +47,7 @@ export default async function (req: express.Request, res: express.Response) {
     if (state && typeof state == "string" && state.indexOf(".") != -1) {
       const t = state.split(".")[0];
       if (Object.values<string>(AuthType).includes(t)) {
-        authType = <AuthType>t;
+        authType = t as AuthType;
       }
       nonce = state.split(".")[1];
     }

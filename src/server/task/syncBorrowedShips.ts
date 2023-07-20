@@ -191,13 +191,13 @@ async function findShips(
 
   return ships.map(
     (it) =>
-      <CharacterShipRow>{
+      ({
         characterId: characterId,
         itemId: it.asset.itemId,
         typeId: it.asset.typeId,
         name: it.asset.name!,
         locationDescription: it.describeLocation(locCache),
-      },
+      }) as CharacterShipRow,
   );
 }
 

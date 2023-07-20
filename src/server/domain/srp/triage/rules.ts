@@ -796,8 +796,7 @@ function invMatchAll(killmail: ZKillmail, items: number[]) {
   if (killmail.victim.items == undefined) {
     return false;
   }
-  for (let i = 0; i < items.length; i++) {
-    const id = items[i];
+  for (const id of items) {
     if (_.findWhere(killmail.victim.items, { item_type_id: id }) == undefined) {
       return false;
     }
@@ -809,8 +808,7 @@ function invMatchAny(killmail: ZKillmail, items: number[]) {
   if (killmail.victim.items == undefined) {
     return undefined;
   }
-  for (let i = 0; i < items.length; i++) {
-    const id = items[i];
+  for (const id of items) {
     if (_.findWhere(killmail.victim.items, { item_type_id: id }) != undefined) {
       return id;
     }

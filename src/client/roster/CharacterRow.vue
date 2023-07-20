@@ -223,9 +223,9 @@ export default defineComponent({
         ) {
           // Special case to reformat numeric value to a friendly ISK string
           // type checked above.
-          metaValue = iskLabel(<number>metaValue);
+          metaValue = iskLabel(metaValue as number);
         }
-        return <string | number>metaValue;
+        return metaValue as string | number;
       } else {
         // Meta data was not included in the server response
         return null;
@@ -247,10 +247,10 @@ export default defineComponent({
             if (!this.isMain) {
               return "″"; // ditto symbol
             } else {
-              return <Value>this.account[(<AccountColumn>col).key];
+              return this.account[(col as AccountColumn).key] as Value;
             }
           } else {
-            return this.character[(<CharacterColumn>col).key];
+            return this.character[(col as CharacterColumn).key];
           }
       }
     },
