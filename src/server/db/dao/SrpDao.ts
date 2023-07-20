@@ -384,7 +384,7 @@ export default class SrpDao {
       .columns("srpr_id")
       .fetchFirst();
 
-    if (accountReim?.srpr_id) {
+    if (accountReim?.srpr_id != null) {
       return accountReim.srpr_id;
     }
 
