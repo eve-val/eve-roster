@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
+
 import sqlite3 from "sqlite3";
 
 import { Tnex, val, DEFAULT_NUM } from "../../db/tnex/index.js";

@@ -7,20 +7,20 @@ import { KeysOfType, nil } from "../../shared/util/simpleTypes.js";
  * fundamental behaviors (in-place sort, etc).
  *
  * @param arr The array to sort.
- * @param comparitors One or more comparison functions. These can be any
+ * @param comparators One or more comparison functions. These can be any
  *    function, although in most cases you will want to pass the result of
  *    calling one of the cmp___() functions defined below. For each pair of
- *    array elements, comparitors are executed in the order passed until one
+ *    array elements, comparators are executed in the order passed until one
  *    of them returns a non-zero value. That value is then used to sort the
  *    two elements.
  * @returns The sorted array. Because sorting is done in-place, this will be
  *    the same object as `arr`.
  */
-export function sortBy<T>(arr: T[], ...comparitors: Comparitor<T>[]): T[] {
-  const len = comparitors.length;
+export function sortBy<T>(arr: T[], ...comparators: Comparator<T>[]): T[] {
+  const len = comparators.length;
   arr.sort((a, b) => {
     for (let i = 0; i < len; i++) {
-      const ret = comparitors[i](a, b);
+      const ret = comparators[i](a, b);
       if (ret != 0) {
         return ret;
       }
@@ -31,13 +31,13 @@ export function sortBy<T>(arr: T[], ...comparitors: Comparitor<T>[]): T[] {
   return arr;
 }
 
-export type Comparitor<T> = (a: T, b: T) => number;
+export type Comparator<T> = (a: T, b: T) => number;
 export type Extractor<T, S> = (obj: T) => S | null;
 export type SortNulls = "frontNulls" | "endNulls";
 export type SortDirection = "forward" | "reverse";
 
 /**
- * Creates a Comparitor that sorts elements by whether a property is null or
+ * Creates a Comparator that sorts elements by whether a property is null or
  * not. All elements where `prop` is `null` are sorted to either the beginning
  * or the end. Non-null elements have their ordering retained.
  *
@@ -48,7 +48,7 @@ export type SortDirection = "forward" | "reverse";
 export function cmpNullProp<T>(
   prop: keyof T,
   sortNulls: SortNulls = "endNulls",
-): Comparitor<T> {
+): Comparator<T> {
   return (a: T, b: T) => {
     const aVal = a[prop];
     const bVal = b[prop];
@@ -70,7 +70,7 @@ export function cmpNullProp<T>(
 }
 
 /**
- * Creates a Comparitor that performs a lexical sort over a string property.
+ * Creates a Comparator that performs a lexical sort over a string property.
  *
  * @param prop Either the name of the property to sort by or an extractor
  *    function. Extractor functions are passed the object and must return a
@@ -85,10 +85,12 @@ export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
   prop: K | Extractor<T, string>,
   direction: SortDirection = "forward",
   sortNulls: SortNulls = "endNulls",
-): Comparitor<T> {
+): Comparator<T> {
   return (a: T, b: T) => {
-    const aVal: string = typeof prop == "function" ? prop(a) : (a[prop] as any);
-    const bVal: string = typeof prop == "function" ? prop(b) : (b[prop] as any);
+    const aVal =
+      typeof prop == "function" ? prop(a) : (a[prop] as string | null);
+    const bVal =
+      typeof prop == "function" ? prop(b) : (b[prop] as string | null);
     let ret: number;
 
     if (aVal == null || bVal == null) {
@@ -106,7 +108,7 @@ export function cmpStringProp<T, K extends KeysOfType<T, string | nil>>(
 }
 
 /**
- * Creates a Comparitor that performs a numerical sort over a number property.
+ * Creates a Comparator that performs a numerical sort over a number property.
  *
  * @param prop Either the name of the property to sort by or an extractor
  *    function. Extractor functions are passed the object and must return a
@@ -121,10 +123,12 @@ export function cmpNumberProp<T, K extends KeysOfType<T, number | nil>>(
   prop: K | Extractor<T, number>,
   direction: SortDirection = "forward",
   sortNulls: SortNulls = "endNulls",
-): Comparitor<T> {
+): Comparator<T> {
   return (a: T, b: T) => {
-    const aVal: number = typeof prop == "function" ? prop(a) : (a[prop] as any);
-    const bVal: number = typeof prop == "function" ? prop(b) : (b[prop] as any);
+    const aVal =
+      typeof prop == "function" ? prop(a) : (a[prop] as number | null);
+    const bVal =
+      typeof prop == "function" ? prop(b) : (b[prop] as number | null);
     let ret: number;
 
     if (aVal == null || bVal == null) {

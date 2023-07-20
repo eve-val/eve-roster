@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-base-to-string, @typescript-eslint/no-unsafe-return */
+
 import express from "express";
 
 import { BadRequestError } from "../../error/BadRequestError.js";

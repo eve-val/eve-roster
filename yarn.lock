@@ -3411,6 +3411,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/moment-locales-webpack-plugin@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@types/moment-locales-webpack-plugin@npm:1.2.3"
+  dependencies:
+    "@types/node": "npm:*"
+    tapable: "npm:^2.2.0"
+    webpack: "npm:^5"
+  checksum: 08ea58cf50d275575de837763b7adab5b66b43c1403c6982282dee24d5b0903f2bcfc72e041312479f84461d910479d58f2734005df47421045f7b711b72fe3a
+  languageName: node
+  linkType: hard
+
 "@types/mysql@npm:2.15.19":
   version: 2.15.19
   resolution: "@types/mysql@npm:2.15.19"
@@ -3637,10 +3648,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/through@npm:*":
+  version: 0.0.30
+  resolution: "@types/through@npm:0.0.30"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 9578470db0b527c26e246a1220ae9bffc6bf47f20f89c54aac467c083ab1f7e16c00d9a7b4bb6cb4e2dfae465027270827e5908a6236063f6214625e50585d78
+  languageName: node
+  linkType: hard
+
 "@types/tmp@npm:^0.2.3":
   version: 0.2.3
   resolution: "@types/tmp@npm:0.2.3"
   checksum: a8ddaa0456d44dc29e310dc663289dfcdf1f029499cbd5343558620178a84b952b169844c5d7710a3d80b717d64e891d9ee585d71f8af4c8685cdb8d85272ca7
+  languageName: node
+  linkType: hard
+
+"@types/unbzip2-stream@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@types/unbzip2-stream@npm:1.4.0"
+  dependencies:
+    "@types/through": "npm:*"
+  checksum: e3f9ee2ee1dd3491d5d0c0df56401049b8e61183c793f72d8851e9911a7806a7fda635bc248692c376fd9ccdf35ec41539f1e38a124c8ef649eb65df996d413f
   languageName: node
   linkType: hard
 
@@ -6763,6 +6792,7 @@ __metadata:
     "@types/heapdump": "npm:^0.3.1"
     "@types/imagemin": "npm:^8.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
+    "@types/moment-locales-webpack-plugin": "npm:^1.2.3"
     "@types/node": "npm:^20.4.2"
     "@types/node-schedule": "npm:^2.1.0"
     "@types/pg": "npm:^8.10.2"
@@ -6774,6 +6804,7 @@ __metadata:
     "@types/sqlite3": "npm:^3.1.8"
     "@types/swagger-ui": "npm:^3.52.0"
     "@types/tmp": "npm:^0.2.3"
+    "@types/unbzip2-stream": "npm:^1.4.0"
     "@types/underscore": "npm:^1.11.5"
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-hot-middleware": "npm:^2.25.6"
@@ -6843,7 +6874,7 @@ __metadata:
     vue-loader: "npm:^17.2.2"
     vue-router: "npm:^4.2.4"
     vue-style-loader: "npm:^4.1.3"
-    webpack: "npm:^5.88.1"
+    webpack: "npm:^5.88.2"
     webpack-cli: "npm:^5.1.4"
     webpack-dev-middleware: "npm:^6.1.1"
     webpack-hot-middleware: "npm:^2.25.4"
@@ -14071,9 +14102,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.88.1":
-  version: 5.88.1
-  resolution: "webpack@npm:5.88.1"
+"webpack@npm:^5, webpack@npm:^5.88.2":
+  version: 5.88.2
+  resolution: "webpack@npm:5.88.2"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.3"
     "@types/estree": "npm:^1.0.0"
@@ -14104,7 +14135,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 1467130267762c1e0002bb1a365874e1f52d2d0ceca61aa0be6241ec26d07feacb2cb5ecb94dd6aa3721d7efb3b0651762c23f1bfbc10612023f8cdf161aec69
+  checksum: 2b26158f091df1d97b85ed8b9c374c673ee91de41e13579a3d5abb76f48fda0e2fe592541e58a96e2630d5bce18d885ce605f6ae767d7e0bc2b5ce3b700a51f0
   languageName: node
   linkType: hard
 
