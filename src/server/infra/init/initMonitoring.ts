@@ -1,15 +1,11 @@
 import * as Sentry from "@sentry/node";
 import Graceful from "node-graceful";
 import { ChannelCredentials, Metadata } from "@grpc/grpc-js";
-import opentelemetry from "@opentelemetry/sdk-node";
-const { NodeSDK } = opentelemetry;
-import resources from "@opentelemetry/resources";
-const { Resource } = resources;
-import semconv from "@opentelemetry/semantic-conventions";
-const { SemanticResourceAttributes } = semconv;
+import * as opentelemetry from "@opentelemetry/sdk-node";
+import { Resource } from "@opentelemetry/resources";
+import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
-import exporter from "@opentelemetry/exporter-trace-otlp-grpc";
-const { OTLPTraceExporter } = exporter;
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 import { Env } from "./Env.js";
 
 export function initMonitoring(env: Env) {
@@ -17,7 +13,7 @@ export function initMonitoring(env: Env) {
   const metadata = new Metadata();
   metadata.set("x-honeycomb-team", env.HONEYCOMB_API_KEY);
   metadata.set("x-honeycomb-dataset", env.HONEYCOMB_DATASET);
-  const sdk = new NodeSDK({
+  const sdk = new opentelemetry.NodeSDK({
     resource: new Resource({
       [SemanticResourceAttributes.SERVICE_NAME]: "roster",
     }),
