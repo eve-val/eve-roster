@@ -29,7 +29,7 @@ losses, etc.
           <span style="color: #cdcdcd">{{ payment.modifiedLabel }}</span>
           by
           <router-link class="stat-link" :to="`/character/${payment.payer}`">
-            {{ name(payment.payer) }} </router-link
+            {{ nameOrUnknown(payment.payer) }} </router-link
           >.
 
           <a v-if="canEditSrp" class="undo-link" @click="onUndoClick"> Undo </a>
@@ -62,22 +62,19 @@ losses, etc.
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType } from "vue";
+
 import AppPage from "../shared/AppPage.vue";
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import LossHeading from "./LossHeading.vue";
 import LossRow from "./LossRow.vue";
 
-import { Loss, Payment } from "./types";
-
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
-
 import { Identity } from "../home";
+import { SrpLossJson } from "../../shared/types/srp/SrpLossJson";
+import { Srp_Payment_GET } from "../../shared/route/api/srp/payment/payment_GET";
 
-const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
-type UndoStatus = (typeof UNDO_STATUSES)[number];
-
-import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AppPage,
@@ -101,8 +98,8 @@ export default defineComponent({
       promise: null,
       undoPromise: null,
     } as {
-      payment: Payment | null;
-      losses: Loss[];
+      payment: Srp_Payment_GET["payment"] | null;
+      losses: SrpLossJson[];
       undoStatus: UndoStatus;
       promise: Promise<any> | null;
       undoPromise: Promise<any> | null;
@@ -167,6 +164,9 @@ export default defineComponent({
     },
   },
 });
+
+const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
+type UndoStatus = (typeof UNDO_STATUSES)[number];
 </script>
 
 <style scoped>
@@ -225,5 +225,6 @@ export default defineComponent({
 
 .denom {
   color: #8b8b8b;
+  margin-left: 5px;
 }
 </style>

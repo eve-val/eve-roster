@@ -4,6 +4,7 @@ import {
   verify,
   nullable,
   stringEnum,
+  string,
 } from "../../../../util/express/schemaVerifier.js";
 import { AccountSummary } from "../../../../infra/express/getAccountPrivs.js";
 import { AccountPrivileges } from "../../../../infra/express/privileges.js";
@@ -21,6 +22,7 @@ import { UserVisibleError } from "../../../../error/UserVisibleError.js";
 export class Input {
   verdict = stringEnum<SrpVerdictStatus>(SrpVerdictStatus);
   reason = nullable(stringEnum<SrpVerdictReason>(SrpVerdictReason));
+  tag = nullable(string());
   payout = number();
 }
 const inputSchema = new Input();
@@ -70,6 +72,7 @@ async function handleEndpoint(
     id,
     input.verdict,
     input.reason,
+    input.tag,
     input.payout,
     account.id,
   );

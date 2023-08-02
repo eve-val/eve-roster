@@ -90,6 +90,7 @@ import {
 } from "../../../eve/constants/mapSolarSystems.js";
 
 import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { SrpVerdictTags } from "../../../../shared/types/srp/srpEnums.js";
 
 /**
  * SOUND-specific implementation of SRP rules. See the TRIAGE_RULES export
@@ -261,6 +262,7 @@ const NAVY_FRIGATES: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Navy frigate",
       payout: { kind: "Market", fallback: million(10) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -272,6 +274,7 @@ const NAVY_CRUISERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Navy cruiser",
       payout: { kind: "Market", fallback: million(60) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -283,6 +286,7 @@ const NAVY_BATTLECRUISERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Navy battlecruiser",
       payout: { kind: "Market", fallback: million(160) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -294,6 +298,7 @@ const NAVY_BATTLESHIPS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Navy battleship",
       payout: { kind: "Market", fallback: million(300) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -307,6 +312,7 @@ const PIRATE_FRIGATES: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Pirate frigate",
       payout: { kind: "Market", fallback: million(50) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -320,6 +326,7 @@ const PIRATE_CRUISERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Pirate cruiser",
       payout: { kind: "Market", fallback: million(210) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -336,6 +343,7 @@ const PIRATE_BATTLESHIPS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Pirate battleship",
       payout: { kind: "Market", fallback: million(350) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -347,6 +355,7 @@ const T1_FRIGATES: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 frigate",
       payout: { kind: "Market", fallback: million(1) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -358,6 +367,7 @@ const T1_DESTROYERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 destroyer",
       payout: { kind: "Market", fallback: million(2) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -369,6 +379,7 @@ const T1_CRUISERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 cruiser",
       payout: { kind: "Market", fallback: million(11) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -380,6 +391,7 @@ const GNOSIS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 combat BC",
       payout: { kind: "Market", fallback: million(40) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -391,6 +403,7 @@ const T1_COMBAT_BCS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 combat BC",
       payout: { kind: "Market", fallback: million(40) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -402,6 +415,7 @@ const T1_ATTACK_BCS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 combat BC",
       payout: { kind: "Market", fallback: million(60) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -413,6 +427,7 @@ const T1_BATTLESHIPS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 battleship",
       payout: { kind: "Market", fallback: million(150) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -426,6 +441,7 @@ const T1_INDUSTRIALS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T1 industrial",
       payout: { kind: "Market", fallback: million(5) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -443,6 +459,7 @@ const LOGISTICS_FRIGATES: TemplateRule = {
         additional: million(50),
         fallback: million(70),
       },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -462,6 +479,7 @@ const OTHER_T2_FRIGATES: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T2 frigate",
       payout: { kind: "Market", fallback: million(20) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -475,6 +493,7 @@ const INTERDICTORS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Interdictor",
       payout: { kind: "Market", fallback: million(60) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -488,6 +507,7 @@ const COMMAND_DESTROYERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Command destroyer",
       payout: { kind: "Market", fallback: million(60) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -505,6 +525,7 @@ const LOGISTICS_CRUISER: TemplateRule = {
         additional: million(50),
         fallback: million(270),
       },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -523,6 +544,7 @@ const OTHER_T2_CRUISER: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T2 cruiser",
       payout: { kind: "Market", fallback: million(250) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -536,6 +558,7 @@ const COMMAND_SHIPS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Command ship",
       payout: { kind: "Market", fallback: million(390) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -549,6 +572,7 @@ const T2_INDUSTRIALS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "T2 industrial",
       payout: { kind: "Market", fallback: million(200) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -562,6 +586,7 @@ const TACTICAL_DESTROYERS: TemplateRule = {
       status: SrpVerdictStatus.APPROVED,
       label: "Tactical destroyer",
       payout: { kind: "Market", fallback: million(40) },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -579,6 +604,7 @@ const STRATEGIC_CRUISERS: TemplateRule = {
         additional: million(145),
         fallback: million(250),
       },
+      tag: SrpVerdictTags.CORP,
     },
   ],
 };
@@ -604,6 +630,7 @@ const GRAIL_IMPLANTS: FuncRule = {
             items: TYPE_LOW_GRADE_GRAILS,
             fallback: million(100),
           },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }
@@ -628,6 +655,7 @@ const TALON_IMPLANTS: FuncRule = {
           status: SrpVerdictStatus.APPROVED,
           label: "Talon implants",
           payout: { kind: "Static", value: million(40) },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }
@@ -653,6 +681,7 @@ const TALISMAN_IMPLANTS: FuncRule = {
           status: SrpVerdictStatus.APPROVED,
           label: "Talisman implants",
           payout: { kind: "Static", value: million(100) },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }
@@ -685,6 +714,7 @@ const BASIC_MINDLINK_IMPLANTS: FuncRule = {
           status: SrpVerdictStatus.APPROVED,
           label: "Mindlink",
           payout: { kind: "Market", items: [implant], fallback: million(40) },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }
@@ -737,6 +767,7 @@ const NAVY_MINDLINK_IMPLANTS: FuncRule = {
             items: [payoutImplant],
             fallback: million(40),
           },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }
@@ -765,6 +796,7 @@ const SLAVE_IMPLANTS: FuncRule = {
             kind: "Static",
             value: million(200),
           },
+          tag: SrpVerdictTags.CORP,
         },
       ];
     }

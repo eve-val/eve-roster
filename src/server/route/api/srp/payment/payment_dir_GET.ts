@@ -10,26 +10,13 @@ import {
   intQuery,
   enumQuery,
 } from "../../../../util/express/paramVerifier.js";
-import { nil, SimpleNumMap } from "../../../../../shared/util/simpleTypes.js";
+import { nil } from "../../../../../shared/util/simpleTypes.js";
 import { fetchEveNames } from "../../../../data-source/esi/names.js";
 import { SrpReimbursementFilter } from "../../../../db/dao/SrpDao.js";
-
-export interface Output {
-  payments: PaymentJson[];
-  names: SimpleNumMap<string>;
-}
-
-export interface PaymentJson {
-  id: number;
-  modified: number;
-  modifiedStr: string;
-  totalPayout: number;
-  totalLosses: number;
-  recipient: number;
-  recipientCorp: number | null;
-  payer: number | null;
-  payerCorp: number | null;
-}
+import {
+  Srp_Payment_dir_GET,
+  PaymentJson,
+} from "../../../../../shared/route/api/srp/payment/payment_dir_GET.js";
 
 export enum OrderBy {
   ID = "id",
@@ -39,17 +26,19 @@ export enum OrderBy {
 /**
  * Returns a list of recent payments. Query can be filtered in a number of ways.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
-  return handleEndpoint(db, account, privs, {
-    paid: boolQuery(req, "paid"),
-    account: intQuery(req, "account"),
-    limit: intQuery(req, "limit"),
-    order:
-      enumQuery<ResultOrder>(req, "order", ResultOrder) ?? ResultOrder.DESC,
-    orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) ?? OrderBy.ID,
-    startingAfter: intQuery(req, "startingAfter"),
-  });
-});
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Srp_Payment_dir_GET> => {
+    return handleEndpoint(db, account, privs, {
+      paid: boolQuery(req, "paid"),
+      account: intQuery(req, "account"),
+      limit: intQuery(req, "limit"),
+      order:
+        enumQuery<ResultOrder>(req, "order", ResultOrder) ?? ResultOrder.DESC,
+      orderBy: enumQuery<OrderBy>(req, "orderBy", OrderBy) ?? OrderBy.ID,
+      startingAfter: intQuery(req, "startingAfter"),
+    });
+  },
+);
 
 const DEFAULT_ROWS_PER_QUERY = 30;
 const MAX_ROWS_PER_QUERY = 100;

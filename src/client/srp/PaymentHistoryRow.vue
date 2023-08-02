@@ -18,7 +18,7 @@ A table row that represents a single SRP payment (either pending or paid).
       :icon-id="payment.recipient"
       icon-type="Character"
       :top-line="name(payment.recipient)"
-      :bottom-line="name(payment.recipientCorp)"
+      :bottom-line="nameOrUnknown(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
     />
@@ -40,7 +40,7 @@ A table row that represents a single SRP payment (either pending or paid).
       :icon-id="payment.payer"
       icon-type="Character"
       :top-line="name(payment.payer)"
-      :bottom-line="name(payment.payerCorp)"
+      :bottom-line="nameOrUnknown(payment.payerCorp)"
       :icon-href="`/character/${payment.payer}`"
       :top-href="`/character/${payment.payer}`"
     />
@@ -48,13 +48,13 @@ A table row that represents a single SRP payment (either pending or paid).
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType } from "vue";
+
 import SrpTriplet from "./SrpTriplet.vue";
 
 import { NameCacheMixin } from "../shared/nameCache";
+import { PaymentJson } from "../../shared/route/api/srp/payment/payment_dir_GET";
 
-import { Payment } from "./types";
-
-import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     SrpTriplet,
@@ -63,7 +63,7 @@ export default defineComponent({
   mixins: [NameCacheMixin],
 
   props: {
-    payment: { type: Object as PropType<Payment>, required: true },
+    payment: { type: Object as PropType<PaymentJson>, required: true },
   },
 
   computed: {

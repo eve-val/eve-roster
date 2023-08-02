@@ -7,8 +7,6 @@ import {
   nil,
   AsyncReturnType,
 } from "../../../shared/util/simpleTypes.js";
-import { SrpLossJson } from "../srp/SrpLossJson.js";
-import { Participant } from "./BattleData.js";
 import { arrayToMap, addAll } from "../../../shared/util/collections.js";
 import { pluck } from "underscore";
 import { srpLossToJson } from "../srp/srpLossToJson.js";
@@ -18,6 +16,11 @@ import { fetchEveNames } from "../../data-source/esi/names.js";
 import { Battle, MemberCorporation } from "../../db/tables.js";
 import { sortBy, cmpNumberProp } from "../../../shared/util/sortBy.js";
 import { isCapsule } from "../../eve/util/isCapsule.js";
+import {
+  BattleJson,
+  Srp_Battle_GET,
+  Team,
+} from "../../../shared/route/api/srp/battle/battle_GET.js";
 
 /**
  * Given a list of results from dao.battle.listBattles(), converts them into
@@ -27,7 +30,7 @@ export async function battlesToJson(
   db: Tnex,
   battles: AsyncReturnType<typeof dao.battle.listBattles>,
   includeSrps: boolean,
-): Promise<BattleOutput> {
+): Promise<Srp_Battle_GET> {
   const memberCorps = arrayToMap(
     await dao.config.getMemberCorporations(db),
     "mcorp_corporationId",
@@ -147,26 +150,4 @@ function rankTeam(team: Team, memberCorps: Map<number, MemberCorporation>) {
   } else {
     return 1;
   }
-}
-
-export interface BattleOutput {
-  battles: BattleJson[];
-  names: SimpleNumMap<string>;
-}
-
-export interface BattleJson {
-  id: number;
-  start: number;
-  startLabel: string;
-  end: number;
-  locations: number[];
-  teams: Team[];
-  srps: SrpLossJson[];
-}
-
-export interface Team {
-  corporationId: number | null;
-  allianceId: number | null;
-  members: Participant[];
-  totalLosses: number;
 }

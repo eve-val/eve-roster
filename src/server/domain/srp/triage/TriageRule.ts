@@ -92,6 +92,11 @@ export interface ApprovedVerdict extends BaseVerdict {
   status: SrpVerdictStatus.APPROVED;
   label: string;
   payout: Payout;
+
+  /**
+   * Specifies the tag that should be associated with this verdict, if any.
+   */
+  tag: string | null;
 }
 
 /** Loss is ineligible for SRP. */

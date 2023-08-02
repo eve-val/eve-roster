@@ -45,23 +45,31 @@ in most other places).
       class="victimlet"
       :icon-id="srp.victim || srp.victimCorp"
       :icon-type="victimIconType"
-      :top-line="name(srp.victim || srp.victimCorp)"
-      :bottom-line="name(srp.victimCorp)"
+      :top-line="nameOrUnknown(srp.victim || srp.victimCorp)"
+      :bottom-line="nameOrUnknown(srp.victimCorp)"
       :default-href="victimHref"
       :bot-href="zkillHref(srp.victimCorp, 'corporation')"
     />
 
-    <srp-triplet
-      class="executionerlet"
-      :icon-id="executionerAffiliation"
-      :icon-type="executionerIconType"
-      :top-line="name(srp.executioner.character || srp.executioner.ship)"
-      :bottom-line="name(executionerAffiliation)"
-      :default-href="
-        zkillHref(executionerAffiliation, executionerAffiliationType)
-      "
-      :top-href="zkillHref(srp.executioner.character, 'character')"
-    />
+    <router-link :to="srp.battle ? `/srp/battle/${srp.battle}` : undefined">
+      <img class="executioner-icon" src="../shared-res/crossed-swords.svg" />
+    </router-link>
+
+    <tool-tip gravity="top" style="margin-right: 35px">
+      <a
+        class="executioner-let"
+        :href="zkillHref(executionerAffiliation, executionerAffiliationType)"
+      >
+        <eve-image
+          :id="executionerAffiliation"
+          :type="executionerIconType"
+          :size="50"
+        />
+      </a>
+      <template #message>
+        {{ nameOrUnknown(executionerAffiliation) }}
+      </template>
+    </tool-tip>
 
     <srp-status
       class="srp-status"
@@ -76,8 +84,9 @@ in most other places).
 import EveImage from "../shared/EveImage.vue";
 import SrpStatus from "./SrpStatus.vue";
 import SrpTriplet from "./SrpTriplet.vue";
+import ToolTip from "../shared/ToolTip.vue";
 
-import { Srp } from "./types";
+import { SrpLossJson } from "../../shared/types/srp/SrpLossJson";
 import { AssetType } from "../shared/types";
 import { NameCacheMixin } from "../shared/nameCache";
 
@@ -87,14 +96,15 @@ export default defineComponent({
     EveImage,
     SrpStatus,
     SrpTriplet,
+    ToolTip,
   },
 
   mixins: [NameCacheMixin],
 
   props: {
-    srp: { type: Object as PropType<Srp>, required: true },
+    srp: { type: Object as PropType<SrpLossJson>, required: true },
     hasEditPriv: { type: Boolean, required: true },
-    startInEditMode: { type: Boolean, required: true },
+    startInEditMode: { type: Boolean, default: false },
     highlightAsRelated: {
       type: Boolean,
       required: false,
@@ -131,10 +141,10 @@ export default defineComponent({
       }
     },
 
-    executionerAffiliation(): number {
+    executionerAffiliation(): number | undefined {
       return (
-        this.srp.executioner.alliance ||
-        this.srp.executioner.corporation ||
+        this.srp.executioner.alliance ??
+        this.srp.executioner.corporation ??
         this.srp.executioner.ship
       );
     },
@@ -152,14 +162,18 @@ export default defineComponent({
 
   methods: {
     onRelatedHover() {
-      this.$emit("related-hover", this.srp.relatedKillmail.id);
+      if (this.srp.relatedKillmail?.id) {
+        this.$emit("related-hover", this.srp.relatedKillmail.id);
+      }
     },
 
     onRelatedUnhover() {
-      this.$emit("related-unhover", this.srp.relatedKillmail.id);
+      if (this.srp.relatedKillmail?.id) {
+        this.$emit("related-unhover", this.srp.relatedKillmail.id);
+      }
     },
 
-    zkillHref(id: number, type: string): string | undefined {
+    zkillHref(id: number | undefined, type: string): string | undefined {
       if (id == undefined) {
         return undefined;
       } else {
@@ -179,10 +193,20 @@ export default defineComponent({
 }
 
 .shiplet,
-.victimlet,
-.executionerlet {
+.victimlet {
   width: 220px;
   margin-right: 8px;
+}
+
+.executioner-let {
+  display: flex;
+  background: #101010;
+}
+
+.executioner-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 .shiplet {

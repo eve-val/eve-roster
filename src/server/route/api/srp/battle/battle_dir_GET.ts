@@ -15,10 +15,8 @@ import {
   jsonQuery,
   boolQuery,
 } from "../../../../util/express/paramVerifier.js";
-import {
-  BattleOutput,
-  battlesToJson,
-} from "../../../../domain/battle/battlesToJson.js";
+import { battlesToJson } from "../../../../domain/battle/battlesToJson.js";
+import { Srp_Battle_GET } from "../../../../../shared/route/api/srp/battle/battle_GET.js";
 
 const FILTER_SCHEMA = {
   id: optional(number()),
@@ -41,7 +39,7 @@ const FILTER_SCHEMA = {
 };
 
 export default jsonEndpoint(
-  async (req, res, db, _account, _privs): Promise<BattleOutput> => {
+  async (req, res, db, _account, _privs): Promise<Srp_Battle_GET> => {
     const includeSrps = boolQuery(req, "includeSrp") ?? false;
     const filter = verify(jsonQuery(req, "filter") ?? {}, FILTER_SCHEMA);
 

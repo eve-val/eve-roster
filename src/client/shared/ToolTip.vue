@@ -82,6 +82,12 @@ export default defineComponent({
       },
     },
 
+    showMessage: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+
     devForceOpen: {
       type: Boolean,
       required: false,
@@ -124,7 +130,7 @@ export default defineComponent({
     },
 
     messageVisible() {
-      return this.hovering || this.devForceOpen;
+      return (this.showMessage && this.hovering) || this.devForceOpen;
     },
 
     zeroSizeWrapperStyle() {

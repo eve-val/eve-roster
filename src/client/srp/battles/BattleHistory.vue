@@ -35,7 +35,10 @@ import MoreButton from "../MoreButton.vue";
 
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
-import { Battle, Battles } from "../types";
+import {
+  Srp_Battle_GET,
+  BattleJson,
+} from "../../../shared/route/api/srp/battle/battle_GET";
 import { Identity } from "../../home";
 import { AxiosResponse } from "axios";
 
@@ -63,8 +66,8 @@ export default defineComponent({
       fetchPromise: null,
       suspectMoreToFetch: true,
     } as {
-      battles: Battle[] | null;
-      fetchPromise: Promise<AxiosResponse<Battles>> | null;
+      battles: BattleJson[] | null;
+      fetchPromise: Promise<AxiosResponse<Srp_Battle_GET>> | null;
       suspectMoreToFetch: boolean;
     };
   },

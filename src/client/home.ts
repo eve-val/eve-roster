@@ -21,6 +21,7 @@ import DevPreview from "./dev/DevPreview.vue";
 import ShipReplacement from "./srp/ShipReplacement.vue";
 import SrpDashboard from "./srp/SrpDashboard.vue";
 import CombatHistory from "./srp/CombatHistory.vue";
+import SrpExportPage from "./srp/SrpExportPage.vue";
 import PaymentHistory from "./srp/PaymentHistory.vue";
 import PaymentTriage from "./srp/PaymentTriage.vue";
 import PaymentDetail from "./srp/PaymentDetail.vue";
@@ -68,6 +69,10 @@ const routes: RouteRecordRaw[] = [
         path: "history",
         component: CombatHistory,
         props: { triageMode: false },
+      },
+      {
+        path: "export",
+        component: SrpExportPage,
       },
       {
         path: "history/:id",

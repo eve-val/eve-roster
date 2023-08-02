@@ -2,18 +2,16 @@ import { default as axios, AxiosResponse } from "axios";
 import { Admin_Roster_SyncStatus_GET } from "../../shared/route/api/admin/roster/syncStatus_GET.js";
 import { Dashboard_GET } from "../../shared/route/api/dashboard_GET.js";
 import { Character_GET } from "../../shared/route/api/character_GET.js";
-import {
-  Triage,
-  Battles,
-  Losses,
-  Transaction,
-  Payments,
-} from "../srp/types.js";
 import { Task, Job, Log, Citadel } from "../admin/types.js";
 import { Account } from "../roster/types.js";
 import { Account_Characters_GET } from "../../shared/route/api/account/characters_GET.js";
 import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET.js";
 import { Ship } from "../ships/ships.js";
+import { Srp_Battle_GET } from "../../shared/route/api/srp/battle/battle_GET.js";
+import { Srp_Loss_GET } from "../../shared/route/api/srp/loss_GET.js";
+import { Srp_Payment_GET } from "../../shared/route/api/srp/payment/payment_GET.js";
+import { Srp_Payment_dir_GET } from "../../shared/route/api/srp/payment/payment_dir_GET.js";
+import { SrpTriageJson } from "../../shared/types/srp/SrpLossJson.js";
 
 export function configureCsrfInterceptor(token: string) {
   axios.interceptors.request.use(
@@ -178,7 +176,7 @@ export default {
   },
 
   getBattles(filter: Object, includeSrp: boolean) {
-    return axios.get<Battles>("/api/srp/battle", {
+    return axios.get<Srp_Battle_GET>("/api/srp/battle", {
       params: {
         filter: filter != undefined ? JSON.stringify(filter) : undefined,
         includeSrp: includeSrp,
@@ -187,7 +185,7 @@ export default {
   },
 
   getBattle(id: number, includeSrp: boolean) {
-    return axios.get<Battles>(`/api/srp/battle/${id}`, {
+    return axios.get<Srp_Battle_GET>(`/api/srp/battle/${id}`, {
       params: {
         includeSrp: includeSrp,
       },
@@ -195,7 +193,7 @@ export default {
   },
 
   getRecentSrpLosses(filter: Object) {
-    return axios.get<Losses>("/api/srp/loss", {
+    return axios.get<Srp_Loss_GET>("/api/srp/loss", {
       params: filter,
     });
   },
@@ -204,30 +202,34 @@ export default {
     killmail: number,
     verdict: string,
     reason: string | null,
+    tag: string | null,
     payout: number,
   ) {
     return axios.put<{ id: number; name: string }>(
       `/api/srp/loss/${killmail}`,
       {
-        verdict: verdict,
-        reason: reason,
-        payout: payout,
+        verdict,
+        reason,
+        tag,
+        payout,
       },
     );
   },
 
   getSrpLossTriageOptions(killmail: number) {
-    return axios.get<{ triage: Triage }>(`/api/srp/loss/${killmail}/triage`);
+    return axios.get<{ triage: SrpTriageJson }>(
+      `/api/srp/loss/${killmail}/triage`,
+    );
   },
 
   getSrpPaymentHistory(filter: Object) {
-    return axios.get<Payments>("/api/srp/payment", {
+    return axios.get<Srp_Payment_dir_GET>("/api/srp/payment", {
       params: filter,
     });
   },
 
   getSrpPayment(paymentId: number) {
-    return axios.get<Transaction>(`/api/srp/payment/${paymentId}`);
+    return axios.get<Srp_Payment_GET>(`/api/srp/payment/${paymentId}`);
   },
 
   putSrpPaymentStatus(

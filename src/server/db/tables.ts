@@ -18,7 +18,7 @@ import {
   SrpVerdictReason,
 } from "./dao/enums.js";
 import { ZKillmail } from "../data-source/zkillboard/ZKillmail.js";
-import { BattleData } from "../domain/battle/BattleData.js";
+import { BattleData } from "../../shared/types/srp/battle/BattleData.js";
 
 export const tables = new TnexBuilder();
 
@@ -365,5 +365,7 @@ export class SrpVerdict {
    * been rendered if the verdict was decided by a bot.
    */
   srpv_renderingAccount = nullable(integer());
+  /** An untyped string that can be associated with verdicts */
+  srpv_tag = nullable(varchar());
 }
 export const srpVerdict = tables.register(new SrpVerdict());

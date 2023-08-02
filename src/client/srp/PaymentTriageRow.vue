@@ -19,7 +19,7 @@ the reimbursement as paid.
       :icon-id="payment.recipient"
       icon-type="Character"
       :top-line="name(payment.recipient)"
-      :bottom-line="name(payment.recipientCorp)"
+      :bottom-line="nameOrUnknown(payment.recipientCorp)"
       :icon-href="`/character/${payment.recipient}`"
       :top-href="`/character/${payment.recipient}`"
     />
@@ -76,18 +76,15 @@ the reimbursement as paid.
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType, ref } from "vue";
+
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import SrpTriplet from "./SrpTriplet.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
+import { PaymentJson } from "../../shared/route/api/srp/payment/payment_dir_GET";
 
-import { Payment } from "./types";
-
-const STATUSES = ["inactive", "saving", "error"];
-type Status = (typeof STATUSES)[number];
-
-import { defineComponent, PropType, ref } from "vue";
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -97,7 +94,7 @@ export default defineComponent({
   mixins: [NameCacheMixin],
 
   props: {
-    payment: { type: Object as PropType<Payment>, required: true },
+    payment: { type: Object as PropType<PaymentJson>, required: true },
     payingCharacter: { type: Number as PropType<number | null>, default: null },
   },
 
@@ -192,6 +189,9 @@ export default defineComponent({
     },
   },
 });
+
+const STATUSES = ["inactive", "saving", "error"];
+type Status = (typeof STATUSES)[number];
 </script>
 
 <style scoped>

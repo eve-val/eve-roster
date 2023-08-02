@@ -13,6 +13,9 @@ Root container for the SRP UI.
         Dashboard
       </router-link>
       <router-link to="/srp/history" class="nav-link"> Activity </router-link>
+      <router-link v-if="canWriteSrp" :to="exportPath" class="nav-link">
+        Export
+      </router-link>
       <router-link to="/srp/payments" class="nav-link"> Payments </router-link>
       <router-link v-if="canWriteSrp" to="/srp/triage" class="nav-link">
         Approve
@@ -31,7 +34,9 @@ import AppPage from "../shared/AppPage.vue";
 
 import { Identity } from "../home";
 
+import moment from "moment";
 import { defineComponent, PropType } from "vue";
+
 export default defineComponent({
   components: {
     AppPage,
@@ -44,6 +49,11 @@ export default defineComponent({
   computed: {
     canWriteSrp(): boolean {
       return this.identity.access.srp == 2;
+    },
+
+    exportPath(): string {
+      const oneMonthAgo = moment().subtract(1, "month").format("YYYY-MM-DD");
+      return `/srp/export?startDate=${oneMonthAgo}`;
     },
   },
 });

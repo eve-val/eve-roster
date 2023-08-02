@@ -1,7 +1,7 @@
 import { BattleResult } from "./BattleCreator.js";
 import { Tnex, DEFAULT_NUM } from "../../db/tnex/index.js";
 import { dao } from "../../db/dao.js";
-import { BattleData } from "./BattleData.js";
+import { BattleData } from "../../../shared/types/srp/battle/BattleData.js";
 import { Writable } from "../../util/stream/Writable.js";
 import { BasicCallback } from "../../util/stream/core.js";
 

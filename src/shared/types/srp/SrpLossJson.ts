@@ -1,4 +1,4 @@
-import { SrpVerdictStatus, SrpVerdictReason } from "../../db/dao/enums.js";
+import type { SrpVerdictStatus, SrpVerdictReason } from "./srpEnums.js";
 
 /**
  * JSON format for corp ship losses. Combines killmail information with SRP
@@ -12,16 +12,18 @@ export interface SrpLossJson {
   victimCorp?: number;
   executioner: AttackerJson;
   relatedKillmail: {
-    id: number | null;
-    shipId: number | null;
+    id: number;
+    shipId: number;
   } | null;
   status: UnifiedSrpLossStatus;
   reason: SrpVerdictReason | null;
+  tag: string | null;
   payout: number;
   reimbursement: number | null;
   payingCharacter: number | null;
   renderingCharacter: number | null;
   triage: SrpTriageJson | null;
+  battle: number | null;
 }
 
 export interface SrpTriageJson {

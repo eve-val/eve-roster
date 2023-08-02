@@ -105,8 +105,7 @@ import SrpStatus from "../SrpStatus.vue";
 import ToolTip from "../../shared/ToolTip.vue";
 import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
-
-import { Battle } from "../types";
+import { BattleJson } from "../../../shared/route/api/srp/battle/battle_GET";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({
@@ -120,7 +119,7 @@ export default defineComponent({
   mixins: [NameCacheMixin],
 
   props: {
-    battle: { type: Object as PropType<Battle>, required: true },
+    battle: { type: Object as PropType<BattleJson>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
@@ -241,9 +240,7 @@ export default defineComponent({
 }
 
 .srp-cnt {
-  width: 665px;
-  margin-left: 236px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .srp {
