@@ -49,15 +49,17 @@ import CharacterSelector from "./CharacterSelector.vue";
 import MoreButton from "./MoreButton.vue";
 import PaymentTriageRow from "./PaymentTriageRow.vue";
 
-import ajaxer from "../shared/ajaxer";
-import { NameCacheMixin } from "../shared/nameCache";
-
-const RESULTS_PER_FETCH = 30;
+import { defineComponent, PropType } from "vue";
 import { AxiosResponse } from "axios";
 
-import { Payment, Payments } from "./types";
+import ajaxer from "../shared/ajaxer";
+import { NameCacheMixin } from "../shared/nameCache";
 import { Identity } from "../home";
-import { defineComponent, PropType } from "vue";
+import {
+  Srp_Payment_dir_GET,
+  PaymentJson,
+} from "../../shared/route/api/srp/payment/payment_dir_GET";
+
 export default defineComponent({
   components: {
     CharacterSelector,
@@ -81,9 +83,9 @@ export default defineComponent({
 
       approvedLiability: 0,
     } as {
-      fetchPromise: null | Promise<AxiosResponse<Payments>>;
+      fetchPromise: null | Promise<AxiosResponse<Srp_Payment_dir_GET>>;
       suspectMoreToFetch: boolean;
-      payments: null | Payment[];
+      payments: null | PaymentJson[];
       payingCharacter: null | number;
       approvedLiability: number;
     };
@@ -140,6 +142,8 @@ export default defineComponent({
     },
   },
 });
+
+const RESULTS_PER_FETCH = 30;
 </script>
 
 <style scoped>

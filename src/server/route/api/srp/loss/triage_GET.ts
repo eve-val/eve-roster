@@ -5,9 +5,9 @@ import { Tnex } from "../../../../db/tnex/index.js";
 import { dao } from "../../../../db/dao.js";
 import { NotFoundError } from "../../../../error/NotFoundError.js";
 import { idParam } from "../../../../util/express/paramVerifier.js";
-import { SrpTriageJson } from "../../../../domain/srp/SrpLossJson.js";
 import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson.js";
 import { triageLosses } from "../../../../domain/srp/triage/triageLosses.js";
+import { SrpTriageJson } from "../../../../../shared/types/srp/SrpLossJson.js";
 
 export interface Output {
   triage: SrpTriageJson | null;

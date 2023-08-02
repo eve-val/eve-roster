@@ -3,47 +3,57 @@ import { Tnex } from "../../../../db/tnex/Tnex.js";
 import { AccountPrivileges } from "../../../../infra/express/privileges.js";
 import { dao } from "../../../../db/dao.js";
 import { SrpVerdictStatus } from "../../../../db/dao/enums.js";
-import { SimpleNumMap, nil } from "../../../../../shared/util/simpleTypes.js";
+import { nil } from "../../../../../shared/util/simpleTypes.js";
 import {
   boolQuery,
   intQuery,
   enumQuery,
+  stringQuery,
 } from "../../../../util/express/paramVerifier.js";
 import { fetchEveNames } from "../../../../data-source/esi/names.js";
 import { srpLossToJson } from "../../../../domain/srp/srpLossToJson.js";
 import { SrpLossFilter } from "../../../../db/dao/SrpDao.js";
 import { ResultOrder } from "../../../../db/tnex/index.js";
-import { SrpLossJson } from "../../../../domain/srp/SrpLossJson.js";
 import { triageLosses } from "../../../../domain/srp/triage/triageLosses.js";
 import { triagedLossesToSuggestionJson } from "../../../../domain/srp/triage/triagedLossesToSuggestionJson.js";
-
-export interface Output {
-  srps: SrpLossJson[];
-  names: SimpleNumMap<string>;
-}
+import { Srp_Loss_GET } from "../../../../../shared/route/api/srp/loss_GET.js";
+import { UnifiedSrpLossStatus } from "../../../../../shared/types/srp/SrpLossJson.js";
 
 /**
  * Returns a list of losses and their associated SRP verdict and payment status.
  * Supports a wide variety of filters.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
-  return handleEndpoint(
-    db,
-    privs,
-    {
-      status: boolQuery(req, "pending") ? SrpVerdictStatus.PENDING : undefined,
-      limit: intQuery(req, "limit"),
-      order: enumQuery<ResultOrder>(req, "order", ResultOrder),
-      fromKillmail: intQuery(req, "fromKillmail"),
-      account: intQuery(req, "account"),
-      character: intQuery(req, "character"),
-    },
-    boolQuery(req, "includeTriage") ?? false,
-  );
-});
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Srp_Loss_GET> => {
+    const rawStatus = stringQuery(req, "status");
+    let status: UnifiedSrpLossStatus | undefined;
+    if (rawStatus == "paid") {
+      status = rawStatus;
+    } else {
+      status = enumQuery<SrpVerdictStatus>(req, "status", SrpVerdictStatus);
+    }
+
+    return handleEndpoint(
+      db,
+      privs,
+      {
+        status,
+        tag: stringQuery(req, "tag"),
+        limit: intQuery(req, "limit"),
+        order: enumQuery<ResultOrder>(req, "order", ResultOrder),
+        fromKillmail: intQuery(req, "fromKillmail"),
+        account: intQuery(req, "account"),
+        character: intQuery(req, "character"),
+        startTimestamp: intQuery(req, "startTimestamp"),
+        endTimestamp: intQuery(req, "endTimestamp"),
+      },
+      boolQuery(req, "includeTriage") ?? false,
+    );
+  },
+);
 
 const DEFAULT_ROWS_PER_QUERY = 30;
-const MAX_ROWS_PER_QUERY = 100;
+const MAX_ROWS_PER_QUERY = 400;
 
 async function handleEndpoint(
   db: Tnex,

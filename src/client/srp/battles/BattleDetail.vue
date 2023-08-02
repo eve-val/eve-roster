@@ -27,7 +27,7 @@ import BattleRow from "./BattleRow.vue";
 import ajaxer from "../../shared/ajaxer";
 import { NameCacheMixin } from "../../shared/nameCache";
 
-import { Battle } from "../types";
+import { BattleJson } from "../../../shared/route/api/srp/battle/battle_GET";
 
 import { Identity } from "../../home";
 import { defineComponent, PropType } from "vue";
@@ -50,7 +50,7 @@ export default defineComponent({
       battle: null,
       promise: null,
     } as {
-      battle: Battle | null;
+      battle: BattleJson | null;
       promise: Promise<any> | null;
     };
   },

@@ -1,4 +1,4 @@
-import { SimpleNumMap } from "../../shared/util/simpleTypes.js";
+import { SimpleNumMap, nil } from "../../shared/util/simpleTypes.js";
 
 const nameCache = new Map<number, string>();
 
@@ -24,6 +24,14 @@ export const NameCacheMixin = {
 
     name(id: number) {
       return nameCache.get(id) ?? "[Unknown entity]";
+    },
+
+    nameOrUnknown(id: number | nil) {
+      if (id == null) {
+        return "[Unknown entity]";
+      } else {
+        return nameCache.get(id) ?? "[Unknown entity]";
+      }
     },
   },
 };

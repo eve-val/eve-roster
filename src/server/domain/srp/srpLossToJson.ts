@@ -5,10 +5,10 @@ import { SrpLossRow } from "../../db/dao/SrpDao.js";
 import { nil } from "../../../shared/util/simpleTypes.js";
 import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
 import {
+  AttackerJson,
   SrpLossJson,
   UnifiedSrpLossStatus,
-  AttackerJson,
-} from "./SrpLossJson.js";
+} from "../../../shared/types/srp/SrpLossJson.js";
 
 /**
  * Shared logic for dumping the representation of an SRPable loss to JSON.
@@ -39,11 +39,13 @@ export function srpLossToJson(
         ? ("paid" as UnifiedSrpLossStatus)
         : row.srpv_status,
     reason: row.srpv_reason,
+    tag: row.srpv_tag,
     payout: row.srpv_payout,
     reimbursement: row.srpr_id,
     payingCharacter: row.srpr_payingCharacter,
     renderingCharacter: row.rendering_mainCharacter,
     triage: null,
+    battle: row.kmb_battle,
   };
 
   ids.add(json.shipType);

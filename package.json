@@ -13,6 +13,7 @@
     "watch-server": "tsc -b src/server --watch",
     "start": "yarn node -r dotenv/config out/server/bin/witness/witness.js",
     "updatedb": "yarn node -r dotenv/config out/server/bin/updatedb.js",
+    "rollbackdb": "yarn node -r dotenv/config out/server/bin/updatedb.js --rollback",
     "clean": "rm -rf out/ && rm -rf static/dist/",
     "test": "jest",
     "lint": "esprint check --workers=4",

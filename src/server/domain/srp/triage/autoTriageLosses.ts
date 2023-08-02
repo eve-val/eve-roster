@@ -37,6 +37,7 @@ async function maybeAutocommitVerdict(
 ) {
   let status = SrpVerdictStatus.PENDING;
   let reason: SrpVerdictReason | null = null;
+  let tag: string | null = null;
   let payout = 0;
 
   if (triaged.loss.km_data.victim.character_id == undefined) {
@@ -55,6 +56,7 @@ async function maybeAutocommitVerdict(
         status = verdict.status;
         if (verdict.status == SrpVerdictStatus.APPROVED) {
           payout = resolvePayout(verdict, triaged.loss.km_data, marketValues);
+          tag = verdict.tag;
         } else {
           reason = verdict.reason;
         }
@@ -68,6 +70,7 @@ async function maybeAutocommitVerdict(
       triaged.loss.km_data.killmail_id,
       status,
       reason,
+      tag,
       payout,
       null,
     );

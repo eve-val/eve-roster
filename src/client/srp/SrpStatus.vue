@@ -13,7 +13,8 @@ triage options weren't initially provided, fetches them from the server.
       <select
         v-if="editing"
         v-model="selectedVerdictKey"
-        class="verdict-select"
+        class="verdict-select dropdown"
+        @change="onUserSelectVerdictOption"
       >
         <option
           v-for="option in verdictOptions"
@@ -22,7 +23,6 @@ triage options weren't initially provided, fetches them from the server.
         >
           {{ option.label }}
         </option>
-        >
       </select>
       <div v-else class="verdict-text">
         <router-link v-if="statusLink" class="row-link" :to="statusLink">
@@ -48,10 +48,30 @@ triage options weren't initially provided, fetches them from the server.
       </div>
     </div>
 
+    <div class="tag-cnt">
+      <select
+        v-if="editing"
+        v-model="proposedVerdict.tag"
+        class="tag-select dropdown"
+        :disabled="!isApprovalSelected"
+      >
+        <option
+          v-for="option in tagOptions"
+          :key="option.value ?? ''"
+          :value="option.value"
+        >
+          {{ option.label }}
+        </option>
+      </select>
+      <div v-else class="tag-disp">
+        {{ getTagLabel(srp.tag) }}
+      </div>
+    </div>
+
     <div class="payout-cnt">
       <div v-if="editing" class="payout-input-cnt">
         <input
-          v-model.number="inputPayout"
+          v-model="inputPayout"
           class="payout-input"
           :disabled="!isApprovalSelected"
         />
@@ -63,7 +83,7 @@ triage options weren't initially provided, fetches them from the server.
           class="row-link"
           :to="`/srp/payment/${srp.reimbursement}`"
         >
-          {{ displayPayout }}
+          {{ srpDisplayPayout }}
           <span style="color: #8b8b8b">M</span>
         </router-link>
         <template v-else> &mdash; </template>
@@ -122,9 +142,16 @@ import { NameCacheMixin } from "../shared/nameCache";
 const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
 type RequestStatus = (typeof REQUEST_STATUSES)[number];
 
-import { VerdictOption, Srp } from "./types";
+import { SrpLossJson } from "../../shared/types/srp/SrpLossJson";
 
 import { defineComponent, PropType } from "vue";
+import {
+  SrpVerdictReason,
+  SrpVerdictStatus,
+  SrpVerdictTags,
+} from "../../shared/types/srp/srpEnums";
+import { checkNotNil } from "../../shared/util/assert";
+
 export default defineComponent({
   components: {
     LoadingSpinner,
@@ -133,7 +160,7 @@ export default defineComponent({
   mixins: [NameCacheMixin],
 
   props: {
-    initialSrp: { type: Object as PropType<Srp>, required: true },
+    initialSrp: { type: Object as PropType<SrpLossJson>, required: true },
     hasEditPriv: { type: Boolean, required: true },
     startInEditMode: { type: Boolean, required: true },
   },
@@ -145,89 +172,129 @@ export default defineComponent({
         this.hasEditPriv &&
         this.startInEditMode &&
         this.initialSrp.status == "pending",
+
+      proposedVerdict: {
+        status: this.initialSrp.status,
+        reason: null as SrpVerdictReason | null,
+        tag: null as string | null,
+        // payout is tracked by the inputPayout field
+      },
+
       selectedVerdictKey: this.initialSrp.triage
         ? this.initialSrp.triage.suggestedOption
         : "custom",
       inputPayout: rawPayoutToDisplayPayout(this.initialSrp.payout),
-      saveStatus: "inactive",
-      fetchTriageStatus: "inactive",
-      originalPayout: null,
-      savePromise: null,
-      editPromise: null,
-    } as {
-      srp: Srp;
-      editing: boolean;
-      selectedVerdictKey: string;
-      inputPayout: number;
-      saveStatus: RequestStatus;
-      fetchTriageStatus: RequestStatus;
-      originalPayout: number | null;
-      savePromise: Promise<any> | null;
-      editPromise: Promise<any> | null;
+      saveStatus: "inactive" as RequestStatus,
+      fetchTriageStatus: "inactive" as RequestStatus,
+      originalPayout: null as number | null,
+      savePromise: null as Promise<unknown> | null,
+      editPromise: null as Promise<unknown> | null,
     };
   },
 
   computed: {
-    displayPayout(): number {
+    srpDisplayPayout(): string {
       return rawPayoutToDisplayPayout(this.srp.payout);
     },
 
-    selectedVerdict(): VerdictOption | undefined {
-      return _.findWhere(this.verdictOptions, { key: this.selectedVerdictKey });
+    numericalPayout(): number {
+      return displayPayoutToRawPayout(this.inputPayout);
     },
 
     isApprovalSelected(): boolean {
-      const selected = this.selectedVerdict;
-      return selected ? selected.verdict == "approved" : false;
+      return this.proposedVerdict.status == SrpVerdictStatus.APPROVED;
     },
 
     isSaveButtonEnabled(): boolean {
       return (
         this.saveStatus != "active" &&
-        isValidInputPayout(this.inputPayout) &&
+        !isNaN(this.numericalPayout) &&
         // require approved to have non-zero payout.
-        (!this.isApprovalSelected || this.inputPayout > 0)
+        (!this.isApprovalSelected || this.numericalPayout > 0)
       );
+    },
+
+    /**
+     * Non-null we are editing a previously-approved loss. Represents an option
+     * to reinstate that approval.
+     */
+    previousApprovalOption(): VerdictOption | null {
+      if (this.srp.status == SrpVerdictStatus.APPROVED) {
+        return {
+          key: "approved_preexisting",
+          label: "Approved",
+          status: SrpVerdictStatus.APPROVED,
+          reason: null,
+          tag: this.srp.tag,
+          payout: this.srp.payout,
+        };
+      }
+      return null;
     },
 
     verdictOptions(): VerdictOption[] {
       let options: VerdictOption[] = [];
+
+      if (this.previousApprovalOption != null) {
+        options.push(this.previousApprovalOption);
+      }
+
       if (this.srp.triage != null) {
         for (let option of this.srp.triage.extraOptions) {
           options.push({
             key: option.key,
             label: option.label,
-            payout: option.payout,
-            verdict: option.verdict,
+            status: option.verdict,
             reason: null,
+            tag: SrpVerdictTags.CORP,
+            payout: option.payout,
           });
         }
       }
-      if (this.originalPayout != null) {
-        options.push({
-          key: "original_payout",
-          label: "Approved",
-          payout: this.originalPayout,
-          verdict: "approved",
-          reason: null,
-        });
-      }
+
       options.push({
-        key: "custom",
+        key: CUSTOM_VERDICT_KEY,
         label: "Custom payout",
-        payout: 0,
-        verdict: "approved",
+        status: SrpVerdictStatus.APPROVED,
         reason: null,
+        tag: SrpVerdictTags.CORP,
+        payout: 0,
       });
-      for (let iv of INELIGIBLE_STATUSES) {
+
+      for (let iv of INELIGIBLE_VERDICTS) {
         options.push({
           key: `${iv.status}_${iv.reason}`,
           label: iv.label,
-          payout: 0,
-          verdict: iv.status,
+          status: iv.status,
           reason: iv.reason,
+          tag: null,
+          payout: 0,
         });
       }
+      return options;
+    },
+
+    tagOptions(): TagOption[] {
+      const options = [] as TagOption[];
+
+      if (this.proposedVerdict.status == SrpVerdictStatus.APPROVED) {
+        options.push(...TAG_OPTIONS);
+      }
+
+      if (this.srp.tag == null) {
+        if (this.srp.status != SrpVerdictStatus.PENDING) {
+          options.push({
+            label: "",
+            value: null,
+          });
+        }
+      } else if (_.findWhere(options, { value: this.srp.tag }) == null) {
+        options.push({
+          label: this.srp.tag,
+          value: this.srp.tag,
+        });
+      }
+
       return options;
     },
 
@@ -264,43 +331,55 @@ export default defineComponent({
     },
   },
 
-  watch: {
-    selectedVerdict(newVerdict: VerdictOption) {
-      this.updateInputPayout(newVerdict.payout);
-    },
-  },
-
   mounted() {
     if (this.editing) {
-      if (this.selectedVerdict) {
-        this.updateInputPayout(this.selectedVerdict.payout);
-      }
+      this.syncProposalWithRemoteVerdict();
     }
   },
 
   methods: {
+    onUserSelectVerdictOption() {
+      const option = _.findWhere(this.verdictOptions, {
+        key: this.selectedVerdictKey,
+      });
+
+      if (option != null) {
+        this.applyVerdictOption(option);
+      } else {
+        console.log("No option for", this.selectedVerdictKey);
+      }
+    },
+
     onSaveClick() {
-      if (!this.selectedVerdict) {
+      if (this.saveStatus == "active") {
         return;
       }
-      const payout = displayPayoutToRawPayout(this.inputPayout);
-      const verdict = this.selectedVerdict.verdict;
-      const reason = this.selectedVerdict.reason;
-
       this.saveStatus = "active";
+
+      const verdict = this.proposedVerdict.status;
+      const reason = this.proposedVerdict.reason;
+      const tag = this.proposedVerdict.tag;
+      const payout = this.numericalPayout;
+      if (isNaN(payout)) {
+        console.log(`Cannot save: payout is NaN`);
+        return;
+      }
+
       const savePromise = ajaxer.putSrpLossVerdict(
         this.srp.killmail,
         verdict,
         reason,
+        tag,
         payout,
       );
       this.savePromise = savePromise;
       savePromise
         .then((response) => {
           this.saveStatus = "inactive";
-          this.srp.payout = payout;
           this.srp.status = verdict;
           this.srp.reason = reason;
+          this.srp.tag = tag;
+          this.srp.payout = payout;
           this.editing = false;
           this.srp.renderingCharacter = response.data.id;
           this.addNames({
@@ -312,28 +391,7 @@ export default defineComponent({
         });
     },
 
-    loadVerdictFromStatusAndTriage() {
-      if (this.srp.triage == null) {
-        // should never happen; only called from onEditClick which guards.
-        return;
-      }
-      if (this.srp.status == "pending") {
-        this.selectedVerdictKey = this.srp.triage.suggestedOption;
-      } else if (this.srp.status == "approved") {
-        this.originalPayout = this.srp.payout;
-        this.selectedVerdictKey = "original_payout";
-      } else {
-        if (_.findWhere(UNSETTABLE_STATUSES, { reason: this.srp.reason })) {
-          this.selectedVerdictKey = this.srp.triage.suggestedOption;
-        } else {
-          // Otherwise it's ineligible; just use that as the key
-          this.selectedVerdictKey = `${this.srp.status}_${this.srp.reason}`;
-        }
-      }
-      this.editing = true;
-    },
-
-    onEditClick() {
+    async onEditClick() {
       if (this.srp.triage == null) {
         if (this.fetchTriageStatus == "active") {
           return;
@@ -341,151 +399,186 @@ export default defineComponent({
         this.fetchTriageStatus = "active";
         const editPromise = ajaxer.getSrpLossTriageOptions(this.srp.killmail);
         this.editPromise = editPromise;
-        editPromise
-          .then((response) => {
-            this.fetchTriageStatus = "inactive";
-            this.srp.triage = response.data.triage;
-            this.loadVerdictFromStatusAndTriage();
-          })
-          .catch(() => {
-            this.fetchTriageStatus = "error";
-          });
+        try {
+          const response = await editPromise;
+          this.fetchTriageStatus = "inactive";
+          this.srp.triage = response.data.triage;
+          this.syncProposalWithRemoteVerdict();
+        } catch (e) {
+          this.fetchTriageStatus = "error";
+        }
       } else {
-        this.loadVerdictFromStatusAndTriage();
+        this.syncProposalWithRemoteVerdict();
       }
+      this.editing = true;
+    },
+
+    syncProposalWithRemoteVerdict() {
+      let option: VerdictOption | undefined;
+
+      switch (this.srp.status) {
+        case SrpVerdictStatus.PENDING:
+          option = _.findWhere(this.verdictOptions, {
+            key: this.srp.triage?.suggestedOption,
+          });
+          break;
+        case SrpVerdictStatus.APPROVED:
+          option = checkNotNil(this.previousApprovalOption);
+          break;
+        case SrpVerdictStatus.INELIGIBLE:
+          option = _.findWhere(this.verdictOptions, {
+            status: SrpVerdictStatus.INELIGIBLE,
+            reason: this.srp.reason,
+          });
+          break;
+        case "paid":
+          throw new Error(`Cannot edit an SRP verdict that has been paid`);
+      }
+
+      if (option == undefined) {
+        // Fall back to default verdict option if necessary
+        option = checkNotNil(
+          _.findWhere(this.verdictOptions, { key: CUSTOM_VERDICT_KEY }),
+        );
+      }
+
+      this.applyVerdictOption(option);
+
+      this.selectedVerdictKey = option.key;
+    },
+
+    applyVerdictOption(option: VerdictOption) {
+      this.proposedVerdict.status = option.status;
+      this.proposedVerdict.reason = option.reason;
+      this.proposedVerdict.tag = option.tag;
+      this.updateInputPayout(option.payout);
     },
 
     updateInputPayout(value: number) {
       this.inputPayout = rawPayoutToDisplayPayout(value);
     },
 
-    getStatusLabel(srp: Srp): string {
-      const nullReasonStatuses: readonly string[] = [
-        "approved",
-        "paid",
-        "pending",
-      ] as const;
-      let entry = _.findWhere(ALL_STATUSES, {
-        status: srp.status,
-        reason: nullReasonStatuses.includes(srp.status) ? null : srp.reason,
-      });
-      return entry?.label ?? "Unknown status";
+    getStatusLabel(srp: SrpLossJson): string {
+      switch (srp.status) {
+        case SrpVerdictStatus.PENDING:
+          return "Pending";
+        case SrpVerdictStatus.APPROVED:
+          return "Approved";
+        case SrpVerdictStatus.INELIGIBLE:
+          // eslint-disable-next-line no-case-declarations
+          const option = _.findWhere(INELIGIBLE_VERDICTS, {
+            reason: srp.reason ?? undefined,
+          });
+          return option?.label ?? "Ineligible (unknown)";
+        case "paid":
+          return "Paid";
+      }
+    },
+
+    getTagLabel(tag: string | null): string {
+      if (tag == null) {
+        return "—"; // em-dash
+      }
+      const option = _.findWhere(TAG_OPTIONS, { value: tag });
+
+      return option?.label ?? tag;
     },
   },
 });
 
-function rawPayoutToDisplayPayout(rawPayout: number | null): number {
+function rawPayoutToDisplayPayout(rawPayout: number | null): string {
   if (rawPayout == null) {
-    return 0;
+    return "0";
   }
-  return Math.round(rawPayout / 1000000);
+  return Math.round(rawPayout / 1000000).toString();
 }
 
-function displayPayoutToRawPayout(displayPayout: number | null): number {
+function displayPayoutToRawPayout(displayPayout: string | null): number {
   if (displayPayout == null) {
     return 0;
   }
-  return displayPayout * 1000000;
+  return parseInt(displayPayout) * 1000000;
 }
 
-interface Status {
-  status: string;
-  reason: string | null;
+interface VerdictOption {
+  key: string;
   label: string;
+  status: SrpVerdictStatus;
+  reason: SrpVerdictReason | null;
+  tag: string | null;
+  payout: number;
 }
 
-const INELIGIBLE_STATUSES: Status[] = [
+interface TagOption {
+  label: string;
+  value: string | null;
+}
+
+const CUSTOM_VERDICT_KEY = "custom";
+
+const INELIGIBLE_VERDICTS = [
   {
-    status: "ineligible",
-    reason: "not_covered",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.NOT_COVERED,
     label: "Ineligible (not covered)",
   },
   {
-    status: "ineligible",
-    reason: "invalid_fit",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.INVALID_FIT,
     label: "Ineligible (invalid fit)",
   },
   {
-    status: "ineligible",
-    reason: "invalid_engagement",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.INVALID_ENGAGEMENT,
     label: "Ineligible (invalid engagement)",
   },
   {
-    status: "ineligible",
-    reason: "npc",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.NPC,
     label: "Ineligible (NPC)",
   },
   {
-    status: "ineligible",
-    reason: "solo",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.SOLO,
     label: "Ineligible (solo)",
   },
   {
-    status: "ineligible",
-    reason: "opt_out",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.OPT_OUT,
     label: "Ineligible (opt out)",
   },
   {
-    status: "ineligible",
-    reason: "no_longer_a_member",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.NO_LONGER_A_MEMBER,
     label: "Ineligible (no longer a member)",
   },
   {
-    status: "ineligible",
-    reason: "obsolete",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.OBSOLETE,
     label: "Ineligible (obsolete)",
   },
   {
-    status: "ineligible",
-    reason: "misc",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.MISC,
     label: "Ineligible (misc)",
   },
   {
-    status: "ineligible",
-    reason: "corp_provided",
+    status: SrpVerdictStatus.INELIGIBLE,
+    reason: SrpVerdictReason.CORP_PROVIDED,
     label: "Ineligible (corp provided ship)",
   },
 ];
 
-const UNSETTABLE_STATUSES: Status[] = [
+const TAG_OPTIONS: TagOption[] = [
   {
-    status: "ineligible",
-    reason: "outside_jurisdiction",
-    label: "Ineligible (outside jurisdiction)",
+    label: "Corp",
+    value: "corp",
   },
   {
-    status: "ineligible",
-    reason: "no_recipient",
-    label: "Ineligible (no recipient)",
+    label: "Alliance",
+    value: "alliance",
   },
 ];
-
-const MAIN_STATUSES: Status[] = [
-  {
-    status: "approved",
-    reason: null,
-    label: "Approved",
-  },
-  {
-    status: "paid",
-    reason: null,
-    label: "Paid",
-  },
-  {
-    status: "pending",
-    reason: null,
-    label: "Pending",
-  },
-];
-
-const ALL_STATUSES: Status[] = MAIN_STATUSES.concat(
-  INELIGIBLE_STATUSES,
-  UNSETTABLE_STATUSES,
-);
-
-function isValidInputPayout(inputPayout: number | null): boolean {
-  return inputPayout != null && inputPayout >= 0;
-}
 </script>
 
 <style scoped>
@@ -494,12 +587,7 @@ function isValidInputPayout(inputPayout: number | null): boolean {
   align-items: center;
 }
 
-.status-cnt {
-  width: 220px;
-}
-
-.verdict-select {
-  width: 100%;
+.dropdown {
   height: 35px;
   background: #161616;
   border: 1px solid #2d2d2d;
@@ -510,9 +598,17 @@ function isValidInputPayout(inputPayout: number | null): boolean {
   padding-left: 11px;
 }
 
-.verdict-select:focus {
+.dropdown:focus {
   outline: none;
   border-color: #444;
+}
+
+.status-cnt {
+  width: 220px;
+}
+
+.verdict-select {
+  width: 100%;
 }
 
 .verdict-text {
@@ -584,6 +680,20 @@ function isValidInputPayout(inputPayout: number | null): boolean {
   font-size: 14px;
   color: #cdcdcd;
   padding-right: 7px;
+}
+
+.tag-cnt {
+  width: 110px;
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.tag-select {
+  width: 100%;
+}
+
+.tag-disp {
+  padding-left: 14px;
 }
 
 .save-cnt {

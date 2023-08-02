@@ -1,6 +1,6 @@
 import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
 import { Battle, Killmail } from "../../db/tables.js";
-import { Participant } from "./BattleData.js";
+import { Participant } from "../../../shared/types/srp/battle/BattleData.js";
 import { Transform, TransformCallback } from "../../util/stream/Transform.js";
 
 /**

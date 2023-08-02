@@ -40,11 +40,13 @@ import MoreButton from "./MoreButton.vue";
 
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
-import { Loss, Losses } from "./types";
 import { AxiosResponse } from "axios";
 
 import { Identity } from "../home";
 import { defineComponent, PropType } from "vue";
+import { Srp_Loss_GET } from "../../shared/route/api/srp/loss_GET";
+import { SrpLossJson } from "../../shared/types/srp/SrpLossJson";
+
 export default defineComponent({
   components: {
     LossHeading,
@@ -80,8 +82,8 @@ export default defineComponent({
       suspectMoreToFetch: true,
       relatedKillmail: null,
     } as {
-      rows: null | Loss[];
-      fetchPromise: null | Promise<AxiosResponse<Losses>>;
+      rows: null | SrpLossJson[];
+      fetchPromise: null | Promise<AxiosResponse<Srp_Loss_GET>>;
       suspectMoreToFetch: boolean;
       relatedKillmail: null | number;
     };
@@ -121,7 +123,7 @@ export default defineComponent({
 
     fetchNextResults() {
       this.fetchPromise = ajaxer.getRecentSrpLosses({
-        pending: this.triageMode,
+        status: this.triageMode ? "pending" : undefined,
         order: this.triageMode ? "asc" : "desc",
         fromKillmail: this.finalKillmail,
         account: this.forAccount,

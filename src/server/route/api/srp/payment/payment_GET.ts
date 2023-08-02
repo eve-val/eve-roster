@@ -6,32 +6,21 @@ import { AccountPrivileges } from "../../../../infra/express/privileges.js";
 import { idParam } from "../../../../util/express/paramVerifier.js";
 import { dao } from "../../../../db/dao.js";
 import { NotFoundError } from "../../../../error/NotFoundError.js";
-import { SimpleNumMap } from "../../../../../shared/util/simpleTypes.js";
 import { srpLossToJson } from "../../../../domain/srp/srpLossToJson.js";
 import { fetchEveNames } from "../../../../data-source/esi/names.js";
-import { SrpLossJson } from "../../../../domain/srp/SrpLossJson.js";
-
-export interface Output {
-  payment: {
-    recipient: number;
-    modified: number;
-    modifiedLabel: string;
-    paid: boolean;
-    payer: number | null;
-  };
-  losses: SrpLossJson[];
-  names: SimpleNumMap<string>;
-}
+import { Srp_Payment_GET } from "../../../../../shared/route/api/srp/payment/payment_GET.js";
 
 /**
  * Return information about a SRP reimbursement as well as all of its associated
  * approved losses.
  */
-export default jsonEndpoint((req, res, db, account, privs): Promise<Output> => {
-  const paymentId = idParam(req, "id");
+export default jsonEndpoint(
+  (req, res, db, account, privs): Promise<Srp_Payment_GET> => {
+    const paymentId = idParam(req, "id");
 
-  return Promise.resolve(handleEndpoint(db, privs, paymentId));
-});
+    return Promise.resolve(handleEndpoint(db, privs, paymentId));
+  },
+);
 
 async function handleEndpoint(
   db: Tnex,
@@ -57,6 +46,7 @@ async function handleEndpoint(
 
   return {
     payment: {
+      id: paymentId,
       recipient: reimbRow.srpr_recipientCharacter,
       modified: reimbRow.srpr_modified,
       modifiedLabel: moment

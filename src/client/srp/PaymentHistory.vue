@@ -39,14 +39,17 @@ Table of PaymentHistoryRows.
 import MoreButton from "./MoreButton.vue";
 import PaymentHistoryRow from "./PaymentHistoryRow.vue";
 
+import { defineComponent, PropType } from "vue";
+import { AxiosResponse } from "axios";
+
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
-
-import { Payment, Payments } from "./types";
-
 import { Identity } from "../home";
-import { AxiosResponse } from "axios";
-import { defineComponent, PropType } from "vue";
+import {
+  Srp_Payment_dir_GET,
+  PaymentJson,
+} from "../../shared/route/api/srp/payment/payment_dir_GET";
+
 export default defineComponent({
   components: {
     MoreButton,
@@ -75,8 +78,8 @@ export default defineComponent({
       fetchPromise: null,
       suspectMoreToFetch: true,
     } as {
-      payments: Payment[] | null;
-      fetchPromise: Promise<AxiosResponse<Payments>> | null;
+      payments: PaymentJson[] | null;
+      fetchPromise: Promise<AxiosResponse<Srp_Payment_dir_GET>> | null;
       suspectMoreToFetch: boolean;
     };
   },

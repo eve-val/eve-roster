@@ -2,25 +2,20 @@ import { Dao } from "../dao.js";
 import { Tnex, DEFAULT_NUM, UpdatePolicy } from "../../db/tnex/index.js";
 import {
   killmail,
-  Killmail,
   character,
   srpReimbursement,
   srpVerdict,
   ownership,
-  SrpReimbursement,
-  SrpVerdict,
   account,
-  Account,
   killmailBattle,
-  KillmailBattle,
 } from "../tables.js";
 import { SrpVerdictStatus, SrpVerdictReason } from "./enums.js";
 import { val, Comparison } from "../tnex/core.js";
-import { Nullable } from "../../../shared/util/simpleTypes.js";
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
+import { UnifiedSrpLossStatus } from "../../../shared/types/srp/SrpLossJson.js";
 
 export interface SrpLossFilter {
-  status?: SrpVerdictStatus;
+  status?: UnifiedSrpLossStatus;
+  tag?: string;
   limit?: number;
   order?: "asc" | "desc";
   fromKillmail?: number;
@@ -29,6 +24,8 @@ export interface SrpLossFilter {
   killmail?: number;
   reimbursement?: number;
   battles?: number[];
+  startTimestamp?: number;
+  endTimestamp?: number;
 }
 
 export interface SrpReimbursementFilter {
@@ -51,6 +48,7 @@ export default class SrpDao {
           srpv_killmail: kmId,
           srpv_status: SrpVerdictStatus.PENDING,
           srpv_reason: null,
+          srpv_tag: null,
           srpv_payout: 0,
           srpv_reimbursement: null,
           srpv_modified: Date.now(),
@@ -69,7 +67,7 @@ export default class SrpDao {
     );
   }
 
-  async listSrps(db: Tnex, filter: SrpLossFilter): Promise<SrpLossRow[]> {
+  async listSrps(db: Tnex, filter: SrpLossFilter) {
     const order = filter.order ?? "desc";
 
     let query = db
@@ -105,6 +103,7 @@ export default class SrpDao {
         "km_relatedLoss",
         "srpv_status",
         "srpv_reason",
+        "srpv_tag",
         "srpv_payout",
         "rendering_mainCharacter",
         "srpr_id",
@@ -114,11 +113,19 @@ export default class SrpDao {
         "account_mainCharacter",
         "kmb_battle",
       );
+
     if (filter.limit != undefined) {
       query = query.limit(filter.limit);
     }
-    if (filter.status == "pending") {
-      query = query.where("srpv_status", "=", val(SrpVerdictStatus.PENDING));
+    if (filter.status != undefined) {
+      if (filter.status == "paid") {
+        query = query.where("srpr_paid", "=", val(true));
+      } else {
+        query = query.where("srpv_status", "=", val(filter.status));
+      }
+    }
+    if (filter.tag != undefined) {
+      query = query.where("srpv_tag", "=", val(filter.tag));
     }
     if (filter.fromKillmail != undefined) {
       const cmp: Comparison = order == "desc" ? "<" : ">";
@@ -138,6 +145,12 @@ export default class SrpDao {
     if (filter.battles != undefined) {
       query = query.whereIn("kmb_battle", filter.battles);
     }
+    if (filter.startTimestamp != undefined) {
+      query = query.where("km_timestamp", ">=", val(filter.startTimestamp));
+    }
+    if (filter.endTimestamp != undefined) {
+      query = query.where("km_timestamp", "<", val(filter.endTimestamp));
+    }
 
     return query.run();
   }
@@ -147,6 +160,7 @@ export default class SrpDao {
     killmailId: number,
     verdict: SrpVerdictStatus,
     reason: SrpVerdictReason | null,
+    tag: string | null,
     payout: number,
     renderingAccount: number | null,
   ) {
@@ -201,6 +215,7 @@ export default class SrpDao {
         .update(srpVerdict, {
           srpv_status: verdict,
           srpv_reason: reason,
+          srpv_tag: tag,
           srpv_payout: payout,
           srpv_reimbursement: rid,
           srpv_renderingAccount: renderingAccount,
@@ -401,24 +416,4 @@ export default class SrpDao {
   }
 }
 
-export type SrpLossRow = Pick<
-  Killmail &
-    SrpVerdict &
-    Nullable<SrpReimbursement> &
-    Nullable<Account> &
-    Nullable<KillmailBattle>,
-  | "km_id"
-  | "km_timestamp"
-  | "km_relatedLoss"
-  | "km_data"
-  | "srpv_status"
-  | "srpv_reason"
-  | "srpv_payout"
-  | "srpr_id"
-  | "srpr_paid"
-  | "srpr_payingCharacter"
-  | "account_mainCharacter"
-  | "kmb_battle"
-> & { related_data: ZKillmail | null } & {
-  rendering_mainCharacter: number | null;
-};
+export type SrpLossRow = Awaited<ReturnType<SrpDao["listSrps"]>>[number];
