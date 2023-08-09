@@ -2036,7 +2036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:0.41.1, @opentelemetry/instrumentation@npm:^0.41.1":
+"@opentelemetry/instrumentation@npm:0.41.1":
   version: 0.41.1
   resolution: "@opentelemetry/instrumentation@npm:0.41.1"
   dependencies:
@@ -2048,6 +2048,21 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
   checksum: 355408f2cd4112ee577f8d1315e6e53fe6729f3883c43b8a299129cd1d299e05182d20b7cc0a45897b576e74993afbe4ac795e2fc66eb512a94ec212cb11a847
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/instrumentation@npm:^0.41.2":
+  version: 0.41.2
+  resolution: "@opentelemetry/instrumentation@npm:0.41.2"
+  dependencies:
+    "@types/shimmer": "npm:^1.0.2"
+    import-in-the-middle: "npm:1.4.2"
+    require-in-the-middle: "npm:^7.1.1"
+    semver: "npm:^7.5.1"
+    shimmer: "npm:^1.2.1"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 837e8c08ecec1550456609a1db4805f1b0e603f12ffcb225e2a25440239c294ab30fde3de0d06a44118a711b5465d9b34120d223197d1e323e0b14f7ba7a2bb4
   languageName: node
   linkType: hard
 
@@ -7061,7 +7076,7 @@ __metadata:
     "@opentelemetry/api": "npm:1.4.1"
     "@opentelemetry/auto-instrumentations-node": "npm:^0.38.0"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.41.1"
-    "@opentelemetry/instrumentation": "npm:^0.41.1"
+    "@opentelemetry/instrumentation": "npm:^0.41.2"
     "@opentelemetry/resources": "npm:^1.15.1"
     "@opentelemetry/sdk-node": "npm:^0.41.1"
     "@opentelemetry/semantic-conventions": "npm:^1.15.1"
@@ -8257,6 +8272,18 @@ __metadata:
     cjs-module-lexer: "npm:^1.2.2"
     module-details-from-path: "npm:^1.0.3"
   checksum: 969ff4d9d27852902b020f7ae26954a8a2fc7b80e4cf764888553d917eb9c6b5c996d5eb35d64606a58248ccd596491b77b69e85e058f5ea256b7ed7abf42a3a
+  languageName: node
+  linkType: hard
+
+"import-in-the-middle@npm:1.4.2":
+  version: 1.4.2
+  resolution: "import-in-the-middle@npm:1.4.2"
+  dependencies:
+    acorn: "npm:^8.8.2"
+    acorn-import-assertions: "npm:^1.9.0"
+    cjs-module-lexer: "npm:^1.2.2"
+    module-details-from-path: "npm:^1.0.3"
+  checksum: fe853b5f4fe521b3dc6ee1946fd9ef3f4c1aaab33a1c80130e57983cab91f95b469d4da27878312bfd300f87b056ae1d7d77f5dbf636647418221fac174c8fc0
   languageName: node
   linkType: hard
 
