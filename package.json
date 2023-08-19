@@ -75,7 +75,7 @@
     "@types/heapdump": "^0.3.1",
     "@types/imagemin": "^8.0.0",
     "@types/mini-css-extract-plugin": "^2.5.1",
-    "@types/node": "^20.4.10",
+    "@types/node": "^20.5.1",
     "@types/node-schedule": "^2.1.0",
     "@types/pg": "^8.10.2",
     "@types/pg-pool": "^2.0.3",
@@ -155,11 +155,11 @@
     }
   },
   "engines": {
-    "node": "20.4.0",
+    "node": "20.5.1",
     "yarn": "4.0.0-rc.48"
   },
   "volta": {
-    "node": "20.4.0"
+    "node": "20.5.1"
   },
   "packageManager": "yarn@4.0.0-rc.48"
 }
