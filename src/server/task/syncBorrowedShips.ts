@@ -222,9 +222,8 @@ async function updateCharacter(
 
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
-  const characterIds = await dao.roster.getCharacterIdsOwnedByMemberAccounts(
-    db,
-  );
+  const characterIds =
+    await dao.roster.getCharacterIdsOwnedByMemberAccounts(db);
   const locCache = new LocationCache(job);
   const len = characterIds.length;
   let progress = 0;
