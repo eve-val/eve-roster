@@ -3,6 +3,19 @@
   "description": "EVE Roster app for SOUND alliance",
   "keywords": ["nodejs", "express"],
   "repository": "https://github.com/eve-val/eve-roster",
+  "healthchecks": {
+    "web": [
+      {
+        "attempts": 10,
+        "content": "ok",
+        "initialDelay": 15,
+        "name": "web check",
+        "description": "Checking if the app responds to the /healthz endpoint",
+        "path": "/healthz",
+        "type": "startup"
+      }
+    ]
+  },
   "scripts": {
     "dokku": {
       "predeploy": "yarn run updatedb",
