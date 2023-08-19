@@ -6819,7 +6819,7 @@ __metadata:
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.2"
     serve-favicon: "npm:^2.5.0"
-    sharp: "npm:^0.32.4"
+    sharp: "npm:^0.32.5"
     source-map-support: "npm:^0.5.21"
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
@@ -12635,9 +12635,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.32.4":
-  version: 0.32.4
-  resolution: "sharp@npm:0.32.4"
+"sharp@npm:^0.32.5":
+  version: 0.32.5
+  resolution: "sharp@npm:0.32.5"
   dependencies:
     color: "npm:^4.2.3"
     detect-libc: "npm:^2.0.2"
@@ -12648,7 +12648,7 @@ __metadata:
     simple-get: "npm:^4.0.1"
     tar-fs: "npm:^3.0.4"
     tunnel-agent: "npm:^0.6.0"
-  checksum: 86a4094d838917711effe0b8b4ab4decc73ecd82a505f074f3797381a478b6ecc965802a52adb1d22b55096b899f86f0ee43d6109adcdd99be463bf77ea295ac
+  checksum: 30352afd82d2c8018d0dca6a270bba83a64874df6d115d95cd4b63b48bcfd17397feab27a8a196eca67a9886f189db06c0382265e6d5d19078b79b83ca7a8144
   languageName: node
   linkType: hard
 
