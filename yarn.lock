@@ -6814,7 +6814,7 @@ __metadata:
     node-graceful: "npm:^3.1.0"
     node-schedule: "npm:^2.1.1"
     p-limit: "npm:^4.0.0"
-    pg: "npm:^8.11.2"
+    pg: "npm:^8.11.3"
     prettier: "npm:^3.0.1"
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.2"
@@ -10508,9 +10508,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.11.2":
-  version: 8.11.2
-  resolution: "pg@npm:8.11.2"
+"pg@npm:^8.11.3":
+  version: 8.11.3
+  resolution: "pg@npm:8.11.3"
   dependencies:
     buffer-writer: "npm:2.0.0"
     packet-reader: "npm:1.0.0"
@@ -10528,7 +10528,7 @@ __metadata:
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: bafa0d34288459eb590e098ce6e7dbb67f4430bd5d70faaef57d441324b308da315c7a882f8baa1d11f8a0f27eac72087fcff0b8b1f9e6c2cf572a398a430574
+  checksum: f15f29c8e17723ee1da72abdf400cbed2c04602c58c93687f3f0068e71df2a6fb62b9a3543e13da21b10a0494f4c5b4cfc8d6cd8396617b76c4cbfd6ddab17e7
   languageName: node
   linkType: hard
 
