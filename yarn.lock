@@ -410,13 +410,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.22.6":
-  version: 7.22.6
-  resolution: "@babel/runtime-corejs3@npm:7.22.6"
+"@babel/runtime-corejs3@npm:^7.22.10":
+  version: 7.22.10
+  resolution: "@babel/runtime-corejs3@npm:7.22.10"
   dependencies:
     core-js-pure: "npm:^3.30.2"
-    regenerator-runtime: "npm:^0.13.11"
-  checksum: 8d18e04233052b8a5c2e61aa3576b360ba89f2df83566f9e1f00c86309cff0bea89f2f78fdd54dcb45af42532c734e7d63a94c8da392b60705aeac954c90c15e
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 78ee6b6952211942001bd9c543a82a939fae8e32ff4de8eebef9255b5e20ae18b53a63d928016c44c32d1359d464958169ad381c968e0a51f05620804fc78bf3
   languageName: node
   linkType: hard
 
@@ -487,10 +487,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braintree/sanitize-url@npm:=6.0.2":
-  version: 6.0.2
-  resolution: "@braintree/sanitize-url@npm:6.0.2"
-  checksum: 81497ab12edfcf215b45ca08c0397fb5cf748efb76a4dbd38a5b88f8d645ecfcfad54d9c1b3f82cb7d286283506068b0ae141de316bcb5bd09a90e5de6d0226a
+"@braintree/sanitize-url@npm:=6.0.4":
+  version: 6.0.4
+  resolution: "@braintree/sanitize-url@npm:6.0.4"
+  checksum: 52de7e19df29039134e2f0fbe6d11dbc15423d18799dc5306fbc2c92d6a7bd0e6c3c079c09be99260647cc85c3ca910e2099d819965a1d8604d05e5d3f3bb358
   languageName: node
   linkType: hard
 
@@ -6824,7 +6824,7 @@ __metadata:
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.0.2"
-    swagger-ui: "npm:^5.3.1"
+    swagger-ui: "npm:^5.4.2"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.1"
     ts-jest-resolver: "npm:^2.0.1"
@@ -9049,6 +9049,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-stable-stringify@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "json-stable-stringify@npm:1.0.2"
+  dependencies:
+    jsonify: "npm:^0.0.1"
+  checksum: 96c8d697520072231c4916b7c0084ea857418cad0d06dc910f89a40df3824386a8eee5ed83ceea25b6052d67223fe821f9b1e51be311383104c5b2305b1dc87e
+  languageName: node
+  linkType: hard
+
 "json-stringify-safe@npm:^5.0.1":
   version: 5.0.1
   resolution: "json-stringify-safe@npm:5.0.1"
@@ -9075,6 +9084,13 @@ __metadata:
     graceful-fs:
       optional: true
   checksum: 03014769e7dc77d4cf05fa0b534907270b60890085dd5e4d60a382ff09328580651da0b8b4cdf44d91e4c8ae64d91791d965f05707beff000ed494a38b6fec85
+  languageName: node
+  linkType: hard
+
+"jsonify@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "jsonify@npm:0.0.1"
+  checksum: 7b86b6f4518582ff1d8b7624ed6c6277affd5246445e864615dbdef843a4057ac58587684faf129ea111eeb80e01c15f0a4d9d03820eb3f3985fa67e81b12398
   languageName: node
   linkType: hard
 
@@ -10342,9 +10358,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"patch-package@npm:^7.0.2":
-  version: 7.0.2
-  resolution: "patch-package@npm:7.0.2"
+"patch-package@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "patch-package@npm:8.0.0"
   dependencies:
     "@yarnpkg/lockfile": "npm:^1.1.0"
     chalk: "npm:^4.1.2"
@@ -10352,6 +10368,7 @@ __metadata:
     cross-spawn: "npm:^7.0.3"
     find-yarn-workspace-root: "npm:^2.0.0"
     fs-extra: "npm:^9.0.0"
+    json-stable-stringify: "npm:^1.0.2"
     klaw-sync: "npm:^6.0.0"
     minimist: "npm:^1.2.6"
     open: "npm:^7.4.2"
@@ -10362,7 +10379,7 @@ __metadata:
     yaml: "npm:^2.2.2"
   bin:
     patch-package: index.js
-  checksum: 6aacba5e9a68ed4ae81eae2d656f916be4e007ad8cabb683e7286b0b0a01b3c79d862098425576a929d0dfca28a8e89cf55939c1c933c5b9245704da28993df9
+  checksum: 8714322c35b29266e71c82d58443ce5322400a546a3327f1b8907b8eeb7e366dff33c4fdfbd25e3f0b3a9927189c26e9ac60636ca1e4140d6dbc11cca10f9b5d
   languageName: node
   linkType: hard
 
@@ -12122,6 +12139,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "regenerator-runtime@npm:0.14.0"
+  checksum: 6c19495baefcf5fbb18a281b56a97f0197b5f219f42e571e80877f095320afac0bdb31dab8f8186858e6126950068c3f17a1226437881e3e70446ea66751897c
+  languageName: node
+  linkType: hard
+
 "relateurl@npm:^0.2.7":
   version: 0.2.7
   resolution: "relateurl@npm:0.2.7"
@@ -13128,12 +13152,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.3.1":
-  version: 5.3.1
-  resolution: "swagger-ui@npm:5.3.1"
+"swagger-ui@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "swagger-ui@npm:5.4.2"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.22.6"
-    "@braintree/sanitize-url": "npm:=6.0.2"
+    "@babel/runtime-corejs3": "npm:^7.22.10"
+    "@braintree/sanitize-url": "npm:=6.0.4"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.3.1"
     css.escape: "npm:1.5.1"
@@ -13144,7 +13168,7 @@ __metadata:
     js-file-download: "npm:^0.4.12"
     js-yaml: "npm:=4.1.0"
     lodash: "npm:^4.17.21"
-    patch-package: "npm:^7.0.2"
+    patch-package: "npm:^8.0.0"
     prop-types: "npm:^15.8.1"
     randexp: "npm:^0.5.3"
     randombytes: "npm:^2.1.0"
@@ -13168,7 +13192,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 07bd62fe0d937841e463c6a1cbecec913c92d8e198de0b93d42df8002520ce94335d0320bd346a1f96abf023cd8a70ec6823ad5bf69f83299db2b07d042130cc
+  checksum: ec868618b8260e7af9cd5911a667486b229e3b05389c6afec7a2ab65dc526ac6b3d69fcbcec33d69a559f0b6d774b9adb8e0d8707457360186392786a84808b0
   languageName: node
   linkType: hard
 
