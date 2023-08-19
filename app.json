@@ -6,7 +6,7 @@
   "healthchecks": {
     "web": [
       {
-        "attempts": 5,
+        "attempts": 10,
         "content": "ok",
         "initialDelay": 15,
         "name": "web check",
