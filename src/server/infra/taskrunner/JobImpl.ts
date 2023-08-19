@@ -16,7 +16,7 @@ export class JobImpl extends EventEmitter implements Job, JobLogger {
   public readonly channel: string | undefined;
   public readonly silent: boolean;
 
-  public timeoutId: NodeJS.Timer | undefined;
+  public timeoutId: NodeJS.Timeout | undefined;
 
   private _logId: number | undefined = undefined;
   private _startTime: number | undefined = undefined;
