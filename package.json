@@ -86,7 +86,7 @@
     "@types/sqlite3": "^3.1.8",
     "@types/swagger-ui": "^3.52.0",
     "@types/tmp": "^0.2.3",
-    "@types/underscore": "^1.11.6",
+    "@types/underscore": "^1.11.7",
     "@types/verror": "^1.10.6",
     "@types/webpack-hot-middleware": "^2.25.6",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
