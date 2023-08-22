@@ -3562,12 +3562,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/source-map-support@npm:^0.5.6":
-  version: 0.5.6
-  resolution: "@types/source-map-support@npm:0.5.6"
+"@types/source-map-support@npm:^0.5.7":
+  version: 0.5.7
+  resolution: "@types/source-map-support@npm:0.5.7"
   dependencies:
     source-map: "npm:^0.6.0"
-  checksum: a0fe4e1926a1ac7465c2c4dc7f72bf7c5272bba10006548998007fa5518020ad0b8cd0a950d7db9fc7cde4ca6f3ad9a3f326f1612243c023ccbfa6214af41971
+  checksum: 277bb1457cef406f51e4ce724655459c7b138d3bb79e40d74a0de8ff53f90b02903c3048e06fe899f44863d00c55e83262beabf59149a35a91fbd978cea10af1
   languageName: node
   linkType: hard
 
@@ -6765,7 +6765,7 @@ __metadata:
     "@types/progress-stream": "npm:^2.0.2"
     "@types/pug": "npm:^2.0.6"
     "@types/serve-favicon": "npm:^2.5.4"
-    "@types/source-map-support": "npm:^0.5.6"
+    "@types/source-map-support": "npm:^0.5.7"
     "@types/sqlite3": "npm:^3.1.8"
     "@types/swagger-ui": "npm:^3.52.0"
     "@types/tmp": "npm:^0.2.3"
