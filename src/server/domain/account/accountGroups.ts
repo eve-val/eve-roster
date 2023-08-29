@@ -8,8 +8,10 @@ import { serialize } from "../../util/asyncUtil.js";
 import { account } from "../../db/tables.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
+import { trace, context } from "@opentelemetry/api";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
+const tracer = trace.getTracer(fileURLToPath(import.meta.url));
 
 export function updateGroupsOnAllAccounts(db: Tnex) {
   return db
@@ -24,25 +26,33 @@ export function updateGroupsOnAllAccounts(db: Tnex) {
 }
 
 export function updateGroupsForAccount(db: Tnex, accountId: number) {
-  return Promise.resolve()
-    .then(() => {
-      return computeGroups(db, accountId);
-    })
-    .then(({ groups, ownsAffiliatedChar }) => {
-      if (!groups.includes(MEMBER_GROUP) && !groups.includes(ADMIN_GROUP)) {
-        logger.verbose("Main char is not a member, stripping groups...");
-        groups = [];
-      }
+  const span = tracer.startSpan("updateGroupsForAccount");
+  span.setAttribute("accountId", accountId);
+  context.with(trace.setSpan(context.active(), span), () => {
+    return Promise.resolve()
+      .then(() => {
+        return computeGroups(db, accountId);
+      })
+      .then(({ groups, ownsAffiliatedChar }) => {
+        if (!groups.includes(MEMBER_GROUP) && !groups.includes(ADMIN_GROUP)) {
+          logger.verbose("Main char is not a member, stripping groups...");
+          groups = [];
+        }
 
-      logger.debug(`updateAccount ${accountId}, groups= ${groups.join(", ")}`);
-      if (!groups.includes(MEMBER_GROUP) && ownsAffiliatedChar) {
-        // TODO: Flag the account somehow
-      }
-      return groups;
-    })
-    .then((groups) => {
-      return dao.group.setAccountGroups(db, accountId, groups);
-    });
+        logger.debug(
+          `updateAccount ${accountId}, groups= ${groups.join(", ")}`,
+        );
+        if (!groups.includes(MEMBER_GROUP) && ownsAffiliatedChar) {
+          // TODO: Flag the account somehow
+        }
+        span.setAttribute("groups", groups);
+        return groups;
+      })
+      .then((groups) => {
+        return dao.group.setAccountGroups(db, accountId, groups);
+      });
+  });
+  span.end();
 }
 
 function computeGroups(db: Tnex, accountId: number) {
