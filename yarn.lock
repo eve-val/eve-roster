@@ -410,13 +410,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.22.10":
-  version: 7.22.10
-  resolution: "@babel/runtime-corejs3@npm:7.22.10"
+"@babel/runtime-corejs3@npm:^7.22.11":
+  version: 7.22.15
+  resolution: "@babel/runtime-corejs3@npm:7.22.15"
   dependencies:
     core-js-pure: "npm:^3.30.2"
     regenerator-runtime: "npm:^0.14.0"
-  checksum: 78ee6b6952211942001bd9c543a82a939fae8e32ff4de8eebef9255b5e20ae18b53a63d928016c44c32d1359d464958169ad381c968e0a51f05620804fc78bf3
+  checksum: cfeb25fbb45eec76e2209ecdff73173fb6a7031875bce528a1d93e5cac4201b618a6a7e5486ee3189062cce4a3867f34faaa5c609f6cf5b6840fb76ceaaf9f7d
   languageName: node
   linkType: hard
 
@@ -6869,7 +6869,7 @@ __metadata:
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.0.2"
-    swagger-ui: "npm:^5.4.2"
+    swagger-ui: "npm:^5.6.2"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.1"
     ts-jest-resolver: "npm:^2.0.1"
@@ -12263,7 +12263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"repeat-string@npm:^1.5.2":
+"repeat-string@npm:*, repeat-string@npm:^1.5.2":
   version: 1.6.1
   resolution: "repeat-string@npm:1.6.1"
   checksum: 1b809fc6db97decdc68f5b12c4d1a671c8e3f65ec4a40c238bc5200e44e85bcc52a54f78268ab9c29fcf5fe4f1343e805420056d1f30fa9a9ee4c2d93e3cc6c0
@@ -13237,11 +13237,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.4.2":
-  version: 5.4.2
-  resolution: "swagger-ui@npm:5.4.2"
+"swagger-ui@npm:^5.6.2":
+  version: 5.6.2
+  resolution: "swagger-ui@npm:5.6.2"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.22.10"
+    "@babel/runtime-corejs3": "npm:^7.22.11"
     "@braintree/sanitize-url": "npm:=6.0.4"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.3.1"
@@ -13277,7 +13277,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: ec868618b8260e7af9cd5911a667486b229e3b05389c6afec7a2ab65dc526ac6b3d69fcbcec33d69a559f0b6d774b9adb8e0d8707457360186392786a84808b0
+  checksum: 90ccc4efe601eb2d62866e7ccb51695e8e3624a760d04d15eb0e02182418a1dc7f7ce617a6d624c2cde4beb2d4f54e541ee459b79bb201973be286208b06756c
   languageName: node
   linkType: hard
 
