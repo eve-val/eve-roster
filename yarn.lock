@@ -6844,7 +6844,7 @@ __metadata:
     esprint: "npm:^3.6.0"
     events: "npm:^3.3.0"
     express: "npm:^4.18.2"
-    express-rate-limit: "npm:^6.9.0"
+    express-rate-limit: "npm:^6.10.0"
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:^5.5.3"
     html-webpack-pug-plugin: "npm:^4.0.0"
@@ -6984,12 +6984,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-rate-limit@npm:^6.9.0":
-  version: 6.9.0
-  resolution: "express-rate-limit@npm:6.9.0"
+"express-rate-limit@npm:^6.10.0":
+  version: 6.10.0
+  resolution: "express-rate-limit@npm:6.10.0"
   peerDependencies:
     express: ^4 || ^5
-  checksum: 49f92cd6907e4ebc2ae67dce15cf655cd8693053d3e49a617f2d554332b05d7341bfe381f9ad4cd1022e234805cbaab62858e0f452d1dea460f8b89896262c74
+  checksum: 85cd6c1a72147c3e46e9542f2878f3288ac2e1aad861cadb27285ef58a9eb7cc3f01785bfb11286b070dbc6b680af034d3e6342205843d59d4793a3cb7610f20
   languageName: node
   linkType: hard
 
