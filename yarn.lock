@@ -3048,12 +3048,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/csurf@npm:^1.11.2":
-  version: 1.11.2
-  resolution: "@types/csurf@npm:1.11.2"
+"@types/csurf@npm:^1.11.3":
+  version: 1.11.3
+  resolution: "@types/csurf@npm:1.11.3"
   dependencies:
     "@types/express-serve-static-core": "npm:*"
-  checksum: 1827f6760d43ae12390f0308289f2c40537bbcb19ec854d0c654e3129074edf6108ddab99a06986813b6cf31d4fc9fa34eaa3d418f647edf607d8af4c69d62e7
+  checksum: 5db4b4f4adabc592846d2efe7c1c95de541adf6b536a7d6f523f1583e480a381418d3841ae2f159d81a863cc1c047559c311a0853e915e301cc717c7d0ff08f7
   languageName: node
   linkType: hard
 
@@ -6798,7 +6798,7 @@ __metadata:
     "@types/cookie-parser": "npm:^1.4.4"
     "@types/cookie-session": "npm:^2.0.44"
     "@types/css-minimizer-webpack-plugin": "npm:^3.2.1"
-    "@types/csurf": "npm:^1.11.2"
+    "@types/csurf": "npm:^1.11.3"
     "@types/events": "npm:^3"
     "@types/express": "npm:^4.17.17"
     "@types/heapdump": "npm:^0.3.1"
