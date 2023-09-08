@@ -26,7 +26,7 @@
     "@grpc/grpc-js": "^1.9.1",
     "@jest/globals": "^29.6.4",
     "@opentelemetry/api": "1.4.1",
-    "@opentelemetry/auto-instrumentations-node": "^0.39.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.39.2",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.41.2",
     "@opentelemetry/instrumentation": "^0.41.2",
     "@opentelemetry/resources": "^1.15.2",
