@@ -3017,13 +3017,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-session@npm:^2.0.44":
-  version: 2.0.44
-  resolution: "@types/cookie-session@npm:2.0.44"
+"@types/cookie-session@npm:^2.0.45":
+  version: 2.0.45
+  resolution: "@types/cookie-session@npm:2.0.45"
   dependencies:
     "@types/express": "npm:*"
     "@types/keygrip": "npm:*"
-  checksum: d91873c7ef06a45c8e30f3853435481ef65e5c51a550527f15b47b3f90a3ec7fc129d5db307e85c994b35f6e0e14714ed35b6c312bd36883e2f1601f30715f0a
+  checksum: 04ff13b7b4083e01f4ff7d6dea670078e018f55be2144c6df0fb0b0bb2a3956aad7d2086a104adeb33d96a602f3b593ff41a84630932b5a836e24457638fef30
   languageName: node
   linkType: hard
 
@@ -6796,7 +6796,7 @@ __metadata:
     "@types/bluebird": "npm:^3.5.38"
     "@types/body-parser": "npm:^1.19.2"
     "@types/cookie-parser": "npm:^1.4.4"
-    "@types/cookie-session": "npm:^2.0.44"
+    "@types/cookie-session": "npm:^2.0.45"
     "@types/css-minimizer-webpack-plugin": "npm:^3.2.1"
     "@types/csurf": "npm:^1.11.3"
     "@types/events": "npm:^3"
