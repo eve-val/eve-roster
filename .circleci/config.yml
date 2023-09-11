@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.1.0
-  queue: eddiewebb/queue@1.8.4
+  queue: eddiewebb/queue@2.2.1
 parameters:
   node-version:
     type: string
