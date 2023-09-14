@@ -5,7 +5,7 @@ orbs:
 parameters:
   node-version:
     type: string
-    default: "20.5.1"
+    default: "20.6.1"
 jobs:
   deploy:
     docker:
