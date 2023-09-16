@@ -20,20 +20,14 @@ May also contain triage UI if triageMode is enabled.
       </div>
     </div>
 
-    <div
-      v-for="team in battle.teams"
-      :key="team.corporationId"
-      class="team-row"
-    >
+    <div v-for="team in battle.teams" :key="team.teamId" class="team-row">
       <srp-triplet
-        v-if="team.corporationId != 0"
+        v-if="team.teamId != 0"
         class="team-triplet"
-        :icon-id="team.corporationId"
-        :icon-type="'Corporation'"
-        :top-line="name(team.corporationId)"
-        :bottom-line="team.allianceId && name(team.allianceId)"
-        :default-href="zkillHref(team.corporationId, 'corporation')"
-        :bot-href="team.allianceId && zkillHref(team.allianceId, 'alliance')"
+        :icon-id="team.teamId"
+        :icon-type="team.type"
+        :top-line="name(team.teamId)"
+        :default-href="zkillHref(team.teamId, team.type)"
       />
       <div v-else class="empty-team">Unaffiliated</div>
       <div class="participant-cnt">
@@ -66,8 +60,8 @@ May also contain triage UI if triageMode is enabled.
                 class="hover-triplet"
                 :icon-id="member.characterId || member.shipId"
                 :icon-type="member.characterId ? 'Character' : 'Type'"
-                :top-line="name(member.characterId || member.shipId)"
-                :bottom-line="name(member.shipId)"
+                :top-line="nameOrUnknown(member.characterId ?? member.shipId)"
+                :bottom-line="nameOrUnknown(member.shipId)"
               />
             </template>
           </tool-tip>
@@ -84,7 +78,7 @@ May also contain triage UI if triageMode is enabled.
           class="srp-triplet"
           :icon-id="srp.shipType"
           :icon-type="'Type'"
-          :top-line="name(srp.victim)"
+          :top-line="nameOrUnknown(srp.victim)"
           :bottom-line="name(srp.shipType)"
           :default-href="zkillHref(srp.killmail, 'kill')"
         />
@@ -99,6 +93,8 @@ May also contain triage UI if triageMode is enabled.
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType } from "vue";
+
 import EveImage from "../../shared/EveImage.vue";
 import SrpTriplet from "../SrpTriplet.vue";
 import SrpStatus from "../SrpStatus.vue";
@@ -107,7 +103,6 @@ import { NameCacheMixin } from "../../shared/nameCache";
 import { formatNumber } from "../../shared/numberFormat";
 import { BattleJson } from "../../../shared/route/api/srp/battle/battle_GET";
 
-import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     EveImage,

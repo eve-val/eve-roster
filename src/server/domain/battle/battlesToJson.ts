@@ -21,6 +21,7 @@ import {
   Srp_Battle_GET,
   Team,
 } from "../../../shared/route/api/srp/battle/battle_GET.js";
+import { Participant } from "../../../shared/types/srp/battle/BattleData.js";
 
 /**
  * Given a list of results from dao.battle.listBattles(), converts them into
@@ -79,14 +80,16 @@ function rowToJson(
   const teamMap = {} as SimpleNumMap<Team>;
 
   for (const participant of row.battle_data.participants) {
-    const teamId = participant.corporationId ?? 0;
+    const [teamId, teamType] = getTeamId(participant, memberCorps);
     let team = teamMap[teamId];
     if (team == undefined) {
       team = {
-        corporationId: teamId,
+        teamId: teamId,
+        corporationId: participant.corporationId ?? null,
         allianceId: participant.allianceId ?? null,
         members: [],
         totalLosses: 0,
+        type: teamType,
       };
       teamMap[teamId] = team;
     }
@@ -110,7 +113,7 @@ function rowToJson(
     (a, b) => {
       return rankTeam(a, memberCorps) - rankTeam(b, memberCorps);
     },
-    cmpNumberProp("corporationId", "reverse"),
+    cmpNumberProp("teamId", "reverse"),
   );
 
   for (const team of teams) {
@@ -137,17 +140,30 @@ function rowToJson(
   };
 }
 
+function getTeamId(
+  participant: Participant,
+  memberCorps: Map<number, MemberCorporation>,
+): [number, Team["type"]] {
+  if (participant.corporationId && memberCorps.has(participant.corporationId)) {
+    return [participant.corporationId, "corporation"];
+  } else if (participant.allianceId) {
+    return [participant.allianceId, "alliance"];
+  } else if (participant.corporationId) {
+    return [participant.corporationId, "corporation"];
+  } else {
+    return [0, "unaffiliated"];
+  }
+}
+
 function rankTeam(team: Team, memberCorps: Map<number, MemberCorporation>) {
-  if (team.corporationId == null) {
-    return 0;
-  }
-  const row = memberCorps.get(team.corporationId);
-  if (row == undefined) {
-    return 0;
-  }
-  if (row.mcorp_membership == "full") {
+  const row = memberCorps.get(team.teamId);
+  if (row?.mcorp_membership == "full") {
+    return 3;
+  } else if (row != undefined) {
+    // Non-full member corp
     return 2;
   } else {
-    return 1;
+    // Non-member corp or alliance (or unaffiliated)
+    return 0;
   }
 }

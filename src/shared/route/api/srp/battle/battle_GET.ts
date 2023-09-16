@@ -18,8 +18,10 @@ export interface BattleJson {
 }
 
 export interface Team {
+  teamId: number;
   corporationId: number | null;
   allianceId: number | null;
   members: Participant[];
   totalLosses: number;
+  type: "corporation" | "alliance" | "unaffiliated";
 }
