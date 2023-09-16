@@ -44,6 +44,8 @@ lines of text on the right. The text may be optionally wrapped in links.
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType } from "vue";
+
 import AdaptiveLink from "./AdaptiveLink.vue";
 import EveImage from "../shared/EveImage.vue";
 import { AssetType } from "../shared/types";
@@ -52,7 +54,6 @@ import { NameCacheMixin } from "../shared/nameCache";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
-import { defineComponent, PropType } from "vue";
 export default defineComponent({
   components: {
     AdaptiveLink,

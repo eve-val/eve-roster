@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-import unknownIcon from "./res/EveImage-Unknown.svg";
-
+import { defineComponent, PropType } from "vue";
 import { SUPPORTED_TYPES, AssetType } from "./types";
+
+import unknownIcon from "./res/EveImage-Unknown.svg";
 
 const SUPPORTED_SIZES = [32, 64, 128, 256, 512] as const;
 type AssetSize = (typeof SUPPORTED_SIZES)[number];
 
-import { defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     id: {
@@ -49,19 +49,37 @@ export default defineComponent({
       if (this.id == null || this.type == null) {
         return unknownIcon;
       } else {
+        const urlType = getUrlType(this.type);
         return (
           "//image.eveonline.com/" +
-          this.type +
+          urlType +
           "/" +
           this.id +
           "_" +
           this.requestSize +
-          (this.type == "Character" ? ".jpg" : ".png")
+          (urlType == "Character" ? ".jpg" : ".png")
         );
       }
     },
   },
 });
+
+function getUrlType(type: AssetType) {
+  switch (type) {
+    case "alliance":
+      return "Alliance";
+    case "corporation":
+      return "Corporation";
+    case "character":
+      return "Character";
+    case "type":
+      return "Type";
+    case "render":
+      return "Render";
+    default:
+      return type;
+  }
+}
 </script>
 
 <style scoped>
