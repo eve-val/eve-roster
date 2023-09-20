@@ -155,11 +155,11 @@
     }
   },
   "engines": {
-    "node": "20.6.1",
-    "yarn": "4.0.0-rc.48"
+    "node": "20.7.0",
+    "yarn": "4.0.0-rc.51"
   },
   "volta": {
-    "node": "20.6.1"
+    "node": "20.7.0"
   },
-  "packageManager": "yarn@4.0.0-rc.50"
+  "packageManager": "yarn@4.0.0-rc.51"
 }
