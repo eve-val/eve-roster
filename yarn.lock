@@ -2676,93 +2676,93 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/tracing@npm:7.68.0":
-  version: 7.68.0
-  resolution: "@sentry-internal/tracing@npm:7.68.0"
+"@sentry-internal/tracing@npm:7.69.0":
+  version: 7.69.0
+  resolution: "@sentry-internal/tracing@npm:7.69.0"
   dependencies:
-    "@sentry/core": "npm:7.68.0"
-    "@sentry/types": "npm:7.68.0"
-    "@sentry/utils": "npm:7.68.0"
+    "@sentry/core": "npm:7.69.0"
+    "@sentry/types": "npm:7.69.0"
+    "@sentry/utils": "npm:7.69.0"
     tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: dc4e72fabfc2dab7cc47ce0b2b9a72820c5c40c9a1e14f91e1f002cc71ed9c1e403823c7fd9582dda9d125c06232ac6469bcb7458355afba36e2207e7968033b
+  checksum: 87d37c12614e9c192cb174a32f2ce5e800fc06c61bcb4228049c271f6b9b58dd67a321f34b1ec37e62605a1160759406a1d0c3eba75eb26b5ccc92cfe11a2ce9
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/browser@npm:7.68.0"
+"@sentry/browser@npm:^7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/browser@npm:7.69.0"
   dependencies:
-    "@sentry-internal/tracing": "npm:7.68.0"
-    "@sentry/core": "npm:7.68.0"
-    "@sentry/replay": "npm:7.68.0"
-    "@sentry/types": "npm:7.68.0"
-    "@sentry/utils": "npm:7.68.0"
+    "@sentry-internal/tracing": "npm:7.69.0"
+    "@sentry/core": "npm:7.69.0"
+    "@sentry/replay": "npm:7.69.0"
+    "@sentry/types": "npm:7.69.0"
+    "@sentry/utils": "npm:7.69.0"
     tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: 2b31683f501f3a42e4aacffb189244df205d776aeb2a7c9c9fef3c956edb62dab7f6d193a6c47a73458480b1f60486e6e3480c9ebc6d5ba43f19942c6ae32997
+  checksum: c08d84cfeac94d43f9b35bcb68632d4dbc033fb34170c015bbebbe32630108a1d41cfd66841280b48349bb9e20c7123988fd50778a346947c699c02f227010d3
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/core@npm:7.68.0"
+"@sentry/core@npm:7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/core@npm:7.69.0"
   dependencies:
-    "@sentry/types": "npm:7.68.0"
-    "@sentry/utils": "npm:7.68.0"
+    "@sentry/types": "npm:7.69.0"
+    "@sentry/utils": "npm:7.69.0"
     tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: 080a54a36ac5e4a96beccc8f709463279191209e58cf91b8dcb9ca27844628b84d3231d67a65e245e2ee03b6e77e5aa33f356279e883c3ac2f615904e197f34b
+  checksum: 22dedb5741a421df71c1bcc2381a3f924d2c5a3d50c7f03bd7b32e323bdb5e1bce614b2f9ea8c199bef2f2c0ae80808f41b1decf5cf23e2109ec8ae952082294
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/node@npm:7.68.0"
+"@sentry/node@npm:^7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/node@npm:7.69.0"
   dependencies:
-    "@sentry-internal/tracing": "npm:7.68.0"
-    "@sentry/core": "npm:7.68.0"
-    "@sentry/types": "npm:7.68.0"
-    "@sentry/utils": "npm:7.68.0"
+    "@sentry-internal/tracing": "npm:7.69.0"
+    "@sentry/core": "npm:7.69.0"
+    "@sentry/types": "npm:7.69.0"
+    "@sentry/utils": "npm:7.69.0"
     cookie: "npm:^0.4.1"
     https-proxy-agent: "npm:^5.0.0"
     lru_map: "npm:^0.3.3"
     tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: 87246d67ce1d664a59e7fba8cd7ccfe08c02e460c1cf5efa2ab9a32d6a31cc5dfbed5b4c21468d9a13504c0c92d71cfd13424fb998fea010db29eb17c9441824
+  checksum: 5dae7613de463dc38f40185353e0422397288a911731622e321580f0c8a6eafbd12c9e922743a6290c9224d035ff008a46395e36341e7e092389c8c19428ab28
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/replay@npm:7.68.0"
+"@sentry/replay@npm:7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/replay@npm:7.69.0"
   dependencies:
-    "@sentry/core": "npm:7.68.0"
-    "@sentry/types": "npm:7.68.0"
-    "@sentry/utils": "npm:7.68.0"
-  checksum: 21376f44f92272d0ebdd24938c6aa9d6674f3d862dfba7ab74a5bbb2b96ce67cc2978b4b524bfeaf5192208942341dfc80125e0ec9a3ed5f5e4016c97d3771e6
+    "@sentry/core": "npm:7.69.0"
+    "@sentry/types": "npm:7.69.0"
+    "@sentry/utils": "npm:7.69.0"
+  checksum: 805492810cb1c6fbb4bdce129d67580e472455b2c50830a16e9b349e5d2b9d3e3afc3f6a9dcf211d5a89a071f3053859057f2a85e9167def2487b898a8c70b97
   languageName: node
   linkType: hard
 
-"@sentry/tracing@npm:^7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/tracing@npm:7.68.0"
+"@sentry/tracing@npm:^7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/tracing@npm:7.69.0"
   dependencies:
-    "@sentry-internal/tracing": "npm:7.68.0"
-  checksum: bc5a59b159e20a90868f40c25372488ee54a569969e861fd61305cf3839c1e50e20a5b9f7a63285b71c26f17c5f8e10628d8be77915a128c97457295b7555ebd
+    "@sentry-internal/tracing": "npm:7.69.0"
+  checksum: 26eac0af42996f026942b6903aa5cdd824ee9a166eda8a1cdb15f93de875b7318e647092b97888a93a60fb969925d33086f8eb6843edae8416009449203751b8
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/types@npm:7.68.0"
-  checksum: dea3592173eb1751b6b42b2a86c3c02feaf83a90b8e0c530805a76aeebcb19155aea87a750d699318afef1b4cd9a215dc693df7b4c4f9aaf0b1a3e2f7bff4cd8
+"@sentry/types@npm:7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/types@npm:7.69.0"
+  checksum: 47f1649460da0c47bebb5c792cf958ff14ea6cbb9d7bd441331bdad2cf0c8f011b36034470c6a48f1d2e856282836ceba42ba58a266ff8196ee0aae6e3f25bd2
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.68.0":
-  version: 7.68.0
-  resolution: "@sentry/utils@npm:7.68.0"
+"@sentry/utils@npm:7.69.0":
+  version: 7.69.0
+  resolution: "@sentry/utils@npm:7.69.0"
   dependencies:
-    "@sentry/types": "npm:7.68.0"
+    "@sentry/types": "npm:7.69.0"
     tslib: "npm:^2.4.1 || ^1.9.3"
-  checksum: 3731c1c860a0a3d3f64e0ed183ee40215c627e8a0fa26d4ed0d5832547b1cd65668f64e8f84c450d0482d9e10858bab74620662af455a1c79736e798ab4367e4
+  checksum: 3a50a20e1d11cf51f24f9c6c2b7ed0549709f15d8d03b9ef02055af19f74983f732b9b7fb62eaf29b84ab5ca345685cf8294c02d9c0af3b4ab1daa0dc084347c
   languageName: node
   linkType: hard
 
@@ -7090,9 +7090,9 @@ __metadata:
     "@opentelemetry/resources": "npm:^1.17.0"
     "@opentelemetry/sdk-node": "npm:^0.43.0"
     "@opentelemetry/semantic-conventions": "npm:^1.17.0"
-    "@sentry/browser": "npm:^7.68.0"
-    "@sentry/node": "npm:^7.68.0"
-    "@sentry/tracing": "npm:^7.68.0"
+    "@sentry/browser": "npm:^7.69.0"
+    "@sentry/node": "npm:^7.69.0"
+    "@sentry/tracing": "npm:^7.69.0"
     "@types/bluebird": "npm:^3.5.38"
     "@types/body-parser": "npm:^1.19.2"
     "@types/cookie-parser": "npm:^1.4.4"
