@@ -3926,10 +3926,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tmp@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@types/tmp@npm:0.2.3"
-  checksum: a8ddaa0456d44dc29e310dc663289dfcdf1f029499cbd5343558620178a84b952b169844c5d7710a3d80b717d64e891d9ee585d71f8af4c8685cdb8d85272ca7
+"@types/tmp@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@types/tmp@npm:0.2.4"
+  checksum: a7547fe01bd47210df3a0def17653e8dabb9d17cd7581dae1c7fb1fd8960c78ab7eef50525a7a343e3abe7a1144893d913490d6ec96f49f08fd8f133ad02011a
   languageName: node
   linkType: hard
 
@@ -7131,7 +7131,7 @@ __metadata:
     "@types/source-map-support": "npm:^0.5.7"
     "@types/sqlite3": "npm:^3.1.8"
     "@types/swagger-ui": "npm:^3.52.0"
-    "@types/tmp": "npm:^0.2.3"
+    "@types/tmp": "npm:^0.2.4"
     "@types/underscore": "npm:^1.11.9"
     "@types/verror": "npm:^1.10.6"
     "@types/webpack-hot-middleware": "npm:^2.25.6"
