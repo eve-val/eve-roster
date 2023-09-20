@@ -159,7 +159,7 @@
     "yarn": "4.0.0-rc.51"
   },
   "volta": {
-    "node": "20.7.0"
+    "node": "20.5.1"
   },
   "packageManager": "yarn@4.0.0-rc.51"
 }
