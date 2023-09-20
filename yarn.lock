@@ -7204,7 +7204,7 @@ __metadata:
     typescript: "npm:^5.2.2"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.6"
-    url: "npm:^0.11.2"
+    url: "npm:^0.11.3"
     verror: "npm:^1.10.1"
     vue: "npm:^3.3.4"
     vue-eslint-parser: "npm:^9.3.1"
@@ -14213,13 +14213,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url@npm:^0.11.2":
-  version: 0.11.2
-  resolution: "url@npm:0.11.2"
+"url@npm:^0.11.3":
+  version: 0.11.3
+  resolution: "url@npm:0.11.3"
   dependencies:
     punycode: "npm:^1.4.1"
     qs: "npm:^6.11.2"
-  checksum: bab7de7b25e04dbe7ff4e7faa1a23073bc52dbb40bc0c2a31818cf0c214e93552878a607408972a9a361b9b2bd15e3755339e5121feeed82ea0e75da8e715909
+  checksum: a3a5ba64d8afb4dda111355d94073a9754b88b1de4035554c398b75f3e4d4244d5e7ae9e4554f0d91be72efd416aedbb646fbb1f3dd4cacecca45ed6c9b75145
   languageName: node
   linkType: hard
 
