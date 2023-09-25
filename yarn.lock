@@ -3955,10 +3955,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/swagger-ui@npm:^3.52.0":
-  version: 3.52.0
-  resolution: "@types/swagger-ui@npm:3.52.0"
-  checksum: 873581c3f04d7db9a227276102d7a0f242c2faf47222c9d0ecdd80a55abdcabecc9df73fc621f2c6b2d2b85459c433cc4c705e17d0f7c04f216e7047138059cc
+"@types/swagger-ui@npm:^3.52.1":
+  version: 3.52.1
+  resolution: "@types/swagger-ui@npm:3.52.1"
+  checksum: 9a9b1d64f73cd754921997240bba7e815591b3e7e2e8d826441682b50c4af72cb572ef93de453fd96d13a4a5794a18840088696af4639ed4b1609912d64fdd03
   languageName: node
   linkType: hard
 
@@ -7168,7 +7168,7 @@ __metadata:
     "@types/serve-favicon": "npm:^2.5.4"
     "@types/source-map-support": "npm:^0.5.7"
     "@types/sqlite3": "npm:^3.1.8"
-    "@types/swagger-ui": "npm:^3.52.0"
+    "@types/swagger-ui": "npm:^3.52.1"
     "@types/tmp": "npm:^0.2.4"
     "@types/underscore": "npm:^1.11.9"
     "@types/verror": "npm:^1.10.6"
