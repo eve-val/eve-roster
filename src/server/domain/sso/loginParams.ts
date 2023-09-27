@@ -34,8 +34,8 @@ function buildEveSsoLoginParams(env: Env) {
     client_id: env.SSO_CLIENT_ID,
     scope: [
       "publicData",
-      "esi-calendar.respond_calendar_events.v1",
-      "esi-calendar.read_calendar_events.v1",
+      //"esi-calendar.respond_calendar_events.v1",
+      //"esi-calendar.read_calendar_events.v1",
       "esi-location.read_location.v1",
       "esi-location.read_ship_type.v1",
 
@@ -78,7 +78,7 @@ function buildEveSsoLoginParams(env: Env) {
       "esi-characters.read_corporation_roles.v1",
       "esi-location.read_online.v1",
       "esi-contracts.read_character_contracts.v1",
-      //"esi-clones.read_implants.v1",
+      "esi-clones.read_implants.v1",
       "esi-characters.read_fatigue.v1",
       "esi-killmails.read_corporation_killmails.v1",
       "esi-corporations.track_members.v1",
