@@ -3791,12 +3791,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg-pool@npm:2.0.3, @types/pg-pool@npm:^2.0.3":
+"@types/pg-pool@npm:2.0.3":
   version: 2.0.3
   resolution: "@types/pg-pool@npm:2.0.3"
   dependencies:
     "@types/pg": "npm:*"
   checksum: 9ea0bcdbdd09c9de6f774e59465189e552ee094901724278082c41ba6287e7fddffb9ba4b4107c242bba4e8f8a1f0016e6a1eb0c6ca306d43c08b5ddd7f34549
+  languageName: node
+  linkType: hard
+
+"@types/pg-pool@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@types/pg-pool@npm:2.0.4"
+  dependencies:
+    "@types/pg": "npm:*"
+  checksum: 5ae1c49fe1820ec011f8e2a877198a62f4c9795d2cc340dff4527c26f24ee22dffe99a8ca5cdec6edb54613bded820cc51256fb668e0eb4d22794181b94fad82
   languageName: node
   linkType: hard
 
@@ -7162,7 +7171,7 @@ __metadata:
     "@types/node": "npm:^20.6.5"
     "@types/node-schedule": "npm:^2.1.0"
     "@types/pg": "npm:^8.10.3"
-    "@types/pg-pool": "npm:^2.0.3"
+    "@types/pg-pool": "npm:^2.0.4"
     "@types/progress-stream": "npm:^2.0.2"
     "@types/pug": "npm:^2.0.7"
     "@types/serve-favicon": "npm:^2.5.5"
