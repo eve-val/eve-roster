@@ -81,7 +81,7 @@
     "@types/pg-pool": "^2.0.3",
     "@types/progress-stream": "^2.0.2",
     "@types/pug": "^2.0.7",
-    "@types/serve-favicon": "^2.5.4",
+    "@types/serve-favicon": "^2.5.5",
     "@types/source-map-support": "^0.5.8",
     "@types/sqlite3": "^3.1.9",
     "@types/swagger-ui": "^3.52.1",
