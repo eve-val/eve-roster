@@ -3761,12 +3761,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-schedule@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@types/node-schedule@npm:2.1.0"
+"@types/node-schedule@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@types/node-schedule@npm:2.1.1"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 33742dc7c18af116e641946abea023170a37bf2ae141cdf5604897fe245d29877d96a3bf740af6388f14685ca5ca9222a5b23d99a91062252fc78c7a87ea4893
+  checksum: af59970e2301b9a5fdb23b34e21b14ce54efd0b1096636300ed48c543c316e4cf3a90baa6cb3335f7cb6488304930194addef4e56bbdda903067634a4879752d
   languageName: node
   linkType: hard
 
@@ -7169,7 +7169,7 @@ __metadata:
     "@types/imagemin": "npm:^8.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^20.7.0"
-    "@types/node-schedule": "npm:^2.1.0"
+    "@types/node-schedule": "npm:^2.1.1"
     "@types/pg": "npm:^8.10.3"
     "@types/pg-pool": "npm:^2.0.4"
     "@types/progress-stream": "npm:^2.0.2"
