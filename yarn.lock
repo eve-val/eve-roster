@@ -3999,10 +3999,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/verror@npm:^1.10.6":
-  version: 1.10.6
-  resolution: "@types/verror@npm:1.10.6"
-  checksum: 650620b851d42cda6e5f6fa84f4d89c259b3f85f7443ee1c85f4f9a9e1ce7b472640c833ef483d0803f8100d6228a82fb9776f53d5539cfe1d8f06adfb04e10c
+"@types/verror@npm:^1.10.7":
+  version: 1.10.7
+  resolution: "@types/verror@npm:1.10.7"
+  checksum: 9f48f3aa5b71ce9470ab9c1e024ca11070def9683f6a88b44b3a49df88f524cf3b17179c4f4bdcbe1c75369504318eef0c7896c8c1dbb0a104e2541b041d5387
   languageName: node
   linkType: hard
 
@@ -7171,7 +7171,7 @@ __metadata:
     "@types/swagger-ui": "npm:^3.52.1"
     "@types/tmp": "npm:^0.2.4"
     "@types/underscore": "npm:^1.11.9"
-    "@types/verror": "npm:^1.10.6"
+    "@types/verror": "npm:^1.10.7"
     "@types/webpack-hot-middleware": "npm:^2.25.7"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.3"
     "@typescript-eslint/parser": "npm:^6.7.3"

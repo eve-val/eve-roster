@@ -87,7 +87,7 @@
     "@types/swagger-ui": "^3.52.1",
     "@types/tmp": "^0.2.4",
     "@types/underscore": "^1.11.9",
-    "@types/verror": "^1.10.6",
+    "@types/verror": "^1.10.7",
     "@types/webpack-hot-middleware": "^2.25.7",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
