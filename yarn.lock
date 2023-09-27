@@ -4006,14 +4006,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-hot-middleware@npm:^2.25.6":
-  version: 2.25.6
-  resolution: "@types/webpack-hot-middleware@npm:2.25.6"
+"@types/webpack-hot-middleware@npm:^2.25.7":
+  version: 2.25.7
+  resolution: "@types/webpack-hot-middleware@npm:2.25.7"
   dependencies:
     "@types/connect": "npm:*"
     tapable: "npm:^2.2.0"
     webpack: "npm:^5"
-  checksum: e3da40b5a80333ae1ce463d5fc283c79413332a5a7331674b6cf48b1e4138d93f4c8143532a2d374fd474044ad67413d735da4e3b145c056ca9713a2be302ed1
+  checksum: 53a024d7c03b954e8d1d372a3d91b41b8993a0e278c879476c2be6f489c6332b266eed02fe2d25fc5e354d394d997967acd980954f443571cdbb48b0611c35e6
   languageName: node
   linkType: hard
 
@@ -7172,7 +7172,7 @@ __metadata:
     "@types/tmp": "npm:^0.2.4"
     "@types/underscore": "npm:^1.11.9"
     "@types/verror": "npm:^1.10.6"
-    "@types/webpack-hot-middleware": "npm:^2.25.6"
+    "@types/webpack-hot-middleware": "npm:^2.25.7"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.3"
     "@typescript-eslint/parser": "npm:^6.7.3"
     "@vue/compiler-sfc": "npm:^3.3.4"
