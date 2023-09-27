@@ -580,13 +580,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.7.1, @grpc/grpc-js@npm:^1.9.3":
-  version: 1.9.3
-  resolution: "@grpc/grpc-js@npm:1.9.3"
+"@grpc/grpc-js@npm:^1.7.1, @grpc/grpc-js@npm:^1.9.4":
+  version: 1.9.4
+  resolution: "@grpc/grpc-js@npm:1.9.4"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.8"
     "@types/node": "npm:>=12.12.47"
-  checksum: ad609a9ce647a454de1209a23403be9a106b8917db37efee2cd8e059e0ce6f49fb54827f692516b679d55c64cf88ae11667cbedb8a6f51a5dfb8f8ed1bb1f11b
+  checksum: 6a3b1a8fc730c695d6ce7896abd2b1c034f2fbd9854a4cbdaf57fa739c1cecdd81fb3b6217e8f98d4e2eb4ccb2f816911788a045b766ec1e32d3d77a16509358
   languageName: node
   linkType: hard
 
@@ -7136,7 +7136,7 @@ __metadata:
   resolution: "eve-roster@workspace:."
   dependencies:
     "@babel/types": "npm:^7.22.19"
-    "@grpc/grpc-js": "npm:^1.9.3"
+    "@grpc/grpc-js": "npm:^1.9.4"
     "@jest/globals": "npm:^29.7.0"
     "@opentelemetry/api": "npm:1.6.0"
     "@opentelemetry/auto-instrumentations-node": "npm:^0.39.2"
