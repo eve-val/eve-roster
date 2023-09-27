@@ -84,7 +84,7 @@
     "@types/serve-favicon": "^2.5.5",
     "@types/source-map-support": "^0.5.8",
     "@types/sqlite3": "^3.1.9",
-    "@types/swagger-ui": "^3.52.1",
+    "@types/swagger-ui": "^3.52.2",
     "@types/tmp": "^0.2.4",
     "@types/underscore": "^1.11.9",
     "@types/verror": "^1.10.7",
