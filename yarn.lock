@@ -6696,12 +6696,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"envalid@npm:^7.3.1":
-  version: 7.3.1
-  resolution: "envalid@npm:7.3.1"
+"envalid@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "envalid@npm:8.0.0"
   dependencies:
-    tslib: "npm:2.3.1"
-  checksum: b599e7294d103c5ea06a4aa531f518898da2341a91c906d922c0c996a1f4424cd1da81564934754d2509ca49838e7a31deea40750a5c19c08b1f0fa826b512b7
+    tslib: "npm:2.6.2"
+  checksum: cf2159a070c7335ecc9cd01523654fb7c8fdc63b92bef47d18027c406dfcf2b4a72663e70ddd91fa91967fa71c7716fe643dcd4a652f9ab0f93722feddb9e1b2
   languageName: node
   linkType: hard
 
@@ -7189,7 +7189,7 @@ __metadata:
     css-minimizer-webpack-plugin: "npm:^5.0.1"
     csurf: "npm:^1.11.0"
     dotenv: "npm:^16.3.1"
-    envalid: "npm:^7.3.1"
+    envalid: "npm:^8.0.0"
     eslint: "npm:^8.50.0"
     eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-jest: "npm:^27.4.0"
@@ -14019,10 +14019,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.3.1, tslib@npm:^2.0.3, tslib@npm:^2.3.0":
-  version: 2.3.1
-  resolution: "tslib@npm:2.3.1"
-  checksum: 5e7de59ed9f2b705b399bda28326b7c3e7526deb48bbe1716e2e17fbd4cecbb610253d09c7b8fd0a6e76cfed9304e2e608cdb81bb1ee812d69e5089d1a94c71a
+"tslib@npm:2.6.2":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
   languageName: node
   linkType: hard
 
@@ -14030,6 +14030,13 @@ __metadata:
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 7dbf34e6f55c6492637adb81b555af5e3b4f9cc6b998fb440dac82d3b42bdc91560a35a5fb75e20e24a076c651438234da6743d139e4feabf0783f3cdfe1dddb
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.0.3, tslib@npm:^2.3.0":
+  version: 2.3.1
+  resolution: "tslib@npm:2.3.1"
+  checksum: 5e7de59ed9f2b705b399bda28326b7c3e7526deb48bbe1716e2e17fbd4cecbb610253d09c7b8fd0a6e76cfed9304e2e608cdb81bb1ee812d69e5089d1a94c71a
   languageName: node
   linkType: hard
 

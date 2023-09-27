@@ -19,14 +19,14 @@ function buildEveSsoLoginParams(env: Env) {
   // port for the EVE SSO redirect URL, not the port in the Docker container
   // that the Node server is listening on.
   const port =
-    env.DOKKU_PROXY_SSL_PORT ||
-    env.DOKKU_NGINX_SSL_PORT ||
-    env.DOKKU_PROXY_PORT ||
-    env.DOKKU_NGINX_PORT ||
+    env.DOKKU_PROXY_SSL_PORT ??
+    env.DOKKU_NGINX_SSL_PORT ??
+    env.DOKKU_PROXY_PORT ??
+    env.DOKKU_NGINX_PORT ??
     env.PORT;
-  const hostname = env.HOSTNAME || "localhost";
+  const hostname = env.HOSTNAME ?? "localhost";
   const protocol =
-    env.DOKKU_PROXY_SSL_PORT || env.DOKKU_NGINX_SSL_PORT ? "https" : "http";
+    env.DOKKU_PROXY_SSL_PORT ?? env.DOKKU_NGINX_SSL_PORT ? "https" : "http";
 
   return querystring.stringify({
     response_type: "code",
