@@ -3498,10 +3498,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.8.0":
-  version: 20.8.0
-  resolution: "@types/node@npm:20.8.0"
-  checksum: 04108e4e54b4a5f500934bfa1c4551d35398886c7e8b3e047d663b9a66f0c3243e4f6a0fe0515e0295a7cf5e0190b6d49d54b4a36ac09ea416918a880c2234f3
+"@types/node@npm:^20.8.5":
+  version: 20.8.5
+  resolution: "@types/node@npm:20.8.5"
+  dependencies:
+    undici-types: "npm:~5.25.1"
+  checksum: 3a213757e134943898fd0d121e249142721a73e029d1b30d74b85c40f1d096b8af53780f9ee1f926e90ea622d93a3c5821575112b87e576cee8974f29fa33de3
   languageName: node
   linkType: hard
 
@@ -6873,7 +6875,7 @@ __metadata:
     "@types/heapdump": "npm:^0.3.2"
     "@types/imagemin": "npm:^8.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
-    "@types/node": "npm:^20.8.0"
+    "@types/node": "npm:^20.8.5"
     "@types/node-schedule": "npm:^2.1.1"
     "@types/pg": "npm:^8.10.3"
     "@types/pg-pool": "npm:^2.0.4"
@@ -13849,6 +13851,13 @@ __metadata:
   version: 1.13.6
   resolution: "underscore@npm:1.13.6"
   checksum: 58cf5dc42cb0ac99c146ae4064792c0a2cc84f3a3c4ad88f5082e79057dfdff3371d896d1ec20379e9ece2450d94fa78f2ef5bfefc199ba320653e32c009bd66
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.25.1":
+  version: 5.25.3
+  resolution: "undici-types@npm:5.25.3"
+  checksum: 9a57f2dd6fecb2d0f7d9b86aa6f417609a0ffc73247a95aa25c078cf36cbbfe6c164b63b8dace7ad01126e6510f284c185b69c78356bb1d6b279f195acffcaf4
   languageName: node
   linkType: hard
 
