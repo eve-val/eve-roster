@@ -7254,8 +7254,8 @@ __metadata:
     url: "npm:^0.11.3"
     verror: "npm:^1.10.1"
     vue: "npm:^3.3.4"
-    vue-eslint-parser: "npm:^9.3.1"
-    vue-loader: "npm:^17.2.2"
+    vue-eslint-parser: "npm:^9.3.2"
+    vue-loader: "npm:^17.3.0"
     vue-router: "npm:^4.2.5"
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.88.2"
@@ -14347,9 +14347,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-loader@npm:^17.2.2":
-  version: 17.2.2
-  resolution: "vue-loader@npm:17.2.2"
+"vue-eslint-parser@npm:^9.3.2":
+  version: 9.3.2
+  resolution: "vue-eslint-parser@npm:9.3.2"
+  dependencies:
+    debug: "npm:^4.3.4"
+    eslint-scope: "npm:^7.1.1"
+    eslint-visitor-keys: "npm:^3.3.0"
+    espree: "npm:^9.3.1"
+    esquery: "npm:^1.4.0"
+    lodash: "npm:^4.17.21"
+    semver: "npm:^7.3.6"
+  peerDependencies:
+    eslint: ">=6.0.0"
+  checksum: f6ae491341e62b36558df11b38933a36cbb98f05ccebf529b8a162a106e6a2a45802fc597d952502266637925392d70ec125cf9e5253b6b6aeba23a0e8f71656
+  languageName: node
+  linkType: hard
+
+"vue-loader@npm:^17.3.0":
+  version: 17.3.0
+  resolution: "vue-loader@npm:17.3.0"
   dependencies:
     chalk: "npm:^4.1.0"
     hash-sum: "npm:^2.0.0"
@@ -14361,7 +14378,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 7d27d70fe1fc04f088a0b8cb08ecbef989cae41864a7f1fdc7d18ef6720e585dd683b5ada92266eb70af00d74ce8621a8657ef5125b0b02e360771a8fa6e977c
+  checksum: 854b6aed6c637e128442d9e9a4029b37b9ddee7bd25da90020800f59fb52e1ea6ed4d427b8b2403c8e5242061bef11984980260e844cfdcf1d506824175b7515
   languageName: node
   linkType: hard
 
