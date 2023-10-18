@@ -75,7 +75,7 @@
     "@types/heapdump": "^0.3.2",
     "@types/imagemin": "^8.0.2",
     "@types/mini-css-extract-plugin": "^2.5.1",
-    "@types/node": "^20.8.5",
+    "@types/node": "^20.8.6",
     "@types/node-schedule": "^2.1.1",
     "@types/pg": "^8.10.5",
     "@types/pg-pool": "^2.0.4",
