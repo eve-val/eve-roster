@@ -11,7 +11,7 @@ export async function fetchAuthInfo(
       timeoutDuration: 5000, // 5 second fetch timeout
     }),
     {
-      issuer: "login.eveonline.com",
+      issuer: ["https://login.eveonline.com", "login.eveonline.com"],
     },
   );
   return result.payload as AuthInfoResponse & JWTPayload;
