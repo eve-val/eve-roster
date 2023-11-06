@@ -1350,9 +1350,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/auto-instrumentations-node@npm:^0.39.3":
-  version: 0.39.3
-  resolution: "@opentelemetry/auto-instrumentations-node@npm:0.39.3"
+"@opentelemetry/auto-instrumentations-node@npm:^0.39.4":
+  version: 0.39.4
+  resolution: "@opentelemetry/auto-instrumentations-node@npm:0.39.4"
   dependencies:
     "@opentelemetry/instrumentation": "npm:^0.44.0"
     "@opentelemetry/instrumentation-amqplib": "npm:^0.33.2"
@@ -1386,7 +1386,7 @@ __metadata:
     "@opentelemetry/instrumentation-pg": "npm:^0.36.2"
     "@opentelemetry/instrumentation-pino": "npm:^0.34.2"
     "@opentelemetry/instrumentation-redis": "npm:^0.35.2"
-    "@opentelemetry/instrumentation-redis-4": "npm:^0.35.2"
+    "@opentelemetry/instrumentation-redis-4": "npm:^0.35.3"
     "@opentelemetry/instrumentation-restify": "npm:^0.34.1"
     "@opentelemetry/instrumentation-router": "npm:^0.33.2"
     "@opentelemetry/instrumentation-socket.io": "npm:^0.34.2"
@@ -1400,7 +1400,7 @@ __metadata:
     "@opentelemetry/sdk-node": "npm:^0.44.0"
   peerDependencies:
     "@opentelemetry/api": ^1.4.1
-  checksum: f56bfeb40e41052b0ca23a0f7bcd978f250132d0e729c2775819513fe67bb237d38b881cee155ccc73d10cbb499fff21400ce7ff29b90820ede4c5a55553360a
+  checksum: 8bc62c0526f747687ce5aac6a276bf6e78e41c0d2a824c51c30f7d706538cfcd3c1aef0aea57db1bccba05718a8823cc2bfb6524a797544deaaa71455fbe581d
   languageName: node
   linkType: hard
 
@@ -1942,16 +1942,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-redis-4@npm:^0.35.2":
-  version: 0.35.2
-  resolution: "@opentelemetry/instrumentation-redis-4@npm:0.35.2"
+"@opentelemetry/instrumentation-redis-4@npm:^0.35.3":
+  version: 0.35.3
+  resolution: "@opentelemetry/instrumentation-redis-4@npm:0.35.3"
   dependencies:
     "@opentelemetry/instrumentation": "npm:^0.44.0"
     "@opentelemetry/redis-common": "npm:^0.36.1"
     "@opentelemetry/semantic-conventions": "npm:^1.0.0"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 9b38d71c3fd706f0f74f5f24edf31bc4fd9daab813b87461cdbf85d9a33ff7b1c77f37040c1540eeab80d25694a9d493423043f73860b3af052f818f50130c10
+  checksum: b2da4a9eedc1fb499a0b4fde86eebdb1a5dd533d1f72db4d7d516f4d3aea9d5116f59e51ee956af17fc4ef5b221e2f2af068784ebcfc78b2c5c66fb8c2b3161a
   languageName: node
   linkType: hard
 
@@ -6952,7 +6952,7 @@ __metadata:
     "@grpc/grpc-js": "npm:^1.9.5"
     "@jest/globals": "npm:^29.7.0"
     "@opentelemetry/api": "npm:1.6.0"
-    "@opentelemetry/auto-instrumentations-node": "npm:^0.39.3"
+    "@opentelemetry/auto-instrumentations-node": "npm:^0.39.4"
     "@opentelemetry/exporter-trace-otlp-grpc": "npm:^0.44.0"
     "@opentelemetry/instrumentation": "npm:^0.44.0"
     "@opentelemetry/resources": "npm:^1.17.1"
