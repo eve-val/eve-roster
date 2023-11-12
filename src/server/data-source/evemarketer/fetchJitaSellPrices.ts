@@ -1,15 +1,11 @@
-import { default as axios } from "axios";
 import moment from "moment";
-import { inspect } from "util";
 
 import { ExpirationCache } from "../../util/ExpirationCache.js";
 import { fetchMarketStats } from "./fetchMarketStats.js";
-import { SYSTEM_JITA } from "../../eve/constants/mapSolarSystems.js";
-import { MarketStat } from "./MarketStat.js";
-import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
-
-const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
+import {
+  REGION_THE_FORGE,
+  SYSTEM_JITA,
+} from "../../eve/constants/mapSolarSystems.js";
 
 const CACHE = new ExpirationCache<number, number>();
 const CACHE_DURATION = moment.duration(4, "hours").asMilliseconds();
@@ -25,27 +21,14 @@ export async function fetchJitaSellPrices(ids: number[]) {
   const out = new Map<number, number>();
   const uncached = pruneCachedResults(ids, out);
   if (uncached.length > 0) {
-    let marketStats: MarketStat[] | undefined;
-    try {
-      marketStats = await fetchMarketStats({
-        ids: uncached,
-        useSystem: SYSTEM_JITA,
-      });
-    } catch (err) {
-      if (!axios.isAxiosError(err)) {
-        throw err;
-      }
-      logger.warn(`Error while trying to retrieve market stats:`);
-      logger.warn(`Url: ${err.config?.url}`);
-      logger.warn(`Params: ${inspect(err.config?.params)}`);
-      logger.warn(`${err.response?.status} ${err.response?.statusText}`);
-      logger.warn(`${err.response?.data}`);
-    }
-    if (marketStats != undefined) {
-      for (const stat of marketStats) {
-        const id = stat.sell.forQuery.types[0];
-        CACHE.set(id, stat.sell.min, CACHE_DURATION);
-        out.set(id, stat.sell.min);
+    const marketStats = await fetchMarketStats(uncached, {
+      regionId: REGION_THE_FORGE,
+      systemId: SYSTEM_JITA,
+    });
+    for (const stat of marketStats) {
+      if (stat.sell != undefined) {
+        CACHE.set(stat.typeId, stat.sell, CACHE_DURATION);
+        out.set(stat.typeId, stat.sell);
       }
     }
   }

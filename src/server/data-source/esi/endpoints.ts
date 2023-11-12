@@ -276,6 +276,34 @@ export const ESI_KILLMAILS_$killmailId_$killmailHash = {
   response: {} as EsiKillmail,
 };
 
+export const ESI_MARKETS_$regionId_ORDERS = {
+  method: FetchMethod.GET,
+  path: "/v1/markets/${regionId}/orders/",
+  pathVars: {} as {
+    regionId: number;
+  },
+  query: {
+    type_id: 0 as number,
+    order_type: "" as "buy" | "sell" | "all",
+    page: 0 as number,
+  },
+  access: Public.ACCESS,
+  response: [] as {
+    duration: number;
+    is_buy_order: boolean;
+    issued: string;
+    location_id: number;
+    min_volume: number;
+    order_id: number;
+    price: number;
+    range: string;
+    system_id: number;
+    type_id: number;
+    volume_remain: number;
+    volume_total: number;
+  }[],
+};
+
 export const ESI_UI_OPENWINDOW_INFORMATION = {
   method: FetchMethod.POST,
   path: "/v1/ui/openwindow/information/",
