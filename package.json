@@ -88,7 +88,7 @@
     "@types/tmp": "^0.2.6",
     "@types/underscore": "^1.11.14",
     "@types/verror": "^1.10.9",
-    "@types/webpack-hot-middleware": "^2.25.7",
+    "@types/webpack-hot-middleware": "^2.25.9",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vue/compiler-sfc": "^3.3.8",
