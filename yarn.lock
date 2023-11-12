@@ -3581,9 +3581,9 @@ __metadata:
   linkType: hard
 
 "@types/events@npm:^3":
-  version: 3.0.1
-  resolution: "@types/events@npm:3.0.1"
-  checksum: 68546116c3d00c47bacda1b475e5a01c30eb6cebfa00609725f7446d3ff4d448d8209f426117c0c7767ac97cdf494548b53c8dbd82a48336a4aac2664b9068b7
+  version: 3.0.3
+  resolution: "@types/events@npm:3.0.3"
+  checksum: 50af9312fab001fd6bd4bb3ff65830f940877e6778de140a92481a0d9bf5f4853d44ec758a8800ef60e0598ac43ed1b5688116a3c65906ae54e989278d6c7c82
   languageName: node
   linkType: hard
 
