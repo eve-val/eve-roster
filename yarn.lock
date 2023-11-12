@@ -4016,10 +4016,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pug@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "@types/pug@npm:2.0.8"
-  checksum: 1cd612cd5eeceecbe2f4569389268b7da91262e51e3e04c93c1f5aee8c508cc38eef12b67d4fca867b0d13aa7dc6dd51b6d4aeb7def232ec2edebec9b95db2b8
+"@types/pug@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "@types/pug@npm:2.0.9"
+  checksum: 30a37fcd5e662efbbe4a5471b77eafbf8309defb63f8219b06ceb28affb7d353a919d2bfb4da74491482b2b13632f858803b8b6c9f0beb3816dc11625642037f
   languageName: node
   linkType: hard
 
@@ -7389,7 +7389,7 @@ __metadata:
     "@types/pg": "npm:^8.10.9"
     "@types/pg-pool": "npm:^2.0.6"
     "@types/progress-stream": "npm:^2.0.4"
-    "@types/pug": "npm:^2.0.8"
+    "@types/pug": "npm:^2.0.9"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/source-map-support": "npm:^0.5.10"
     "@types/sqlite3": "npm:^3.1.9"
