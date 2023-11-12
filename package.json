@@ -78,7 +78,7 @@
     "@types/node": "^20.8.6",
     "@types/node-schedule": "^2.1.1",
     "@types/pg": "^8.10.5",
-    "@types/pg-pool": "^2.0.4",
+    "@types/pg-pool": "^2.0.6",
     "@types/progress-stream": "^2.0.2",
     "@types/pug": "^2.0.8",
     "@types/serve-favicon": "^2.5.7",
