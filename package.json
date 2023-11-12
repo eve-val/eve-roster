@@ -67,7 +67,7 @@
     "@types/bluebird": "^3.5.41",
     "@types/body-parser": "^1.19.3",
     "@types/cookie-parser": "^1.4.4",
-    "@types/cookie-session": "^2.0.45",
+    "@types/cookie-session": "^2.0.47",
     "@types/css-minimizer-webpack-plugin": "^3.2.1",
     "@types/csurf": "^1.11.3",
     "@types/events": "^3",
