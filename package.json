@@ -80,7 +80,7 @@
     "@types/pg": "^8.10.5",
     "@types/pg-pool": "^2.0.4",
     "@types/progress-stream": "^2.0.2",
-    "@types/pug": "^2.0.7",
+    "@types/pug": "^2.0.8",
     "@types/serve-favicon": "^2.5.5",
     "@types/source-map-support": "^0.5.8",
     "@types/sqlite3": "^3.1.9",
