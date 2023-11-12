@@ -3622,15 +3622,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.19":
-  version: 4.17.19
-  resolution: "@types/express@npm:4.17.19"
+"@types/express@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "@types/express@npm:4.17.21"
   dependencies:
     "@types/body-parser": "npm:*"
     "@types/express-serve-static-core": "npm:^4.17.33"
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
-  checksum: c51de5e2fed424e7d89db2fe186b00bb00265cc0b715e31275d983eb1f14122f214a200b88f1586e16f5dd038b59a3b044ea44142d3cf06d0906167716d44caa
+  checksum: 7a6d26cf6f43d3151caf4fec66ea11c9d23166e4f3102edfe45a94170654a54ea08cf3103d26b3928d7ebcc24162c90488e33986b7e3a5f8941225edd5eb18c7
   languageName: node
   linkType: hard
 
@@ -7380,7 +7380,7 @@ __metadata:
     "@types/css-minimizer-webpack-plugin": "npm:^3.2.1"
     "@types/csurf": "npm:^1.11.5"
     "@types/events": "npm:^3"
-    "@types/express": "npm:^4.17.19"
+    "@types/express": "npm:^4.17.21"
     "@types/heapdump": "npm:^0.3.2"
     "@types/imagemin": "npm:^8.0.4"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
