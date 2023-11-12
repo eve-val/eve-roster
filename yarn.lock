@@ -4000,12 +4000,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/progress-stream@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/progress-stream@npm:2.0.2"
+"@types/progress-stream@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@types/progress-stream@npm:2.0.4"
   dependencies:
     "@types/node": "npm:*"
-  checksum: c076d7acb4ae4a986795fbf5014a0d6057b8da48dfb077359bdff0e5c1595bb29e7220593f9d5149c3506596e8c7d42d794e4e5a502d3c8f0c3e9b69b041ace1
+  checksum: 4f32a8644721551a843a2267085fd8bf9575ba220bc9a6e7eb89534e7b216f1e87235efb5231563e30d1b0a89babf551cbcd16ee1cea738d2dde65a3980f2178
   languageName: node
   linkType: hard
 
@@ -7388,7 +7388,7 @@ __metadata:
     "@types/node-schedule": "npm:^2.1.1"
     "@types/pg": "npm:^8.10.5"
     "@types/pg-pool": "npm:^2.0.6"
-    "@types/progress-stream": "npm:^2.0.2"
+    "@types/progress-stream": "npm:^2.0.4"
     "@types/pug": "npm:^2.0.8"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/source-map-support": "npm:^0.5.8"
