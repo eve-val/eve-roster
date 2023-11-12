@@ -3436,10 +3436,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bluebird@npm:^3.5.41":
-  version: 3.5.41
-  resolution: "@types/bluebird@npm:3.5.41"
-  checksum: 66ebd0538708d6163bcd75868865a509491bf940ea7499fc0230cf9ea6b498e59e7bb217b88bec2597a906b00170fd705677ceb6378d46ae66008a16e0f71c0f
+"@types/bluebird@npm:^3.5.42":
+  version: 3.5.42
+  resolution: "@types/bluebird@npm:3.5.42"
+  checksum: 09ad60b083f916c7611936d3c70986df8f2eae11e46768ab7901d86bee5b1ca6b00cd9ef8cc0d3761256e2bc4ada3388e5529f71745a6b3d7602e868e3530310
   languageName: node
   linkType: hard
 
@@ -7373,7 +7373,7 @@ __metadata:
     "@sentry/browser": "npm:^7.80.0"
     "@sentry/node": "npm:^7.80.0"
     "@sentry/tracing": "npm:^7.80.0"
-    "@types/bluebird": "npm:^3.5.41"
+    "@types/bluebird": "npm:^3.5.42"
     "@types/body-parser": "npm:^1.19.3"
     "@types/cookie-parser": "npm:^1.4.4"
     "@types/cookie-session": "npm:^2.0.47"
