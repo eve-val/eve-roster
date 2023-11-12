@@ -114,7 +114,7 @@ export class RotatingFileLogWriter extends Writable {
     } else {
       timestamp = moment.utc();
       levelTag = "U";
-      message = line;
+      message = line.trimEnd();
     }
 
     let outLine = formatOutputLine(timestamp, levelTag, message);
