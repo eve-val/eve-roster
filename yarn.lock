@@ -4106,12 +4106,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sqlite3@npm:^3.1.9":
-  version: 3.1.9
-  resolution: "@types/sqlite3@npm:3.1.9"
+"@types/sqlite3@npm:^3.1.11":
+  version: 3.1.11
+  resolution: "@types/sqlite3@npm:3.1.11"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 5570a8bf70a2a1da35de334fb4989cd285f31bd17daec4015b2294fb775104dace36c7dac3be5d79a76f38a5d3adcdd9631212907d98d03f0dd0314aff09fd44
+  checksum: bcda2df582bdc1e1c0f0fa2e4ca0c5188207155eac52518244a3e7517d3c58a1f441871a7ec9088f2281af1bfdc5175c082a2c13da920c51cb7f3aa2f17e8d7b
   languageName: node
   linkType: hard
 
@@ -7392,7 +7392,7 @@ __metadata:
     "@types/pug": "npm:^2.0.9"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/source-map-support": "npm:^0.5.10"
-    "@types/sqlite3": "npm:^3.1.9"
+    "@types/sqlite3": "npm:^3.1.11"
     "@types/swagger-ui": "npm:^3.52.4"
     "@types/tmp": "npm:^0.2.6"
     "@types/underscore": "npm:^1.11.14"
