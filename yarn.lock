@@ -3703,10 +3703,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/heapdump@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "@types/heapdump@npm:0.3.2"
-  checksum: d18d8a0d7a3648a5df3a0775d6bf6d3abb022cccd55f6d57c5412c10817fae908428d0168545fc0c957ad2ff09eff9f1e492d924ded7e08c326db45ff8ec5df0
+"@types/heapdump@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "@types/heapdump@npm:0.3.4"
+  checksum: a9c62274e4b0cf841811410275fb58c1d82af128e5ee61d6df94297819cc45b0c2d900b155377a734788f84f3d5b76f9de4e36682870d24b38dc414b787fe507
   languageName: node
   linkType: hard
 
@@ -7381,7 +7381,7 @@ __metadata:
     "@types/csurf": "npm:^1.11.5"
     "@types/events": "npm:^3"
     "@types/express": "npm:^4.17.21"
-    "@types/heapdump": "npm:^0.3.2"
+    "@types/heapdump": "npm:^0.3.4"
     "@types/imagemin": "npm:^8.0.4"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^20.9.0"
