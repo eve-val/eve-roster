@@ -16,8 +16,8 @@ export function checkEsiResponseForWarnings(
     const tag = warning.startsWith(`199`)
       ? "newVer"
       : warning.startsWith(`299`)
-      ? "deprecated"
-      : "unknown";
+        ? "deprecated"
+        : "unknown";
 
     logPathWarning(endpoint.path, tag, warning);
   }
