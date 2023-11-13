@@ -50,10 +50,10 @@ async function handleEndpoint(
           row.accessToken_scopes == null
             ? "No token"
             : !hasRosterScopes(row.accessToken_scopes)
-            ? "Missing scopes"
-            : row.accessToken_needsUpdate
-            ? "Token expired"
-            : "Have token";
+              ? "Missing scopes"
+              : row.accessToken_needsUpdate
+                ? "Token expired"
+                : "Have token";
 
         return {
           id: row.character_id,
