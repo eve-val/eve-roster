@@ -138,7 +138,10 @@ export default defineComponent({
       let level = 0;
       if (this.isMain) {
         level = Math.max(
-          this.account.alertLevel ?? 0,
+          Math.min(
+            this.account.alertLevel ?? 0,
+            2, // Non-main character errors shown up as warnings
+          ),
           this.character.alertLevel ?? 0,
         );
       } else {
