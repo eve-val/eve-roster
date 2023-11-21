@@ -7137,7 +7137,7 @@ __metadata:
     source-map-support: "npm:^0.5.21"
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
-    svgo: "npm:^3.0.3"
+    svgo: "npm:^3.0.4"
     swagger-ui: "npm:^5.10.0"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.1"
@@ -13433,19 +13433,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svgo@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "svgo@npm:3.0.3"
+"svgo@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "svgo@npm:3.0.4"
   dependencies:
     "@trysound/sax": "npm:0.2.0"
     commander: "npm:^7.2.0"
     css-select: "npm:^5.1.0"
     css-tree: "npm:^2.2.1"
+    css-what: "npm:^6.1.0"
     csso: "npm:5.0.5"
     picocolors: "npm:^1.0.0"
   bin:
     svgo: ./bin/svgo
-  checksum: 3cebb7553cd57b7c2020ea6d580681cdd6045a8a5c40d866d4dfb40da1d6668d27ccac23fb8d9365773c354b55f7073f0fcc6f6e50c60e599cc70bdc20dd4fab
+  checksum: 077858c571b3ad988b0cf72c132fb766b293a6edeab62c5da648050473622c9ffdcf7870d3dd87cd7a74e2a71a43d382221dff79f6094f0bd63c382361dcab8f
   languageName: node
   linkType: hard
 
