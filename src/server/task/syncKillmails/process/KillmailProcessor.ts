@@ -59,7 +59,9 @@ export class KillmailProcessor extends BatchedObjectWritable<ProcessedKillmail> 
       }
     }
 
-    await dao.killmail.updateKillmails(this._db, updateRows);
+    if (updateRows.length > 0) {
+      await dao.killmail.updateKillmails(this._db, updateRows);
+    }
 
     if (kmIds.length > 0) {
       await dao.srp.createSrpEntries(this._db, kmIds);
