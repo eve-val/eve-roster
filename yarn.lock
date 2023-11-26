@@ -3464,12 +3464,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/imagemin@npm:^8.0.4":
-  version: 8.0.4
-  resolution: "@types/imagemin@npm:8.0.4"
+"@types/imagemin@npm:^8.0.5":
+  version: 8.0.5
+  resolution: "@types/imagemin@npm:8.0.5"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 29c490a18aced93634d9e0b7cb240041cb540bd0bc596c23af4e05be0a3db0681508599a8b6863b025cf91b0a6ca948496bebe041fcd8e90424594f1c562ca9b
+  checksum: 7d492a0953b932546ff952370f21f62067a2311809f6e6c23288745e6e7ec70e2dad443a455e4ab1b63e6e8d9780cbe4dfc3f3519a6e78d6812b55dc642706ac
   languageName: node
   linkType: hard
 
@@ -7087,7 +7087,7 @@ __metadata:
     "@types/events": "npm:^3"
     "@types/express": "npm:^4.17.21"
     "@types/heapdump": "npm:^0.3.4"
-    "@types/imagemin": "npm:^8.0.4"
+    "@types/imagemin": "npm:^8.0.5"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^20.9.2"
     "@types/node-schedule": "npm:^2.1.4"
