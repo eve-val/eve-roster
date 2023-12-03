@@ -43,7 +43,7 @@
     "envalid": "^8.0.0",
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.4",
-    "jose": "^5.1.1",
+    "jose": "^5.1.3",
     "knex": "^3.0.1",
     "moment": "^2.29.4",
     "node-graceful": "^3.1.0",
