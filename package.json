@@ -114,7 +114,7 @@
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^2.7.6",
     "moment-locales-webpack-plugin": "^1.2.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "sharp": "^0.32.6",
     "stream-browserify": "^3.0.0",
     "svgo": "^3.0.5",
