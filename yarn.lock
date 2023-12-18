@@ -494,13 +494,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.23.2":
-  version: 7.23.2
-  resolution: "@babel/runtime-corejs3@npm:7.23.2"
+"@babel/runtime-corejs3@npm:^7.23.5":
+  version: 7.23.6
+  resolution: "@babel/runtime-corejs3@npm:7.23.6"
   dependencies:
     core-js-pure: "npm:^3.30.2"
     regenerator-runtime: "npm:^0.14.0"
-  checksum: ea48e6e4eaee6ec66f767f50d1ca6caeafee09521b6814c6ce45d57d630e14d1171dfbb596957f0d19049c500b87c81486048a31b7670c82f9208a8c417988bb
+  checksum: 6780931fc75baa486bc05db9ca2ea26706eed72fa75323af338c35edd25f804ccbdc3f6e421630b8d57aa9d39174af3ad7f49411345d9cca5d6837ce49672768
   languageName: node
   linkType: hard
 
@@ -6231,10 +6231,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.5.0, cookie@npm:~0.5.0":
+"cookie@npm:0.5.0":
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
   checksum: aae7911ddc5f444a9025fbd979ad1b5d60191011339bce48e555cb83343d0f98b865ff5c4d71fecdfb8555a5cafdc65632f6fce172f32aaf6936830a883a0380
+  languageName: node
+  linkType: hard
+
+"cookie@npm:~0.6.0":
+  version: 0.6.0
+  resolution: "cookie@npm:0.6.0"
+  checksum: c1f8f2ea7d443b9331680598b0ae4e6af18a618c37606d1bbdc75bec8361cce09fe93e727059a673f2ba24467131a9fb5a4eec76bb1b149c1b3e1ccb268dc583
   languageName: node
   linkType: hard
 
@@ -7609,7 +7616,7 @@ __metadata:
     sqlite3: "npm:^5.1.6"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.1.0"
-    swagger-ui: "npm:^5.10.3"
+    swagger-ui: "npm:^5.10.5"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.1"
     ts-jest-resolver: "npm:^2.0.1"
@@ -13965,9 +13972,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.24.5":
-  version: 3.24.5
-  resolution: "swagger-client@npm:3.24.5"
+"swagger-client@npm:^3.24.6":
+  version: 3.24.6
+  resolution: "swagger-client@npm:3.24.6"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
     "@swagger-api/apidom-core": "npm:>=0.83.0 <1.0.0"
@@ -13975,7 +13982,7 @@ __metadata:
     "@swagger-api/apidom-json-pointer": "npm:>=0.83.0 <1.0.0"
     "@swagger-api/apidom-ns-openapi-3-1": "npm:>=0.83.0 <1.0.0"
     "@swagger-api/apidom-reference": "npm:>=0.83.0 <1.0.0"
-    cookie: "npm:~0.5.0"
+    cookie: "npm:~0.6.0"
     deepmerge: "npm:~4.3.0"
     fast-json-patch: "npm:^3.0.0-1"
     is-plain-object: "npm:^5.0.0"
@@ -13985,15 +13992,15 @@ __metadata:
     qs: "npm:^6.10.2"
     traverse: "npm:~0.6.6"
     undici: "npm:^5.24.0"
-  checksum: 404b006a042e413f5166c96934fb52311bbca36cb69909a674729ef8355f2cfdf26240be912e2cde0fe55e0f6e1d23a164783efb746af248da8c40dfde5349e9
+  checksum: 76dda380cf97ba677326be75ed7f439cec0f14b4034fedab51c15f2099a2f56e2c6adf6d704262f439b875a0842568731ae2f659470c5503797fe794973eb230
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.10.3":
-  version: 5.10.3
-  resolution: "swagger-ui@npm:5.10.3"
+"swagger-ui@npm:^5.10.5":
+  version: 5.10.5
+  resolution: "swagger-ui@npm:5.10.5"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.23.2"
+    "@babel/runtime-corejs3": "npm:^7.23.5"
     "@braintree/sanitize-url": "npm:=6.0.4"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.3.1"
@@ -14024,12 +14031,12 @@ __metadata:
     reselect: "npm:^4.1.8"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.24.5"
+    swagger-client: "npm:^3.24.6"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 2a66aa806492067e015d8c0309ef2c6d13eb785e8ea4a70c538e3d732bcdb418fbc1c4427027264962874c9aaf6d10046a432346e41529969ac25df720729e54
+  checksum: 1d8a0f3969d2510a8f30e35e8028242a0984c10a58e1a6e23c9355ff64f3207458c7398af7881e71267bad5c177f0ca15d06e9b08c63c60dc9c47f442a168dd7
   languageName: node
   linkType: hard
 
