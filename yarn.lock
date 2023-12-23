@@ -7593,7 +7593,7 @@ __metadata:
     express: "npm:^4.18.2"
     express-rate-limit: "npm:^7.1.5"
     file-loader: "npm:^6.2.0"
-    html-webpack-plugin: "npm:^5.5.4"
+    html-webpack-plugin: "npm:^5.6.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
     image-minimizer-webpack-plugin: "npm:^3.8.3"
     jest: "npm:^29.7.0"
@@ -8472,9 +8472,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:^5.5.4":
-  version: 5.5.4
-  resolution: "html-webpack-plugin@npm:5.5.4"
+"html-webpack-plugin@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "html-webpack-plugin@npm:5.6.0"
   dependencies:
     "@types/html-minifier-terser": "npm:^6.0.0"
     html-minifier-terser: "npm:^6.0.2"
@@ -8482,8 +8482,14 @@ __metadata:
     pretty-error: "npm:^4.0.0"
     tapable: "npm:^2.0.0"
   peerDependencies:
+    "@rspack/core": 0.x || 1.x
     webpack: ^5.20.0
-  checksum: ef3ceb84a1cd4304a3b4d2391e767ed8a32ec99454dff90daca6654bed689a54b0bc43de5a498564718e02df71e13ffb492b61234c09f59f6ab058e2c2a25be6
+  peerDependenciesMeta:
+    "@rspack/core":
+      optional: true
+    webpack:
+      optional: true
+  checksum: d651f3a88a7c932c72c6a30f0fdd610b49a864a69f1ddb34562c750f1602ea471e27fd8fc32c01adadd484b38fa6b74f055d1ccce26e5f8fcf814ee0d398a121
   languageName: node
   linkType: hard
 
