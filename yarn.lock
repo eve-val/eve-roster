@@ -7629,7 +7629,7 @@ __metadata:
     verror: "npm:^1.10.1"
     vue: "npm:^3.3.13"
     vue-eslint-parser: "npm:^9.3.2"
-    vue-loader: "npm:^17.3.1"
+    vue-loader: "npm:^17.4.0"
     vue-router: "npm:^4.2.5"
     vue-style-loader: "npm:^4.1.3"
     webpack: "npm:^5.89.0"
@@ -14771,9 +14771,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-loader@npm:^17.3.1":
-  version: 17.3.1
-  resolution: "vue-loader@npm:17.3.1"
+"vue-loader@npm:^17.4.0":
+  version: 17.4.0
+  resolution: "vue-loader@npm:17.4.0"
   dependencies:
     chalk: "npm:^4.1.0"
     hash-sum: "npm:^2.0.0"
@@ -14785,7 +14785,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 2fbce88dc7bf7dc56cbe688a4aecdfee45e29d29c6f4c247ebc8dad083e81f4a609696acfb013500cc33399d3e03e33a4c14d6f15a20e00d569936f755311a69
+  checksum: 157a9f6c9a3a9f28917e3b4ec3ec1231e70b5884f3c60fe0f1ddb42378bdaa0ed7f27ca51f5d5eaac8ddf5efc6427250ebd81a85bc007e4cf0aada05d2bfd4e2
   languageName: node
   linkType: hard
 
