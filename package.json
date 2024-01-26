@@ -33,7 +33,7 @@
     "@opentelemetry/sdk-node": "^0.47.0",
     "@opentelemetry/semantic-conventions": "^1.20.0",
     "@sentry/node": "^7.98.0",
-    "axios": "^1.6.5",
+    "axios": "^1.6.7",
     "bluebird": "^3.7.2",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
