@@ -125,7 +125,7 @@
     "typescript": "^5.3.3",
     "url": "^0.11.3",
     "vue": "^3.4.15",
-    "vue-eslint-parser": "^9.4.1",
+    "vue-eslint-parser": "^9.4.2",
     "vue-loader": "^17.4.2",
     "vue-router": "^4.2.5",
     "vue-style-loader": "^4.1.3",
