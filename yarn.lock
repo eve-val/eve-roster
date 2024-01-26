@@ -6226,15 +6226,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-session@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "cookie-session@npm:2.0.0"
+"cookie-session@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "cookie-session@npm:2.1.0"
   dependencies:
-    cookies: "npm:0.8.0"
+    cookies: "npm:0.9.1"
     debug: "npm:3.2.7"
     on-headers: "npm:~1.0.2"
     safe-buffer: "npm:5.2.1"
-  checksum: aeb51fad26226b64643899f93d2b8f1cf54de28f04758aafc4e8a628df5ab62148c00207011867f5a25623ea3aad813fe54f9ff2e190ffaceac108193f17614e
+  checksum: 31dd3c5a945d23681d18aa0642135795a09a15f1e4ebc469886980a4610d39bf9df1070cb028ded241b5f78dbd0d854b288a29419e6f797c0e5fd7b04c9bede8
   languageName: node
   linkType: hard
 
@@ -6273,13 +6273,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookies@npm:0.8.0":
-  version: 0.8.0
-  resolution: "cookies@npm:0.8.0"
+"cookies@npm:0.9.1":
+  version: 0.9.1
+  resolution: "cookies@npm:0.9.1"
   dependencies:
     depd: "npm:~2.0.0"
     keygrip: "npm:~1.1.0"
-  checksum: 5da4d72ba81c2740511751ac8ea9506e10e2366b9ad3360333581e4667fd8d063d02c5be0bef16177de3e366b8128ed2b72921e2952c79cbca084d177e529bba
+  checksum: 4816461a38d907b20f3fb7a2bc4741fe580e7a195f3e248ef7025cb3be56a07638a0f4e72553a5f535554ca30172c8a3245c63ac72c9737cec034e9a47773392
   languageName: node
   linkType: hard
 
@@ -7615,7 +7615,7 @@ __metadata:
     clean-webpack-plugin: "npm:^4.0.0"
     cleanup-mini-css-extract-plugin: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.6"
-    cookie-session: "npm:^2.0.0"
+    cookie-session: "npm:^2.1.0"
     css-loader: "npm:^6.9.1"
     css-minimizer-webpack-plugin: "npm:^6.0.0"
     csurf: "npm:^1.11.0"
