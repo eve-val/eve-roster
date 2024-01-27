@@ -494,13 +494,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.23.7":
-  version: 7.23.8
-  resolution: "@babel/runtime-corejs3@npm:7.23.8"
+"@babel/runtime-corejs3@npm:^7.23.8":
+  version: 7.23.9
+  resolution: "@babel/runtime-corejs3@npm:7.23.9"
   dependencies:
     core-js-pure: "npm:^3.30.2"
     regenerator-runtime: "npm:^0.14.0"
-  checksum: d0d32ec423c4e528571fd2496a3a3ddeaa343bda9112cb21e3420fbdbbca02bf3e12ec5cb65d1c6b9f4bf6b3ed31cd5b3fcab430da111b1ec0ceeb06d6c4eb35
+  checksum: 4139c275039fa419f6f62b2865a231b2f28c5db4c61a01b92f145f0e9f94f644da6d77345153c96e44ab6b6637a3d55cb0411e34fa87879e3492f4ef72bc7e8c
   languageName: node
   linkType: hard
 
@@ -6986,10 +6986,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:=3.0.6":
-  version: 3.0.6
-  resolution: "dompurify@npm:3.0.6"
-  checksum: bf6e8a240673f60f5aafa46b598cfb66a18ab68f2801840005bc784b3fd3598a6bfac1eca1f80a98b197054d2329cd6edbc857aca34364abdee389a8fe6c027a
+"dompurify@npm:=3.0.8":
+  version: 3.0.8
+  resolution: "dompurify@npm:3.0.8"
+  checksum: 671fa18bd4bcb1a6ff2e59ecf919f807615b551e7add8834b27751d4e0f3d754a67725482d1efdd259317cadcaaccb72a8afc3aba829ac59730e760041591a1a
   languageName: node
   linkType: hard
 
@@ -7665,7 +7665,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.11.0"
+    swagger-ui: "npm:^5.11.1"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -12839,7 +12839,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^9.0.4":
+"react-redux@npm:^9.1.0":
   version: 9.1.0
   resolution: "react-redux@npm:9.1.0"
   dependencies:
@@ -12929,7 +12929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^5.0.0":
+"redux@npm:^5.0.1":
   version: 5.0.1
   resolution: "redux@npm:5.0.1"
   checksum: a373f9ed65693ead58bea5ef61c1d6bef39da9f2706db3be6f84815f3a1283230ecd1184efb1b3daa7f807d8211b0181564ca8f336fc6ee0b1e2fa0ba06737c2
@@ -13039,7 +13039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reselect@npm:^5.0.1":
+"reselect@npm:^5.1.0":
   version: 5.1.0
   resolution: "reselect@npm:5.1.0"
   checksum: 657c379d9461781b7cb5f0a32133e23b4266886660c94fcc77c102bec8abe484b32bf43a911b99b747ecf7439f157696561d744d40dc920024611beb1a0d921f
@@ -14014,17 +14014,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.11.0":
-  version: 5.11.0
-  resolution: "swagger-ui@npm:5.11.0"
+"swagger-ui@npm:^5.11.1":
+  version: 5.11.1
+  resolution: "swagger-ui@npm:5.11.1"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.23.7"
+    "@babel/runtime-corejs3": "npm:^7.23.8"
     "@braintree/sanitize-url": "npm:=7.0.0"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.5.1"
     css.escape: "npm:1.5.1"
     deep-extend: "npm:0.6.0"
-    dompurify: "npm:=3.0.6"
+    dompurify: "npm:=3.0.8"
     ieee754: "npm:^1.2.1"
     immutable: "npm:^3.x.x"
     js-file-download: "npm:^0.4.12"
@@ -14041,12 +14041,12 @@ __metadata:
     react-immutable-proptypes: "npm:2.2.0"
     react-immutable-pure-component: "npm:^2.2.0"
     react-inspector: "npm:^6.0.1"
-    react-redux: "npm:^9.0.4"
+    react-redux: "npm:^9.1.0"
     react-syntax-highlighter: "npm:^15.5.0"
-    redux: "npm:^5.0.0"
+    redux: "npm:^5.0.1"
     redux-immutable: "npm:^4.0.0"
     remarkable: "npm:^2.0.1"
-    reselect: "npm:^5.0.1"
+    reselect: "npm:^5.1.0"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
     swagger-client: "npm:^3.25.0"
@@ -14054,7 +14054,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: dcf426129a3d3adfec3965715ebca9d95039e4e2095f3ab1b833a1e4cc12536eb55167cb20ccd02838ab528b08b7740cf208792248fda294bd539affe71e9de4
+  checksum: 86eb10e2a2760229de7db91db9b6611040b9fd1749d06973b9a39d4ba37e5ae283824d3a53e8c3a217a5169766f17e86881f385bc1b311d31b43efb136b60e46
   languageName: node
   linkType: hard
 
