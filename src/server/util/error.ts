@@ -44,6 +44,14 @@ export function gentleStackTrace(e: unknown) {
   }
 }
 
+export function wrapError(err: unknown) {
+  if (err instanceof Error) {
+    return err;
+  } else {
+    return new Error(`Unknown error: ${JSON.stringify(err)}`);
+  }
+}
+
 function axiosErrorToString(e: AxiosError<unknown, unknown>): string {
   const message = [e.message];
   if (e.request instanceof http.ClientRequest) {
