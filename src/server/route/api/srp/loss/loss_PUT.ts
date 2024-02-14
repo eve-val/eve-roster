@@ -66,6 +66,13 @@ async function handleEndpoint(
   if (input.verdict != SrpVerdictStatus.INELIGIBLE && input.reason != null) {
     throw new BadRequestError(`Reason must be null if status not ineligible.`);
   }
+  if (
+    isNaN(input.payout) ||
+    input.payout < 0 ||
+    input.payout >= Number.MAX_SAFE_INTEGER
+  ) {
+    throw new BadRequestError(`Payout ${input.payout} out of bounds`);
+  }
 
   const updateCount = await dao.srp.setSrpVerdict(
     db,
