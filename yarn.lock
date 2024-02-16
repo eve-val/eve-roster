@@ -494,7 +494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.23.8":
+"@babel/runtime-corejs3@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/runtime-corejs3@npm:7.23.9"
   dependencies:
@@ -7392,7 +7392,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.11.3"
+    swagger-ui: "npm:^5.11.6"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -13742,11 +13742,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.11.3":
-  version: 5.11.3
-  resolution: "swagger-ui@npm:5.11.3"
+"swagger-ui@npm:^5.11.6":
+  version: 5.11.6
+  resolution: "swagger-ui@npm:5.11.6"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.23.8"
+    "@babel/runtime-corejs3": "npm:^7.23.9"
     "@braintree/sanitize-url": "npm:=7.0.0"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.5.1"
@@ -13782,7 +13782,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/0b2e0b23e6c345ae83d2e42a3cc0bf83f6ce6fb980ba7e70b6f8581e0b85b5df9a6bc49c1d9c97097a0dfc5f33d54b90c47a77d657ee380c5591ee5d7dda9452
+  checksum: 10/a922bddf3835eeba694f1d7872b80ae3f47f89d76811779f881d1475d0bf655c692957df0c4f81850e05cf781c4df7afb4d40f20d233509cca9392f8a122136e
   languageName: node
   linkType: hard
 
