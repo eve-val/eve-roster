@@ -7392,7 +7392,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.11.6"
+    swagger-ui: "npm:^5.11.7"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -13742,9 +13742,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.11.6":
-  version: 5.11.6
-  resolution: "swagger-ui@npm:5.11.6"
+"swagger-ui@npm:^5.11.7":
+  version: 5.11.7
+  resolution: "swagger-ui@npm:5.11.7"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.23.9"
     "@braintree/sanitize-url": "npm:=7.0.0"
@@ -13782,7 +13782,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/a922bddf3835eeba694f1d7872b80ae3f47f89d76811779f881d1475d0bf655c692957df0c4f81850e05cf781c4df7afb4d40f20d233509cca9392f8a122136e
+  checksum: 10/8059f5b323d73926eec9271d0c57cd7e7e83fccf1f64185516d735ac4755b5607436f4be66d53ebf07b290f2d18f18f6f022b9976211bfa1df6aa2e1bdd9c5ca
   languageName: node
   linkType: hard
 
