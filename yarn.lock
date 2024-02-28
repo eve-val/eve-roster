@@ -688,13 +688,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fastify/busboy@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@fastify/busboy@npm:2.0.0"
-  checksum: 10/6a2366d06b82aac1069b8323792f76f7a8fca02533cb3745fcd218d8f0f953dc4dbef057287237414658cd43f8dede0846ef33398999e3dbe54ddaeefec71c0a
-  languageName: node
-  linkType: hard
-
 "@gar/promisify@npm:^1.0.1, @gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -6713,10 +6706,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:=3.0.8":
-  version: 3.0.8
-  resolution: "dompurify@npm:3.0.8"
-  checksum: 10/671fa18bd4bcb1a6ff2e59ecf919f807615b551e7add8834b27751d4e0f3d754a67725482d1efdd259317cadcaaccb72a8afc3aba829ac59730e760041591a1a
+"dompurify@npm:=3.0.9":
+  version: 3.0.9
+  resolution: "dompurify@npm:3.0.9"
+  checksum: 10/cfb8ed92672e7ddfa43a9ce5bfcd4b3c91287454402672da930b0ecfc8c86d0d2133116607e6c7c77a07ddd8c6baec6d11fa07d9fddebd8701572e3cace2ecea
   languageName: node
   linkType: hard
 
@@ -7392,7 +7385,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.11.7"
+    swagger-ui: "npm:^5.11.8"
     tmp: "npm:^0.2.1"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -10509,7 +10502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch-commonjs@npm:^3.3.1":
+"node-fetch-commonjs@npm:^3.3.2":
   version: 3.3.2
   resolution: "node-fetch-commonjs@npm:3.3.2"
   dependencies:
@@ -13740,9 +13733,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.25.0":
-  version: 3.25.0
-  resolution: "swagger-client@npm:3.25.0"
+"swagger-client@npm:^3.25.3":
+  version: 3.25.3
+  resolution: "swagger-client@npm:3.25.3"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
     "@swagger-api/apidom-core": "npm:>=0.90.0 <1.0.0"
@@ -13756,17 +13749,16 @@ __metadata:
     is-plain-object: "npm:^5.0.0"
     js-yaml: "npm:^4.1.0"
     node-abort-controller: "npm:^3.1.1"
-    node-fetch-commonjs: "npm:^3.3.1"
+    node-fetch-commonjs: "npm:^3.3.2"
     qs: "npm:^6.10.2"
     traverse: "npm:~0.6.6"
-    undici: "npm:^5.24.0"
-  checksum: 10/1fc260fce7cc7571db00167d7606ed9317e0f32146e24ee8f76ce750f9642c541f2cdf167b1612fbe6e31115c53d74c83a80d9b94bcc6a3bd2f91dde0d546da7
+  checksum: 10/ddef844966ed24e494cadaec975f8f2ba42f79a41095000afa2c866cb559bc1ce75321195d278f5d4d75250a30e8271e4ef00af2c5aa0646bb80a8ef0de68781
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.11.7":
-  version: 5.11.7
-  resolution: "swagger-ui@npm:5.11.7"
+"swagger-ui@npm:^5.11.8":
+  version: 5.11.8
+  resolution: "swagger-ui@npm:5.11.8"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.23.9"
     "@braintree/sanitize-url": "npm:=7.0.0"
@@ -13774,7 +13766,7 @@ __metadata:
     classnames: "npm:^2.5.1"
     css.escape: "npm:1.5.1"
     deep-extend: "npm:0.6.0"
-    dompurify: "npm:=3.0.8"
+    dompurify: "npm:=3.0.9"
     ieee754: "npm:^1.2.1"
     immutable: "npm:^3.x.x"
     js-file-download: "npm:^0.4.12"
@@ -13799,12 +13791,12 @@ __metadata:
     reselect: "npm:^5.1.0"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.25.0"
+    swagger-client: "npm:^3.25.3"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/8059f5b323d73926eec9271d0c57cd7e7e83fccf1f64185516d735ac4755b5607436f4be66d53ebf07b290f2d18f18f6f022b9976211bfa1df6aa2e1bdd9c5ca
+  checksum: 10/03fce6f2f80ee4fc7cd8f93c55636d0729079bc73e6dd831006378d881f5a7ef9e1da012fb48d1e0fb02ba6b4cc649efb364dda326fb858c41239523fcaf0f02
   languageName: node
   linkType: hard
 
@@ -14338,15 +14330,6 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 10/0097779d94bc0fd26f0418b3a05472410408877279141ded2bd449167be1aed7ea5b76f756562cb3586a07f251b90799bab22d9019ceba49c037c76445f7cddd
-  languageName: node
-  linkType: hard
-
-"undici@npm:^5.24.0":
-  version: 5.28.3
-  resolution: "undici@npm:5.28.3"
-  dependencies:
-    "@fastify/busboy": "npm:^2.0.0"
-  checksum: 10/779856ce14ba6907c0759df8e4babd61608b1f502569d44de7dd1d014afb7c67a0a2997b4f706e0daff8a55d87ee2f25b830b195fc0202cb6fbd25abe2d941eb
   languageName: node
   linkType: hard
 
