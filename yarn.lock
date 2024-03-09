@@ -7649,7 +7649,7 @@ __metadata:
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
     ts-loader: "npm:^9.5.1"
-    typescript: "npm:5.4.0-beta"
+    typescript: "npm:^5.4.2"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.6"
     url: "npm:^0.11.3"
@@ -14525,23 +14525,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.0-beta":
-  version: 5.4.0-beta
-  resolution: "typescript@npm:5.4.0-beta"
+"typescript@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "typescript@npm:5.4.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/380556e1a843d1649ad1834eeacef491b28cf69951b6b7b41a413a49b15b88777961adff98140c900bef35c6bdcf6df1e09b6ebdff352ca8c3269deb971843b6
+  checksum: 10/f8cfdc630ab1672f004e9561eb2916935b2d267792d07ce93e97fc601c7a65191af32033d5e9c0169b7dc37da7db9bf320f7432bc84527cb7697effaa4e4559d
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.4.0-beta#optional!builtin<compat/typescript>":
-  version: 5.4.0-beta
-  resolution: "typescript@patch:typescript@npm%3A5.4.0-beta#optional!builtin<compat/typescript>::version=5.4.0-beta&hash=d69c25"
+"typescript@patch:typescript@npm%3A^5.4.2#optional!builtin<compat/typescript>":
+  version: 5.4.2
+  resolution: "typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>::version=5.4.2&hash=5adc0c"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/7188bd33c638cb19595e122eab95eae608b465873e837ea49df9e46c7a8e9c62e68d67a49e262d628d8c9263959fe92127b5f8cab34509c31b7920b8fcbaad20
+  checksum: 10/f5f9a4133c2670761f0166eae5b3bafbc4a3fc24f0f42a93c9c893d9e9d6e66ea066969c5e7483fa66b4ae0e99125592553f3b92fd3599484de8be13b0615176
   languageName: node
   linkType: hard
 
