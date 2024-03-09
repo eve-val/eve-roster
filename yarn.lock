@@ -14278,11 +14278,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.4.1-rc#optional!builtin<compat/typescript>":
   version: 5.4.1-rc
-  resolution: "typescript@patch:typescript@npm%3A5.4.1-rc#optional!builtin<compat/typescript>::version=5.4.1-rc&hash=d69c25"
+  resolution: "typescript@patch:typescript@npm%3A5.4.1-rc#optional!builtin<compat/typescript>::version=5.4.1-rc&hash=5adc0c"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/ff111d0129c69528db463c8022b38b2e696865ef52c10687d47af29016b2c62d68d82ce52b900a0e35c3331caa2b705fcd3a70d572951b9eb42af725551dc6d8
+  checksum: 10/613747bc8c9636ad70e8a692331a78b7a1f3c30ea247bd7f5427eafcee9041a7b42d1b7ee484be018bfc448abbba286bd75ef5353108daec203b5882d18cd75d
   languageName: node
   linkType: hard
 
