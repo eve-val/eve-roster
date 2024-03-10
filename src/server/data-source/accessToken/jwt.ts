@@ -1,6 +1,6 @@
 import { createRemoteJWKSet, jwtVerify, JWTPayload } from "jose";
 
-export async function fetchAuthInfo(
+export async function fetchJwtInfo(
   accessToken: string,
 ): Promise<AuthInfoResponse & JWTPayload> {
   const result = await jwtVerify(

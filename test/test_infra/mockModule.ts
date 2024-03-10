@@ -9,7 +9,6 @@ import { jest } from "@jest/globals";
  * @param implementation The mock or fake module to use instead of the real one
  * @returns The implementation passed in
  */
-export function mockModule<T>(path: string, implementation: T): T {
+export function mockModule<T>(path: string, implementation: NoInfer<T>) {
   jest.mock(`../../${path}`, () => implementation);
-  return implementation;
 }

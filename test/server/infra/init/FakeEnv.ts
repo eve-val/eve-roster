@@ -1,13 +1,19 @@
-import type * as EnvModule from "../../../../src/server/infra/init/Env.js";
+import * as EnvModule from "../../../../src/server/infra/init/Env.js";
 import type { Env } from "../../../../src/server/infra/init/Env.js";
+import { mockModule } from "../../../test_infra/mockModule.js";
 
 /**
  * Builds a fake version of the Env module for use in testing.
  *
  * See ExampleLegacyEnvReader.test.ts for an example of usage.
  */
+export function mockEnv(props: Partial<Env> = {}) {
+  const fakeModule = fakeEnvModule(props);
+  mockModule<typeof EnvModule>("src/server/infra/init/Env.js", fakeModule);
+  return fakeModule;
+}
 
-export function fakeEnvModule(props: Partial<Env> = {}) {
+function fakeEnvModule(props: Partial<Env> = {}) {
   const fakeEnv = Object.assign({}, DEFAULT_ENV) as Writable<Env>;
 
   const fakeModule = {
@@ -16,10 +22,12 @@ export function fakeEnvModule(props: Partial<Env> = {}) {
     setEnv(props: Partial<Env>) {
       Object.assign(fakeEnv, props);
     },
+    __esModule: true,
   };
+
   fakeModule.setEnv(props);
 
-  return impersonateModule<typeof EnvModule, typeof fakeModule>(fakeModule);
+  return fakeModule;
 }
 
 const DEFAULT_ENV: Env = {
@@ -53,10 +61,3 @@ const DEFAULT_ENV: Env = {
 };
 
 type Writable<T> = { -readonly [P in keyof T]: T[P] };
-
-function impersonateModule<M, F extends M>(fake: F) {
-  return {
-    ...fake,
-    __esModule: true,
-  };
-}

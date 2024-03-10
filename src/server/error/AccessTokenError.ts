@@ -1,6 +1,6 @@
 import { ExtendableError } from "./ExtendableError.js";
 
-export const enum AccessTokenErrorType {
+export enum AccessTokenErrorType {
   TOKEN_MISSING,
   TOKEN_REFRESH_REJECTED,
   HTTP_FAILURE,
