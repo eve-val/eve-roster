@@ -1,15 +1,11 @@
 import { expect, test } from "@jest/globals";
-import { mockModule } from "../../../test_infra/mockModule.js";
-import { fakeEnvModule } from "./FakeEnv.js";
+import { mockEnv } from "./FakeEnv.js";
 
 // The line must appear above the ExampleEnvReader import (i.e. the class
 // under tests) in order for the faking to work properly.
-const fakeEnv = mockModule(
-  "src/server/infra/init/Env.js",
-  fakeEnvModule({
-    COOKIE_SECRET: "early_secret",
-  }),
-);
+const fakeEnv = mockEnv({
+  COOKIE_SECRET: "early_secret",
+});
 
 import {
   exampleFunctionThatDependsOnEnv,

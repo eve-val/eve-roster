@@ -29,6 +29,7 @@ export default class AccessTokenDao {
         "accessToken_accessToken",
         "accessToken_accessTokenExpires",
         "accessToken_needsUpdate",
+        "accessToken_scopes",
       )
       .run();
   }
@@ -43,7 +44,7 @@ export default class AccessTokenDao {
       | "accessToken_accessTokenExpires"
       | "accessToken_needsUpdate"
     >[],
-  ) {
+  ): Promise<unknown> {
     return db.updateAll(accessToken, "accessToken_character", rows);
   }
 
@@ -99,7 +100,7 @@ export default class AccessTokenDao {
     scopes: string[],
     accessTokenVal: string,
     accessTokenExpires: number,
-  ) {
+  ): Promise<unknown> {
     return db.upsert(
       accessToken,
       {

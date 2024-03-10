@@ -1,3 +1,4 @@
+import { FakeWitnessLogger } from "./FakeWitnessLogger.js";
 import { Logger } from "./Logger.js";
 import { WitnessLogger } from "./WitnessLogger.js";
 
@@ -13,7 +14,11 @@ import { WitnessLogger } from "./WitnessLogger.js";
  *    name).
  */
 export function buildLogger(tag: string): Logger {
-  return new WitnessLogger(tag);
+  if (process.env.NODE_ENV == "test") {
+    return new FakeWitnessLogger();
+  } else {
+    return new WitnessLogger(tag);
+  }
 }
 
 /**

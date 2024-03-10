@@ -19,7 +19,7 @@ import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { getSession } from "../infra/express/session.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
-import { fetchAuthInfo } from "../data-source/accessToken/jwt.js";
+import { fetchJwtInfo } from "../data-source/accessToken/jwt.js";
 import { getEnv } from "../infra/init/Env.js";
 import { generateSsoAuthToken } from "../data-source/accessToken/generateSsoAuthCode.js";
 
@@ -103,7 +103,7 @@ async function handleEndpoint(
 
 async function fetchCharInfo(authCode: string) {
   const tokens = await fetchAccessTokens(authCode);
-  const authInfo = await fetchAuthInfo(tokens.access_token);
+  const authInfo = await fetchJwtInfo(tokens.access_token);
 
   const charId = +authInfo.sub!.replace("CHARACTER:EVE:", "");
   const charInfo: CharacterInfo = {

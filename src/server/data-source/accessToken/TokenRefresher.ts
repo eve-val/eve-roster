@@ -6,7 +6,7 @@ import { AccessTokenErrorType } from "../../error/AccessTokenError.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 
-import { fetchAuthInfo } from "./jwt.js";
+import { fetchJwtInfo } from "./jwt.js";
 import { Env } from "../../infra/init/Env.js";
 import { generateSsoAuthToken } from "./generateSsoAuthCode.js";
 
@@ -74,7 +74,7 @@ export class TokenRefresher {
         row.accessToken_refreshToken,
       );
 
-      const authInfo = await fetchAuthInfo(response.data.access_token);
+      const authInfo = await fetchJwtInfo(response.data.access_token);
 
       result.row = {
         accessToken_character: row.accessToken_character,
