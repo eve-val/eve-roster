@@ -6,9 +6,10 @@ import { Tnex } from "../../../../db/tnex/index.js";
 import { dao } from "../../../../db/dao.js";
 import { BadRequestError } from "../../../../error/BadRequestError.js";
 import { UnauthorizedClientError } from "../../../../error/UnauthorizedClientError.js";
-import { getAccessToken } from "../../../../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../../../../data-source/accessToken/accessToken.js";
 import { fetchEsi } from "../../../../data-source/esi/fetch/fetchEsi.js";
 import { ESI_UI_OPENWINDOW_INFORMATION } from "../../../../data-source/esi/endpoints.js";
+import { EsiScope } from "../../../../data-source/esi/EsiScope.js";
 
 export class Input {
   character = number();
@@ -43,7 +44,9 @@ async function handleEndpoint(
     );
   }
   // TODO: Catch errors below and throw a uservisible error
-  const accessToken = await getAccessToken(db, input.character);
+  const accessToken = await fetchAccessToken(db, input.character, [
+    EsiScope.OPEN_WINDOW,
+  ]);
   await fetchEsi(ESI_UI_OPENWINDOW_INFORMATION, {
     target_id: input.targetId,
     _token: accessToken,

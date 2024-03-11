@@ -3,9 +3,10 @@ import moment from "moment";
 import { Tnex } from "../../db/tnex/index.js";
 import { dao } from "../../db/dao.js";
 import { SkillQueueRow } from "../../db/dao/SkillQueueDao.js";
-import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../../data-source/accessToken/accessToken.js";
 import { ESI_CHARACTERS_$characterId_SKILLQUEUE } from "../../data-source/esi/endpoints.js";
 import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
+import { EsiScope } from "../../data-source/esi/EsiScope.js";
 
 /**
  * Fetches fresh skill queue data from ESI and stores it in the DB. Returns a
@@ -13,16 +14,12 @@ import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
  * @param accessToken If you already have an access token for this character,
  *   pass it here to skip querying for it again.
  */
-export function updateSkillQueue(
-  db: Tnex,
-  characterId: number,
-  accessToken?: string,
-) {
+export function updateSkillQueue(db: Tnex, characterId: number) {
   let newQueue: SkillQueueRow[];
 
   return Promise.resolve()
     .then(() => {
-      return accessToken ?? getAccessToken(db, characterId);
+      return fetchAccessToken(db, characterId, [EsiScope.READ_SKILLQUEUE]);
     })
     .then((accessToken) => {
       return fetchEsi(ESI_CHARACTERS_$characterId_SKILLQUEUE, {

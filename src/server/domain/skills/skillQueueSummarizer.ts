@@ -10,21 +10,20 @@ import {
 import { isAnyEsiError } from "../../data-source/esi/error.js";
 import {
   AccessTokenError,
-  AccessTokenErrorType,
-} from "../../error/AccessTokenError.js";
+  TokenResultType,
+} from "../../data-source/accessToken/AccessTokenResult.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
-
-const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
-
-const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
-
 import {
   DataFreshness,
   QueueStatus,
   WarningType,
   SkillQueueSummary,
 } from "../../../shared/types/SkillQueueSummary.js";
+
+const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
+
+const SKILL_LEVEL_LABELS = ["0", "I", "II", "III", "IV", "V"];
 
 /**
  * Loads a character's skill queue and then generates summary text for it
@@ -93,10 +92,17 @@ function consumeOrThrowError(e: any, characterId: number): WarningType {
       e,
     );
   } else if (e instanceof AccessTokenError) {
-    if (e.type == AccessTokenErrorType.HTTP_FAILURE) {
-      warningType = "fetch_failure";
-    } else {
-      warningType = "bad_credentials";
+    switch (e.result.kind) {
+      case TokenResultType.MISSING_SCOPES:
+      case TokenResultType.TOKEN_INVALID:
+      case TokenResultType.TOKEN_MISSING:
+        warningType = "bad_credentials";
+        break;
+      case TokenResultType.HTTP_FAILURE:
+      case TokenResultType.JWT_ERROR:
+      case TokenResultType.UNKNOWN_ERROR:
+        warningType = "fetch_failure";
+        break;
     }
   } else {
     throw e;

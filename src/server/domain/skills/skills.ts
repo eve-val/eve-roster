@@ -1,7 +1,7 @@
 import { Tnex } from "../../db/tnex/index.js";
 import { dao } from "../../db/dao.js";
 
-import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../../data-source/accessToken/accessToken.js";
 import { updateSkillQueue, isQueueEntryCompleted } from "./skillQueue.js";
 import { NamedSkillQueueRow } from "../../db/dao/SkillQueueDao.js";
 import { SimpleNumMap } from "../../../shared/util/simpleTypes.js";
@@ -9,48 +9,48 @@ import { skillLevelToSp } from "../../eve/skillLevelToSp.js";
 import * as sde from "../../eve/sde.js";
 import { ESI_CHARACTERS_$characterId_SKILLS } from "../../data-source/esi/endpoints.js";
 import { fetchEsi } from "../../data-source/esi/fetch/fetchEsi.js";
+import { EsiScope } from "../../data-source/esi/EsiScope.js";
 
 /** Throws AccessTokenError and ESI failure errors. */
 export function updateSkills(db: Tnex, characterId: number) {
-  return getAccessToken(db, characterId)
-    .then((accessToken) => {
-      return Promise.all([
-        getSkillQueue(db, characterId, accessToken),
-        getEsiSkills(characterId, accessToken),
-      ]);
-    })
-    .then(([queue, esiSkills]) => {
-      // Put all complete queue items into a map
-      // More recent completions of the same skill will overwrite earlier entries
-      const completedSkills = {} as SimpleNumMap<NamedSkillQueueRow>;
-      for (const queueItem of queue) {
-        if (isQueueEntryCompleted(queueItem)) {
-          completedSkills[queueItem.skill] = queueItem;
-        } else {
-          break;
-        }
+  return Promise.all([
+    getSkillQueue(db, characterId),
+    getEsiSkills(db, characterId),
+  ]).then(([queue, esiSkills]) => {
+    // Put all complete queue items into a map
+    // More recent completions of the same skill will overwrite earlier entries
+    const completedSkills = {} as SimpleNumMap<NamedSkillQueueRow>;
+    for (const queueItem of queue) {
+      if (isQueueEntryCompleted(queueItem)) {
+        completedSkills[queueItem.skill] = queueItem;
+      } else {
+        break;
       }
+    }
 
-      // Convert the skills array to the final, merged set of skills
-      const rows = esiSkills.map((esiSkill) => {
-        return esiSkillToRow(
-          characterId,
-          esiSkill,
-          completedSkills[esiSkill.skill_id],
-        );
-      });
-
-      return dao.skillsheet.set(db, characterId, rows);
+    // Convert the skills array to the final, merged set of skills
+    const rows = esiSkills.map((esiSkill) => {
+      return esiSkillToRow(
+        characterId,
+        esiSkill,
+        completedSkills[esiSkill.skill_id],
+      );
     });
+
+    return dao.skillsheet.set(db, characterId, rows);
+  });
 }
 
-function getSkillQueue(db: Tnex, characterId: number, accessToken: string) {
-  return updateSkillQueue(db, characterId, accessToken).then(() => {
+function getSkillQueue(db: Tnex, characterId: number) {
+  return updateSkillQueue(db, characterId).then(() => {
     return dao.skillQueue.getCachedSkillQueue(db, characterId);
   });
 }
 
-async function getEsiSkills(characterId: number, accessToken: string) {
+async function getEsiSkills(db: Tnex, characterId: number) {
+  const accessToken = await fetchAccessToken(db, characterId, [
+    EsiScope.READ_SKILLS,
+  ]);
   const data = await fetchEsi(ESI_CHARACTERS_$characterId_SKILLS, {
     characterId,
     _token: accessToken,

@@ -82,16 +82,16 @@ export class AccessTokenError extends Error {
     super(`AccessTokenError:` + accessTokenResultToString(result));
   }
 
-  isTransportError(): boolean {
+  isInsufficientTokenError(): boolean {
     switch (this.result.kind) {
       case TokenResultType.MISSING_SCOPES:
       case TokenResultType.TOKEN_MISSING:
       case TokenResultType.TOKEN_INVALID:
-        return false;
+        return true;
       case TokenResultType.HTTP_FAILURE:
       case TokenResultType.JWT_ERROR:
       case TokenResultType.UNKNOWN_ERROR:
-        return true;
+        return false;
     }
   }
 }

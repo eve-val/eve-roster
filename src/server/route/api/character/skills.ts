@@ -1,7 +1,6 @@
 import { jsonEndpoint } from "../../../infra/express/protectedEndpoint.js";
 import { dao } from "../../../db/dao.js";
 import { Tnex } from "../../../db/tnex/index.js";
-
 import { isAnyEsiError } from "../../../data-source/esi/error.js";
 import { updateSkills } from "../../../domain/skills/skills.js";
 import {
@@ -12,8 +11,8 @@ import { SkillsheetEntry } from "../../../db/dao/SkillsheetDao.js";
 import { NamedSkillQueueRow } from "../../../db/dao/SkillQueueDao.js";
 import {
   AccessTokenError,
-  AccessTokenErrorType,
-} from "../../../error/AccessTokenError.js";
+  TokenResultType,
+} from "../../../data-source/accessToken/AccessTokenResult.js";
 import * as time from "../../../util/time.js";
 import {
   CharacterSkillJson,
@@ -85,16 +84,30 @@ function consumeOrThrowError(e: any) {
   if (isAnyEsiError(e)) {
     return "ESI request failed. Skills may be out of date.";
   } else if (e instanceof AccessTokenError) {
-    switch (e.type) {
-      case AccessTokenErrorType.TOKEN_MISSING:
-        return "Missing access token for this character.";
-      case AccessTokenErrorType.TOKEN_REFRESH_REJECTED:
+    switch (e.result.kind) {
+      case TokenResultType.MISSING_SCOPES:
+        return (
+          "Access token for this character does not have sufficient" +
+          " scopes. Please log in with this character again."
+        );
+      case TokenResultType.TOKEN_MISSING:
+        return (
+          "Missing access token for this character." +
+          " Please log in with this character again."
+        );
+      case TokenResultType.TOKEN_INVALID:
         return (
           "Access token for this character appears to have expired." +
           " Please log in with this character again."
         );
-      case AccessTokenErrorType.HTTP_FAILURE:
+      case TokenResultType.HTTP_FAILURE:
+      case TokenResultType.JWT_ERROR:
         return "Error getting refreshed access token from CCP.";
+      case TokenResultType.UNKNOWN_ERROR:
+        return (
+          "Unknown error while trying to refresh access tokens." +
+          " Please tell someone."
+        );
     }
   } else {
     // Unknown failure

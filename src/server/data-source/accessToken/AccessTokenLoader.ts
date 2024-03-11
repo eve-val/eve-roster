@@ -531,6 +531,7 @@ class BatchedDbWriter {
       scopes,
       accessToken,
       accessTokenExpires,
+      needsUpdate,
     );
   }
 

@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { getAccessTokensFromRows } from "../data-source/accessToken/accessToken.js";
+import { fetchAccessTokens } from "../data-source/accessToken/accessToken.js";
 import { dao } from "../db/dao.js";
 import { Tnex } from "../db/tnex/index.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
@@ -12,6 +12,11 @@ import {
 } from "../data-source/esi/endpoints.js";
 import { isAnyEsiError } from "../data-source/esi/error.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
+import { EsiScope } from "../data-source/esi/EsiScope.js";
+import {
+  TokenResultType,
+  accessTokenResultToString,
+} from "../data-source/accessToken/AccessTokenResult.js";
 
 export const syncCharacterLocations: Task = {
   name: "syncCharacterLocations",
@@ -31,37 +36,44 @@ async function executor(db: Tnex, job: JobLogger) {
     await fillLocationCache(db);
   }
 
-  const initialRows =
-    await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
-  const tokenMap = await getAccessTokensFromRows(db, initialRows);
+  const characterIds = (
+    await dao.roster.getMemberCharactersWithValidAccessTokens(db)
+  ).map((row) => row.character_id);
+  const tokenMap = await fetchAccessTokens(db, characterIds, [
+    EsiScope.READ_LOCATION,
+    EsiScope.READ_SHIP_TYPE,
+  ]);
   const esiErrors: [number, string][] = [];
 
   const tasks: Promise<CharacterLocation | null>[] = [];
-  for (const row of initialRows) {
-    const tokenResult = tokenMap.get(row.accessToken_character)!;
-    if (tokenResult.kind == "error") {
-      job.warn(
-        `Error (${tokenResult.error}) while refreshing token for ` +
-          `${row.accessToken_character}.`,
-      );
+  for (const characterId of characterIds) {
+    const tokenResult = tokenMap.get(characterId)!;
+    if (tokenResult.kind != TokenResultType.SUCCESS) {
+      switch (tokenResult.kind) {
+        case TokenResultType.MISSING_SCOPES:
+        case TokenResultType.TOKEN_INVALID:
+          // This is to be expected for some members, just ignore
+          break;
+        default:
+          job.warn(
+            `Error while refreshing token for ${characterId}: ` +
+              accessTokenResultToString(tokenResult),
+          );
+          break;
+      }
       continue;
     }
-    if (shouldCheckLocation(row.accessToken_character)) {
+    if (shouldCheckLocation(characterId)) {
       tasks.push(
-        checkLocation(row.accessToken_character, tokenResult.token).catch(
-          (e) => {
-            if (isAnyEsiError(e)) {
-              esiErrors.push([row.accessToken_character, e.kind]);
-            } else {
-              job.error(
-                `Error while updating location for ` +
-                  `${row.accessToken_character}:`,
-              );
-              job.error(e);
-            }
-            return null;
-          },
-        ),
+        checkLocation(characterId, tokenResult.token).catch((e) => {
+          if (isAnyEsiError(e)) {
+            esiErrors.push([characterId, e.kind]);
+          } else {
+            job.error(`Error while updating location for ` + `${characterId}:`);
+            job.error(e);
+          }
+          return null;
+        }),
       );
     }
   }

@@ -2,7 +2,7 @@ import moment from "moment";
 
 import { Tnex, val, UpdatePolicy } from "../db/tnex/index.js";
 import { character, Character, MemberCorporation } from "../db/tables.js";
-import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../data-source/accessToken/accessToken.js";
 import { dao } from "../db/dao.js";
 import { arrayToMap, refine } from "../../shared/util/collections.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
@@ -17,12 +17,13 @@ import {
 } from "../data-source/esi/endpoints.js";
 import { isAnyEsiError, printError } from "../data-source/esi/error.js";
 import { hasRosterScopes } from "../domain/roster/hasRosterScopes.js";
-import { AccessTokenError } from "../error/AccessTokenError.js";
+import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { AsyncReturnType } from "../../shared/util/simpleTypes.js";
 import { updateGroupsOnAllAccounts } from "../domain/account/accountGroups.js";
 import { LogLevel } from "../infra/logging/Logger.js";
 import { Task } from "../infra/taskrunner/Task.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
+import { EsiScope } from "../data-source/esi/EsiScope.js";
 
 /**
  * Updates the member list of each member corporation.
@@ -81,9 +82,14 @@ async function syncCorporation(
       if (!(e instanceof Error)) {
         throw e;
       }
-      if (isAnyEsiError(e) || e instanceof AccessTokenError) {
+      if (isAnyEsiError(e)) {
         job.warn(`ESI error while syncing via director ${row.character_name}:`);
         job.warn(printError(e));
+      } else if (e instanceof AccessTokenError) {
+        job.info(
+          `Token error while syncing via director ` +
+            `${row.character_name}: ${e.message}`,
+        );
       } else {
         job.error(
           `Unexpected failure while trying to sync corp ${corpId} using ` +
@@ -115,7 +121,11 @@ async function updateMemberList(
   corporationId: number,
   director: number,
 ) {
-  const token = await getAccessToken(db, director);
+  const token = await fetchAccessToken(db, director, [
+    EsiScope.CORP_READ_MEMBERSHIP,
+    EsiScope.CORP_READ_TITLES,
+    EsiScope.CORP_TRACK_MEMBERS,
+  ]);
   const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] =
     await Promise.all([
       fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS, {

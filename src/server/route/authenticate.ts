@@ -22,6 +22,7 @@ import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { fetchJwtInfo } from "../data-source/accessToken/jwt.js";
 import { getEnv } from "../infra/init/Env.js";
 import { generateSsoAuthToken } from "../data-source/accessToken/generateSsoAuthCode.js";
+import { AccessToken } from "../data-source/accessToken/accessToken.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -165,13 +166,14 @@ async function storeCharInfo(db: Tnex, charInfo: CharacterInfo) {
     },
   );
 
-  await dao.accessToken.upsert(
+  await AccessToken.loader.storeRefreshToken(
     db,
     charInfo.id,
     charInfo.refreshToken,
     charInfo.scopes,
     charInfo.accessToken,
     charInfo.accessTokenExpires,
+    false,
   );
 }
 

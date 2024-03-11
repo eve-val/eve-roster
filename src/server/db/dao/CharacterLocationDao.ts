@@ -5,7 +5,6 @@ import {
   CharacterLocation,
   memberCorporation,
   character,
-  accessToken,
 } from "../tables.js";
 
 export default class LocationDao {
@@ -25,21 +24,6 @@ export default class LocationDao {
         "charloc_shipName",
         "charloc_solarSystemId",
         "charloc_timestamp",
-      )
-      .run();
-  }
-
-  getMemberCharactersWithValidAccessTokens(db: Tnex) {
-    return db
-      .select(memberCorporation)
-      .join(character, "character_corporationId", "=", "mcorp_corporationId")
-      .join(accessToken, "accessToken_character", "=", "character_id")
-      .where("accessToken_needsUpdate", "=", val(false))
-      .columns(
-        "accessToken_character",
-        "accessToken_accessToken",
-        "accessToken_accessTokenExpires",
-        "accessToken_refreshToken",
       )
       .run();
   }
