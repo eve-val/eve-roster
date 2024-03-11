@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../data-source/accessToken/accessToken.js";
 import { ESI_UNIVERSE_STRUCTURES_$structureId } from "../data-source/esi/endpoints.js";
 import { isAnyEsiError } from "../data-source/esi/error.js";
 import { EsiErrorKind } from "../data-source/esi/EsiError.js";
@@ -8,7 +8,7 @@ import { fetchEveNames } from "../data-source/esi/names.js";
 import { dao } from "../db/dao.js";
 import { CharacterShipRow } from "../db/dao/CharacterShipDao.js";
 import { Tnex } from "../db/tnex/index.js";
-import { AccessTokenError } from "../error/AccessTokenError.js";
+import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { Asset, fetchAssets, formatLocationFlag } from "../eve/assets.js";
 import { TYPE_CATEGORY_SHIP } from "../eve/constants/categories.js";
 import { fileURLToPath } from "url";
@@ -16,6 +16,7 @@ import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
 import { Task } from "../infra/taskrunner/Task.js";
 import { arrayToMap } from "../../shared/util/collections.js";
+import { EsiScope } from "../data-source/esi/EsiScope.js";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
@@ -214,7 +215,7 @@ async function updateCharacter(
   if (lastUpdated > updateNeededCutoff) {
     return;
   }
-  const token = await getAccessToken(db, characterId);
+  const token = await fetchAccessToken(db, characterId, [EsiScope.READ_ASSETS]);
   const assets = await fetchAssets(characterId, token, db);
   const ships = await findShips(characterId, token, assets, locCache);
   await dao.characterShip.setCharacterShips(db, characterId, ships);
@@ -233,16 +234,22 @@ async function executor(db: Tnex, job: JobLogger) {
       await updateCharacter(db, locCache, characterId);
     } catch (e) {
       if (e instanceof AccessTokenError) {
-        logger.info(
-          `Access token error while fetching ships for char ${characterId}.`,
-          e,
-        );
+        if (e.isInsufficientTokenError()) {
+          logger.info(
+            `Access token error while fetching ships for char ${characterId}: ` +
+              e.message,
+          );
+        } else {
+          ++errors;
+          logger.warn(
+            `Unexpected access token error while fetching ships: ${e.message}`,
+          );
+        }
       } else if (isAnyEsiError(e)) {
         if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
-          logger.info(
-            `Marking access token as invalid for char ${characterId} due to 403.`,
+          logger.error(
+            `Received a 403 when trying to sync character ${characterId}`,
           );
-          dao.accessToken.markAsInvalid(db, characterId);
         }
         if (e.kind == EsiErrorKind.INTERNAL_SERVER_ERROR) {
           // Don't consider ISEs to be noteworthy failures on our side

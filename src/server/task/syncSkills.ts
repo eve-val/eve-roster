@@ -5,7 +5,7 @@ import { dao } from "../db/dao.js";
 import { Tnex } from "../db/tnex/index.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
 import { updateSkills } from "../domain/skills/skills.js";
-import { AccessTokenError } from "../error/AccessTokenError.js";
+import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { isAnyEsiError } from "../data-source/esi/error.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";

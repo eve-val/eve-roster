@@ -1,7 +1,7 @@
 import { default as axios, AxiosRequestConfig, Method } from "axios";
 import { MixedObject } from "../../../shared/util/simpleTypes.js";
 
-import { getAccessToken } from "../../data-source/accessToken/accessToken.js";
+import { fetchAccessToken } from "../../data-source/accessToken/accessToken.js";
 import { jsonEndpoint } from "../../infra/express/protectedEndpoint.js";
 
 import { CHARACTER_HEADER } from "../../data-source/esi/fetch/fetchSwagger.js";
@@ -25,7 +25,9 @@ export default jsonEndpoint(
         if (isNaN(targetCharacter) || targetCharacter <= 0) {
           return null;
         }
-        return getAccessToken(db, targetCharacter);
+        // Don't enforce any scopes when refreshing the token; if the token
+        // has insufficient scopes that'll surface later in the call.
+        return fetchAccessToken(db, targetCharacter, []);
       })
       .then((token: string | null) => {
         // Reissue the request using the credentials.

@@ -161,6 +161,16 @@ export default class RosterDao {
       .run();
   }
 
+  getMemberCharactersWithValidAccessTokens(db: Tnex) {
+    return db
+      .select(t.memberCorporation)
+      .join(t.character, "character_corporationId", "=", "mcorp_corporationId")
+      .join(t.accessToken, "accessToken_character", "=", "character_id")
+      .where("accessToken_needsUpdate", "=", val(false))
+      .columns("character_id", "character_name")
+      .run();
+  }
+
   // Get all unique corporation IDs in the roster, which can include
   // non-member corporations if someone leaves but their character is still
   // in the roster. Or for opsec alts, etc.

@@ -1,6 +1,7 @@
 import _ from "underscore";
 import moment from "moment";
-import { getAccessToken } from "../data-source/accessToken/accessToken.js";
+import { trace, context } from "@opentelemetry/api";
+import { fetchAccessToken } from "../data-source/accessToken/accessToken.js";
 import { isAnyEsiError } from "../data-source/esi/error.js";
 import { EsiErrorKind } from "../data-source/esi/EsiError.js";
 import { EsiNotification } from "../data-source/esi/EsiNotification.js";
@@ -8,13 +9,12 @@ import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { ESI_CHARACTERS_$characterId_NOTIFICATIONS } from "../data-source/esi/endpoints.js";
 import { dao } from "../db/dao.js";
 import { Tnex } from "../db/tnex/index.js";
-import { AccessTokenError } from "../error/AccessTokenError.js";
+import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
 import { Task } from "../infra/taskrunner/Task.js";
-
-import { trace, context } from "@opentelemetry/api";
+import { EsiScope } from "../data-source/esi/EsiScope.js";
 
 // If a character was updated less than 10 minutes ago, we consider it
 // unnecessary to update that character this time.
@@ -62,7 +62,9 @@ async function updateCharacter(db: Tnex, characterId: number) {
   if (lastUpdated.isAfter(updateNeededCutoff)) {
     return;
   }
-  const token = await getAccessToken(db, characterId);
+  const token = await fetchAccessToken(db, characterId, [
+    EsiScope.READ_NOTIFICATIONS,
+  ]);
   const messages = await findNotifications(characterId, token);
   await dao.characterNotification.setCharacterNotifications(
     db,
@@ -73,11 +75,10 @@ async function updateCharacter(db: Tnex, characterId: number) {
 
 async function executor(db: Tnex, job: JobLogger) {
   job.setProgress(0, undefined);
-  const tokens =
-    await dao.characterLocation.getMemberCharactersWithValidAccessTokens(db);
+  const rows = await dao.roster.getMemberCharactersWithValidAccessTokens(db);
 
   const start = moment();
-  const characterIds = _.pluck(tokens, "accessToken_character").filter(
+  const characterIds = _.pluck(rows, "character_id").filter(
     (characterId) =>
       // Only pull 1/12 of characters every minute; cache refresh is 10 min.
       // This maximizes chance we'll find out about structure hits quickly.
@@ -96,15 +97,12 @@ async function executor(db: Tnex, job: JobLogger) {
       } catch (e) {
         if (e instanceof AccessTokenError) {
           logger.info(
-            `Access token error while fetching notifications for char ${characterId}.`,
-            e,
+            `Access token error while fetching notifications for char ` +
+              `${characterId}: ${e.message}`,
           );
         } else if (isAnyEsiError(e)) {
           if (e.kind == EsiErrorKind.FORBIDDEN_ERROR) {
-            logger.info(
-              `Marking access token as invalid for char ${characterId} due to 403.`,
-            );
-            dao.accessToken.markAsInvalid(db, characterId);
+            logger.error(`Received 403 for character ${characterId}`);
           }
           ++errors;
           logger.warn(
