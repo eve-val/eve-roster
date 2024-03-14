@@ -1,6 +1,6 @@
 import { jsonEndpoint } from "../../../../infra/express/protectedEndpoint.js";
 import { verify, string } from "../../../../util/express/schemaVerifier.js";
-import { JobJson } from "./job.js";
+import { JobJson } from "./job_dir_GET.js";
 
 import { BadRequestError } from "../../../../error/BadRequestError.js";
 import { findRunnableTaskWithName } from "../../../../task-registry/runnableTasks.js";

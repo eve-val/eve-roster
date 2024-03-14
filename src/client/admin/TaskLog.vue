@@ -8,7 +8,7 @@
         <div class="cell result">Result</div>
       </div>
       <div class="rows">
-        <div
+        <a
           v-for="row in rows"
           :key="row.id"
           class="row"
@@ -18,6 +18,7 @@
               ? 'aberrant'
               : '',
           ]"
+          :href="`/admin/tasks/job/${row.id}`"
         >
           <div class="cell task">
             {{ row.task }}
@@ -33,7 +34,7 @@
           <div class="cell result">
             {{ row.result }}
           </div>
-        </div>
+        </a>
       </div>
       <div class="length-reminder">Showing most recent 400 records</div>
     </template>
@@ -91,6 +92,10 @@ export default defineComponent({
 .row {
   display: flex;
   font-weight: normal;
+}
+
+.row:hover .task {
+  text-decoration: underline;
 }
 
 .row.failure {

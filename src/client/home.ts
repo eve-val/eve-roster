@@ -15,6 +15,7 @@ import AccountLog from "./admin/AccountLog.vue";
 import ApiAudit from "./admin/ApiAudit.vue";
 import AdminSetup from "./admin/AdminSetup.vue";
 import TaskControl from "./admin/TaskControl.vue";
+import JobDetail from "./admin/JobDetail.vue";
 import CitadelManagement from "./admin/CitadelManagement.vue";
 import DevPreview from "./dev/DevPreview.vue";
 
@@ -51,6 +52,13 @@ const routes: RouteRecordRaw[] = [
   { path: "/admin/api/:id", component: ApiAudit },
   { path: "/admin/account-logs", component: AccountLog },
   { path: "/admin/tasks", component: TaskControl },
+  {
+    path: "/admin/tasks/job/:id",
+    component: JobDetail,
+    props: (route) => ({
+      taskId: parseInt(route.params.id as string),
+    }),
+  },
   { path: "/admin/citadels", component: CitadelManagement },
 
   {

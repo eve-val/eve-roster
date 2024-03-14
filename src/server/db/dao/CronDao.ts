@@ -115,4 +115,18 @@ export default class CronDao {
         .run()
     );
   }
+
+  getJob(db: Tnex, id: number) {
+    return db
+      .select(cronLog)
+      .columns(
+        "cronLog_id",
+        "cronLog_task",
+        "cronLog_start",
+        "cronLog_end",
+        "cronLog_result",
+      )
+      .where("cronLog_id", "=", val(id))
+      .fetchFirst();
+  }
 }
