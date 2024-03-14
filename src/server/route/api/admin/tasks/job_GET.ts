@@ -54,11 +54,11 @@ async function loadJobLog(
     const timestampMatch = LOG_LINE_PATTERN.exec(line);
     if (timestampMatch != null) {
       const lineStamp = moment(timestampMatch[1]);
+      if (end != null && lineStamp.isAfter(end)) {
+        break;
+      }
       if (lineStamp.isSameOrAfter(start)) {
         filteredLines.push(line);
-      }
-      if (end != null && lineStamp.isSameOrAfter(end)) {
-        break;
       }
     }
   }
