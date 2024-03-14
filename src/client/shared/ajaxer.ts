@@ -1,5 +1,6 @@
 import { default as axios, AxiosResponse } from "axios";
 import { Admin_Roster_SyncStatus_GET } from "../../shared/route/api/admin/roster/syncStatus_GET.js";
+import { Admin_Tasks_Job_GET } from "../../shared/route/api/admin/tasks/job_GET.js";
 import { Dashboard_GET } from "../../shared/route/api/dashboard_GET.js";
 import { Character_GET } from "../../shared/route/api/character_GET.js";
 import { Task, Job, Log, Citadel } from "../admin/types.js";
@@ -147,6 +148,10 @@ export default {
 
   getAdminTaskLog() {
     return axios.get<Log[]>("/api/admin/tasks/logs");
+  },
+
+  getAdminTaskJob(jobId: number) {
+    return axios.get<Admin_Tasks_Job_GET>(`/api/admin/tasks/job/${jobId}`);
   },
 
   getAdminSetup() {

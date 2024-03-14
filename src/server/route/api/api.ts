@@ -16,8 +16,9 @@ import admin_setup_GET from "./admin/setup_GET.js";
 import admin_setup_PUT from "./admin/setup_PUT.js";
 import admin_srp_jurisdiction_GET from "./admin/srp/jurisdiction_GET.js";
 import admin_srp_jurisdiction_PUT from "./admin/srp/jurisdiction_PUT.js";
-import admin_tasks_job_PUT from "./admin/tasks/job_PUT.js";
-import admin_tasks_job from "./admin/tasks/job.js";
+import admin_tasks_job_dir_PUT from "./admin/tasks/job_dir_PUT.js";
+import admin_tasks_job_dir_GET from "./admin/tasks/job_dir_GET.js";
+import admin_tasks_job_GET from "./admin/tasks/job_GET.js";
 import admin_tasks_logs from "./admin/tasks/logs.js";
 import admin_tasks_task from "./admin/tasks/task.js";
 
@@ -69,8 +70,9 @@ router.get("/admin/setup/", admin_setup_GET);
 router.put("/admin/setup/", admin_setup_PUT);
 router.get("/admin/srp/jurisdiction", admin_srp_jurisdiction_GET);
 router.put("/admin/srp/jurisdiction", admin_srp_jurisdiction_PUT);
-router.put("/admin/tasks/job", admin_tasks_job_PUT);
-router.get("/admin/tasks/job", admin_tasks_job);
+router.put("/admin/tasks/job", admin_tasks_job_dir_PUT);
+router.get("/admin/tasks/job", admin_tasks_job_dir_GET);
+router.get("/admin/tasks/job/:id", admin_tasks_job_GET);
 router.get("/admin/tasks/logs", admin_tasks_logs);
 router.get("/admin/tasks/task", admin_tasks_task);
 
