@@ -130,7 +130,7 @@ async function fetchCharInfo(authCode: string) {
       }),
     ]);
     charInfo.corporationId = esiCharInfo.corporation_id;
-    charInfo.roles = esiCharRoles.roles;
+    charInfo.roles = esiCharRoles.roles ?? [];
   } catch (e) {
     if (isAnyEsiError(e)) {
       logger.warn("ESI is unavailable, attempting to auth anyway...", e);
