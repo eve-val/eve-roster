@@ -59,13 +59,13 @@ export const ESI_CHARACTERS_$characterId_ASSETS_NAMES = {
 
 export const ESI_CHARACTERS_$characterId_ROLES = {
   method: FetchMethod.GET,
-  path: "/v2/characters/${characterId}/roles",
+  path: "/v3/characters/${characterId}/roles",
   pathVars: {} as {
     characterId: number;
   },
   access: Private.ACCESS,
   response: {} as {
-    roles: string[];
+    roles?: string[];
     roles_at_hq?: string[];
     roles_at_base?: string[];
     roles_at_other?: string[];
