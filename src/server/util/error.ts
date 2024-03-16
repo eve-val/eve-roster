@@ -1,6 +1,6 @@
 import * as http from "http";
 import axios, { AxiosError } from "axios";
-import { VError } from "verror";
+import VError from "verror";
 
 export function errorMessage(e: unknown): string {
   if (e instanceof VError) {

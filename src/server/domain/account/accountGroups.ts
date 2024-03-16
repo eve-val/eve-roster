@@ -6,10 +6,6 @@ import { Tnex } from "../../db/tnex/index.js";
 import { ADMIN_GROUP, MEMBER_GROUP } from "./specialGroups.js";
 import { serialize } from "../../util/asyncUtil.js";
 import { account } from "../../db/tables.js";
-import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
-
-const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export function updateGroupsOnAllAccounts(db: Tnex) {
   return db
@@ -30,11 +26,8 @@ export function updateGroupsForAccount(db: Tnex, accountId: number) {
     })
     .then(({ groups, ownsAffiliatedChar }) => {
       if (!groups.includes(MEMBER_GROUP) && !groups.includes(ADMIN_GROUP)) {
-        logger.verbose("Main char is not a member, stripping groups...");
         groups = [];
       }
-
-      logger.debug(`updateAccount ${accountId}, groups= ${groups.join(", ")}`);
       if (!groups.includes(MEMBER_GROUP) && ownsAffiliatedChar) {
         // TODO: Flag the account somehow
       }

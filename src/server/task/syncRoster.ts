@@ -25,6 +25,8 @@ import { Task } from "../infra/taskrunner/Task.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { EsiScope } from "../data-source/esi/EsiScope.js";
 import { errorMessage } from "../util/error.js";
+import { EsiEntity } from "../data-source/esi/EsiEntity.js";
+import { inspect } from "util";
 
 /**
  * Updates the member list of each member corporation.
@@ -40,43 +42,48 @@ export const syncRoster: Task = {
 async function executor(db: Tnex, job: JobLogger) {
   const memberRows = await dao.config.getMemberCorporations(db);
 
+  const results: CorpSyncResult[] = [];
   for (const row of memberRows) {
-    await syncCorporation(db, job, row);
+    const result = await syncCorporation(db, job, row);
+    results.push(result);
   }
   await updateGroupsOnAllAccounts(db);
+
+  job.info(`Finished syncing roster:\n${inspect(results)}`);
 }
 
 async function syncCorporation(
   db: Tnex,
   job: JobLogger,
-  corporation: MemberCorporation,
-) {
-  const corpId = corporation.mcorp_corporationId;
+  corpRow: MemberCorporation,
+): Promise<CorpSyncResult> {
+  const corp = new EsiEntity(corpRow.mcorp_corporationId, corpRow.mcorp_name);
   const errorLevel =
-    corporation.mcorp_membership == "full" ? LogLevel.ERROR : LogLevel.WARN;
-  job.info(`syncCorporation ${corpId}`);
+    corpRow.mcorp_membership == "full" ? LogLevel.ERROR : LogLevel.WARN;
+  job.info(`syncCorporation ${corp}`);
 
-  const directorRows = await dao.roster.getCorpDirectors(db, corpId);
+  const directorRows = await dao.roster.getCorpDirectors(db, corp.id);
 
   let updateSuccessful = false;
+  let characterCount = 0;
 
   for (const row of directorRows) {
+    const director = new EsiEntity(row.character_id, row.character_name);
     if (row.accessToken_needsUpdate) {
-      job.info(
-        `Skipping director ${row.character_id}/${row.character_name}` +
-          ` (access token has expired).`,
-      );
+      job.info(`Skipping director ${director} (access token has expired).`);
       continue;
     }
     if (!hasRosterScopes(row.accessToken_scopes)) {
-      job.info(
-        `Skipping director ${row.character_id}/${row.character_name}` +
-          ` (insufficient token scopes).`,
-      );
+      job.info(`Skipping director ${director} (insufficient token scopes).`);
       continue;
     }
     try {
-      await updateMemberList(db, job, corpId, row.character_id);
+      characterCount = await updateMemberList(
+        db,
+        job,
+        corp.id,
+        row.character_id,
+      );
       updateSuccessful = true;
       break;
     } catch (e) {
@@ -84,17 +91,16 @@ async function syncCorporation(
         throw e;
       }
       if (isAnyEsiError(e)) {
-        job.warn(`ESI error while syncing via director ${row.character_name}:`);
+        job.warn(`ESI error while syncing via director ${director}:`);
         job.warn(errorMessage(e));
       } else if (e instanceof AccessTokenError) {
         job.info(
-          `Token error while syncing via director ` +
-            `${row.character_name}: ${e.message}`,
+          `Token error while syncing via director ${director}: ${e.message}`,
         );
       } else {
         job.error(
-          `Unexpected failure while trying to sync corp ${corpId} using ` +
-            `char ${row.character_name}'s token.`,
+          `Unexpected failure while trying to sync corp ${corp} using` +
+            ` ${director}'s token.`,
         );
         job.error(e.toString());
 
@@ -106,14 +112,26 @@ async function syncCorporation(
   }
 
   if (directorRows.length == 0) {
-    job.log(errorLevel, `No known directors for corporation ${corpId}.`);
+    job.log(errorLevel, `No known directors for corporation ${corp}.`);
   }
 
   if (!updateSuccessful) {
-    job.log(errorLevel, `Roster sync failed for corporation ${corpId}.`);
+    job.log(errorLevel, `Roster sync failed for corporation ${corp}.`);
   }
 
-  job.info(`Sync ${corpId} complete.`);
+  job.info(`Sync ${corp} complete.`);
+
+  return {
+    corporation: corp,
+    status: updateSuccessful ? "success" : "failure",
+    characterCount,
+  };
+}
+
+interface CorpSyncResult {
+  corporation: EsiEntity;
+  status: "success" | "failure";
+  characterCount: number;
 }
 
 async function updateMemberList(
@@ -181,6 +199,8 @@ async function updateMemberList(
   });
 
   job.info(`Synced ${rows.length} characters.`);
+
+  return rows.length;
 }
 
 function buildMemberRows(
