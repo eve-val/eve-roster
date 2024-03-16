@@ -9,6 +9,7 @@ import { JobLogger } from "../infra/taskrunner/Job.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../infra/logging/buildLogger.js";
 import { Task } from "../infra/taskrunner/Task.js";
+import { gentleStackTrace } from "../util/error.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -72,8 +73,8 @@ function fetchAll(db: Tnex, job: JobLogger, year: number, month: number) {
           })
           .catch((e) => {
             logger.warn(
-              `Error fetching killboard for ${row.character_name}:`,
-              e,
+              `Error fetching killboard for ${row.character_name}: ` +
+                gentleStackTrace(e),
             );
             failureCount++;
             if (failureCount > MAX_FAILURES_BEFORE_BAILING) {
@@ -188,7 +189,14 @@ function fetchMailsPage(
       },
     }),
   ).then((response) => {
-    if (!response.data || "error" in response.data) {
+    // Some errors have Status 200 for some reason (╯°□°)╯︵ ┻━┻
+    // Also sometimes errors are of the form { error: string } and sometimes
+    // just a string, because of course.
+    if (typeof response.data == "string") {
+      throw new Error(
+        `Unable to fetch ${kind} for ${characterId}: ${response.data}`,
+      );
+    } else if ("error" in response.data) {
       const errorMessage = response.data?.error;
       throw new Error(
         `Unable to fetch ${kind} for ${characterId}: ${errorMessage}`,

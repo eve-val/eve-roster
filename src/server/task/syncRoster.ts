@@ -15,7 +15,7 @@ import {
   ESI_CORPORATIONS_$corporationId_ROLES,
   ESI_CORPORATIONS_$corporationId_MEMBERTRACKING,
 } from "../data-source/esi/endpoints.js";
-import { isAnyEsiError, printError } from "../data-source/esi/error.js";
+import { isAnyEsiError } from "../data-source/esi/error.js";
 import { hasRosterScopes } from "../domain/roster/hasRosterScopes.js";
 import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { AsyncReturnType } from "../../shared/util/simpleTypes.js";
@@ -24,6 +24,7 @@ import { LogLevel } from "../infra/logging/Logger.js";
 import { Task } from "../infra/taskrunner/Task.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { EsiScope } from "../data-source/esi/EsiScope.js";
+import { errorMessage } from "../util/error.js";
 
 /**
  * Updates the member list of each member corporation.
@@ -84,7 +85,7 @@ async function syncCorporation(
       }
       if (isAnyEsiError(e)) {
         job.warn(`ESI error while syncing via director ${row.character_name}:`);
-        job.warn(printError(e));
+        job.warn(errorMessage(e));
       } else if (e instanceof AccessTokenError) {
         job.info(
           `Token error while syncing via director ` +

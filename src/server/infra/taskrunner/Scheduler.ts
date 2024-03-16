@@ -13,6 +13,7 @@ import { buildLoggerFromFilename } from "../logging/buildLogger.js";
 import { Task } from "./Task.js";
 
 import { trace, context } from "@opentelemetry/api";
+import { stackTrace } from "../../util/error.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -92,7 +93,7 @@ export class Scheduler {
     this._runningJobs.push(job);
 
     let jobResult: JobResult;
-    let executorError: any = null;
+    let executorError: unknown = null;
 
     const span = tracer.startSpan(job.task.name);
     context.with(trace.setSpan(context.active(), span), async () => {
@@ -121,8 +122,7 @@ export class Scheduler {
         .then(() => {
           if (executorError) {
             logger.error(`Error while executing ${jobSummary(job)}.`);
-            logger.error(executorError);
-            job.error(executorError.message ?? executorError.toString());
+            job.error(stackTrace(executorError));
           }
 
           if (job.errors.length > 0) {

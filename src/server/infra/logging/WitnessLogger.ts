@@ -1,7 +1,7 @@
 import { Logger, LogLevel } from "./Logger.js";
 import * as protocol from "../../bin/witness/protocol.js";
-import { printError } from "../../data-source/esi/error.js";
 import { nil } from "../../../shared/util/simpleTypes.js";
+import { stackTrace } from "../../util/error.js";
 
 export class WitnessLogger implements Logger {
   private _tag: string | nil;
@@ -38,7 +38,7 @@ export class WitnessLogger implements Logger {
     const levelTag = logLevelToProtocolTag(level);
     logMessage(levelTag, this._formatMessage(message, data));
     if (error) {
-      logMessage(levelTag, printError(error));
+      logMessage(levelTag, stackTrace(error));
     }
   }
 

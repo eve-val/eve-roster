@@ -18,7 +18,7 @@ import {
   TYPE_CAPSULE,
   TYPE_CAPSULE_GENOLUTION,
 } from "../../eve/constants/types.js";
-import { errorMessage, fullStackTrace } from "../../util/error.js";
+import { errorMessage, stackTrace } from "../../util/error.js";
 import { LogLevel } from "../../infra/logging/Logger.js";
 
 const IMPORTER_VERSION = 0;
@@ -63,7 +63,7 @@ export async function ingestSdeDryRun(
     if (message == "Error: Dry run complete") {
       job.log(LogLevel.INFO, "Dry run complete");
     } else {
-      job.error(fullStackTrace(e));
+      job.error(stackTrace(e));
       throw e;
     }
   }
