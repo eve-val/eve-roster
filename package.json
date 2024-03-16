@@ -15,6 +15,7 @@
     "updatedb": "yarn node -r dotenv/config out/server/bin/updatedb.js",
     "rollbackdb": "yarn node -r dotenv/config out/server/bin/updatedb.js --rollback",
     "clean": "rm -rf out/ && rm -rf static/dist/",
+    "clean-server": "rm -rf out/server && rm -rf out/shared",
     "test": "jest",
     "lint": "esprint check --workers=4",
     "presubmit": "prettier --write --list-different . && yarn lint && jest",
