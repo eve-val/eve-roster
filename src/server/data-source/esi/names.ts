@@ -1,10 +1,11 @@
 import { SimpleNumMap, nil } from "../../../shared/util/simpleTypes.js";
-import { isAnyEsiError, printError } from "./error.js";
+import { isAnyEsiError } from "./error.js";
 import { UNKNOWN_CORPORATION_ID } from "../../db/constants.js";
 import { fileURLToPath } from "url";
 import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
 import { ESI_UNIVERSE_NAMES } from "./endpoints.js";
 import { fetchEsi } from "./fetch/fetchEsi.js";
+import { errorMessage } from "../../util/error.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
@@ -44,7 +45,7 @@ export async function fetchEveNames(ids: Iterable<number | nil>) {
         logger.error(
           "ESI error while fetching names for " + unresolvedIds.slice(i, end),
         );
-        logger.error(printError(e));
+        logger.error(errorMessage(e));
       }
     }
     i = end;
