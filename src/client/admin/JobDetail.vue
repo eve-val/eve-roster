@@ -144,7 +144,7 @@ export default defineComponent({
   },
 });
 
-const LINE_PATTERN = /^([^ ]+) ([^ ]+) ([^ ]+) (.*)/;
+const LINE_PATTERN = /^([^ ]+) +([^ ]+) +([^ ]+) +(.*)/;
 
 interface LogLine {
   timestamp: string;
