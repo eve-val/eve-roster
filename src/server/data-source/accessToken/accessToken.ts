@@ -2,7 +2,11 @@ import { Tnex } from "../../db/tnex/index.js";
 import { getEnv } from "../../infra/init/Env.js";
 import { AccessTokenLoader } from "./AccessTokenLoader.js";
 import { checkNotNil } from "../../../shared/util/assert.js";
-import { AccessTokenError, TokenResultType } from "./AccessTokenResult.js";
+import {
+  AccessTokenError,
+  AccessTokenResult,
+  TokenResultType,
+} from "./AccessTokenResult.js";
 import { EsiScope } from "../esi/EsiScope.js";
 
 const tokenLoader = new AccessTokenLoader(getEnv());
@@ -26,6 +30,15 @@ export async function fetchAccessToken(
   } else {
     throw new AccessTokenError(result);
   }
+}
+
+export async function fetchAccessTokenResult(
+  db: Tnex,
+  characterId: number,
+  scopes: EsiScope[],
+): Promise<AccessTokenResult> {
+  const map = await tokenLoader.fetchAccessTokens(db, [characterId], scopes);
+  return checkNotNil(map.get(characterId));
 }
 
 /**

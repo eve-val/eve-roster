@@ -7,7 +7,7 @@ export class EsiEntity {
   ) {}
 
   toString(): string {
-    return `{ ${this.name}, ${this.id} }"`;
+    return `{ ${this.name}, ${this.id} }`;
   }
 
   [util.inspect.custom](
@@ -17,4 +17,12 @@ export class EsiEntity {
   ) {
     return this.toString();
   }
+}
+
+export function esiChar(id: number, name: string) {
+  return new EsiEntity(id, name);
+}
+
+export function esiCorp(id: number, name: string) {
+  return new EsiEntity(id, name);
 }

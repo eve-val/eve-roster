@@ -1,8 +1,7 @@
 import moment from "moment";
 
 import { Tnex, val, UpdatePolicy } from "../db/tnex/index.js";
-import { character, Character, MemberCorporation } from "../db/tables.js";
-import { fetchAccessToken } from "../data-source/accessToken/accessToken.js";
+import { character, Character } from "../db/tables.js";
 import { dao } from "../db/dao.js";
 import { arrayToMap, refine } from "../../shared/util/collections.js";
 import { JobLogger } from "../infra/taskrunner/Job.js";
@@ -15,18 +14,16 @@ import {
   ESI_CORPORATIONS_$corporationId_ROLES,
   ESI_CORPORATIONS_$corporationId_MEMBERTRACKING,
 } from "../data-source/esi/endpoints.js";
-import { isAnyEsiError } from "../data-source/esi/error.js";
-import { hasRosterScopes } from "../domain/roster/hasRosterScopes.js";
-import { AccessTokenError } from "../data-source/accessToken/AccessTokenResult.js";
 import { AsyncReturnType } from "../../shared/util/simpleTypes.js";
 import { updateGroupsOnAllAccounts } from "../domain/account/accountGroups.js";
-import { LogLevel } from "../infra/logging/Logger.js";
 import { Task } from "../infra/taskrunner/Task.js";
 import { fetchEsi } from "../data-source/esi/fetch/fetchEsi.js";
 import { EsiScope } from "../data-source/esi/EsiScope.js";
 import { errorMessage } from "../util/error.js";
-import { EsiEntity } from "../data-source/esi/EsiEntity.js";
+import { EsiEntity, esiCorp } from "../data-source/esi/EsiEntity.js";
 import { inspect } from "util";
+import { tryAsDirector } from "../data-source/accessToken/runAsDirector.js";
+import { Result } from "../util/Result.js";
 
 /**
  * Updates the member list of each member corporation.
@@ -44,8 +41,26 @@ async function executor(db: Tnex, job: JobLogger) {
 
   const results: CorpSyncResult[] = [];
   for (const row of memberRows) {
-    const result = await syncCorporation(db, job, row);
-    results.push(result);
+    const corp = esiCorp(row.mcorp_corporationId, row.mcorp_name);
+    const result = await syncCorporation(db, job, corp);
+
+    if (result.isSuccess()) {
+      job.info(`Synced ${result.value} characters for corp ${corp}`);
+      results.push({
+        corporation: corp,
+        status: "success",
+        characterCount: result.value,
+      });
+    } else {
+      job.error(
+        `Error while syncing corp ${corp}: ${errorMessage(result.error)}`,
+      );
+      results.push({
+        corporation: corp,
+        status: "failure",
+        characterCount: 0,
+      });
+    }
   }
   await updateGroupsOnAllAccounts(db);
 
@@ -55,77 +70,20 @@ async function executor(db: Tnex, job: JobLogger) {
 async function syncCorporation(
   db: Tnex,
   job: JobLogger,
-  corpRow: MemberCorporation,
-): Promise<CorpSyncResult> {
-  const corp = new EsiEntity(corpRow.mcorp_corporationId, corpRow.mcorp_name);
-  const errorLevel =
-    corpRow.mcorp_membership == "full" ? LogLevel.ERROR : LogLevel.WARN;
+  corp: EsiEntity,
+): Promise<Result<number>> {
   job.info(`syncCorporation ${corp}`);
 
-  const directorRows = await dao.roster.getCorpDirectors(db, corp.id);
+  const scopes = [
+    EsiScope.CORP_READ_MEMBERSHIP,
+    EsiScope.CORP_READ_TITLES,
+    EsiScope.CORP_TRACK_MEMBERS,
+  ];
 
-  let updateSuccessful = false;
-  let characterCount = 0;
-
-  for (const row of directorRows) {
-    const director = new EsiEntity(row.character_id, row.character_name);
-    if (row.accessToken_needsUpdate) {
-      job.info(`Skipping director ${director} (access token has expired).`);
-      continue;
-    }
-    if (!hasRosterScopes(row.accessToken_scopes)) {
-      job.info(`Skipping director ${director} (insufficient token scopes).`);
-      continue;
-    }
-    try {
-      characterCount = await updateMemberList(
-        db,
-        job,
-        corp.id,
-        row.character_id,
-      );
-      updateSuccessful = true;
-      break;
-    } catch (e) {
-      if (!(e instanceof Error)) {
-        throw e;
-      }
-      if (isAnyEsiError(e)) {
-        job.warn(`ESI error while syncing via director ${director}:`);
-        job.warn(errorMessage(e));
-      } else if (e instanceof AccessTokenError) {
-        job.info(
-          `Token error while syncing via director ${director}: ${e.message}`,
-        );
-      } else {
-        job.error(
-          `Unexpected failure while trying to sync corp ${corp} using` +
-            ` ${director}'s token.`,
-        );
-        job.error(e.toString());
-
-        // These kinds of errors are unexpected: bail on the rest of the roster
-        // sync.
-        break;
-      }
-    }
-  }
-
-  if (directorRows.length == 0) {
-    job.log(errorLevel, `No known directors for corporation ${corp}.`);
-  }
-
-  if (!updateSuccessful) {
-    job.log(errorLevel, `Roster sync failed for corporation ${corp}.`);
-  }
-
-  job.info(`Sync ${corp} complete.`);
-
-  return {
-    corporation: corp,
-    status: updateSuccessful ? "success" : "failure",
-    characterCount,
-  };
+  return await tryAsDirector(db, job, corp, scopes, (token, director) => {
+    job.info(`Using ${director} to sync roster for ${corp}...`);
+    return updateMemberList(db, job, corp.id, token);
+  });
 }
 
 interface CorpSyncResult {
@@ -138,13 +96,8 @@ async function updateMemberList(
   db: Tnex,
   job: JobLogger,
   corporationId: number,
-  director: number,
+  token: string,
 ) {
-  const token = await fetchAccessToken(db, director, [
-    EsiScope.CORP_READ_MEMBERSHIP,
-    EsiScope.CORP_READ_TITLES,
-    EsiScope.CORP_TRACK_MEMBERS,
-  ]);
   const [memberIds, titleDefs, memberTitles, memberRoles, memberTracking] =
     await Promise.all([
       fetchEsi(ESI_CORPORATIONS_$corporationId_MEMBERS, {
@@ -197,8 +150,6 @@ async function updateMemberList(
       character_siggyScore: UpdatePolicy.PRESERVE_EXISTING,
     });
   });
-
-  job.info(`Synced ${rows.length} characters.`);
 
   return rows.length;
 }
