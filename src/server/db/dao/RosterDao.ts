@@ -191,12 +191,7 @@ export default class RosterDao {
       .join(t.accessToken, "accessToken_character", "=", "character_id")
       .where("character_corporationId", "=", val(corporation))
       .whereContains("character_roles", "@>", ["Director"])
-      .columns(
-        "character_id",
-        "character_name",
-        "accessToken_scopes",
-        "accessToken_needsUpdate",
-      )
+      .columns("character_id", "character_name")
       .run();
   }
 
