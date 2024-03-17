@@ -311,9 +311,15 @@ export class AccessTokenLoader {
         `Expected status for ${entry.characterId} to be "refreshing"`,
       );
     } else if (refreshResult.kind == "refresh_success") {
+      const expiresIn = (
+        (refreshResult.expires - clock.now()) /
+        1000 /
+        60
+      ).toFixed(1);
       logger.info(
-        `Successfully refreshed token for character ` +
-          `${entry.characterId}; expires ${refreshResult.expires}`,
+        `Successfully refreshed token for character` +
+          ` ${entry.characterId}; expires ${refreshResult.expires}` +
+          ` (in ${expiresIn} minutes)`,
       );
       entry.accessToken = refreshResult.token;
       entry.accessTokenExpires = refreshResult.expires;

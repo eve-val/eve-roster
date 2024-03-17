@@ -144,7 +144,8 @@ export default defineComponent({
   },
 });
 
-const LINE_PATTERN = /^([^ ]+) +([^ ]+) +([^ ]+) +(.*)/;
+// (timestamp) (pid) (logleve) (message)
+const LINE_PATTERN = /^([^ ]+) +([^ ]+) +([^ ]+) (.*)/;
 
 interface LogLine {
   timestamp: string;
@@ -186,6 +187,7 @@ interface Data extends Admin_Tasks_Job_GET {
   background-color: #131313;
   padding: 10px 0px;
   font-size: 14px;
+  white-space-collapse: break-spaces;
 }
 
 .log-line {

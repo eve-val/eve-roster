@@ -2,7 +2,10 @@
   <div class="_reauthentication-prompt">
     <div class="cnt-left">
       <div class="bother-title">Character needs to be reauthorized.</div>
-      Log in as "{{ characterName }}".
+      <div class="bother-subtitle">
+        Log in as <span class="bother-charname">{{ characterName }}</span
+        >.
+      </div>
     </div>
     <div class="cnt-right">
       <a
@@ -55,7 +58,16 @@ export default defineComponent({
 .bother-title {
   font-size: 16px;
   margin-bottom: 6px;
+  font-weight: normal;
   color: #000;
+}
+
+.bother-subtitle {
+  color: #eee;
+}
+
+.bother-charname {
+  font-weight: normal;
 }
 
 .reauth-btn {
