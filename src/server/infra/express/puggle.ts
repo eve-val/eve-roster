@@ -115,7 +115,7 @@ class DevMiddlewareTemplateFs implements TemplateFs {
 
   readFile(filepath: string, encoding: BufferEncoding): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      (this.compiler.outputFileSystem.readFile as typeof fs.readFile)(
+      (this.compiler.outputFileSystem!.readFile as typeof fs.readFile)(
         filepath,
         encoding,
         (err, data) => {
@@ -128,7 +128,7 @@ class DevMiddlewareTemplateFs implements TemplateFs {
 
   private lstat(filepath: string) {
     return new Promise<fs.Stats>((resolve, reject) => {
-      (this.compiler.outputFileSystem.lstat as typeof fs.lstat)(
+      (this.compiler.outputFileSystem!.lstat as typeof fs.lstat)(
         filepath,
         (err, data) => {
           if (err) reject(err);
