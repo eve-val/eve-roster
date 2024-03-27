@@ -1,5 +1,6 @@
 export enum EsiScope {
   OPEN_WINDOW = "esi-ui.open_window.v1",
+  CORP_READ_KILLMAILS = "esi-killmails.read_corporation_killmails.v1",
   CORP_READ_MEMBERSHIP = "esi-corporations.read_corporation_membership.v1",
   CORP_READ_TITLES = "esi-corporations.read_titles.v1",
   CORP_TRACK_MEMBERS = "esi-corporations.track_members.v1",

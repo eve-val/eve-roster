@@ -20,10 +20,11 @@ export interface EsiKillmail {
  * associated with players; sometimes they aren't.
  *
  * Below are a few common patterns, but in general your code must expect that
- * ANY combination of the optional fields below can occur. Of particular note
- * is that there is no reliable way to tell the difference between a
- * player corporation-owned structure and a "corporation NPC" (beyond checking
- * the corporation ID against a list of known NPC corps).
+ * ANY combination of the optional fields below can occur. Note that CCP has
+ * reworked how NPC ships are represented; these used to be primarily associated
+ * with a faction_id. Now, many NPC ships have an associated corporation and
+ * faction_id has been repurposed to (sometimes) represent faction warfare
+ * alignment (and can be present on real players as a result).
  *
  * Finally, a few oddities. The ship_type_id property is present for most
  * entities but is sometimes left blank for reasons known only to CCP. If an
@@ -40,6 +41,7 @@ export interface EsiKillmail {
  *  character_id,
  *  corpororation_id,
  *  alliance_id?,
+ *  faction_id?
  * }
  *
  * Corporation-owned structure
@@ -48,22 +50,27 @@ export interface EsiKillmail {
  *  alliance_id?,
  * }
  *
- * Normal NPC
+ * Normal NPC (pirates, CONCORD, faction police, etc.)
  * {
- *  faction_id,
+ *  corporation_id,
  * }
  *
  * "Character" NPC (Arithmos Tyrranos)
  * {
  *  character_id,
  *  corporation_id,
+ * }
+ *
+ * Old school NPCs (these are far less common but still exist)
+ * {
  *  faction_id,
  * }
  *
- * "Corporation" NPC (CONCORD, Faction Police, etc.)
+ * Environment effects
  * {
- *  corporation_id,
+ *  faction_id, // This is often (always?) the faction 500021 ("Unknown")
  * }
+ *
  */
 
 export interface Victim {

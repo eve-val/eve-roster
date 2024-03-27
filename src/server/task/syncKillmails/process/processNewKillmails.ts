@@ -40,6 +40,11 @@ export async function processNewKillmails(db: Tnex, log: JobLogger) {
 
   log.info(`Processed ${updater.getProcessedCount()} killmails`);
   log.info(`  Created ${updater.getSrpCount()} SRP entries`);
+
+  return {
+    processedCount: updater.getProcessedCount(),
+    srpCreatedCount: updater.getSrpCount(),
+  };
 }
 
 /**

@@ -1,23 +1,18 @@
 import moment from "moment";
 
-import { Tnex } from "../db/tnex/index.js";
 import { dao } from "../db/dao.js";
-import { JobLogger } from "../infra/taskrunner/Job.js";
-import { MemberCorporation } from "../db/tables.js";
-import { createPendingBattles } from "../domain/battle/createPendingBattles.js";
+import { Tnex } from "../db/tnex/Tnex.js";
 import { Task } from "../infra/taskrunner/Task.js";
+import { createPendingBattles } from "../domain/battle/createPendingBattles.js";
+import { JobLogger } from "../infra/taskrunner/Job.js";
 import { processNewKillmails } from "./syncKillmails/process/processNewKillmails.js";
 import { fetchKillmails } from "./syncKillmails/fetch/fetchKillmails.js";
+import { EsiEntity, esiCorp } from "../data-source/esi/EsiEntity.js";
 
 /**
  * Downloads and stores any recent killmails for all member and affiliated
  * corporations. Also creates SRP entries for each loss, possibly rendering
  * verdicts for some of them if the triage rules dictate it.
- *
- * For new corporations, fetches the last 60 days of losses; for
- * existing corporations, fetches all new losses since the last sync.
- *
- * Uses Zkillboard as a backend.
  */
 export const syncKillmails: Task = {
   name: "syncKillmails",
@@ -28,91 +23,96 @@ export const syncKillmails: Task = {
 };
 
 async function executor(db: Tnex, job: JobLogger) {
+  const syncResults = await syncKillmailsForAllCorps(db, job);
+
+  const [processResult, battleResult] = await db.asyncTransaction(
+    async (db) => {
+      const processResult = await processNewKillmails(db, job);
+      const battleResult = await createPendingBattles(db, job);
+
+      return [processResult, battleResult];
+    },
+  );
+
+  const finalResults = {
+    sync: syncResults,
+    process: processResult,
+    battle: battleResult,
+  };
+
+  job.info(JSON.stringify(finalResults, undefined, 2));
+}
+
+async function syncKillmailsForAllCorps(db: Tnex, job: JobLogger) {
+  const memberCorps = await dao.config.getSrpMemberCorporations(db);
   const config = await dao.config.get(
     db,
     "srpJurisdiction",
     "killmailSyncRanges",
   );
-  const memberCorps = await dao.config.getSrpMemberCorporations(db);
-
   if (config.srpJurisdiction == null) {
     return;
   }
-  let syncedRanges = config.killmailSyncRanges ?? {};
+  const syncedRanges = config.killmailSyncRanges ?? {};
+  const syncResults: SyncResult[] = [];
 
-  syncedRanges = await syncKillmailsForAllCorps(
-    db,
-    job,
-    config.srpJurisdiction,
-    memberCorps,
-    syncedRanges,
-  );
-
-  await dao.config.set(db, { killmailSyncRanges: syncedRanges });
-  await db.asyncTransaction(async (db) => {
-    await processNewKillmails(db, job);
-    await createPendingBattles(db, job);
-  });
-}
-
-async function syncKillmailsForAllCorps(
-  db: Tnex,
-  job: JobLogger,
-  jurisdiction: { start: number; end: number | undefined },
-  memberCorps: MemberCorporation[],
-  syncedRanges: Record<number, { start: number; end: number }>,
-) {
   for (const memberCorp of memberCorps) {
+    const corp = esiCorp(memberCorp.mcorp_corporationId, memberCorp.mcorp_name);
+
+    const jurisdictionStarts = moment(config.srpJurisdiction.start);
+    // Fetch a day's worth of previous killmails since it may take some time
+    // for all mails to get to zkill (CCP asplode, etc.)
+    const historyEnds = moment(syncedRanges[corp.id]?.end ?? 0).subtract(
+      24,
+      "hours",
+    );
+
+    const fetchAfter = moment.max(jurisdictionStarts, historyEnds);
+
+    const syncResult: SyncResult = {
+      corp,
+      newMailCount: 0,
+      earliestTimestamp: 0,
+      latestTimestamp: 0,
+      encounteredError: false,
+    };
+    syncResults.push(syncResult);
+
+    job.info(
+      `Syncing killmails for corp ${corp} occurring after ${fetchAfter}...`,
+    );
+
     try {
-      const corpId = memberCorp.mcorp_corporationId;
-      syncedRanges[corpId] = await syncKillmailsForCorp(
-        db,
-        job,
-        memberCorp.mcorp_corporationId,
-        syncedRanges[corpId],
-        jurisdiction,
+      const { earliestTimestamp, latestTimestamp, fetchedCount, newCount } =
+        await fetchKillmails(db, job, corp, fetchAfter);
+
+      syncedRanges[corp.id] = {
+        start: syncedRanges[corp.id]?.start ?? historyEnds.valueOf(),
+        end: latestTimestamp.valueOf(),
+      };
+      syncResult.newMailCount = newCount;
+      syncResult.earliestTimestamp = earliestTimestamp.valueOf();
+      syncResult.latestTimestamp = latestTimestamp.valueOf();
+      job.info(
+        `Synced ${newCount} new killmails for ${corp} (${fetchedCount}` +
+          ` fetched total) from ${earliestTimestamp.toISOString()} to` +
+          ` ${latestTimestamp.toISOString()}`,
       );
     } catch (e) {
-      if (!(e instanceof Error)) {
-        throw e;
-      }
-      job.error(
-        `Error while syncing kills for corp ` +
-          `${memberCorp.mcorp_corporationId}`,
-        e,
-      );
+      syncResult.encounteredError = true;
+      job.error(`Error while syncing kills for corp ${corp}`, e);
     }
   }
 
-  return syncedRanges;
+  await dao.config.set(db, { killmailSyncRanges: syncedRanges });
+
+  return syncResults;
 }
 
-async function syncKillmailsForCorp(
-  db: Tnex,
-  job: JobLogger,
-  corpId: number,
-  syncedRange: { start: number; end: number } | undefined,
-  jurisdiction: { start: number; end: number | undefined },
-) {
-  if (syncedRange == undefined || syncedRange.start > jurisdiction.start) {
-    job.info(`Performing pre-range fill...`);
-    await fetchKillmails(
-      db,
-      job,
-      corpId,
-      jurisdiction.start,
-      syncedRange?.start,
-    );
-  }
-  if (
-    syncedRange != undefined &&
-    (jurisdiction.end == undefined || syncedRange.end < jurisdiction.end)
-  ) {
-    // Fetch a day's worth of previous killmails since it may take some time
-    // for all mails to get to zkill (CCP asplode, etc.)
-    const start = moment(syncedRange.end).subtract(1, "day").valueOf();
-    await fetchKillmails(db, job, corpId, start, jurisdiction.end);
-  }
-
-  return { start: jurisdiction.start, end: Date.now() };
+interface SyncResult {
+  corp: EsiEntity;
+  newMailCount: number;
+  earliestTimestamp: number;
+  latestTimestamp: number;
+  encounteredError: boolean;
 }
