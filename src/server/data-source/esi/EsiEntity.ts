@@ -2,6 +2,7 @@ import util, { InspectOptions } from "node:util";
 
 export class EsiEntity {
   constructor(
+    public readonly category: "character" | "corporation" | "type",
     public readonly id: number,
     public readonly name: string,
   ) {}
@@ -20,9 +21,13 @@ export class EsiEntity {
 }
 
 export function esiChar(id: number, name: string) {
-  return new EsiEntity(id, name);
+  return new EsiEntity("character", id, name);
 }
 
 export function esiCorp(id: number, name: string) {
-  return new EsiEntity(id, name);
+  return new EsiEntity("corporation", id, name);
+}
+
+export function esiType(id: number, name: string) {
+  return new EsiEntity("type", id, name);
 }

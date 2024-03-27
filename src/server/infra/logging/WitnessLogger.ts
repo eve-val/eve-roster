@@ -10,15 +10,15 @@ export class WitnessLogger implements Logger {
     this._tag = tag;
   }
 
-  crit(message: string, error?: Error, data?: object): void {
+  crit(message: string, error?: unknown, data?: object): void {
     this.log(LogLevel.CRIT, message, error, data);
   }
 
-  error(message: string, error?: Error, data?: object): void {
+  error(message: string, error?: unknown, data?: object): void {
     this.log(LogLevel.ERROR, message, error, data);
   }
 
-  warn(message: string, error?: Error, data?: object): void {
+  warn(message: string, error?: unknown, data?: object): void {
     this.log(LogLevel.WARN, message, error, data);
   }
 
@@ -34,7 +34,7 @@ export class WitnessLogger implements Logger {
     this.log(LogLevel.DEBUG, message, undefined, data);
   }
 
-  log(level: LogLevel, message: string, error?: Error, data?: object): void {
+  log(level: LogLevel, message: string, error?: unknown, data?: object): void {
     const levelTag = logLevelToProtocolTag(level);
     logMessage(levelTag, this._formatMessage(message, data));
     if (error) {

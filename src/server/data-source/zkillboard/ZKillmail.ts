@@ -1,3 +1,4 @@
+import { SimpleNumMap } from "../../../shared/util/simpleTypes.js";
 import { EsiKillmail } from "../esi/EsiKillmail.js";
 
 /**
@@ -15,13 +16,14 @@ export type ZKillmail = EsiKillmail & ZKillDescriptor;
 export interface ZKillDescriptor {
   killmail_id: number;
   zkb: {
-    locationID: number;
+    locationID?: number;
     hash: string;
     fittedValue: number;
     totalValue: number;
-    points: number;
+    prices?: SimpleNumMap<number>;
+    points?: number;
     npc: boolean;
-    solo: boolean;
-    awox: boolean;
+    solo?: boolean;
+    awox?: boolean;
   };
 }
