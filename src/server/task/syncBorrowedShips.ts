@@ -90,8 +90,7 @@ class LocationCache {
 function isCorpShip(asset: Asset) {
   return (
     asset.typeCategory == TYPE_CATEGORY_SHIP &&
-    asset.name &&
-    asset.name.startsWith(CORP_OWNED_SHIP_NAME_PREFIX)
+    asset.name?.startsWith(CORP_OWNED_SHIP_NAME_PREFIX)
   );
 }
 
