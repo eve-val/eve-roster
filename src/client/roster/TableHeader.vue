@@ -44,7 +44,7 @@ export default defineComponent({
         classes.push("reverse");
       }
       let col = _.find(this.columns, (col: Column) => col.key == this.sortKey);
-      let numeric = col != null && col.numeric;
+      let numeric = col?.numeric;
       if (numeric) {
         classes.push("right");
       } else {
