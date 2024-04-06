@@ -304,6 +304,17 @@ export const ESI_MARKETS_$regionId_ORDERS = {
   }[],
 };
 
+export const ESI_MARKETS_PRICES = {
+  method: FetchMethod.GET,
+  path: "/v1/markets/prices/",
+  access: Public.ACCESS,
+  response: [] as {
+    adjusted_price: number;
+    average_price: number;
+    type_id: number;
+  }[],
+};
+
 export const ESI_UI_OPENWINDOW_INFORMATION = {
   method: FetchMethod.POST,
   path: "/v1/ui/openwindow/information/",

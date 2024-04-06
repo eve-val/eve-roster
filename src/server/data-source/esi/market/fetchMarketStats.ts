@@ -1,11 +1,11 @@
 import { default as axios } from "axios";
 import { inspect } from "util";
-import { ESI_MARKETS_$regionId_ORDERS } from "../esi/endpoints.js";
-import { fetchEsiEx } from "../esi/fetch/fetchEsi.js";
+import { ESI_MARKETS_$regionId_ORDERS } from "../endpoints.js";
+import { fetchEsiEx } from "../fetch/fetchEsi.js";
 import { fileURLToPath } from "url";
-import { buildLoggerFromFilename } from "../../infra/logging/buildLogger.js";
-import { streamParallelJobs } from "../../util/asyncUtil.js";
-import { isAnyEsiError } from "../esi/error.js";
+import { buildLoggerFromFilename } from "../../../infra/logging/buildLogger.js";
+import { streamParallelJobs } from "../../../util/asyncUtil.js";
+import { isAnyEsiError } from "../error.js";
 
 const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
