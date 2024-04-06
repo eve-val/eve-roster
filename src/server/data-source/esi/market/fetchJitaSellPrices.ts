@@ -1,11 +1,11 @@
 import moment from "moment";
 
-import { ExpirationCache } from "../../util/ExpirationCache.js";
+import { ExpirationCache } from "../../../util/ExpirationCache.js";
 import { fetchMarketStats } from "./fetchMarketStats.js";
 import {
   REGION_THE_FORGE,
   SYSTEM_JITA,
-} from "../../eve/constants/mapSolarSystems.js";
+} from "../../../eve/constants/mapSolarSystems.js";
 
 const CACHE = new ExpirationCache<number, number>();
 const CACHE_DURATION = moment.duration(4, "hours").asMilliseconds();
