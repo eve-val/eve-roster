@@ -2,6 +2,7 @@ import _ from "underscore";
 
 import { Task } from "../infra/taskrunner/Task.js";
 
+import { getEnv } from "../infra/init/Env.js";
 import { dumpCharacterGroups } from "../task/dumpCharacterGroups.js";
 import { syncCharacterLocations } from "../task/syncCharacterLocations.js";
 import { syncCombatStats } from "../task/syncCombatStats.js";
@@ -16,7 +17,7 @@ import { truncateCharacterLocations } from "../task/truncateCharacterLocations.j
 import { updateSde } from "../task/updateSde.js";
 import { triagePendingLosses } from "../task/triagePendingLosses.js";
 import { updateSdeDryRun } from "../task/updateSdeDryRun.js";
-import { getEnv } from "../infra/init/Env.js";
+import { runDevTask } from "../task/runDevTask.js";
 
 /**
  * List of tasks that can be manually invoked from the admin UI.
@@ -39,6 +40,7 @@ const TASKS: Task[] = [
 
 if (getEnv().isDev) {
   TASKS.push(updateSdeDryRun);
+  TASKS.push(runDevTask);
 }
 
 verifyTaskNamesAreUnique(TASKS);
