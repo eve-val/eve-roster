@@ -1,9 +1,17 @@
-import { default as axios, AxiosResponse } from "axios";
+import {
+  default as axios,
+  AxiosRequestConfig,
+  AxiosResponse,
+  isAxiosError,
+} from "axios";
 import { EsiEndpoint } from "../EsiEndpoint.js";
 import { EsiError, EsiErrorKind } from "../EsiError.js";
 import { buildEsiFetchConfig } from "./buildEsiFetchConfig.js";
 import { checkEsiResponseForWarnings } from "./checkEsiResponseForWarnings.js";
 import { EsiEndpointParams } from "./EsiEndpointParams.js";
+import { buildLogger } from "../../../infra/logging/buildLogger.js";
+
+const logger = buildLogger("fetchEsi");
 
 /**
  * Loads a particular ESI endpoint.
@@ -15,8 +23,9 @@ import { EsiEndpointParams } from "./EsiEndpointParams.js";
 export async function fetchEsi<T extends EsiEndpoint>(
   endpoint: T,
   params: EsiEndpointParams<T>,
+  maxAttempts = 1,
 ): Promise<T["response"]> {
-  const response = await fetchEsiImpl(endpoint, params);
+  const response = await fetchEsiImpl(endpoint, params, maxAttempts);
   return response.data;
 }
 
@@ -33,8 +42,9 @@ export interface EsiResults<T extends EsiEndpoint> {
 export async function fetchEsiEx<T extends EsiEndpoint>(
   endpoint: T,
   params: EsiEndpointParams<T>,
+  maxAttempts = 1,
 ): Promise<EsiResults<T>> {
-  const response = await fetchEsiImpl(endpoint, params);
+  const response = await fetchEsiImpl(endpoint, params, maxAttempts);
   return {
     data: response.data,
     pageCount: parseInt(response.headers?.["x-pages"] || "1") || 1,
@@ -44,12 +54,13 @@ export async function fetchEsiEx<T extends EsiEndpoint>(
 async function fetchEsiImpl<T extends EsiEndpoint>(
   endpoint: T,
   params: EsiEndpointParams<T>,
+  maxAttempts: number,
 ): Promise<AxiosResponse<T["response"]>> {
   const config = buildEsiFetchConfig(BASE_URL, endpoint, params);
 
   let response: AxiosResponse<T["response"]>;
   try {
-    response = await axios.request<T["response"]>(config);
+    response = await fetchAxios<T["response"]>(config, maxAttempts);
   } catch (err) {
     let errKind = EsiErrorKind.GENERIC_ERROR;
 
@@ -83,6 +94,36 @@ async function fetchEsiImpl<T extends EsiEndpoint>(
 
   // TODO: Verify data matches expected structure
   return response;
+}
+
+async function fetchAxios<T>(
+  config: AxiosRequestConfig<unknown>,
+  maxAttempts: number,
+) {
+  let attemptCount = 0;
+
+  while (true) {
+    attemptCount++;
+    try {
+      return await axios.request<T>(config);
+    } catch (e) {
+      if (attemptCount < maxAttempts && isRetryableError(e)) {
+        logger.info(
+          `FAILURE ${attemptCount} (max ${maxAttempts}) for ${config.url}` +
+            ` params=${JSON.stringify(config.params)}`,
+        );
+        continue;
+      } else {
+        throw e;
+      }
+    }
+  }
+}
+
+function isRetryableError(err: unknown): boolean {
+  return (
+    isAxiosError(err) && (err.response == null || err.response.status >= 500)
+  );
 }
 
 export const BASE_URL = "https://esi.evetech.net";

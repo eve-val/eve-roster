@@ -31,6 +31,9 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
+    // Allows usage of "while (true) {}" patterns (but otherwise still prevents
+    // constant conditions).
+    "no-constant-condition": ["error", { "checkLoops": false }],
     // Covered by @typescript-eslint/no-unused-vars
     "no-unused-vars": "off",
     "no-redeclare": "off",
