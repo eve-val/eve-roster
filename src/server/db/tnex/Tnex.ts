@@ -23,16 +23,20 @@ export const DEFAULT_BOOL: boolean = USE_DEFAULT as any;
 export class Tnex {
   private _knex: Knex;
   private _registry: Scoper;
-  private _rootKnex: Knex;
+  private _root: Tnex;
 
-  constructor(knex: Knex, registry: Scoper, rootKnex: Knex) {
+  constructor(knex: Knex, registry: Scoper, rootTnex: Tnex | null = null) {
     this._knex = knex;
     this._registry = registry;
-    this._rootKnex = rootKnex;
+    this._root = rootTnex ?? this;
   }
 
   knex(): Knex {
     return this._knex;
+  }
+
+  root(): Tnex {
+    return this._root;
   }
 
   raw(query: string, bindings: any[]) {
@@ -44,7 +48,7 @@ export class Tnex {
       return callback(this);
     } else {
       return this._knex.transaction((trx) => {
-        return callback(new Tnex(trx, this._registry, this._knex));
+        return callback(new Tnex(trx, this._registry, this));
       });
     }
   }
@@ -59,7 +63,7 @@ export class Tnex {
     } else {
       return Promise.resolve(
         this._knex.transaction((trx) => {
-          return callback(new Tnex(trx, this._registry, this._knex));
+          return callback(new Tnex(trx, this._registry, this));
         }),
       );
     }
@@ -291,7 +295,7 @@ export class Tnex {
       return Promise.resolve(0);
     }
 
-    const clientType = (this._rootKnex as any).CLIENT as string;
+    const clientType = this._getClient();
     const tableName = this._registry.getTableName(table);
     const columns = getColumnDescriptors(table);
 
@@ -425,11 +429,11 @@ export class Tnex {
   }
 
   private _getClient() {
-    return (this._rootKnex as any).CLIENT as string;
+    return (this.root()._knex as any).CLIENT as string;
   }
 
   private _isTransaction() {
-    return this._knex != this._rootKnex;
+    return this != this._root;
   }
 
   private _prepRowForInsert<T extends object>(row: T, table: T): SimpleObj {

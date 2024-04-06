@@ -509,7 +509,7 @@ class BatchedDbWriter {
   }
 
   writeEntry(db: Tnex, entry: LoadedCacheEntry) {
-    this.db = db;
+    this.db = db.root();
     this.pendingWrites.set(entry.characterId, {
       accessToken_character: entry.characterId,
       accessToken_refreshToken: entry.refreshToken,

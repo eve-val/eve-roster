@@ -26,4 +26,20 @@ export type FakeDb = Tnex & {
 
 class FakeDbWrapper {
   tables = new FakeDbTables();
+
+  asDb() {
+    return this as unknown as Tnex;
+  }
+
+  root() {
+    return this.asDb();
+  }
+
+  transaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
+    return callback(this.asDb());
+  }
+
+  asyncTransaction<T>(callback: (db: Tnex) => Promise<T>): Promise<T> {
+    return callback(this.asDb());
+  }
 }
