@@ -84,7 +84,6 @@ export class TnexBuilder {
     return new Tnex(
       knex,
       new Scoper(this._separator, this._tableToName, this._prefixToName),
-      knex,
     );
   }
 }
