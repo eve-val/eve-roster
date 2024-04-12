@@ -3956,14 +3956,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:^8.11.4":
-  version: 8.11.4
-  resolution: "@types/pg@npm:8.11.4"
+"@types/pg@npm:^8.11.5":
+  version: 8.11.5
+  resolution: "@types/pg@npm:8.11.5"
   dependencies:
     "@types/node": "npm:*"
     pg-protocol: "npm:*"
     pg-types: "npm:^4.0.1"
-  checksum: 10/b2713bc4ec8e7245958d8ced5833e5fbf3b7bdc090c19b1967f49626abf79cfe62a14e36b194c48c9fc9edeeeb3d4308cfa716534e6ca318b0785daaeb32e359
+  checksum: 10/bb4c28f721ab0da9df96ecf9e2ebb34c3986b2c785e763612c899292bfd0e4e364f38ae10c0a35144d1e647d51cb9a2a80eb900a4ee1f1fdcc3e8d54d39c5abf
   languageName: node
   linkType: hard
 
@@ -7277,7 +7277,7 @@ __metadata:
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
     "@types/node": "npm:^20.12.7"
     "@types/node-schedule": "npm:^2.1.7"
-    "@types/pg": "npm:^8.11.4"
+    "@types/pg": "npm:^8.11.5"
     "@types/pg-pool": "npm:^2.0.6"
     "@types/progress-stream": "npm:^2.0.5"
     "@types/pug": "npm:^2.0.10"
