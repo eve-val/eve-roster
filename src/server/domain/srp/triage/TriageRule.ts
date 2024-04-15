@@ -1,4 +1,4 @@
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
 import { SrpVerdictStatus, SrpVerdictReason } from "../../../db/dao/enums.js";
 
 /**
@@ -69,7 +69,7 @@ export interface TemplateRule extends CoreRule {
  */
 export interface FuncRule extends CoreRule {
   discriminant: (
-    killmail: ZKillmail,
+    killmail: AnnotatedKillmail,
     meta: LossMeta,
   ) => TriageVerdict[] | undefined;
 }
@@ -137,7 +137,7 @@ export interface LossMeta {
   shipGroup: number;
   shipMarketGroup: number;
   mainCharacter: number | null;
-  relatedKillmail: ZKillmail | null;
+  relatedKillmail: AnnotatedKillmail | null;
 }
 
 export function isFuncRule(rule: TriageRule): rule is FuncRule {

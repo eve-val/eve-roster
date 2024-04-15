@@ -89,7 +89,7 @@ import {
   SYSTEM_AD200,
 } from "../../../eve/constants/mapSolarSystems.js";
 
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
 import { SrpVerdictTags } from "../../../../shared/types/srp/srpEnums.js";
 
 /**
@@ -821,7 +821,7 @@ function million(value: number) {
   return value * 1000000;
 }
 
-function invMatchAll(killmail: ZKillmail, items: number[]) {
+function invMatchAll(killmail: AnnotatedKillmail, items: number[]) {
   if (items.length == 0) {
     return true;
   }
@@ -836,7 +836,7 @@ function invMatchAll(killmail: ZKillmail, items: number[]) {
   return true;
 }
 
-function invMatchAny(killmail: ZKillmail, items: number[]) {
+function invMatchAny(killmail: AnnotatedKillmail, items: number[]) {
   if (killmail.victim.items == undefined) {
     return undefined;
   }

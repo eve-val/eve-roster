@@ -4,12 +4,12 @@ import { AccountPrivileges } from "../../../infra/express/privileges.js";
 import { idParam } from "../../../util/express/paramVerifier.js";
 import { dao } from "../../../db/dao.js";
 import { NotFoundError } from "../../../error/NotFoundError.js";
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../../domain/killmail/AnnotatedKillmail.js";
 import { SimpleNumMap, nil } from "../../../../shared/util/simpleTypes.js";
 import { fetchEveNames } from "../../../data-source/esi/names.js";
 
 export interface Output {
-  killmail: ZKillmail;
+  killmail: AnnotatedKillmail;
   names: SimpleNumMap<string>;
 }
 
@@ -41,7 +41,7 @@ async function handleEndpoint(
   };
 }
 
-async function buildNameMap(mail: ZKillmail) {
+async function buildNameMap(mail: AnnotatedKillmail) {
   const unnamedIds = new Set<number | nil>();
   unnamedIds.add(mail.solar_system_id);
   unnamedIds.add(mail.victim.character_id);

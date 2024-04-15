@@ -1,6 +1,6 @@
 import * as util from "util";
 import { default as axios } from "axios";
-import { ZKillDescriptor } from "./ZKillmail.js";
+import { ZKillDescriptor } from "./ZKillDescriptor.js";
 import { RateLimiter } from "../../util/RateLimiter.js";
 
 /**

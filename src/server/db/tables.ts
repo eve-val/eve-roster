@@ -17,7 +17,7 @@ import {
   SrpVerdictStatus,
   SrpVerdictReason,
 } from "./dao/enums.js";
-import { ZKillmail } from "../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../domain/killmail/AnnotatedKillmail.js";
 import { BattleData } from "../../shared/types/srp/battle/BattleData.js";
 
 export const tables = new TnexBuilder();
@@ -225,7 +225,7 @@ export class Killmail {
   km_relatedLoss = nullable(integer());
 
   /** The full JSON blob received from ZKillboard. */
-  km_data = jsonb<ZKillmail>();
+  km_data = jsonb<AnnotatedKillmail>();
 
   /**
    * Whether the killmail has been processed: had its related loss computed,

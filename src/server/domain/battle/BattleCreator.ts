@@ -1,4 +1,4 @@
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../killmail/AnnotatedKillmail.js";
 import { Battle, Killmail } from "../../db/tables.js";
 import { Participant } from "../../../shared/types/srp/battle/BattleData.js";
 import { Transform, TransformCallback } from "../../util/stream/Transform.js";
@@ -167,7 +167,7 @@ function addParticipant(battle: InternalBattle, participant: Participant) {
   }
 }
 
-function extractParticipants(killmail: ZKillmail) {
+function extractParticipants(killmail: AnnotatedKillmail) {
   const participants: Participant[] = [];
 
   const victim = buildParticipant(killmail.victim);
