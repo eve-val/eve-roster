@@ -1,4 +1,4 @@
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
 import { Tnex } from "../../../db/tnex/index.js";
 import { TRIAGE_RULES } from "./rules.js";
 import { dao } from "../../../db/dao.js";
@@ -11,8 +11,8 @@ const logger = buildLoggerFromFilename(fileURLToPath(import.meta.url));
 
 export interface LossRow {
   km_timestamp: number;
-  km_data: ZKillmail;
-  related_data: ZKillmail | null;
+  km_data: AnnotatedKillmail;
+  related_data: AnnotatedKillmail | null;
   account_mainCharacter: number | null;
 }
 
@@ -81,8 +81,8 @@ async function loadShipDefs(
 
 function triageLoss(
   rules: TriageRule[],
-  killmail: ZKillmail,
-  relatedKillmail: ZKillmail | null,
+  killmail: AnnotatedKillmail,
+  relatedKillmail: AnnotatedKillmail | null,
   mainCharacter: number | null,
   shipDefs: Map<number, ShipDef>,
 ) {
@@ -106,8 +106,8 @@ function triageLoss(
 
 function executeRule(
   rule: TriageRule,
-  killmail: ZKillmail,
-  relatedKillmail: ZKillmail | null,
+  killmail: AnnotatedKillmail,
+  relatedKillmail: AnnotatedKillmail | null,
   mainCharacter: number | null,
   shipDefs: Map<number, ShipDef>,
 ) {
@@ -145,7 +145,7 @@ function executeRule(
 
 function testFilter(
   match: TriageRule["filter"],
-  killmail: ZKillmail,
+  killmail: AnnotatedKillmail,
   shipDef: ShipDef,
 ) {
   if (

@@ -5,8 +5,6 @@ test("Priority order is preserved", () => {
   const queue = new PriorityQueue(noDuplicatesComparator);
   push(queue, 2, 4, 7, 1, 5, 3, 6);
 
-  console.log(Array.from(queue));
-
   expect(drain(queue)).toEqual([1, 2, 3, 4, 5, 6, 7]);
 });
 

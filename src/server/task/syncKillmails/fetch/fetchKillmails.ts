@@ -15,7 +15,7 @@ import { Attacker, EsiKillmail } from "../../../data-source/esi/EsiKillmail.js";
 import { paginatedEsiEndpoint } from "../../../data-source/esi/flow/paginatedEsiEndpoint.js";
 import { fetchAverageMarketPrices } from "../../../data-source/esi/market/fetchAverageMarketPrices.js";
 import { checkNotNil } from "../../../../shared/util/assert.js";
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../../domain/killmail/AnnotatedKillmail.js";
 import { killmailToRow } from "./killmailToRow.js";
 
 export async function fetchKillmails(
@@ -92,7 +92,7 @@ async function fetchKillmailsWithinTransaction(
       .batch(20)
       .observe(async (batch) => {
         const rows = batch.map((value) => {
-          const zkm: ZKillmail = {
+          const zkm: AnnotatedKillmail = {
             ...value.km,
             zkb: value.metadata,
           };

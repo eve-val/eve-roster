@@ -3,7 +3,7 @@ import _ from "underscore";
 
 import { SrpLossRow } from "../../db/dao/SrpDao.js";
 import { nil } from "../../../shared/util/simpleTypes.js";
-import { ZKillmail } from "../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../killmail/AnnotatedKillmail.js";
 import {
   AttackerJson,
   SrpLossJson,
@@ -57,7 +57,10 @@ export function srpLossToJson(
   return json;
 }
 
-function getExecutioner(mail: ZKillmail, ids: Set<number | nil>): AttackerJson {
+function getExecutioner(
+  mail: AnnotatedKillmail,
+  ids: Set<number | nil>,
+): AttackerJson {
   const executioner = _.findWhere(mail.attackers, { final_blow: true })!;
 
   ids.add(executioner.ship_type_id);

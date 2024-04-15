@@ -1,5 +1,5 @@
 import { Readable } from "../../util/stream/Readable.js";
-import { ZKillDescriptor } from "./ZKillmail.js";
+import { ZKillDescriptor } from "./ZKillDescriptor.js";
 import { fetchZKillResultPage } from "./fetchZKillResultPage.js";
 
 /**

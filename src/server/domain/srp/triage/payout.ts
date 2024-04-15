@@ -1,4 +1,4 @@
-import { ZKillmail } from "../../../data-source/zkillboard/ZKillmail.js";
+import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
 import { ApprovedVerdict, MarketPayout } from "./TriageRule.js";
 import { fetchJitaSellPrices } from "../../../data-source/esi/market/fetchJitaSellPrices.js";
 import { SrpVerdictStatus } from "../../../db/dao/enums.js";
@@ -20,7 +20,7 @@ export async function fetchHullMarketValues(losses: TriagedLoss[]) {
  */
 export function resolvePayout(
   approval: ApprovedVerdict,
-  killmail: ZKillmail,
+  killmail: AnnotatedKillmail,
   marketValues: Map<number, number>,
 ) {
   let value: number;
