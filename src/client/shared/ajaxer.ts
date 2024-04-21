@@ -7,6 +7,7 @@ import { Task, Job, Log, Citadel } from "../admin/types.js";
 import { Account } from "../roster/types.js";
 import { Account_Characters_GET } from "../../shared/route/api/account/characters_GET.js";
 import { Character_Skills_GET } from "../../shared/route/api/character/skills_GET.js";
+import { Killmail_$Id_GET } from "../../shared/route/api/killmail/type_killmail_$id_GET.js";
 import { Ship } from "../ships/ships.js";
 import { Srp_Battle_GET } from "../../shared/route/api/srp/battle/battle_GET.js";
 import { Srp_Loss_GET } from "../../shared/route/api/srp/loss_GET.js";
@@ -160,6 +161,10 @@ export default {
 
   putAdminSetup(setupObj: string) {
     return axios.put("/api/admin/setup", setupObj);
+  },
+
+  getKillmail(id: number) {
+    return axios.get<Killmail_$Id_GET>(`/api/killmail/${id}`);
   },
 
   getAdminSrpJurisdiction() {

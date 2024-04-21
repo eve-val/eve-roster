@@ -1,5 +1,5 @@
 import moment from "moment";
-import { AnnotatedKillmail } from "../../../domain/killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { Killmail } from "../../../db/tables.js";
 import { HullCategory } from "../../../db/dao/enums.js";
 import { isCapsule } from "../../../eve/util/isCapsule.js";

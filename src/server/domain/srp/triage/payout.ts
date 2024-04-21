@@ -1,4 +1,4 @@
-import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { ApprovedVerdict, MarketPayout } from "./TriageRule.js";
 import { fetchJitaSellPrices } from "../../../data-source/esi/market/fetchJitaSellPrices.js";
 import { SrpVerdictStatus } from "../../../db/dao/enums.js";

@@ -1,4 +1,4 @@
-import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { Tnex } from "../../../db/tnex/index.js";
 import { TRIAGE_RULES } from "./rules.js";
 import { dao } from "../../../db/dao.js";

@@ -1,4 +1,4 @@
-import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { SrpVerdictStatus, SrpVerdictReason } from "../../../db/dao/enums.js";
 
 /**

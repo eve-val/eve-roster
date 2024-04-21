@@ -89,7 +89,7 @@ import {
   SYSTEM_AD200,
 } from "../../../eve/constants/mapSolarSystems.js";
 
-import { AnnotatedKillmail } from "../../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { SrpVerdictTags } from "../../../../shared/types/srp/srpEnums.js";
 
 /**

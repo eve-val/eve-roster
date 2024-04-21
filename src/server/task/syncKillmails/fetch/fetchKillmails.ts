@@ -11,11 +11,14 @@ import { dao } from "../../../db/dao.js";
 import { runAsDirector } from "../../../data-source/accessToken/runAsDirector.js";
 import { EsiEntity } from "../../../data-source/esi/EsiEntity.js";
 import { EsiScope } from "../../../data-source/esi/EsiScope.js";
-import { Attacker, EsiKillmail } from "../../../data-source/esi/EsiKillmail.js";
+import {
+  Attacker,
+  EsiKillmail,
+} from "../../../../shared/types/esi/EsiKillmail.js";
 import { paginatedEsiEndpoint } from "../../../data-source/esi/flow/paginatedEsiEndpoint.js";
 import { fetchAverageMarketPrices } from "../../../data-source/esi/market/fetchAverageMarketPrices.js";
 import { checkNotNil } from "../../../../shared/util/assert.js";
-import { AnnotatedKillmail } from "../../../domain/killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../../shared/types/killmail/AnnotatedKillmail.js";
 import { killmailToRow } from "./killmailToRow.js";
 
 export async function fetchKillmails(

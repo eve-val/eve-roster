@@ -46,6 +46,7 @@ const FRONTEND_ROUTES = [
   "/admin/*",
   "/dev/",
   "/dev/:section",
+  "/killmail/*",
   "/srp",
   "/srp/*",
   "/ships",

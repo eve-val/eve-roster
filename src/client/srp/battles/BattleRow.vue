@@ -38,22 +38,13 @@ May also contain triage UI if triageMode is enabled.
         >
           <tool-tip gravity="top">
             <template #default>
-              <a
-                class="killmail-link"
-                :href="
-                  member.loss
-                    ? zkillHref(member.loss.killmailId, 'kill')
-                    : undefined
-                "
-                target="_blank"
-              >
-                <eve-image
-                  :id="member.shipId"
-                  class="ship-image"
-                  :size="36"
-                  type="Type"
-                />
-              </a>
+              <eve-image
+                :id="member.shipId"
+                class="ship-image"
+                :size="36"
+                type="Type"
+                :href="member.loss && `/killmail/${member.loss.killmailId}`"
+              />
             </template>
             <template #message>
               <srp-triplet

@@ -3,7 +3,7 @@ import _ from "underscore";
 
 import { SrpLossRow } from "../../db/dao/SrpDao.js";
 import { nil } from "../../../shared/util/simpleTypes.js";
-import { AnnotatedKillmail } from "../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../shared/types/killmail/AnnotatedKillmail.js";
 import {
   AttackerJson,
   SrpLossJson,

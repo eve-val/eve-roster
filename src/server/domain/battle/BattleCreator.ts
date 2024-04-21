@@ -1,4 +1,4 @@
-import { AnnotatedKillmail } from "../killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../../shared/types/killmail/AnnotatedKillmail.js";
 import { Battle, Killmail } from "../../db/tables.js";
 import { Participant } from "../../../shared/types/srp/battle/BattleData.js";
 import { Transform, TransformCallback } from "../../util/stream/Transform.js";

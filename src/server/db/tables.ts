@@ -17,7 +17,7 @@ import {
   SrpVerdictStatus,
   SrpVerdictReason,
 } from "./dao/enums.js";
-import { AnnotatedKillmail } from "../domain/killmail/AnnotatedKillmail.js";
+import { AnnotatedKillmail } from "../../shared/types/killmail/AnnotatedKillmail.js";
 import { BattleData } from "../../shared/types/srp/battle/BattleData.js";
 
 export const tables = new TnexBuilder();

@@ -22,13 +22,13 @@ in most other places).
       :icon-type="'Type'"
       :top-line="name(srp.shipType)"
       :bottom-line="srp.timestamp"
-      :default-href="zkillHref(srp.killmail, 'kill')"
+      :default-href="kmHref(srp.killmail)"
     >
       <template #top-line-extra>
         <a
           v-if="srp.relatedKillmail != null"
           class="related-link"
-          :href="zkillHref(srp.relatedKillmail.id, 'kill')"
+          :href="kmHref(srp.relatedKillmail.id)"
         >
           <eve-image
             :id="srp.relatedKillmail.shipId"
@@ -179,6 +179,10 @@ export default defineComponent({
       } else {
         return `https://zkillboard.com/${type}/${id}/`;
       }
+    },
+
+    kmHref(id: number | undefined) {
+      return id != undefined ? `/killmail/${id}` : undefined;
     },
   },
 });

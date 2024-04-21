@@ -1,5 +1,5 @@
-import { SimpleNumMap } from "../../../shared/util/simpleTypes.js";
-import { EsiKillmail } from "../../data-source/esi/EsiKillmail.js";
+import { SimpleNumMap } from "../../util/simpleTypes.js";
+import { EsiKillmail } from "../esi/EsiKillmail.js";
 
 /**
  * Meta-object created by adding metadata to an {@link EsiKillmail}.
