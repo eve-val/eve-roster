@@ -1,6 +1,13 @@
 import { Dao } from "../dao.js";
 import { Tnex } from "../tnex/Tnex.js";
-import { SdeType, sdeType } from "../tables.js";
+import {
+  SdeAttribute,
+  SdeType,
+  SdeTypeAttribute,
+  sdeAttribute,
+  sdeType,
+  sdeTypeAttribute,
+} from "../tables.js";
 
 export default class SdeDao {
   constructor(private _dao: Dao) {}
@@ -15,5 +22,22 @@ export default class SdeDao {
       .whereIn("styp_id", ids)
       .columns(...columns)
       .run();
+  }
+
+  getTypeAttributes<
+    K extends keyof (SdeType & SdeTypeAttribute & SdeAttribute),
+  >(db: Tnex, typeIds: number[], attrIds: number[], columns: K[]) {
+    let query = db
+      .select(sdeType)
+      .join(sdeTypeAttribute, "sta_type", "=", "styp_id")
+      .join(sdeAttribute, "sattr_id", "=", "sta_attribute")
+      .whereIn("styp_id", typeIds)
+      .columns(...columns);
+
+    if (attrIds.length > 0) {
+      query = query.whereIn("sattr_id", attrIds);
+    }
+
+    return query.run();
   }
 }

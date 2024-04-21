@@ -1,3 +1,4 @@
+import { defineComponent } from "vue";
 import { SimpleNumMap, nil } from "../../shared/util/simpleTypes.js";
 
 const nameCache = new Map<number, string>();
@@ -14,7 +15,7 @@ const nameCache = new Map<number, string>();
  * map, it should call addNames(). This allows any child components to
  * access the map without it being passed to them explicitly.
  */
-export const NameCacheMixin = {
+export const NameCacheMixin = defineComponent({
   methods: {
     addNames(names: SimpleNumMap<string>) {
       for (const id in names) {
@@ -30,8 +31,8 @@ export const NameCacheMixin = {
       if (id == null) {
         return "[Unknown entity]";
       } else {
-        return nameCache.get(id) ?? "[Unknown entity]";
+        return nameCache.get(id) ?? `[Entity ${id}]`;
       }
     },
   },
-};
+});

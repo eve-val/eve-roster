@@ -51,6 +51,7 @@ import EveImage from "../shared/EveImage.vue";
 import { AssetType } from "../shared/types";
 
 import { NameCacheMixin } from "../shared/nameCache";
+import { nil } from "../../shared/util/simpleTypes";
 
 const ABS_URL_PATTERN = /^(?:[a-z]+:)?\/\//i;
 
@@ -78,20 +79,24 @@ export default defineComponent({
      * All entries are linked with the href unless overridden by the above
      * props.
      */
-    defaultHref: { type: String, required: false, default: "" },
+    defaultHref: {
+      type: String as PropType<string | nil>,
+      required: false,
+      default: "",
+    },
   },
 
   computed: {
-    effectiveIconHref(): string {
-      return this.iconHref || this.defaultHref;
+    effectiveIconHref(): string | undefined {
+      return this.iconHref ?? this.defaultHref ?? undefined;
     },
 
-    effectiveTopHref(): string {
-      return this.topHref || this.defaultHref;
+    effectiveTopHref(): string | undefined {
+      return this.topHref ?? this.defaultHref ?? undefined;
     },
 
-    effectiveBotHref(): string {
-      return this.botHref || this.defaultHref;
+    effectiveBotHref(): string | undefined {
+      return this.botHref ?? this.defaultHref ?? undefined;
     },
   },
 

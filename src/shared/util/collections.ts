@@ -10,6 +10,19 @@ export function arrayToMap<T, K extends keyof T>(array: T[], key: K) {
   return map;
 }
 
+export function getWithDefault<K, V>(
+  map: Map<K, V>,
+  key: K,
+  defaultGenerator: (key: K) => NoInfer<V>,
+): V {
+  let value = map.get(key);
+  if (value == undefined) {
+    value = defaultGenerator(key);
+    map.set(key, value);
+  }
+  return value;
+}
+
 /**
  * Transforms an array into another array, removing any nil values.
  *

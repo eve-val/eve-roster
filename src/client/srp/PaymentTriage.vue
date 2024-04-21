@@ -79,14 +79,14 @@ export default defineComponent({
       suspectMoreToFetch: true,
 
       payments: null,
-      payingCharacter: null,
+      payingCharacter: undefined,
 
       approvedLiability: 0,
     } as {
       fetchPromise: null | Promise<AxiosResponse<Srp_Payment_dir_GET>>;
       suspectMoreToFetch: boolean;
       payments: null | PaymentJson[];
-      payingCharacter: null | number;
+      payingCharacter: undefined | number;
       approvedLiability: number;
     };
   },
@@ -124,7 +124,6 @@ export default defineComponent({
         order: "asc",
         orderBy: "id",
         startingAfter: this.finalId,
-        account: this.forAccount,
         limit: RESULTS_PER_FETCH,
       });
 

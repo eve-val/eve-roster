@@ -1,6 +1,6 @@
 import { EsiAsset } from "./EsiAsset.js";
 import { FetchMethod, Private, Public } from "./EsiEndpoint.js";
-import { EsiKillmail } from "./EsiKillmail.js";
+import { EsiKillmail } from "../../../shared/types/esi/EsiKillmail.js";
 import { EsiNotification } from "./EsiNotification.js";
 
 /**

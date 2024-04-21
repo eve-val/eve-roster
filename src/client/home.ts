@@ -19,6 +19,8 @@ import JobDetail from "./admin/JobDetail.vue";
 import CitadelManagement from "./admin/CitadelManagement.vue";
 import DevPreview from "./dev/DevPreview.vue";
 
+import KillmailDetail from "./killmail/KillmailDetail.vue";
+
 import ShipReplacement from "./srp/ShipReplacement.vue";
 import SrpDashboard from "./srp/SrpDashboard.vue";
 import CombatHistory from "./srp/CombatHistory.vue";
@@ -60,6 +62,14 @@ const routes: RouteRecordRaw[] = [
     }),
   },
   { path: "/admin/citadels", component: CitadelManagement },
+
+  {
+    path: "/killmail/:id",
+    component: KillmailDetail,
+    props: (route) => ({
+      killmailId: parseInt(route.params.id as string),
+    }),
+  },
 
   {
     path: "/srp",
