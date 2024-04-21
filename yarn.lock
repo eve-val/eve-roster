@@ -2874,7 +2874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swagger-api/apidom-core@npm:>=0.99.0 <1.0.0, @swagger-api/apidom-core@npm:^0.99.1":
+"@swagger-api/apidom-core@npm:>=0.99.1 <1.0.0, @swagger-api/apidom-core@npm:^0.99.1":
   version: 0.99.1
   resolution: "@swagger-api/apidom-core@npm:0.99.1"
   dependencies:
@@ -2900,7 +2900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swagger-api/apidom-json-pointer@npm:>=0.99.0 <1.0.0, @swagger-api/apidom-json-pointer@npm:^0.99.1":
+"@swagger-api/apidom-json-pointer@npm:>=0.99.1 <1.0.0, @swagger-api/apidom-json-pointer@npm:^0.99.1":
   version: 0.99.1
   resolution: "@swagger-api/apidom-json-pointer@npm:0.99.1"
   dependencies:
@@ -3024,7 +3024,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swagger-api/apidom-ns-openapi-3-1@npm:>=0.99.0 <1.0.0, @swagger-api/apidom-ns-openapi-3-1@npm:^0.99.1":
+"@swagger-api/apidom-ns-openapi-3-1@npm:>=0.99.1 <1.0.0, @swagger-api/apidom-ns-openapi-3-1@npm:^0.99.1":
   version: 0.99.1
   resolution: "@swagger-api/apidom-ns-openapi-3-1@npm:0.99.1"
   dependencies:
@@ -3273,7 +3273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swagger-api/apidom-reference@npm:>=0.99.0 <1.0.0":
+"@swagger-api/apidom-reference@npm:>=0.99.1 <1.0.0":
   version: 0.99.1
   resolution: "@swagger-api/apidom-reference@npm:0.99.1"
   dependencies:
@@ -7340,7 +7340,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.15.2"
+    swagger-ui: "npm:^5.16.2"
     tmp: "npm:^0.2.3"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -12509,9 +12509,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "react-redux@npm:9.1.0"
+"react-redux@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "react-redux@npm:9.1.1"
   dependencies:
     "@types/use-sync-external-store": "npm:^0.0.3"
     use-sync-external-store: "npm:^1.0.0"
@@ -12527,7 +12527,7 @@ __metadata:
       optional: true
     redux:
       optional: true
-  checksum: 10/e2e5fe1c6965aedf3a80d7d5252ccbe6f231448cc1010ce19036fe8965f996cbafa2f81cacab77e54e75d6a14caa40540b8907459ef36af26b65c14f1bf89d80
+  checksum: 10/eecc5cf0d9f9dec30634b23c912535eb1314d135f426a6108cd1532d52f14f699834f7cb07bcccffa1369ee26f7b43020dc9b41c4486c09bd6f98d7279be07bc
   languageName: node
   linkType: hard
 
@@ -13671,16 +13671,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.26.8":
-  version: 3.26.8
-  resolution: "swagger-client@npm:3.26.8"
+"swagger-client@npm:^3.27.0":
+  version: 3.27.0
+  resolution: "swagger-client@npm:3.27.0"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
-    "@swagger-api/apidom-core": "npm:>=0.99.0 <1.0.0"
+    "@swagger-api/apidom-core": "npm:>=0.99.1 <1.0.0"
     "@swagger-api/apidom-error": "npm:>=0.99.0 <1.0.0"
-    "@swagger-api/apidom-json-pointer": "npm:>=0.99.0 <1.0.0"
-    "@swagger-api/apidom-ns-openapi-3-1": "npm:>=0.99.0 <1.0.0"
-    "@swagger-api/apidom-reference": "npm:>=0.99.0 <1.0.0"
+    "@swagger-api/apidom-json-pointer": "npm:>=0.99.1 <1.0.0"
+    "@swagger-api/apidom-ns-openapi-3-1": "npm:>=0.99.1 <1.0.0"
+    "@swagger-api/apidom-reference": "npm:>=0.99.1 <1.0.0"
     cookie: "npm:~0.6.0"
     deepmerge: "npm:~4.3.0"
     fast-json-patch: "npm:^3.0.0-1"
@@ -13690,13 +13690,13 @@ __metadata:
     node-fetch-commonjs: "npm:^3.3.2"
     qs: "npm:^6.10.2"
     traverse: "npm:~0.6.6"
-  checksum: 10/4399ae470023da6a445e936c5e3c222b091aa4d46b35085706a81532590eab11180cbe2b50607b21b8c579623c8c14308cb4ab504562d4f7e21336b7ce312b0b
+  checksum: 10/c791d826b49d0a044f5e28ae14a24f199980874c4a82659375224a29cf02db49b921080f754b84b1cc11a23a32d8bb9d9dcdd8bf05825c0dec5076b5fba9788d
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.15.2":
-  version: 5.15.2
-  resolution: "swagger-ui@npm:5.15.2"
+"swagger-ui@npm:^5.16.2":
+  version: 5.16.2
+  resolution: "swagger-ui@npm:5.16.2"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.24.4"
     "@braintree/sanitize-url": "npm:=7.0.1"
@@ -13721,7 +13721,7 @@ __metadata:
     react-immutable-proptypes: "npm:2.2.0"
     react-immutable-pure-component: "npm:^2.2.0"
     react-inspector: "npm:^6.0.1"
-    react-redux: "npm:^9.1.0"
+    react-redux: "npm:^9.1.1"
     react-syntax-highlighter: "npm:^15.5.0"
     redux: "npm:^5.0.1"
     redux-immutable: "npm:^4.0.0"
@@ -13729,12 +13729,12 @@ __metadata:
     reselect: "npm:^5.1.0"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.26.8"
+    swagger-client: "npm:^3.27.0"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/fd50437847465a94d9dd59fafa188ecb7d90ff597b3d58eba21c4204d19efeb3c0d8bd530c72c96d1917929997d4dc9625b04a17e9fdc55426b6a98eb9496e41
+  checksum: 10/de747de6e19df5fd79091e8472edb1088696657b41cf28e022faee78440d8a451f44e79a95010a4d8fe85cf6ea1f6e23d42ffb97e3440457aae9db8d1bda9890
   languageName: node
   linkType: hard
 
