@@ -7340,7 +7340,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.16.2"
+    swagger-ui: "npm:^5.17.2"
     tmp: "npm:^0.2.3"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -13678,9 +13678,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.27.0":
-  version: 3.27.0
-  resolution: "swagger-client@npm:3.27.0"
+"swagger-client@npm:^3.27.2":
+  version: 3.27.2
+  resolution: "swagger-client@npm:3.27.2"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
     "@swagger-api/apidom-core": "npm:>=0.99.1 <1.0.0"
@@ -13696,14 +13696,14 @@ __metadata:
     node-abort-controller: "npm:^3.1.1"
     node-fetch-commonjs: "npm:^3.3.2"
     qs: "npm:^6.10.2"
-    traverse: "npm:~0.6.6"
-  checksum: 10/c791d826b49d0a044f5e28ae14a24f199980874c4a82659375224a29cf02db49b921080f754b84b1cc11a23a32d8bb9d9dcdd8bf05825c0dec5076b5fba9788d
+    traverse: "npm:=0.6.8"
+  checksum: 10/697b71272d7fe3ecf6409ec49c6b59e54f15a14e3f19536f7ad537fe8bdac14e12c3fb754c4c09973fe053ded4da1150b6ef7e2c3034178527b53db7f4151ae9
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.16.2":
-  version: 5.16.2
-  resolution: "swagger-ui@npm:5.16.2"
+"swagger-ui@npm:^5.17.2":
+  version: 5.17.2
+  resolution: "swagger-ui@npm:5.17.2"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.24.4"
     "@braintree/sanitize-url": "npm:=7.0.1"
@@ -13736,12 +13736,12 @@ __metadata:
     reselect: "npm:^5.1.0"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.27.0"
+    swagger-client: "npm:^3.27.2"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/de747de6e19df5fd79091e8472edb1088696657b41cf28e022faee78440d8a451f44e79a95010a4d8fe85cf6ea1f6e23d42ffb97e3440457aae9db8d1bda9890
+  checksum: 10/d676afdefcf9c69e13080354074e308dc04d30d8dd8290d7a77637d60aa81b045bdcbb4fb1dd884f69680148cf36b0ad7fca27463d9bdc588cbaa3b469be251c
   languageName: node
   linkType: hard
 
@@ -14007,10 +14007,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"traverse@npm:~0.6.6":
-  version: 0.6.6
-  resolution: "traverse@npm:0.6.6"
-  checksum: 10/8c300c9d15aa6149d6086eedd5f42475a4bfd942de1ac54ef8acc7026c970943d207a4b1d92ebdf86a73a030be11367ec50d307dddf5296df8d615199210bc01
+"traverse@npm:=0.6.8":
+  version: 0.6.8
+  resolution: "traverse@npm:0.6.8"
+  checksum: 10/b0df554b47e32c6a3525d277a64982bd43c94c05a378248d71ce591e8ee781b74051e9391020e60bb33bdbe8cfe0d26861934979eeadee584918a91812ba82bb
   languageName: node
   linkType: hard
 
