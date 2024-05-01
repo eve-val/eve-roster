@@ -64,17 +64,17 @@ export default defineComponent({
   mixins: [NameCacheMixin],
 
   props: {
-    iconId: { type: Number, required: false, default: null },
+    iconId: { type: Number, required: false, default: undefined },
     iconType: {
-      type: String as PropType<AssetType | null>,
+      type: String as PropType<AssetType | nil>,
       required: false,
-      default: null,
+      default: undefined,
     },
     topLine: { type: String, required: true },
-    bottomLine: { type: String, required: false, default: "" },
-    iconHref: { type: String, required: false, default: "" },
-    topHref: { type: String, required: false, default: "" },
-    botHref: { type: String, required: false, default: "" },
+    bottomLine: { type: String, required: false, default: undefined },
+    iconHref: { type: String, required: false, default: undefined },
+    topHref: { type: String, required: false, default: undefined },
+    botHref: { type: String, required: false, default: undefined },
     /**
      * All entries are linked with the href unless overridden by the above
      * props.
@@ -82,7 +82,7 @@ export default defineComponent({
     defaultHref: {
       type: String as PropType<string | nil>,
       required: false,
-      default: "",
+      default: undefined,
     },
   },
 
