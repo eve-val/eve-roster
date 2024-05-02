@@ -6693,10 +6693,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:=3.1.0":
-  version: 3.1.0
-  resolution: "dompurify@npm:3.1.0"
-  checksum: 10/a8788d3510b0a5e26ae8f1beb3f079be63f417be0f7259918c273bd53f9b9eab50a0708e065caff9904ae97895cc4a7d4c66a1076021a9be0685389ad8ae4d2d
+"dompurify@npm:=3.1.1":
+  version: 3.1.1
+  resolution: "dompurify@npm:3.1.1"
+  checksum: 10/32102d99af058c84a2e6dba4ff4bb0bb544db50c519d756594d443537db14ce5457785160ab3461b6dfa556fa963cf7b5e1a6e766ed3e1cc0ed3fdb2c77cc432
   languageName: node
   linkType: hard
 
@@ -7344,7 +7344,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.2.0"
-    swagger-ui: "npm:^5.17.2"
+    swagger-ui: "npm:^5.17.3"
     tmp: "npm:^0.2.3"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -13730,9 +13730,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.17.2":
-  version: 5.17.2
-  resolution: "swagger-ui@npm:5.17.2"
+"swagger-ui@npm:^5.17.3":
+  version: 5.17.3
+  resolution: "swagger-ui@npm:5.17.3"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.24.4"
     "@braintree/sanitize-url": "npm:=7.0.1"
@@ -13740,7 +13740,7 @@ __metadata:
     classnames: "npm:^2.5.1"
     css.escape: "npm:1.5.1"
     deep-extend: "npm:0.6.0"
-    dompurify: "npm:=3.1.0"
+    dompurify: "npm:=3.1.1"
     ieee754: "npm:^1.2.1"
     immutable: "npm:^3.x.x"
     js-file-download: "npm:^0.4.12"
@@ -13770,7 +13770,7 @@ __metadata:
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/d676afdefcf9c69e13080354074e308dc04d30d8dd8290d7a77637d60aa81b045bdcbb4fb1dd884f69680148cf36b0ad7fca27463d9bdc588cbaa3b469be251c
+  checksum: 10/1ed2bba273ceeac979e2fae7519fe2a51990e7a7503c888cd5df67caf4723ad3f8a06bacead6e822bd9152df1bf5db76d8e77ba7720ab66fa66d6a97fcc9121a
   languageName: node
   linkType: hard
 
