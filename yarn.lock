@@ -5151,6 +5151,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"apg-lite@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "apg-lite@npm:1.0.3"
+  checksum: 10/f9344143c869f4048417b264787baf05ce469ea30aa877585d35972d54a173bff77c5f863af4e9c69293489f93abbac433e66a3957241b36b07862030195c597
+  languageName: node
+  linkType: hard
+
 "aproba@npm:^1.0.3 || ^2.0.0":
   version: 2.0.0
   resolution: "aproba@npm:2.0.0"
@@ -7527,7 +7534,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.3.2"
-    swagger-ui: "npm:^5.17.4"
+    swagger-ui: "npm:^5.17.7"
     tmp: "npm:^0.2.3"
     ts-jest: "npm:^29.1.2"
     ts-jest-resolver: "npm:^2.0.1"
@@ -10864,6 +10871,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-path-templating@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "openapi-path-templating@npm:1.5.1"
+  dependencies:
+    apg-lite: "npm:^1.0.3"
+  checksum: 10/6bb45bad34467dbb4e92e6f424a2c5cb8813579c2fad3473d5bb9f65117687465d3f7e490d95cdb77195a92ac373f25bef05c0b0ec1665658b831babae01e1e0
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.9.3":
   version: 0.9.3
   resolution: "optionator@npm:0.9.3"
@@ -12458,6 +12474,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ramda-adjunct@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "ramda-adjunct@npm:5.0.0"
+  peerDependencies:
+    ramda: ">= 0.30.0"
+  checksum: 10/87a531158ecadd9e212d5b66c415b238b4aee5da116fca542e37660cd5752e670af4e0d90971d0eb4fdeacfc5fc960553f469cdd876405b784f89fa54582dc21
+  languageName: node
+  linkType: hard
+
 "ramda@npm:~0.29.1":
   version: 0.29.1
   resolution: "ramda@npm:0.29.1"
@@ -13781,9 +13806,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.27.2":
-  version: 3.27.2
-  resolution: "swagger-client@npm:3.27.2"
+"swagger-client@npm:^3.27.3":
+  version: 3.27.7
+  resolution: "swagger-client@npm:3.27.7"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
     "@swagger-api/apidom-core": "npm:>=0.99.1 <1.0.0"
@@ -13798,15 +13823,17 @@ __metadata:
     js-yaml: "npm:^4.1.0"
     node-abort-controller: "npm:^3.1.1"
     node-fetch-commonjs: "npm:^3.3.2"
+    openapi-path-templating: "npm:^1.5.1"
     qs: "npm:^6.10.2"
+    ramda-adjunct: "npm:^5.0.0"
     traverse: "npm:=0.6.8"
-  checksum: 10/697b71272d7fe3ecf6409ec49c6b59e54f15a14e3f19536f7ad537fe8bdac14e12c3fb754c4c09973fe053ded4da1150b6ef7e2c3034178527b53db7f4151ae9
+  checksum: 10/ebd802fe72fe53d2a529b5214a10c43d0618fcca5c8819e789e9ead3a900903f18f468b91d80881359819b3e4b992ce4c38f3cacd1877219de65323f4a567976
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.17.4":
-  version: 5.17.4
-  resolution: "swagger-ui@npm:5.17.4"
+"swagger-ui@npm:^5.17.7":
+  version: 5.17.7
+  resolution: "swagger-ui@npm:5.17.7"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.24.5"
     "@braintree/sanitize-url": "npm:=7.0.1"
@@ -13838,12 +13865,12 @@ __metadata:
     reselect: "npm:^5.1.0"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.27.2"
+    swagger-client: "npm:^3.27.3"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/6c0fb27f973267dccaf87a4f97bdf7876b432aac9559b27bc588761bf126ff5bde9405375e231b23c1bb43445bfbf980e6516b8dc7151f675350aed0fe571eea
+  checksum: 10/ca686f7d91cb71e6f2a9186fec115492c138b3b2eeab5d198a820db21ad29f700abcb16fcbcb1ddc22ff953bf4e428a7b1d3c01eb8de2c3f749109fbc06b556f
   languageName: node
   linkType: hard
 
