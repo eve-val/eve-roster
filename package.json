@@ -33,7 +33,7 @@
     "@opentelemetry/resources": "^1.24.1",
     "@opentelemetry/sdk-node": "^0.51.1",
     "@opentelemetry/semantic-conventions": "^1.24.1",
-    "@sentry/node": "^7.114.0",
+    "@sentry/node": "^8.2.1",
     "axios": "^1.6.8",
     "bluebird": "^3.7.2",
     "body-parser": "^1.20.2",
@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.5",
-    "@sentry/browser": "^7.114.0",
+    "@sentry/browser": "^8.2.1",
     "@sentry/tracing": "^7.114.0",
     "@types/bluebird": "^3.5.42",
     "@types/body-parser": "^1.19.5",
