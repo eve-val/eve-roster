@@ -7512,7 +7512,7 @@ __metadata:
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:^5.6.0"
     html-webpack-pug-plugin: "npm:^4.0.0"
-    image-minimizer-webpack-plugin: "npm:^4.0.0"
+    image-minimizer-webpack-plugin: "npm:^4.0.1"
     jest: "npm:^29.7.0"
     jose: "npm:^5.3.0"
     json-loader: "npm:^0.5.7"
@@ -8539,9 +8539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "image-minimizer-webpack-plugin@npm:4.0.0"
+"image-minimizer-webpack-plugin@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "image-minimizer-webpack-plugin@npm:4.0.1"
   dependencies:
     schema-utils: "npm:^4.2.0"
     serialize-javascript: "npm:^6.0.2"
@@ -8556,7 +8556,7 @@ __metadata:
       optional: true
     svgo:
       optional: true
-  checksum: 10/4ee0960ced64adf262a1e35ad9e7029ac48732952bfdeff8e52f90e701f23439974946e5dfa775bfcd37ebf9a23c21e1db33427018b2589099854893e03ef280
+  checksum: 10/1425f67663e92324de49b7db402bf218a960bb4fd803779c61e7847815574885029258f795d4e4f3a40cde8b68cbd685066cfb8f21f127fbdaf70e67e991cddf
   languageName: node
   linkType: hard
 
