@@ -7253,7 +7253,7 @@ __metadata:
     node-graceful: "npm:^3.1.0"
     node-schedule: "npm:^2.1.1"
     p-limit: "npm:^5.0.0"
-    pg: "npm:^8.11.5"
+    pg: "npm:^8.12.0"
     prettier: "npm:^3.2.5"
     progress-stream: "npm:^2.0.0"
     pug: "npm:^3.0.3"
@@ -10883,9 +10883,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.11.5":
-  version: 8.11.5
-  resolution: "pg@npm:8.11.5"
+"pg@npm:^8.12.0":
+  version: 8.12.0
+  resolution: "pg@npm:8.12.0"
   dependencies:
     pg-cloudflare: "npm:^1.1.1"
     pg-connection-string: "npm:^2.6.4"
@@ -10901,7 +10901,7 @@ __metadata:
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 10/1510bc42943ea1749bfffac3f7ebae52ae638dc798e38786552fc67ffc0b2e4bd54456e7fd5cda7e805f30a0a59126c98e8c59afa88b6952f95411f16a16f709
+  checksum: 10/ce39af0e85d42bf5fc8dcc02c57b38d4cb203fea937688509a77c0b005a54d4821e5e5963a5663934d76994eab42381698f08a44e21544b4545fd9d142dcfd12
   languageName: node
   linkType: hard
 
