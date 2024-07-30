@@ -123,7 +123,7 @@
     "ts-jest": "^29.2.0",
     "ts-jest-resolver": "^2.0.1",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "url": "^0.11.4",
     "vue": "^3.4.34",
     "vue-eslint-parser": "^9.4.3",
