@@ -58,7 +58,7 @@
     "sqlite3": "^5.1.7",
     "tmp": "^0.2.3",
     "unbzip2-stream": "^1.4.3",
-    "underscore": "^1.13.6",
+    "underscore": "^1.13.7",
     "verror": "^1.10.1"
   },
   "devDependencies": {
