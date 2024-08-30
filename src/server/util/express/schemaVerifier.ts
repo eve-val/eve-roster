@@ -255,7 +255,7 @@ class SimpleMapSchema extends Schema {
 }
 
 function extractPropSchema(
-  schema: Object,
+  schema: object,
   key: string | number,
   path: string[],
 ): Schema {

@@ -112,8 +112,8 @@ const ACCOUNT_IS_OPT_OUT: FuncRule = {
       return undefined;
     }
     if (
-      OPT_OUT_CHARS.indexOf(killmail.victim.character_id) != -1 ||
-      OPT_OUT_CHARS.indexOf(extra.mainCharacter!) != -1
+      OPT_OUT_CHARS.includes(killmail.victim.character_id) ||
+      OPT_OUT_CHARS.includes(extra.mainCharacter!)
     ) {
       return [
         {

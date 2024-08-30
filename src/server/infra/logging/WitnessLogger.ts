@@ -54,7 +54,7 @@ export class WitnessLogger implements Logger {
 }
 
 function logMessage(level: protocol.LevelTag, message: string) {
-  if (message.indexOf("\n") == -1) {
+  if (!message.includes("\n")) {
     process.stdout.write(protocol.formatInputLine(Date.now(), level, message));
   } else {
     const lines = message.split("\n");

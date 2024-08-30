@@ -23,17 +23,15 @@ export interface Log {
   end: number;
 }
 
-const CITADEL_TYPES = [
-  "Astrahus",
-  "Fortizar",
-  "Keepstar",
-  "Raitaru",
-  "Azbel",
-  "Sotiyo",
-  "Athanor",
-  "Tatara",
-];
-type CitadelType = (typeof CITADEL_TYPES)[number];
+type CitadelType =
+  | "Astrahus"
+  | "Fortizar"
+  | "Keepstar"
+  | "Raitaru"
+  | "Azbel"
+  | "Sotiyo"
+  | "Athanor"
+  | "Tatara";
 
 export interface Citadel {
   id: number | null;

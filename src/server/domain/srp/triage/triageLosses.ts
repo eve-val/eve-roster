@@ -157,20 +157,17 @@ function testFilter(
   }
   if (
     match.groupId != undefined &&
-    match.groupId.indexOf(shipDef.styp_group) == -1
+    !match.groupId.includes(shipDef.styp_group)
   ) {
     return false;
   }
   if (
     match.marketGroupId != undefined &&
-    match.marketGroupId.indexOf(shipDef.styp_marketGroup) == -1
+    !match.marketGroupId.includes(shipDef.styp_marketGroup)
   ) {
     return false;
   }
-  if (
-    match.shipId != undefined &&
-    match.shipId.indexOf(shipDef.styp_id) == -1
-  ) {
+  if (match.shipId != undefined && !match.shipId.includes(shipDef.styp_id)) {
     return false;
   }
   return true;

@@ -190,8 +190,7 @@ export default defineComponent({
   },
 });
 
-const STATUSES = ["inactive", "saving", "error"];
-type Status = (typeof STATUSES)[number];
+type Status = "inactive" | "saving" | "error";
 </script>
 
 <style scoped>

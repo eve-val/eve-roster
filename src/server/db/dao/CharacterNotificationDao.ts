@@ -25,8 +25,8 @@ export default class CharacterNotificationDao {
       .run()
       .then((rows) =>
         _.map(rows, async function (row) {
-          const sol = row.characterNotification_text.match(
-            /solarSystemID: (?<id>\d+)/,
+          const sol = /solarSystemID: (?<id>\d+)/.exec(
+            row.characterNotification_text,
           );
           return {
             type: row.characterNotification_type,

@@ -7,8 +7,8 @@ export function hasRosterScopes(scopes: string[] | null) {
     return false;
   }
   return (
-    scopes.indexOf("esi-corporations.read_corporation_membership.v1") != -1 &&
-    scopes.indexOf("esi-corporations.track_members.v1") != -1 &&
-    scopes.indexOf("esi-corporations.read_titles.v1") != -1
+    scopes.includes("esi-corporations.read_corporation_membership.v1") &&
+    scopes.includes("esi-corporations.track_members.v1") &&
+    scopes.includes("esi-corporations.read_titles.v1")
   );
 }

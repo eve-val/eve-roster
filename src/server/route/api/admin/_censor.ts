@@ -34,5 +34,5 @@ export function censor(
 
 export function isCensored(value: string | null, censorshipChar = "*") {
   const testStr = censorshipChar + censorshipChar;
-  return typeof value == "string" && value.indexOf(testStr) != -1;
+  return typeof value == "string" && value.includes(testStr);
 }

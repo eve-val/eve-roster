@@ -1,5 +1,4 @@
 /*eslint-disable @typescript-eslint/no-unused-vars*/
-/*eslint-disable no-unused-vars*/
 
 import { val, integer, varchar } from "./index.js";
 import { Tnex } from "./Tnex.js";
