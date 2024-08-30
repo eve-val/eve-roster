@@ -400,7 +400,7 @@ export default defineComponent({
 });
 
 function cleanUserDate(value: string | nil) {
-  return value == "" ? undefined : value ?? undefined;
+  return value == "" ? undefined : (value ?? undefined);
 }
 </script>
 
