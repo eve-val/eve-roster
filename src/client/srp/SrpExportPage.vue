@@ -298,7 +298,7 @@ export default defineComponent({
         const response = await ajaxer.getRecentSrpLosses(this.buildFilter());
         this.results = response.data.srps;
         this.addNames(response.data.names);
-      } catch (e) {
+      } catch {
         // TODO: Handle or display error
       }
       this.searchStatus = "inactive";

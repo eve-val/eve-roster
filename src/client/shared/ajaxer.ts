@@ -185,7 +185,7 @@ export default {
     );
   },
 
-  getBattles(filter: Object, includeSrp: boolean) {
+  getBattles(filter: object, includeSrp: boolean) {
     return axios.get<Srp_Battle_GET>("/api/srp/battle", {
       params: {
         filter: filter != undefined ? JSON.stringify(filter) : undefined,
@@ -202,7 +202,7 @@ export default {
     });
   },
 
-  getRecentSrpLosses(filter: Object) {
+  getRecentSrpLosses(filter: object) {
     return axios.get<Srp_Loss_GET>("/api/srp/loss", {
       params: filter,
     });
@@ -232,7 +232,7 @@ export default {
     );
   },
 
-  getSrpPaymentHistory(filter: Object) {
+  getSrpPaymentHistory(filter: object) {
     return axios.get<Srp_Payment_dir_GET>("/api/srp/payment", {
       params: filter,
     });

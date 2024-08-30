@@ -139,8 +139,7 @@ import LoadingSpinner from "../shared/LoadingSpinner.vue";
 import ajaxer from "../shared/ajaxer";
 import { NameCacheMixin } from "../shared/nameCache";
 
-const REQUEST_STATUSES = ["inactive", "active", "error"] as const;
-type RequestStatus = (typeof REQUEST_STATUSES)[number];
+type RequestStatus = "inactive" | "active" | "error";
 
 import { SrpLossJson } from "../../shared/types/srp/SrpLossJson";
 
@@ -404,7 +403,7 @@ export default defineComponent({
           this.fetchTriageStatus = "inactive";
           this.srp.triage = response.data.triage;
           this.syncProposalWithRemoteVerdict();
-        } catch (e) {
+        } catch {
           this.fetchTriageStatus = "error";
         }
       } else {

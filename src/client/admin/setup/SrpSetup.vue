@@ -54,8 +54,7 @@ SRP tracking starts, if it does at all.
 import ajaxer from "../../shared/ajaxer";
 import LoadingSpinner from "../../shared/LoadingSpinner.vue";
 
-const STATUSES = ["active", "inactive", "error"] as const;
-type Status = (typeof STATUSES)[number];
+type Status = "active" | "inactive" | "error";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {

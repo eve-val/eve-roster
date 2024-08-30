@@ -1,7 +1,7 @@
 /**
  * Internal data structure that tracks information related to table columns.
  */
-export interface ColumnDescriptor<T extends Object> {
+export interface ColumnDescriptor<T extends object> {
   readonly prefixedName: keyof T;
   readonly unprefixedName: string;
   readonly type: DataType;
