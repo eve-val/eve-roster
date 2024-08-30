@@ -170,10 +170,8 @@ export default defineComponent({
     },
 
     inPrimaryCorp: function (): boolean {
-      return (
-        eveConstants.primaryCorporations.indexOf(
-          this.character.corporationId,
-        ) != -1
+      return eveConstants.primaryCorporations.includes(
+        this.character.corporationId,
       );
     },
   },

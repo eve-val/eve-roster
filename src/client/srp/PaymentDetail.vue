@@ -165,8 +165,7 @@ export default defineComponent({
   },
 });
 
-const UNDO_STATUSES = ["inactive", "saving", "error"] as const;
-type UndoStatus = (typeof UNDO_STATUSES)[number];
+type UndoStatus = "inactive" | "saving" | "error";
 </script>
 
 <style scoped>

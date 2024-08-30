@@ -29,8 +29,7 @@ A component that either looks like a "load more" button or a loading spinner.
 <script lang="ts">
 import LoadingSpinner from "../shared/LoadingSpinner.vue";
 
-const STATUSES = ["inactive", "active", "error"] as const;
-type Status = (typeof STATUSES)[number];
+type Status = "inactive" | "active" | "error";
 
 import { defineComponent, PropType } from "vue";
 export default defineComponent({

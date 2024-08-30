@@ -38,7 +38,7 @@ export type JsonEndpointHandler<T extends object> = (
   privs: AccountPrivileges,
 ) => Promise<T>;
 
-export type HtmlEndpointHandler<T extends Object> = (
+export type HtmlEndpointHandler<T extends object> = (
   req: express.Request,
   res: express.Response,
   db: Tnex,
