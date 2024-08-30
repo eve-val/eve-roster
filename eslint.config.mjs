@@ -12,65 +12,75 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default [{
+export default [
+  {
     ignores: ["**/node_modules", "**/out", "**/coverage"],
-}, ...compat.extends(
+  },
+  ...compat.extends(
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:jest/recommended",
     "plugin:vue/vue3-recommended",
     "plugin:prettier/recommended",
     "eslint:recommended",
-), {
+  ),
+  {
     plugins: {
-        "@typescript-eslint": typescriptEslint,
-        jest,
-        vue,
-        "prettier-vue": prettierVue,
+      "@typescript-eslint": typescriptEslint,
+      jest,
+      vue,
+      "prettier-vue": prettierVue,
     },
 
     languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.node,
-        },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
 
-        parser: parser,
-        ecmaVersion: 5,
-        sourceType: "commonjs",
+      parser: parser,
+      ecmaVersion: 5,
+      sourceType: "commonjs",
 
-        parserOptions: {
-            parser: "@typescript-eslint/parser",
-            project: "./tsconfig.eslint.json",
-            extraFileExtensions: [".vue"],
-        },
+      parserOptions: {
+        parser: "@typescript-eslint/parser",
+        project: "./tsconfig.eslint.json",
+        extraFileExtensions: [".vue"],
+      },
     },
 
     rules: {
-        "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-empty-function": "off",
-        "@typescript-eslint/no-empty-interface": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-empty-interface": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
 
-        "@typescript-eslint/no-unused-vars": ["error", {
-            argsIgnorePattern: "^_",
-        }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+        },
+      ],
 
-        "no-constant-condition": ["error", {
-            checkLoops: false,
-        }],
+      "no-constant-condition": [
+        "error",
+        {
+          checkLoops: false,
+        },
+      ],
 
-        "no-unused-vars": "off",
-        "no-redeclare": "off",
-        "no-dupe-class-members": "off",
-        "no-undef": "off",
+      "no-unused-vars": "off",
+      "no-redeclare": "off",
+      "no-dupe-class-members": "off",
+      "no-undef": "off",
     },
-}];
+  },
+];
