@@ -3967,12 +3967,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.16.3":
-  version: 20.16.3
-  resolution: "@types/node@npm:20.16.3"
+"@types/node@npm:^20.16.5":
+  version: 20.16.5
+  resolution: "@types/node@npm:20.16.5"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10/3b14b8b3cb92adc7db69f8cf351e7b6b5001e5c7cdb07470943215afeafc2952ae588c918543784e8f8e975d43d609ce0c7bced91f1b8745f1669d6137adaabc
+  checksum: 10/39a8457149dc17cdea57afc90d4da53182fdb8b958d5bb065a15d123d81d4efa6b51a0de92428d05ead2e63ce07195586f71083401b99cdbcd04662344fbf7a1
   languageName: node
   linkType: hard
 
@@ -7287,7 +7287,7 @@ __metadata:
     "@types/heapdump": "npm:^0.3.4"
     "@types/imagemin": "npm:^9.0.0"
     "@types/mini-css-extract-plugin": "npm:^2.5.1"
-    "@types/node": "npm:^20.16.3"
+    "@types/node": "npm:^20.16.5"
     "@types/node-schedule": "npm:^2.1.7"
     "@types/pg": "npm:^8.11.8"
     "@types/pg-pool": "npm:^2.0.6"
