@@ -7427,7 +7427,7 @@ __metadata:
     ts-jest: "npm:^29.2.5"
     ts-jest-resolver: "npm:^2.0.1"
     ts-loader: "npm:^9.5.1"
-    typescript: "npm:5.6.2"
+    typescript: "npm:^5.6.2"
     unbzip2-stream: "npm:^1.4.3"
     underscore: "npm:^1.13.7"
     url: "npm:^0.11.4"
@@ -14350,7 +14350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.6.2":
+"typescript@npm:^5.6.2":
   version: 5.6.2
   resolution: "typescript@npm:5.6.2"
   bin:
@@ -14360,7 +14360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.6.2#optional!builtin<compat/typescript>":
   version: 5.6.2
   resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
   bin:
