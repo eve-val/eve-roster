@@ -7403,7 +7403,7 @@ __metadata:
     html-webpack-pug-plugin: "npm:^4.0.0"
     image-minimizer-webpack-plugin: "npm:^4.1.0"
     jest: "npm:^29.7.0"
-    jose: "npm:^5.8.0"
+    jose: "npm:^5.9.2"
     json-loader: "npm:^0.5.7"
     knex: "npm:^3.1.0"
     mini-css-extract-plugin: "npm:^2.9.1"
@@ -9574,10 +9574,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^5.8.0":
-  version: 5.8.0
-  resolution: "jose@npm:5.8.0"
-  checksum: 10/d5a11135754aeb7e3dcfbfb33ae1087541a081002cedb533e4705a9d71237a2c22f21085a291a0847939257a7b2f2374b589d306be17c3330049aefb62719c5e
+"jose@npm:^5.9.2":
+  version: 5.9.2
+  resolution: "jose@npm:5.9.2"
+  checksum: 10/bbcad3bb2681424ee257f3eb561d70b69a082ceef628926ac20f8c1d3471fccfc039bc8d7b7507fa818f695fdafa2cfaab53c46dfd8e56d9b89262f7c83b8a25
   languageName: node
   linkType: hard
 
