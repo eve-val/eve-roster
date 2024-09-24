@@ -9,26 +9,30 @@
 
     <template v-if="data != null">
       <table>
-        <tr class="summary-row">
-          <td class="row-label">task</td>
-          <td class="row-value">{{ data.task }}</td>
-        </tr>
-        <tr class="summary-row">
-          <td class="row-label">id</td>
-          <td class="row-value">{{ data.id }}</td>
-        </tr>
-        <tr class="summary-row">
-          <td class="row-label">start</td>
-          <td class="row-value">{{ displayDate(data.start) }}</td>
-        </tr>
-        <tr class="summary-row">
-          <td class="row-label">end</td>
-          <td class="row-value">{{ displayDate(data.end) }}</td>
-        </tr>
-        <tr class="summary-row">
-          <td class="row-label">result</td>
-          <td class="row-value">{{ data.result ?? "none" }}</td>
-        </tr>
+        <thead>
+          <tr class="summary-row">
+            <td class="row-label">task</td>
+            <td class="row-value">{{ data.task }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="summary-row">
+            <td class="row-label">id</td>
+            <td class="row-value">{{ data.id }}</td>
+          </tr>
+          <tr class="summary-row">
+            <td class="row-label">start</td>
+            <td class="row-value">{{ displayDate(data.start) }}</td>
+          </tr>
+          <tr class="summary-row">
+            <td class="row-label">end</td>
+            <td class="row-value">{{ displayDate(data.end) }}</td>
+          </tr>
+          <tr class="summary-row">
+            <td class="row-label">result</td>
+            <td class="row-value">{{ data.result ?? "none" }}</td>
+          </tr>
+        </tbody>
       </table>
 
       <div class="logs-title">Logs</div>
