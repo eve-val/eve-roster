@@ -18,6 +18,7 @@ updates:
           - "vue"
       eslint:
         patterns:
+          - "@eslint/*"
           - "@typescript-eslint/*"
           - "eslint-*"
           - "eslint"
