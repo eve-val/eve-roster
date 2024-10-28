@@ -61,7 +61,7 @@
     "verror": "^1.10.1"
   },
   "devDependencies": {
-    "@babel/types": "^7.25.8",
+    "@babel/types": "^7.26.0",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.13.0",
     "@jest/globals": "^29.7.0",
