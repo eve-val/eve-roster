@@ -3811,12 +3811,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-minimizer-webpack-plugin@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "@types/css-minimizer-webpack-plugin@npm:3.2.1"
+"@types/css-minimizer-webpack-plugin@npm:^3.2.4":
+  version: 3.2.4
+  resolution: "@types/css-minimizer-webpack-plugin@npm:3.2.4"
   dependencies:
     css-minimizer-webpack-plugin: "npm:*"
-  checksum: 10/e3ecdeb94a39e1dd97653210cf8f18052f7818adb95926ac8c50266668ff2f89fae515c27fa5f5035322aa7b6ae004d31711d000244c70b3d243e567321058d8
+  checksum: 10/c668cb494af4ba9f1035b19a718724a71f4b3a04286549ab0d3a865c9d81df940362cf93c5987b777c0a6252a36097c7e7a74c4f4109eb67698dd208a75c0303
   languageName: node
   linkType: hard
 
@@ -7459,7 +7459,7 @@ __metadata:
     "@types/body-parser": "npm:^1.19.5"
     "@types/cookie-parser": "npm:^1.4.7"
     "@types/cookie-session": "npm:^2.0.49"
-    "@types/css-minimizer-webpack-plugin": "npm:^3.2.1"
+    "@types/css-minimizer-webpack-plugin": "npm:^3.2.4"
     "@types/csurf": "npm:^1.11.5"
     "@types/events": "npm:^3"
     "@types/express": "npm:^4.17.21"
