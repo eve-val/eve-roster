@@ -13,9 +13,7 @@ export enum ResultOrder {
  * Given a type T and a key of T, K, creates a new type with a single
  * property named L that has type T[K].
  */
-export type Link<T, K extends keyof T, L extends string> = {
-  [P in L]: T[K];
-};
+export type Link<T, K extends keyof T, L extends string> = Record<L, T[K]>;
 
 /**
  * All of the string keys of a type. Essentially `keyof <type>` but only
