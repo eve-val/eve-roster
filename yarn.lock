@@ -517,13 +517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime-corejs3@npm:^7.24.5":
-  version: 7.24.5
-  resolution: "@babel/runtime-corejs3@npm:7.24.5"
+"@babel/runtime-corejs3@npm:^7.24.7":
+  version: 7.26.0
+  resolution: "@babel/runtime-corejs3@npm:7.26.0"
   dependencies:
     core-js-pure: "npm:^3.30.2"
     regenerator-runtime: "npm:^0.14.0"
-  checksum: 10/571c7e225ae8dbfef58a9ea5e5f4d368b1c6e13f498e7f74a98aab5f8d02cb543e2ac397270251b5cd3aaa4e9dfa927bea08ba16909630bfa416d5392c5bb41c
+  checksum: 10/fd813d8b5bfc412c083033638c937e13f621b3223161c4a20bb8532d77ae622b620915476bd265670f6a8fc1a76a017ffd738ad25ad24431953e3725247c6520
   languageName: node
   linkType: hard
 
@@ -626,10 +626,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braintree/sanitize-url@npm:=7.0.2":
-  version: 7.0.2
-  resolution: "@braintree/sanitize-url@npm:7.0.2"
-  checksum: 10/8d5a728fc57b86c5175ae37f8642dab721ad1bacbef0f5ace68f40a737a5d937a6030cbf0e31a95469956a1a05f6576f6afcf0b0ee9ce04e4610a23503a07de2
+"@braintree/sanitize-url@npm:=7.0.4":
+  version: 7.0.4
+  resolution: "@braintree/sanitize-url@npm:7.0.4"
+  checksum: 10/80ea0080776a0305d697d12042acac287675e88a2abd9d294464f70ec57c1b00242d8d02a110c98ef8ea1731e512d67273ff5532c4bf01a78ab8b046fabb53d9
   languageName: node
   linkType: hard
 
@@ -2719,6 +2719,13 @@ __metadata:
   version: 1.1.0
   resolution: "@protobufjs/utf8@npm:1.1.0"
   checksum: 10/131e289c57534c1d73a0e55782d6751dd821db1583cb2f7f7e017c9d6747addaebe79f28120b2e0185395d990aad347fb14ffa73ef4096fa38508d61a0e64602
+  languageName: node
+  linkType: hard
+
+"@scarf/scarf@npm:=1.4.0":
+  version: 1.4.0
+  resolution: "@scarf/scarf@npm:1.4.0"
+  checksum: 10/1b39a18fa29e91cfbc134c588e20c5f01a1b21ec4473614123801155b48378e9c3bf72adaca8c67e433ae951ab653268e9502cc5733230d8927532f74a6b89c9
   languageName: node
   linkType: hard
 
@@ -6126,17 +6133,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2":
+"cookie@npm:0.7.2, cookie@npm:~0.7.2":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10/24b286c556420d4ba4e9bc09120c9d3db7d28ace2bd0f8ccee82422ce42322f73c8312441271e5eefafbead725980e5996cc02766dbb89a90ac7f5636ede608f
-  languageName: node
-  linkType: hard
-
-"cookie@npm:~0.6.0":
-  version: 0.6.0
-  resolution: "cookie@npm:0.6.0"
-  checksum: 10/c1f8f2ea7d443b9331680598b0ae4e6af18a618c37606d1bbdc75bec8361cce09fe93e727059a673f2ba24467131a9fb5a4eec76bb1b149c1b3e1ccb268dc583
   languageName: node
   linkType: hard
 
@@ -6843,10 +6843,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:=3.1.4":
-  version: 3.1.4
-  resolution: "dompurify@npm:3.1.4"
-  checksum: 10/be036d5c10bda3ca9cc8069f26f3e586ac0379fc2a2499df7c362eeee53de49594ead3cc7e82e012eadcb071cf7327001fca33751682882e42da87618b10a4e6
+"dompurify@npm:=3.1.6":
+  version: 3.1.6
+  resolution: "dompurify@npm:3.1.6"
+  checksum: 10/036844bc9b717b172ba27f5863b56f950289a05d8eebfb702d6953bbf80bd021e480ce4217bd084567186f2d0ada13358ce5556963492cfe402d774e8667f120
   languageName: node
   linkType: hard
 
@@ -7565,7 +7565,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     stream-browserify: "npm:^3.0.0"
     svgo: "npm:^3.3.2"
-    swagger-ui: "npm:^5.17.14"
+    swagger-ui: "npm:^5.18.2"
     tmp: "npm:^0.2.3"
     ts-jest: "npm:^29.2.5"
     ts-jest-resolver: "npm:^2.0.1"
@@ -12982,10 +12982,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reselect@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "reselect@npm:5.1.0"
-  checksum: 10/657c379d9461781b7cb5f0a32133e23b4266886660c94fcc77c102bec8abe484b32bf43a911b99b747ecf7439f157696561d744d40dc920024611beb1a0d921f
+"reselect@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "reselect@npm:5.1.1"
+  checksum: 10/1fdae11a39ed9c8d85a24df19517c8372ee24fefea9cce3fae9eaad8e9cefbba5a3d4940c6fe31296b6addf76e035588c55798f7e6e147e1b7c0855f119e7fa5
   languageName: node
   linkType: hard
 
@@ -13992,17 +13992,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-client@npm:^3.28.1":
-  version: 3.29.3
-  resolution: "swagger-client@npm:3.29.3"
+"swagger-client@npm:^3.31.0":
+  version: 3.31.0
+  resolution: "swagger-client@npm:3.31.0"
   dependencies:
     "@babel/runtime-corejs3": "npm:^7.22.15"
+    "@scarf/scarf": "npm:=1.4.0"
     "@swagger-api/apidom-core": "npm:>=1.0.0-alpha.9 <1.0.0-beta.0"
     "@swagger-api/apidom-error": "npm:>=1.0.0-alpha.9 <1.0.0-beta.0"
     "@swagger-api/apidom-json-pointer": "npm:>=1.0.0-alpha.9 <1.0.0-beta.0"
     "@swagger-api/apidom-ns-openapi-3-1": "npm:>=1.0.0-alpha.9 <1.0.0-beta.0"
     "@swagger-api/apidom-reference": "npm:>=1.0.0-alpha.9 <1.0.0-beta.0"
-    cookie: "npm:~0.6.0"
+    cookie: "npm:~0.7.2"
     deepmerge: "npm:~4.3.0"
     fast-json-patch: "npm:^3.0.0-1"
     js-yaml: "npm:^4.1.0"
@@ -14013,21 +14014,22 @@ __metadata:
     openapi-server-url-templating: "npm:^1.0.0"
     ramda: "npm:^0.30.1"
     ramda-adjunct: "npm:^5.0.0"
-  checksum: 10/e22c15946371a24d24657d8002fa5e80657f4b524efede1418137a236804eb02754a35c2226d60714b9f6dc6fc2e755680f06a14c6bb9f031f5a803460ef1b45
+  checksum: 10/53f21f508241acccae61f2fdab07843988c8f17ce3f14c79a9865ba5120ced4fd8587752a33d0297c5563f3901651d8c60b6fd6237a6a679aa89b5062cf63866
   languageName: node
   linkType: hard
 
-"swagger-ui@npm:^5.17.14":
-  version: 5.17.14
-  resolution: "swagger-ui@npm:5.17.14"
+"swagger-ui@npm:^5.18.2":
+  version: 5.18.2
+  resolution: "swagger-ui@npm:5.18.2"
   dependencies:
-    "@babel/runtime-corejs3": "npm:^7.24.5"
-    "@braintree/sanitize-url": "npm:=7.0.2"
+    "@babel/runtime-corejs3": "npm:^7.24.7"
+    "@braintree/sanitize-url": "npm:=7.0.4"
+    "@scarf/scarf": "npm:=1.4.0"
     base64-js: "npm:^1.5.1"
     classnames: "npm:^2.5.1"
     css.escape: "npm:1.5.1"
     deep-extend: "npm:0.6.0"
-    dompurify: "npm:=3.1.4"
+    dompurify: "npm:=3.1.6"
     ieee754: "npm:^1.2.1"
     immutable: "npm:^3.x.x"
     js-file-download: "npm:^0.4.12"
@@ -14048,15 +14050,15 @@ __metadata:
     redux: "npm:^5.0.1"
     redux-immutable: "npm:^4.0.0"
     remarkable: "npm:^2.0.1"
-    reselect: "npm:^5.1.0"
+    reselect: "npm:^5.1.1"
     serialize-error: "npm:^8.1.0"
     sha.js: "npm:^2.4.11"
-    swagger-client: "npm:^3.28.1"
+    swagger-client: "npm:^3.31.0"
     url-parse: "npm:^1.5.10"
     xml: "npm:=1.0.1"
     xml-but-prettier: "npm:^1.0.1"
     zenscroll: "npm:^4.0.2"
-  checksum: 10/29e8b5e77ee5ccbf01b5519ef4a3630c712fcd704f86fd6fe60a8cc26c3552c29dc116e71aa166bbaaf59705d5cc76998986d6d84cb7176aa5a54f806aacb01d
+  checksum: 10/5bdba8099f3e03b938071e2523fd21c5fbecaf82f118342948c507344992c09df5b3f7b4978fad208f5c68463a79408e5a9c1a48355ed67bce76033eee3be1d0
   languageName: node
   linkType: hard
 
