@@ -71,7 +71,7 @@ May also contain triage UI if triageMode is enabled.
           :icon-type="'Type'"
           :top-line="nameOrUnknown(srp.victim)"
           :bottom-line="name(srp.shipType)"
-          :default-href="zkillHref(srp.killmail, 'kill')"
+          :default-href="`/killmail/${srp.killmail}`"
         />
         <srp-status
           :initial-srp="srp"
