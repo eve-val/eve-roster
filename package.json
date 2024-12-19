@@ -41,7 +41,7 @@
     "csurf": "^1.11.0",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "express-rate-limit": "^7.4.1",
     "jose": "^5.9.6",
     "knex": "^3.1.0",
