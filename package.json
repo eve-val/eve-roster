@@ -124,7 +124,7 @@
     "swagger-ui": "^5.18.2",
     "ts-jest": "^29.2.5",
     "ts-jest-resolver": "^2.0.1",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
     "url": "^0.11.4",
     "vue": "^3.5.13",
