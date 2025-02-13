@@ -4661,12 +4661,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sqlite3@npm:^3.1.11":
-  version: 3.1.11
-  resolution: "@types/sqlite3@npm:3.1.11"
+"@types/sqlite3@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@types/sqlite3@npm:5.1.0"
   dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/bcda2df582bdc1e1c0f0fa2e4ca0c5188207155eac52518244a3e7517d3c58a1f441871a7ec9088f2281af1bfdc5175c082a2c13da920c51cb7f3aa2f17e8d7b
+    sqlite3: "npm:*"
+  checksum: 10/3301245c9b20569da719dab0df0ee5c6ee88709133254f9ba65d8822514483971f87a1580f750ec4af5528811e7beafc99c5ada84ced9534a02e3a921838ece6
   languageName: node
   linkType: hard
 
@@ -7965,7 +7965,7 @@ __metadata:
     "@types/pug": "npm:^2.0.10"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/source-map-support": "npm:^0.5.10"
-    "@types/sqlite3": "npm:^3.1.11"
+    "@types/sqlite3": "npm:^5.1.0"
     "@types/swagger-ui": "npm:^3.52.4"
     "@types/tmp": "npm:^0.2.6"
     "@types/underscore": "npm:^1.13.0"
@@ -14158,7 +14158,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite3@npm:^5.1.7":
+"sqlite3@npm:*, sqlite3@npm:^5.1.7":
   version: 5.1.7
   resolution: "sqlite3@npm:5.1.7"
   dependencies:
