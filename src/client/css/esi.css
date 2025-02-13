@@ -213,7 +213,8 @@ section.block.col-12.block-desktop.col-12-desktop {
 .swagger-ui .opblock-tag,
 section.models h4 span {
   color: #c1d3dd !important;
-  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  font-family:
+    "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
   font-weight: 500;
   font-size: 1.2em !important;
   padding: 0 !important;
@@ -249,7 +250,8 @@ div#swagger-ui
 .swagger-ui .opblock .opblock-summary-path,
 .swagger-ui .opblock .opblock-summary-path__deprecated {
   color: #fff !important;
-  font-family: "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
+  font-family:
+    "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
     "Courier New", monospace !important;
   font-weight: 500 !important;
   font-size: inherit;
@@ -277,7 +279,8 @@ div#swagger-ui
 
 .swagger-ui .opblock .opblock-summary-description {
   color: #c1d3dd !important;
-  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  font-family:
+    "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
   font-weight: 500;
   font-size: 18px !important;
   text-align: right;
@@ -328,7 +331,8 @@ div#swagger-ui
   height: 100%;
   min-width: 50px !important;
   margin: 0 !important;
-  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  font-family:
+    "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
   font-size: 12px !important;
   font-weight: 400 !important;
   position: absolute;
@@ -419,13 +423,15 @@ div#swagger-ui
 }
 
 code {
-  font-family: "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
+  font-family:
+    "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
     "Courier New", monospace;
   padding: 1px 3px;
 }
 
 .swagger-ui .parаmeter__type {
-  font-family: "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
+  font-family:
+    "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
     "Courier New", monospace;
   color: #fff !important;
 }
@@ -444,7 +450,8 @@ code {
 button.btn.btn-clear.opblock-control__btn,
 div.responses-inner tr.response td,
 div#api_info {
-  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  font-family:
+    "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
   color: #fff !important;
 }
 
@@ -456,7 +463,8 @@ tr.response > td.response-col_description > span {
   padding: 10px;
   border-radius: 0 !important;
   background: #41444e;
-  font-family: "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
+  font-family:
+    "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
     "Courier New", monospace !important;
   font-weight: 600;
   color: #fff;
@@ -491,7 +499,8 @@ div.opblock-section-header label {
   font-weight: 300 !important;
   border-radius: 0 !important;
   width: 100% !important;
-  font-family: "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
+  font-family:
+    "Roboto Mono", "Menlo", "Consolas", "Bitstream Vera Sans Mono",
     "Courier New", monospace !important;
 }
 
