@@ -609,13 +609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.26.8":
-  version: 7.26.8
-  resolution: "@babel/types@npm:7.26.8"
+"@babel/types@npm:^7.27.0":
+  version: 7.27.0
+  resolution: "@babel/types@npm:7.27.0"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.25.9"
     "@babel/helper-validator-identifier": "npm:^7.25.9"
-  checksum: 10/e6889246889706ee5e605cbfe62657c829427e0ddef0e4d18679a0d989bdb23e700b5a851d84821c2bdce3ded9ae5b9285fe1028562201b28f816e3ade6c3d0d
+  checksum: 10/2c322bce107c8a534dc4a23be60d570e6a4cc7ca2e44d4f0eee08c0b626104eb7e60ab8de03463bc5da1773a2f69f1e6edec1648d648d65461d6520a7f3b0770
   languageName: node
   linkType: hard
 
@@ -7664,7 +7664,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eve-roster@workspace:."
   dependencies:
-    "@babel/types": "npm:^7.26.8"
+    "@babel/types": "npm:^7.27.0"
     "@eslint/eslintrc": "npm:^3.2.0"
     "@eslint/js": "npm:^9.20.0"
     "@jest/globals": "npm:^29.7.0"
